@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
@@ -17,8 +18,9 @@ import basic.zKernel.file.ini.KernelFileIniZZZ;
 /**
 @author 0823 ,date 05.10.2004
 */
-public class FileIniZZZ extends KernelFileIniZZZ{
-	
+public class FileIniZZZ<T> extends KernelFileIniZZZ<T>{
+	private static final long serialVersionUID = 5192676798207771609L;
+
 	public FileIniZZZ() throws ExceptionZZZ{
 		super();
 	}
@@ -42,8 +44,16 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 		super(objKernel, objFile, saFlagControl);
 	}
 	
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String, String> hmVariable, String[] saFlagControl) throws ExceptionZZZ {
+		super(objKernel, objFile, hmVariable, saFlagControl);
+	}
+	
 	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 		super(objKernel, objFile, hmFlag);
+	}
+	
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String, String> hmVariable, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+		super(objKernel, objFile, hmVariable, hmFlag);
 	}
 
 	/** CONSTRUCTOR

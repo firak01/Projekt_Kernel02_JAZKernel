@@ -3,10 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectWithExpressionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -65,22 +62,24 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### aus IIniTagBasicZZZ
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null;
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
-			objReturn = new KernelConfigSectionEntryZZZ(this);			
+			//hier den Wert explizit noch im Entry-Objekt nachhalten, da es keine entry-Propety gibt, in die automatisch beim Wert-Setzen der Wert geschieben wird.
+			//wie in AbstractKernelIniTagSimpleZZZ
+			objReturn.setValue(sReturn);
 		}//end main:
 		return objReturn;
 	}	
-	
+
 	@Override
 	public String[] parseAsArray(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parseAsArray(sLineWithExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);
@@ -131,55 +130,55 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return bReturn;
 	}
 		
-	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-				
-			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
-			
-			//Bei einfachen Tags, den Wert zurückgeben
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
-			
-			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
-			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
-		}//end main:
-		return sReturn;
-	}	
+//	@Override
+//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//				
+//			//Bei einfachen Tags den Ersten Vektor holen
+//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
+//			
+//			//Bei einfachen Tags, den Wert zurückgeben
+//			sReturn = (String) vecAll.get(1);
+//			this.setValue(sReturn);
+//			
+//			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
+//			String sExpressionImploded = VectorZZZ.implode(vecAll);
+//			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+//		}//end main:
+//		return sReturn;
+//	}	
 		
 	
 	
-	/**
-	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
-	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
-	 * ist der Ausdruck NACH der ersten Expression.
-	 * 
-	 * @param sLineWithExpression
-	 * @throws ExceptionZZZ
-	 */
-	@Override
-	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
-		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-		}
-		return vecReturn;
-	}
+//	/**
+//	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+//	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+//	 * ist der Ausdruck NACH der ersten Expression.
+//	 * 
+//	 * @param sLineWithExpression
+//	 * @throws ExceptionZZZ
+//	 */
+//	@Override
+//	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String>vecReturn = new Vector<String>();		
+//		main:{
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+//		}
+//		return vecReturn;
+//	}
 	
 	@Override
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.parseFirstVector(sLineWithExpression);			
 			
 		}
 		return vecReturn;
@@ -189,7 +188,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	@Override
 	public IIniStructurePositionZZZ getIniStructurePosition() throws ExceptionZZZ{
 		if(this.objIniPosition==null) {
-			this.objIniPosition = new IniStructurePositionZZZ();
+			this.objIniPosition = new IniStructurePositionZZZ(this);
 		}
 		return this.objIniPosition;
 	}
@@ -202,6 +201,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//### aus IIniStructurePositionZZZ
 	@Override
 	public String getSection() throws ExceptionZZZ {
+		if(this.objIniPosition==null)return null;
 		return this.getIniStructurePosition().getSection();
 	}
 
@@ -212,6 +212,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 
 	@Override
 	public String getProperty() throws ExceptionZZZ {
+		if(this.objIniPosition==null)return null; 
 		return this.getIniStructurePosition().getProperty();
 	}
 

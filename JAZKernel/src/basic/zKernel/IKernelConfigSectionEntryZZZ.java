@@ -8,6 +8,7 @@ import basic.zBasic.IValueArrayUserZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zBasic.IValueUserZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionUserZZZ;
@@ -31,6 +32,13 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
 	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap();
 	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
+	
+	public void setProperty(String sProperty, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
+	public HashMapMultiIndexedZZZ<String,Boolean> getPropertiesSearchedHashMap();
+	public void setPropertiesSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmProperiesSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
+	
+	public HashMapMultiZZZ<String,String> getPropertiesSectionHashMap();
+	public void setPropertiesSectionHashMap(HashMapMultiZZZ<String,String> hmProperiesSearched); 
 	
 	public String getSystemNumber();
 	public void setSystemNumber(String sSystemNumber);
@@ -162,9 +170,14 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	//Suchpfaddetail	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists) throws ExceptionZZZ;
-	
 	public boolean hasAnySectionExists(); //existierte auf dem Suchpfad nach einer Property ueberhaupt einmal eine Section?
 	//soll nur private eingesetzt werden. abstract void hasAnySectionExists(boolean bValue);
+	
+	public boolean propertyExists();
+	abstract void propertyExists(boolean bPropertyExists) throws ExceptionZZZ;
+	public boolean hasAnyPropertyExists(); //existierte auf dem Suchpfad nach einer Property ueberhaupt einmal eine Section?
+	//soll nur private eingesetzt werden. abstract void hasAnyPropertyExists(boolean bValue);
+	
 	
 	//In clonable protected
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;

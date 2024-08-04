@@ -71,7 +71,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sLineWithExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 			
 			
@@ -104,7 +104,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sLineWithExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 			
 			

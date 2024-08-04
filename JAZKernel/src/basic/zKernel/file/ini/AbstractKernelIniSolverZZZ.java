@@ -11,18 +11,14 @@ import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
 	private static final long serialVersionUID = -4816468638381054061L;
-	protected FileIniZZZ objFileIni=null;
 	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
@@ -52,45 +48,43 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
 		super(objKernelUsing);
-		AbstractKernelIniSolverNew_();
+		AbstractKernelIniSolverNew_(null, null);
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
 		super(objKernelUsing, saFlag);
-		AbstractKernelIniSolverNew_();
+		AbstractKernelIniSolverNew_(null, null);
 	}
 	
-	private boolean AbstractKernelIniSolverNew_() throws ExceptionZZZ {
-	 boolean bReturn = false;	
-	 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}	
-			
-			
-	 	}//end main:
-		return bReturn;
-	 }//end function AbstractKernelIniSolverNew_
+	TODOGOON20240804; //s. KernelZFormulaIniSolverZZZ Konstruktoren deutlich erweitern.... 
+	
+	
+	private boolean AbstractKernelIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
 		
-	public String getValue() {
-		return this.getEntry().getValue();
-	}
-
-	public void setValue(String sValue) {
-		this.getEntry().setValue(sValue);
-	}
-	
-	//### aus IKernelConfigSectionEntryUserZZZ
-	public IKernelConfigSectionEntryZZZ getEntry() {
-		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ();			
+	boolean bReturn = false;		 
+	main:{
+		if(this.getFlag("init")==true){
+			bReturn = true;
+			break main;
 		}
-		return this.objEntry;
-	}
-	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-		this.objEntry = objEntry;
-	}
+		
+		if(objFileIn==null ){
+			ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez; 
+		}else{
+			this.setFileConfigKernelIni(objFileIn);	
+			if(objFileIn.getHashMapVariable()!=null){
+				this.setHashMapVariable(objFileIn.getHashMapVariable());
+			}
+		}
+				
+		if(hmVariable!=null){				
+				this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+		}
+ 	}//end main:
+	return bReturn;
+ractKernelIniSolverNew_
+		
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
@@ -100,13 +94,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */	
 	@Override
-	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {		
+	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ {		
              //Darin können also auch Variablen, etc. sein
 			Vector<String> vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
-				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				vecReturn = this.parseFirstVector(sLineWithExpression);			
 				String sExpression = (String) vecReturn.get(1);									
 				if(!StringZZZ.isEmpty(sExpression)){
 					
@@ -121,8 +115,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
 					String sExpressionOld = sExpression;
 					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-					while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-							sExpression = objIniPath.computeAsExpression(sExpression);	
+					while(objIniPath.isExpression(sExpression)){
+							sExpression = objIniPath.parseAsExpression(sExpression);	
 							if(StringZZZ.isEmpty(sExpression)) {
 								sExpression = sExpressionOld;
 								break;
@@ -225,16 +219,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return saReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#computeAsExpression(java.lang.String)
-	 */
+	//### aus IExpressionUserZZZ
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 				String sReturn = sLineWithExpression;
 				main:{
 					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 					
-					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+					Vector vecAll = this.parseAllVector(sLineWithExpression);
 					
 					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 					sReturn = VectorZZZ.implode(vecAll);
@@ -248,21 +240,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	/* (non-Javadoc)
 	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForConvertRelevant(java.lang.String)
 	 */
+	
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return KernelConfigSectionEntryUtilZZZ.isConvertable(sStringToProof);
 	}
-
-	/* (non-Javadoc)
-	 * @see basic.zKernel.IKernelZFormulaIniZZZ#convert(java.lang.String)
-	 */
-	@Override
-	public abstract String convert(String sLine) throws ExceptionZZZ;
-
-	/* (non-Javadoc)
-	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForComputeRelevant(java.lang.String)
-	 */
-	@Override
-	public abstract boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ;
-
 }//End class

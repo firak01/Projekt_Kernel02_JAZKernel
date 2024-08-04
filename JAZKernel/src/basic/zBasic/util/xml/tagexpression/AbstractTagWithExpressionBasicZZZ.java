@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
@@ -106,6 +107,27 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	//Aus IParseEnabledZZZ
+	
+	@Override
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+				
+			//Bei einfachen Tags den Ersten Vektor holen
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
+			
+			//Bei einfachen Tags, den Wert zurückgeben
+			sReturn = (String) vecAll.get(1);
+			this.setValue(sReturn);
+			
+			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			String sExpressionImploded = VectorZZZ.implode(vecAll);
+			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+		}//end main:
+		return sReturn;
+	}	
+	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element

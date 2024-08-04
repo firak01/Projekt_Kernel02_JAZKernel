@@ -146,11 +146,15 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFile = new File(sFilePathTotal);
 							
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
-			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);	
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
+			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
+			
+			//Für die Variablenersetzung wichtig: Eine HashMap mit den Variablen in der Ini-Datei.
+			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
+			hmVariable.put("myTestVariableString", "mySolvedTestVariableString");
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable, (String[]) null);
 			 			
 			//### Die TestObjecte
-			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ();
+			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ<Object>();
 			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
 			
 			//TestKonfiguration prüfen
@@ -281,8 +285,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
 			String sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
-			String sValue="Der dynamische Wert ist 'myTestVariableString'. FGL rulez."; //Also der Wert mit einer uebergebenen Variablen ausgerechnet.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariableString' erwartet.", StringZZZ.contains(sExpression, "myTestVariableString"));
+			String sValue="Der dynamische Wert ist 'mySolvedTestVariableString'. FGL rulez."; //Also der Wert mit einer uebergebenen Variablen ausgerechnet.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete 'mySolvedTestVariableString' erwartet.", StringZZZ.contains(sExpression, "mySolvedTestVariableString"));
 			assertEquals(sValue, sExpression);
 			 
 		} catch (ExceptionZZZ ez) {

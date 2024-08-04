@@ -22,140 +22,127 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniSolverZZZ{
 	private static final long serialVersionUID = 7989209806367224848L;
 	public static String sTAG_NAME = "Z";
-	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-	
-	
-	
+
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelExpressionIniSolverNew_(null, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(String sFlag) throws ExceptionZZZ{
 		super(sFlag);
-		KernelExpressionIniSolverNew_(null, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionIniSolverNew_(null, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject(), saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject(), saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniSolverNew_();
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
-		boolean bReturn = false;		 
-		main:{
-			if(this.getFlag("init")==true){
+	private boolean KernelExpressionIniSolverNew_() throws ExceptionZZZ {
+		 boolean bReturn = false;	
+		 main:{
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
+				}	
+				
 				bReturn = true;
-				break main;
-			}
-		
-			if(objFileIn==null ){
-				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez; 
-			}else{
-				this.setFileConifgKernelIni(objFileIn);	
-				if(objFileIn.getHashMapVariable()!=null){
-					this.setHashMapVariable(objFileIn.getHashMapVariable());
-				}
-			}
-					
-			if(hmVariable!=null){				
-					this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
-			}
-	 	}//end main:
-		return bReturn;
+		 	}//end main:
+			return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
-		main:{		
-			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
-			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
-		}
-		return vecReturn;
-	}
+//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+//	* @param sLineWithExpression
+//	* @return
+//	* 
+//	* lindhaueradmin; 06.03.2007 11:20:34
+//	 * @throws ExceptionZZZ 
+//	 */
+//	@Override
+//	public Vector<String>parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String>vecReturn = new Vector<String>();		
+//		main:{		
+//			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
+//			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
+//			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+//		}
+//		return vecReturn;
+//	}
 	
-	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
-			String sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
-				
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-				while(objVariable.isExpression(sExpression)){
-					sExpression = objVariable.parse(sExpression);			
-				} //end while
-					
-								
-				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-				String sExpressionOld = sExpression;
-				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.parse(sExpression);//in computeAsExpression wäre Z-Tags
-						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
-						sExpressionOld = sExpression;
-				} //end while
-				
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
-				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
-				if(sExpression!=null){
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-					vecReturn.add(1, sExpression);
-				}
-				
-
-			} //end if sExpression = ""					
-		}//end main:
-		return vecReturn;
-	}
+//	@Override
+//	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String> vecReturn = new Vector<String>();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
+//			vecReturn = this.parseFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
+//			String sExpression = (String) vecReturn.get(1);									
+//			if(!StringZZZ.isEmpty(sExpression)){
+//				
+//				//ZUERST: Löse ggfs. übergebene Variablen auf.
+//				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
+//				while(objVariable.isExpression(sExpression)){
+//					sExpression = objVariable.parse(sExpression);			
+//				} //end while
+//					
+//								
+//				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+//				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
+//				String sExpressionOld = sExpression;
+//				while(objIniPath.isExpression(sExpression)){
+//						sExpression = objIniPath.parse(sExpression);//in computeAsExpression wäre Z-Tags
+//						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
+//						sExpressionOld = sExpression;
+//				} //end while
+//				
+//				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
+//				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+//				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
+//				if(sExpression!=null){
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+//					vecReturn.add(1, sExpression);
+//				}
+//				
+//
+//			} //end if sExpression = ""					
+//		}//end main:
+//		return vecReturn;
+//	}
 	
 	
-	public Vector<String> computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String> solveAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
@@ -172,7 +159,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen
 					//objVariable.compute(sExpressionOld);
 					//Also: Einen Vektor holen....
-					Vector<String> vecExpression = objVariable.computeExpressionFirstVector(sExpressionOld);
+					Vector<String> vecExpression = objVariable.parseFirstVector(sExpressionOld);
 					
 					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
 					if(!StringZZZ.equals(sExpression,sExpressionOld)){
@@ -203,10 +190,10 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 				sExpressionOld = sExpression;
-				while(KernelZFormulaIni_PathZZZ.isExpression(sExpressionOld)){
+				while(objIniPath.isExpression(sExpressionOld)){
 											
 					//Verwende wie oben computeExpressionFirstVector(sExpressionOld);
-					Vector<String> vecExpression = objIniPath.computeExpressionFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
+					Vector<String> vecExpression = objIniPath.parseFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
 					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
 					if(!sExpressionOld.equals(sExpression)) {
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
@@ -256,35 +243,30 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return vecReturn;
 	}
 	
+	@Override
 	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{		
 			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
 			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), true, false); //asExpression, d.h. lass z-Tags drin.
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false); //asExpression, d.h. lass z-Tags drin.
 		}
 		return vecReturn;
 	}
 
 	//###### Getter / Setter
-	public String getExpressionTagName(){
-		return KernelZFormulaIniSolverZZZ.sTAG_NAME;
-	}
-	
-	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileConfigKernelIni(){
-		return this.objFileIni;
-	}
-	
+
+	@Override
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
 	}
+	
+	@Override
 	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
 		return this.hmVariable;
 	}
 	
+	@Override
 	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		if(this.hmVariable==null){
 			this.hmVariable = hmVariable;
@@ -301,10 +283,12 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}
 	}
 	
+	@Override
 	public String getVariable(String sKey){
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
+	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
@@ -344,8 +328,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
-			String sTagStart = this.getExpressionTagStarting();
-			String sTagEnd = this.getExpressionTagClosing();
+			String sTagStart = this.getTagStarting();
+			String sTagEnd = this.getTagClosing();
 			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
 			//TODOGOON; HIER vecAll wieder ins Spiel bringen????????????????
@@ -397,12 +381,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 
 	@Override
-	public String convert(String sLine) throws ExceptionZZZ {		
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
-		return false;
+	public String getNameDefault() throws ExceptionZZZ {
+	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
 	}
 }//End class

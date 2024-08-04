@@ -12,19 +12,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -32,7 +27,6 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -41,13 +35,10 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
-import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.event.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
-import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 
@@ -58,7 +49,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
-//	private boolean bFlagFileNew; // don�t create a file in the constructor
+//	private boolean bFlagFileNew; // don't create a file in the constructor
 //	private boolean bFlagFileChanged;
 //	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelöst. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
 	
@@ -415,7 +406,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -435,7 +426,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 */
 	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ<T>();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			String sSection; String sProperty;
 			check:{
@@ -455,7 +446,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 					throw ez;		
 				}else{
 					sProperty = sPropertyIn;
-					objReturn.setProperty(sProperty);
+					objReturn.setProperty(sProperty,false);
 				}					
 			}//end check:
 							
@@ -511,7 +502,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				KernelExpressionIniHandlerZZZ objExpressionHandler = new KernelExpressionIniHandlerZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				
 				objReturnReference.set(objReturn);
-				int iReturnValue = objExpressionHandler.compute(sReturnRaw,objReturnReference);	
+				int iReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
 				objReturn = objReturnReference.get();
 			}
@@ -521,7 +512,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}//end function
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -534,12 +525,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	
 	private IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ<T>();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
 			if(StringZZZ.isEmpty(sProperty)) break main;						
-			objReturn.setProperty(sProperty);
+			objReturn.setProperty(sProperty, false);
 			
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSection);
 			if(bSectionExists) {
@@ -549,7 +540,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 				if(sReturnRaw!=null) {											
 					objReturn.setRaw(sReturnRaw);
-					objReturn.setValue(sReturnRaw);						
+					objReturn.setValue(sReturnRaw);			
+					objReturn.setProperty(sProperty, true);
 				}
 			}else {
 				objReturn.setSection(sSection , false);
@@ -575,7 +567,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			objReturn.setSystemNumber(sSystemNumber);
 			
 			if(StringZZZ.isEmpty(sProperty)) break main;						
-			objReturn.setProperty(sProperty);
+			objReturn.setProperty(sProperty, false);
 			
 			String sSectionUsed = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSectionUsed);
@@ -583,12 +575,16 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				String sReturnRaw=null;
 				objReturn.setSection(sSectionUsed, true);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
+				objReturn.setProperty(sProperty, false);
 				sReturnRaw = this.objFileIni.getValue(sSectionUsed, sProperty);
 				if(sReturnRaw!=null) {											
 					objReturn.setRaw(sReturnRaw);
-					objReturn.setValue(sReturnRaw);						
+					objReturn.setValue(sReturnRaw);		
+					objReturn.setProperty(sProperty, true);
 				}
-			}			
+			}else{
+				objReturn.setSection(sSectionUsed, false);
+			}
 		}//end main:
 		this.setEntry(objReturn);
 		return objReturn;

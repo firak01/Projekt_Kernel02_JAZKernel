@@ -21,7 +21,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	private static final long serialVersionUID = -3411751655174978836L;
 
 	//aus IIniStructurePositionUserZZZ
-	protected IIniStructurePositionZZZ objIniPosition;
+	protected IIniStructurePositionZZZ objIniPosition=null;
 	
 	//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String vewendet werden.
 	//aus IValueArrayUserZZZ
@@ -58,12 +58,12 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	//### aus IIniTagBasicZZZ
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
@@ -118,7 +118,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 				
 			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
 			sReturn = (String) vecAll.get(1);
@@ -142,7 +142,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
@@ -152,14 +152,14 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 	
 	@Override
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.parseFirstVector(sLineWithExpression);			
 			
 		}
 		return vecReturn;
@@ -182,6 +182,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//### aus IIniStructurePositionZZZ
 	@Override
 	public String getSection() throws ExceptionZZZ {
+		if(this.objIniPosition==null) return null; //wg. Konstutruktor mit (this) beim Holen von Werten auf null pruefen. 
 		return this.getIniStructurePosition().getSection();
 	}
 
@@ -192,6 +193,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 
 	@Override
 	public String getProperty() throws ExceptionZZZ {
+		if(this.objIniPosition==null) return null; //wg. Konstutruktor mit (this) beim Holen von Werten auf null pruefen.
 		return this.getIniStructurePosition().getProperty();
 	}
 

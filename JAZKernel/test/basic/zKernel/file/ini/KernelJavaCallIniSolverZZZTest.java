@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -79,7 +80,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Teilberechnungen durchführen
-				Vector<String> vecReturn = objExpressionJavaCallSolver.computeExpressionFirstVector(sLineWithExpression);
+				Vector<String> vecReturn = objExpressionJavaCallSolver.parseFirstVector(sLineWithExpression);
 				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				
@@ -121,19 +122,19 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				objExpressionJavaCallSolver.setEntry(objEntryTemp);
 				
 				//TODOGOON20230427;//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
-				Vector<String> vecReturn = objExpressionJavaCallSolver.computeExpressionFirstVector(sLineWithExpression);
+				Vector<String> vecReturn = objExpressionJavaCallSolver.parseFirstVector(sLineWithExpression);
 				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				
 				//### Nun die Gesamtberechnung durchführen
-				IKernelConfigSectionEntryZZZ objEntry = objExpressionJavaCallSolver.computeAsEntry(sLineWithExpression);
-				//String sValue = objExpressionSolver.compute(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry = objExpressionJavaCallSolver.parseAsEntry(sLineWithExpression);
+				//String sValue = objExpressionSolver.parse(sLineWithExpression);
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
 				//Anwenden der ersten Formel		
 				objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						
-				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionJavaCallSolver.computeAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionJavaCallSolver.parseAsEntry(sLineWithExpression);
 				sValue = objEntry2.getValue();
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");
@@ -159,8 +160,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe5: '" + sValue + "'\n");
 				
 				//Besonderheit: Weil noch ein Call-Solver drum ist, ist korrekterweise beim Ausfuehren des Z:JavaCall noch der Z:Call Tag drin. Zum Vergleichen also noch rausrechnen.
-				String sTagStart = KernelCallIniSolverZZZ.computeExpressionTagStarting(KernelCallIniSolverZZZ.sTAG_NAME);
-				String sTagEnd = KernelCallIniSolverZZZ.computeExpressionTagClosing(KernelCallIniSolverZZZ.sTAG_NAME);
+				String sTagStart = XmlUtilZZZ.computeTagPartStarting(KernelCallIniSolverZZZ.sTAG_NAME);
+				String sTagEnd = XmlUtilZZZ.computeTagPartClosing(KernelCallIniSolverZZZ.sTAG_NAME);
 				sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStart, sTagEnd);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe6: '" + sValue + "'\n");
 				

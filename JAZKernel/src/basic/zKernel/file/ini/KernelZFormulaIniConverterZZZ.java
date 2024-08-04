@@ -3,9 +3,7 @@ package basic.zKernel.file.ini;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Grundliegende Idee dahinter stammt aus den Converter-Klassen in JSF. 
@@ -123,16 +121,16 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		String sReturn = sLineWithExpression;
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
-			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpression.isParseRelevant(sLineWithExpression)){	
+			IKernelZFormulaIniZZZ objExpressionEmpty = new KernelZFormulaIni_EmptyZZZ();
+			if(objExpressionEmpty.isParseRelevant(sLineWithExpression)){	
 				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
+				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpressionEmpty, sLineWithExpression);
 				break main;
 			}
 			
-			objExpression = new ZTagFormulaIni_NullZZZ();
-			if(objExpression.isParseRelevant(sLineWithExpression)){				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
+			IKernelZFormulaIniZZZ objExpressionNull = new ZTagFormulaIni_NullZZZ();
+			if(objExpressionNull.isParseRelevant(sLineWithExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpressionNull, sLineWithExpression);
 				break main;
 			}
 			
@@ -145,7 +143,7 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		main:{
 			if(objExpression==null) break main;
 			
-			sReturn = objExpression.computeAsExpression(sLineWithExpression);
+			sReturn = objExpression.parse(sLineWithExpression);
 		}
 		return sReturn;
 	}

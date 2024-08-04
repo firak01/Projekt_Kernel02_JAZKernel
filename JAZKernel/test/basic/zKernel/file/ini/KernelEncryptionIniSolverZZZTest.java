@@ -88,17 +88,17 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objExpressionSolver.parse(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der ersten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			sValue = objExpressionSolver.parse(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
@@ -130,19 +130,19 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			objExpressionSolver.setEntry(objEntryTemp);
 			
 			//TODOGOON20230427;//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.computeAsEntry(sLineWithExpression);
+			IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.parseAsEntry(sLineWithExpression);
 			//String sValue = objExpressionSolver.compute(sLineWithExpression);
 			String sValue = objEntry.getValue();
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der ersten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird						
-			IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.computeAsEntry(sLineWithExpression);
+			IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.parseAsEntry(sLineWithExpression);
 			sValue = objEntry2.getValue();
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe1: '" + sValue + "'\n");
@@ -171,16 +171,16 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 						
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 						
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objExpressionSolver.parse(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der zweiten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			sValue = objExpressionSolver.parse(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
@@ -204,16 +204,16 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 						
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 						
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objExpressionSolver.parse(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der zweiten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			sValue = objExpressionSolver.parse(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
@@ -238,16 +238,16 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 						
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 						
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objExpressionSolver.parse(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der zweiten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			sValue = objExpressionSolver.parse(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			

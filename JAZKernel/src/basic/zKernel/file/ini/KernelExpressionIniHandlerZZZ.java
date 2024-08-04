@@ -33,12 +33,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZZ<T> implements IKernelExpressionIniSolverZZZ{
 	private static final long serialVersionUID = -6430027792689200422L;
 	public static String sTAG_NAME = "Z";
-	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-	
-	IKernelConfigSectionEntryZZZ objEntry = null;
-	
+		
 	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelExpressionIniSolverNew_(null, null);
@@ -78,24 +74,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-//				if(saFlagControlIn != null){
-//					 String stemp; boolean btemp; String sLog;
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							 String sKey = stemp;
-//							 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-//							 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-//							//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
-//							// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
-//							// throw ez;		 
-//						}
-//					}					
-//				}
 				if(this.getFlag("init")==true){
 					bReturn = true;
 					break main;
@@ -115,6 +93,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						this.setHashMapVariable(objFileIn.getHashMapVariable());
 					}
 				}
+				
+				bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
@@ -171,7 +151,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			 * @throws ExceptionZZZ
 			 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
 			 */
-			public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
+			public int solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 				int iReturn = -1;
 				boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
 				IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
@@ -326,20 +306,20 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			 * (non-Javadoc)
 			 * @see basic.zKernel.file.ini.AbstractKernelIniTagCascadedZZZ#computeExpressionAllVector(java.lang.String)
 			 */
-			public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+			public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 				Vector<String> vecReturn = new Vector<String>();
 				main:{
 					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 								
 					//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 					//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-					vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+					vecReturn = this.parseFirstVector(sLineWithExpression);			
 					
 				}
 				return vecReturn;
 			}
 			
-			public ArrayList<String> computeArrayList(String sLineWithExpression)throws ExceptionZZZ{
+			public ArrayList<String> solveAsArrayList(String sLineWithExpression)throws ExceptionZZZ{
 				ArrayList<String> alsReturn=  new ArrayList<String>();
 				main:{
 					
@@ -350,7 +330,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 			}
 			
-			public HashMap<String,String> computeHashMap(String sLineWithExpression)throws ExceptionZZZ{
+			public HashMap<String,String> solveAsHashMap(String sLineWithExpression)throws ExceptionZZZ{
 				HashMap<String,String> hmReturn=  new HashMap<String,String>();
 				main:{
 					
@@ -465,13 +445,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	}
 
 		//### Interface aus IKernelExpressionIniSolver
-		public IKernelConfigSectionEntryZZZ getEntry() {
+		public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
 			if(this.objEntry==null) {
-				this.objEntry = new KernelConfigSectionEntryZZZ();			
+				this.objEntry = new KernelConfigSectionEntryZZZ<T>(this);			
 			}
 			return this.objEntry;
 		}
-		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
 			this.objEntry = objEntry;
 		}
 		
@@ -486,12 +466,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			this.objCrypt = objCrypt;
 		}
 
-		//### Interface
-		/* (non-Javadoc)
-		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#getExpressionTagName()
-		 */
+		//### Aus ITagBasicZZZ
 		@Override
-		public String getName() {
+		public String getNameDefault() {
 			return KernelExpressionIniHandlerZZZ.sTAG_NAME;
 		}
 		

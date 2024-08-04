@@ -8,19 +8,24 @@ import java.util.Set;
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
+import basic.zBasic.util.file.ini.IniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IIniTagBasicZZZ;
 
 public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private static final long serialVersionUID = -6413574962232912980L;
-	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
+	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = null;
+	private HashMapMultiIndexedZZZ<String,Boolean>hmPropertiesSearched = null;
+	private HashMapMultiZZZ<String,String>hmPropertiesSection = null;
+	
 	private IIniStructurePositionZZZ objIniPosition = null;
 	private String sSystemNumber = null;
 	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
@@ -30,6 +35,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	private VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
 	private boolean bSectionExists = false;
 	private boolean bAnySectionExists = false;
+	private boolean bPropertyExists = false;
+	private boolean bAnyPropertyExists = false;
 	private boolean bExpression = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
@@ -77,6 +84,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	//#### Konstruktor ##########################
 	public KernelConfigSectionEntryZZZ() throws ExceptionZZZ{
 		super();
+		KernelConfigSectionEntryNew_(null);
 	}
 	
 	public KernelConfigSectionEntryZZZ(IIniTagBasicZZZ objTag) throws ExceptionZZZ{
@@ -92,9 +100,20 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			
 			this.setIniStructurePostion(objTag.getIniStructurePosition()); //Section, Property
 			
+			//OVERFLOW SCHLEIFENGEFAHR, wg. Ruekursion !!!
+			//Wenn in dem objTag das KenelConfigSectionEntry-Objekt neu erstellt werde muss 
+			//und dabei auch das Tag übergeben wird (mit "this");
+			//Darum in diesem Tag beim Holen der Werte ueber as KernelConfigSectionEntry-Objekt
+			//unbedingt immer auf objEntry==null abprüfen und dann ggfs. auch null oder false zurückliefern.
+			
 			this.setValue(objTag.getValue());
 			this.setValue(objTag.getValueArrayList());
-					
+			
+			this.setSection(objTag.getSection());
+			//this.setSectionsSearchedHashMap(objTag.getSe);
+			
+			this.setProperty(objTag.getProperty());
+			//this.setPropertySearchedHashMap(objTag.getSe);
 			bReturn = true;
 		}//end main:
 		return bReturn;
@@ -212,8 +231,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	
 	//#############################
+	
+	//### Aus IKernelConfigSectionEntryZZZ
 	@Override
 	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap(){
+		if(this.hmSectionsSearched==null) {
+			this.hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
+		}
 		return this.hmSectionsSearched;
 	}
 	
@@ -222,8 +246,31 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.hmSectionsSearched = hmSectionsSearched;
 	}
 	
+	@Override
+	public HashMapMultiIndexedZZZ<String,Boolean> getPropertiesSearchedHashMap(){
+		if(this.hmPropertiesSearched==null) {
+			this.hmPropertiesSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
+		}
+		return this.hmPropertiesSearched;
+	}
 	
+	@Override 
+	public void setPropertiesSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmPropertiesSearched) {
+		this.hmPropertiesSearched = hmPropertiesSearched;
+	}
 	
+	@Override
+	public HashMapMultiZZZ<String,String> getPropertiesSectionHashMap(){
+		if(this.hmPropertiesSection==null) {
+			this.hmPropertiesSection = new HashMapMultiIndexedZZZ<String,String>();
+		}
+		return this.hmPropertiesSection;
+	}
+	
+	@Override 
+	public void setPropertiesSectionHashMap(HashMapMultiZZZ<String,String> hmPropertiesSection) {
+		this.hmPropertiesSection = hmPropertiesSection;
+	}
 	
 	//###########################################
 	@Override
@@ -469,10 +516,26 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	//##############################################
 	
+	@Override
+	public boolean hasAnySectionExists() {
+		return this.bAnySectionExists;
+	}
+	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
 	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
 	public void hasAnySectionExists(boolean bAnySectionExists) {
 		if(!this.bAnySectionExists) this.bAnySectionExists=bAnySectionExists;
+	}
+		
+	@Override
+	public boolean hasAnyPropertyExists() {
+		return this.bAnyPropertyExists;
+	}
+	
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
+	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
+		public void hasAnyPropertyExists(boolean bAnyPropertyExists) {
+		if(!this.bAnyPropertyExists) this.bAnyPropertyExists=bAnyPropertyExists;
 	}
 		
 	
@@ -568,26 +631,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bJavaCall = bJavaCall;
 	}
 	
-	@Override
-	public boolean sectionExists() {
-		return this.bSectionExists;
-	}
-
-	@Override
-	public void sectionExists(boolean bSectionExists) throws ExceptionZZZ {
-//      TODOGOON20240509: Eine der Stellen, an denen ein LogLevel=Debug sinnvoll waere.
-		//                Ggfs. einbauen wenn dies alles auf die Verwendung von LogStringZZZ umgestellt wird.
-//		if(bSectionExists) {
-//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Section Exists");
-//		}
-		this.bSectionExists = bSectionExists;
-		this.hasAnySectionExists(bSectionExists);
-	}
 	
-	@Override
-	public boolean hasAnySectionExists() {
-		return this.bAnySectionExists;
-	}
+	
+	
 	
 	//Aus Interface IObjectCachableZZZ
 	@Override
@@ -799,6 +845,38 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		}
 	}
 	
+	@Override
+	public boolean sectionExists() {
+		return this.bSectionExists;
+	}
+
+	@Override
+	public void sectionExists(boolean bSectionExists) throws ExceptionZZZ {
+//      TODOGOON20240509: Eine der Stellen, an denen ein LogLevel=Debug sinnvoll waere.
+		//                Ggfs. einbauen wenn dies alles auf die Verwendung von LogStringZZZ umgestellt wird.
+//		if(bSectionExists) {
+//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Section Exists");
+//		}
+		this.bSectionExists = bSectionExists;
+		this.hasAnySectionExists(bSectionExists);
+	}
+	
+	@Override
+	public boolean propertyExists() {
+		return this.bPropertyExists;
+	}
+
+	@Override
+	public void propertyExists(boolean bPropertyExists) throws ExceptionZZZ {
+//      TODOGOON20240509: Eine der Stellen, an denen ein LogLevel=Debug sinnvoll waere.
+		//                Ggfs. einbauen wenn dies alles auf die Verwendung von LogStringZZZ umgestellt wird.
+//		if(bSectionExists) {
+//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Section Exists");
+//		}
+		this.bPropertyExists = bPropertyExists;
+		this.hasAnyPropertyExists(bPropertyExists);
+	}
+	
 	//### Aus Interface ICryptZZZ
 	@Override
 	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
@@ -814,6 +892,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	//### aus IIniStructurePositionUserZZZ
 	@Override
 	public IIniStructurePositionZZZ getIniStructurePosition() throws ExceptionZZZ {
+		if(this.objIniPosition==null) {
+			this.objIniPosition = new IniStructurePositionZZZ(this);
+		}
 		return this.objIniPosition;
 	}
 
@@ -825,6 +906,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	//### aus IIniStructurePositionUserZZZ
 		@Override
 		public String getSection() throws ExceptionZZZ {
+			if(this.objIniPosition==null)return null;
 			return this.getIniStructurePosition().getSection();
 		}
 
@@ -849,11 +931,26 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 		@Override
 		public String getProperty() throws ExceptionZZZ{
+			if(this.objIniPosition==null)return null;
 			return this.getIniStructurePosition().getProperty();		
 		}
 
 		@Override
 		public void setProperty(String sProperty) throws ExceptionZZZ{
 			this.getIniStructurePosition().setProperty(sProperty);
+			
+			//!!! wg. folgender Codezeile bedenken, dass erst der Section-Name gesetzt werden muss
+			//    und dann erst der bSectionExists Wert. Sonst wird dieser naemlich wieder ueberschrieben.
+			this.propertyExists(false);//es ist noch nicht bewiesen, dass es diese Section ueberhaupt gibt!!!
+		}
+		
+		
+		@Override
+		public void setProperty(String sProperty, boolean bExists) throws ExceptionZZZ{
+			if(sProperty!=null) {
+				this.setProperty(sProperty); //Beachte die Reihenfolge... erst Section setzen, dann ggfs. den true Wert
+				this.propertyExists(bExists);
+				this.getPropertiesSearchedHashMap().putAsLast(sProperty, bExists);
+			}
 		}
 }

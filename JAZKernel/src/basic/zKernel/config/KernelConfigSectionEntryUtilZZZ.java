@@ -194,12 +194,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturn= ex.computeAsEntry(sRaw);
+					objReturn= ex.parseAsEntry(sRaw);
 					sValue = objReturn.getValue();
 					
 				}else {
 					sFall = "computeAsExpression";
-					sValue = ex.computeAsExpression(sRaw);
+					sValue = ex.parseAsExpression(sRaw);
 					objReturn = ex.getEntry();					
 				}
 				
@@ -287,12 +287,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturn = ex.computeAsEntry(sRaw);
+					objReturn = ex.parseAsEntry(sRaw);
 					sValue = objReturn.getValue();
 					
 				}else {
 					sFall = "computeAsExpression";
-					sValue = ex.computeAsExpression(sRaw);
+					sValue = ex.parseAsExpression(sRaw);
 					objReturn = ex.getEntry();					
 				}
 				

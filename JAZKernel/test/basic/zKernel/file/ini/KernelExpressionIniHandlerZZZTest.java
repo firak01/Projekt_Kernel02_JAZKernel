@@ -237,7 +237,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objExpressionHandler.setFlag(sFlagUseExpression, true); 
 			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionHandler.compute(sLineWithExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.solve(sLineWithExpression, objSectionEntryReference);
 			assertEquals(1,iReturn); //+1 für den Ini Path, der als Formel aufgeloest wird.
 
 			
@@ -272,7 +272,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry2Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn2 = objExpressionHandler.compute(sLineWithExpression2, objSectionEntry2Reference);
+			int iReturn2 = objExpressionHandler.solve(sLineWithExpression2, objSectionEntry2Reference);
 			assertTrue(iReturn2==1);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry2 = objSectionEntry2Reference.get();
@@ -305,7 +305,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry3Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn3 = objExpressionHandler.compute(sLineWithExpression3, objSectionEntry3Reference);
+			int iReturn3 = objExpressionHandler.solve(sLineWithExpression3, objSectionEntry3Reference);
 			assertTrue(iReturn3==1);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry3 = objSectionEntry3Reference.get();
@@ -352,7 +352,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//...weitermachen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertEquals(6,iReturn);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
@@ -425,7 +425,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertEquals(101,iReturn); //+100 für den Call , +1 für den Ini Path, der als Formel aufgeloest wird.
 			
 			objSectionEntry = objSectionEntryReference.get();
@@ -506,7 +506,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 						
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertEquals(101,iReturn); //+100 fuer den Call +1 fuer die Formula
 			
 			objSectionEntry = objSectionEntryReference.get();
@@ -550,7 +550,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertEquals(10,iReturn); //+10 für die Encryption
 			
 			objSectionEntry = objSectionEntryReference.get();
@@ -562,7 +562,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#####################################################
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
-			iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
 			assertNotNull(objSectionEntry);
 			assertTrue(objSectionEntry.isDecrypted());

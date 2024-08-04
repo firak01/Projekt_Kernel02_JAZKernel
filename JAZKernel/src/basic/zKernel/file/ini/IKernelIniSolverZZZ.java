@@ -9,11 +9,11 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 public interface IKernelIniSolverZZZ {
 	
 	//Methoden zur Aufloesung der "Ini-Pfade" und Variablen
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	public Vector parseAllVector(String sLineWithExpression) throws ExceptionZZZ;
 	
 	
 	//Es war notwendig mehr Informationen zurückzuliefern als nur einen aufgeloesten String
 	//Z.B. bei Zeilen mit Verschluesselung will man nicht nur den entschluessleten Wert haben, sondern auch den verschluesselten Ausgangswert
 	//     aus der Zeile haben.
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ;
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ;
 }

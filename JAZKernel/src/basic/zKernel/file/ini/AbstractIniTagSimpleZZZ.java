@@ -40,18 +40,18 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public String computeAsExpression() throws ExceptionZZZ {
+	public String parseAsExpression() throws ExceptionZZZ {
 		String sExpression = this.getValue();
-		return this.computeAsExpression(sExpression);
+		return this.parseAsExpression(sExpression);
 	}	
 
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);

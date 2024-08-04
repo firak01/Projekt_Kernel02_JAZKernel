@@ -4,16 +4,10 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /** Merke: Der Path-Tag besteht aus [ oder ] ist damit kein normaler Tag 
@@ -22,10 +16,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * 
  * @author Fritz Lindhauer, 12.07.2024, 09:26:56 
  */
-public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
+//public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
+public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -6403139308573148654L;
 	public static String sTAG_NAME = ""; //Hier kein Tag 
-	private FileIniZZZ objFileIni=null;
 		
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
 		super("init");
@@ -55,27 +49,28 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	
 	private boolean KernelExpressionIniPathNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
 	 boolean bReturn = false;
-	 main:{		
-	 																
+	 main:{			 															
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;
 			}										
 					
 			this.setFileConfigKernelIni(objFileIni);
+			
+			bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
-	
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	@Override
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector<String>vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector<String>vecSection = this.parseFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sRest = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
@@ -151,11 +146,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	@Override
+	public Vector<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();		
 		main:{
 			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
 			
 			String sValue = vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sValue)) {
@@ -181,8 +177,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 			
 			//Hier eine gehärtete Variante einsezten, bei der man auf jeden Fall eine Section findet durch Verdoppeln der Tags!!!			
 			String sSectionTotal = vecReturn.get(1);
-			String sSection = StringZZZ.midLeftRightback(KernelZFormulaIni_PathZZZ.getExpressionTagStarting() + sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
-			String sProperty = StringZZZ.right(sSectionTotal, sSection + KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
+			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
+			String sProperty = StringZZZ.right(sSectionTotal, sSection + this.getTagClosing());
 			
 			String sValuePathed =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			if(!StringZZZ.isEmpty(sValuePathed)) {
@@ -194,152 +190,163 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	}
 	
 	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
-			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
-			//if(btemp==false) break main;
-		
-			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			//if(btemp==false) break main;
-			
-			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
-			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
-			//Also: 
-			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			if(!bAsTagFound) break main;
-			
-			int iIndexClosing = sLine.toLowerCase().indexOf(KernelZFormulaIni_PathZZZ.getExpressionTagClosing().toLowerCase());
-			iIndexClosing=iIndexClosing+KernelZFormulaIni_PathZZZ.getExpressionTagClosing().length();
-			String sRest = sLine.substring(iIndexClosing);
-			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
+//	public static boolean isExpression(String sLine){
+//		boolean bReturn = false;
+//		main:{
+//			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
+//			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
+//			//if(btemp==false) break main;
+//		
+//			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+//			//if(btemp==false) break main;
+//			
+//			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
+//			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
+//			//Also: 
+//			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+//			if(!bAsTagFound) break main;
+//			
+//			int iIndexClosing = sLine.toLowerCase().indexOf(KernelZFormulaIni_PathZZZ.getExpressionTagClosing().toLowerCase());
+//			iIndexClosing=iIndexClosing+KernelZFormulaIni_PathZZZ.getExpressionTagClosing().length();
+//			String sRest = sLine.substring(iIndexClosing);
+//			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
+//			
+//			bReturn = true;
+//		}//end main
+//		return bReturn;
+//	}
 	
 	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
-		return KernelZFormulaIni_PathZZZ.sTAG_NAME;
-	}
-	public static String getExpressionTagStarting(){
+	//Merke: Static Ausdruecke koennen erst ab Java 8 in ein Interface
+
+	@Override
+	public String getTagStarting() throws ExceptionZZZ{
+		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
 		return "[";
 	}
-	public static String getExpressionTagClosing(){
+	
+	@Override
+	public String getTagClosing() throws ExceptionZZZ{
+		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
 		return "]"; 
 	}
-	public static String getExpressionTagEmpty(){
+	
+	@Override
+	public String getTagEmpty()throws ExceptionZZZ{
+		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
 		return "[/]";
 	}
 		
 	//### Aus Interface IKernelFileIniUserZZZ	
-	@Override
-	public void setFileConfigKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
+//	@Override
+//	public void setFileConfigKernelIni(FileIniZZZ objFileIni){
+//		this.objFileIni = objFileIni;
+//	}
 	
-	@Override
-	public FileIniZZZ getFileConfigKernelIni() throws ExceptionZZZ{
-		if(this.objFileIni==null) {
-			IKernelZZZ objKernel = this.getKernelObject();
-			if(objKernel==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			return objKernel.getFileConfigKernelIni();						
-		}else {
-			return this.objFileIni;
-		}
-	}
+//	@Override
+//	public FileIniZZZ getFileConfigKernelIni() throws ExceptionZZZ{
+//		if(this.objFileIni==null) {
+//			IKernelZZZ objKernel = this.getKernelObject();
+//			if(objKernel==null) {
+//				ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
+//			return objKernel.getFileConfigKernelIni();						
+//		}else {
+//			return this.objFileIni;
+//		}
+//	}
 
 	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		
-		//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//		if(StringZZZ.isEmpty(sToProof)){
-//			bReturn = true;
-//		}
-		return bReturn;
-	}
+//	@Override
+//	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+//		boolean bReturn=false;
+//		
+//		//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
+////		if(StringZZZ.isEmpty(sToProof)){
+////			bReturn = true;
+////		}
+//		return bReturn;
+//	}
 	
+//	@Override
+//	public boolean isParseRelevant(String sExpressionToProof)
+//			throws ExceptionZZZ {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+	
+//	/* (non-Javadoc)
+//	 * @see basic.zKernel.IKernelZFormulaIniZZZ#compute(java.lang.String)
+//	 */
+//	@Override
+//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = null;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//			
+//			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+//			
+//			//nun nur den Wert an Index 1 zurückgeben
+//			//...ist falsch für Formeln, die "aufeinander folgen" sReturn = (String) vecAll.get(1);
+//			sReturn = VectorZZZ.implode(vecAll);
+//		}//end main:
+//		return sReturn;
+//	}
+	
+//	@Override
+//	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+//		String[] saReturn = null;
+//		main:{
+//			if(!this.isParseRelevant(sLineWithExpression)) break main;
+//						
+//			String sDelimiter;
+//			if(StringZZZ.isEmpty(sDelimiterIn)) {
+//				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
+//			}else {
+//				sDelimiter = sDelimiterIn;
+//			}
+//			
+//			String[] saExpression = StringZZZ.explode(sLineWithExpression, sDelimiter);
+//			
+//			//Hier einfach das Leerzeichen zurückgeben
+//			String sValue = null;
+//			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+//			for(String sExpression : saExpression) {
+//				sValue = this.parse(sExpression);
+//				listasValue.add(sValue);
+//			}
+//			saReturn = listasValue.toStringArray();
+//			
+//		}//end main:
+//		return saReturn;
+//	}
+	
+//	@Override
+//	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//			
+//			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
+//			
+//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+//			sReturn = VectorZZZ.implode(vecAll);
+//			
+//		}//end main:
+//		return sReturn;
+//	}
+
+	//### Aus ITagBasicZZZ
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public String getNameDefault() throws ExceptionZZZ {
+		return KernelZFormulaIni_PathZZZ.sTAG_NAME;
+	}
+
+	//### Aus IConvertable
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.IKernelZFormulaIniZZZ#compute(java.lang.String)
-	 */
-	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//nun nur den Wert an Index 1 zurückgeben
-			//...ist falsch für Formeln, die "aufeinander folgen" sReturn = (String) vecAll.get(1);
-			sReturn = VectorZZZ.implode(vecAll);
-		}//end main:
-		return sReturn;
-	}
-	
-	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null;
-		main:{
-			if(!this.isParseRelevant(sLineWithExpression)) break main;
-						
-			String sDelimiter;
-			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
-			}else {
-				sDelimiter = sDelimiterIn;
-			}
-			
-			String[] saExpression = StringZZZ.explode(sLineWithExpression, sDelimiter);
-			
-			//Hier einfach das Leerzeichen zurückgeben
-			String sValue = null;
-			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
-			for(String sExpression : saExpression) {
-				sValue = this.parse(sExpression);
-				listasValue.add(sValue);
-			}
-			saReturn = listasValue.toStringArray();
-			
-		}//end main:
-		return saReturn;
-	}
-	
-	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			
-		}//end main:
-		return sReturn;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 }//End class

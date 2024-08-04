@@ -37,29 +37,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 	private boolean KernelEncryptionIniSolverNew_() throws ExceptionZZZ {
 		 boolean bReturn = false;
-		 main:{
-//			 	    String stemp; boolean btemp;  		
-//		 			//setzen der uebergebenen Flags	
-//					if(saFlagControlIn != null){
-//						for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//							stemp = saFlagControlIn[iCount];
-//							btemp = setFlag(stemp, true);
-//							if(btemp==false){
-//								ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//								throw ez;		 
-//							}
-//						}			
-//					}	
-			
+		 main:{	
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;
 			}
+			
+			bReturn = true;
 		}//end main:
 		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+	 }//end function KernelEncryptionIniSolverNew_
 	
-	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{		
 			Vector<String> vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -67,7 +56,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				String sValue=null;  String sCode=null;
 				
 				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				vecReturn = this.parseFirstVector(sLineWithExpression);			
 				String sExpression = (String) vecReturn.get(1);				
 				if(!StringZZZ.isEmpty(sExpression)){
 					
@@ -230,16 +219,19 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return baReturn;
 	}
 	
-	//### Aus Interface IKernelExpressionIniZZZ
+	//### aus ITagBasicZZZ
 	@Override
-	public String getExpressionTagName(){
+	public String getNameDefault() throws ExceptionZZZ{
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
-		
+
+	//### Aus Interface IParseEnabledZZZ
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
+			
+			//Ergaenzen der Elternmethode um das nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
 				sReturn = super.parse(sLineWithExpression);
@@ -254,6 +246,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
+			
+			//Ergaenzen der Elternmethode um das nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
 				saReturn = super.parseAsArray(sLineWithExpression, sDelimiter);
@@ -263,17 +257,17 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}//end main
 		return saReturn;
 	}
-	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
-	 */
+
+	//### aus IExpressionUserZZZ
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
-		main:{			
+		main:{	
+			
+			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
 			if(bUseEncryption) {
-				sReturn = super.computeAsExpression(sLineWithExpression);
+				sReturn = super.parseAsExpression(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
 			}									
@@ -281,32 +275,25 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return sReturn;
 	}
 	
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {		
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
-		return false;
-	}
-
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
 	}
-
+	
 	//### Aus IKernelIniSolver
 	/* (non-Javadoc)
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
 	 */
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-		main:{			
+		main:{		
+			
+			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				objReturn = super.computeAsEntry(sLineWithExpression);
+				objReturn = super.parseAsEntry(sLineWithExpression);
 			}else {
 				objReturn.setValue(sLineWithExpression);
 			}									

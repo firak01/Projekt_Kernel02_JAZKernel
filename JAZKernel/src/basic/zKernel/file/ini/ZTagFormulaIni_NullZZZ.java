@@ -20,7 +20,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @param <T>
  */
 //public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
-public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>{ // implements IKernelZFormulaIniZZZ{
+public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
@@ -64,13 +64,13 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 			
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector vecSection = this.parseExpressionFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -132,7 +132,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
 			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(ZTagFormulaIni_NullZZZ.sTAG_NAME), XmlUtilZZZ.computeTagPartClosing(ZTagFormulaIni_NullZZZ.sTAG_NAME), false,false);
@@ -240,7 +240,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	}
 	
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(!this.isParseRelevant(sLineWithExpression)) break main;
@@ -259,4 +259,6 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
 	}
+
+
 }//End class

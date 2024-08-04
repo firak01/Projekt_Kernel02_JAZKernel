@@ -64,14 +64,17 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				
 			this.setFileConfigKernelIni(objFileIni);
 			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
-							
+				
+			bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonMapIniSolverNew_
 			
 	//###### Getter / Setter
-	public String getExpressionTagName(){
-		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
+	
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return this.sTagName;
 	}
 		
 	/**Eine HashMap wird zum String umgewandelt. 
@@ -106,7 +109,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -147,7 +150,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -260,6 +263,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
+
+	
 
 		
 		

@@ -28,7 +28,6 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = -8017698515311079738L;
 	public static String sTAG_NAME = "Z:Call";
-	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	
@@ -76,7 +75,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				objFile = objFileIn;
 			}
 			
-			this.setFileConifgKernelIni(objFile);	
+			this.setFileConfigKernelIni(objFile);	
 			if(objFile.getHashMapVariable()!=null){
 				this.setHashMapVariable(objFile.getHashMapVariable());			
 			}
@@ -88,13 +87,6 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	@Override
 	public String getNameDefault(){
 		return KernelCallIniSolverZZZ.sTAG_NAME;
-	}
-	
-	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileConfigKernelIni(){
-		return this.objFileIni;
 	}
 	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
@@ -184,12 +176,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(bUseCall) {
-				objReturn = super.computeAsEntry(sLineWithExpression);	
+				objReturn = super.parseAsEntry(sLineWithExpression);	
 				
 				//Speichere nun das USECALL - Ergebnis auch ab.
 				objReturn.setValueCallSolvedAsExpression(objReturn.getValueAsExpression());				
@@ -205,12 +197,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
 	 */
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(bUseCall) {
-				sReturn = super.computeAsExpression(sLineWithExpression);
+				sReturn = super.parseAsExpression(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
 			}									
@@ -227,7 +219,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -237,7 +229,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Fuer den abschliessenden Aufruf selbst.
 			String sClassnameWithPackage=null; String sMethodname=null;
 						
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);//Alle Z:Call Ausdruecke ersetzen						
+			vecReturn = this.parseFirstVector(sLineWithExpression);//Alle Z:Call Ausdruecke ersetzen						
 			String sLineWithExpression2 = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sLineWithExpression2)& !sLineWithExpression.equals(sLineWithExpression2)) {
 				bAnyCall = true;
@@ -261,7 +253,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				String sExpressionOld = sExpression;
 				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ();
 				while(objClassname.isExpression(sExpression)){
-						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sLineWithExpression2);	
+						IKernelConfigSectionEntryZZZ objEntry = objClassname.parseAsEntry(sLineWithExpression2);	
 						sExpression = objEntry.getValue();
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;
@@ -282,7 +274,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				String sExpressionOld = sExpression;
 				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ();
 				while(objMethodname.isExpression(sExpression)){
-						IKernelConfigSectionEntryZZZ objEntry = objMethodname.computeAsEntry(sExpression);
+						IKernelConfigSectionEntryZZZ objEntry = objMethodname.parseAsEntry(sExpression);
 						sExpression = objEntry.getValue();
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;

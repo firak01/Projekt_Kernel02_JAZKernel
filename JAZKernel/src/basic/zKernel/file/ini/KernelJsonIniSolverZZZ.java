@@ -83,7 +83,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					
 	//###### Getter / Setter
 	@Override
-	public String getExpressionTagName(){
+	public String getNameDefault(){
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
 	
@@ -154,7 +154,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
 	 */
 	@Override
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+	public Vector parseAllVector(String sLineWithExpression) throws ExceptionZZZ {
 		return null;
 	}
 

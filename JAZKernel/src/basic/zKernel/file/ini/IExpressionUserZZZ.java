@@ -7,7 +7,7 @@ import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 public interface IExpressionUserZZZ extends IParseEnabledZZZ, IConvertableZZZ{		
 	public boolean isExpression(String sExpression) throws ExceptionZZZ;
 	
-	public String computeAsExpression() throws ExceptionZZZ;
-	public String computeAsExpression(String sExpression) throws ExceptionZZZ;
+	public String parseAsExpression() throws ExceptionZZZ;
+	public String parseAsExpression(String sExpression) throws ExceptionZZZ;
 	
 }

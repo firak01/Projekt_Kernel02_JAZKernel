@@ -9,8 +9,4 @@ public interface IParseEnabledZZZ {
 	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ;
 	
 	boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
-	
-	
-	
-   	
 }

@@ -17,23 +17,21 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	
 	public AbstractObjectWithExpressionZZZ() throws ExceptionZZZ{
 		this("init");
-		AbstractObjectWithExpressionNew_(null);
+		AbstractObjectWithExpressionNew_();
 	}
 	
 	public AbstractObjectWithExpressionZZZ(String sFlag) throws ExceptionZZZ{
-		super();
-		String[] saFlag = new String[0];
-		saFlag[0] = sFlag;	
-		AbstractObjectWithExpressionNew_(saFlag);
+		super(sFlag);
+		AbstractObjectWithExpressionNew_();
 	}
 	
 	public AbstractObjectWithExpressionZZZ(String[] saFlag) throws ExceptionZZZ{
-		super();
-		AbstractObjectWithExpressionNew_(saFlag);
+		super(saFlag);
+		AbstractObjectWithExpressionNew_();
 	}
 	
 	//Merke: Da in diesem Vererbungsstring erstmalig Flags vorgesehen sind, diese hier komplett setzen wie bei AbstractObjectWithFlagZZZ
-	private boolean AbstractObjectWithExpressionNew_(String[] saFlag) throws ExceptionZZZ {
+	private boolean AbstractObjectWithExpressionNew_() throws ExceptionZZZ {
 		 boolean bReturn = false;
 		 main:{	
 			if(this.getFlag("init")==true){
@@ -41,6 +39,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 				break main;
 			}
 				
+			bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function AbstractObjectWithExpressionNew_
@@ -90,7 +89,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	}
 	
 	@Override
-	public boolean hasNullValue() {
+	public boolean hasNullValue() throws ExceptionZZZ {
 		return this.bNullValue;
 	}
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 

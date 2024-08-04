@@ -73,7 +73,9 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	 }//end function KernelJsonMapIniSolverNew_
 		
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	
+	
+	public String getNameDefault(){
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 
@@ -109,7 +111,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -156,16 +158,6 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	//### Andere Interfaces
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
-		return false;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {			
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

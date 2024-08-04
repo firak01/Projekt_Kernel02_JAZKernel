@@ -7,10 +7,10 @@ public interface IValueUserZZZ{
 	public void setValue(String sValue) throws ExceptionZZZ;
 	
 	public boolean hasAnyValue() throws ExceptionZZZ;
-	public boolean hasNullValue();
+	public boolean hasNullValue() throws ExceptionZZZ;
 	//Merke: protected geht in Interface nicht, also direkt so in der abstrakten Klasse
 	//protected void hasAnyValue(boolean bHasAnyValue);
 	//protected void hasNullValue(boolean bHasNullValue);
 	public void hasAnyValue(boolean bHasAnyValue) throws ExceptionZZZ;
-	public void hasNullValue(boolean bHasNullValue);
+	public void hasNullValue(boolean bHasNullValue) throws ExceptionZZZ;
 }

@@ -62,7 +62,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZ
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
@@ -110,13 +110,13 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZ
 	 * 
 	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
 	 */
-	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();		
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector<String> vecSection = this.parseFirstVector(sLineWithExpression);	
 								
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;

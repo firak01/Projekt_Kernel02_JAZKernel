@@ -40,14 +40,14 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 	
 	
 	
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.parseFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
 					

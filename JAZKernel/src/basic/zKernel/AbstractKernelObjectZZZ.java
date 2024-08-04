@@ -3970,10 +3970,12 @@ MeinTestParameter=blablaErgebnis
 				objReturn.setSection(sSection, true);
 				objReturn.setRaw(sReturn);
 				objReturn.setValue(sReturn);
+				objReturn.setProperty(sProperty, true);
 			}else{									
 				objReturn.setSection(sSection, false);
+				objReturn.setProperty(sProperty, false);
 			}
-			objReturn.setProperty(sProperty);
+			
 			
 		}//End main:
 		return objReturn;
@@ -4029,12 +4031,15 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			objReturn.setSection(sSection); //Hier erst einmal setzen. Es wird in der LookupFunktion noch genauer gesetzt.
-			objReturn.setProperty(sProperty);
+			objReturn.setProperty(sProperty, false);
 			if(!StringZZZ.isEmpty(sSection)){
 			    boolean bSectionExists = objFileIniConfig.proofSectionExistsDirectLookup(sSection);
-				if(bSectionExists==true){						
-					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);					
+				if(bSectionExists==true){
 					objReturn.setSection(sSection,true);
+					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);					
+					if(objReturn.hasAnyValue()) {
+						objReturn.setProperty(sProperty, true);
+					}
 				}else{						
 					objReturn.setSection(sSection,false);
 				}				

@@ -13,38 +13,16 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZZZ<T> {
-//public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> {
 	private static final long serialVersionUID = 3041123191138631240L;
 
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {
 		super();
-	}
-	
-	public AbstractIniTagCascadedZZZ(String sFlag) throws ExceptionZZZ {
-		super(sFlag);
-		AbstractKernelIniTagNew_();
-	}
-
-	public AbstractIniTagCascadedZZZ(String[] saFlag) throws ExceptionZZZ {
-		super(saFlag);
 		AbstractKernelIniTagNew_();
 	}
 
 	private boolean AbstractKernelIniTagNew_() throws ExceptionZZZ {
-		boolean bReturn = false;		
-		main: {			
-			if (this.getFlag("init") == true) {
-				bReturn = true;
-				break main;
-			}	
-			
-			
-		} // end main:
-		return bReturn;
-	}// end function KernelExpressionMathSolverNew_
-
-	// In den erbenden Klassen werden darin die enthaltenden Tags aufgelöst
-	//abstract public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+		return true;
+	}// end function AbstractKernelIniTagNew_
 
 		
 	//### Aus Interface IKernelExpressionIniZZZ		
@@ -55,7 +33,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Bei CASCADED Tags alle Untertags holen.
-			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);
@@ -65,13 +43,12 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 	}
 
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); // Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this); // Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main: {
-			if (StringZZZ.isEmptyTrimmed(sLineWithExpression))
-				break main;
+			if (StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 
-			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
 
 			// Bei einfachen Tag Werten reicht das...
 			// String sReturn = (String) vecAll.get(1);
@@ -80,8 +57,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 
 			// ...bei verschachtelten (CASCADED) Werten aber zusammenfassen.
 			String sExpressionWithTags = VectorZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
-			objReturn = this.getEntry();
-
+			
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
@@ -94,6 +70,10 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
 						
 			// Den gerade errechneten Wert setzen
+			// im gleichen Objekt
+			this.setValue(sValue);
+			
+			// im Return Objekt
 			objReturn.setValue(sValue);
 			
 			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den

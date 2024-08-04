@@ -9,7 +9,6 @@ import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
@@ -80,13 +79,13 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 	 }//end function KernelExpressionMathSolverNew_
 			
 	@Override
-	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector<String> vecSection = this.parseFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -165,23 +164,23 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 //		return vecReturn;
 //	}
 	
-	/**
-	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
-	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
-	 * ist der Ausdruck NACH der ersten Expression.
-	 * 
-	 * @param sLineWithExpression
-	 * @throws ExceptionZZZ
-	 */
-	@Override
-	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
-		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagEmpty(), false, false);
-		}
-		return vecReturn;
-	}
+//	/**
+//	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+//	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+//	 * ist der Ausdruck NACH der ersten Expression.
+//	 * 
+//	 * @param sLineWithExpression
+//	 * @throws ExceptionZZZ
+//	 */
+//	@Override
+//	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String>vecReturn = new Vector<String>();		
+//		main:{
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagEmpty(), false, false);
+//		}
+//		return vecReturn;
+//	}
 	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
@@ -194,7 +193,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 			//und nur Elternklassenmethode nutzen
 			
 			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
 			sReturn = (String) vecAll.get(1);
@@ -236,7 +235,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(!this.isParseRelevant(sLineWithExpression)) break main;

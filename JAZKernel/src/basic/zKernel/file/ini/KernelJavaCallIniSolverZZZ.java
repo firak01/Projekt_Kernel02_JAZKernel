@@ -1,26 +1,18 @@
 package basic.zKernel.file.ini;
 
-import java.lang.reflect.Method;
-import java.util.EnumSet;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
-import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelJavaCallIniSolverZZZ{
+public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelJavaCallIniSolverZZZ{
+	private static final long serialVersionUID = 6579389159644435205L;
 	public static String sTAG_NAME = "Z:Java";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelJavaCallIniSolverZZZ() throws ExceptionZZZ{
@@ -29,42 +21,20 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		
 	public KernelJavaCallIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelJavaCallIniSolverNew_(saFlag);
+		KernelJavaCallIniSolverNew_();
 	}
 	
 	public KernelJavaCallIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelJavaCallIniSolverNew_(saFlag);
+		KernelJavaCallIniSolverNew_();
 	}
 	
 	
-	private boolean KernelJavaCallIniSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der �bergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
+	private boolean KernelJavaCallIniSolverNew_() throws ExceptionZZZ {
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{		
 			Vector<String>vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -73,7 +43,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 				String sJavaCallClass = null; String sJavaCallMethod = null;
 				
 				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				vecReturn = this.parseFirstVector(sLineWithExpression);			
 				String sExpression = (String) vecReturn.get(1);
 				this.getEntry().setRaw(sExpression);
 				if(!StringZZZ.isEmpty(sExpression)){
@@ -142,12 +112,13 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	//###### Getter / Setter
 	
 
-	//### Aus Interface IKernelExpressionIniZZZ
+	//### Aus ITagBasicZZZ
 	@Override
-	public String getExpressionTagName(){
+	public String getNameDefault(){
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
 	}
 		
+	//### Aus IParseEnabledZZZ
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
@@ -180,12 +151,12 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
 	 */
 	@Override
-	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
-				sReturn = super.computeAsExpression(sLineWithExpression);
+				sReturn = super.parseAsExpression(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
 			}									
@@ -213,12 +184,12 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
 	 */
 	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
-				objReturn = super.computeAsEntry(sLineWithExpression);				
+				objReturn = super.parseAsEntry(sLineWithExpression);				
 			}else {
 				objReturn.setValue(sLineWithExpression);
 			}									
