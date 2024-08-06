@@ -19,7 +19,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 		super(saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
-	
+		
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathSolverNew_(saFlag);

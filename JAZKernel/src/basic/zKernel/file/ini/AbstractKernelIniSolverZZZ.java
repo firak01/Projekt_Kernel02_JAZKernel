@@ -17,73 +17,133 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
+/**Merke: Es gibt auch solver, die unabhaengig von einem ini-File funktionieren sollen.
+ *        Darum 2 Kategorien bei den Konstruktoren
+ * @author fl86kyvo
+ *
+ * @param <T>
+ */
 public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
 	private static final long serialVersionUID = -4816468638381054061L;
 	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-	
+			
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		AbstractKernelIniSolverNew_();
-	}
-	
-	public AbstractKernelIniSolverZZZ(String sFlag) throws ExceptionZZZ{
-		super(sFlag);
-		AbstractKernelIniSolverNew_();
+		AbstractKernelIniSolverNew1_(null);
 	}
 		
+	public AbstractKernelIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		AbstractKernelIniSolverNew1_(null);
+	}
+			
 	public AbstractKernelIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		AbstractKernelIniSolverNew_();
+		AbstractKernelIniSolverNew1_(null);
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		AbstractKernelIniSolverNew_();
+		AbstractKernelIniSolverNew1_(null);
 	}
 	
+	//Merke: Konstruktoren ohne ini-File machen keinen Sinn und muessen ohne "init"-Flag zu Exception fuehren
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		AbstractKernelIniSolverNew_();
-	}
-	
-	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
-		super(objKernelUsing);
 		AbstractKernelIniSolverNew_(null, null);
 	}
 	
-	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
-		super(objKernelUsing, saFlag);
-		AbstractKernelIniSolverNew_(null, null);
+	//Merke: Konstruktoren ohne ini-File machen keinen Sinn und muessen ohne "init"-Flag zu Exception fuehren
+	public AbstractKernelIniSolverZZZ(FileIniZZZ<T> objFileIniKernelConfig) throws ExceptionZZZ{
+		super(objFileIniKernelConfig); //Inifile als IKernelUserZZZ		
+		AbstractKernelIniSolverNew_(objFileIniKernelConfig, null);		
 	}
 	
-	TODOGOON20240804; //s. KernelZFormulaIniSolverZZZ Konstruktoren deutlich erweitern.... 
+	public AbstractKernelIniSolverZZZ(FileIniZZZ<T> objFileIniKernelConfig, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIniKernelConfig, saFlag);//Inifile als IKernelUserZZZ
+		AbstractKernelIniSolverNew_(objFileIniKernelConfig, null);
+	}
+	
+	public AbstractKernelIniSolverZZZ(FileIniZZZ<T> objFileIniKernelConfig, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		super(objFileIniKernelConfig, null);//Inifile als IKernelUserZZZ		
+		AbstractKernelIniSolverNew_(objFileIniKernelConfig, hmVariable);		
+	}
+	
+	public AbstractKernelIniSolverZZZ(FileIniZZZ<T> objFileIniKernelConfig, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIniKernelConfig, saFlag);//Inifile als IKernelUserZZZ		
+		AbstractKernelIniSolverNew_(objFileIniKernelConfig, hmVariable);		
+	}
 	
 	
-	private boolean AbstractKernelIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
+	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
+		super(objKernel, null);
+		AbstractKernelIniSolverNew_(objFileIni, null);
+	}
+	
+	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		super(objKernel, null);
+		AbstractKernelIniSolverNew_(objFileIni, hmVariable);
+	}
+	
+	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		AbstractKernelIniSolverNew_(objFileIni, null);
+	}
+	
+	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		AbstractKernelIniSolverNew_(objFileIni, hmVariable);
+	}
+		
+	private boolean AbstractKernelIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 		
 	boolean bReturn = false;		 
-	main:{
-		if(this.getFlag("init")==true){
-			bReturn = true;
-			break main;
-		}
-		
-		if(objFileIn==null ){
-			ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez; 
-		}else{
-			this.setFileConfigKernelIni(objFileIn);	
-			if(objFileIn.getHashMapVariable()!=null){
-				this.setHashMapVariable(objFileIn.getHashMapVariable());
+		main:{
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
 			}
-		}
+			
+			//Merke: Konstruktoren ohne ini-File machen keinen Sinn und muessen ohne "init"-Flag zu Exception fuehren
+			if(objFileIn==null ){
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}else{
+				this.setFileConfigKernelIni(objFileIn);	
 				
-		if(hmVariable!=null){				
-				this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
-		}
- 	}//end main:
-	return bReturn;
-ractKernelIniSolverNew_
+				if(hmVariable!=null){				
+					this.setVariable(hmVariable);					
+				}else if(hmVariable == null && objFileIn.getHashMapVariable() !=null){
+					this.setHashMapVariable(objFileIn.getHashMapVariable());
+				}else {
+					//soll zu den Variablen aus dem Ini-File hinzuaddieren, bzw. ersetzen
+					TODOGOON20240806; //HashMapCaseInsensitive PLus HashMapCaseInsensitive..
+				}
+			}
+			
+			bReturn = true;
+	 	}//end main:
+		return bReturn;
+	}//AbstractKernelIniSolverNew_
+	
+	
+	private boolean AbstractKernelIniSolverNew1_(HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {		
+		boolean bReturn = false;		 
+		main:{
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+			
+	
+			if(hmVariable!=null){				
+				this.setVariable(hmVariable);									
+			}
+			
+			bReturn = true;
+	 	}//end main:
+		return bReturn;
+	}//AbstractKernelIniSolverNew2_
 		
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
@@ -155,14 +215,23 @@ ractKernelIniSolverNew_
 		}
 	}
 	
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+	
+	//### Aus IValueVariableUserZZZ
+	@Override
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{				
 		this.hmVariable = hmVariable;
 	}
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+	
+	@Override
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable() throws ExceptionZZZ{
+		if(this.hmVariable==null) {
+			this.hmVariable = new HashMapCaseInsensitiveZZZ<String, String>();
+		}
 		return this.hmVariable;
 	}
 	
-	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+	@Override
+	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		if(this.hmVariable==null){
 			this.hmVariable = hmVariable;
 		}else{
@@ -175,10 +244,11 @@ ractKernelIniSolverNew_
 					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
 				}
 			}
-		}
+		}	
 	}
 	
-	public String getVariable(String sKey){
+	@Override
+	public String getVariable(String sKey) throws ExceptionZZZ{
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	//#########################################	

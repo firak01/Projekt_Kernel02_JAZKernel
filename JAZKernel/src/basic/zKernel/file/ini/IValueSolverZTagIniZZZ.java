@@ -8,7 +8,7 @@ import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface IValueSolverZTagIniZZZ extends IObjectWithExpressionZZZ{
+public interface IValueSolverZTagIniZZZ extends IObjectWithExpressionZZZ, IValueVariableUserZZZ{
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()

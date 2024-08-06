@@ -22,8 +22,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniSolverZZZ{
 	private static final long serialVersionUID = 7989209806367224848L;
 	public static String sTAG_NAME = "Z";
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-
+	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelExpressionIniSolverNew_();
@@ -39,23 +38,23 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
+		super(objFileIni); //als IKernelUserZZZ - Object
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject(), saFlag);
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
 		KernelExpressionIniSolverNew_();
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel, saFlag);
+		super(objKernel, objFileIni, saFlag);
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		super(objFileIni, hmVariable); //als IKernelUserZZZ - Object
 		KernelExpressionIniSolverNew_();
 	}
 	
@@ -255,39 +254,9 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 
 	//###### Getter / Setter
-
-	@Override
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		this.hmVariable = hmVariable;
-	}
 	
-	@Override
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-		return this.hmVariable;
-	}
 	
-	@Override
-	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		if(this.hmVariable==null){
-			this.hmVariable = hmVariable;
-		}else{
-			if(hmVariable==null){
-				//nix....
-			}else{
-				//füge Werte hinzu.
-				Set<String> sSet =  this.hmVariable.keySet();
-				for(String sKey : sSet){
-					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
-				}
-			}
-		}
-	}
-	
-	@Override
-	public String getVariable(String sKey){
-		return (String) this.getHashMapVariable().get(sKey);
-	}
-	
+	//############################################
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
