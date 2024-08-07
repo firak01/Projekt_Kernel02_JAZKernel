@@ -33,7 +33,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Bei CASCADED Tags alle Untertags holen.
-			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);
@@ -48,7 +48,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 		main: {
 			if (StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 
-			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
 
 			// Bei einfachen Tag Werten reicht das...
 			// String sReturn = (String) vecAll.get(1);

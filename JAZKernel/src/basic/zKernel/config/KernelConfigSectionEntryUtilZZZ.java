@@ -135,7 +135,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				bAnyFormula = true;
 									
 				KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
-				String stemp = ex.parse(sRaw);
+				String stemp = ex.solve(sRaw);
 				if(!StringZZZ.equals(stemp,sRaw)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
 				}else {

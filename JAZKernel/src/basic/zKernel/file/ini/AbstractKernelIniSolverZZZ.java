@@ -117,7 +117,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					this.setHashMapVariable(objFileIn.getHashMapVariable());
 				}else {
 					//soll zu den Variablen aus dem Ini-File hinzuaddieren, bzw. ersetzen
-					TODOGOON20240806; //HashMapCaseInsensitive PLus HashMapCaseInsensitive..
+					//TODOGOON20240806; //HashMapCaseInsensitive PLus HashMapCaseInsensitive..
 				}
 			}
 			
@@ -145,6 +145,31 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}//AbstractKernelIniSolverNew2_
 		
+	@Override
+	public String solve(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+				
+			//Bei einfachen Tags den Ersten Vektor holen
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
+			
+			//Bei einfachen Tags, den Wert zurückgeben
+			sReturn = (String) vecAll.get(1);
+			this.setValue(sReturn);
+			
+			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			String sExpressionImploded = VectorZZZ.implode(vecAll);
+			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+			
+			//TODOGOON20240807;//Nun noch parsen..
+			sReturn = this.parse(sReturn);
+			
+			
+		}//end main:
+		return sReturn;
+	}
+	
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
@@ -154,11 +179,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */	
 	@Override
-	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ {		
+	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
              //Darin können also auch Variablen, etc. sein
 			Vector<String> vecReturn = new Vector<String>();
 			main:{
-				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				if(StringZZZ.isEmpty(sLineWithExpression))break main;
 				
 				vecReturn = this.parseFirstVector(sLineWithExpression);			
 				String sExpression = (String) vecReturn.get(1);									
@@ -253,41 +278,41 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	//#########################################	
 	
-	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null; //new String[];//sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			String sDelimiter;
-			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
-			}else {
-				sDelimiter = sDelimiterIn;
-			}
-				   
-			String sExpressionTotal = this.parse(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
-			if(!StringZZZ.isEmpty(sExpressionTotal)) {
-				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-				
-				String sValue = null;
-				ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
-				for(String sExpression : saExpression) {
-					
-					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
-					if(this.isExpression(sExpression)){
-						sValue = this.parse(sExpression);
-					}else {
-						sValue = sExpression;
-					}
-					listasValue.add(sValue);
-				}
-								
-				saReturn = listasValue.toStringArray();				
-			}
-		}//end main:
-		return saReturn;
-	}
+//	@Override
+//	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+//		String[] saReturn = null; //new String[];//sLineWithExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//			
+//			String sDelimiter;
+//			if(StringZZZ.isEmpty(sDelimiterIn)) {
+//				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
+//			}else {
+//				sDelimiter = sDelimiterIn;
+//			}
+//				   
+//			String sExpressionTotal = this.parse(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
+//			if(!StringZZZ.isEmpty(sExpressionTotal)) {
+//				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+//				
+//				String sValue = null;
+//				ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+//				for(String sExpression : saExpression) {
+//					
+//					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
+//					if(this.isExpression(sExpression)){
+//						sValue = this.parse(sExpression);
+//					}else {
+//						sValue = sExpression;
+//					}
+//					listasValue.add(sValue);
+//				}
+//								
+//				saReturn = listasValue.toStringArray();				
+//			}
+//		}//end main:
+//		return saReturn;
+//	}
 	
 	//### aus IExpressionUserZZZ
 	@Override
@@ -296,7 +321,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				main:{
 					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 					
-					Vector vecAll = this.parseAllVector(sLineWithExpression);
+					Vector vecAll = this.solveFirstVector(sLineWithExpression);
 					
 					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 					sReturn = VectorZZZ.implode(vecAll);

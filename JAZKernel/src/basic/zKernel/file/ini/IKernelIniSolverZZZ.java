@@ -9,7 +9,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 public interface IKernelIniSolverZZZ {
 	
 	//Methoden zur Aufloesung der "Ini-Pfade" und Variablen
-	public Vector parseAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ;
 	
 	
 	//Es war notwendig mehr Informationen zurückzuliefern als nur einen aufgeloesten String

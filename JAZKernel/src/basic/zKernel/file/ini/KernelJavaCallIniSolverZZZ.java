@@ -34,7 +34,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{		
 			Vector<String>vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -162,16 +162,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			}									
 		}//end main:
 		return sReturn;
-	}
-	
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {		
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
-		return false;
 	}
 
 	@Override

@@ -154,7 +154,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
 	 */
 	@Override
-	public Vector parseAllVector(String sLineWithExpression) throws ExceptionZZZ {
+	public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ {
 		return null;
 	}
 

@@ -58,8 +58,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject(), saFlag);
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
 		KernelExpressionIniSolverNew_();
 	}
 	
@@ -141,106 +141,106 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 //	}
 	
 	
-	public Vector<String> solveAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
-						
-			boolean bHasVariableProcessed=false; boolean bHasPathProcessed=false;
-			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
-			String sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
-				
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-				String sExpressionOld = sExpression;
-				while(objVariable.isExpression(sExpressionOld)){
-					//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen
-					//objVariable.compute(sExpressionOld);
-					//Also: Einen Vektor holen....
-					Vector<String> vecExpression = objVariable.parseFirstVector(sExpressionOld);
-					
-					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
-					if(!StringZZZ.equals(sExpression,sExpressionOld)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-VARIABLE verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
-					}else {
-						break;
-					}					
-
-					//Die umgebenden Werte sichern
-					String s0=vecReturn.get(0);
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-					vecReturn.add(0, s0 + vecExpression.get(0));
-					
-					String s1 = sExpression;
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-					vecReturn.add(1, s1);
-										
-					String s2=vecReturn.get(2);
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-					vecReturn.add(2, vecExpression.get(2) + s2);
-					
-					sExpression = VectorZZZ.implode(vecReturn);
-					sExpressionOld=sExpression;//Sonst Endlosschleife.
-					bHasVariableProcessed = true;
-				} //end while
-					
-								
-				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-				sExpressionOld = sExpression;
-				while(objIniPath.isExpression(sExpressionOld)){
-											
-					//Verwende wie oben computeExpressionFirstVector(sExpressionOld);
-					Vector<String> vecExpression = objIniPath.parseFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
-					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
-					if(!sExpressionOld.equals(sExpression)) {
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
-					}else {
-						break;//Sonst Endlosschleife
-					}
-					
-					//Die umgebenden Werte sichern
-					if(bHasVariableProcessed || bHasPathProcessed) {
-						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln	
-						String s0 = vecExpression.get(0);
-						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-						vecReturn.add(0, s0);
-						
-						String s1 = vecExpression.get(1);
-						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-						vecReturn.add(1, s1);	
-						
-						String s2 = vecExpression.get(2);
-						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-						vecReturn.add(2, s2);
-						
-						sExpression = VectorZZZ.implode(vecReturn);
-						sExpressionOld=sExpression;//Sonst Endlosschleife.
-					}else {
-						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln
-						String s0 = vecReturn.get(0);
-						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-						vecReturn.add(0, s0 + vecExpression.get(0));
-						
-						String s1 = sExpression;
-						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-						vecReturn.add(1, s1);
-						
-						String s2 = vecReturn.get(2);
-						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-						vecReturn.add(2, vecExpression.get(2) + s2);
-						
-						sExpression = VectorZZZ.implode(vecReturn);
-						sExpressionOld=sExpression;//Sonst Endlosschleife.
-					}
-						
-					bHasPathProcessed = true;
-				} //end while
-			} //end if sExpression = ""					
-		}//end main:
-		return vecReturn;
-	}
+//	public Vector<String> solveAllVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String> vecReturn = new Vector<String>();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
+//						
+//			boolean bHasVariableProcessed=false; boolean bHasPathProcessed=false;
+//			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
+//			String sExpression = (String) vecReturn.get(1);									
+//			if(!StringZZZ.isEmpty(sExpression)){
+//				
+//				//ZUERST: Löse ggfs. übergebene Variablen auf.
+//				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
+//				String sExpressionOld = sExpression;
+//				while(objVariable.isExpression(sExpressionOld)){
+//					//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen
+//					//objVariable.compute(sExpressionOld);
+//					//Also: Einen Vektor holen....
+//					Vector<String> vecExpression = objVariable.parseFirstVector(sExpressionOld);
+//					
+//					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
+//					if(!StringZZZ.equals(sExpression,sExpressionOld)){
+//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-VARIABLE verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+//					}else {
+//						break;
+//					}					
+//
+//					//Die umgebenden Werte sichern
+//					String s0=vecReturn.get(0);
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//					vecReturn.add(0, s0 + vecExpression.get(0));
+//					
+//					String s1 = sExpression;
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//					vecReturn.add(1, s1);
+//										
+//					String s2=vecReturn.get(2);
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+//					vecReturn.add(2, vecExpression.get(2) + s2);
+//					
+//					sExpression = VectorZZZ.implode(vecReturn);
+//					sExpressionOld=sExpression;//Sonst Endlosschleife.
+//					bHasVariableProcessed = true;
+//				} //end while
+//					
+//								
+//				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+//				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
+//				sExpressionOld = sExpression;
+//				while(objIniPath.isExpression(sExpressionOld)){
+//											
+//					//Verwende wie oben computeExpressionFirstVector(sExpressionOld);
+//					Vector<String> vecExpression = objIniPath.parseFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
+//					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
+//					if(!sExpressionOld.equals(sExpression)) {
+//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+//					}else {
+//						break;//Sonst Endlosschleife
+//					}
+//					
+//					//Die umgebenden Werte sichern
+//					if(bHasVariableProcessed || bHasPathProcessed) {
+//						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln	
+//						String s0 = vecExpression.get(0);
+//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//						vecReturn.add(0, s0);
+//						
+//						String s1 = vecExpression.get(1);
+//						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//						vecReturn.add(1, s1);	
+//						
+//						String s2 = vecExpression.get(2);
+//						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+//						vecReturn.add(2, s2);
+//						
+//						sExpression = VectorZZZ.implode(vecReturn);
+//						sExpressionOld=sExpression;//Sonst Endlosschleife.
+//					}else {
+//						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln
+//						String s0 = vecReturn.get(0);
+//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//						vecReturn.add(0, s0 + vecExpression.get(0));
+//						
+//						String s1 = sExpression;
+//						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//						vecReturn.add(1, s1);
+//						
+//						String s2 = vecReturn.get(2);
+//						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+//						vecReturn.add(2, vecExpression.get(2) + s2);
+//						
+//						sExpression = VectorZZZ.implode(vecReturn);
+//						sExpressionOld=sExpression;//Sonst Endlosschleife.
+//					}
+//						
+//					bHasPathProcessed = true;
+//				} //end while
+//			} //end if sExpression = ""					
+//		}//end main:
+//		return vecReturn;
+//	}
 	
 	@Override
 	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{

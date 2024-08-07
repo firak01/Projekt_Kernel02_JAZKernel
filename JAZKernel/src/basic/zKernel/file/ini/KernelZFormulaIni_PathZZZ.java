@@ -19,7 +19,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 //public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
 public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -6403139308573148654L;
-	public static String sTAG_NAME = ""; //Hier kein Tag 
+	public static String sTAG_NAME = ""; //Hier kein Tag-Name
 		
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
 		super("init");
@@ -64,7 +64,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	
 	@Override
-	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -190,31 +190,33 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	
-//	public static boolean isExpression(String sLine){
-//		boolean bReturn = false;
-//		main:{
-//			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
-//			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
-//			//if(btemp==false) break main;
-//		
-//			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-//			//if(btemp==false) break main;
-//			
-//			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
-//			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
-//			//Also: 
-//			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-//			if(!bAsTagFound) break main;
-//			
-//			int iIndexClosing = sLine.toLowerCase().indexOf(KernelZFormulaIni_PathZZZ.getExpressionTagClosing().toLowerCase());
-//			iIndexClosing=iIndexClosing+KernelZFormulaIni_PathZZZ.getExpressionTagClosing().length();
-//			String sRest = sLine.substring(iIndexClosing);
-//			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
-//			
-//			bReturn = true;
-//		}//end main
-//		return bReturn;
-//	}
+	@Override
+	public boolean isExpression(String sLine) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
+			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
+			//if(btemp==false) break main;
+		
+			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			//if(btemp==false) break main;
+			
+			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
+			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
+			//Also: 
+			//boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagStarting(), this.getTagClosing(), false);
+			if(!bAsTagFound) break main;
+			
+			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagClosing().toLowerCase());
+			iIndexClosing=iIndexClosing+this.getTagClosing().length();
+			String sRest = sLine.substring(iIndexClosing);
+			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
+			
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
 	
 	
 	//###### Getter / Setter

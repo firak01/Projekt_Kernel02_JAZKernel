@@ -51,7 +51,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);

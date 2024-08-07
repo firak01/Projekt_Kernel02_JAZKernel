@@ -48,7 +48,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return bReturn;
 	 }//end function KernelEncryptionIniSolverNew_
 	
-	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{		
 			Vector<String> vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;

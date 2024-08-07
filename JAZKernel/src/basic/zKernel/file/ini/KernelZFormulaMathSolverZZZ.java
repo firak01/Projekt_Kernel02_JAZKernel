@@ -34,13 +34,14 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 					break main;
 				}										
 					
+				bReturn = true;
 		 	}//end main:
 			return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
 	
-	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -56,7 +57,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 				if(objOperator.isExpression(sExpression)){
 					 sExpression = objOperator.parse(sExpression);					
 				}else{
-					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+					//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 					ZTagFormulaMath_ValueZZZ objValue = new ZTagFormulaMath_ValueZZZ();
 					
@@ -95,17 +96,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 		return KernelZFormulaMathSolverZZZ.sTAG_NAME;
 	}
 
-	//### Andere Interfaces
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
-		return false;
-	}
-
+	//### Andere Interfaces	
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
 		return false;

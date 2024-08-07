@@ -67,7 +67,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
@@ -171,7 +171,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 //	}
 	
 	@Override
-	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

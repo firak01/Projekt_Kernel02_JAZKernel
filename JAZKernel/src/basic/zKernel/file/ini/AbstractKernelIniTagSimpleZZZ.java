@@ -34,22 +34,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	protected volatile IKernelConfigSectionEntryZZZ objEntry = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.	
 			
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ {
-		super("init");
+		super(); //Elternklasse kennt keinen Kernel
 		AbstractKernelIniTagNew_(null, null);
 	}
 
 	public AbstractKernelIniTagSimpleZZZ(String sFlag) throws ExceptionZZZ {
-		super(sFlag);
+		super(sFlag); //Elternklasse kennt keinen Kernel
 		AbstractKernelIniTagNew_(null, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ {
-		super(saFlag);	
+		super(saFlag);	//Elternklasse kennt keinen Kernel
 		AbstractKernelIniTagNew_(null, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
-		super();
+		super(""); //Elternklasse kennt keinen Kernel, aber mit super() wuerde "init"-Flag gesetzt. Also Leerzeichen setzen.
 		AbstractKernelIniTagNew_(objKernel, null);
 	}
 	
@@ -59,7 +59,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
-		super();
+		super(""); //Elternklasse kennt keinen Kernel, aber mit super() wuerde "init"-Flag gesetzt. Also Leerzeichen setzen.
 		AbstractKernelIniTagNew_(null, objKernelUsing);
 	}
 	
@@ -211,7 +211,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
@@ -326,7 +326,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);

@@ -219,7 +219,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	public Vector<String>parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
