@@ -5,15 +5,15 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
-import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -23,7 +23,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *
  * @param <T>
  */
-public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
+public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
 	private static final long serialVersionUID = -4816468638381054061L;
 	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 			
@@ -145,29 +145,66 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}//AbstractKernelIniSolverNew2_
 		
+	//### Aus IValueSolverZTagIniZZZ
 	@Override
 	public String solve(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 				
-			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
+			IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReference.set(objReturn);
 			
-			//Bei einfachen Tags, den Wert zurückgeben
+			//Bei einfachen Tags den Ersten Vektor holen
+			//dabei werden Variablen und Pfade aufgeloest
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression, objReturnReference);
+			
+			//Rueckgabewert
 			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
 			
-			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			//Rueckgabestring
 			String sExpressionImploded = VectorZZZ.implode(vecAll);
 			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
 			
-			//TODOGOON20240807;//Nun noch parsen..
+			//Nun noch parsen..
 			sReturn = this.parse(sReturn);
-			
-			
+			this.setValue(sReturn);						
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public int solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		int iReturn=-1;
+		String sReturn=null;
+		
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+		if(objReturn==null) {
+			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturnReference.set(objReturn);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		main:{
+			//Solver haben immer die Aufgabe einen IKernelConfigSectionEntryZZZ zu fuellen. Das ueber ein Referenzobjekt loesen.
+			//Darin dann neue Zustaende fuellen isPathSolved, isVariableReplaced
+			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression, objReturnReference);
+			
+			//Zwischenstand zurückgeben. Implode, weil: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			sReturn = VectorZZZ.implode(vecAll);
+			this.setValue(sReturn);
+									
+			//Nach dem Aufloesen der Variablen, etc. ... Parsen.
+			//Solver parsen und fuellen ein internes entry-Objekt
+			String sExpressionImploded = sReturn;			
+			iReturn = this.parse(sExpressionImploded, objReturnReference);
+			
+			objReturn = objReturnReference.get();
+			sReturn = objReturn.getValue();			
+			this.setValue(sReturn);
+			
+		}//end main;
+		return iReturn;
 	}
 	
 	
@@ -179,36 +216,56 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */	
 	@Override
-	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
+	public Vector<String> solveFirstVector(String sLineWithExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
              //Darin können also auch Variablen, etc. sein
-			Vector<String> vecReturn = new Vector<String>();
+			Vector<String> vecReturn = null;
+			
+			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+			if(objReturn==null) {
+				objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				objReturnReference.set(objReturn);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			main:{
+				if(sLineWithExpression==null) break main;
+				vecReturn = new Vector<String>();
 				if(StringZZZ.isEmpty(sLineWithExpression))break main;
-				
+								
 				vecReturn = this.parseFirstVector(sLineWithExpression);			
-				String sExpression = (String) vecReturn.get(1);									
+				String sExpression = (String) vecReturn.get(1);
+				String sExpressionOld = sExpression;
 				if(!StringZZZ.isEmpty(sExpression)){
 					
+					//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
+					
 					//ZUERST: Löse ggfs. übergebene Variablen auf.
-					ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
+					ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable());
 					while(objVariable.isExpression(sExpression)){
 						sExpression = objVariable.parse(sExpression);			
 					} //end while
+					if(sExpression!=sExpressionOld) {
+						objReturn.isVariableSolved(true);
+					}
 						
 									
 					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-					String sExpressionOld = sExpression;
-					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
+					sExpressionOld = sExpression;
+					String sExpressionTemp = sExpression;
+					KernelZFormulaIni_PathZZZ<T> objIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni());
 					while(objIniPath.isExpression(sExpression)){
-							sExpression = objIniPath.parseAsExpression(sExpression);	
-							if(StringZZZ.isEmpty(sExpression)) {
-								sExpression = sExpressionOld;
+							sExpressionTemp = objIniPath.parse(sExpression);	
+							if(StringZZZ.isEmpty(sExpressionTemp)) {
+								break;
+							}else if(sExpression.equals(sExpressionTemp)) {
 								break;
 							}else{
-								sExpressionOld = sExpression;							
+								sExpression = sExpressionTemp;							
 							}
 					} //end while
+					if(sExpression!=sExpressionOld) {
+						objReturn.isPathSolved(true);
+					}
+					
 										
 					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
@@ -220,26 +277,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	//###### Getter / Setter
-	
-	//### Aus IKernelFileIniUserZZZ
-	@Override
-	public void setFileConfigKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	@Override
-	public FileIniZZZ getFileConfigKernelIni()throws ExceptionZZZ{
-		if(this.objFileIni==null) {
-			IKernelZZZ objKernel = this.getKernelObject();
-			if(objKernel==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			return objKernel.getFileConfigKernelIni();						
-		}else {
-			return this.objFileIni;
-		}
-	}
-	
 	
 	//### Aus IValueVariableUserZZZ
 	@Override
@@ -271,7 +308,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			}
 		}	
 	}
-	
+		
 	@Override
 	public String getVariable(String sKey) throws ExceptionZZZ{
 		return (String) this.getHashMapVariable().get(sKey);
@@ -314,22 +351,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 //		return saReturn;
 //	}
 	
-	//### aus IExpressionUserZZZ
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-				String sReturn = sLineWithExpression;
-				main:{
-					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-					
-					Vector vecAll = this.solveFirstVector(sLineWithExpression);
-					
-					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-					sReturn = VectorZZZ.implode(vecAll);
-					this.setValue(sReturn);
-					
-				}//end main:
-				return sReturn;
-			}
+	
 	
 	//### aus IKernelZFormulaIniZZZ
 	/* (non-Javadoc)

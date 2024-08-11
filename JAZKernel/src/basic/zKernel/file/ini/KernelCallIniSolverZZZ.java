@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -41,22 +42,22 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		KernelCallIniSolverNew_(null);
 	}
 	
-	public KernelCallIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelCallIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelCallIniSolverNew_(objFileIni);
 	}
 	
-	public KernelCallIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelCallIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject(), saFlag);
 		KernelCallIniSolverNew_(objFileIni);
 	}
 	
-	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelCallIniSolverNew_(objFileIni);
 	}
 			
-	private boolean KernelCallIniSolverNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
+	private boolean KernelCallIniSolverNew_(FileIniZZZ<T> objFileIn) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{ 		
 			if(this.getFlag("init")==true){
@@ -64,7 +65,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				break main;
 			}
 			
-			FileIniZZZ objFile=null;
+			FileIniZZZ<T> objFile=null;
 			if(objFileIn==null ){
 				objFile = this.getKernelObject().getFileConfigKernelIni();
 				if(objFile==null) {
@@ -120,15 +121,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)==false) break main;
 			
 			//WICHTIG: DIE FLAGS VERERBEN !!!
-			KernelJavaCallIniSolverZZZ init4FlagLookup = new KernelJavaCallIniSolverZZZ();
+			KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
 			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
-			HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 			
 			//FileIniZZZ objFileIni = this.getFileIni();
 			IKernelZZZ objKernel = this.getKernelObject();
 			
 			//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-			KernelJavaCallIniSolverZZZ objJavaCallSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlagZpassed); 
+			KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
 			sReturn=objJavaCallSolver.parse(sLineWithExpression);		
 										
 		}
@@ -143,7 +143,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)==true){				
 		
 				//WICHTIG: DIE FLAGS VERERBEN !!!
-				KernelJavaCallIniSolverZZZ init4FlagLookup = new KernelJavaCallIniSolverZZZ();
+				KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(init4FlagLookup, this, true);
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 				
@@ -151,7 +151,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				IKernelZZZ objKernel = this.getKernelObject();
 				
 				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-				KernelJavaCallIniSolverZZZ objJavaCallSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlagZpassed); 
+				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
 				//hmReturn=objJavaCallSolver.computeHashMap(sLineWithExpression);			
 			}				
 		}//end main:
@@ -168,7 +168,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)==true){				
 		
 				//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.
-				KernelJavaCallIniSolverZZZ objSolver = new KernelJavaCallIniSolverZZZ(); 
+				KernelJavaCallIniSolverZZZ<T> objSolver = new KernelJavaCallIniSolverZZZ<T>(); 
 				//alsReturn=objSolver.computeArrayList(sLineWithExpression);															
 			}					
 		}//end main:
@@ -177,7 +177,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(bUseCall) {
@@ -210,7 +210,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return sReturn;
 	}
 	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	//### Andere Interfaces
+	
 	/**Methode ersetzt in der Zeile alle CALL Werte.
 	 * Methode überschreibt den abstrakten "solver", weil erst einmal keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
@@ -251,7 +258,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//++++++++++++++++++++++++++++++++++++++++++++				
 				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
-				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ();
+				KernelJavaCall_ClassZZZ<T> objClassname = new KernelJavaCall_ClassZZZ<T>();
 				while(objClassname.isExpression(sExpression)){
 						IKernelConfigSectionEntryZZZ objEntry = objClassname.parseAsEntry(sLineWithExpression2);	
 						sExpression = objEntry.getValue();
@@ -272,7 +279,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//++++++++++++++++++++++++++++++++++++++++++++++
 				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
-				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ();
+				KernelJavaCall_MethodZZZ<T> objMethodname = new KernelJavaCall_MethodZZZ<T>();
 				while(objMethodname.isExpression(sExpression)){
 						IKernelConfigSectionEntryZZZ objEntry = objMethodname.parseAsEntry(sExpression);
 						sExpression = objEntry.getValue();
@@ -328,6 +335,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
+	
+	//###############################
+	//### FLAG Handling
 	
 	//### aus IKernelCallIniSolverZZZ
 		@Override

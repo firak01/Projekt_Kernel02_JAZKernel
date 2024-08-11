@@ -7,6 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
@@ -43,6 +44,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	private VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
 
+	
+	private boolean bPathSolved = false;
+	private boolean bVariableSolved = false;
 	
 	private boolean bConversion = false;
 	private boolean bConverted = false;
@@ -109,11 +113,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			this.setValue(objTag.getValue());
 			this.setValue(objTag.getValueArrayList());
 			
-			this.setSection(objTag.getSection());
-			//this.setSectionsSearchedHashMap(objTag.getSe);
+			//Das geht mit IIniTagBasicZZZ nicht....
+			//this.setValueAsExpression(objTag.getValueAsExpression());
 			
+			this.setSection(objTag.getSection());			
 			this.setProperty(objTag.getProperty());
-			//this.setPropertySearchedHashMap(objTag.getSe);
 			bReturn = true;
 		}//end main:
 		return bReturn;
@@ -501,7 +505,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setValue(ArrayList<String> alValue) {
 		this.getValueArrayListVector().add(alValue);
-		this.isArrayValue(true);
+		if(!ArrayListZZZ.isEmpty(alValue)) {				
+			this.isArrayValue(true);
+		}else {
+			this.isArrayValue(false);
+		}
 	}
 	
 	@Override
@@ -577,6 +585,26 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public boolean isConverted() {
 		return this.bConverted; 
+	}
+	
+	@Override 
+	public boolean isPathSolved() {
+		return this.bPathSolved;
+	}
+	
+	@Override
+	public void isPathSolved(boolean bPathSolved) {
+		this.bPathSolved = bPathSolved;
+	}
+	
+	@Override
+	public boolean isVariableSolved() {
+		return this.bVariableSolved;
+	}
+	
+	@Override
+	public void isVariableSolved(boolean bVariableSolved) {
+		this.bVariableSolved = bVariableSolved;
 	}
 	
 	//#####################################

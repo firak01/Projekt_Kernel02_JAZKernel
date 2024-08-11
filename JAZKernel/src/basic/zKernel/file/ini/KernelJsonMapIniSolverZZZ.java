@@ -10,8 +10,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -101,6 +103,14 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return sReturn;
 	}
 	
+	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap hmReturn = new HashMap<String,String>();
 		main:{
@@ -109,7 +119,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -150,7 +160,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -182,90 +192,79 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return hmReturn;
 	}
 
-		//### Andere Interfaces
-		@Override
-		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			return false;
-		}
+	//### Andere Interfaces
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+		return false;
+	}
+	
+	//##############################################
+	//### FLAG HANDLING
+				
+	//Aus IKernelJsonMapIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-		@Override
-		public String convert(String sLine) throws ExceptionZZZ {
-			return null;
-		}
-
-		@Override
-		public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
-			return false;
-		}
-		
-		//Aus IKernelJsonMapIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-
-		@Override
-			public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-				boolean[] baReturn=null;
-				main:{
-					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
-						int iCounter=-1;
-						for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-							baReturn[iCounter]=bReturn;
-						}
-					}
-				}//end main:
-				return baReturn;
+	@Override
+	public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
 			}
-	
-		@Override
-		public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		//Aus IKernelJsonIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
+		}//end main:
+		return baReturn;
+	}
 
-		@Override
-			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-				boolean[] baReturn=null;
-				main:{
-					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
-						int iCounter=-1;
-						for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-							baReturn[iCounter]=bReturn;
-						}
-					}
-				}//end main:
-				return baReturn;
+	@Override
+	public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	//Aus IKernelJsonIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+
+	@Override
+	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
 			}
-	
-		@Override
-		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
+		}//end main:
+		return baReturn;
+	}
 
+	@Override
+	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
 	
-
-		
-		
+	}
 }//End class

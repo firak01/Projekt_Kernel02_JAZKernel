@@ -63,13 +63,13 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
-			objReturn = new KernelConfigSectionEntryZZZ(this);			
+			objReturn = new KernelConfigSectionEntryZZZ<T>(this);			
 		}//end main:
 		return objReturn;
 	}	
@@ -147,20 +147,6 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-		}
-		return vecReturn;
-	}
-	
-	@Override
-	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVector(sLineWithExpression);			
-			
 		}
 		return vecReturn;
 	}

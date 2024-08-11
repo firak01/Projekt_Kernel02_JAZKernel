@@ -50,9 +50,9 @@ public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParamete
 	public File[]getFileConfigModuleAllByDir(String sDir) throws ExceptionZZZ;
 	
 	
-	public FileIniZZZ searchModuleFileWithProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ;
-	public FileIniZZZ searchModuleFileByModule(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
-	public FileIniZZZ searchModuleFileByModuleInWorkspace(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
+	public <T> FileIniZZZ<T> searchModuleFileWithProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ;
+	public <T> FileIniZZZ<T> searchModuleFileByModule(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
+	public <T> FileIniZZZ<T> searchModuleFileByModuleInWorkspace(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
 	public String searchFileConfigIniPathByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ;
 	
 	//HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sModule, String sKeyInHashMapForProgramOrSection, String sValueInHashMapForsProperty) throws ExceptionZZZ;

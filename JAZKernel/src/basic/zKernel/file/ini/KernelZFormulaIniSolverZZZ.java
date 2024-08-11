@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -48,7 +49,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, objFileIni, saFlag);
 		KernelExpressionIniSolverNew_();
 	}
@@ -63,7 +64,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		KernelExpressionIniSolverNew_();
 	}
 	
-	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
 		KernelExpressionIniSolverNew_();
 	}
@@ -82,6 +83,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
+	
+	//### Andere Interfaces
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
+		return false;
+	}
+
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
+	}
 	
 //	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 //	* @param sLineWithExpression
@@ -310,6 +322,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return sReturn;
 	}
 	
+
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	//########################################################
+	//### FLAG Handling
+	
 	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ) {
@@ -341,16 +364,5 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	@Override
 	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
-	}
-
-	//### Andere Interfaces
-	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
-		return false;
-	}
-
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
 	}
 }//End class

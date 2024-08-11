@@ -8,12 +8,12 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	private static final long serialVersionUID = 4049221887081114236L;
 		
 	//+++ fuer IValueBufferedUserZZZ
-	protected VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
-	protected boolean bAnyValue = false;
-	protected boolean bNullValue = false;
+	protected VectorExtendedDifferenceZZZ<String> vecValue = null;
+	protected boolean bAnyValueInObjectWithExpression = false;
+	protected boolean bNullValueInObjectWithExpression = false;
 	
 	//IValueSolvedUserZZZ
-	protected VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorExtendedDifferenceZZZ<String> vecRaw = null;
 	
 	public AbstractObjectWithExpressionZZZ() throws ExceptionZZZ{
 		this("init");
@@ -48,6 +48,9 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	//### Aus IValueBufferedUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
+		if(this.vecValue==null) {
+			this.vecValue = new VectorExtendedDifferenceZZZ<String>();
+		}
 		return this.vecValue;
 	}
 	
@@ -78,31 +81,34 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 
 	@Override
 	public boolean hasAnyValue() throws ExceptionZZZ {
-		return this.bAnyValue;
+		return this.bAnyValueInObjectWithExpression;
 	}	
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar
 	//daher protected. Was nicht im Intface definierbar ist.
 	@Override
 	public void hasAnyValue(boolean bAnyValue) throws ExceptionZZZ {
-		this.bAnyValue=bAnyValue;
+		this.bAnyValueInObjectWithExpression=bAnyValue;
 	}
 	
 	@Override
 	public boolean hasNullValue() throws ExceptionZZZ {
-		return this.bNullValue;
+		return this.bNullValueInObjectWithExpression;
 	}
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 
 	//daher protected. Was nicht im Interface definierbar ist.
 	@Override
 	public void hasNullValue(boolean bNullValue) {
-		this.bNullValue=bNullValue;
+		this.bNullValueInObjectWithExpression=bNullValue;
 	}
 	
 	//####################################################
 	//### Aus IValueComputedBufferedUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<String> getRawVector() throws ExceptionZZZ{
+		if(this.vecRaw==null) {
+			this.vecRaw = new VectorExtendedDifferenceZZZ<String>();
+		}
 		return this.vecRaw;
 	}
 	
@@ -115,4 +121,6 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	public void setRaw(String sRaw) throws ExceptionZZZ {
 		this.getRawVector().add(sRaw);
 	}
+	
+	
 }

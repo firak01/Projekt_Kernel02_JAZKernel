@@ -17,7 +17,9 @@ import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
  *
  * @param <T>
  */
-public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>{
+
+//Merke: Klasse benötigt kein Kernel-Objekt und hat demnach auch keine Flags...
+public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 6370617551800139734L;
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
@@ -29,21 +31,22 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZ
 	
 	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
 		super();
+		//super(""); //kein "init" Flag setzen lassen, da wir ja eine Map mitbekommen.
 		KernelExpressionIniVariableNew_(hmVariableValue);
 	}
 	
-	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{
-		super(saFlagControl);
-		KernelExpressionIniVariableNew_(hmVariableValue);
-	}
+//	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{
+//		super(saFlagControl);
+//		KernelExpressionIniVariableNew_(hmVariableValue);
+//	}
 		
 	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 main:{		
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}										
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}										
 				
 			this.setHashMapVariable(hmVariableValue);
 	 	}//end main:
@@ -182,7 +185,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZ
 		main:{
 			if(StringZZZ.isEmpty(sKey)) break main;
 			
-			 HashMapCaseInsensitiveZZZ hmVariable = this.getHashMapVariable();
+			 HashMapCaseInsensitiveZZZ<String,String> hmVariable = this.getHashMapVariable();
 			 if(hmVariable==null) break main;
 			 
 			 sReturn = (String)hmVariable.get(sKey);

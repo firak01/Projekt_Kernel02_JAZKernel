@@ -31,20 +31,20 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			
 	public AbstractIniTagWithExpressionBasicZZZ() throws ExceptionZZZ{
 		super();
-		AbstractIniTagWithExprssionBasicNew_();
+		AbstractIniTagWithExpressionBasicNew_();
 	}
 	
 	public AbstractIniTagWithExpressionBasicZZZ(String sFlagControl) throws ExceptionZZZ{
 		super(sFlagControl);
-		AbstractIniTagWithExprssionBasicNew_();
+		AbstractIniTagWithExpressionBasicNew_();
 	}
 	
 	public AbstractIniTagWithExpressionBasicZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		super(saFlagControl);
-		AbstractIniTagWithExprssionBasicNew_();
+		AbstractIniTagWithExpressionBasicNew_();
 	}
 	
-	private boolean AbstractIniTagWithExprssionBasicNew_() throws ExceptionZZZ {
+	private boolean AbstractIniTagWithExpressionBasicNew_() throws ExceptionZZZ {
 		 boolean bReturn = false;
 		 main:{			 
 				if(this.getFlag("init")==true){
@@ -52,7 +52,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 					break main;
 				}
 				
-				
+				bReturn = true;
 		 	}//end main:
 			return bReturn;
 		 }//end function AbstractObjectWithFormulaNew_
@@ -67,7 +67,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
@@ -170,19 +170,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 //		return vecReturn;
 //	}
 	
-	@Override
-	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVector(sLineWithExpression);			
-			
-		}
-		return vecReturn;
-	}
+	
 	
 	//### aus IIniStructurePositionUserZZZ
 	@Override
@@ -257,20 +245,54 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		this.bArrayValue = bIsArrayValue;
 	}
 	
-	//### Merke: Kein IValueSolvedUserZZZ hier eingebunden, da es keine Expression ist
-
-	
 	//### aus IExpressionUserZZZ
 	@Override
 	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
 		return ComputableExpressionUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
+	
+	@Override
+	public String parseAsExpression() throws ExceptionZZZ {
+		String sExpression = this.getValue();
+		return this.parseAsExpression(sExpression);
+	}	
+
+
+	@Override
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
+			
+			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
+			sReturn = VectorZZZ.implode(vecAll);
+			this.setValue(sReturn);
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();
+		main:{
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+		}
+		return vecReturn;
+			
+	}
 
 	
 	//### Merke: IValueSolvedUserZZZ hier eingebunden, da es eine Expression ist
 	//           Die MEthoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
 	//### aus IValueSolvedUserZZZ
+	//### Merke: Kein IValueSolvedUserZZZ hier eingebunden, da es keine Expression ist
 
+	
 
 	
 }

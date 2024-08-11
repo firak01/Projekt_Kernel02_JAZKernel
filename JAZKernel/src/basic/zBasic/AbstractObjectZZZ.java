@@ -10,7 +10,7 @@ import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
-public abstract class AbstractObjectZZZ <T> implements Serializable, IOutputDebugNormedZZZ, IObjectZZZ, ILogZZZ{
+public abstract class AbstractObjectZZZ <T> implements Serializable, Cloneable, IOutputDebugNormedZZZ, IObjectZZZ, ILogZZZ{
 	private static final long serialVersionUID = 1L;	
 	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
@@ -44,6 +44,15 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IOutputDebu
 		return sReturn;
 	}
 	
+
+	//### aus Clonable
+	@Override
+	//https://www.geeksforgeeks.org/clone-method-in-java-2/
+	//Hier wird also "shallow clone" gemacht. Statt einem deep Clone.
+	//Beim Deep Clone müssten alle intern verwendeten Objekte ebenfalls neu erstellt werden.	
+	public Object clone() throws CloneNotSupportedException{
+		return super.clone();
+	}
 	
 	//### aus IObjectZZZ
 	@Override
@@ -54,6 +63,17 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IOutputDebu
 	@Override
 	public void setExceptionObject(ExceptionZZZ objException) {
 		this.objException = objException;
+	}
+	
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+		try {
+			return this.clone();
+		}catch(CloneNotSupportedException e) {
+			ExceptionZZZ ez = new ExceptionZZZ(e);
+			throw ez;
+				
+		}
 	}
 	
 	

@@ -207,7 +207,13 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 			//+++++++++++++++++++++++++++++++++++++++
 			objFormulaSolver.setFlag("useformula",true);
+			
+			//beim "reinen Parsen" bleiben Pfadangaben bestehen
 			sValue = objFormulaSolver.parse(sExpression);
+			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
+						
+			//beim "Solven" werden dann Pfade ersetzt
+			sValue = objFormulaSolver.solve(sExpression);
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
 							
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird

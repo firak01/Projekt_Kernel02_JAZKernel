@@ -10,7 +10,9 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
@@ -110,6 +112,13 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}
 		return sReturn;
 	}
+	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 			
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
@@ -150,28 +159,14 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	//### Andere Interfaces
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
-	 */
-	@Override
-	public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ {
-		return null;
-	}
-
+	
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;
 	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {			
-		return null;
-	}
-
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
-		return false;
-	}
+	
+	//####################################
+	//### FLAG Handling
 	
 	//### aus IKernelJsonIniSolverZZZ
 	@Override

@@ -406,7 +406,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -425,8 +425,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @throws ExceptionZZZ
 	 */
 	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ<T>();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+		if(objReturn==null) {
+			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturnReference.set(objReturn);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.	
 		main:{
 			String sSection; String sProperty;
 			check:{
@@ -495,11 +498,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			if(bUseExpression) {
 				
 				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
-				KernelExpressionIniHandlerZZZ exDummy = new KernelExpressionIniHandlerZZZ();
+				KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
 				
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
-				KernelExpressionIniHandlerZZZ objExpressionHandler = new KernelExpressionIniHandlerZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
+				KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
 				
 				objReturnReference.set(objReturn);
 				int iReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);	
@@ -512,7 +515,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}//end function
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist. //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -524,8 +527,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	private IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ<T>();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+		if(objReturn==null) {
+			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturnReference.set(objReturn);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
@@ -552,7 +559,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty, String sSystemNumberIn) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
@@ -600,6 +607,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 * @throws ExceptionZZZ 
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
+		//!!! Das ist lediglich eine Untergeordnete Suchanfrage..., daher: 
+		//!!! Wichtig: Neues EntryObjekt für diese neue Suche verwenden !!!
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		main:{
 			String sSectionUsed; String sProperty; String sSystemNumberUsed;
@@ -1295,12 +1304,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;	
 			}
-		
-		//Das Array aller Sections nach der einen Section durchsuchen
-		String[] saSectionAll = this.getSectionAll();
-		StringArrayZZZ saZZZ = new StringArrayZZZ(saSectionAll);
-		bReturn = saZZZ.containsIgnoreCase(sSection);
-				
+			
+			//Das Array aller Sections nach der einen Section durchsuchen
+			String[] saSectionAll = this.getSectionAll();
+			StringArrayZZZ saZZZ = new StringArrayZZZ(saSectionAll);
+			bReturn = saZZZ.containsIgnoreCase(sSection);
+					
 		}//END main
 		return bReturn;
 	}

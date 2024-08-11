@@ -17,5 +17,5 @@ public interface IIniTagBasicZZZ extends ITagBasicZZZ, IParseEnabledZZZ, IExpres
 	public String[] parseAsArray(String sExpression, String sDelimiter) throws ExceptionZZZ;
 	
 	//public Vector<String> parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
-	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ;	
+	//public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ;	
 }

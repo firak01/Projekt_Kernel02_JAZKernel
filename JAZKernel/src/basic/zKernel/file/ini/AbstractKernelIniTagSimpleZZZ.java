@@ -28,7 +28,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
-	protected volatile FileIniZZZ objFileIni = null; //Kann anders als beim Kernel selbst sein.
+	protected volatile FileIniZZZ<T> objFileIni = null; //Kann anders als beim Kernel selbst sein.
 	
 	//Fuer Interface IKernelConfigSectionEntryUserZZZ
 	protected volatile IKernelConfigSectionEntryZZZ objEntry = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.	
@@ -174,7 +174,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.objFileIni = objFileIni;
 	}
 	@Override
-	public FileIniZZZ getFileConfigKernelIni()throws ExceptionZZZ{
+	public FileIniZZZ<T> getFileConfigKernelIni()throws ExceptionZZZ{
 		if(this.objFileIni==null) {
 			IKernelZZZ objKernel = this.getKernelObject();
 			if(objKernel==null) {
@@ -205,20 +205,20 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	//### aus IIniTagBasicZZZ
-	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-											
-			Vector<String>vecAll = this.solveFirstVector(sLineWithExpression);
-			
-			//Das ist bei einfachen Tag Werten so
-			String sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn); 	//Dabei wird der Wert in das Entry-Objekt geschrieben.		
-		}//end main:
-		return objReturn;
-	}	
+//	@Override
+//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+//		IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//											
+//			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
+//			
+//			//Das ist bei einfachen Tag Werten so
+//			String sReturn = (String) vecAll.get(1);
+//			this.setValue(sReturn); 	//Dabei wird der Wert in das Entry-Objekt geschrieben.		
+//		}//end main:
+//		return objReturn;
+//	}	
 	
 	// Die Methoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
 	// Aber Achtung: Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
@@ -264,7 +264,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//daher protected. Was nicht im Intface definierbar ist.
 	@Override
 	public void hasNullValue(boolean bNullValue) {		
-		this.bNullValue=bNullValue;
+		this.bNullValueInObjectWithExpression=bNullValue;
 	}
 	
 	//####################################################
@@ -313,28 +313,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	
 	
-	//### aus IExpressionUserZZZ
-	@Override
-	public String parseAsExpression() throws ExceptionZZZ {
-		String sExpression = this.getValue();
-		return this.parseAsExpression(sExpression);
-	}	
-
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			this.setValue(sReturn);
-			
-		}//end main:
-		return sReturn;
-	}	
+	
 	
 	//### aus IIniTagWithExpressionZZZ
 	

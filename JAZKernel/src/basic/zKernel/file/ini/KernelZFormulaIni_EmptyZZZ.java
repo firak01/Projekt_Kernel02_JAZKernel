@@ -11,53 +11,9 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
-//public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{	
+public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{	
 	private static final long serialVersionUID = 7203160369729097L;
 	public static String sTAG_NAME = "z:Empty";
-	//private FileIniZZZ objFileIni=null;
-			
-	//Braucht man hier die ini und den Kernel überhaupt???? oder kann man ein IniTagSimpleZZZ sein???
-//	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{
-//	super("init");
-//	KernelExpressionIniEmptyNew_(null);
-//}
-
-//	public KernelZFormulaIni_EmptyZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
-//		super(objFileIni.getKernelObject());
-//		KernelExpressionIniEmptyNew_(objFileIni);
-//	}
-//	
-//	public KernelZFormulaIni_EmptyZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
-//		super(objFileIni.getKernelObject(),saFlag);
-//		KernelExpressionIniEmptyNew_(objFileIni);
-//	}
-//	
-//	public KernelZFormulaIni_EmptyZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
-//		super(objKernel);
-//		KernelExpressionIniEmptyNew_(objFileIni);
-//	}
-//	
-//	public KernelZFormulaIni_EmptyZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-//		super(objKernel, saFlag);
-//		KernelExpressionIniEmptyNew_(objFileIni);
-//	}
-	
-//	private boolean KernelExpressionIniEmptyNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
-//		 boolean bReturn = false; 
-//		 main:{		
-//		 															
-//				if(this.getFlag("init")==true){
-//					bReturn = true;
-//					break main;
-//				}										
-//					
-//				this.setFileIni(objFileIni);
-//		 	}//end main:
-//			return bReturn;
-//		 }//end function KernelExpressionMathSolverNew_
-		
-	
 	
 	//Hier die Variante ohne ini-File
 	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{		
@@ -79,7 +35,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 	 }//end function KernelExpressionMathSolverNew_
 			
 	@Override
-	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

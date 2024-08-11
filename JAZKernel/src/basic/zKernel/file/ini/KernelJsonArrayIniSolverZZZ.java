@@ -7,8 +7,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -103,6 +105,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return sReturn;
 	}
 	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	public ArrayList<String> computeArrayList(String sLineWithExpression) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
@@ -111,7 +120,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
 			
 			String sReturn = "";
-			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -160,6 +169,10 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;
 	}
+	
+	
+	//########################################################################
+	//### FLAG - Handling
 	
 	//### aus IKernelJsonArrayIniSolverZZZ
 	@Override

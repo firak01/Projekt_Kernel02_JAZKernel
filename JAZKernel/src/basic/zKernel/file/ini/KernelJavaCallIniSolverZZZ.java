@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -132,6 +133,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//end main:
 		return sReturn;
 	}
+	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 		
 	@Override
 	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
@@ -187,72 +194,73 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return objReturn;
 	}
 	
-		//### Aus Interface IKernelCallIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) {
-			return this.getFlag(objEnum_IKernelCallIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnum_IKernelCallIniSolverZZZ.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnum_IKernelCallIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelCallIniSolverZZZ)) {
-					baReturn = new boolean[objaEnum_IKernelCallIniSolverZZZ.length];
-					int iCounter=-1;
-					for(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ:objaEnum_IKernelCallIniSolverZZZ) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnum_IKernelCallIniSolverZZZ, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-				}
-			}//end main:
-			return baReturn;
-		}
-
+	//#######################################
+	//### FLAG Handling
 	
-		//### Aus Interface IKernelJavaCallIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
-			return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
-					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
-					int iCounter=-1;
-					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
+	//### Aus Interface IKernelCallIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelCallIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelCallIniSolverZZZ.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnum_IKernelCallIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelCallIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelCallIniSolverZZZ.length];
+				int iCounter=-1;
+				for(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ:objaEnum_IKernelCallIniSolverZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelCallIniSolverZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
-			}//end main:
-			return baReturn;
-		}
+			}
+		}//end main:
+		return baReturn;
+	}
 
-		
+
+	//### Aus Interface IKernelJavaCallIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
+				int iCounter=-1;
+				for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}		
 }//End class

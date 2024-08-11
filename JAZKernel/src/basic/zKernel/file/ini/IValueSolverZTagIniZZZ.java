@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
@@ -14,6 +15,13 @@ public interface IValueSolverZTagIniZZZ extends IObjectWithExpressionZZZ, IValue
 	//getExpressionTagStarting()
 	//getExpressionTagClosing()
 	//getExpressionTagEmpty()
+		
+	public String solve(String sLineWithExpression) throws ExceptionZZZ;
+	
+	//Methoden zur Aufloesung der "Ini-Pfade" und Variablen
+	//public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ;
+		
+	
 	
 	//public String parse(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! OHNE <z:.. voran.
 	//siehe IIniTagBasicZZZ   public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ;
@@ -22,11 +30,7 @@ public interface IValueSolverZTagIniZZZ extends IObjectWithExpressionZZZ, IValue
 	//boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
    																				//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.
 	
-	//Vector mit 3 Elementen und den Indexwerten 0 = Vor dem Tag, 1= Der Taginhalt 2= Nach dem Tag
-	//Damit kann man dann Formeln aufloesen.
-	//public Vector<String>parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
-	public String solve(String sLineWithExpression) throws ExceptionZZZ;
-	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ;
+		
 	
 	
 	//Innerhalb des Vectors werden die Elemente auch mit den Tags zurueckgegeben.
