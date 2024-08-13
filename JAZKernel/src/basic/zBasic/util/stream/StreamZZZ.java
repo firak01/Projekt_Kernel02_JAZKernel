@@ -227,6 +227,7 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 		return bReturn;
 	}
 	
+	
 
     public BufferedReader open(InputStream in) throws ExceptionZZZ {
     	//return new BufferedReader(new InputStreamReader(in));
@@ -336,6 +337,7 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
     	  return pw;
       }
       
+  	//### aus IObjectZZZ
 	@Override
 	public ExceptionZZZ getExceptionObject() {
 	  return this.objException;
@@ -343,6 +345,18 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 	@Override
 	public void setExceptionObject(ExceptionZZZ objException) {
 		this.objException = objException;
+	}
+	
+	//Meine Variante Objekte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+		try {
+			return this.clone();
+		}catch(CloneNotSupportedException e) {
+			ExceptionZZZ ez = new ExceptionZZZ(e);
+			throw ez;
+				
+		}
 	}
 	
 	//Neue Komfort-Methoden, die es in der Elternklasse nicht gibt
@@ -367,4 +381,5 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 		
 		return sLine;
 	}
+	
 }
