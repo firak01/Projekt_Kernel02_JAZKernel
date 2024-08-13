@@ -274,7 +274,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(! this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) break main;
+			if(! this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION)) break main;
 			
 			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
 			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
@@ -287,23 +287,27 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
 			objReturn.setValueAsExpression(sExpressionWithTags); //nicht noch andere Z-Tags rumsetzen
 			
-			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
-			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
-			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) {				
+			
+			if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) {
 						
-				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
-													
-				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				String sExpressionWithTagsOld = sExpressionWithTags;
-				while(objMathSolver.isExpression(sExpressionWithTags)){
-					String sValueMath = objMathSolver.parse(sExpressionWithTags);
-					sExpressionWithTags=sValueMath;				
-					
-					if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
-					sExpressionWithTagsOld = sExpressionWithTags;					
-				}				
+				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+				if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) {				
+							
+					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+					KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+														
+					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+					String sExpressionWithTagsOld = sExpressionWithTags;
+					while(objMathSolver.isExpression(sExpressionWithTags)){
+						String sValueMath = objMathSolver.parse(sExpressionWithTags);
+						sExpressionWithTags=sValueMath;				
+						
+						if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
+						sExpressionWithTagsOld = sExpressionWithTags;					
+					}				
+				}
 			}
 
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen

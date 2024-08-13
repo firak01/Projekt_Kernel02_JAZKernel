@@ -204,8 +204,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);//					
 			//+++++++ SPEZIELLER TEST ENDE
 			
-			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION,true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, false); //false: Damit der Wert NICHT sofort ausgerechnet wird
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION,false); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true); //eh keine Formel drin, also sollte das egal sein.
 			
 			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
