@@ -155,12 +155,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	public Vector<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();		
 		main:{
-			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
+			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbetting in Tags vorhanden ist.
+			//Also, z.B.: [Section A]Testentry1
+			vecReturn = StringZZZ.vecMidFirst(this.getTagStarting() + sLineWithExpression + "<", this.getTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
 			
 			String sValue = vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sValue)) {
-				//den oben geklauten Anfangstag wieder hinzufuegen
+				//den oben geklauten Anfangstag - des nachfolgendne Ausdrucks - wieder hinzufuegen
 				sValue = "<" + sValue;
 			}
 			

@@ -176,33 +176,37 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public int solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+	public int solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
 		int iReturn=-1;
 		String sReturn=null;
 		
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReferenceIn.get();		
 		if(objReturn==null) {
 			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-			objReturnReference.set(objReturn);
+			objReturnReferenceIn.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		main:{
 			//Solver haben immer die Aufgabe einen IKernelConfigSectionEntryZZZ zu fuellen. Das ueber ein Referenzobjekt loesen.
 			//Darin dann neue Zustaende fuellen isPathSolved, isVariableReplaced
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression, objReturnReference);
 			
 			//Zwischenstand zurückgeben. Implode, weil: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			objReturn = objReturnReference.get();
+			this.setEntry(objReturn);
+			
 			sReturn = VectorZZZ.implode(vecAll);
 			this.setValue(sReturn);
-									
+			
 			//Nach dem Aufloesen der Variablen, etc. ... Parsen.
 			//Solver parsen und fuellen ein internes entry-Objekt
 			String sExpressionImploded = sReturn;			
-			iReturn = this.parse(sExpressionImploded, objReturnReference);
-			
+			iReturn = this.parse(sExpressionImploded, objReturnReference);			
 			objReturn = objReturnReference.get();
-			sReturn = objReturn.getValue();			
-			this.setValue(sReturn);
+			this.setEntry(objReturn);			
 			
+			//Wichtig: Reference nach aussen zurueckgeben.
+			objReturnReferenceIn.set(objReturn);
 		}//end main;
 		return iReturn;
 	}
