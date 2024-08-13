@@ -58,6 +58,8 @@ import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -3248,7 +3250,7 @@ MeinTestParameter=blablaErgebnis
 					
 			//first, get the Ini-file-object
 			HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-			hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			hmFlag.put(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 
 			FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
 
@@ -4778,7 +4780,7 @@ MeinTestParameter=blablaErgebnis
 	
 						//1. Erstellen des FileIni-Objects
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-						hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+						hmFlag.put(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 					
 						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, bFlagSaveImmidiate);
@@ -4814,7 +4816,7 @@ MeinTestParameter=blablaErgebnis
 	
 						//1. Erstellen des FileIni-Objects
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-						hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+						hmFlag.put(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 					
 						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, true);
@@ -6282,7 +6284,7 @@ MeinTestParameter=blablaErgebnis
 				File objFile = this.getFileConfigKernel();
 				
 				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+				hmFlag.put(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 				
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
@@ -7418,6 +7420,16 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 
+	//# aus ICryptUserZZZ
+	@Override
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
+
+	@Override
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt = objCrypt;
+	}
 	
 	
 	//######### Intefaces ############################################################################
@@ -7454,40 +7466,12 @@ MeinTestParameter=blablaErgebnis
 	public boolean proofFlagExists(IKernelZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 
-	//### aus IKernelZFormulaIniSolverZZZ
-	@Override
-	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
-	}
-	
-	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
-	
-	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
-				int iCounter=-1;
-				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-					baReturn[iCounter]=bReturn;
-				}
-			}
-		}//end main:
-		return baReturn;
-	}
-	
-	@Override
-	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objaEnumFlag.name());
-	}
-	
 	//### Aus Interface IKernelExpressionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -7519,6 +7503,11 @@ MeinTestParameter=blablaErgebnis
 	@Override
 	public boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	//### aus IKernelEncryptionIniSolverZZZ
@@ -7554,31 +7543,11 @@ MeinTestParameter=blablaErgebnis
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
-		//# aus ICryptUserZZZ
 		@Override
-		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-			return this.objCrypt;
+		public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
 		}
-
-		@Override
-		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-			this.objCrypt = objCrypt;
-		}
-		
-		//### Interface aus IKernelExpressionIniSolver
-//		@Override
-//		public IKernelConfigSectionEntryZZZ getEntry() {
-//			if(this.objEntry==null) {
-//				this.objEntry = new KernelConfigSectionEntryZZZ();			
-//			}
-//			return this.objEntry;
-//		}
-//		
-//		@Override
-//		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-//			this.objEntry = objEntry;
-//		}
-		
+				
 		//### aus IKernelJsonIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ) {
@@ -7613,6 +7582,11 @@ MeinTestParameter=blablaErgebnis
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 		//Aus IKernelJsonMapIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -7644,6 +7618,11 @@ MeinTestParameter=blablaErgebnis
 		@Override
 		public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
 		}
 
 		//### aus IKernelJsonArrayIniSolverZZZ
@@ -7679,6 +7658,11 @@ MeinTestParameter=blablaErgebnis
 				return this.proofFlagExists(objaEnumFlag.name());
 			}
 			
+			@Override
+			public boolean proofFlagSetBefore(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
 			//### aus IKernelCallIniSolverZZZ
 			@Override
 			public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -7712,6 +7696,11 @@ MeinTestParameter=blablaErgebnis
 				return this.proofFlagExists(objaEnumFlag.name());
 			}
 			
+			@Override
+			public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
 			//### Aus Interface IKernelJavaCallIniSolverZZZ
 			@Override
 			public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
@@ -7721,11 +7710,6 @@ MeinTestParameter=blablaErgebnis
 			@Override
 			public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
-			}
-			
-			@Override
-			public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
-				return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
 			}
 			
 			@Override
@@ -7744,4 +7728,51 @@ MeinTestParameter=blablaErgebnis
 				}//end main:
 				return baReturn;
 			}
-}//end class// end class
+			
+			@Override
+			public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+			}
+			
+			@Override
+			public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
+			//### aus IKernelZFormulaIni_PathZZZ
+			@Override
+			public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {
+				return this.getFlag(objEnumFlag.name());
+			}
+			@Override
+			public boolean setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				return this.setFlag(objEnumFlag.name(), bFlagValue);
+			}
+			
+			@Override
+			public boolean[] setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+			
+			@Override
+			public boolean proofFlagExists(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagExists(objEnumFlag.name());
+			}
+			
+			@Override
+			public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+}//end class

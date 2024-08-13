@@ -99,6 +99,18 @@ public abstract class AbstractModuleZZZ  extends AbstractObjectWithFlagZZZ imple
 		this.sModuleName=sModuleName;
 	}
 	
+	@Override
+	public void resetModuleUsed() {
+		this.setModuleName(null);
+	}
+	
+	//### Methoden
+	@Override
+	public abstract void reset();
+	
+	
+	//##################################
+	//### Flag handling
 	
 	@Override
 	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag) {
@@ -135,13 +147,4 @@ public abstract class AbstractModuleZZZ  extends AbstractObjectWithFlagZZZ imple
 	public boolean proofFlagSetBefore(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-	
-	@Override
-	public void resetModuleUsed() {
-		this.setModuleName(null);
-	}
-	
-	//### Methoden
-	@Override
-	public abstract void reset();
 }

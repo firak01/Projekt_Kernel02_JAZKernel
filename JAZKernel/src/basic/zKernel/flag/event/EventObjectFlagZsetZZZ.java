@@ -124,5 +124,17 @@ public final class EventObjectFlagZsetZZZ extends EventObject implements IEventO
 		   return this.getFlagText().hashCode();
 	   }
 
+	   //Meine Variante Objekte zu clonen
+		@Override
+		public Object clonez() throws ExceptionZZZ {
+			try {
+				return this.clone();
+			}catch(CloneNotSupportedException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+					
+			}
+		}
+
 }
 

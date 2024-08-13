@@ -235,7 +235,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++ Anwenden der ersten Formel, mit Berechnung
 			objExpressionHandler.setFlag(sFlagUseExpression, true); 
-			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.solve(sLineWithExpression, objSectionEntryReference);
 			assertEquals(1,iReturn); //+1 für den Ini Path, der als Formel aufgeloest wird.
@@ -246,7 +246,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
 			
 			objFileIniTest.setFlag(sFlagUseExpression, true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.",sExpression);
 		
@@ -269,7 +269,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++ Anwenden der zweiten Formel, mit Berechnung			
 			objExpressionHandler.setFlag(sFlagUseExpression, true); 
-			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry2Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn2 = objExpressionHandler.solve(sLineWithExpression2, objSectionEntry2Reference);
@@ -280,7 +280,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.", sValue2 );
 			
 			objFileIniTest.setFlag("useExpression", true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			String sExpression2 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
 			assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.",sExpression2);
 		
@@ -302,7 +302,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++ Anwenden der zweiten Formel, mit Berechnung			
 			objExpressionHandler.setFlag(sFlagUseExpression, true); 
-			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry3Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn3 = objExpressionHandler.solve(sLineWithExpression3, objSectionEntry3Reference);
@@ -313,7 +313,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertEquals("Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.", sValue3 );
 			
 			objFileIniTest.setFlag("useExpression", true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),true);
 			String sExpression3 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula3").getValue();
 			assertEquals("Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.",sExpression3);
 		
@@ -415,13 +415,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//###################################################
 			//Berechne die erste Formel, DIRECT			
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true);
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
 			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -478,7 +478,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			
 			//... erste die Formelberechnung hinzunehmen ändert etwas
-			bFlagAvailable = objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
+			bFlagAvailable = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
 			String sExpressionFormulaComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
 			String sFormulaSolvedAndConverted = objFileIniTest.getEntry().getValueFormulaSolvedAndConverted();
@@ -498,7 +498,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//Berechne die erste Formel, DIRECT			
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);			
@@ -560,7 +560,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			
 			//#####################################################
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
 			iReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String

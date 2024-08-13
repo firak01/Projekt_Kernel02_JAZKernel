@@ -1,5 +1,7 @@
 package basic.zKernel;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
@@ -128,5 +130,5 @@ public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelSingletonZZZ.class);
 			}
 			return bReturn;
-		}	
+		}
 }

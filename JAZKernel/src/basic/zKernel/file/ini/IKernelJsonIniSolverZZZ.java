@@ -12,4 +12,5 @@ public interface IKernelJsonIniSolverZZZ{
 	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

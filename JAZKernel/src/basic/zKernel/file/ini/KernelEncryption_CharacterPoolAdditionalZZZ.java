@@ -1,5 +1,7 @@
 package basic.zKernel.file.ini;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 
 public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
@@ -38,5 +40,6 @@ public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIni
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
-	}			
+	}
+		
 }//End class

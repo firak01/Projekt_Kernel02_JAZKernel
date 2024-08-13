@@ -28,6 +28,7 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnum_IKernelFileIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objEnum_IKernelFileIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelFileIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IKernelFileIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public File getFileObject();		
 	public IniFile getFileIniObject() throws ExceptionZZZ;

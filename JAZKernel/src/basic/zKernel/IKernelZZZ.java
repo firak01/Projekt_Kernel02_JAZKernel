@@ -18,14 +18,14 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
-		USEFORMULA, USEFORMULA_MATH;
+		DUMMY; //die sollte in IFormula.... stehen USEFORMULA, USEFORMULA_MATH;
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag);
 	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;	
 	public abstract boolean proofFlagExists(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
-	
+	public abstract boolean proofFlagSetBefore(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;	
 	public void setConfigObject(IKernelConfigZZZ objConfig);

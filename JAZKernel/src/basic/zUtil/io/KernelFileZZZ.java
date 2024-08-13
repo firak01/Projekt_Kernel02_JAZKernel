@@ -1141,9 +1141,15 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 		return sReturn;
 	}
 
-	
-
-	
-
-	
+	//Meine Variante Objekte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+		try {
+			return this.clone();
+		}catch(CloneNotSupportedException e) {
+			ExceptionZZZ ez = new ExceptionZZZ(e);
+			throw ez;
+				
+		}
+	}
 }//end class

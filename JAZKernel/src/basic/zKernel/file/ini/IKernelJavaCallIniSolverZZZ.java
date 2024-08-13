@@ -12,4 +12,5 @@ public interface IKernelJavaCallIniSolverZZZ extends IKernelCallIniSolverZZZ{
 	public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

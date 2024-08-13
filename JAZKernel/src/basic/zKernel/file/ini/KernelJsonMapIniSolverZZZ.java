@@ -234,6 +234,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//Aus IKernelJsonIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -266,5 +271,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
 	
+	}
+
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }//End class

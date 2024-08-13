@@ -12,4 +12,5 @@ public interface IKernelCallIniSolverZZZ {
 	public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

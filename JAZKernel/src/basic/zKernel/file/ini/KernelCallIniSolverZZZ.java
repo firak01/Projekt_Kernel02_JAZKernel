@@ -372,6 +372,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
+		@Override
+		public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
 		
 		//### Aus Interface IKernelJavaCallIniSolverZZZ
 		@Override
@@ -383,12 +387,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
 		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
+				
 		@Override
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
@@ -405,4 +404,16 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}//end main:
 			return baReturn;
 		}
+
+		@Override
+		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
+		
 }//End class

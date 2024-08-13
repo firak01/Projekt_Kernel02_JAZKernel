@@ -1499,8 +1499,46 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//# aus ICryptUserZZZ
+	@Override
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
 
-	//### Interface
+	@Override
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt = objCrypt;
+	}
+
+		
+
+	//###################################################
+	//### Flag Handling
+	
+	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
+	@Override
+	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(eventFlagZset==null) break main;
+			
+			//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
+			//Dieses Setzen des Flags ggfs. nachvollziehen.
+			String sFlagText = eventFlagZset.getFlagText();
+			boolean bFlagValue = eventFlagZset.getFlagValue();
+			
+			try {
+				bReturn = this.setFlag(sFlagText, bFlagValue);
+			} catch (ExceptionZZZ e) {
+				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
+				//Es kann aber auch ggfs. anders verfahren werden. 
+			}
+			
+		}//end main:
+		return bReturn;
+	}
+	
 	//### aus IKernelKernelFileIniZZZ
 	@Override
 	public boolean getFlag(IKernelFileIniZZZ.FLAGZ objEnumFlag) {
@@ -1534,25 +1572,30 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
-	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean proofFlagSetBefore(IKernelFileIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	//### aus IKernelZFormulaIni_PathZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -1563,8 +1606,13 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	@Override
-	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IKernelZFormulaIni_PathZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	//### Aus Interface IKernelExpressionIniSolverZZZ
@@ -1600,6 +1648,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -1633,17 +1686,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
-	//# aus ICryptUserZZZ
 	@Override
-	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-		return this.objCrypt;
+	public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-	@Override
-	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-		this.objCrypt = objCrypt;
-	}
-
+	
 	
 	//### aus IKernelJsonIniSolverZZZ
 	@Override
@@ -1678,6 +1725,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//Aus IKernelJsonMapIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -1710,38 +1762,48 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 
 	//### aus IKernelJsonArrayIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
+	@Override
+	public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-		@Override
-			public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-				boolean[] baReturn=null;
-				main:{
-					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
-						int iCounter=-1;
-						for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-							baReturn[iCounter]=bReturn;
-						}
+	@Override
+		public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
 					}
-				}//end main:
-				return baReturn;
-			}
-		
+				}
+			}//end main:
+			return baReturn;
+		}
+	
 		@Override
 		public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
 		}
 		
 		//### aus IKernelCallIniSolverZZZ
@@ -1777,6 +1839,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
+		@Override
+		public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 		//### Aus Interface IKernelJavaCallIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
@@ -1787,12 +1854,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
 		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
+				
 		@Override
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
@@ -1810,29 +1872,16 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			return baReturn;
 		}
 		
-		//+++ Aus Interface: IListenerObjectFlagZsetZZZ
 		@Override
-		public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
-			boolean bReturn = false;
-			main:{
-				if(eventFlagZset==null) break main;
-				
-				//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
-				//Dieses Setzen des Flags ggfs. nachvollziehen.
-				String sFlagText = eventFlagZset.getFlagText();
-				boolean bFlagValue = eventFlagZset.getFlagValue();
-				
-				try {
-					bReturn = this.setFlag(sFlagText, bFlagValue);
-				} catch (ExceptionZZZ e) {
-					//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
-					//Es kann aber auch ggfs. anders verfahren werden. 
-				}
-				
-			}//end main:
-			return bReturn;
+		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
 		}
-
+		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 		//###################################################
 		//### FLAG: IListenerObjectFlagZsetZZZ
 		//###################################################
@@ -1876,5 +1925,4 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 		}		
-
 }

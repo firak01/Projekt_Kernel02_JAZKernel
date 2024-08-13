@@ -1,42 +1,24 @@
 package basic.zKernel.file.ini;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertableZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 
-//public interface IKernelZFormulaIniZZZ {
-//	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
-//	//getExpressionTagName()
-//	//getExpressionTagStarting()
-//	//getExpressionTagClosing()
-//	//getExpressionTagEmpty()
-//	
-//	public String compute(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! OHNE <z:.. voran.
-//	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ;
-//	public String[] computeAsArray(String sLineWithExpression, String sSeparator) throws ExceptionZZZ;
-//	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! MIT <z:... voran. Dann kann das Ergebnis weiterverarbeit werden.	
-//	public String convert(String sLine) throws ExceptionZZZ; //Mache aus einem String "..." den passenden <z: ... Ausdruck.
-//	boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ; //z.B. ein Leerstring wird für KernelExpressionIni_EmptyZZZ relevant sein, d.h. true zurück.
-//                                                                               	//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.
-//	boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
-//   																				//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.
-//	
-//	//Vector mit 3 Elementen und den Indexwerten 0 = Vor dem Tag, 1= Der Taginhalt 2= Nach dem Tag
-//	//Damit kann man dann Formeln aufloesen.
-//	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
-//}
-
-public interface IKernelZFormulaIniZZZ extends IParseEnabledZZZ, IConvertableZZZ{
+public interface IKernelZFormulaIniZZZ extends IConvertableZZZ, IParseEnabledZZZ{
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()
 	//getExpressionTagClosing()
 	//getExpressionTagEmpty()
-                                                                           	//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.
-//	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! MIT <z:... voran. Dann kann das Ergebnis weiterverarbeit werden.
 	
-	//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.
+	public enum FLAGZ{
+		USEFORMULA,USEFORMULA_MATH
+	}	
 	
-	//Vector mit 3 Elementen und den Indexwerten 0 = Vor dem Tag, 1= Der Taginhalt 2= Nach dem Tag
-	//Damit kann man dann Formeln aufloesen.
-//	public Vector<String>parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ);
+	public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;  
+	public abstract boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

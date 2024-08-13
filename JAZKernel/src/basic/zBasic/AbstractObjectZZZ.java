@@ -65,6 +65,7 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, Cloneable, 
 		this.objException = objException;
 	}
 	
+	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {
 		try {

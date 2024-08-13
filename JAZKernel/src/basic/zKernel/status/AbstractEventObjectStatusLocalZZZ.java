@@ -243,6 +243,17 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 			// TODO Auto-generated method stub			
 		}
 		
+		@Override
+		public Object clonez() throws ExceptionZZZ {
+			try {
+				return this.clone();
+			}catch(CloneNotSupportedException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+					
+			}
+		}
+		
 		//#################################################################
 		//### aus ILogZZZ
 		@Override

@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
+public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZZZ, IKernelZFormulaIni_PathZZZ,  IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
 	public enum FLAGZ{
 		USEEXPRESSION
 	}
@@ -18,5 +18,6 @@ public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZ
 	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ);
 	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
-	public abstract boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;	
+	public abstract boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

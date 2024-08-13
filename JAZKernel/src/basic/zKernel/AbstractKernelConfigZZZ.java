@@ -39,6 +39,8 @@ import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
@@ -138,7 +140,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		String sReturn=null;
 		main:{		
 		boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
-		boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
+		boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name());
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
 		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
@@ -436,38 +438,113 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
 	}
 	
-	//### aus IKernelZFormulaIniSolverZZZ
+	//### Aus Interface ICryptUserZZZ
 		@Override
-		public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
+		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
+			return this.objCrypt;
+		}
+		@Override
+		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
+			this.objCrypt=objCrypt;
+		}
+			
+		
+		//### Aus Interface IKernelConfigProjectHelperZZZ
+		@Override
+		public String getProjectPath() throws ExceptionZZZ{
+			return this.computeProjectPath();
+		}
+		@Override
+		public String computeProjectPath() throws ExceptionZZZ {
+			return AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+		}
+		
+		public static String computeProjectPath(String sProjektDirectory, String sProjectName) throws ExceptionZZZ {
+			String sReturn = FileEasyZZZ.joinFilePathNameForUrl(sProjektDirectory, sProjectName);
+			sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+			return sReturn;
+		}
+		
+		@Override 
+		public String computeProjectPathTotal() throws ExceptionZZZ {
+			String sReturn = null;
+			String sWorkspacePath = ReflectWorkspaceZZZ.computeWorkspaceRunningProjectPath(); //Hole den aktuellen Pfad des gesamten "aktuellen" Projekts
+			
+			//Davon einen ggfs. vorhandenen Aufrufenden Projektpfad abziehen.
+			String sProjectCallingPath = this.getCallingProjectPath();
+			String sWorkspacePathPure = StringZZZ.leftback(sWorkspacePath, sProjectCallingPath);
+			sWorkspacePathPure = StringZZZ.stripFileSeparators(sWorkspacePathPure);
+			
+			String sProjectPath = AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+			
+			sReturn = FileEasyZZZ.joinFilePathNameForUrl(sWorkspacePathPure, sProjectPath);
+			sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+			return sReturn;
 		}
 		
 		@Override
-		public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		public String getProjectPathTotal() throws ExceptionZZZ {
+			return this.computeProjectPathTotal();
 		}
 		
 		@Override
-		public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
-					int iCounter=-1;
-					for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
+		public String getCallingProjectPath() {
+			return this.sCallingProjectPathTotal;
+		}
+		
+		@Override
+		public void setCallingProjectPath(String sCallingProjectPathTotal) {
+			this.sCallingProjectPathTotal = sCallingProjectPathTotal;
+		}
+		
+		//##########
+		// Getter / Setter
+		//##########
+		public GetOptZZZ getOptObject(){
+			return this.objOpt;
+		}		
+	
+	
+	//##################################################
+	//### FLAG Handling
+	
+	//### aus IKernelZFormulaIni_PathZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIni_PathZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 	
 	//###### aus IKernelExpressionIniSolverZZZ
 	@Override
@@ -500,6 +577,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	@Override
 	public boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	//### aus IKernelEncryptionIniSolverZZZ
@@ -535,6 +617,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//### aus IKernelJsonIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -568,6 +655,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//Aus IKernelJsonMapIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -599,6 +691,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	@Override
 	public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 
 	//### aus IKernelJsonArrayIniSolverZZZ
@@ -634,6 +731,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 		//### aus IKernelCallIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -667,6 +769,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
+		@Override
+		public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
 		//### Aus Interface IKernelJavaCallIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
@@ -677,12 +784,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
 		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
+				
 		@Override
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
@@ -700,69 +802,13 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 			return baReturn;
 		}
 
-	//### Aus Interface ICryptUserZZZ
-	@Override
-	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-		return this.objCrypt;
-	}
-	@Override
-	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-		this.objCrypt=objCrypt;
-	}
+		@Override
+		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
 		
-	
-	//### Aus Interface IKernelConfigProjectHelperZZZ
-	@Override
-	public String getProjectPath() throws ExceptionZZZ{
-		return this.computeProjectPath();
-	}
-	@Override
-	public String computeProjectPath() throws ExceptionZZZ {
-		return AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
-	}
-	
-	public static String computeProjectPath(String sProjektDirectory, String sProjectName) throws ExceptionZZZ {
-		String sReturn = FileEasyZZZ.joinFilePathNameForUrl(sProjektDirectory, sProjectName);
-		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
-		return sReturn;
-	}
-	
-	@Override 
-	public String computeProjectPathTotal() throws ExceptionZZZ {
-		String sReturn = null;
-		String sWorkspacePath = ReflectWorkspaceZZZ.computeWorkspaceRunningProjectPath(); //Hole den aktuellen Pfad des gesamten "aktuellen" Projekts
-		
-		//Davon einen ggfs. vorhandenen Aufrufenden Projektpfad abziehen.
-		String sProjectCallingPath = this.getCallingProjectPath();
-		String sWorkspacePathPure = StringZZZ.leftback(sWorkspacePath, sProjectCallingPath);
-		sWorkspacePathPure = StringZZZ.stripFileSeparators(sWorkspacePathPure);
-		
-		String sProjectPath = AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
-		
-		sReturn = FileEasyZZZ.joinFilePathNameForUrl(sWorkspacePathPure, sProjectPath);
-		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
-		return sReturn;
-	}
-	
-	@Override
-	public String getProjectPathTotal() throws ExceptionZZZ {
-		return this.computeProjectPathTotal();
-	}
-	
-	@Override
-	public String getCallingProjectPath() {
-		return this.sCallingProjectPathTotal;
-	}
-	
-	@Override
-	public void setCallingProjectPath(String sCallingProjectPathTotal) {
-		this.sCallingProjectPathTotal = sCallingProjectPathTotal;
-	}
-	
-	//##########
-	// Getter / Setter
-	//##########
-	public GetOptZZZ getOptObject(){
-		return this.objOpt;
-	}		
+		@Override
+		public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
 }

@@ -204,8 +204,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);//					
 			//+++++++ SPEZIELLER TEST ENDE
 			
+			
+			
 			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION,false); //false: Damit der Pfad NICHT sofort ausgerechnet wird
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true); //eh keine Formel drin, also sollte das egal sein.
+			objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //eh keine Formel drin, also sollte das egal sein.
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //eh keine Formel drin, also sollte das egal sein.
 			
 			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
@@ -214,9 +217,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
 				
 			//+++++++++++++++++++++++++++++++++++++++
-			objFormulaSolver.setFlag("useformula",true);
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+			objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.			
+			objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //eh keine Formel drin, also sollte das egal sein.);
 			
-			//beim "reinen Parsen" bleiben Pfadangaben bestehen
+			TODOGOON20240813; 
+			//beim "reinen Parsen" bleiben Pfadangaben bestehen, aber die Z-Tags müssen weg.
 			sValue = objFormulaSolver.parse(sExpression);
 			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
 						
@@ -398,7 +404,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
 			
 			//Anwenden der ersten Formel
 			objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -436,8 +442,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH,true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true);
 			
 			//Anwenden der ersten Formel
 			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet

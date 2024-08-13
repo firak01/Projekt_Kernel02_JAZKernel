@@ -36,5 +36,17 @@ public final class EventObjectStatusLocalZZZ extends AbstractEventObjectStatusLo
 	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bFlagValue) throws ExceptionZZZ {
 		super(source, objStatusEnum, bFlagValue);
 	}
+
+	//MeineVariante Objecte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+		try {
+			return this.clone();
+		}catch(CloneNotSupportedException e) {
+			ExceptionZZZ ez = new ExceptionZZZ(e);
+			throw ez;
+				
+		}
+	}
 }
 

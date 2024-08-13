@@ -13,6 +13,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
@@ -288,12 +289,12 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			objReturn.setValueAsExpression(sExpressionWithTags); //nicht noch andere Z-Tags rumsetzen
 			
 			
-			if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) {
+			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA)) {
 						
 				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-				if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) {				
+				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)) {				
 							
 					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 					KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
@@ -339,25 +340,25 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ) {
-		return this.getFlag(objEnum_IKernelZFormulaIniSolverZZZ.name());
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
+		return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnum_IKernelZFormulaIniSolverZZZ.name(), bFlagValue);
+	public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelZFormulaIniZZZ.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIniSolverZZZ)) {
-				baReturn = new boolean[objaEnum_IKernelZFormulaIniSolverZZZ.length];
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIniZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelZFormulaIniZZZ.length];
 				int iCounter=-1;
-				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ:objaEnum_IKernelZFormulaIniSolverZZZ) {
+				for(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ:objaEnum_IKernelZFormulaIniZZZ) {
 					iCounter++;
-					boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIniSolverZZZ, bFlagValue);
+					boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIniZZZ, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
 			}
@@ -366,7 +367,53 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 	
 	@Override
-	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objaEnumFlag.name());
+	public boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
 	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}	
+	
+	//### aus IKernelZFormulaIni_PathZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) {
+		return this.getFlag(objEnum_IKernelZFormulaIni_PathZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelZFormulaIni_PathZZZ.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ[] objaEnum_IKernelZFormulaIni_PathZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIni_PathZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelZFormulaIni_PathZZZ.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ:objaEnum_IKernelZFormulaIni_PathZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIni_PathZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	
+
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}	
+	
 }//End class
