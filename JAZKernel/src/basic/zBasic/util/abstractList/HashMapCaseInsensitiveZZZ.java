@@ -42,12 +42,27 @@ public class HashMapCaseInsensitiveZZZ<T,X> extends CaseInsensitiveMap  implemen
 		super();
 	}
 	
-	//#### GETTER / SETTER
-		public ExceptionZZZ getExceptionObject() {
-			return this.objException;
-		}
-		public void setExceptionObject(ExceptionZZZ objException) {
-			this.objException = objException;
-		}
+	//#### aus IObjectZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		return this.objException;
+	}
+	
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException = objException;
+	}
+
+	//Meine Variante Objekte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+//		try {
+			return this.clone();
+//		}catch(CloneNotSupportedException e) {
+//			ExceptionZZZ ez = new ExceptionZZZ(e);
+//			throw ez;
+//				
+//		}
+	}
 
 }

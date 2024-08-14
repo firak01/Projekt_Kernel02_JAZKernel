@@ -10,18 +10,19 @@ import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ{
+public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		DUMMY; //die sollte in IFormula.... stehen USEFORMULA, USEFORMULA_MATH;
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag);
+	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;	
 	public abstract boolean proofFlagExists(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

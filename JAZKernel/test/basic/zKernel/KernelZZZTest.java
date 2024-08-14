@@ -22,6 +22,7 @@ import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -432,9 +433,9 @@ public void testGetParameter(){
 		boolean[] baReturn1 = objKernelTest.setFlag(objaEnum_IKernelExpressionIniSolverZZZ, true);
 		assertTrue("Das Flag USEEXPRESSION wurde erwartet",baReturn1[0]);//Ohne das Flag wird die Behandlung irgendwelcher Ausdrücke gar nicht gemacht.
 		
-		IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ = new IKernelZFormulaIniSolverZZZ.FLAGZ[1];
-		objaEnum_IKernelZFormulaIniSolverZZZ[0]=IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA;
-		boolean[] baReturn2 = objKernelTest.setFlag(objaEnum_IKernelZFormulaIniSolverZZZ, true);
+		IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ = new IKernelZFormulaIniZZZ.FLAGZ[1];
+		objaEnum_IKernelZFormulaIniZZZ[0]=IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA;
+		boolean[] baReturn2 = objKernelTest.setFlag(objaEnum_IKernelZFormulaIniZZZ, true);
 		assertTrue("Das Flag USEFORMULA wurde erwartet",baReturn2[0]);//Ohne das Flag wird <z>...</z> um das Ergebnis ggfs. rum sein.
 		
 		//Das reicht noch nicht, unbeding den Cache leeren, sonst wird das unverschlüsselte Objekt zurueckgeliefert
@@ -884,8 +885,8 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		//###         Dann wird nach der erfolgreichen Suche das vorhandenen CRYPT-Objekt wiederverwendet
 		//#######################################################
 		
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
@@ -913,8 +914,8 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_ROT13";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
@@ -957,8 +958,8 @@ public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_VIGENEREnn";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
@@ -1142,8 +1143,8 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_ROT13";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
@@ -1520,8 +1521,8 @@ public void testGetModuleAliasAll(){
 	
 	public void testGetParameterArrayWithStringByProgramAlias() {
 		try {
-			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION, true);
-			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
+			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'",bFlagExists);
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
@@ -1537,8 +1538,8 @@ public void testGetModuleAliasAll(){
 	
 	public void testGetParameterHashMapWithStringByProgramAlias() {
 		try {
-			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION, true);
-			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
+			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'",bFlagExists);
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);

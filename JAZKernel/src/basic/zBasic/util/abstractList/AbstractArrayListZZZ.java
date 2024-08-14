@@ -60,6 +60,28 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return bReturn;
 	}//end private constructor
 	
+	//#### aus IObjectZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		return this.objException;
+	}
+
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException=objException;
+	}
+	
+	//Meine Variante Objekte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+//		try {
+			return this.clone();
+//		}catch(CloneNotSupportedException e) {
+//			ExceptionZZZ ez = new ExceptionZZZ(e);
+//			throw ez;			
+//		}
+	}
+	
 	public boolean addList(ArrayList<T> obj_alIn, int istartin, int iendin) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -377,18 +399,6 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 	return sReturn;
 	}
  
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetObjectZZZ#getExceptionObject()
-	 */
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetObjectZZZ#setExceptionObject(zzzKernel.custom.ExceptionZZZ)
-	 */
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException=objException;
-	}
 	/**
 	 * @return ArrayList, internal ArrayList. E.g. this is the result-list aber an .addList-method.
 	 */

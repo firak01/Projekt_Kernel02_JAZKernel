@@ -355,4 +355,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}	
 	public abstract boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ;
 
+	
+	//###################################
+	//### FLAG Handling
+	
+
+	
 }// End class

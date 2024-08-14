@@ -17,7 +17,7 @@ public interface IKernelZFormulaIni_PathZZZ {
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag);
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

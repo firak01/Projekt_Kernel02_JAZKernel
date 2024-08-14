@@ -11,13 +11,13 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{	
+public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T>{	
 	private static final long serialVersionUID = 7203160369729097L;
 	public static String sTAG_NAME = "z:Empty";
 	
 	//Hier die Variante ohne ini-File
 	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{		
-		super();
+		super();		
 		KernelExpressionIniEmptyNew_();
 	}
 		

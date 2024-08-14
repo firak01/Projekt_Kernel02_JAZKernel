@@ -58,7 +58,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhauer
  * 
  */
-public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigZZZ,IKernelExpressionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 //	public enum FLAGZ{
 //		USEFORMULA, USEFORMULA_MATH;
@@ -136,11 +136,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 
-	public String expressionSolveConfigDirectoryNameDefault(String sDirectoryNameReadIn) {
+	public String expressionSolveConfigDirectoryNameDefault(String sDirectoryNameReadIn) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{		
-		boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
-		boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name());
+		boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION);
+		boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
 		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
@@ -233,7 +233,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	}
 	
-	public String readConfigDirectoryName(){
+	public String readConfigDirectoryName() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -510,7 +510,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 	//### aus IKernelZFormulaIni_PathZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ{
 		return this.getFlag(objEnumFlag.name());
 	}
 	

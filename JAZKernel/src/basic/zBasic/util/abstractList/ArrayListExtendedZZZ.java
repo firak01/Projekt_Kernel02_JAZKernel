@@ -57,7 +57,7 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 		}//end main:
 				
 		return bReturn;
-	}//end private constructor
+	}//end private constructor	
 	
 	@SuppressWarnings("unchecked")
 	public void addUnique(Object obj) throws ExceptionZZZ{
@@ -106,5 +106,5 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 			iReturn = HashMapExtendedIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
 		}//end main
 		return iReturn;
-	}
+	}	
 }//end class

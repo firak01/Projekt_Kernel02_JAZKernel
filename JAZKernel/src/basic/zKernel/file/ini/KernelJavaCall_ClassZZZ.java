@@ -51,5 +51,5 @@ public class KernelJavaCall_ClassZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
-	}
+	}	
 }//End class

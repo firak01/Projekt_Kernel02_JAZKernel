@@ -14,11 +14,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConvertableZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -26,7 +28,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -46,7 +47,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniSolverZZZ, ICryptUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -494,7 +495,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			if(sReturnRaw==null) break main;
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
-			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION);
+			boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION);
 			if(bUseExpression) {
 				
 				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
@@ -821,7 +822,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				
 					
 					//Hole den passenden Converter. 
-					IKernelZFormulaIniZZZ objExpression = KernelZFormulaIniConverterZZZ.getAsObject(sValueIn);
+					IConvertableZZZ objExpression = KernelZFormulaIniConverterZZZ.getAsObject(sValueIn);
 					
 					//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
 					if(objExpression!=null){

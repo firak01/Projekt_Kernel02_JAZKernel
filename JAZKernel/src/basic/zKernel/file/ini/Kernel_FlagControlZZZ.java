@@ -40,5 +40,5 @@ public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return false;
-	}
+	}	
 }//End class

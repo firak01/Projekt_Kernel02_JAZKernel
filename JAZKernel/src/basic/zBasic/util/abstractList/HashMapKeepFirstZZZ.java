@@ -81,6 +81,29 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 		return hmReturn;
 	}
 	
+	//### aus IObjectZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		return this.objException;
+	}
+	
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException = objException;
+	}
+	
+	//Meine Variante Objekte zu clonen
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+//				try {
+			return this.clone();
+//				}catch(CloneNotSupportedException e) {
+//					ExceptionZZZ ez = new ExceptionZZZ(e);
+//					throw ez;			
+//				}
+	}
+		
+	
 	public static Object put(HashMap<Object, Object> hm, Object key, Object value) throws ExceptionZZZ{
 		return HashMapKeepFirstZZZ.putButKeep(hm, key, value);
 	}
@@ -129,17 +152,8 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	public Object putButKeep(Object key, Object value) throws ExceptionZZZ {
 		return HashMapKeepFirstZZZ.putButKeep(this, key, value);
 	}
-
 	
-	//#### GETTER / SETTER
 	
-	//+++ aus IObjectZZZ
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
 
 	//#####################
 	@Override
@@ -189,9 +203,5 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	@Override
 	public void setDebugKeyDelimiter(String sKeyDelimiter) {
 		this.sDebugKeyDelimiterUsed = sKeyDelimiter;
-	}
-	
-	
-
-	
+	}	
 }

@@ -22,7 +22,7 @@ public interface IKernelConfigZZZ extends IFlagZUserZZZ,IKernelConfigProjectHelp
 	public String getApplicationKeyDefault();
 	public String readSystemNumber();
 	public String getSystemNumberDefault();
-	public String readConfigDirectoryName();
+	public String readConfigDirectoryName() throws ExceptionZZZ;
 	public String getConfigDirectoryNameDefault();
 	public String readConfigFileName();
 	public String getConfigFileNameDefault();
