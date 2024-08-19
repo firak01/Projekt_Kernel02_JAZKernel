@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
@@ -49,6 +50,7 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -57,7 +59,6 @@ import basic.zKernel.file.ini.IKernelJavaCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
-import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
@@ -79,7 +80,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
+public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
 	private static final long serialVersionUID = 699752030418877631L;
 
 	private FileFilterModuleZZZ objFileFilterModule=null;
@@ -7511,42 +7512,42 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	//### aus IKernelEncryptionIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
-			return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelEncryptionIniSolverZZZ)) {
-					baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
-					int iCounter=-1;
-					for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
+	@Override
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
+				int iCounter=-1;
+				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 				
 		//### aus IKernelJsonIniSolverZZZ
 		@Override
@@ -7774,5 +7775,84 @@ MeinTestParameter=blablaErgebnis
 			@Override
 			public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 					return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
+			
+			//### aus IKernelZFormulaIniZZZ
+			@Override
+			public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
+				return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
+			}
+			
+			@Override
+			public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				return this.setFlag(objEnum_IKernelZFormulaIniZZZ.name(), bFlagValue);
+			}
+			
+			@Override
+			public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIniZZZ)) {
+						baReturn = new boolean[objaEnum_IKernelZFormulaIniZZZ.length];
+						int iCounter=-1;
+						for(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ:objaEnum_IKernelZFormulaIniZZZ) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIniZZZ, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+			
+			@Override
+			public boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
+			}
+			
+			@Override
+			public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
+			
+			
+			//### aus IIniTagWithExpressionZZZ
+			@Override
+			public boolean getFlag(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ) {
+				return this.getFlag(objEnum_IIniTagWithExpressionZZZ.name());
+			}
+			
+			@Override
+			public boolean setFlag(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				return this.setFlag(objEnum_IIniTagWithExpressionZZZ.name(), bFlagValue);
+			}
+			
+			@Override
+			public boolean[] setFlag(IIniTagWithExpressionZZZ.FLAGZ[] objaEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isNull(objaEnum_IIniTagWithExpressionZZZ)) {
+						baReturn = new boolean[objaEnum_IIniTagWithExpressionZZZ.length];
+						int iCounter=-1;
+						for(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ:objaEnum_IIniTagWithExpressionZZZ) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnum_IIniTagWithExpressionZZZ, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+			
+			@Override
+			public boolean proofFlagExists(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
+			}
+			
+			@Override
+			public boolean proofFlagSetBefore(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
 			}
 }//end class

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -18,7 +19,7 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 
 //DIES IST DER FLAG - WEG: AbstractObjectWithFlagZZZ -> AbstractObjectWithExpression -> AbstractTagWithExpressionBasic
 //ALSO: ALLES WAS IN AbstractIniTagBasicZZZ und dessen Elternklasse implementiert ist hierein kopieren
-public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTagWithExpressionBasicZZZ<T> implements IIniTagBasicZZZ{
+public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTagWithExpressionBasicZZZ<T> implements IIniTagWithExpressionZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 	
 	//aus IIniStructurePositionUserZZZ
@@ -59,6 +60,19 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 
 	
 	//######## Getter / Setter #################
+	
+	
+	//### Aus IParseEnabledZZZ	
+	@Override
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			
+			sReturn = super.parse(sLineWithExpression);
+		}//end main:
+		return sReturn;
+	}	
 	
 	//### aus IIniTagBasicZZZ
 	@Override
@@ -287,12 +301,43 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}
 
 	
-	//### Merke: IValueSolvedUserZZZ hier eingebunden, da es eine Expression ist
-	//           Die MEthoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
-	//### aus IValueSolvedUserZZZ
-	//### Merke: Kein IValueSolvedUserZZZ hier eingebunden, da es keine Expression ist
-
+	//###################################
+	//### FLAG Handling
 	
-
+	//### aus IIniTagWithExpressionZZZ	
+	@Override
+	public boolean getFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 	
+	@Override
+	public boolean[] setFlag(IIniTagWithExpressionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 }

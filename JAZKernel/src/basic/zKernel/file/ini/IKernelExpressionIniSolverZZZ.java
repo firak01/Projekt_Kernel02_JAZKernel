@@ -1,12 +1,10 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZZZ, IKernelZFormulaIni_PathZZZ,  IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
+public interface IKernelExpressionIniSolverZZZ { //extends IKernelZFormulaIniSolverZZZ, IKernelZFormulaIni_PathZZZ,  IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
 	public enum FLAGZ{
-		USEEXPRESSION
+		USEEXPRESSION_SOLVER
 	}
 	
 	//Das Entry-Objekt wird in den Methoden fortlaufend gefüllt. Damit bekommt man auch Zwischenstände.

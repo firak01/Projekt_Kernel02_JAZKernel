@@ -6,11 +6,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -156,14 +155,15 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	public Vector<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();		
 		main:{
-			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbetting in Tags vorhanden ist.
+			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
-			vecReturn = StringZZZ.vecMidFirst(this.getTagStarting() + sLineWithExpression + "<", this.getTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression + "<", this.getTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
 			
 			String sValue = vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sValue)) {
 				//den oben geklauten Anfangstag - des nachfolgendne Ausdrucks - wieder hinzufuegen
-				sValue = "<" + sValue;
+				//und den zuviel gesetzten < wegnehmen am Ende.
+				sValue = "<" + StringZZZ.left(sValue, sValue.length()-1);
 			}
 			
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);			
@@ -200,8 +200,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//Hier eine gehärtete Variante einsezten, bei der man auf jeden Fall eine Section findet durch Verdoppeln der Tags!!!			
 			String sSectionTotal = vecReturn.get(1);
+			//Merke: Es gibt: KernelZZZ.computeSectionFromSystemSection(sSystemSection)
+			//                Damit wird eine Section aus abcsection!01 geholt. 
+			
 			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
-			String sProperty = StringZZZ.right(sSectionTotal, sSection + this.getTagClosing());
+			String sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
 			
 			String sValuePathed =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			if(!StringZZZ.isEmpty(sValuePathed)) {

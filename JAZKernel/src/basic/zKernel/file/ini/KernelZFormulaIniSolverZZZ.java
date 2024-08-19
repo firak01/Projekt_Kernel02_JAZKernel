@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -21,7 +22,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniSolverZZZ{
+public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = 7989209806367224848L;
 	public static String sTAG_NAME = "Z";
 	
@@ -255,16 +256,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 //		return vecReturn;
 //	}
 	
-	@Override
-	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
-		main:{		
-			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
-			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false); //asExpression, d.h. lass z-Tags drin.
-		}
-		return vecReturn;
-	}
+
 
 	//###### Getter / Setter
 	
@@ -272,24 +264,21 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//############################################
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+		String sReturn = sLineWithExpression;		
 		main:{
+			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(! this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION)) break main;
-			
+					
 			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
 			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
 			objReturn.setRaw(sLineWithExpression);
 			
-			//Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			//String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat NICHT mehr alle Z-Tags
-			
-			Vector<String> vecAll = this.computeAsExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
-			objReturn.setValueAsExpression(sExpressionWithTags); //nicht noch andere Z-Tags rumsetzen
-			
-			
+			Vector<String> vecAll = this.parseAllVectorAsExpression(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
+			sReturn = VectorZZZ.implode(vecAll);
+			objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen
+						
 			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA)) {
+				String sExpressionWithTags = vecAll.get(1); //VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
 						
 				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -307,22 +296,64 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 						
 						if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTagsOld = sExpressionWithTags;					
-					}				
-				}
+					}
+					
+					
+				}	
+								
+				vecAll.remove(1);
+				vecAll.add(1, sExpressionWithTags);
+				
+				sReturn = VectorZZZ.implode(vecAll);
+				objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen				
 			}
-
+			
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
-			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
+			objReturn.setValue(sValue);
 			
-			//TODOGOON; HIER vecAll wieder ins Spiel bringen????????????????
+			sReturn = sValue;
+		
+//			Vector<String>vecReturn=new Vector<String>();
+//			String sBefore = vecAll.get(0);
+//			String sRest = vecAll.get(2);
+//			if(!StringZZZ.isEmpty(sBefore)){
+//				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+//				//Hier: Nur dann, wenn es nicht der String selber ist.
+//				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+//				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
+//				if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
+//					sBefore = StringZZZ.leftback(sBefore, sTagStart);
+//				}
+//				vecReturn.add(0, sBefore);
+//			}else{
+//				vecReturn.add(0,"");
+//			}
+//													
+//			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//			vecReturn.add(1, sValue);
+//			
+//			if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
+//			if(!StringZZZ.isEmpty(sRest)){	
+//				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+//				//Hier: Nur dann, wenn es nicht der String selber ist.
+//				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+//				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
+//				
+//				if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+//					sRest = StringZZZ.rightback(sRest, sTagEnd);
+//				}
+//				vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
+//			}else{
+//				vecReturn.add(2,"");
+//			}
 			
-			objReturn.setValue(sExpression);
-			
-			sReturn = sExpression;			
+//			sReturn = VectorZZZ.implode(vecReturn);			
 		}//end main:
 		return sReturn;
 	}
@@ -338,7 +369,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//########################################################
 	//### FLAG Handling
 	
-	//### aus IKernelZFormulaIniSolverZZZ
+	//### aus IKernelZFormulaIniZZZ
 	@Override
 	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
 		return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
@@ -414,6 +445,5 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	@Override
 	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
-	}	
-	
+	}
 }//End class

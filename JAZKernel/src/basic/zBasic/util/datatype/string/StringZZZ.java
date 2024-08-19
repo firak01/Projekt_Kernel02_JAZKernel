@@ -1326,13 +1326,13 @@ public class StringZZZ implements IConstantZZZ{
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft + sLeftSep);
+				vecReturn.add(0, sLeft);
 
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sMid);			
+				vecReturn.add(1, sLeftSep + sMid + sRightSep);			
 			
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRightSep + sRight);	
+				vecReturn.add(2, sRight);	
 			}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
 				vecReturn.add(sLeft);
@@ -1487,13 +1487,13 @@ public class StringZZZ implements IConstantZZZ{
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft + sLeftSep);
+				vecReturn.add(0, sLeft);
 				
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sMid);
+				vecReturn.add(1, sLeftSep + sMid + sRightSep);
 				
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRightSep + sRight);
+				vecReturn.add(2, sRight);
 			}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
 				vecReturn.add(0, sLeft);

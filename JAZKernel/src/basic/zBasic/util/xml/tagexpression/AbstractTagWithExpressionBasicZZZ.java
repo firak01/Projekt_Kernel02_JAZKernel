@@ -106,14 +106,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return sReturn;
 	}
 	
-	//Aus IParseEnabledZZZ
-	
+	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-				
+			
 			//Bei einfachen Tags den Ersten Vektor holen
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			

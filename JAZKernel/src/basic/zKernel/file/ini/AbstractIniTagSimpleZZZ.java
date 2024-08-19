@@ -14,7 +14,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 20.07.2024, 08:03:01
  * 
  */
-public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T> implements IIniTagSimpleZZZ{
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T>{
 	private static final long serialVersionUID = -5785934791199206030L;
 	
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
@@ -72,14 +72,14 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	
 	//### aus IIniTagWithExpressionZZZ
 	@Override
-	public Vector<String>computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
 			
 		}
 		return vecReturn;
@@ -94,7 +94,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...

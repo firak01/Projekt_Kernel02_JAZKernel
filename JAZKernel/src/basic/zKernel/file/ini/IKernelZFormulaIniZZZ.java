@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertableZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 
-public interface IKernelZFormulaIniZZZ extends IConvertableZZZ, IParseEnabledZZZ{
+public interface IKernelZFormulaIniZZZ{
 	//TODOGOON 20240814; //Wenn sonstige compilerfehler bereinigt, umbennen in IKernelZFormulaIniSolverZZZ 
 	
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 

@@ -1,5 +1,7 @@
 package basic.zKernel.file.ini;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 
 public class ZTagEncryption_KeyStringZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
@@ -33,5 +35,5 @@ public class ZTagEncryption_KeyStringZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
-	}					
+	}				
 }//End class

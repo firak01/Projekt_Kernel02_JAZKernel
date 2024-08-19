@@ -25,10 +25,9 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 02.05.2023, 19:55:30
  * 
  */
-public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZZ<T> implements IKernelExpressionIniSolverZZZ{
+public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZZ<T> implements IKernelExpressionIniHandlerZZZ {
 	private static final long serialVersionUID = -6430027792689200422L;
 	public static String sTAG_NAME = "Z";
-	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
 		
 	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
 		super("init");
@@ -129,9 +128,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturnReference.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION);
-			if(!bUseExpression) break main;
+			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
+
 			
 			//TODOGOON20240810; //jetzt sollte eigentlich hier parseFirstVector mit Referenz IKernelConfigSectionEntryZZZ passieren.
 						        //und darin dann das machen...
@@ -337,18 +336,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
 		this.objEntry = objEntry;
 	}
-	
-	//### Aus Interface ICryptUserZZZ
-	@Override
-	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-		return this.objCrypt;
-	}
-
-	@Override
-	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-		this.objCrypt = objCrypt;
-	}
-	
 	
 	//##############################################
 	//### FLAG HANDLING
