@@ -215,15 +215,18 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			
 			//+++ Expression behandeln
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true); //eh keine Formel drin, also sollte das egal sein.);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //eh keine Formel drin, also sollte das egal sein.);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
  
 			//--> Output = Input, weil keine Pfad-expression verarbeitet wird.
 			sExpression = objFormulaSolver.solve(sExpressionSource);
 			assertEquals(sExpressionSource, sExpression);
 			
 			//-->Output = Input, aber durch das Parsen und Verareitung der Expression sind die Z-Tags drumrum weg
-			sExpression = objFormulaSolver.solve(sExpressionSource);
+			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+ 
+			sExpression = objFormulaSolver.parse(sExpressionSource);
 			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
 			
 			
@@ -273,8 +276,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//################################################
 			//### mit objFileini
 			
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,false); //false: Damit der Pfad NICHT sofort ausgerechnet wird
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //eh keine Formel drin, also sollte das egal sein.
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -288,7 +291,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
 			objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.			
 			objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //eh keine Formel drin, also sollte das egal sein.);
 			
@@ -370,7 +373,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testCompute_Variables() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 			
 			//+++ Teste Uebergabe von Variablen
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -387,7 +390,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testCompute_VariablesCascaded() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 						
 			//Einbinden der Variablen in Math-Ausdrücke
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -411,7 +414,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testCompute_VariablesCascaded_DifferentPath() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 						
 			//Einbinden der Variablen in Math-Ausdrücke
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -434,7 +437,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testCompute_Math_Cascaded() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 				
 			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält.
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -472,7 +475,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testComputeEncryption() {		
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
 			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(), true);
@@ -510,7 +513,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testComputeJson() {		
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
 			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);

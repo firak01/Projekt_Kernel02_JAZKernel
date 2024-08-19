@@ -326,24 +326,51 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	 */
 	@Override
 	public Vector<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
+		Vector<String> vecReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{
+			if(sLineWithExpression==null) break main;
+			
+			vecReturn = new Vector<String>();
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+								
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-		}
+				
+		}//end main:			
 		return vecReturn;
 	}
 	
 	@Override
 	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
+		Vector<String> vecReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{
+			if(sLineWithExpression==null) break main;
+			
+			vecReturn = new Vector<String>();
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
+			
+			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+								
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
 			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
 			
+		}//end main:
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(vecReturn!=null) {
+			if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+			vecReturn.add(0, "");
+			
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			vecReturn.add(1, sReturn);
+			
+			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+			vecReturn.add(2, "");
 		}
 		return vecReturn;
 	}

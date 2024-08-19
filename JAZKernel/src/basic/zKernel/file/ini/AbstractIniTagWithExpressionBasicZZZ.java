@@ -19,7 +19,7 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 
 //DIES IST DER FLAG - WEG: AbstractObjectWithFlagZZZ -> AbstractObjectWithExpression -> AbstractTagWithExpressionBasic
 //ALSO: ALLES WAS IN AbstractIniTagBasicZZZ und dessen Elternklasse implementiert ist hierein kopieren
-public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTagWithExpressionBasicZZZ<T> implements IIniTagWithExpressionZZZ{
+public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTagWithExpressionBasicZZZ<T> implements IIniTagBasicZZZ, IIniTagWithExpressionZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 	
 	//aus IIniStructurePositionUserZZZ

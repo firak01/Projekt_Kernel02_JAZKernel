@@ -367,13 +367,13 @@ public class FileIniZZZTest extends TestCase {
 			
 			
 			//NEU 20070306: Hier über eine Formel die Property auslesen
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,false);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
 			objFileIniTest.setFlag("useFormula", false);
 			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
 			String sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 			
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);//Das reicht nicht
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);//Das reicht nicht
 			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
 			sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 

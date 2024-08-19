@@ -23,67 +23,68 @@ import basic.zKernel.file.ini.IIniTagBasicZZZ;
 
 public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private static final long serialVersionUID = -6413574962232912980L;
-	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = null;
-	private HashMapMultiIndexedZZZ<String,Boolean>hmPropertiesSearched = null;
-	private HashMapMultiZZZ<String,String>hmPropertiesSection = null;
+	protected HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = null;
+	protected HashMapMultiIndexedZZZ<String,Boolean>hmPropertiesSearched = null;
+	protected HashMapMultiZZZ<String,String>hmPropertiesSection = null;
 	
-	private IIniStructurePositionZZZ objIniPosition = null;
-	private String sSystemNumber = null;
-	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
-	private VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
+	protected IIniStructurePositionZZZ objIniPosition = null;
+	protected String sSystemNumber = null;
+	protected VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
+	protected VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
 	
-	private VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();	
-	private VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
-	private boolean bSectionExists = false;
-	private boolean bAnySectionExists = false;
-	private boolean bPropertyExists = false;
-	private boolean bAnyPropertyExists = false;
-	private boolean bExpression = false;
-	private boolean bFormula = false;
-	private boolean bCrypt = false;
+	protected VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();	
+	protected VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
+	protected boolean bSectionExists = false;
+	protected boolean bAnySectionExists = false;
+	protected boolean bPropertyExists = false;
+	protected boolean bAnyPropertyExists = false;
+	protected boolean bExpression = false;
+	protected boolean bFormula = false;
+	protected boolean bCrypt = false;
 	
-	private VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
 
+	protected boolean bSolved = false;
+	protected boolean bPathSolved = false;
+	protected boolean bVariableSolved = false;
 	
-	private boolean bPathSolved = false;
-	private boolean bVariableSolved = false;
-	
-	private boolean bConversion = false;
-	private boolean bConverted = false;
-	private VectorExtendedDifferenceZZZ<String> vecValueAsConversion = new VectorExtendedDifferenceZZZ<String>();
+	protected boolean bConversion = false;
+	protected boolean bConverted = false;
+	protected VectorExtendedDifferenceZZZ<String> vecValueAsConversion = new VectorExtendedDifferenceZZZ<String>();
 	
 	
 	
-	private boolean bJson = false;
-	private boolean bJsonArray = false;
-	private boolean bJsonMap = false;
+	protected boolean bJson = false;
+	protected boolean bJsonArray = false;
+	protected boolean bJsonMap = false;
 	
-	private boolean bCall = false;
-	private boolean bJavaCall = false;
+	protected boolean bCall = false;
+	protected boolean bJavaCall = false;
 	
-	private String sCallingClassname = null;
-	private String sCallingMethodname = null;
-	private String sValueCallSolvedAsExpression = null;
+	protected String sCallingClassname = null;
+	protected String sCallingMethodname = null;
+	protected String sValueCallSolvedAsExpression = null;
 
-	private ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
+	protected ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
 	
-	private boolean bEncrypted = false;
-	private boolean bRawEncrypted = false;
-	private VectorExtendedDifferenceZZZ<String> vecRawEncrypted = new VectorExtendedDifferenceZZZ<String>();
-	private VectorExtendedDifferenceZZZ<String> vecValueEncrypted = new VectorExtendedDifferenceZZZ<String>();
-	private VectorExtendedDifferenceZZZ<String> vecValueDecrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected boolean bEncrypted = false;
+	protected boolean bRawEncrypted = false;
+	protected VectorExtendedDifferenceZZZ<String> vecRawEncrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorExtendedDifferenceZZZ<String> vecValueEncrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorExtendedDifferenceZZZ<String> vecValueDecrypted = new VectorExtendedDifferenceZZZ<String>();
 	
-	private boolean bDecrypted = false;
-	private boolean bRawDecrypted = false;	
-	private VectorExtendedDifferenceZZZ<String> vecRawDecrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected boolean bDecrypted = false;
+	protected boolean bRawDecrypted = false;	
+	protected VectorExtendedDifferenceZZZ<String> vecRawDecrypted = new VectorExtendedDifferenceZZZ<String>();
 	
-	private String sKey = null;
+	protected String sKey = null;
 	
-	private boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
-	private boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
-	private int iIndex = 0;            //dito
+	protected boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
+	protected boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
+	protected int iIndex = 0;            //dito
 		
-	private boolean bSkipCache = false;
+	protected boolean bSkipCache = false;
+	
 	
 	//#### Konstruktor ##########################
 	public KernelConfigSectionEntryZZZ() throws ExceptionZZZ{
@@ -585,6 +586,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public boolean isConverted() {
 		return this.bConverted; 
+	}
+	
+	@Override 
+	public boolean isSolved() {
+		return this.bSolved;
+	}
+	
+	@Override
+	public void isSolved(boolean bSolved) {
+		this.bSolved = bSolved;
 	}
 	
 	@Override 
