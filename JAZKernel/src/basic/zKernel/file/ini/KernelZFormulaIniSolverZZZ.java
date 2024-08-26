@@ -15,6 +15,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
@@ -278,21 +279,92 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//############################################
 	@Override
+	public Vector<String> solveFirstVector(String sLineWithExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+	     //Darin können also auch Variablen, etc. sein
+		Vector<String> vecReturn = null;
+		String sReturn = sLineWithExpression;
+		
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+		if(objReturn==null) {
+			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objReturnReference.set(objReturn);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objReturn.setRaw(sLineWithExpression);
+		
+		main:{			
+			vecReturn = super.solveFirstVector(sLineWithExpression, objReturnReference);
+			if(vecReturn==null) break main;
+			
+			sReturn = VectorZZZ.implode(vecReturn);				
+			objReturn.setValue(sReturn);
+			if(!sLineWithExpression.equals(sReturn)) {
+				objReturn.isSolved(true);
+			}	
+			
+			//### Nun erst der MATH Teil, ggfs. mit ersetzten Variablen
+			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA)) {
+				String sExpressionWithTags = vecReturn.get(1); //VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
+						
+				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)) {				
+							
+					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(); 
+														
+					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+					String sExpressionWithTagsOld = sExpressionWithTags;
+					while(objMathSolver.isExpression(sExpressionWithTags)){
+						
+						TODOGOON20240826;//Aber das Parsen wird nicht ausgeführt. Interne Auflösung der MatheAusdrücke erfolgt nicht...
+						String sValueMath = objMathSolver.parse(sExpressionWithTags);
+						sExpressionWithTags=sValueMath;				
+						
+						if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
+						sExpressionWithTagsOld = sExpressionWithTags;					
+					}
+					
+					sReturn = sExpressionWithTags;
+				}	
+			}			
+		}//end main:
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(vecReturn!=null) {
+			if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+			vecReturn.add(0, "");
+			
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			vecReturn.add(1, sReturn);
+			
+			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+			vecReturn.add(2, "");
+		}			
+		return vecReturn;			
+	}
+	
+	
+	
+	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parse(sLineWithExpression, true);
 	}
 	
 	@Override
 	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;		
+		String sReturn = sLineWithExpression;
+		
+		//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
+		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		objReturn.setRaw(sLineWithExpression);
+		
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 					
-			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
-			//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-			objReturn.setRaw(sLineWithExpression);
 			
 			Vector<String> vecAll = this.parseAllVectorAsExpression(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
 			sReturn = VectorZZZ.implode(vecAll);
@@ -329,14 +401,15 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen				
 			}
 			
+			objReturn.setValue(sReturn);
+			
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden
 			if(bRemoveSurroundingSeparators) {
 				String sTagStart = this.getTagStarting();
 				String sTagEnd = this.getTagClosing();
-				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
-				objReturn.setValue(sValue);						
+				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
 				sReturn = sValue;
 			}
 		
@@ -377,6 +450,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			
 //			sReturn = VectorZZZ.implode(vecReturn);			
 		}//end main:
+		
+		objReturn.setValue(sReturn);
 		return sReturn;
 	}
 

@@ -198,300 +198,48 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			boolean btemp;
 			sExpressionSource = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
 			sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
-			sExpessionSourceFormulaMath="";
+			sExpessionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			btemp = testCompute_2ndSolverUsesGetPropertyResult_();
+			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);
 			
-	
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//################################################
 			//### mit objFormulaSolver
 			
-			//+++ Alle Flags auf false
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,false); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-						
-			//Nun werden die Pfade aufgeloest
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+			btemp = testCompute_SolveWithExpressionA_(sExpressionSource);		
 			
-			//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			btemp = testCompute_SolveWithExpressionB_(sExpressionSource);		
 			
-			
-			//--> Output = Input
-			sExpression = objFormulaSolver.solve(sExpressionSource);
-			assertEquals(sExpressionSource, sExpression);
-			
-			//-->Output = Input			
-			sExpression = objFormulaSolver.parse(sExpressionSource);
-			assertEquals(sExpressionSource, sExpression);
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++		
-			//+++ Expression behandeln
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //eh keine Formel drin, also sollte das egal sein.);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
- 
-			//--> Output = Input, weil keine Pfad-expression verarbeitet wird.
-			sExpression = objFormulaSolver.solve(sExpressionSource);
-			assertEquals(sExpressionSource, sExpression);
-			
-			//-->Output = Input, aber durch das Parsen und Verareitung der Expression sind die Z-Tags drumrum weg
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
- 
-			//beim "reinen Parsen" bleiben Pfadangaben bestehen, 
-			//auch Z-Tags müssten bestehen bleiben, weil IKernelExpressionIniSolverZZZ nicht implementiert ist 
-			//Aber Weil der Tag fuer Formeln auch <Z> ist, werden diese letztendlich vom Parsen doch entfent!!!
-			sExpression = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
-			
-			
-			//+++++++++++++++++++++++++++++++++++++++	
-			//Behandlung von expression ueberhaupt
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
- 
-			//Nun werden die Pfade aufgeloest
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-
-			sExpression = objFormulaSolver.solve(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.", sExpression);
-						
-			//Wenn der parser den Solver nicht nutzen soll, kommt nicht das vom solve() raus.
-			//Umgebende Z-Tags werden aber trotzdem enfernt.
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			
-			sExpression = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
-			
-			
-			//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			 
-			sExpression = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sExpression);
-			//+++++++++++++++++++++++++++++++++++++++
-				
 			
 			//################################################
 			//### mit objFileini
-			//+++ KEINE Expression oder Formel verwenden dann ist die Aufloesung egal
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = testCompute_GetPropertyWithExpression_();
 			
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			 			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESIONSOLVER = FALSE
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-						
-			//Merke: Ohne Expression Behandlund duefen trotz parsen die Z-Tags nicht verschwinden.
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
-			
-			
-			//+++ Expression oder Formel verwenden, aber keine Aufloesung verwenden, dann wird mit parse() der Z-Tag entfernt.
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-						
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			 			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESIONSOLVER = FALSE
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			 		
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); 
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-						
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
-			 
-			
-			//+++ Expression verwenden, aber keine Aufloesung verwenden.
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-						
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			 			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //das ist dann egal, weil USE..._Solver=false
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //eh keine Formel drin, also sollte das egal sein.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-			
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Erst wenn Expression aufgeloest werden sollen, klappts
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-
-			//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			
-			//Nun werden die Pfade aufgeloest
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-						
-			//!!! Merke: Anders als beim Kernel-Holen der Property, wird beim KernelIniFile kein Cache verwendet.
-			//           Darum reicht es die Flagz zu andern und es muss kein Cache erst geleert werden.
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sExpression);
 			
 			//++++++++++++++++++++++++++++++++++			
 			//#############################################################
 			//+++++++++++++++++++++++++++++++++++++++
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-						
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //eh keine Formel drin, also sollte das egal sein.);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-						
-			//beim "reinen Solven" bleiben die Z-Tags drin
-			sValue = objFormulaSolver.solve(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
-						
-			//beim "Parsen" bleiben immer noch die Pfadangaben bestehen, aber die Z-Tags müssen weg.
-			sValue = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
+			//### Kombination, erst Property Holen und dann diesen Wert mit einem Solver verarbeiten.
+			btemp = testCompute_GetPropertyWithExpressionCombinedWithSolver_();
 			
-			//++++++++++++++++++++++++++++++++++			
-			//#############################################################
-			//+++++++++++++++++++++++++++++++++++++++
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,false); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-								
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-						
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-			
-			//Wenn man die Expression-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
-			sValue = objFormulaSolver.solve(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
-											
-			//dito beim parsen... aber dann sind die Z-Tags auch nicht weg.
-			sValue = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
-			
-			//nun einfach oben das Flag setzen... alles wird maximal uebersetzt
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-			
-			//... beim solven bleiben die Z-Tags bestehen
-			sValue = objFormulaSolver.solve(sExpressionSource);
-			assertEquals("Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.", sValue);
-			
-			//... beim parsen kommen die Z-Tags raus.
-			sValue = objFormulaSolver.parse(sExpressionSource);
-			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
-			
-			//Anwenden der Formel, so dass ein localer Wert vor einem globalen Wert gefunden wird.
-			/*
-			 * 
-			objStreamFile.println("[Section for testCompute]");
-			....
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
-			
-			
-			
-			objStreamFile.println("[Section B!01]");
-			objStreamFile.println("Testentry2=Testvalue2 local to be found");
-			
-			objStreamFile.println("[Section B]");
-			objStreamFile.println("Testentry2=Testvalue2 global. This should not be found");
-			
-			*/
-			
-			//Erst einmal soll der Wert nicht sofort ausgerechnet werden.			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-			
-			//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-						
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false); //Pfade werden nicht aufgeloest
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-													
-			//Merke: wg. Parsen sind die Z-Tags verschwunden.
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
-			assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sExpression);
-						
-			//+++++++++++++++++++ Arbeite mit dem Ergebnis im Solver weiter
-			//Wenn man die Expression_PATH-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
-			btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-			
-			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-											
-			sValue = objFormulaSolver.solve(sExpression);
-			//assertEquals("Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.", sValue);
-			//Weil oben die Z-Tags raus sind, bleiben Sie auch hier weg
-			assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sValue);
-			
-			//Wenn man die Expression_PATH-Behandlung anstellt, dann findet die Ersetzung statt.
-			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-			
-			//Test: Wert mit Systemnr soll vor dem globalen Wert gefunden werden!!!
-			//Weil oben die Z-Tags raus sind, findet keine Ersetzung statt
-			sValue = objFormulaSolver.solve(sExpression);
-			assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sExpression);
-			
-			//Zum Vergleich, String mit Z-Tags
-			sValue = objFormulaSolver.solve(sExpressionSource2);
-			assertEquals("Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.", sValue);
-			
-			
+		
 			//+++++++++++++++++++			
 			//###########################################################################
+			//+++++++++++++++++++++++++++++++++++++++
 			
-			//###########################
 			
 			btemp = testCompute_GetPropertySystemNrBeforeGlobal_();
 			
 			btemp = testCompute_2ndSolverUsesGetPropertyResult_();
+			
+			//+++++++++++++++++++			
+			//###########################################################################
+			//+++++++++++++++++++++++++++++++++++++++
+			
 			
 			
 			//Wenn man die Expression_PATH-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
@@ -526,18 +274,18 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			btemp = testCompute_2ndSolveA_(sExpressionSource);
 			
 			btemp = testCompute_2ndSolveB_(sExpressionSource2);
-									
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+												
 			//### mit objFileIni			
 			btemp = testCompute_2ndGetProperty_();
+			
 			
 			//########################################################################################
 			//### Ausrechnen Mathematischer Formeln ##################################################
 			//########################################################################################
-			TODOGOON20240826;
+			//TODOGOON20240826;
 			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);
 			
-			btemp = testCompute_GetPropertyWithFormulaMath_();
+			//btemp = testCompute_GetPropertyWithFormulaMath_();
 					
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -742,27 +490,207 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		return true;
 	}
 	
-	private boolean testCompute_SolveWithFormulaMath_(String sExpressionSourceFormulaMath) {
+	private boolean testCompute_SolveWithExpressionA_(String sExpressionSource) {
 		boolean btemp; String sExpression; String sValue;
 		main:{
 			try {				
-				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //Damit der Wert sofort ausgerechnet wird
+				//+++ Alle Flags auf false
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,false); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+							
+				//Nun werden die Pfade aufgeloest
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
 				
-				//+++ Wert noch nicht ausrechnen.
+				
+				//--> Output = Input
+				sExpression = objFormulaSolver.solve(sExpressionSource);
+				assertEquals(sExpressionSource, sExpression);
+				
+				//-->Output = Input			
+				sExpression = objFormulaSolver.parse(sExpressionSource);
+				assertEquals(sExpressionSource, sExpression);
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++		
+				//+++ Expression behandeln
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //eh keine Formel drin, also sollte das egal sein.);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+	 
+				//--> Output = Input, weil keine Pfad-expression verarbeitet wird.
+				sExpression = objFormulaSolver.solve(sExpressionSource);
+				assertEquals(sExpressionSource, sExpression);
+				
+				//-->Output = Input, aber durch das Parsen und Verareitung der Expression sind die Z-Tags drumrum weg
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+	 
+				//beim "reinen Parsen" bleiben Pfadangaben bestehen, 
+				//auch Z-Tags müssten bestehen bleiben, weil IKernelExpressionIniSolverZZZ nicht implementiert ist 
+				//Aber Weil der Tag fuer Formeln auch <Z> ist, werden diese letztendlich vom Parsen doch entfent!!!
+				sExpression = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
+				
+				
+				//+++++++++++++++++++++++++++++++++++++++	
+				//Behandlung von expression ueberhaupt
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+	 
+				//Nun werden die Pfade aufgeloest
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+
+				sExpression = objFormulaSolver.solve(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.", sExpression);
+							
+				//Wenn der parser den Solver nicht nutzen soll, kommt nicht das vom solve() raus.
+				//Umgebende Z-Tags werden aber trotzdem enfernt.
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				sExpression = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sExpression);
+				
+				
+				//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				 
+				sExpression = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sExpression);
+				//+++++++++++++++++++++++++++++++++++++++
+
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+	
+	private boolean testCompute_SolveWithExpressionB_(String sExpressionSource) {
+		boolean btemp; String sExpression; String sValue;
+		main:{
+			try {				
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //eh keine Formel drin, also sollte das egal sein.);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+							
+				//beim "reinen Solven" bleiben die Z-Tags drin
+				sValue = objFormulaSolver.solve(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
+							
+				//beim "Parsen" bleiben immer noch die Pfadangaben bestehen, aber die Z-Tags müssen weg.
+				sValue = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
+				
+				//++++++++++++++++++++++++++++++++++			
+				//#############################################################
+				//+++++++++++++++++++++++++++++++++++++++
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,false); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+									
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				//Wenn man die Expression-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
+				sValue = objFormulaSolver.solve(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
+												
+				//dito beim parsen... aber dann sind die Z-Tags auch nicht weg.
+				sValue = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
+				
+				//nun einfach oben das Flag setzen... alles wird maximal uebersetzt
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				//... beim solven bleiben die Z-Tags bestehen
+				sValue = objFormulaSolver.solve(sExpressionSource);
+				assertEquals("Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.", sValue);
+				
+				//... beim parsen kommen die Z-Tags raus.
+				sValue = objFormulaSolver.parse(sExpressionSource);
+				assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+	
+	private boolean testCompute_SolveWithFormulaMath_(String sExpressionSourceFormulaMath) {
+		boolean btemp; String sValue;
+		String sExpression = sExpressionSourceFormulaMath;	
+		
+		//Merke: Beim Solven bleiben umgebende Z-Tags immer erhalten
+		//sExpression = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+		main:{
+			try {
+				//+++ Wert noch nicht ausrechnen: A			
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,false); //Damit der Wert sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, false); //Damit der Wert NICHT sofort ausgerechnet wird
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
-				
-				//Merke: Beim Solven bleiben umgebende Z-Tags immer erhalten
-				sExpression = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+															
 				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
-				assertEquals(sValue, sExpression);
+				assertEquals(sExpressionSourceFormulaMath, sValue);
 				
-				//+++ Wert ausrechen
+				//+++ Wert noch nicht ausrechnen: B, wieder eine FlagEbene aktivieren
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
+				assertEquals(sExpressionSourceFormulaMath, sValue);
+				
+				//+++ Wert noch nicht ausrechnen: C, wieder eine FlagEbene aktivieren
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
+				assertEquals(sExpressionSourceFormulaMath, sValue);
+				
+				//+++ Wert noch nicht ausrechnen: D, wieder eine FlagEbene aktivieren
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
+				assertEquals(sExpressionSourceFormulaMath, sValue);
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Wert ausrechnen
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true);
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 				
-				
+				sExpression = "";
+				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);				
+				assertEquals(sExpression, sValue);
 				
 //				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 //				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
@@ -803,28 +731,215 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		return true;
 	}
 	
-	private boolean testCompute_GetPropertyWithFormulaMath_() {
+	private boolean testCompute_GetPropertyWithExpression_() {
+		boolean btemp; String sValue;
+		String sExpression = null; //fuer den RAW Vergleich.
+		main:{
+			try {
+				//+++ KEINE Expression oder Formel verwenden dann ist die Aufloesung egal
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false);
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				 			
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESIONSOLVER = FALSE
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+							
+				//Merke: Ohne Expression Behandlund duefen trotz parsen die Z-Tags nicht verschwinden.
+				sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+				assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sValue);
+				
+				
+				//+++ Expression oder Formel verwenden, aber keine Aufloesung verwenden, dann wird mit parse() der Z-Tag entfernt.
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				 			
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESIONSOLVER = FALSE
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				 		
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); 
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+							
+				sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+				assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
+				 
+				
+				//+++ Expression verwenden, aber keine Aufloesung verwenden.
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				 			
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //das ist dann egal, weil USE..._Solver=false
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //eh keine Formel drin, also sollte das egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+				assertEquals("Der dynamische Wert ist '[Section A]Testentry1'. FGL rulez.", sValue);
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Erst wenn Expression aufgeloest werden sollen, klappts
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+
+				//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				//Nun werden die Pfade aufgeloest
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+							
+				//!!! Merke: Anders als beim Kernel-Holen der Property, wird beim KernelIniFile kein Cache verwendet.
+				//           Darum reicht es die Flagz zu andern und es muss kein Cache erst geleert werden.
+				sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+				assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+
+	private boolean testCompute_GetPropertyWithExpressionCombinedWithSolver_() {
 		boolean btemp; String sExpression; String sValue;
 		main:{
 			try {
-				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-				sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
-				assertEquals(sValue, sExpression);
+				//Anwenden der Formel, so dass ein localer Wert vor einem globalen Wert gefunden wird.
+				/*
+				 * 
+				objStreamFile.println("[Section for testCompute]");
+				....
+				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
 				
-				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-				objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
-				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
+				
+				
+				objStreamFile.println("[Section B!01]");
+				objStreamFile.println("Testentry2=Testvalue2 local to be found");
+				
+				objStreamFile.println("[Section B]");
+				objStreamFile.println("Testentry2=Testvalue2 global. This should not be found");
+				
+				*/
+				
+				//+++ Erst einmal den Wert nur auslesen, nicht parsen oder solven
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,false); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+					
+				//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false); //Pfade werden nicht aufgeloest
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); //eh keine Formel drin, also sollte das egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				//Merke: wg. Parsen sind die Z-Tags verschwunden.
+				sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+				assertEquals("Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.", sExpression);
+				String sExpressionForSolverDirect = sExpression; //fuer spaeter aufheben
+				
+				//++++++++++++++++++++++++++++
+				//Erst einmal soll der Wert nicht sofort ausgerechnet werden.			
+				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+									
+				//Merke: wg. Parsen sind die Z-Tags verschwunden.
+				sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+				assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sExpression);
+							
+				//+++++++++++++++++++ Arbeite mit dem Ergebnis im Solver weiter
+				//Wenn man die Expression_PATH-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
+				btemp = objFormulaSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION,true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //false: Damit der Pfad NICHT sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //also nur die Expression aufloesen, aber den Pfad nicht aufloesen.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+												
+				sValue = objFormulaSolver.solve(sExpression);
+				//assertEquals("Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.", sValue);
+				//Weil oben die Z-Tags raus sind, bleiben Sie auch hier weg
+				assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sValue);
+				
+				//Wenn man die Expression_PATH-Behandlung anstellt, dann findet die Ersetzung statt.
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+				
+				//Test: Wert mit Systemnr soll vor dem globalen Wert gefunden werden!!!
+				//Weil oben die Z-Tags raus sind, findet keine Ersetzung statt
+				sValue = objFormulaSolver.solve(sExpression);
+				assertEquals("Der dynamische Wert2 ist '[Section B]Testentry2'. FGL rulez.", sExpression);
+				
+				//Zum Vergleich, String mit Z-Tags
+				sValue = objFormulaSolver.solve(sExpressionForSolverDirect);
+				assertEquals("Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.", sValue);
+								
+				sValue = objFormulaSolver.solve(sExpressionForSolverDirect);
+				assertEquals("Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.", sValue);
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+	
+	private boolean testCompute_GetPropertyWithFormulaMath_() {
+		boolean btemp; String sValue;
+		String sExpression="";
+		main:{
+			try {
+				//+++ nicht ausrechen
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, false);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+								
+				sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+				assertEquals(sExpression, sValue);
+				
+				//+++ ausrechnen
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, false);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+					
+				sValue = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
+				assertEquals(sExpression, sValue);
+				
 				//Merke: Das waere der String mit umgebenden <Z> - Tag. Der wird aber aufgeloest:
 				//     "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 				sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also Z-Tag weg aber der Wert ohne die z:math-Tags auszurechnen.
-				assertEquals(sValue, sExpression);
+				assertEquals(sExpression, sValue);
 				
-				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
-				sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
+				sValue = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
+				sExpression="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
 				assertTrue("Im Ergebnis '" + sExpression + "' wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
-				assertEquals(sValue, sExpression);
+				assertEquals(sExpression, sValue);
 				
 				
 				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird

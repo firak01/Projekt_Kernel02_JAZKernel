@@ -68,27 +68,27 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	private boolean KernelExpressionIniSolverNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
-				if(this.getFlag("init")==true){
-					bReturn = true;
-					break main;
-				}
-			
-				if(objFileIni==null ){
-					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez; 
-				}else{
-					this.setFileConfigKernelIni(objFileIni);						
-				}
-				
-				if(hmVariable!=null){				
-						this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
-				}else {
-					if(hmVariable!=null){
-						this.setHashMapVariable(hmVariable);
-					}
-				}
-				
+			if(this.getFlag("init")==true){
 				bReturn = true;
+				break main;
+			}
+		
+			if(objFileIni==null ){
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}else{
+				this.setFileConfigKernelIni(objFileIni);						
+			}
+			
+			if(hmVariable!=null){				
+					this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				if(hmVariable!=null){
+					this.setHashMapVariable(hmVariable);
+				}
+			}
+			
+			bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
@@ -127,6 +127,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			objReturnReference.set(objReturn);
 		}
+		objReturn.setRaw(sLineWithExpression);
+		String sReturn = sLineWithExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
@@ -271,16 +273,17 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			
 			
 			} //end solver:
+			
+			sReturn = objReturn.getValue();
 			if(bRemoveSurroundingSeparators) {
 				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();
-				String sReturn = objReturn.getValue();
+				String sTagEnd = this.getTagClosing();				
 				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
-				objReturn.setValue(sValue);								
+                sReturn = sValue;												
 			}
 		}//end main:
 		
-		String sReturn = objReturn.getValue();
+		objReturn.setValue(sReturn);
 		if(!sLineWithExpression.equals(sReturn)) {
 			objReturn.isParsed(true);
 		}

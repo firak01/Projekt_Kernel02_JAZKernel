@@ -249,20 +249,21 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public String solve(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
-		main:{
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		objReturn.setRaw(sLineWithExpression);
+		
+		main:{		
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 				
-			IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-																	  //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			objReturn.setRaw(sLineWithExpression);
-			
+		
+			//Bei einfachen Tags den Ersten Vektor holen
+			//dabei werden Variablen und Pfade aufgeloest
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
 			
-			//Bei einfachen Tags den Ersten Vektor holen
-			//dabei werden Variablen und Pfade aufgeloest
 			Vector<String> vecAll = this.solveFirstVector(sLineWithExpression, objReturnReference);			
 			if(vecAll!=null) {
 				
@@ -270,13 +271,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				objReturn = objReturnReference.get();
 
 				sReturn = VectorZZZ.implode(vecAll);
-				this.setValue(sReturn);
-				objReturn.setValue(sReturn);				
 				if(!sLineWithExpression.equals(sReturn)) {					
 					objReturn.isSolved(true);
 				}				
 			}		
 		}//end main:
+		this.setValue(sReturn);
+		objReturn.setValue(sReturn);						
 		return sReturn;
 	}
 	
@@ -291,9 +292,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 										    //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objReturnReferenceIn.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objReturn.setRaw(sLineWithExpression);
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			objReturn.setRaw(sLineWithExpression);
 			
 			//Solver haben immer die Aufgabe einen IKernelConfigSectionEntryZZZ zu fuellen. Das ueber ein Referenzobjekt loesen.
 			//Darin dann neue Zustaende fuellen isPathSolved, isVariableReplaced
@@ -306,16 +308,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				this.setEntry(objReturn);
 				
 				sReturn = VectorZZZ.implode(vecAll);
-				this.setValue(sReturn);
-				objReturn.setValue(sReturn);
 				if(!sLineWithExpression.equals(sReturn)) {
 					objReturn.isSolved(true);
 				}
-					
-				//Wichtig: Reference nach aussen zurueckgeben.
-				objReturnReferenceIn.set(objReturn);
 			}
 		}//end main;
+		this.setValue(sReturn);
+		objReturn.setValue(sReturn);
+		
+		//Wichtig: Reference nach aussen zurueckgeben.
+		objReturnReferenceIn.set(objReturn);
 		return iReturn;
 	}
 	
@@ -339,9 +341,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objReturnReference.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objReturn.setRaw(sLineWithExpression);
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			objReturn.setRaw(sLineWithExpression);
 			
 			vecReturn = new Vector<String>();
 			if(StringZZZ.isEmpty(sLineWithExpression))break main;
