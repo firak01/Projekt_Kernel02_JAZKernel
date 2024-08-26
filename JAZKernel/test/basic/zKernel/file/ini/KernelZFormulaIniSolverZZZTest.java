@@ -194,10 +194,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute(){
 		try {
-			String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;
+			String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 			boolean btemp;
 			sExpressionSource = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
 			sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
+			sExpessionSourceFormulaMath="";
+			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
 			btemp = testCompute_2ndSolverUsesGetPropertyResult_();
@@ -532,50 +534,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//########################################################################################
 			//### Ausrechnen Mathematischer Formeln ##################################################
 			//########################################################################################
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
-			assertEquals(sValue, sExpression);
+			TODOGOON20240826;
+			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);
 			
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
-			//Merke: Das waere der String mit umgebenden <Z> - Tag. Der wird aber aufgeloest:
-			//     "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
-			sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also Z-Tag weg aber der Wert ohne die z:math-Tags auszurechnen.
-			assertEquals(sValue, sExpression);
-			
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
-			assertTrue("Im Ergebnis '" + sExpression + "' wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
-			assertEquals(sValue, sExpression);
-			
-			
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
-			assertEquals(sValue, sExpression);
-			
-			//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
-			assertEquals(sValue, sExpression);
-			
-			//+++ Teste das Rechnen mit Float-Werten
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
-			assertEquals(sValue, sExpression);
-			
-			
+			btemp = testCompute_GetPropertyWithFormulaMath_();
+					
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -772,6 +735,122 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
 				assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.", sExpression);
 														
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+	
+	private boolean testCompute_SolveWithFormulaMath_(String sExpressionSourceFormulaMath) {
+		boolean btemp; String sExpression; String sValue;
+		main:{
+			try {				
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //Damit der Wert sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				//+++ Wert noch nicht ausrechnen.
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, false); //Damit der Wert NICHT sofort ausgerechnet wird
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+				
+				//Merke: Beim Solven bleiben umgebende Z-Tags immer erhalten
+				sExpression = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
+				assertEquals(sValue, sExpression);
+				
+				//+++ Wert ausrechen
+				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+				
+				
+				
+//				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+//				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+//				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
+//				sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
+//				assertTrue("Im Ergebnis '" + sExpression + "' wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
+//				assertEquals(sValue, sExpression);
+//				
+//				
+//				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+//				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+//				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
+//				sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+//				assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
+//				assertEquals(sValue, sExpression);
+//				
+//				//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
+//				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+//				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+//				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1").getValue();
+//				sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+//				assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
+//				assertEquals(sValue, sExpression);
+//				
+//				//+++ Teste das Rechnen mit Float-Werten
+//				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+//				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+//				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1").getValue();
+//				sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+//				assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
+//				assertEquals(sValue, sExpression);
+//				
+		
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:			
+		return true;
+	}
+	
+	private boolean testCompute_GetPropertyWithFormulaMath_() {
+		boolean btemp; String sExpression; String sValue;
+		main:{
+			try {
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+				assertEquals(sValue, sExpression);
+				
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
+				//Merke: Das waere der String mit umgebenden <Z> - Tag. Der wird aber aufgeloest:
+				//     "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also Z-Tag weg aber der Wert ohne die z:math-Tags auszurechnen.
+				assertEquals(sValue, sExpression);
+				
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
+				sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
+				assertTrue("Im Ergebnis '" + sExpression + "' wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
+				assertEquals(sValue, sExpression);
+				
+				
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
+				sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+				assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
+				assertEquals(sValue, sExpression);
+				
+				//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1").getValue();
+				sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+				assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
+				assertEquals(sValue, sExpression);
+				
+				//+++ Teste das Rechnen mit Float-Werten
+				objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+				objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+				sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1").getValue();
+				sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+				assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
+				assertEquals(sValue, sExpression);
+				
+		
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
