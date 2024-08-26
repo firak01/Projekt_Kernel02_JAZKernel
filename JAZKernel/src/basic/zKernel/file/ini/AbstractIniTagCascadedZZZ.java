@@ -49,7 +49,8 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this); // Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main: {
 			if (StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-
+			objReturn.setRaw(sLineWithExpression);
+			
 			//TODOGOON: Das muesste bei cascaded aber eigentlich AllVector sein.
 			//Vector<String> vecAll = this.parseAllVector(sLineWithExpression);
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
@@ -79,6 +80,9 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			
 			// im Return Objekt
 			objReturn.setValue(sValue);
+			if(!sLineWithExpression.equals(sValue)) {
+				objReturn.isParsed(true);
+			}
 			
 			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den
 			// Expression Ausdruck mit Z-Tags

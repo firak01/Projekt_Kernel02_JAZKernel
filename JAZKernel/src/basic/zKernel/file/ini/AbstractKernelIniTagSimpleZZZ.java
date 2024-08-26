@@ -10,10 +10,12 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelConfigZZZ;
+import basic.zKernel.IKernelEntryExpressionUserZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -24,7 +26,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 //DIES IST DER FLAG - WEG: AbstractObjectWithFlagZZZ -> AbstractObjectWithExpression -> AbstractTagWithExpressionBasic
 //ALSO:      In AbstractInitTagWitchExpressionBasicZZZ steht schon ALLES WAS IN AbstractIniTagBasicZZZ und dessen Elternklasse implementiert ist
 //NUN NOCH:  Alles WAS in AbstractIniTagSimpleZZZ steht hier auch noch hinein.
-public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelConfigSectionEntryUserZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelEntryExpressionUserZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
@@ -189,6 +191,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 	//### aus IKernelConfigSectionEntryUserZZZ 	
 	@Override
+	public IKernelConfigSectionEntryZZZ getEntryNew() throws ExceptionZZZ {
+		this.objEntry = null; //Also explizit leer setzen, um etwas neues zu holen. Ist wichtig für Objekte, die eine 2te Verarbeitung starten. z.B. KernelFileIni.
+		return this.getEntry();
+	}
+				
+	@Override
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ{
 		if(this.objEntry==null) {
 			//!!! Endlosschleifengefahr.
@@ -203,23 +211,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
 		this.objEntry = objEntry;
 	}
-	
-	//### aus IIniTagBasicZZZ
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//											
-//			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
-//			
-//			//Das ist bei einfachen Tag Werten so
-//			String sReturn = (String) vecAll.get(1);
-//			this.setValue(sReturn); 	//Dabei wird der Wert in das Entry-Objekt geschrieben.		
-//		}//end main:
-//		return objReturn;
-//	}	
-	
+		
 	// Die Methoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
 	// Aber Achtung: Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 	//               Darum beim holen der Werte mit .get...() immer auf this.objEntry==null prüfen.
@@ -313,10 +305,37 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	
 	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parse(sLineWithExpression, objReturnReference, true);
+	}
 	
+	@Override
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		int iReturn = -1;
+		
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+		if(objReturn==null) {
+			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objReturnReference.set(objReturn);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objReturn.setRaw(sLineWithExpression);
+		
+		String sReturn = this.parse(sLineWithExpression, bRemoveSurroundingSeparators);
+		this.setValue(sReturn);
+		
+		objReturn.setValue(sReturn);				
+		if(!sLineWithExpression.equals(sReturn)) {
+			objReturn.isParsed(true);			
+			iReturn = 1;
+		}
+		objReturnReference.set(objReturn);
+				
+		return iReturn;
+	}
 	
-	//### aus IIniTagWithExpressionZZZ
-	
+	//### aus IExpressionUserZZZ	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -327,7 +346,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	@Override
 	public Vector<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = null;
-		String sReturn = sLineWithExpression;
+
 		main:{
 			if(sLineWithExpression==null) break main;
 			
@@ -345,8 +364,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	@Override
 	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = null;
-		String sReturn = sLineWithExpression;
+		Vector<String> vecReturn = null;		
 		main:{
 			if(sLineWithExpression==null) break main;
 			
@@ -357,21 +375,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 								
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
+			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression); 			
 			
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(vecReturn!=null) {
-			if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-			vecReturn.add(0, "");
-			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			vecReturn.add(1, sReturn);
-			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-			vecReturn.add(2, "");
-		}
 		return vecReturn;
 	}
 	

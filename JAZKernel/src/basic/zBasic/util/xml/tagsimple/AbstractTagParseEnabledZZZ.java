@@ -57,9 +57,14 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ {
+		return this.parse(sLineWithExpression, true);
+	}
+	
+	@Override
+	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			Vector<String> vecParse = this.parseFirstVector(sLineWithExpression);
+			Vector<String> vecParse = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
 			this.setValue(vecParse.get(1)); //uebernimm also das 1. Element
 			
 			sReturn = VectorZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
@@ -78,10 +83,24 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 */
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, true);
+	}
+	
+	
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
+	 */
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
 		}
 		return vecReturn;
 	}

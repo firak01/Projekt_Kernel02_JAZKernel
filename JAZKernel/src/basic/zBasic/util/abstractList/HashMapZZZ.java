@@ -1,7 +1,9 @@
 package basic.zBasic.util.abstractList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,59 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 	
 	private HashMapZZZ(){
 	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/** Erstelle eine echte Kopie der HashMap und nicht nur einen Clone, bei dem die Referencen gleich bleiben.
+	 *  siehe: https://stackoverflow.com/questions/28288546/how-to-copy-hashmap-not-shallow-copy-in-java
+	 */
+//	public static HashMap<String,MySpecialClass> copy(HashMap<String,MySpecialClass> hmOriginal){
+//	    HashMap<String,MySpecialClass> copy = new HashMap<String, MySpecialClass>();
+//	    for (Map.Entry<String, MySpecialClass> entry : hmOriginal.entrySet())
+//	    {
+//	        copy.put((entry).getKey(), entry.getValue()));
+//	    }
+//	    return copy;
+//	}
+	
+	/** Erstelle eine echte Kopie der HashMap und nicht nur einen Clone, bei dem die Referencen gleich bleiben.
+	 *  siehe: https://stackoverflow.com/questions/28288546/how-to-copy-hashmap-not-shallow-copy-in-java
+	 */
+	public static HashMap<String,Boolean> copy(HashMap<String,Boolean> hmOriginal){
+	    HashMap<String,Boolean> copy = new HashMap<String, Boolean>();
+	    for (Map.Entry<String, Boolean> entry : hmOriginal.entrySet())
+	    {
+	        copy.put((entry).getKey(), entry.getValue());
+	    }
+	    return copy;
+	}
+	
+//	/** Erstelle eine echte Kopie der HashMap und nicht nur einen Clone, bei dem die Referencen gleich bleiben.
+//	 *  siehe: https://stackoverflow.com/questions/28288546/how-to-copy-hashmap-not-shallow-copy-in-java
+//	 */
+	
+	//TODOGOON: Das ist nicht im Einsatz, testen. 
+	public static HashMap<Integer, List<?>> copyWithList(HashMap<Integer, List<?>> original){
+	    HashMap<Integer, List<?>> copy = new HashMap<Integer, List<?>>();
+	    for (Map.Entry<Integer, List<?>> entry : original.entrySet())
+	    {
+	        copy.put(entry.getKey(),
+	           // Or whatever List implementation you'd like here.
+	           new ArrayList<Object>(entry.getValue()));
+	    }
+	    return copy;
+	}
+
+//	public static HashMap<String, List<?>> copyWithList(HashMap<String, List<?>> original){
+//    HashMap<String, List<?>> copy = new HashMap<String, List<?>>();
+//    for (Map.Entry<String, List<?>> entry : original.entrySet())
+//    {
+//        copy.put(entry.getKey(),
+//           // Or whatever List implementation you'd like here.
+//           new ArrayList<Object>(entry.getValue()));
+//    }
+//    return copy;
+// }
+	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.

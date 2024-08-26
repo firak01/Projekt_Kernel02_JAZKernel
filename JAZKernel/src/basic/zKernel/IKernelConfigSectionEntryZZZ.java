@@ -66,6 +66,10 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isExpression(boolean bIsExpression);	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public boolean isParsed();
+	abstract void isParsed(boolean bIsParsed);
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isSolved();
 	abstract void isSolved(boolean bIsSolved);
 	

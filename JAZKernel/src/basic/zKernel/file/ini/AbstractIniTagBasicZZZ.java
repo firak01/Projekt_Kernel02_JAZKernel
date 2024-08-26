@@ -8,6 +8,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zBasic.util.file.ini.IniStructurePositionZZZ;
@@ -59,17 +60,21 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//### aus IIniTagBasicZZZ
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null;
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-											
+			objReturn.setRaw(sLineWithExpression);
+			
 			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
-			objReturn = new KernelConfigSectionEntryZZZ<T>(this);			
+			objReturn.setValue(sReturn);	
+			if(!sLineWithExpression.equals(sReturn)) {
+				objReturn.isParsed(true);
+			}
 		}//end main:
 		return objReturn;
 	}	
@@ -230,6 +235,6 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//### aus IExpressionUserZZZ
 	@Override
 	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
-		return ComputableExpressionUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
 }

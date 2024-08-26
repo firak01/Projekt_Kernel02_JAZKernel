@@ -109,20 +109,29 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parse(sLineWithExpression, true);
+	}	
+	
+	@Override
+	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
 			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
 			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
 			
 			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
+			String sExpressionImploded = VectorZZZ.implode(vecAll);			
 			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+//Es gibt an dieser Stelle aber kein Entry-Objekt			
+//			if(sLineWithExpression.equals(sReturn)) {
+//					this.getEntry().isParsed(true);
+//			}
 		}//end main:
 		return sReturn;
 	}	
@@ -137,10 +146,23 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 */
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, true);
+	}
+	
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
+	 */
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
 		}
 		return vecReturn;
 	}

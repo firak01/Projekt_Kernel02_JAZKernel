@@ -54,8 +54,14 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return false;
 	}
 	
+	//### aus IParseEnabled
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, true);
+	}
+	
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -96,18 +102,13 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 				}		
 				
 				// Z-Tags entfernen.
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+				if(bRemoveSurroundingSeparators) {
+					String sTagStartZ = "<Z>";
+					String sTagEndZ = "</Z>";
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+				}
 			}
 		}
 		return vecReturn;
-	}
-	
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }//End class

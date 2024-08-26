@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -18,7 +19,7 @@ import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
 
-public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Object> implements IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
+public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Object> implements IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -29,12 +30,11 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 //		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
 	
-	//+++ fuer die Flags
 	protected volatile HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	protected volatile HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
-	protected volatile HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
+	protected HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
 		
-	protected volatile ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
+	protected ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
 	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
@@ -78,6 +78,38 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 			}
 		}
 	}
+	
+		//Meine Variante Objekte zu clonen.
+	    //Merke: Einfaches Clonen erzeugt einen "Shallow Copy", 
+	    //       Damit sich aber Flag-Aenderungen in einer Kopie nicht auf Flags des Originals auswirken.
+	    //       Auch eine Kopie der HashMaps machen
+		@Override
+		public Object clonez() throws ExceptionZZZ {
+			AbstractObjectWithFlagZZZ<T> obj = null;
+			main:{
+//				try {					
+					obj = (AbstractObjectWithFlagZZZ<T>) super.clonez();
+										
+					HashMap<String, Boolean> hmFlag = HashMapZZZ.copy(obj.hmFlag);
+					obj.hmFlag = hmFlag;
+					
+					HashMap<String, Boolean> hmFlagLocal = HashMapZZZ.copy(obj.hmFlagLocal);
+					obj.hmFlagLocal = hmFlagLocal;
+					
+					HashMap<String, Boolean> hmFlagPassed = HashMapZZZ.copy(obj.hmFlagPassed);
+					obj.hmFlagPassed = hmFlagPassed;
+					
+//				}catch(CloneNotSupportedException e) {
+//					ExceptionZZZ ez = new ExceptionZZZ(e);
+//					throw ez;						
+//				}
+			}//end main:
+			return (Object) obj;
+		}
+	
+	//###############################################
+	//### FLAG HANDLING
+	//###############################################
 	
 	//### Aus IFlagUserZZZ ##########################
 	@Override

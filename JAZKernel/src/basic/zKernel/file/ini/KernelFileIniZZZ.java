@@ -33,6 +33,7 @@ import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelObjectZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
@@ -47,7 +48,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -407,7 +408,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist. 
+		                                                             //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 		main:{
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -496,6 +498,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können.
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			//if(! this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 			
 			//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
 			KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
@@ -505,7 +508,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
 				
 			objReturnReference.set(objReturn);
-			int iReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);	
+			int iReturnValue = objExpressionHandler.parse(sReturnRaw,objReturnReference);//.solve(sReturnRaw,objReturnReference);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
 			objReturn = objReturnReference.get();			
 		}//end main:
@@ -514,7 +517,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}//end function
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist. //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();  //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist. 
+		                                                              //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.	
 		main:{			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -558,7 +562,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty, String sSystemNumberIn) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+																	 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
@@ -608,7 +613,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public IKernelConfigSectionEntryZZZ getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
 		//!!! Das ist lediglich eine Untergeordnete Suchanfrage..., daher: 
 		//!!! Wichtig: Neues EntryObjekt für diese neue Suche verwenden !!!
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntry();//new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		 															 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 		main:{
 			String sSectionUsed; String sProperty; String sSystemNumberUsed;
 				if(this.objFileIni==null){				
@@ -1394,13 +1400,22 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 		
 
-	//### Interface aus IKernelExpressionIniSolver
+	//### aus IKernelConfigSectionEntryUserZZZ
+	@Override
+	public IKernelConfigSectionEntryZZZ getEntryNew() throws ExceptionZZZ {
+		this.objEntry = null; //Also explizit leer setzen, um etwas neues zu holen.
+		return this.getEntry();
+	}
+	
+	@Override
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
 		if(this.objEntry==null) {
 			this.objEntry = new KernelConfigSectionEntryZZZ<T>();			
 		}
 		return this.objEntry;
 	}
+	
+	@Override
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
 		this.objEntry = objEntry;
 	}
@@ -1477,29 +1492,29 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 
 	//###### AUS INTERFACE ICachableObjectZZZ
-	@Override
-	public boolean isCacheSkipped() {
-		return this.bSkipCache;
-	}
-
-	@Override
-	public void isCacheSkipped(boolean bValue) {
-		this.bSkipCache=bValue;
-	}
-
-	@Override
-	public boolean wasValueComputed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String getValueForFilter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public boolean isCacheSkipped() {
+//		return this.bSkipCache;
+//	}
+//
+//	@Override
+//	public void isCacheSkipped(boolean bValue) {
+//		this.bSkipCache=bValue;
+//	}
+//
+//	@Override
+//	public boolean wasValueComputed() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public String getValueForFilter() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
-	//# aus ICryptUserZZZ
+	//### aus ICryptUserZZZ
 	@Override
 	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCrypt;
@@ -1652,6 +1667,47 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	@Override
 	public boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	//### aus IKernelZFormulaIniZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	//### aus IKernelZFormulaIni_PathZZZ
@@ -1819,13 +1875,51 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 
 	@Override
-		public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	//### aus IKernelCallIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+
+	@Override
+		public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 					baReturn = new boolean[objaEnumFlag.length];
 					int iCounter=-1;
-					for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 						iCounter++;
 						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 						baReturn[iCounter]=bReturn;
@@ -1835,133 +1929,95 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			return baReturn;
 		}
 	
-		@Override
-		public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
-		
-		//### aus IKernelCallIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-
-		@Override
-			public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-				boolean[] baReturn=null;
-				main:{
-					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
-						int iCounter=-1;
-						for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-							baReturn[iCounter]=bReturn;
-						}
-					}
-				}//end main:
-				return baReturn;
-			}
-		
-		@Override
-		public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
-		
-		//### Aus Interface IKernelJavaCallIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
-			return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
-		}
-				
-		@Override
-		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
-					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
-					int iCounter=-1;
-					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
-		
-		//###################################################
-		//### FLAG: IListenerObjectFlagZsetZZZ
-		//###################################################
-		
-		@Override
-		public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		@Override
-		public boolean setFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean[] setFlag(IListenerObjectFlagZsetZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
-					int iCounter=-1;
-					for(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-					
-					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
-					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
-				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnumFlag.name());
-		}	
-		
-		@Override
-		public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	@Override
+	public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
-		}
+	}
+	
+	//### Aus Interface IKernelJavaCallIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
+	}
+			
+	@Override
+	public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
+				int iCounter=-1;
+				for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	//###################################################
+	//### FLAG: IListenerObjectFlagZsetZZZ
+	//###################################################
+	
+	@Override
+	public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IListenerObjectFlagZsetZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 }

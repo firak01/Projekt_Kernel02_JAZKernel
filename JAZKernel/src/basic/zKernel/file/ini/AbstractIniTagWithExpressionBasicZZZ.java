@@ -8,6 +8,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
@@ -65,31 +66,42 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parse(sLineWithExpression, true);
+	}	
+	
+	@Override
+	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			
-			sReturn = super.parse(sLineWithExpression);
+			sReturn = super.parse(sLineWithExpression, bRemoveSurroundingSeparators);
+			//Es gibt an dieser Stelle aber kein Entry-Objekt			
+//			if(sLineWithExpression.equals(sReturn)) {
+//					this.getEntry().isParsed(true);
+//			}
 		}//end main:
 		return sReturn;
-	}	
+	}
 	
 	//### aus IIniTagBasicZZZ
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);;
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-											
+			objReturn.setRaw(sLineWithExpression);
+			
 			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
-			//hier den Wert explizit noch im Entry-Objekt nachhalten, da es keine entry-Propety gibt, in die automatisch beim Wert-Setzen der Wert geschieben wird.
-			//wie in AbstractKernelIniTagSimpleZZZ
 			objReturn.setValue(sReturn);
+			if(!sLineWithExpression.equals(sReturn)) {
+				objReturn.isParsed(true);
+			}
 		}//end main:
 		return objReturn;
 	}	
@@ -262,7 +274,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//### aus IExpressionUserZZZ
 	@Override
 	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
-		return ComputableExpressionUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
 	
 	@Override

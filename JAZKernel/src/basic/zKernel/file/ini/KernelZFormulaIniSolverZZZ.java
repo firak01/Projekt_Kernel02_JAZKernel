@@ -28,61 +28,76 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(String sFlag) throws ExceptionZZZ{
 		super(sFlag);
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
 		super(objFileIni); //als IKernelUserZZZ - Object
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, objFileIni, saFlag);
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni, hmVariable); //als IKernelUserZZZ - Object
-		KernelExpressionIniSolverNew_();
+	KernelZFormulaIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelExpressionIniSolverNew_();
+		KernelZFormulaIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_() throws ExceptionZZZ {
+	private boolean KernelZFormulaIniSolverNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 		 boolean bReturn = false;	
-		 main:{
-				if(this.getFlag("init")==true){
-					bReturn = true;
-					break main;
-				}	
-				
+		 main:{		
+			if(this.getFlag("init")==true){
 				bReturn = true;
-		 	}//end main:
-			return bReturn;
+				break main;
+			}
+		
+			if(objFileIni==null ){
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}else{
+				this.setFileConfigKernelIni(objFileIni);						
+			}
+			
+			if(hmVariable!=null){				
+				this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				if(objFileIni.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFileIni.getHashMapVariable());
+				}
+			}
+						
+			bReturn = true;
+	 	}//end main:
+		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
 	
@@ -264,13 +279,19 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//############################################
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parse(sLineWithExpression, true);
+	}
+	
+	@Override
+	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;		
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 					
 			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
-			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
+			//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
 			objReturn.setRaw(sLineWithExpression);
 			
 			Vector<String> vecAll = this.parseAllVectorAsExpression(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
@@ -310,13 +331,14 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
-			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
-			objReturn.setValue(sValue);
-			
-			sReturn = sValue;
+			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
+				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
+				objReturn.setValue(sValue);						
+				sReturn = sValue;
+			}
 		
 //			Vector<String>vecReturn=new Vector<String>();
 //			String sBefore = vecAll.get(0);
@@ -357,15 +379,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}//end main:
 		return sReturn;
 	}
-	
 
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	//########################################################
 	//### FLAG Handling
 	

@@ -65,7 +65,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
+	private boolean KernelExpressionIniSolverNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
 				if(this.getFlag("init")==true){
@@ -73,18 +73,18 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					break main;
 				}
 			
-				if(objFileIn==null ){
+				if(objFileIni==null ){
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileConfigKernelIni(objFileIn);						
+					this.setFileConfigKernelIni(objFileIni);						
 				}
 				
 				if(hmVariable!=null){				
 						this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
 				}else {
-					if(objFileIn.getHashMapVariable()!=null){
-						this.setHashMapVariable(objFileIn.getHashMapVariable());
+					if(hmVariable!=null){
+						this.setHashMapVariable(hmVariable);
 					}
 				}
 				
@@ -119,16 +119,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 //	 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
 //	 */	
 	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		int iReturn = -1;
 		boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
 		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 		if(objReturn==null) {
-			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			objReturnReference.set(objReturn);
-		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		}
 		main:{
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
 
 			
@@ -147,14 +147,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objReturn.isExpression(true);	
 			}
 			if(! (bIsExpression  | bIsConversion)) break main;						
-								
+			
+			solver:{
 			iReturn=0;
 			
+			boolean bUseExpressionSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+			if(!(bUseExpressionSolver | bUseFormula | bUseCall | bUseJson | bUseEncryption )) break solver;
 			
 			//Zuerst einmal <Z> - Tag herausrechen.
 			//Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
@@ -162,7 +164,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			String sLineWithExpressionUsed = sLineWithExpression;
 			
 			//Darin dann weiterrechnen...										
-			if(bUseFormula) {
+			if(bUseFormula | bUseExpressionSolver) {
 			
 				//Hier KernelZFormulIniSolverZZZ
 				//und KernelJsonInisolverZZZ verwenden
@@ -174,9 +176,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 				
 //				TODOGOON20240810; //ÄHEM das muss anders sein: Vorher werden Variablen aufgeloest und hier wird keine "FormulaSolver" verwendet.
- 				  //BZW. jetzt solle ein .solve(...) unter Verwendung eines Solves reichen....
+ 				//BZW. jetzt solle ein .solve(...) unter Verwendung eines Solves reichen....
+				//Aber: Das entfernt nicht die Tags drumherum, darum parse()...
 				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
-				int iReturnExpression = objFormulaSolver.solve(sLineWithExpressionUsed, objReturnReference);
+				int iReturnSolver = objFormulaSolver.parse(sLineWithExpressionUsed, objReturnReference);//solve(sLineWithExpressionUsed, objReturnReference); //
+				iReturn = iReturn + iReturnSolver;
 				
 //				TODOGOON20240810; //Das sollte dann wegfallen koennen, bzw. wird im obigen solve erledig.
 //				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
@@ -265,7 +269,22 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
 			}
 			
+			
+			} //end solver:
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
+				String sReturn = objReturn.getValue();
+				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
+				objReturn.setValue(sValue);								
+			}
 		}//end main:
+		
+		String sReturn = objReturn.getValue();
+		if(!sLineWithExpression.equals(sReturn)) {
+			objReturn.isParsed(true);
+		}
+		
 		if(bAnyEncryption) {				
 			iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
 		}
