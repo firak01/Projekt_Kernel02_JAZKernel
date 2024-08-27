@@ -8,6 +8,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T> {
 	private static final long serialVersionUID = -6400035649490240580L;
@@ -19,16 +20,21 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		
 	public KernelZFormulaMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathSolverNew_(saFlag);
+		KernelExpressionMathSolverNew_();
 	}
 		
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionMathSolverNew_(saFlag);
+		KernelExpressionMathSolverNew_();
+	}
+	
+	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag)  throws ExceptionZZZ{
+		super(objKernel, objFileIni, saFlag);
+		KernelExpressionMathSolverNew_();
 	}
 	
 	
-	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionMathSolverNew_() throws ExceptionZZZ {
 		 boolean bReturn = false; 
 		 main:{			 																
 				if(this.getFlag("init")==true){
@@ -68,30 +74,31 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			vecReturn = this.parseFirstVector(sLineWithExpression);			
-			String sExpression = (String) vecReturn.get(1);
-			if(!StringZZZ.isEmpty(sExpression)){
+//			vecReturn = this.parseFirstVector(sLineWithExpression);			
+//			String sExpression = (String) vecReturn.get(1);
+//			if(!StringZZZ.isEmpty(sExpression)){
 					
-				//Nun den z:operator Tag suchen
-				ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
-				if(objOperator.isExpression(sExpression)){
-					 sExpression = objOperator.parse(sExpression);					
-				}else{
-					//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
-					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-					ZTagFormulaMath_ValueZZZ<T> objValue = new ZTagFormulaMath_ValueZZZ<T>();
-					
-					String sExpressionOld = sExpression; 
-					while(objValue.isExpression(sExpression)){
-						sExpression = objValue.parse(sExpression);
+			//Nun den z:operator Tag suchen
+			String sExpression=null; 
+			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
+			if(objOperator.isExpression(sLineWithExpression)){
+				 sExpression = objOperator.parse(sLineWithExpression);					
+			}else{
+				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
+				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
+				ZTagFormulaMath_ValueZZZ<T> objValue = new ZTagFormulaMath_ValueZZZ<T>();
+				
+				String sExpressionOld = sExpression; 
+				while(objValue.isExpression(sExpression)){
+					sExpression = objValue.parse(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
-						
-						if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
-						sExpressionOld = sExpression;
-					}					
-				}
+					
+					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
+					sExpressionOld = sExpression;
+				}					
+//				}
 								
 				String sValue = sExpression;
 				

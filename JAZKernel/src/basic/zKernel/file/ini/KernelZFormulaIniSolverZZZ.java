@@ -296,10 +296,12 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			vecReturn = super.solveFirstVector(sLineWithExpression, objReturnReference);
 			if(vecReturn==null) break main;
 			
-			sReturn = VectorZZZ.implode(vecReturn);				
-			objReturn.setValue(sReturn);
+			sReturn = VectorZZZ.implode(vecReturn);							
 			if(!sLineWithExpression.equals(sReturn)) {
 				objReturn.isSolved(true);
+				objReturn.setValueFormulaSolvedAndConverted(sReturn);
+				objReturn.setValue(sReturn);
+				this.setValue(sReturn);
 			}	
 			
 			//### Nun erst der MATH Teil, ggfs. mit ersetzten Variablen
@@ -310,15 +312,21 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
 				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)) {				
-							
-					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(); 
-														
+												
+					//Hier KernelZFormulaMathSolverZZZ verwenden
+					//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
+					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
+					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
+					KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objMathSolverDummy, true);
+					
+					//Variablen sind vorher schon aufgeloest, wir brauchen also keine HashMap mit den Variablen:	HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();					
+					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+																									
 					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 					String sExpressionWithTagsOld = sExpressionWithTags;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
-						
-						TODOGOON20240826;//Aber das Parsen wird nicht ausgeführt. Interne Auflösung der MatheAusdrücke erfolgt nicht...
+												
 						String sValueMath = objMathSolver.parse(sExpressionWithTags);
 						sExpressionWithTags=sValueMath;				
 						
@@ -327,6 +335,14 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					}
 					
 					sReturn = sExpressionWithTags;
+					if(!sExpressionWithTagsOld.equals(sExpressionWithTags)) {
+						objReturn.isSolved(true);
+						objReturn.isFormulaMathSolved(true);
+						objReturn.setValueFormulaSolvedAndConverted(sReturn);
+						objReturn.setValue(sReturn);
+						this.setValue(sReturn);
+					}
+					
 				}	
 			}			
 		}//end main:

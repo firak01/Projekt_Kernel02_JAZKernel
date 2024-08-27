@@ -102,6 +102,11 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce);
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public boolean isFormulaMathSolved();
+	abstract void isFormulaMathSolved(boolean bIsFormulaMathSolved);
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//JSON
 	public boolean isJson();
 	abstract void isJson(boolean bIsJson);

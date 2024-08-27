@@ -74,12 +74,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		String sReturn = sLineWithExpression;
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			
-			sReturn = super.parse(sLineWithExpression, bRemoveSurroundingSeparators);
-			//Es gibt an dieser Stelle aber kein Entry-Objekt			
-//			if(sLineWithExpression.equals(sReturn)) {
-//					this.getEntry().isParsed(true);
-//			}
+			TODOGOON20240827;
+			sReturn = super.parse(sLineWithExpression, bRemoveSurroundingSeparators);			
 		}//end main:
 		return sReturn;
 	}

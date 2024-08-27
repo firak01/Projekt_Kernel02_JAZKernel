@@ -118,20 +118,11 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			//Bei einfachen Tags den Ersten Vektor holen
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
-			
-			//Bei einfachen Tags, den Wert zurückgeben
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
-			
-			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);			
-			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
-//Es gibt an dieser Stelle aber kein Entry-Objekt			
-//			if(sLineWithExpression.equals(sReturn)) {
-//					this.getEntry().isParsed(true);
-//			}
+			if(vecAll!=null) {
+				sReturn = VectorZZZ.implode(vecAll);			
+				this.setValue(sReturn);				
+			}
 		}//end main:
 		return sReturn;
 	}	

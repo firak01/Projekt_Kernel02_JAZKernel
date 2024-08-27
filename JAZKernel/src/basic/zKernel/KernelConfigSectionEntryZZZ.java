@@ -50,6 +50,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bPathSolved = false;
 	protected boolean bVariableSolved = false;
 	
+	protected boolean bFormulaMathSolved = false;
+	
 	protected boolean bConversion = false;
 	protected boolean bConverted = false;
 	protected VectorExtendedDifferenceZZZ<String> vecValueAsConversion = new VectorExtendedDifferenceZZZ<String>();
@@ -569,6 +571,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void isFormula(boolean bFormula) {
 		this.bFormula = bFormula;
 	}
+	
+	@Override 
+	public void isFormulaMathSolved(boolean bFormulaSolved) {
+		this.bFormulaMathSolved = bFormulaSolved;
+	}
+	
+	@Override
+	public boolean isFormulaMathSolved() {
+		return this.bFormulaMathSolved; 
+	} 
+	
 	
 	@Override
 	public boolean isConversion() {
