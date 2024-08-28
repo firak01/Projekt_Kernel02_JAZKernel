@@ -70,52 +70,54 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		main:{
+			String sValue = null;
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-//			vecReturn = this.parseFirstVector(sLineWithExpression);			
-//			String sExpression = (String) vecReturn.get(1);
-//			if(!StringZZZ.isEmpty(sExpression)){
-					
+			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
+			String sExpression = (String) vecReturn.get(1);
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+		    //Das Ziel ist, das der Operator nur mit der reinen Formel arbeitet. Da er umgebenden Text nicht herausfiltern kann.
 			//Nun den z:operator Tag suchen
-			String sExpression=null; 
+			String sFormulaExpression = sExpression;
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
-			if(objOperator.isExpression(sLineWithExpression)){
-				 sExpression = objOperator.parse(sLineWithExpression);					
+			if(objOperator.isExpression(sFormulaExpression)){
+				 sExpression = objOperator.parse(sFormulaExpression);
+				 sValue = sExpression;
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 				ZTagFormulaMath_ValueZZZ<T> objValue = new ZTagFormulaMath_ValueZZZ<T>();
 				
-				String sExpressionOld = sExpression; 
-				while(objValue.isExpression(sExpression)){
-					sExpression = objValue.parse(sExpression);
+				String sExpressionOld = sFormulaExpression; 
+				while(objValue.isExpression(sFormulaExpression)){
+					sExpression = objValue.parse(sFormulaExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
 					
 					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
 					sExpressionOld = sExpression;
-				}					
-//				}
-								
-				String sValue = sExpression;
-				
-				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-				if(sValue!=null){
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-					vecReturn.add(1, sValue);
-				}		
-				
-				// Z-Tags entfernen.
-				if(bRemoveSurroundingSeparators) {
-					String sTagStartZ = "<Z>";
-					String sTagEndZ = "</Z>";
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
-				}
+				}													
+				 sValue = sExpression;
+			}//end if operator.isExpression(...)
+			
+			//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+			if(sValue!=null){
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+				vecReturn.add(1, sValue);
+			}		
+			
+			// Z-Tags entfernen.
+			if(bRemoveSurroundingSeparators) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
-		}
+		}//end main:
 		return vecReturn;
 	}
 }//End class

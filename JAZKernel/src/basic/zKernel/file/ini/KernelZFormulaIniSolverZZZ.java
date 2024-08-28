@@ -327,8 +327,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					String sExpressionWithTagsOld = sExpressionWithTags;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
 												
-						String sValueMath = objMathSolver.parse(sExpressionWithTags);
-						sExpressionWithTags=sValueMath;				
+						String sExpressionMathParsedAndSolved = objMathSolver.parse(sExpressionWithTags);
+						sExpressionWithTags=sExpressionMathParsedAndSolved;				
 						
 						if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTagsOld = sExpressionWithTags;					
