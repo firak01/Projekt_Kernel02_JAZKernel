@@ -115,26 +115,48 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return saReturn;
 	}
 	
-	//### Aus IParseEnabled
+	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parse(sLineWithExpression, true);
+	}
+			
+//	@Override
+//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//				
+//			//Bei einfachen Tags den Ersten Vektor holen
+//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
+//			
+//			//Bei einfachen Tags, den Wert als Wert zur Verfügung stellen.
+//			sReturn = (String) vecAll.get(1);
+//			this.setValue(sReturn);
+//			
+//			//als Rueckgabewert aber die gesamte, bisher aufgeloeste Zeile.
+//			String sExpressionImploded = VectorZZZ.implode(vecAll);
+//			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+//		}//end main:
+//		return sReturn;
+//	}	
+	
+	
+	@Override
+	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-				
-			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			
-			//Bei einfachen Tags, den Wert zurückgeben
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
-			
-			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
-			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
+			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
+			if(vecAll!=null) {
+				sReturn = VectorZZZ.implode(vecAll);			
+				this.setValue(vecAll.get(1));				
+			}
 		}//end main:
 		return sReturn;
 	}	
+	
 		
 	
 	

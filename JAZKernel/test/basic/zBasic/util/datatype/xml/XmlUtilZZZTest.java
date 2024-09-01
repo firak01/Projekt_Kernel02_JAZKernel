@@ -37,9 +37,10 @@ public class XmlUtilZZZTest extends TestCase{
 		    
 		    Vector<String> vec02 = XmlUtilZZZ.computeExpressionFirstVector(sTestXml, objTagType);		    
 		    assertNotNull(vec02);
-		    assertTrue(vec02.size()==2);
-		    assertTrue(vec02.get(0).equals("aBc"));		    
-		    assertTrue(vec02.get(1).equals("xYz"));
+		    assertTrue(vec02.size()==3);
+		    assertTrue(vec02.get(0).equals("aBc"));
+		    assertTrue(vec02.get(1).equals(""));
+		    assertTrue(vec02.get(2).equals("xYz"));
 		    
 		 }catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());

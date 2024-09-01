@@ -103,7 +103,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 					//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 					if(sValue!=null){
 						if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-						vecReturn.add(1, sValue);
+						if(!StringZZZ.isEmpty(sValue)){
+							vecReturn.add(1, sValue);
+						}else {
+							vecReturn.add(1, "");
+						}
 					}	
 				}
 			}//end main:

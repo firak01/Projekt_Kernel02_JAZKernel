@@ -20,6 +20,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -79,27 +80,51 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01(){
+		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+		String sTagStartZ; String sTagEndZ;
+		boolean btemp;
+		sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+		
 		try {
-			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+			//Nun erst werden Pfade ersetzt
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+						
+			//Nun erst werden Variablen ersetzt			
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			//noch nicht sofort entschluesseln
+			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
 			
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.parse(sLineWithExpression);
-			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+			sValue = objExpressionSolver.parse(sExpressionSource);
+			assertEquals(sExpression, sValue);
 		
-			//Anwenden der ersten Formel		
-			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.parse(sLineWithExpression);			
-			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
+			//Anwenden der ersten Formel, nun Entschluesselung	
+			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
+		
+			sExpression = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
+			sValue = objExpressionSolver.parse(sExpressionSource);			
+			assertEquals(sExpression, sValue);
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
 			
@@ -163,27 +188,54 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute02(){
+		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+		String sTagStartZ;	String sTagEndZ;
+		boolean btemp;
+		sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+		
 		try {
-			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+			//Nun erst werden Pfade ersetzt
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
-			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+			//Nun erst werden Variablen ersetzt			
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			//noch nicht sofort entschluesseln
+			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
+						
+			//Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 						
-			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.parse(sLineWithExpression);
-			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
-		
-			//Anwenden der zweiten Formel		
-			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
-			sValue = objExpressionSolver.parse(sLineWithExpression);			
-			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			//Gesamtberechnung durchführen
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
 			
+			sValue = objExpressionSolver.parse(sExpressionSource);
+			assertEquals(sExpression, sValue);
+		
+			
+			//#############################################################
+			//Sofort entschluesseln
+			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
+				
+			sExpressionSource = "<Z><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z>";			
+			sExpression = "abcde";			
+			
+			sValue = objExpressionSolver.parse(sExpressionSource);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			assertEquals(sExpression, sValue);
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -197,6 +249,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute03(){
 		try {
+			TODOGOON20240901 Muss angepasst werden;
+			
 			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
 			
 			

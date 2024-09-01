@@ -122,14 +122,23 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 					
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 				if(!bIsError){
-				if(vecReturn.size()>=1) vecReturn.remove(0)	;
-				vecReturn.add(0,"");
-				
-				if(vecReturn.size()>=2) vecReturn.remove(1);
-				vecReturn.add(1, sExpression);
-				
-				if(vecReturn.size()>=3) vecReturn.remove(2);
-				vecReturn.add(2,"");
+					//if(vecReturn.size()==0) vecReturn.add(0,"");					
+					if(vecReturn.size()>=1) {
+						vecReturn.remove(0);
+						vecReturn.add(0,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
+					}else if(vecReturn.size()==0) {
+						vecReturn.add(0,"");
+					}
+					
+					if(vecReturn.size()>=2) vecReturn.remove(1);
+					vecReturn.add(1, sExpression);
+					
+					if(vecReturn.size()>=3) {
+						vecReturn.remove(2);
+						vecReturn.add(2,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
+					}else if(vecReturn.size()==2) {
+						vecReturn.add(2,"");
+					}					
 				}					
 			}//end main:
 			return vecReturn;

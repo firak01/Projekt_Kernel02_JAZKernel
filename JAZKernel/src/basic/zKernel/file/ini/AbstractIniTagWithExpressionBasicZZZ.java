@@ -290,7 +290,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 			sReturn = VectorZZZ.implode(vecAll);
-			this.setValue(sReturn);
+			this.setValue(vecAll.get(1));
 			
 		}//end main:
 		return sReturn;

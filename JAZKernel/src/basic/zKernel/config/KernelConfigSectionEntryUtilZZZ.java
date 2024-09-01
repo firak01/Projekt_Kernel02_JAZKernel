@@ -528,75 +528,95 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	}	
 	
 	public static void getValueExpressionTagSurroundingRemoved(Vector<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
-		main:{
-			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty(sTagEnd) && StringZZZ.isEmpty(sTagStart))break main;
-			
-			
-			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			String sBefore = vecReturn.get(0);
-			String sValue = vecReturn.get(1);
-			String sRest = vecReturn.get(2);
-			
-			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
-			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
-			//         Will man sie loswerden, dann muessen halt die inneren Z: - Tags aufgeloest werden.
-			//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
-			boolean bSkip = false;
-			if(StringZZZ.contains(sValue, "<Z:")) {
-				if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
-					if(!bSkip) bSkip = true;
+			main:{
+				if(vecReturn==null)break main;
+				if(StringZZZ.isEmpty(sTagEnd) && StringZZZ.isEmpty(sTagStart))break main;
+				
+				
+				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+				String sBefore = vecReturn.get(0);
+				String sValue = vecReturn.get(1);
+				String sRest = vecReturn.get(2);
+				
+				//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
+				//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
+				//         Will man sie loswerden, dann muessen halt die inneren Z: - Tags aufgeloest werden.
+				//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
+				boolean bSkip = false;
+				if(StringZZZ.contains(sValue, "<Z:")) {
+					if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
+						if(!bSkip) bSkip = true;
+					}
+					if(StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
+						if(!bSkip) bSkip = true;
+					}
 				}
-				if(StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
-					if(!bSkip) bSkip = true;
+				if(bSkip) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Weitere Formeln im String vermutet. Entferne aeusser Z-Tags nicht.");
+					break main;
 				}
-			}
-			if(bSkip) {
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Weitere Formeln im String vermutet. Entferne aeusser Z-Tags nicht.");
-				break main;
-			}
-			
-			
-			String sBeforeOld = sBefore;
-			String sRestOld = sRest;
-			while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-			
-			if(!StringZZZ.isEmpty(sBefore)){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-				//Hier: Nur dann, wenn es nicht der String selber ist.
-				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
-				if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
-					sBefore = StringZZZ.leftback(sBefore, sTagStart);
+				
+				
+				String sBeforeOld = sBefore;
+				String sRestOld = sRest;
+				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+				
+				if(!StringZZZ.isEmpty(sBefore)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+					//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+					//Hier: Nur dann, wenn es nicht der String selber ist.
+					//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+					//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
+					if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
+						sBefore = StringZZZ.leftback(sBefore, sTagStart);
+					}
+					vecReturn.add(0, sBefore);
+				}else{
+					vecReturn.add(0,"");
 				}
-				vecReturn.add(0, sBefore);
-			}else{
-				vecReturn.add(0,"");
-			}
-													
+														
+//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//				vecReturn.add(1, sValue);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
+				if(!StringZZZ.isEmpty(sRest)){	
+					//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+					//Hier: Nur dann, wenn es nicht der String selber ist.
+					//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+					//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
+					
+					if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+						sRest = StringZZZ.rightback(sRest, sTagEnd);
+					}
+					vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
+				}else{
+					vecReturn.add(2,"");
+				}
+				
+				if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
+				sBeforeOld=sBefore;
+				sRestOld=sRest;
+			}//end while
+				
+			//ggfs. aus dem Mittleren Teil auch entfernen
+			while(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd) & StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+
+					//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des mittleren Teils entfernen
+					//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
+					if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+						sBefore = StringZZZ.leftback(sValue, sTagEnd);
+						sValue = sBefore;
+					}
+					
+					if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+						sRest = StringZZZ.rightback(sValue, sTagStart);
+						sValue = sRest;
+					}										
+			}//end while
+			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 			vecReturn.add(1, sValue);
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
-			if(!StringZZZ.isEmpty(sRest)){	
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-				//Hier: Nur dann, wenn es nicht der String selber ist.
-				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
-				
-				if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-					sRest = StringZZZ.rightback(sRest, sTagEnd);
-				}
-				vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-			}else{
-				vecReturn.add(2,"");
-			}
-			
-			if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
-			sBeforeOld=sBefore;
-			sRestOld=sRest;
-		}//end while
 		}//end main
 	}	
 		

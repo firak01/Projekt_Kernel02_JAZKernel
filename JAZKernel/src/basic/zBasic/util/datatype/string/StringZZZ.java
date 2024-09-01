@@ -1324,34 +1324,38 @@ public class StringZZZ implements IConstantZZZ{
 			
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
-
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sLeftSep + sMid + sRightSep);			
-			
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);	
-			}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-				vecReturn.add(sLeft);
+			if(vecReturn!=null) {
+				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					vecReturn.add(0, sLeft);					
+	
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sLeftSep + sMid + sRightSep);			
 				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-				vecReturn.add(sMid);
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
-				vecReturn.add(sRight);
-				
-			}else {
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-				vecReturn.add("");
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-				vecReturn.add(sStringToParse);
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
-				vecReturn.add("");
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+					vecReturn.add(2, sRight);	
+				}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+					vecReturn.add(0, sLeft);
+					
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+					vecReturn.add(1, sMid);
+					
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
+					vecReturn.add(2, sRight);
+					
+				}else {
+					if(vecReturn.size()==0) vecReturn.add(0, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+//					vecReturn.add("");
+					
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+					vecReturn.add(1, sStringToParse);
+					
+					if(vecReturn.size()==2) vecReturn.add(2, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
+//					vecReturn.add("");
+				}
 			}
 		}
 		return vecReturn;		
@@ -1400,23 +1404,40 @@ public class StringZZZ implements IConstantZZZ{
 									
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators ==true){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+				if(!StringZZZ.isEmpty(sLeft)){
+					vecReturn.add(0, sLeft);
+				}else {
+					vecReturn.add(0, "");
+				}
 				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
 				vecReturn.add(1, sMidSep);
 				
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);
+				if(!StringZZZ.isEmpty(sRight)){
+					vecReturn.add(2, sRight);
+				}else {
+					vecReturn.add(2, "");
+				}
+				
 			}else if(bReturnSeparators ==false){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);										
+				if(!StringZZZ.isEmpty(sLeft)){
+					vecReturn.add(0, sLeft);
+				}else {
+					vecReturn.add(0, "");
+				}
 				
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
 				vecReturn.add(1, "");  //Also ein Leerstring
 				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);										
+				if(!StringZZZ.isEmpty(sRight)){
+					vecReturn.add(2, sRight);
+				}else {
+					vecReturn.add(2, "");
+				}
 			}
 		}
 		return vecReturn;
@@ -1483,39 +1504,63 @@ public class StringZZZ implements IConstantZZZ{
 			}else {
 				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
 			}
-						
-			//Nun die Werte in den ErgebnisVector zusammenfassen
-			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sLeftSep + sMid + sRightSep);
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);
-			}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sMid);
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);
 			
-			} else {
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeft);
+			if(vecReturn!=null) {
+				//Nun die Werte in den ErgebnisVector zusammenfassen
+				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
+										
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sLeftSep + sMid + sRightSep);
+					
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);											
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
+				}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
+					
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sMid);
+					
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
 				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, sMid);
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight);
+				} else {
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
+					
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sMid);
+					
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
+				}
 			}
-			
-			
 		}
 		return vecReturn;
 	}
@@ -1545,6 +1590,8 @@ public class StringZZZ implements IConstantZZZ{
 			
 			if(bReturnSeparators ==true){				
 				vecReturn.add(sSeparator);
+			}else {
+				vecReturn.add("");
 			}
 						
 			vecReturn.add(sRemainingTagged);									

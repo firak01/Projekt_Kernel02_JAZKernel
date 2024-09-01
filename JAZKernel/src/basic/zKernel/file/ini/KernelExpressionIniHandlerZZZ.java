@@ -134,7 +134,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
 
 			
-			//TODOGOON20240810; //jetzt sollte eigentlich hier parseFirstVector mit Referenz IKernelConfigSectionEntryZZZ passieren.
+			//TODOGOON20240810; //jetzt sollte eigentlich hier super.parse()
+								//und diese Anpassung in .parseFirstVector() mit Referenz IKernelConfigSectionEntryZZZ passieren.
 						        //und darin dann das machen...
 			
 			//Aber <z:Null/> und <z:Empty/> muessen auch behandelt werden durch die Expression verarbeitung

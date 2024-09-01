@@ -55,6 +55,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		AbstractKernelIniTagNew_(objKernel, null);
 	}
 	
+	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ {
+		super(sFlag);
+		AbstractKernelIniTagNew_(objKernel, null);
+	}
+	
 	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractKernelIniTagNew_(objKernel, null);

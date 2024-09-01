@@ -313,8 +313,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 								
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				vecReturn.add(1, sExpression);
-
+				if(!StringZZZ.isEmpty(sExpression)){
+					vecReturn.add(1, sExpression);
+				}else {
+					vecReturn.add(1, "");
+				}
+			
 			} //end if sExpression = ""					
 		}//end main:
 		return vecReturn;

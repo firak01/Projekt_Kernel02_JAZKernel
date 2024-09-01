@@ -55,7 +55,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);
-			this.setValue(sReturn);
+			this.setValue(vecAll.get(1));
 			
 		}//end main:
 		return sReturn;
@@ -70,7 +70,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 //	}
 	
 	
-	//### aus IIniTagWithExpressionZZZ
+	//### aus IIniTagWithExpressionZZZ (siehe auch: IExpressionUserZZZ)
 	@Override
 	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();

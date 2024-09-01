@@ -218,15 +218,23 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				sValue = "<" + StringZZZ.left(sValue, sValue.length()-1);
 			}
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);			
-			vecReturn.add(2, sValue);
+			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+			if(!StringZZZ.isEmpty(sValue)){
+				vecReturn.add(2, sValue);
+			}else {
+				vecReturn.add(2, "");
+			}
 			
 			//2. Vorne den Tag zu haben ist gut, hinten aber muss der DummyTag "<" entfernt werden.
 			sValue = vecReturn.get(1);
 			sValue = StringZZZ.stripRight(sValue, "<");
 			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);			
-			vecReturn.add(1, sValue);
+			if(!StringZZZ.isEmpty(sValue)){
+				vecReturn.add(1, sValue);
+			}else {
+				vecReturn.add(1, "");
+			}
 			
 			//Problem: Parsen und solven sind hier zusammen...
 			//         Es wird also beim Nachsehen in der INI - Datei ein weiterer Solver gestartet.
@@ -281,7 +289,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				//vecReturn.add(0, "");	
 				
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-				vecReturn.add(1, sValuePathed);	
+				if(!StringZZZ.isEmpty(sValuePathed)){
+					vecReturn.add(1, sValuePathed);
+				}else {
+					vecReturn.add(1, "");
+				}
 				
 				//if(vecReturn.size()>=3) vecReturn.removeElementAt(2);						
 				//vecReturn.add(2, "");

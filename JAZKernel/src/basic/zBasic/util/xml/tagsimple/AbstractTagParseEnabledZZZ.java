@@ -65,9 +65,10 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		String sReturn = null;
 		main:{
 			Vector<String> vecParse = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
-			this.setValue(vecParse.get(1)); //uebernimm also das 1. Element
-			
-			sReturn = VectorZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
+			if(vecParse!=null) {
+				this.setValue(vecParse.get(1)); //uebernimm also das 1. Element			
+				sReturn = VectorZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
+			}
 		}
 		return sReturn;
 	}

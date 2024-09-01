@@ -1,6 +1,11 @@
 package basic.zBasic;
 
+import java.util.Vector;
+
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
 //Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
@@ -121,6 +126,10 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	public void setRaw(String sRaw) throws ExceptionZZZ {
 		this.getRawVector().add(sRaw);
 	}
+	
+	
+	
+	
 	
 	
 }

@@ -56,10 +56,9 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 
 			// Bei einfachen Tag Werten reicht das...
-			// String sReturn = (String) vecAll.get(1);
-			// this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden
-			// in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
-
+			this.setValue(vecAll.get(1)); //Merke: Internes Entry-Objekt nutzen. 
+													//Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
+			
 			// ...bei verschachtelten (CASCADED) Werten aber zusammenfassen.
 			String sExpressionWithTags = VectorZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
 			

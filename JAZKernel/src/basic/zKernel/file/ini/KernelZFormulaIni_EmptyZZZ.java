@@ -152,12 +152,10 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
+			this.setValue(vecAll.get(1));
 			
 			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
-			sReturn = sExpressionImploded;  //Merke: Der eigentliche Wert des Tags unterscheidet sich also vom Gesamt-compute
+			sReturn = VectorZZZ.implode(vecAll);  //Merke: Der eigentliche Wert des Tags unterscheidet sich also vom Gesamt-compute
 		}//end main:
 		return sReturn;
 	}	

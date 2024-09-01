@@ -9,6 +9,7 @@ import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
+import basic.zKernel.file.ini.IExpressionUserZZZ;
 
 public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
 	private static final long serialVersionUID = -367756957686201953L;
@@ -121,7 +122,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
 			if(vecAll!=null) {
 				sReturn = VectorZZZ.implode(vecAll);			
-				this.setValue(sReturn);				
+				this.setValue(vecAll.get(1));
 			}
 		}//end main:
 		return sReturn;
@@ -156,5 +157,81 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
 		}
 		return vecReturn;
+	}
+	
+	@Override
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		boolean bReturn=false;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+		
+			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
+			if(bReturn) break main;
+			
+			
+		}//end main
+	return bReturn;
+	}
+	
+	//### aus IExpressionUserZZZ
+	@Override
+	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
+		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+	}	
+	
+	@Override
+	public String parseAsExpression() throws ExceptionZZZ {
+		String sExpression = this.getValue();
+		return this.parseAsExpression(sExpression);
+	}	
+
+
+	@Override
+	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
+			
+			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
+			sReturn = VectorZZZ.implode(vecAll);
+			this.setValue(vecAll.get(1));
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();
+		main:{
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+		}
+		return vecReturn;
+			
+	}
+	
+	
+	//### aus IExpressionUserZZZ
+	@Override
+	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+						
+			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
+			
+		}
+		return vecReturn;
+	}
+
+	@Override
+	public String convert(String sLine) throws ExceptionZZZ {
+		return sLine; //Also was reinkommt wieder rausgeben, keine spezielle Konvertierung. Die muss in der erbenden Klasse implementiert werden.
 	}
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertableZZZ;
@@ -48,7 +49,13 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
+/**
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 31.08.2024, 08:07:50
+ * 
+ */
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IValueVariableUserZZZ, IIniTagWithExpressionZVariableZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -1453,15 +1460,36 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		this.objFileIni = objIniFile;
 	}
 
+	//### Aus IValueVariableUserZZZ
+	@Override
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
 	}
+	
+	@Override
 	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
 		if(this.hmVariable==null){
 			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
 			this.setHashMapVariable(hmVariable);		
 		}
 		return this.hmVariable;
+	}
+	
+	@Override
+	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		if(this.hmVariable==null){
+			this.hmVariable = hmVariable;
+		}else{
+			if(hmVariable==null){
+				//nix....
+			}else{
+				//füge Werte hinzu.
+				Set<String> sSet =  hmVariable.keySet();
+				for(String sKey : sSet){
+					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
+				}
+			}
+		}	
 	}
 	
 	/**Setze die Variable. 
@@ -1473,6 +1501,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 * @param bUncacheFormula
 	 * @throws ExceptionZZZ 
 	 */
+	//Nein, speziell nur dann, wenn ein Cache vorliegt @Override
 	public void setVariable(String sVariable, String sValue, boolean bUncacheFormula) throws ExceptionZZZ{
 			this.getHashMapVariable().put(sVariable, sValue);		
 		
@@ -1484,9 +1513,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			}
 	}
 	
+	@Override
 	public void setVariable(String sVariable, String sValue) throws ExceptionZZZ{
 		this.setVariable(sVariable, sValue, false);
 	}	
+	
+	@Override
 	public String getVariable(String sVariable){
 		return (String) this.getHashMapVariable().get(sVariable);
 	}
@@ -1710,6 +1742,47 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
+	//### aus IKernelZFormulaIniZZZ
+	@Override
+	public boolean getFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IIniTagWithExpressionZVariableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IIniTagWithExpressionZVariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IIniTagWithExpressionZVariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+
 	//### aus IKernelZFormulaIni_PathZZZ
 	@Override
 	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {

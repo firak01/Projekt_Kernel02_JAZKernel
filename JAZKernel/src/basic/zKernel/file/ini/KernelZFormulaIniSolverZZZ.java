@@ -293,6 +293,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		objReturn.setRaw(sLineWithExpression);
 		
 		main:{			
+			//!!! Pfade und Variablen ersetzen !!!
 			vecReturn = super.solveFirstVector(sLineWithExpression, objReturnReference);
 			if(vecReturn==null) break main;
 			
@@ -301,7 +302,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				objReturn.isSolved(true);
 				objReturn.setValueFormulaSolvedAndConverted(sReturn);
 				objReturn.setValue(sReturn);
-				this.setValue(sReturn);
+				objReturn.setValueAsExpression(sReturn);
+				this.setValue(sReturn);				
 			}	
 			
 			//### Nun erst der MATH Teil, ggfs. mit ersetzten Variablen
@@ -349,14 +351,16 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 		if(vecReturn!=null) {
-			if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-			vecReturn.add(0, "");
+			if(vecReturn.size()==0) vecReturn.add(0, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
 			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			vecReturn.add(1, sReturn);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-			vecReturn.add(2, "");
+			if(vecReturn.size()==2) vecReturn.add(2, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
 		}			
 		return vecReturn;			
 	}
@@ -395,7 +399,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)) {				
 							
 					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-					KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(); 
 														
 					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 					String sExpressionWithTagsOld = sExpressionWithTags;
@@ -427,44 +431,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				String sTagEnd = this.getTagClosing();
 				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
 				sReturn = sValue;
-			}
-		
-//			Vector<String>vecReturn=new Vector<String>();
-//			String sBefore = vecAll.get(0);
-//			String sRest = vecAll.get(2);
-//			if(!StringZZZ.isEmpty(sBefore)){
-//				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-//				//Hier: Nur dann, wenn es nicht der String selber ist.
-//				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-//				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
-//				if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
-//					sBefore = StringZZZ.leftback(sBefore, sTagStart);
-//				}
-//				vecReturn.add(0, sBefore);
-//			}else{
-//				vecReturn.add(0,"");
-//			}
-//													
-//			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//			vecReturn.add(1, sValue);
-//			
-//			if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
-//			if(!StringZZZ.isEmpty(sRest)){	
-//				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-//				//Hier: Nur dann, wenn es nicht der String selber ist.
-//				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-//				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
-//				
-//				if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-//					sRest = StringZZZ.rightback(sRest, sTagEnd);
-//				}
-//				vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-//			}else{
-//				vecReturn.add(2,"");
-//			}
-			
-//			sReturn = VectorZZZ.implode(vecReturn);			
+			}		
 		}//end main:
 		
 		objReturn.setValue(sReturn);

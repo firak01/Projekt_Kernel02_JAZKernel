@@ -139,16 +139,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
-			objStreamFile.println("WertAencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertAencrypted="+sEncrypted);
+			objStreamFile.println("WertAforDecrypt="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true,false);
 			objStreamFile.println("WertB="+sValue);
-			objStreamFile.println("WertBencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertBencrypted="+sEncrypted);
+			objStreamFile.println("WertBforDecrypt="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false,false);
 			objStreamFile.println("WertC="+sValue);
-			objStreamFile.println("WertCencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertCencrypted="+sEncrypted);
+			objStreamFile.println("WertCForDecrypt="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			//20230505 Tests fuer die Arbeit mit JavaCall Aufrufen
 			objStreamFile.println("[Section for testCall]");
@@ -206,8 +209,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			bFlagAvailable = objExpressionHandler.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionHandler.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+ IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -529,10 +532,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	public void testComputeEncrypted(){			
 		try {					
 			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION +"' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted").getValue();
+			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAforDecrypt").getValue();
 			assertEquals(KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT,sExpression);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
