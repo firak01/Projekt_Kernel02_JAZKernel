@@ -1631,11 +1631,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		try {
 			//###############################################	
 			//### Verschluesselten Ausdruck aus INI-Datei lesen
-			//###############################################
-			sSection = "Section for testPassVariable";
-			sProperty = "Formula2";
-			sExpressionSource = "Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.";
-			
+			//###############################################			
 			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -1708,30 +1704,70 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		}
 	}
 	
-	public void testComputeJson() {		
+	public void testComputeJson() {	
+		boolean btemp; String sSection; String sProperty; String sValue;
+		String sExpressionSource; String sExpression;
+		
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
+			//###############################################	
+			//### JSON Ausdruck aus INI-Datei lesen
+			//###############################################
 			
-			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
-			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-			objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true);
+			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			//Nun erst werden Pfade ersetzt
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+						
+			//Nun erst werden Variablen ersetzt			
+			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); //Damit der Wert NICHT sofort ausgerechnet wird
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+			
+			//+++ Im 1. Lauf JSON noch nicht verwenden
+			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+					
 			//Anwenden der ersten Formel
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
-			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
-			assertNotNull(sExpression);
+			sSection = "Section for testJsonHashmap";
+			sProperty = "Map1";
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			
-			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+			
+//			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+//			assertNotNull(sValue);
+//			assertEquals(sExpression, sValue);
+			
+			//+++ Weiterer Lauf mit objEntry, aber immer noch keine JSONMAP verwenden			
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
 			
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
-			objFileIniTest.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);
-			objFileIniTest.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
-			objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
-			bIsJson = objEntry.isJson();
-			assertTrue(bIsJson);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.
+			//+++ Nun JSONMAP verwenden			
+			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
+			btemp = objFileIniTest.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'", btemp);
+						
+			objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
+			bIsJson = objEntry.isJson();
+			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			
+			TODOGOON20240903;//Den Wert pruefen.
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

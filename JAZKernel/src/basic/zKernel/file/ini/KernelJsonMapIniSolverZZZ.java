@@ -15,7 +15,9 @@ import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
@@ -63,9 +65,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				bReturn = true;
 				break main;
 			}
-				
-			this.setFileConfigKernelIni(objFileIni);
-			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+							
+			this.setFileConfigKernelIni(objFileIni);		
 				
 			bReturn = true;
 	 	}//end main:
@@ -76,68 +77,146 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
-		return this.sTagName;
+		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
 		
-	/**Eine HashMap wird zum String umgewandelt. 
-	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
-	 * @param sLineWithExpression
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
-	 */
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{			
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-				
-			sReturn = sLineWithExpression;
-			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
-			if(!this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)) break main;
-			
-			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
-			if(hmReturn!=null) {
-				sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
-			}
+//	/**Eine HashMap wird zum String umgewandelt. 
+//	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
+//	 * @param sLineWithExpression
+//	 * @return
+//	 * @throws ExceptionZZZ
+//	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
+//	 */
+//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{			
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+//				
+//			sReturn = sLineWithExpression;
+//			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
+//			if(!this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)) break main;
+//			
+//			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
+//			if(hmReturn!=null) {
+//				sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
+//			}
+//		}
+//		return sReturn;
+//	}
+//	
+//	
+		
+	//### aus IParseEnabled
+		@Override
+		public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+			return this.parseFirstVector(sLineWithExpression, true);
 		}
-		return sReturn;
-	}
+		
+		//Analog zu KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
+		@Override
+		public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+			Vector<String>vecReturn = new Vector<String>();
+			String sReturn = sLineWithExpression;
+			main:{
+				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				
+//				if().getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+//				
+//				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+//				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+//				
+				
+				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);		
+				if(!bUseJson) break main;
+				
+				boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);		
+				if(!bUseJsonMap) break main;
+				
+				
+				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+				//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+				//Z:math drumherum entfernen
+				vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
+				String sExpression = (String) vecReturn.get(1);
+				if(StringZZZ.isEmpty(sExpression)) break main;
+				
+				//++++++++++++++++++++++++++++++
+			    //Das Ziel ist, nun die JSON:MAP umzuwandeln
+				HashMap<String,String> hmReturn = this.computeHashMap(sExpression);
+				if(hmReturn!=null) {
+					sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
+				}
+				
+			}//end main:
+			
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+			if(sReturn!=null){
+				if(vecReturn.size()==0) vecReturn.add(0,"");
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+				if(!StringZZZ.isEmpty(sReturn)){
+					vecReturn.add(1, sReturn);
+				}else {
+					vecReturn.add(1, "");
+				}
+				
+				if(vecReturn.size()==2) vecReturn.add(2,"");			
+			}		
+			
+			// Z-Tags entfernen.
+			if(bRemoveSurroundingSeparators) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+			}
+			
+			return vecReturn;
+		}
 	
-	
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap hmReturn = new HashMap<String,String>();
+		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
-			String sReturn = "";
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			//Keine weiteren Flags verwenden, ggfs. nur noch Formeln aufloesen....
 			
-			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
-			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
-			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			
-			//Beschränke das ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturn = vecAll.get(1);
-			if(this.getFlag("useFormula_math")==true){				
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);		
+			boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);				
+			if(bUseFormula && bUseFormulaMath){		
+				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+												
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+				KernelZFormulaMathSolverZZZ<T> formulaSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
+				
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(objKernel, saFlagZpassed);
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
-				while(objMathSolver.isExpression(sReturn)){
-					String sValueMath = objMathSolver.parse(sReturn);
-					sReturn=sValueMath;				
+				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?				
+				boolean bAnyFormula = false;
+				String sRaw = sReturn;
+				String sRawOld = sRaw;
+				while(objMathSolver.isExpression(sRaw)){
+					bAnyFormula = true;
+						
+					String sValueMath = objMathSolver.parse(sReturn);										
+					if(!StringZZZ.equals(sRaw, sValueMath)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + sValueMath +"'");
+					}else {
+						break;
+					}
+					sRaw = sReturn;
+					if(sRawOld.equals(sRaw)) break; //Sonst Endlosschleife.
+					sRawOld = sRaw;
+					sReturn = sValueMath;					
 				}	
-				//sReturn = VectorZZZ.implode(vecAll);
+				
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen

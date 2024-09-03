@@ -22,7 +22,12 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		super(saFlag);
 		KernelExpressionMathSolverNew_();
 	}
-		
+	
+	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+		KernelExpressionMathSolverNew_();
+	}
+	
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathSolverNew_();
@@ -66,11 +71,11 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return this.parseFirstVector(sLineWithExpression, true);
 	}
 	
-	//Analog zu KernelEncrytptionIniSolver aufbauen...
+	//Analog zu KernelJsonMapInisolver, KernelEncrytptionIniSolver aufbauen...
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
-		String sValue = sLineWithExpression;
+		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);		
@@ -94,7 +99,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
 			if(objOperator.isExpression(sFormulaExpression)){
 				 sExpression = objOperator.parse(sFormulaExpression);
-				 sValue = sExpression;
+				 sReturn = sExpression;
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
@@ -110,19 +115,19 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
 					sExpressionOld = sExpression;
 				}													
-				 sValue = sExpression;
+				 sReturn = sExpression;
 			}//end if operator.isExpression(...)
 			
 			
 		}//end main:
 		
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(sValue!=null){
+		if(sReturn!=null){
 			if(vecReturn.size()==0) vecReturn.add(0,"");
 			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sValue)){
-				vecReturn.add(1, sValue);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
 			}else {
 				vecReturn.add(1, "");
 			}

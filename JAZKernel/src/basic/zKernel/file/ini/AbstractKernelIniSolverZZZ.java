@@ -213,7 +213,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//mache die Aufloesung von Pfaden und Variablen
 			String sExpressionSolved = this.solve(sExpression);
 			
-			//NUN DEN INNERHALB DER SOLVE BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+			//NUN DEN INNERHALB DER SOLVE BERECHNUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 			if(!StringZZZ.isEmpty(sExpressionSolved)){
 				vecReturn.add(1, sExpressionSolved);

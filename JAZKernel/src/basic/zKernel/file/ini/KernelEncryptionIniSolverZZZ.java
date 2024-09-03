@@ -24,6 +24,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
+		KernelEncryptionIniSolverNew_();
 	}
 		
 	public KernelEncryptionIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
@@ -50,11 +51,11 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return bReturn;
 	 }//end function KernelEncryptionIniSolverNew_
 	
-	//Analog zu KernelZFormulaMathSolver aufbauen... Der code ist im Parser
+	//Analog zu KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	@Override
 	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector<String> vecReturn = new Vector<String>();
-		String sValue=sLineWithExpression;
+		String sReturn=sLineWithExpression;
 		main:{			
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
@@ -173,8 +174,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					 if(!StringZZZ.isEmpty(sCode)) {
 						 //Das ist der reine kodierte Wert. Er gehört in objEntry.getValueEncrypted().
 						 this.getEntry().setValueEncrypted(sCode);	//Zwischenstand festhalten
-						 sValue = objAlgorithm.decrypt(sCode);
-						 this.getEntry().setValueDecrypted(sValue); //Zwischenstand festhalten
+						 sReturn = objAlgorithm.decrypt(sCode);
+						 this.getEntry().setValueDecrypted(sReturn); //Zwischenstand festhalten
 					 }
 					 
 				}else{
@@ -187,18 +188,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						sCode = objValue.getValue();
 					}						
 					this.getEntry().setValueDecrypted(sCode);//Zwischenstand festhalten
-					sValue = sCode;						
+					sReturn = sCode;						
 				}													
 			}
 		}//end main:
 		
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(sValue!=null){
+		if(sReturn!=null){
 			if(vecReturn.size()==0) vecReturn.add(0,"");
 			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sValue)){
-				vecReturn.add(1, sValue);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
 			}else {
 				vecReturn.add(1, "");
 			}
