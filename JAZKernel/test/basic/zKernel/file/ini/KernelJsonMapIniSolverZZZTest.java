@@ -99,6 +99,11 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sValue = objExpressionSolver.parse(sExpressionSource);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
 		
+			//Entry auswerten
+			IKernelConfigSectionEntryZZZ objEntry01 = objExpressionSolver.getEntry();
+			assertFalse(objEntry01.isJson());
+			assertFalse(objEntry01.isJsonMap());
+			
 			//### Anwenden der ersten Formel
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
@@ -109,6 +114,11 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sValue = objExpressionSolver.parse(sExpressionSource);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			assertEquals(sExpression, sValue);
+
+			//Entry auswerten
+			IKernelConfigSectionEntryZZZ objEntry01 = objExpressionSolver.getEntry();
+			assertFalse(objEntry01.isJson());
+			assertFalse(objEntry01.isJsonMap());
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
