@@ -12,7 +12,8 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON></Z>";
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}";
+	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT +"</JSON:MAP></JSON></Z>";
 	
 	
 	private KernelZZZ objKernel;
@@ -117,32 +118,84 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testComputeHashMap(){
-		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+	public void testComputeHashMapFromJson(){
+		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+		String sTagStartZ;	String sTagEndZ;
+		Vector<String> vecReturn; HashMap<String,String> hm;
+		boolean btemp;
+		sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
+		try {
+			//Aus dem Source String den reinen Json-Part machen. False steht für "von aussen nach innen" statt true = "von innen nach aussen".
+//			sTagStartZ = "<Z>";
+//			sTagEndZ = "</Z>";
+			sTagStartZ = "<JSON:MAP>";
+			sTagEndZ = "</JSON:MAP>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
 			
-			String sLineWithExpression = sEXPRESSION_JSONMAP01_DEFAULT;
+			sTagStartZ = "<JSON>";
+			sTagEndZ = "</JSON>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false);
 			
-			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+			sTagStartZ = "<JSON:MAP>";
+			sTagEndZ = "</JSON:MAP>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false);
+			
+			String sLineWithJson = sExpression;
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(2,hm.size());
+			
+			
+			//####### Gesamtpaket testen, d.h. mit echt geparsten Werten
+			//### Teilberechnungen durchführen			
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
+									
+			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 			
+			//ohne gueltigen Json-String wird keine HashMap erzeugt.
+			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(0,hm.size());
 			
+			//+++
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); 
+			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
+			
+			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			//ohne gueltigen Json-String wird keine HashMap erzeugt.
+			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(0,hm.size());
+									
 			//### Nun die Gesamtberechnung durchführen
-			HashMap<String,String>hm1 = objExpressionSolver.computeHashMap(sLineWithExpression);
-			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm1.size()==0);
-				
-			objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(), true); //Damit der Wert sofort ausgerechnet wird
-			//Aber ohne Map-Flag wird noch nix gefunden...
-			HashMap<String,String>hmDummy = objExpressionSolver.computeHashMap(sLineWithExpression);
-			assertTrue("Ohne Auflösung soll es keine HashMap geben",hmDummy.size()==0);
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); 
+			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
+			
+			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 						
-			objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); //Damit der Wert sofort ausgerechnet wird			
-			HashMap<String,String>hm2 = objExpressionSolver.computeHashMap(sLineWithExpression);
-			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm2.size()==2);
-
-			String sValue = HashMapExtendedZZZ.computeDebugString(hm2);	
+			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(2,hm.size());
+				
+			//##### Wert ermitteln
+			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
 		} catch (ExceptionZZZ ez) {

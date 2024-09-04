@@ -142,11 +142,13 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				
 				//++++++++++++++++++++++++++++++
 			    //Das Ziel ist, nun die JSON:MAP umzuwandeln
-				HashMap<String,String> hmReturn = this.computeHashMap(sExpression);
-				if(hmReturn!=null) {
-					sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
-				}
+//				HashMap<String,String> hmReturn = this.computeHashMapFromJson(sExpression);
+//				if(hmReturn!=null) {
+//					sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
+//				}
 				
+				//Hier nur den String so zurückgeben. Für die Umwandlung in den Debug - String oder die HashMap selbst gibt es andere Methoden.
+				sReturn = sExpression;
 			}//end main:
 			
 			
@@ -176,11 +178,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		}
 	
 	
-	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
+	public HashMap<String,String> computeHashMapFromJson(String sLineWithJson) throws ExceptionZZZ{
 		HashMap hmReturn = new HashMap<String,String>();
-		String sReturn = sLineWithExpression;
+		String sReturn = sLineWithJson;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sLineWithJson)) break main;
 			
 			//Keine weiteren Flags verwenden, ggfs. nur noch Formeln aufloesen....
 			

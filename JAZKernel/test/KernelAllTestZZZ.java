@@ -57,6 +57,7 @@ import basic.zKernel.LogZZZTest;
 import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
 import basic.zKernel.file.ini.KernelCallIniSolverZZZTest;
+import basic.zKernel.file.ini.KernelConfigSectionEntryUtilZZZTest;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniHandlerZZZTest;
@@ -137,7 +138,8 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(TxtWriterZZZTest.class);
 		
 		
-		//FileIni - Tests		
+		//FileIni - Tests
+		objReturn.addTestSuite(KernelConfigSectionEntryUtilZZZTest.class);
 		objReturn.addTestSuite(KernelZFormulaIniSolverZZZTest.class);
 		
 		objReturn.addTestSuite(KernelEncryptionIniSolverZZZTest.class);

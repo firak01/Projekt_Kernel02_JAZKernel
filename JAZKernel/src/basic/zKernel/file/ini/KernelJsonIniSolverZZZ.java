@@ -133,7 +133,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
 			objJsonMapSolver.setFlag(saFlag,true);
-			hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
+			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);			
 			}				
 		}//end main:
 		return hmReturn;
