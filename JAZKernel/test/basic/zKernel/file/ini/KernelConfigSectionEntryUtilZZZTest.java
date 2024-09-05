@@ -11,7 +11,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		
 	public void testGetValueExpressionTagSurroundingRemoved_SingleTag(){
 		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
-		String sExpressionSource; String sExpression; String sExpressionOld:
+		String sExpressionSource; String sExpression; String sExpressionOld;
 		Vector<String> vecExpressionSource;
 		try{	
 			//die JSON Map ist schoen verschachtelt
@@ -77,7 +77,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	public void testGetValueExpressionTagSurroundingRemoved_MultiTags(){
 		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
 		String sExpressionSource; String sExpression; String sExpressionOld;
-		Vector<String> vecExpressionSource;
+		Vector<String> vecExpressionSource; boolean bDirectionFromInToOut;
 		try{	
 			//Hier der Test für "mehrere Tags auf anderen Positionen des Vectors".
 			
@@ -92,6 +92,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Beim Löschen der umgebenden Tags von "innen nach aussen", bleibt der Z-Tag bestehen...
+			bDirectionFromInToOut = true;
 			sExpression = sExpressionSource;
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
@@ -103,7 +104,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 						
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";	
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);					
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
 			sExpression = VectorZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
@@ -111,7 +112,8 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertTrue(sExpression.contains(sTagStartZ));
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//Beim Löschen der umgebenden Tags von "innen nach aussen", wird der JSON:MAP-Tag entfernt..			
+			//Beim Löschen der umgebenden Tags von "innen nach aussen", wird der JSON:MAP-Tag entfernt..
+			bDirectionFromInToOut = true;
 			sExpression = sExpressionSource;
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
@@ -123,7 +125,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);					
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
 			sExpression = VectorZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
@@ -134,6 +136,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Beim Löschen der umgebenden Tags von "aussen nach innen", soll der Z-Tag entfernt werden...
+			bDirectionFromInToOut = false;
 			sExpression = sExpressionSource;
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
@@ -146,7 +149,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";	
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, false);					
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
 			sExpression = VectorZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
@@ -156,6 +159,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Beim Löschen der umgebenden Tags von "aussen nach innnen", soll der JSON:MAP-Tag bestehen bleiben...
+			bDirectionFromInToOut = false;
 			sExpression = sExpressionSource;
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
@@ -168,7 +172,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, false);					
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
 			sExpression = VectorZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
@@ -181,6 +185,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Beim Löschen der umgebenden Tags von "aussen nach innen", soll in dieser Konstellation der JSON:MAP-Tag entfernt werden...
+			bDirectionFromInToOut = false;
 			sExpression = sExpressionSource;
 			sTagStartSource = "<Z><JSON>";
 			sTagEndSource = "</JSON></Z>";	
@@ -193,12 +198,55 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, false);					
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
 			sExpression = VectorZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			TODOGOON20240904;
 			assertFalse(sExpression.contains(sTagStartZ));
 			assertFalse(sExpression.contains(sTagStartZ));
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
+			//Beim Löschen der umgebenden Tags von "aussen nach innen", soll in dieser Konstellation der JSON:MAP-Tag erhalten bleiben...
+			bDirectionFromInToOut = false;
+			sExpression = sExpressionSource;
+			sTagStartSource = "<Z>";
+			sTagEndSource = "</Z>";	
+			
+			vecExpressionSource = new Vector<String>();
+			vecExpressionSource.add(sTagStartSource);
+			vecExpressionSource.add("<JSON><JSON:MAP>" + sExpression + "</JSON:MAP></JSON>");
+			vecExpressionSource.add(sTagEndSource);
+			
+			
+			sTagStartZ = "<JSON:MAP>";
+			sTagEndZ = "</JSON:MAP>";	
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
+			sExpression = VectorZZZ.implode(vecExpressionSource);
+			assertNotNull(sExpression);
+			assertTrue(sExpression.contains(sTagStartZ));
+			assertTrue(sExpression.contains(sTagStartZ));
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Beim Löschen der umgebenden Tags von "aussen nach innen", soll in dieser Konstellation der JSON:MAP-Tag geloescht werden...
+			bDirectionFromInToOut = true;
+			sExpression = sExpressionSource;
+			sTagStartSource = "<Z>";
+			sTagEndSource = "</Z>";	
+			
+			vecExpressionSource = new Vector<String>();
+			vecExpressionSource.add(sTagStartSource);
+			vecExpressionSource.add("<JSON><JSON:MAP>" + sExpression + "</JSON:MAP></JSON>");
+			vecExpressionSource.add(sTagEndSource);
+			
+			
+			sTagStartZ = "<JSON:MAP>";
+			sTagEndZ = "</JSON:MAP>";	
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
+			sExpression = VectorZZZ.implode(vecExpressionSource);
+			assertNotNull(sExpression);
+			assertFalse(sExpression.contains(sTagStartZ));
+			assertFalse(sExpression.contains(sTagStartZ));
+			
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

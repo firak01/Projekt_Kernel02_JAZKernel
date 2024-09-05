@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -203,7 +204,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			btemp = testCompute_SolveWithExpressionA_(sExpressionSource);		
+			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);		
 			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -1747,16 +1748,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			String sTagEndZ = "</Z>";
 			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
 			
-//			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
-//			assertNotNull(sValue);
-//			assertEquals(sExpression, sValue);
-			
 			//+++ Weiterer Lauf mit objEntry, aber immer noch keine JSONMAP verwenden			
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
 			
-			//+++ Nun JSONMAP verwenden			
+			//+++ Nun JSONMAP und JSON verwenden			
 			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
@@ -1765,9 +1762,10 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 						
 			objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 			bIsJson = objEntry.isJson();
-			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			assertTrue(bIsJson);
 			
-			TODOGOON20240903;//Den Wert pruefen.
+			HashMap<String,String> hm = objEntry.getValueHashMap();
+			assertEquals(2,hm.size());
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

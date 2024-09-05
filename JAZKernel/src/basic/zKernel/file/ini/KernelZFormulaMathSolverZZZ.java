@@ -3,14 +3,13 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T> {
+public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -6400035649490240580L;
 	public static String sTAG_NAME = "Z:math";
 	
@@ -142,5 +141,47 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 		}
 		return vecReturn;
+	}
+	
+	//##########################
+	//### FLAG Handling
+	
+	//### Aus Interface IKernelZFormulaIniZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
+	}
+	
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }//End class

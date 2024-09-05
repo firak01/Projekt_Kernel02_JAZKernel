@@ -7,6 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
@@ -68,7 +69,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	public void testCompute(){
 		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 		String sTagStartZ;	String sTagEndZ;
-		boolean btemp;
+		boolean btemp; IKernelConfigSectionEntryZZZ objEntryTemp;
 		sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
 		
 		try {			
@@ -100,9 +101,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
 		
 			//Entry auswerten
-			IKernelConfigSectionEntryZZZ objEntry01 = objExpressionSolver.getEntry();
-			assertFalse(objEntry01.isJson());
-			assertFalse(objEntry01.isJsonMap());
+			objEntryTemp = objExpressionSolver.getEntry();
+			assertFalse(objEntryTemp.isJson());
+			assertFalse(objEntryTemp.isJsonMap());
 			
 			//### Anwenden der ersten Formel
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
@@ -116,9 +117,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertEquals(sExpression, sValue);
 
 			//Entry auswerten
-			IKernelConfigSectionEntryZZZ objEntry01 = objExpressionSolver.getEntry();
-			assertFalse(objEntry01.isJson());
-			assertFalse(objEntry01.isJsonMap());
+			objEntryTemp = objExpressionSolver.getEntry();
+			assertFalse(objEntryTemp.isJson());
+			assertFalse(objEntryTemp.isJsonMap());
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -131,15 +132,27 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	public void testComputeHashMapFromJson(){
 		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 		String sTagStartZ;	String sTagEndZ;
-		Vector<String> vecReturn; HashMap<String,String> hm;
+		Vector<String> vecReturn; HashMap<String,String> hm; String sLineWithJson;
 		boolean btemp;
-		sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
+		
 		try {
-			//Aus dem Source String den reinen Json-Part machen. False steht für "von aussen nach innen" statt true = "von innen nach aussen".
-//			sTagStartZ = "<Z>";
-//			sTagEndZ = "</Z>";
-			sTagStartZ = "<JSON:MAP>";
-			sTagEndZ = "</JSON:MAP>";
+			//###############################################################
+			//Einfacher Test: Den JSON-Map source String direkt uebernehmen.
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sExpression = sExpressionSource;
+			sLineWithJson = sExpression;
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(2,hm.size());
+			
+			
+			//###############################################################
+			//Aus dem Source String den reinen Json-Part machen. 
+			//False steht für "von aussen nach innen" statt true = "von innen nach aussen".
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
+			
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";
 			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
 			
 			sTagStartZ = "<JSON>";
@@ -150,7 +163,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sTagEndZ = "</JSON:MAP>";
 			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false);
 			
-			String sLineWithJson = sExpression;
+			sLineWithJson = sExpression;
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
 			assertEquals(2,hm.size());

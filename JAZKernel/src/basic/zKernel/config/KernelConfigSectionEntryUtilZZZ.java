@@ -592,7 +592,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
 			boolean bSkip = false;
 			if(StringZZZ.contains(sValue, "<Z:")) {
-				if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
+			if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
 					if(!bSkip) bSkip = true;
 				}
 				if(StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
@@ -611,10 +611,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 				if(!StringZZZ.isEmpty(sBefore)){
 					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-					//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-					//Hier: Nur dann, wenn es nicht der String selber ist.
-					//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-					//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
+								
 					if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
 						sBefore = StringZZZ.leftback(sBefore, sTagStart);
 					}
@@ -622,17 +619,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}else{
 					vecReturn.add(0,"");
 				}
-														
-	//			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-	//			vecReturn.add(1, sValue);
 				
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
 				if(!StringZZZ.isEmpty(sRest)){	
-					//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-					//Hier: Nur dann, wenn es nicht der String selber ist.
-					//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-					//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
-					
+				
 					if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
 						sRest = StringZZZ.rightback(sRest, sTagEnd);
 					}
@@ -647,21 +637,14 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}//end while
 				
 			//ggfs. aus dem Mittleren Teil auch entfernen
-			while(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd) & StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+			//Merke, hier zu beachten: Der Tag faengt qusi mitten im String an, darum nicht mit startWith.. endsWith..
+			Vector<String> vecMid = StringZZZ.vecMid(sValue, sTagStart, sTagEnd, false);
+			sBefore=vecMid.get(0);
+			sValue = vecMid.get(1);
+			sRest = vecMid.get(2);
 
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des mittleren Teils entfernen
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
-				if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-					sBefore = StringZZZ.leftback(sValue, sTagEnd);
-					sValue = sBefore;
-				}
-				
-				if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-					sRest = StringZZZ.rightback(sValue, sTagStart);
-					sValue = sRest;
-				}										
-			}//end while
-		
+			sValue = sBefore + sValue + sRest;
+			
 			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 			vecReturn.add(1, sValue);
 			
@@ -708,10 +691,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			if(!StringZZZ.isEmpty(sBefore)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-				//Hier: Nur dann, wenn es nicht der String selber ist.
-				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
+								
 				if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
 					sBefore = StringZZZ.right(sBefore, sTagStart);
 				}
@@ -719,16 +699,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}else{
 				vecReturn.add(0,"");
 			}
-														
-//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//				vecReturn.add(1, sValue);
 				
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
 			if(!StringZZZ.isEmpty(sRest)){	
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-				//Hier: Nur dann, wenn es nicht der String selber ist.
-				//if(!sRest.equals(sTagEnd) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.
 				
 				if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
 					sRest = StringZZZ.left(sRest, sTagEnd);
@@ -744,17 +717,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		}//end while
 				
 		//ggfs. aus dem Mittleren Teil auch entfernen
-		while(StringZZZ.startsWithIgnoreCase(sValue, sTagEnd) & StringZZZ.endsWithIgnoreCase(sValue, sTagStart)) {
+		while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
 
-				//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des mittleren Teils entfernen
-				//Nein: Der Z-Tag einzeln hat nur Sinn, wenn noch andere Z: Tags drin enthalten sind. Wird weiter oben schon erledigt.				
-				if(StringZZZ.startsWithIgnoreCase(sValue, sTagEnd)) {
-					sBefore = StringZZZ.right(sValue, sTagEnd);
+				if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+					sBefore = StringZZZ.right(sValue, sTagStart);
 					sValue = sBefore;
 				}
 				
-				if(StringZZZ.endsWithIgnoreCase(sValue, sTagStart)) {
-					sRest = StringZZZ.left(sValue, sTagStart);
+				if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+					sRest = StringZZZ.left(sValue, sTagEnd);
 					sValue = sRest;
 				}										
 		}//end while
