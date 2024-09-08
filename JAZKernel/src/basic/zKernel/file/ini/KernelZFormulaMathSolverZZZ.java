@@ -60,7 +60,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 
 	//### Andere Interfaces	
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {
 		return false;
 	}
 	
@@ -70,13 +70,21 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return this.parseFirstVector(sLineWithExpression, true);
 	}
 	
-	//Analog zu KernelJsonMapInisolver, KernelEncrytptionIniSolver aufbauen...
+	//Analog zu KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelEncrytptionIniSolver aufbauen...
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		String sReturn = sLineWithExpression;
+		boolean bUseExpression = false;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);		
 			if(!bUseFormula) break main;
 			
@@ -90,6 +98,8 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
 			String sExpression = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			this.getEntry().setRaw(sExpression);
 			
 			//++++++++++++++++++++++++++++++
 		    //Das Ziel ist, das der Operator nur mit der reinen Formel arbeitet. Da er umgebenden Text nicht herausfiltern kann.
@@ -133,12 +143,16 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			
 			if(vecReturn.size()==2) vecReturn.add(2,"");			
 		}		
+		this.setValue(sReturn);
+		
 		
 		// Z-Tags entfernen.
 		if(bRemoveSurroundingSeparators) {
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+			if(bUseExpression) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+			}
 		}
 		return vecReturn;
 	}

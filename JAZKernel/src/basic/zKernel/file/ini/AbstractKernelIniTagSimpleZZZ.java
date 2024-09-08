@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelConfigZZZ;
@@ -26,6 +27,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 //DIES IST DER FLAG - WEG: AbstractObjectWithFlagZZZ -> AbstractObjectWithExpression -> AbstractTagWithExpressionBasic
 //ALSO:      In AbstractInitTagWitchExpressionBasicZZZ steht schon ALLES WAS IN AbstractIniTagBasicZZZ und dessen Elternklasse implementiert ist
 //NUN NOCH:  Alles WAS in AbstractIniTagSimpleZZZ steht hier auch noch hinein.
+
+//ABER MIT DEM internen Entry-Objek aus IKernelConfigSectionEntryUserZZZ 
 public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelEntryExpressionUserZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
@@ -308,8 +311,23 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.getEntry().isArrayValue(bIsArrayValue);
 	}
 	
+	//### aus IIniTagBasicZZZ
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReference.set(objReturn);					
+			int iReturn = this.parse(sLineWithExpression, objReturnReference);
+			objReturn = objReturnReference.get();		
+		}//end main:		
+		return objReturn;
+	}
 	
-	
+	//### Aus IKernelEntryExpressionUserZZZ
 	@Override
 	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parse(sLineWithExpression, objReturnReference, true);
@@ -336,7 +354,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			iReturn = 1;
 		}
 		objReturnReference.set(objReturn);
-				
 		return iReturn;
 	}
 	
@@ -392,8 +409,28 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public String convert(String sLine) throws ExceptionZZZ {
 		return sLine;
 	}	
-	public abstract boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ;
-
+	
+	/* IDEE: convertable != parasable.
+    convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
+    parsable würde dann lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
+	
+	* 
+	* (non-Javadoc)
+	* @see basic.zKernel.file.ini.AbstractIniTagSimpleZZZ#isConvertRelevant(java.lang.String)
+	*/
+	@Override
+	public boolean isConvertRelevant(String sLineWithExpression) throws ExceptionZZZ {
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		
+		bReturn = this.getEmpty().equalsIgnoreCase(sLineWithExpression);
+		if(bReturn) break main;
+	
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagStarting(), this.getTagClosing());		
+	}//end main
+	return bReturn;
+	}
 	
 	//###################################
 	//### FLAG Handling

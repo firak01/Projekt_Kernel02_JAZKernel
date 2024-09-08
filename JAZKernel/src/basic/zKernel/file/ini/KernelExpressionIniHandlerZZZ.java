@@ -139,7 +139,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						        //und darin dann das machen...
 			
 			//Aber <z:Null/> und <z:Empty/> muessen auch behandelt werden durch die Expression verarbeitung
-			boolean bIsConversion = this.isStringForConvertRelevant(sLineWithExpression); 
+			boolean bIsConversion = this.isConvertRelevant(sLineWithExpression); 
 			if(bIsConversion) {
 				objReturn.isConversion(true);
 			}

@@ -50,6 +50,10 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	 }//end function AbstractObjectWithExpressionNew_
 	//++++++++++++++++++++++++
 		
+	//### Aus IParseEnabledZZZ
+	@Override
+	public abstract boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ;
+	
 	//### Aus IValueBufferedUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{

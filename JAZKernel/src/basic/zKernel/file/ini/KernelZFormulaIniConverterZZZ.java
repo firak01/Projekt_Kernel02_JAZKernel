@@ -1,8 +1,11 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConvertableZZZ;
+import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.xml.tagsimple.AbstractTagParseEnabledZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -15,7 +18,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @param <T>
  *
  */
-public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ<T>{
+public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IIniTagWithConversionZZZ{
 	private static final long serialVersionUID = -8982048164029456581L;
 	private FileIniZZZ objFileIni=null;
 	
@@ -68,19 +71,19 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 	}
 	
 	//############################################
-	public static IConvertableZZZ getAsObject(String sToConvert)throws ExceptionZZZ{
-		IConvertableZZZ objReturn = null;
+	public static IConvertEnabledZZZ getAsObject(String sToConvert)throws ExceptionZZZ{
+		IConvertEnabledZZZ objReturn = null;
 	main:{
 			
-		//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem String etwas anfangen können.			
-		IConvertableZZZ objTemp = new KernelZFormulaIni_EmptyZZZ();
-		if(objTemp.isStringForConvertRelevant(sToConvert)){
+		//Erstelle nun alle möglichen Klassen und prüfe, ob sie mit dem String etwas anfangen können.
+		IConvertEnabledZZZ objTemp = new KernelZFormulaIni_EmptyZZZ(); //Klasse ohne Kernel oder Expression Flags
+		if(objTemp.isConvertRelevant(sToConvert)){
 			objReturn = objTemp;
 			break main;
 		}
 		
 		objTemp = new ZTagFormulaIni_NullZZZ();
-		if(objTemp.isStringForConvertRelevant(sToConvert)){
+		if(objTemp.isConvertRelevant(sToConvert)){
 			objReturn = objTemp;
 			break main;
 		}
@@ -89,49 +92,70 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		return objReturn;
 	}
 	
-	public static String getAsString(IParseEnabledZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
+	public static String getAsString(IConvertEnabledZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(objExpression==null) break main;
 			
-			sReturn = objExpression.parse(sLineWithExpression);
-		}
-		return sReturn;
-	}
-	public static String getAsString(String sLineWithExpression)throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
-			IParseEnabledZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpression.isParseRelevant(sLineWithExpression)){				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
-				break main;
-			}
-			
-			objExpression = new ZTagFormulaIni_NullZZZ();
-			if(objExpression.isParseRelevant(sLineWithExpression)){				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
-				break main;
-			}
-			
-			
+			sReturn = objExpression.convert(sLineWithExpression);
 		}
 		return sReturn;
 	}
 	
-	public static String getAsExpression(String sLineWithExpression)throws ExceptionZZZ{
+	public String getAsString(String sLineWithExpression)throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(!this.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION))break main;
+			
+			sReturn = KernelZFormulaIniConverterZZZ.getAsStringStatic(sLineWithExpression);
+		}//end main:
+		return sReturn;		
+	}
+	
+	public static String getAsStringStatic(String sLineWithExpression)throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			
+			IConvertEnabledZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();//Klasse ohne Kernel oder Expression Flags
+			if((objExpression).isConvertRelevant(sLineWithExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+				break main;
+			}
+			
+			//Wie soll das gehen... nach der Umstrukturieren hat die Klasse nun doch KErnel, FileIni und Expression Flags
+			objExpression = new ZTagFormulaIni_NullZZZ(); //Klasse ohne Kernel oder Expression Flags
+			if(objExpression.isConvertRelevant(sLineWithExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+				break main;
+			}						
+		}
+		return sReturn;
+	}
+	
+	
+	public String getAsExpression(String sLineWithExpression)throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(!this.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION))break main;
+			
+			sReturn = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sLineWithExpression);
+		}//end main:
+		return sReturn;		
+	}
+	
+	public static String getAsExpressionStatic(String sLineWithExpression)throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
-			IParseEnabledZZZ objExpressionEmpty = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpressionEmpty.isParseRelevant(sLineWithExpression)){	
+			IConvertEnabledZZZ objExpressionEmpty = new KernelZFormulaIni_EmptyZZZ();
+			if(objExpressionEmpty.isConvertRelevant(sLineWithExpression)){	
 				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpressionEmpty, sLineWithExpression);
 				break main;
 			}
 			
-			IParseEnabledZZZ objExpressionNull = new ZTagFormulaIni_NullZZZ();
-			if(objExpressionNull.isParseRelevant(sLineWithExpression)){				
+			IConvertEnabledZZZ objExpressionNull = new ZTagFormulaIni_NullZZZ();
+			if(objExpressionNull.isConvertRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpressionNull, sLineWithExpression);
 				break main;
 			}
@@ -140,13 +164,64 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		}
 		return sReturn;
 	}
-	public static String getAsExpression(IParseEnabledZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
+
+	public static String getAsExpression(IConvertEnabledZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(objExpression==null) break main;
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			sReturn = objExpression.parse(sLineWithExpression);
+			sReturn = objExpression.convert(sLineWithExpression);
+			if(!sLineWithExpression.equals(sReturn)){
+				if(sReturn==null) {
+					sReturn="<Z/>";
+				}else if(sReturn.equals("")) {
+					sReturn="<Z/>";
+				}else {
+					sReturn = "<Z>" + sReturn + "</Z>";
+				}
+			}
 		}
 		return sReturn;
+	}
+
+	//###################################
+	//### FLAG Handling
+	
+	//### aus IIniTagWithConversionZZZ	
+	@Override
+	public boolean getFlag(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IIniTagWithConversionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IIniTagWithConversionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IIniTagWithConversionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }

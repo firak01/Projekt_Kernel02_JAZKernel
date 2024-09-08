@@ -1739,7 +1739,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 					
-			//Anwenden der ersten Formel
+			//Anwenden der ersten Formel mit objEntry als Ergebnis, keine JSON verwenden
 			sSection = "Section for testJsonHashmap";
 			sProperty = "Map1";
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
@@ -1747,11 +1747,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
-			
-			//+++ Weiterer Lauf mit objEntry, aber immer noch keine JSONMAP verwenden			
+										
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			sValue = objEntry.getValue();
+			assertEquals(sExpression, sValue);
 			
 			//+++ Nun JSONMAP und JSON verwenden			
 			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);

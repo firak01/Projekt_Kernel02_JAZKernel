@@ -104,7 +104,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//### Andere Interfaces
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
 	}
 

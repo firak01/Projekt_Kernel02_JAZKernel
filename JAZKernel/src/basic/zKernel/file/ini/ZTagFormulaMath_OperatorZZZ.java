@@ -31,6 +31,19 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return true;
 	 }//end function ZTagFormulaMath_OperatorNew_
 	
+	//###### Getter / Setter
+	public String getOperator(){
+		return this.sOperator;
+	}
+	public void setOperator(String sOperator){
+		this.sOperator=sOperator;
+	}
+	
+	//### Aus ITagBasicZZZ
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
+	}
 
 	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
 		String sReturn = null;
@@ -100,65 +113,60 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return sReturn;
 	}
 	
-		public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-			Vector vecReturn = new Vector();
-			main:{
-				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector();
+		String sReturn = sLineWithExpression;
+		boolean bIsError = false;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			vecReturn = this.parseFirstVector(sLineWithExpression);			
+			String sExpression = (String) vecReturn.get(1);		
+			
+			if(!StringZZZ.isEmpty(sExpression)){															
+				this.setOperator(sExpression);
+				String sValue01 = (String)vecReturn.get(0);
+				String sValue02 = (String)vecReturn.get(2);
 				
-				vecReturn = this.parseFirstVector(sLineWithExpression);			
-				String sExpression = (String) vecReturn.get(1);		
-				boolean bIsError = false;
-				if(!StringZZZ.isEmpty(sExpression)){															
-					this.setOperator(sExpression);
-					String sValue01 = (String)vecReturn.get(0);
-					String sValue02 = (String)vecReturn.get(2);
-					
-					try{
-						sExpression = this.compute(sValue01, sValue02);
-					}catch(ExceptionZZZ ez){
-						bIsError=true;
-					}					
-				} //end if sExpression = ""
-					
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				if(!bIsError){
-					//if(vecReturn.size()==0) vecReturn.add(0,"");					
-					if(vecReturn.size()>=1) {
-						vecReturn.remove(0);
-						vecReturn.add(0,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
-					}else if(vecReturn.size()==0) {
-						vecReturn.add(0,"");
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.remove(1);
-					vecReturn.add(1, sExpression);
-					
-					if(vecReturn.size()>=3) {
-						vecReturn.remove(2);
-						vecReturn.add(2,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
-					}else if(vecReturn.size()==2) {
-						vecReturn.add(2,"");
-					}					
+				try{
+					sReturn = this.compute(sValue01, sValue02);
+				}catch(ExceptionZZZ ez){
+					bIsError=true;
 				}					
-			}//end main:
-			return vecReturn;
+			} //end if sExpression = ""
+				
+							
+		}//end main:
+		
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(bIsError){
+			sReturn = sLineWithExpression;				
 		}
+		
+		//if(vecReturn.size()==0) vecReturn.add(0,"");					
+		if(vecReturn.size()>=1) {
+			vecReturn.remove(0);
+			vecReturn.add(0,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
+		}else if(vecReturn.size()==0) {
+			vecReturn.add(0,"");
+		}
+		
+		if(vecReturn.size()>=2) vecReturn.remove(1);
+		vecReturn.add(1, sReturn);
+		
+		if(vecReturn.size()>=3) {
+			vecReturn.remove(2);
+			vecReturn.add(2,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
+		}else if(vecReturn.size()==2) {
+			vecReturn.add(2,"");
+		}								
+		return vecReturn;
+	}
 
 	
 	
-	//###### Getter / Setter
-	public String getExpressionTagName(){
-		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
-	}
 	
-	
-	//++++ 
-	public String getOperator(){
-		return this.sOperator;
-	}
-	public void setOperator(String sOperator){
-		this.sOperator=sOperator;
-	}
 
 	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
@@ -190,14 +198,11 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			return sReturn;
 		}
 
-		@Override
-		public String getNameDefault() throws ExceptionZZZ {
-			return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
-		}
+		
 
 		//### aus IConvertableZZZ
 		@Override
-		public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 			return false;
 		}
 }//End class

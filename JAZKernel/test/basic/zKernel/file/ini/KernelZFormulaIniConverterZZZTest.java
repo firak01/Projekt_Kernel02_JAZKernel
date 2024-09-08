@@ -111,9 +111,13 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 	public void testFlagHandling(){
 		//try{
 				
-		assertTrue(objExpressionConverterInit.getFlag("init")==true);
-		assertFalse(objExpressionConverter.getFlag("init")==true); //Nun wäre init falsch
+		assertTrue(objExpressionConverterInit.getFlag("init"));
+		assertFalse(objExpressionConverter.getFlag("init")); //Nun wäre init falsch
 
+		assertFalse(objExpressionConverterInit.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION));
+		assertFalse(objExpressionConverter.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION)); //Nun wäre init falsch
+		
+		
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
@@ -122,24 +126,148 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testConvert(){
+	public void testConvertEmpty(){
+		boolean btemp;
+		String sConversionSource; String sConversion; String sValue;
 		try {
 			//Anwenden der ersten 
-			String sTestEmpty = KernelZFormulaIniConverterZZZ.getAsString("<z:Empty/>");
-			assertTrue(sTestEmpty.equals(""));
 			
-			String sTestNotEmpty = KernelZFormulaIniConverterZZZ.getAsString("BLABLA");
-			assertTrue(sTestNotEmpty.equals("BLABLA"));
+			//IDEE: convertable != parasable.
+			//      convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
+			//      parsable wird also lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
+		
+			//#######################################								
+			//1. Test Konvertierung static verwenden
+			
+			sConversionSource = "abcd<z:Empty/>xyz";
+			sConversion = sConversionSource;			
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "<z:Empty/>";
+			sConversion = "";
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+
+			
+			sConversionSource = "BLABLA";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			
+			//+++ as Expression
+			sConversionSource = "<z:Empty/>";
+			sConversion = "<Z/>";
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "BLABLA";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "<z>BLABLA</z>";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
 			
 			//#######################################
-			String sTestEmptyExpression = KernelZFormulaIniConverterZZZ.getAsExpression("<z:Empty/>");
-			assertTrue(sTestEmptyExpression.equalsIgnoreCase("<Z/>"));
+			//2. Test: Konvertierung per Objekt
 			
-			String sTestNotEmptyString = KernelZFormulaIniConverterZZZ.getAsExpression("BLABLA");
-			assertTrue(sTestNotEmptyString.equalsIgnoreCase("BLABLA"));
+			//+++ Konvertierung ausgeschaltet
+			btemp = objExpressionConverter.setFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION, false);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithConversionZZZ.FLAGZ.USECONVERSION + "'", btemp);
 			
-			String sTestNotEmptyExpression = KernelZFormulaIniConverterZZZ.getAsExpression("<z>BLABLA</z>");
-			assertTrue(sTestNotEmptyExpression.equalsIgnoreCase("<z>BLABLA</z>"));
+			sConversionSource = "<z:Empty/>";
+			sConversion = sConversionSource;
+			sValue = objExpressionConverter.getAsString(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			//+++ Konvertierung einschalten
+			btemp = objExpressionConverter.setFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION, true);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithConversionZZZ.FLAGZ.USECONVERSION + "'", btemp);
+			
+			sConversionSource = "<z:Empty/>";
+			sConversion = "";
+			sValue = objExpressionConverter.getAsString(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testConvertNull(){
+		boolean btemp;
+		String sConversionSource; String sConversion; String sValue;
+		try {
+			//Anwenden der ersten 
+			
+			//IDEE: convertable != parasable.
+			//      convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
+			//      parsable wird also lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
+		
+			//#######################################								
+			//1. Test Konvertierung static verwenden
+			
+			sConversionSource = "abcd<z:Null/>xyz";
+			sConversion = sConversionSource;			
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "<z:Null/>";
+			sConversion = null;
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertNull(sValue);
+
+			
+			sConversionSource = "BLABLA";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			
+			//+++ as Expression
+			sConversionSource = "<z:Null/>";
+			sConversion = "<Z/>";
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "BLABLA";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			sConversionSource = "<z>BLABLA</z>";
+			sConversion = sConversionSource;
+			sValue = KernelZFormulaIniConverterZZZ.getAsExpressionStatic(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			//#######################################
+			//2. Test: Konvertierung per Objekt
+			
+			//+++ Konvertierung ausgeschaltet
+			btemp = objExpressionConverter.setFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION, false);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithConversionZZZ.FLAGZ.USECONVERSION + "'", btemp);
+			
+			sConversionSource = "<z:Null/>";
+			sConversion = sConversionSource;
+			sValue = objExpressionConverter.getAsString(sConversionSource);
+			assertEquals(sConversion, sValue);
+			
+			//+++ Konvertierung einschalten
+			btemp = objExpressionConverter.setFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION, true);
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithConversionZZZ.FLAGZ.USECONVERSION + "'", btemp);
+			
+			sConversionSource = "<z:Null/>";
+			sConversion = null;
+			sValue = objExpressionConverter.getAsString(sConversionSource);
+			assertNull(sValue);
 			
 			
 		} catch (ExceptionZZZ ez) {
@@ -190,7 +318,7 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 		//B02) Teste welche von den gemeinsamen FlagZ hier True gesetzt sind.
 		//objFileInit.getFlagZ_passable(true, sTargetClassnameForThePass);
 		String[] saTestB02 = objFileIniInit.getFlagZ_passable(true, objSolverInit);
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT ZWEI FLAGS WENIGER für 'true' erwartet.",saTestB02.length==saTestB01.length-2);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT SECHS FLAGS WENIGER für 'true' erwartet.",saTestB02.length==saTestB01.length-6);
 		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());

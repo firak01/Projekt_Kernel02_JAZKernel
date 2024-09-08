@@ -31,7 +31,7 @@ public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	
 	//### aus IConvertableZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
 	}
 }//End class

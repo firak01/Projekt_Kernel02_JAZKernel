@@ -3,8 +3,10 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 /** Merke: Einfache Tags sind nicht verschachtelt.
  *         => 1. Bei einer compute() Berechnung wird nur der Inhalt des Tags zurückgegeben. 
@@ -14,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 20.07.2024, 08:03:01
  * 
  */
-public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T>{
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T> implements IConvertEnabledZZZ{
 	private static final long serialVersionUID = -5785934791199206030L;
 	
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
@@ -35,7 +37,30 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	public String convert(String sLine) throws ExceptionZZZ {
 		return sLine;
 	}	
-	public abstract boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ;
+	
+	/* IDEE: convertable != parseable.
+    convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
+    parsable würde dann lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
+	
+	* 
+	* (non-Javadoc)
+	* @see basic.zKernel.file.ini.AbstractIniTagSimpleZZZ#isConvertRelevant(java.lang.String)
+	*/
+	@Override
+	public boolean isConvertRelevant(String sLineWithExpression) throws ExceptionZZZ {
+	//Nein return this.isParseRelevant(sStringToProof);
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		
+		bReturn = this.getEmpty().equalsIgnoreCase(sLineWithExpression);
+		if(bReturn) break main;
+	
+		
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagStarting(), this.getTagClosing());		
+	}//end main
+	return bReturn;
+	}
 	
 	
 	//### aus IExpressionUserZZZ
@@ -49,7 +74,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 			
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			

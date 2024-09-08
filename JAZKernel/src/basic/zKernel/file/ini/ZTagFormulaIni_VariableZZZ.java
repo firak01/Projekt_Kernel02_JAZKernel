@@ -76,8 +76,16 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
+		String sReturn = sLineWithExpression;
+		boolean bUseExpression = false;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+			if(!bUseExpression) break main;
+			
+			boolean bUseExpressionPath = this.getFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE);
+			if(!bUseExpressionPath) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			Vector<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
@@ -113,14 +121,15 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
 			vecReturn.add(2,vecSection.get(2));	
-	
-				
+							
 			// Z-Tags entfernen.
 			if(bRemoveSurroundingSeparators) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
+			
+			this.setValue(vecReturn.get(1));
 		} //end main
 		return vecReturn;
 	}
@@ -217,7 +226,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	}
 
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return false;
 	}
 

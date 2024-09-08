@@ -270,4 +270,27 @@ public class XmlUtilZZZ {
 		}//end main
 		return bReturn;
 	}
+	
+	
+	/** Also der String beginnt mit dem Starting Tag und enedet mit dem Closing Tag
+	 * @param sLineWithExpression
+	 * @param sTagStarting
+	 * @param sTagClosing
+	 * @return
+	 * @author Fritz Lindhauer, 05.09.2024, 18:30:57
+	 */
+	public static boolean isSurroundedByTag(String sLineWithExpression, String sTagStarting, String sTagClosing){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+		
+			boolean bSurroundedLeft = StringZZZ.startsWithIgnoreCase(sLineWithExpression, sTagStarting);
+			boolean bSurroundedRight = StringZZZ.endsWithIgnoreCase(sLineWithExpression, sTagClosing);
+			
+			if(bSurroundedLeft && bSurroundedRight) bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 }

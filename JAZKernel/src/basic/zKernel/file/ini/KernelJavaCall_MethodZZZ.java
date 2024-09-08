@@ -12,32 +12,16 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	}
 	
 	private boolean KernelJavaCallMethodNew_() throws ExceptionZZZ {
-//	private boolean KernelJavaCallMethodNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der uebergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
-		
-		return true;
-	 }//end function KernelExpressionMathSolverNew_
+//		 boolean bReturn = false;
+//		 main:{
+//				if(this.getFlag("init")==true){
+//					bReturn = true;
+//					break main;
+//				}
+//				
+//		 	}//end main:
+			return true;
+	 }//end function KernelJavaCallMethodNew_
 		
 	
 	//###### Getter / Setter
@@ -48,7 +32,7 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 
 	//### aus IConvertableZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
 	}						
 }//End class

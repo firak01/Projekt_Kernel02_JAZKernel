@@ -105,13 +105,6 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return sReturn;
 	}
 	
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	public ArrayList<String> computeArrayList(String sLineWithExpression) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
@@ -166,7 +159,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		
 	//### Andere Interfaces
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

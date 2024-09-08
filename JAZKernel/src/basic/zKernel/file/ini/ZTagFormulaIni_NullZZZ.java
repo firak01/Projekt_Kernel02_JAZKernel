@@ -20,7 +20,6 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
  * @param <T>
  */
-//public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
 public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
@@ -28,6 +27,11 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		
 	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{	
 		super("init");
+		KernelExpressionIniNullNew_(null);
+	}
+	
+	public ZTagFormulaIni_NullZZZ(String sFlagControl) throws ExceptionZZZ{	
+		super(sFlagControl);
 		KernelExpressionIniNullNew_(null);
 	}
 	
@@ -71,7 +75,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector vecSection = this.parseExpressionFirstVector(sLineWithExpression);	
+			Vector vecSection = this.parseFirstVectorAsExpression(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -126,20 +130,20 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(ZTagFormulaIni_NullZZZ.sTAG_NAME), XmlUtilZZZ.computeTagPartClosing(ZTagFormulaIni_NullZZZ.sTAG_NAME), false,false);
-		}
-		return vecReturn;
-	}
+//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+//	* @param sLineWithExpression
+//	* @return
+//	* 
+//	* lindhaueradmin; 06.03.2007 11:20:34
+//	 * @throws ExceptionZZZ 
+//	 */
+//	public Vector parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector vecReturn = new Vector();		
+//		main:{
+//			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(ZTagFormulaIni_NullZZZ.sTAG_NAME), XmlUtilZZZ.computeTagPartClosing(ZTagFormulaIni_NullZZZ.sTAG_NAME), false,false);
+//		}
+//		return vecReturn;
+//	}
 	
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
@@ -165,97 +169,45 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 
 	
 	//### Aus Interface IConvertable
-	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		if(sStringToProof==null) bReturn = true;
-		return bReturn;
-	}
+//	@Override
+//	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {
+//		boolean bReturn=false;
+//		if(sStringToProof==null) bReturn = true;
+//		return bReturn;
+//	}
 	
 	@Override
 	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithoutExpression;
 		main:{
-			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
+			if(!this.isConvertRelevant(sLineWithoutExpression)) break main;
 			
 			//Hier einfach den Leeren-Tag zurückgeben			
-			sReturn = this.getTagEmpty();
+			sReturn = null; //this.getTagEmpty();
 						
 		}//end main
 		return sReturn;
 	}
 	
-	//### Aus Interface IParseEnabled	
+	//### Aus Interface IParseEnabled			
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
+	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
-		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(this.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
-			bReturn = true;
-			break main;
-		}
-	}//end main
-		return bReturn;
-	}
-	
-	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(!this.isParseRelevant(sLineWithExpression)) break main;
+			//Nein, der Konverter nutzt das Flag auch nicht if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			//Hier einfach NULL zurückgeben
-			return null;
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
 			
+			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			vecReturn.add(1, null);
+			this.setValue(vecReturn.get(1));
 		}//end main:
-		return sReturn;
+		return vecReturn;
 	}
 	
-	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null;
-		main:{
-			if(!this.isParseRelevant(sLineWithExpression)) break main;
-						
-			String sDelimiter;
-			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
-			}else {
-				sDelimiter = sDelimiterIn;
-			}
-			
-			String[] saExpression = StringZZZ.explode(sLineWithExpression, sDelimiter);
-			
-			//Hier einfach das Leerzeichen zurückgeben
-			String sValue = null;
-			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
-			for(String sExpression : saExpression) {
-				sValue = this.parse(sExpression);
-				listasValue.add(sValue);
-			}
-			saReturn = listasValue.toStringArray();
-			
-		}//end main:
-		return saReturn;
-	}
-	
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(!this.isParseRelevant(sLineWithExpression)) break main;
-			
-			//Hier einfach eine leere Expression zurückgeben
-			sReturn = "<Z/>";
-			
-		}//end main:
-		return sReturn;
-	}
-	
-	
-
-
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
@@ -302,4 +254,5 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
 }//End class

@@ -10,6 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
 	private static final long serialVersionUID = -367756957686201953L;
@@ -109,6 +110,20 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	//### Aus IParseEnabledZZZ	
 	@Override
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		boolean bReturn=false;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+		
+			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
+			if(bReturn) break main;
+			
+			
+		}//end main
+	return bReturn;
+	}
+	
+	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parse(sLineWithExpression, true);
 	}	
@@ -117,13 +132,17 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
+			//Bei einfachen Tags den Ersten Vektor holen
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
 			if(vecAll!=null) {
-				sReturn = VectorZZZ.implode(vecAll);			
+				
+				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.						
 				this.setValue(vecAll.get(1));
-			}
+				sReturn = VectorZZZ.implode(vecAll);
+			}									
 		}//end main:
 		return sReturn;
 	}	
@@ -155,22 +174,9 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			this.setValue(vecReturn.get(1));
 		}
 		return vecReturn;
-	}
-	
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		
-			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
-			if(bReturn) break main;
-			
-			
-		}//end main
-	return bReturn;
 	}
 	
 	//### aus IExpressionUserZZZ
@@ -205,13 +211,24 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	@Override
 	public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
+		String sReturn = sLineWithExpression;
 		main:{
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+		}//end main:
+		
+		//NUN DEN INNERHALB DER SOLVE BERECHNUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+		if(!StringZZZ.isEmpty(sReturn)){
+			vecReturn.add(1, sReturn);
+		}else {
+			vecReturn.add(1, "");
 		}
-		return vecReturn;
-			
+		this.setValue(vecReturn.get(1));
+		return vecReturn;	
 	}
 	
 	

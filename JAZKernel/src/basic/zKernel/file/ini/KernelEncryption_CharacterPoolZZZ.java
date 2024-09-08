@@ -37,7 +37,7 @@ public class KernelEncryption_CharacterPoolZZZ<T>  extends AbstractIniTagSimpleZ
 
 	//### aus IConvertableZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
 	}
 				

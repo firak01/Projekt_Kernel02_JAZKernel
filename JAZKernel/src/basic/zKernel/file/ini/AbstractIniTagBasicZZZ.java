@@ -1,6 +1,7 @@
 package basic.zKernel.file.ini;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
@@ -16,9 +17,11 @@ import basic.zBasic.util.xml.tagsimple.AbstractTagParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-//DIES IST DER ERG OHNE FLAG - HANDLING
-//UND OHNE einen IKernelConfigSectionEntryZZZ als interne Variable. D.h. die einzelnen Variablen müssen direkt hier gespeichert werden.
-public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZZZ<T> implements IIniTagBasicZZZ{			
+//DIES IST NICHT DER FLAG - WEG, sondern der reine Objekt Weg: AbstractObjectZZZ -> AbstractObjectWithValueBufferedZZZ -> AbstractTagParseEnabledZZZ -> AbstractIniTagBasicZZZ
+//ALLES WAS IN AbstractIniTagWithExpressionBasicZZZ steht dort rein
+
+//ABER OHNE einen IKernelConfigSectionEntryZZZ als interne Variable. D.h. die einzelnen Variablen müssen direkt hier gespeichert werden.
+public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZZZ<T>  implements IIniTagBasicZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 
 	//aus IIniStructurePositionUserZZZ
@@ -28,6 +31,9 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//aus IValueArrayUserZZZ
 	protected VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
 	protected boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
+	
+	protected VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();
+	protected boolean bMapValue = false; //Falls eine ArrayList gesetzt wurde.
 	
 	public AbstractIniTagBasicZZZ() throws ExceptionZZZ{
 		super();
@@ -93,24 +99,36 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
 				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
-//				ExceptionZZZ ez = new ExceptionZZZ("Delimiter for Array Values", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
+//					ExceptionZZZ ez = new ExceptionZZZ("Delimiter for Array Values", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
 			
 			Vector<String> vecParsed = this.parseFirstVector(sLineWithExpression);
-			String sParsed = this.getValue();
+			String sParsed = vecParsed.get(1);
 			
-			String[] saParsed = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saParsed);
+			String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
 			this.setValue(listasValue);		
 			
 			//Fasse nun zusammen.
-			listasValue.add(0, vecParsed.get(0));
-			listasValue.add(vecParsed.get(2));
-				
-			saReturn = listasValue.toStringArray();				
+			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
+			listasReturnParsed.add(vecParsed.get(0));
+			
+			//Fuer den Wert lediglich
+			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
+			
+			String sValue = null;			
+			for(String sExpression : saExpression) {
+				sValue = this.parse(sExpression);
+				listasReturnParsed.add(sValue);
+				listasValueParsed.add(sValue);
+			}
+			listasReturnParsed.add(vecParsed.get(2));
+			
+			this.setValue(listasValueParsed);
+			saReturn = listasReturnParsed.toStringArray();				
 		}//end main:
 		return saReturn;
 	}
@@ -174,6 +192,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			this.setValue(vecReturn.get(1));
 		}
 		return vecReturn;
 	}
@@ -221,8 +240,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector() throws ExceptionZZZ{
 		return this.vecalValue;
 	}
-	
-	
+		
 	@Override
 	public ArrayList<String> getValueArrayList() throws ExceptionZZZ {		
 		if(this.hasNullValue()){
@@ -250,6 +268,42 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	public void isArrayValue(boolean bIsArrayValue) {
 		this.bArrayValue = bIsArrayValue;
 	}
+	
+	
+	//###############################################
+	//### aus IValueMapUserZZZ
+	@Override 
+	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ{
+		return this.vechmValue;
+	}
+		
+	@Override
+	public HashMap<String,String> getValueHashMap() throws ExceptionZZZ {		
+		if(this.hasNullValue()){
+			return null;		
+		}else if (!this.hasAnyValue()){
+			return new HashMap<String,String>(); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
+		}else {
+			return this.getValueHashMapVector().getEntryHigh();
+		}
+	}
+
+	@Override
+	public void setValue(HashMap<String,String> hmValue) throws ExceptionZZZ {
+		this.getValueHashMapVector().add(hmValue);
+		this.isMapValue(true);
+	}
+	
+	@Override
+	public boolean isMapValue() {
+		return this.bMapValue;
+	}
+	
+	@Override 
+	public void isMapValue(boolean bIsMapValue) {
+		this.bMapValue = bIsMapValue;
+	}
+		
 	
 	//### Merke: Kein IValueSolvedUserZZZ hier eingebunden, da es keine Expression ist
 

@@ -5,12 +5,14 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = 6579389159644435205L;
@@ -32,118 +34,183 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	
 	private boolean KernelJavaCallIniSolverNew_() throws ExceptionZZZ {
-		return true;
+		boolean bReturn = false; 
+		 main:{
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+										
+			bReturn = true;
+	 	}//end main:
+		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{		
-			Vector<String>vecReturn = new Vector<String>();
-			main:{
-				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-				String sValue=null;  String sCode=null;
-				String sJavaCallClass = null; String sJavaCallMethod = null;
-				
-				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-				vecReturn = this.parseFirstVector(sLineWithExpression);			
-				String sExpression = (String) vecReturn.get(1);
-				this.getEntry().setRaw(sExpression);
-				if(!StringZZZ.isEmpty(sExpression)){
-					this.getEntry().isCall(true);
-					this.getEntry().isJavaCall(true);
-										
-					//++++++++++++++++++++++++++++++++++++++++++++
-					//Nun den z:class Tag suchen				
-					KernelJavaCall_ClassZZZ objJavaCallClass = new KernelJavaCall_ClassZZZ();
-					if(objJavaCallClass.isExpression(sExpression)){					
-						sJavaCallClass = objJavaCallClass.parse(sExpression);	
-						if(StringZZZ.isEmpty(sJavaCallClass)) break main;
-						
-						this.getEntry().setCallingClassname(sJavaCallClass);
-						
-						//NEIN, wenn die Klasse nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
-						//Mit diesem Klassennamen nun das Class-Objekt erstellen
-						//objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
-						//if(objClass==null) break main;
-						
-						
-						
-					}else{
-						//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-						sValue = sExpression;	
-						break main;
-					}
-					
-					//++++++++++++++++++++++++++++++++++++++++++++
-					//Nun den z:method Tag suchen
-					KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
-					if(objJavaCallMethod.isExpression(sExpression)){					
-						sJavaCallMethod = objJavaCallMethod.parse(sExpression);	
-						if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
-						
-						this.getEntry().setCallingMethodname(sJavaCallMethod);
-						
-						//NEIN, wenn die Methode nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
-						//Mit diesem Klassennamen nun das Method-Objekt erstellen
-						//objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
-						//if(objMethod==null) break main;
+	//##### Getter / Setter
 	
-					}else{
-						//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-						sValue = sExpression;	
-						break main;
-					}
-					
-								
-					//Nun die Methode aufrufen.
-					Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
-					if(objReturn==null)break main;						
-					sValue = objReturn.toString();
-					
-					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
-					//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-					if(sValue!=null){
-						if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-						if(!StringZZZ.isEmpty(sValue)){
-							vecReturn.add(1, sValue);
-						}else {
-							vecReturn.add(1, "");
-						}
-					}	
-				}
-			}//end main:
-			return vecReturn;
-		}
 	
-	//###### Getter / Setter
-	
-
-	//### Aus ITagBasicZZZ
+	//### Aus ITagBasicZZZ	
 	@Override
-	public String getNameDefault(){
+	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
 	}
-		
-	//### Aus IParseEnabledZZZ
+	
+	
+	//### aus IParseEnabled
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{	
-			
-			if(!this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) break main;
-			if(!this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)) break main;
-			
-			sReturn = super.parse(sLineWithExpression);
-			
-		}//end main:
-		return sReturn;
+	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, true);
 	}
 	
+//	@Override
+//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{	
+//			
+//			if(!this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) break main;
+//			if(!this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)) break main;
+//			
+//			sReturn = super.parse(sLineWithExpression);
+//			
+//		}//end main:
+//		return sReturn;
+//	}
+	
+	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
 	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+		Vector<String>vecReturn = new Vector<String>();
+		String sReturn = sLineWithExpression;
+		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+						
+			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseCall) break main;
+			
+			boolean bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);		
+			if(!bUseCallJava) break main;
+			
+			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+			//Z:call drumherum entfernen
+			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
+			String sExpression = (String) vecReturn.get(1);
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			this.getEntry().setRaw(sExpression);
+			
+			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
+			if(!sLineWithExpression.equals(sExpression)) {
+				this.getEntry().isCall(true);
+				this.getEntry().isJavaCall(true);				
+			}
+			
+			
+			///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			String sValue=null;  String sCode=null;
+			String sJavaCallClass = null; String sJavaCallMethod = null;
+	
+			if(!StringZZZ.isEmpty(sExpression)){
+											
+				//++++++++++++++++++++++++++++++++++++++++++++
+				//Nun den z:class Tag suchen				
+				KernelJavaCall_ClassZZZ objJavaCallClass = new KernelJavaCall_ClassZZZ();
+				if(objJavaCallClass.isExpression(sExpression)){		
+					
+					sExpression = objJavaCallClass.parse(sExpression);
+					sJavaCallClass = objJavaCallClass.getValue();
+					if(StringZZZ.isEmpty(sJavaCallClass)) break main;
+					
+					this.getEntry().setCallingClassname(sJavaCallClass);
+					
+					//NEIN, wenn die Klasse nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
+					//Mit diesem Klassennamen nun das Class-Objekt erstellen
+					//objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
+					//if(objClass==null) break main;
+									
+					
+				}else{
+					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+					sValue = sExpression;	
+					sReturn = sValue;
+					break main;
+				}
+				
+				//++++++++++++++++++++++++++++++++++++++++++++
+				//Nun den z:method Tag suchen
+				KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
+				if(objJavaCallMethod.isExpression(sExpression)){					
+					sExpression = objJavaCallMethod.parse(sExpression);
+					sJavaCallMethod = objJavaCallMethod.getValue();
+					if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
+					
+					this.getEntry().setCallingMethodname(sJavaCallMethod);
+					
+					//NEIN, wenn die Methode nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
+					//Mit diesem Klassennamen nun das Method-Objekt erstellen
+					//objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
+					//if(objMethod==null) break main;
+
+				}else{
+					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+					sValue = sExpression;
+					sReturn = sValue;
+					break main;
+				}
+				
+							
+				//Nun die Methode aufrufen.
+				Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
+				if(objReturn==null)break main;						
+				sValue = objReturn.toString();
+				sReturn = sValue;
+			}
+		}//end main:	
+				
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		if(sReturn!=null){
+			if(vecReturn.size()==0) vecReturn.add(0,"");
+			
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
+			
+			if(vecReturn.size()==2) vecReturn.add(2,"");										
+		}	
 		
+		this.setValue(sReturn);
+		
+		// Z-Tags entfernen.
+		if(bRemoveSurroundingSeparators) {
+			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
+			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
+			if(bUseExpression) {
+				if(bUseSolver) {
+					if(bUseCall) {
+						String sTagStartZCall = "<Z:Call>";
+						String sTagEndZCall = "</Z:Call>";
+						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZCall, sTagEndZCall);
+					}
+				}
+								
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+			}
+		}	
+		return vecReturn;					
+	}
+	
 	@Override
 	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
@@ -158,9 +225,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return saReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
-	 */
 	@Override
 	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
@@ -176,22 +240,37 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
 	}
 
 	//### Aus IKernelIniSolver
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
-	 */
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
-			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-			if(bUse) {
-				objReturn = super.parseAsEntry(sLineWithExpression);				
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			
+			if(bUseCall) {				
+				boolean bUseJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+				if(bUseJava) {
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					objReturnReference.set(objReturn);
+					
+					int iReturn = super.parse(sLineWithExpression, objReturnReference);		
+					objReturn = objReturnReference.get();
+					
+					String sValue = objReturn.getValue();
+					if(!sLineWithExpression.equals(sValue)) {
+						objReturn.setValueCallSolvedAsExpression(sValue);
+					}
+				}else{
+					objReturn = this.getEntryNew();
+					objReturn.isCall(true);
+					objReturn.setValue(sLineWithExpression);
+				}
 			}else {
+				objReturn = this.getEntryNew();
 				objReturn.setValue(sLineWithExpression);
 			}									
 		}//end main:
@@ -276,7 +355,4 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-	
-
-	
 }//End class

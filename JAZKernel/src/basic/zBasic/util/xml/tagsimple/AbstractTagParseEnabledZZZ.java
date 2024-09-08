@@ -42,12 +42,12 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 
 	//### aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+	public boolean isParseRelevant(String sLineWithExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 		
-			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTag(sLineWithExpression, this.getName(), false); //also, kein exact match
 			if(bReturn) break main;
 			
 			
@@ -102,6 +102,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			this.setValue(vecReturn.get(1));
 		}
 		return vecReturn;
 	}

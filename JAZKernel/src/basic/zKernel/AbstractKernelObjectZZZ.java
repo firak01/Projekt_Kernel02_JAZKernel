@@ -2449,7 +2449,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2476,7 +2476,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						//this.setValueRaw(sReturnRaw);
@@ -2505,7 +2505,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						//this.setValueRaw(sReturnRaw);
@@ -2534,7 +2534,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2561,7 +2561,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2587,7 +2587,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2613,7 +2613,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2640,7 +2640,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2666,7 +2666,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -2688,7 +2688,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu guter Letzt. Erstmals gefundener Value (section='" + objReturn.getSection() + "') anwenden für Property '" + objReturn.getProperty() + "'=''" + objReturn.getValue() + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsStringStatic(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -3573,7 +3573,7 @@ MeinTestParameter=blablaErgebnis
 			if(StringZZZ.isEmpty(sFileName)) break main;//Leer konfiguriert, bedeutet.. an anderer Stelle suchen
 			
 			
-			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
+			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFileName);				
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
@@ -3638,7 +3638,7 @@ MeinTestParameter=blablaErgebnis
 			if(StringZZZ.isEmpty(sFileName)) break main;//Leer konfiguriert, bedeutet.. an anderer Stelle suchen
 			
 			
-			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
+			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFileName);				
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
@@ -3699,7 +3699,7 @@ MeinTestParameter=blablaErgebnis
 			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
 			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
 						
-			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");								
 				//this.setValueRaw(sFilePath);
@@ -3789,7 +3789,7 @@ MeinTestParameter=blablaErgebnis
 			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
 			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
 						
-			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");								
 				//this.setValueRaw(sFilePath);
@@ -6653,7 +6653,7 @@ MeinTestParameter=blablaErgebnis
 			//1. Versuch: Systemebene
 			String sKeyUsed = this.getSystemKey();			
 			String sFileName =objIni.getValue(sKeyUsed, IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule );
-			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
+			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
@@ -6669,7 +6669,7 @@ MeinTestParameter=blablaErgebnis
 			if(StringZZZ.isEmptyNull(sFileNameUsed)){
 				sKeyUsed = this.getApplicationKey();
 				sFileName =objIni.getValue(sKeyUsed, IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX+sModule );
-				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
+				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 					//this.setValueRaw(sFileName);

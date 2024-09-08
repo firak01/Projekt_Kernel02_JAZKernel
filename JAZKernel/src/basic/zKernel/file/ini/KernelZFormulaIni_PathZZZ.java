@@ -202,8 +202,18 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	 */
 	@Override
 	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();		
+		Vector<String> vecReturn = new Vector<String>();
+		String sRetunr = sLineWithExpression;
+		boolean bUseExpression = false;
 		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+			if(!bUseExpression) break main;
+			
+			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
+			if(!bUseExpressionPath) break main;
+			
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 			
@@ -304,6 +314,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 					String sTagEnd="</Z>";
 					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 				}
+				
+				this.setValue(vecReturn.get(1));
 			}
 		}
 		return vecReturn;
@@ -369,7 +381,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 
 	//### Aus IConvertable
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return false;
 	}
 	

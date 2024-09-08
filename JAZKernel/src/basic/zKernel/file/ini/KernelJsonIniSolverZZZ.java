@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -93,7 +94,14 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		String sReturn = new String("");
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main;
+			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
+			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			if(!bUseJson) break main;
 			
 			//1. Versuch als Array
 			ArrayList<String> als = this.computeArrayList(sLineWithExpression);
@@ -110,16 +118,10 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}
 										
 		}
+		this.setValue(sReturn);
 		return sReturn;
 	}
-	
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-			
+				
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
@@ -136,6 +138,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);			
 			}				
 		}//end main:
+		this.setValue(hmReturn);
 		return hmReturn;
 	}
 	
@@ -155,13 +158,14 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);															
 							
 		}//end main:
+		this.setValue(alsReturn);
 		return alsReturn;
 	}
 	
 	//### Andere Interfaces
 	
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

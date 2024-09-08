@@ -35,7 +35,7 @@ public class KernelEncryption_KeyNumberZZZ<T>  extends AbstractIniTagSimpleZZZ<T
 	
 	//### aus IConvertableZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
 	}
 

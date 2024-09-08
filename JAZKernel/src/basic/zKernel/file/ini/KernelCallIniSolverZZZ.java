@@ -326,7 +326,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;
 	}
 

@@ -7,6 +7,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -69,6 +70,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 	//###### Getter / Setter
 	
+	//### Aus ITagBasicZZZ
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
@@ -101,75 +103,81 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 //	
 		
 	//### aus IParseEnabled
-		@Override
-		public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-			return this.parseFirstVector(sLineWithExpression, true);
-		}
-		
-		//Analog zu KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
-		@Override
-		public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-			Vector<String>vecReturn = new Vector<String>();
-			String sReturn = sLineWithExpression;
-			main:{
-				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-				
-//				if().getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
-//				
-//				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
-//				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-//				
-				
-				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);		
-				if(!bUseJson) break main;
-				
-				boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);		
-				if(!bUseJsonMap) break main;
-				
-				
-				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-				//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
-				//Z:math drumherum entfernen
-				vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
-				String sExpression = (String) vecReturn.get(1);
-				if(StringZZZ.isEmpty(sExpression)) break main;
-				
-				//++++++++++++++++++++++++++++++
-			    //Das Ziel ist, nun die JSON:MAP umzuwandeln
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, true);
+	}
+	
+	//Analog zu KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();
+		String sReturn = sLineWithExpression;
+		boolean bUseExpression=false;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;	
+			
+			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);		
+			if(!bUseJson) break main;
+			
+			boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);		
+			if(!bUseJsonMap) break main;
+			
+			
+			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+			//Z:math drumherum entfernen
+			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
+			String sExpression = (String) vecReturn.get(1);
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			this.getEntry().setRaw(sExpression);
+			
+			
+			//++++++++++++++++++++++++++++++
+		    //Das Ziel ist, nun die JSON:MAP umzuwandeln
 //				HashMap<String,String> hmReturn = this.computeHashMapFromJson(sExpression);
 //				if(hmReturn!=null) {
 //					sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
 //				}
-				
-				//Hier nur den String so zurückgeben. Für die Umwandlung in den Debug - String oder die HashMap selbst gibt es andere Methoden.
-				sReturn = sExpression;
-			}//end main:
 			
+			//Hier nur den String so zurückgeben. Für die Umwandlung in den Debug - String oder die HashMap selbst gibt es andere Methoden.
+			sReturn = sExpression;
+		}//end main:
+		
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		if(sReturn!=null){
+			if(vecReturn.size()==0) vecReturn.add(0,"");
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-			if(sReturn!=null){
-				if(vecReturn.size()==0) vecReturn.add(0,"");
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				if(!StringZZZ.isEmpty(sReturn)){
-					vecReturn.add(1, sReturn);
-				}else {
-					vecReturn.add(1, "");
-				}
-				
-				if(vecReturn.size()==2) vecReturn.add(2,"");			
-			}		
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
 			
-			// Z-Tags entfernen.
-			if(bRemoveSurroundingSeparators) {
+			if(vecReturn.size()==2) vecReturn.add(2,"");			
+		}	
+		this.setValue(sReturn);
+		
+		// Z-Tags entfernen.
+		if(bRemoveSurroundingSeparators) {
+			if(bUseExpression) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
-			
-			return vecReturn;
-		}
+		}	
+		return vecReturn;
+	}
 	
 	
 	public HashMap<String,String> computeHashMapFromJson(String sLineWithJson) throws ExceptionZZZ{
@@ -269,7 +277,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 
 	//### Andere Interfaces
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {
 		return false;
 	}
 	

@@ -235,7 +235,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 			//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
 			boolean bAnyExpression = false;				
-			String sValueConverted = KernelZFormulaIniConverterZZZ.getAsString(sRaw);
+			String sValueConverted = KernelZFormulaIniConverterZZZ.getAsStringStatic(sRaw);
 			if(!StringZZZ.equals(sRaw,sValueConverted)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sRaw + "' nach '" + sValueConverted +"'");
 				bAnyExpression = true;						

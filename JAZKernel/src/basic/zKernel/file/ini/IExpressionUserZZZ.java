@@ -3,12 +3,12 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConvertableZZZ;
+import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface IExpressionUserZZZ extends IParseEnabledZZZ, IConvertableZZZ{		
+public interface IExpressionUserZZZ extends IParseEnabledZZZ{//, IConvertEnabledZZZ{		
 	public boolean isExpression(String sExpression) throws ExceptionZZZ;
 	
 	public String parseAsExpression() throws ExceptionZZZ;
