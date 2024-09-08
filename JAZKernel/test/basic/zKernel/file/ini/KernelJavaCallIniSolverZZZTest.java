@@ -301,6 +301,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
 			
+				TODOGOON20240908;//Die Werte in objEntry gehen verloren... Lösungsansatz: Beim solve(..) Reference verwenden
+				
 				//Details	
 				//20230426: DAS IST VORERST DAS ZIEL, DAMIT IN DER FTPCREDENTIALS MASKE DER VERSCHLUESSELTE WERT AUCH ANGEZEIGT WERDEN KANN!!!
 				bValue = objEntry.isCall();
