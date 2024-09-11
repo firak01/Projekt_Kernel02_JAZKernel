@@ -138,28 +138,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parse(sLineWithExpression, true);
 	}
-			
-//	@Override
-//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//				
-//			//Bei einfachen Tags den Ersten Vektor holen
-//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
-//			
-//			//Bei einfachen Tags, den Wert als Wert zur Verfügung stellen.
-//			sReturn = (String) vecAll.get(1);
-//			this.setValue(sReturn);
-//			
-//			//als Rueckgabewert aber die gesamte, bisher aufgeloeste Zeile.
-//			String sExpressionImploded = VectorZZZ.implode(vecAll);
-//			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
-//		}//end main:
-//		return sReturn;
-//	}	
-	
-	
+				
 	@Override
 	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;

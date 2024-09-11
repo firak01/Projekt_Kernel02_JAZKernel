@@ -56,33 +56,14 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	
-	//### aus IParseEnabled
+	//### aus IParseEnabled		
+	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
-	}
-	
-//	@Override
-//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{	
-//			
-//			if(!this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) break main;
-//			if(!this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)) break main;
-//			
-//			sReturn = super.parse(sLineWithExpression);
-//			
-//		}//end main:
-//		return sReturn;
-//	}
-	
-	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
-	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+	public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector<String>vecReturn = new Vector<String>();
 		String sReturn = sLineWithExpression;
 		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false;
-		main:{
+		main:{			
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
@@ -95,11 +76,23 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			boolean bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);		
 			if(!bUseCallJava) break main;
+					
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}
+			if(objEntry==null) {
+				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sLineWithExpression);
+			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:call drumherum entfernen
-			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
+			vecReturn = super.parseFirstVector(sLineWithExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);			
 			String sExpression = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
@@ -170,6 +163,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				if(objReturn==null)break main;						
 				sValue = objReturn.toString();
 				sReturn = sValue;
+			}
+			
+			
+			if(objReturnReferenceIn!=null) {
+				objReturnReferenceIn.set(objEntry);
 			}
 		}//end main:	
 				

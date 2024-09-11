@@ -6,7 +6,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
@@ -181,18 +183,40 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 //		return sReturn;
 //	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
+
+	//### aus IExpressionUserZZZ
 	@Override
-	public Vector<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
+	public boolean isExpression(String sLine) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
+			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
+			//if(btemp==false) break main;
+		
+			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			//if(btemp==false) break main;
+			
+			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
+			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
+			//Also: 
+			//boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagStarting(), this.getTagClosing(), false);
+			if(!bAsTagFound) break main;
+			
+			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagClosing().toLowerCase());
+			iIndexClosing=iIndexClosing+this.getTagClosing().length();
+			String sRest = sLine.substring(iIndexClosing);
+			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
+			
+			bReturn = true;
+		}//end main
+		return bReturn;
 	}
 	
+	
+	//### Aus IParseEnabledZZZ	
+		
+	//### aus IKernelEntryExpressionUserZZZ
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -201,7 +225,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector<String> parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		Vector<String> vecReturn = new Vector<String>();
 		String sRetunr = sLineWithExpression;
 		boolean bUseExpression = false;
@@ -213,6 +237,17 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
 			if(!bUseExpressionPath) break main;
+			
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}
+			if(objEntry==null) {
+				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sLineWithExpression);
 			
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
@@ -317,37 +352,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				
 				this.setValue(vecReturn.get(1));
 			}
-		}
+			
+			if(objReturnReferenceIn!=null) {
+				objReturnReferenceIn.set(objEntry);
+			}
+		}//end main:
 		return vecReturn;
-	}
-	
-	
-	@Override
-	public boolean isExpression(String sLine) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
-			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
-			//if(btemp==false) break main;
-		
-			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			//if(btemp==false) break main;
-			
-			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
-			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
-			//Also: 
-			//boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagStarting(), this.getTagClosing(), false);
-			if(!bAsTagFound) break main;
-			
-			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagClosing().toLowerCase());
-			iIndexClosing=iIndexClosing+this.getTagClosing().length();
-			String sRest = sLine.substring(iIndexClosing);
-			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
 	}
 	
 	
@@ -465,6 +475,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	public boolean proofFlagSetBefore(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+	
 
 	
 }//End class

@@ -322,7 +322,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);					
 			int iReturn = this.parse(sLineWithExpression, objReturnReference);
-			objReturn = objReturnReference.get();		
+			objReturn = objReturnReference.get();
 		}//end main:		
 		return objReturn;
 	}
@@ -334,28 +334,69 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		int iReturn = -1;
-		
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) {
-			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			objReturnReference.set(objReturn);
+				
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {				
+		}else {
+			objEntry = objReturnReferenceIn.get();
+		}
+		if(objEntry==null) {
+			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objReturn.setRaw(sLineWithExpression);
-		
+		objEntry.setRaw(sLineWithExpression);
+						
 		String sReturn = this.parse(sLineWithExpression, bRemoveSurroundingSeparators);
 		this.setValue(sReturn);
 		
-		objReturn.setValue(sReturn);				
+		objEntry.setValue(sReturn);				
 		if(!sLineWithExpression.equals(sReturn)) {
-			objReturn.isParsed(true);			
+			objEntry.isParsed(true);			
 			iReturn = 1;
 		}
-		objReturnReference.set(objReturn);
+		if(objReturnReferenceIn!=null) {
+			objReturnReferenceIn.set(objEntry);
+		}
 		return iReturn;
 	}
+	
+	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
+	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		
+	//### Aus IKernelEntryExpressionUserZZZ	
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
+		return this.parseFirstVector(sLineWithExpression, objReturnReference, true);
+	}
+
+	@Override
+	public Vector<String> parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}
+			if(objEntry==null) {
+				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sLineWithExpression);
+			
+			vecReturn = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
+			
+			
+		}
+		return vecReturn;
+	}
+	
+	
+	
 	
 	//### aus IExpressionUserZZZ	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.

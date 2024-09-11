@@ -6,8 +6,10 @@ import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
 import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
@@ -172,8 +174,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+						
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			
+			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);			
 			this.setValue(vecReturn.get(1));
 		}
 		return vecReturn;

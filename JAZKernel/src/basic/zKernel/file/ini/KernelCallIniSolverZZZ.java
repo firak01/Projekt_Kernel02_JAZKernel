@@ -209,13 +209,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}//end main:
 		return sReturn;
 	}
-	
-	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
+		
 	//### Andere Interfaces
 	
 	/**Methode ersetzt in der Zeile alle CALL Werte.
@@ -418,6 +412,4 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagSetBefore(objEnumFlag.name());
 		}
-		
-		
 }//End class

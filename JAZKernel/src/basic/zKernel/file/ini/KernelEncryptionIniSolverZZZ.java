@@ -85,8 +85,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				
 			//Nun den z:cipher Tag suchen				
 			KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
-			if(objCipher.isExpression(sExpression)){					
-				//String sCipher = objCipher.parse(sExpression);	
+			if(objCipher.isExpression(sExpression)){						
 				String sRemaining = objCipher.parse(sExpression);
 				String sCipher = objCipher.getValue();
 				 

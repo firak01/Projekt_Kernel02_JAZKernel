@@ -6,9 +6,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -191,29 +193,13 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	
 	//### Aus Interface IParseEnabled			
 	@Override
-	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			//Nein, der Konverter nutzt das Flag auch nicht if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-			
-			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			vecReturn.add(1, null);
-			this.setValue(vecReturn.get(1));
-		}//end main:
-		return vecReturn;
-	}
-	
-	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
 	}
 	
-	
+		
+	//### Aus IKernelEntryExpressionUserZZZ
+			
 	//##############################################################
 	//### FLAG Handling
 	
@@ -255,4 +241,5 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 
+	
 }//End class
