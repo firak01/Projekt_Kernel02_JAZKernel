@@ -39,7 +39,10 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bPropertyExists = false;
 	protected boolean bAnyPropertyExists = false;
 	protected boolean bExpression = false;
+	
 	protected boolean bFormula = false;
+	protected boolean bFormulaSolved = false;
+	
 	protected boolean bCrypt = false;
 	
 	protected VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
@@ -63,10 +66,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bJsonMap = false;
 	
 	protected boolean bCall = false;
+	protected boolean bCallSolved = false;
 	protected boolean bJavaCall = false;
+	
 	
 	protected String sCallingClassname = null;
 	protected String sCallingMethodname = null;
+	protected String sValueCallSolved = null;
 	protected String sValueCallSolvedAsExpression = null;
 
 	protected ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
@@ -572,9 +578,20 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bFormula = bFormula;
 	}
 	
+	
+	@Override
+	public boolean isFormulaSolved() {
+		return this.bFormulaSolved;
+	}
+
+	@Override
+	public void isFormulaSolved(boolean bFormulaSolved) {
+		this.bFormulaSolved = bFormulaSolved;
+	}
+	
 	@Override 
-	public void isFormulaMathSolved(boolean bFormulaSolved) {
-		this.bFormulaMathSolved = bFormulaSolved;
+	public void isFormulaMathSolved(boolean bFormulaMathSolved) {
+		this.bFormulaMathSolved = bFormulaMathSolved;
 	}
 	
 	@Override
@@ -683,6 +700,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isCall(boolean bCall) {
 		this.bCall = true;
+	}
+	
+	@Override
+	public boolean isCallSolved() {
+		return this.bCallSolved;
+	}
+	
+	@Override
+	public void isCallSolved(boolean bCallSolved) {
+		this.bCallSolved = true;
 	}
 	
 	@Override
@@ -883,6 +910,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setCallingMethodname(String sJavaCallingMethodName) {
 		this.sCallingMethodname = sJavaCallingMethodName;
+	}
+	
+	@Override
+	public String getValueCallSolved() {
+		return this.sValueCallSolved;
+	}
+	
+	@Override
+	public void setValueCallSolved(String sValueCallSolved) {
+		this.sValueCallSolved = sValueCallSolved;
 	}
 	
 	@Override

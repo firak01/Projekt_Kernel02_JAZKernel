@@ -436,14 +436,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
 	 */
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sLineWithExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{		
 			
 			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				objReturn = super.parseAsEntry(sLineWithExpression);
+				objReturn = super.parseAsEntryNew(sLineWithExpression);
 			}else {
 				objReturn.setValue(sLineWithExpression);
 			}									

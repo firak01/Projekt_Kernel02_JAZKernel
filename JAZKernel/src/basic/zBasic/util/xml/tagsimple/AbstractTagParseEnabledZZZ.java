@@ -42,12 +42,12 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 
 	//### aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant(String sLineWithExpression) throws ExceptionZZZ {
+	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 		
-			bReturn = XmlUtilZZZ.containsTag(sLineWithExpression, this.getName(), false); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
 			if(bReturn) break main;
 			
 			
@@ -56,15 +56,15 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ {
-		return this.parse(sLineWithExpression, true);
+	public String parse(String sExpression) throws ExceptionZZZ {
+		return this.parse(sExpression, true);
 	}
 	
 	@Override
-	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			Vector<String> vecParse = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
+			Vector<String> vecParse = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecParse!=null) {
 				this.setValue(vecParse.get(1)); //uebernimm also das 1. Element			
 				sReturn = VectorZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
@@ -83,8 +83,8 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
+	public Vector<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sExpression, true);
 	}
 	
 	
@@ -97,11 +97,11 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			vecReturn = XmlUtilZZZ.parseFirstVector(sExpression, this.getTagStarting(), this.getTagClosing(), bRemoveSurroundingSeparators);
 			this.setValue(vecReturn.get(1));
 		}
 		return vecReturn;

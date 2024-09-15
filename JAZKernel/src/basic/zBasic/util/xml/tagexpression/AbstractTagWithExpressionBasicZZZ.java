@@ -112,12 +112,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	//### Aus IParseEnabledZZZ	
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 		
-			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
 			if(bReturn) break main;
 			
 			
@@ -126,19 +126,19 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parse(sLineWithExpression, true);
+	public String parse(String sLExpression) throws ExceptionZZZ{
+		return this.parse(sLExpression, true);
 	}	
 	
 	@Override
-	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
 			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
+			Vector<String> vecAll = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecAll!=null) {
 				
 				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.						
@@ -154,12 +154,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
 	 * ist der Ausdruck NACH der ersten Expression.
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
+	public Vector<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sExpression, true);
 	}
 	
 	/**
@@ -167,29 +167,33 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
 	 * ist der Ausdruck NACH der ersten Expression.
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
+			if(StringZZZ.isEmpty(sExpression)) break main;
+		
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			if(vecReturn==null)break main;			
 			
-			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);			
-			this.setValue(vecReturn.get(1));
+			String sReturn = VectorZZZ.implode(vecReturn);
+			this.setValue(sReturn);
 		}
 		return vecReturn;
 	}
+
+	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
+	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
-		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+	public boolean isExpression(String sExpression) throws ExceptionZZZ {
+		return XmlUtilZZZ.isExpression4TagXml(sExpression, this.getName());
 	}	
 	
 	@Override
@@ -200,12 +204,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 
 
 	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
-			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
+			Vector<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 			sReturn = VectorZZZ.implode(vecAll);
@@ -216,15 +220,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	@Override
-	public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
-		String sReturn = sLineWithExpression;
+		String sReturn = sExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER SOLVE BERECHNUNG ERSTELLTEN WERT in den Return-Vector übernehmen
@@ -241,14 +245,14 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 						
 			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
+			vecReturn = this.parseFirstVectorAsExpression(sExpression);			
 			
 		}
 		return vecReturn;

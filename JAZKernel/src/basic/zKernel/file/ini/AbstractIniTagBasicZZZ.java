@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
@@ -63,9 +64,47 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			
 	//######## Getter / Setter #################
 	
-	//### aus IIniTagBasicZZZ
+	//### aus IIniTagBasicZZZ  
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
+		return this.parseAsEntry(sExpression, null);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
+		return this.parseAsEntry(sExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		//IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			if(objReturnReferenceIn==null) {
+				objReturn = this.parseAsEntryNew(sExpression);
+				break main;
+			}
+			
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReferenceIn.get();
+			if(objEntry==null) {
+				objReturn =  this.parseAsEntryNew(sExpression);							
+			}else {			
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
+				objReturnReference.set(objEntry);
+				
+				String sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
+				objReturn = objReturnReference.get();
+				objReturn.setValue(sReturn);
+			}
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
+			
+		}//end main:		
+		return objReturn;
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sLineWithExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;

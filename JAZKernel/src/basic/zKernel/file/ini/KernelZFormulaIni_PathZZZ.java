@@ -11,6 +11,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -217,6 +218,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//### Aus IParseEnabledZZZ	
 		
 	//### aus IKernelEntryExpressionUserZZZ
+	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -225,12 +227,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String> parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		Vector<String> vecReturn = new Vector<String>();
-		String sRetunr = sLineWithExpression;
+		String sReturn = sExpression;
 		boolean bUseExpression = false;
+		IKernelConfigSectionEntryZZZ objEntry = null;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
@@ -238,22 +241,30 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
 			if(!bUseExpressionPath) break main;
 			
-			IKernelConfigSectionEntryZZZ objEntry = null;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			if(objReturnReferenceIn==null) {				
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten" 
+				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
 			}else {
 				objEntry = objReturnReferenceIn.get();
 			}
+			
 			if(objEntry==null) {
-				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
-			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry.setRaw(sLineWithExpression);
+				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//objEntry = this.getEntry();
+				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			}	
+			
+			
+			objEntry.setRaw(sExpression);
+			objReturnReference.set(objEntry);			
 			
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 			
 			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression + "<", this.getTagStarting(), "<", false,false);
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression + "<", this.getTagStarting(), "<", true,false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression + "<", this.getTagStarting(), "<", true,false);
 			
 			//Erforderliche Nacharbeiten, weil es halt besondere Tags sind:
 			//1. den oben geklauten Anfangstag - des nachfolgenden Ausdrucks - wieder hinzufuegen
@@ -353,9 +364,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				this.setValue(vecReturn.get(1));
 			}
 			
-			if(objReturnReferenceIn!=null) {
-				objReturnReferenceIn.set(objEntry);
-			}
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);			
 		}//end main:
 		return vecReturn;
 	}

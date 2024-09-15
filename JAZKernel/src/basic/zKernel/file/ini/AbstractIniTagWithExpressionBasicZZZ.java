@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
@@ -70,8 +71,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### aus IConvertableZZZ
 	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return sLine;
+	public String convert(String sExpression) throws ExceptionZZZ {
+		return sExpression;
 	}	
 	
 	/* IDEE: convertable != parseable.
@@ -83,59 +84,108 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	* @see basic.zKernel.file.ini.AbstractIniTagSimpleZZZ#isConvertRelevant(java.lang.String)
 	*/
 	@Override
-	public boolean isConvertRelevant(String sLineWithExpression) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sExpression) throws ExceptionZZZ {
 	boolean bReturn = false;
 	main:{
-		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 		
-		bReturn = this.getEmpty().equalsIgnoreCase(sLineWithExpression);
+		bReturn = this.getEmpty().equalsIgnoreCase(sExpression);
 		if(bReturn) break main;
 	
 		
-		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagStarting(), this.getTagClosing());		
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sExpression, this.getTagStarting(), this.getTagClosing());		
 	}//end main
 	return bReturn;
 	}
 	
 	//### Aus IParseEnabledZZZ	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parse(sLineWithExpression, true);
+	public String parse(String sExpression) throws ExceptionZZZ{
+		return this.parse(sExpression, true);
 	}	
 	
 	@Override
-	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			
-			sReturn = super.parse(sLineWithExpression, bRemoveSurroundingSeparators);
+			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
 		}//end main:
 		return sReturn;
 	}
-	
+
 	//### aus IIniTagBasicZZZ
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			objReturn.setRaw(sLineWithExpression);
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			objReturn.setRaw(sExpression);
 			
-			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseFirstVector(sExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
 			objReturn.setValue(sReturn);
-			if(!sLineWithExpression.equals(sReturn)) {
+			if(!sExpression.equals(sReturn)) {
 				objReturn.isParsed(true);
 			}
 		}//end main:
 		return objReturn;
 	}	
-
+ 
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
+		return this.parseAsEntry(sExpression, null);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
+		return this.parseAsEntry(sExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		//IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ<T>(this);
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objReturnReferenceIn==null) {
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this); //geht hier nicht... this.getEntryNew(); ausserdem gingen alle Informationen verloren				
+				                                                      //nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			}else {
+				objReturn = objReturnReferenceIn.get();				
+			}
+			
+			if(objReturn==null) {
+				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+			}
+			objReturn.setRaw(sExpression);
+						
+			//Hier Methode nur ohne Reference... String sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
+			//ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
+			//objReturnReference.set(objReturn);			
+			String sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
+			//objReturn = objReturnReference.get();
+			objReturn.setValue(sReturn);	
+			
+			if(!sExpression.equals(sReturn)) objReturn.isParsed(true);
+			
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
+			
+		}//end main:		
+		return objReturn;
+	}
+		
+	
 	@Override
 	public String[] parseAsArray(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parseAsArray(sLineWithExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);

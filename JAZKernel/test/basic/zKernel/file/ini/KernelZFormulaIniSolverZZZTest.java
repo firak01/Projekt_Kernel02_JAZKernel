@@ -1439,8 +1439,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
 			//Nun werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			//Erst wenn der Parser den Solver nutzen soll, kommt auch das vom solve() raus.
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);
@@ -1485,8 +1485,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
@@ -1533,8 +1533,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
@@ -1580,8 +1580,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
@@ -1644,8 +1644,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
@@ -1725,8 +1725,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);

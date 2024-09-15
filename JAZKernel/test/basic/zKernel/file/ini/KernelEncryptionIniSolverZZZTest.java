@@ -98,8 +98,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			//noch nicht sofort entschluesseln
 			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -205,8 +205,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 						
 			//Nun erst werden Variablen ersetzt			
-			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
 			//noch nicht sofort entschluesseln
 			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -266,8 +266,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 							
 				//Nun erst werden Variablen ersetzt			
-				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 				
 				//noch nicht sofort entschluesseln
 				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -326,8 +326,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 							
 				//Nun erst werden Variablen ersetzt			
-				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZVariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 				
 				//noch nicht sofort entschluesseln
 				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet

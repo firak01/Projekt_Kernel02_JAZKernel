@@ -5,8 +5,10 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 /** Merke: Einfache Tags sind nicht verschachtelt.
  *         => 1. Bei einer compute() Berechnung wird nur der Inhalt des Tags zurückgegeben. 
@@ -128,7 +130,11 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return vecReturn;
 	}
 	
-	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 //	@Override

@@ -206,37 +206,37 @@ public class XmlUtilZZZ {
 	//+++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
+	* @param sExpression
 	* @return
 	* 
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public static Vector computeExpressionFirstVector(String sLineWithExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
+	public static Vector computeExpressionFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
 			if(objTagType==null) break main;
 			
-			if(StringZZZ.contains(sLineWithExpression, objTagType.getTagPartEmpty())) {
-				vecReturn = StringZZZ.vecSplitFirst(sLineWithExpression, objTagType.getTagPartEmpty(), false,true);				
+			if(StringZZZ.contains(sExpression, objTagType.getTagPartEmpty())) {
+				vecReturn = StringZZZ.vecSplitFirst(sExpression, objTagType.getTagPartEmpty(), false,true);				
 				
 			}else {
-				vecReturn = StringZZZ.vecMid(sLineWithExpression, objTagType.getTagPartStarting(), objTagType.getTagPartClosing(), false,true);
+				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartStarting(), objTagType.getTagPartClosing(), false,true);
 				
 			}
 		}
 		return vecReturn;
 	}
 	
-	public static boolean isExpression(String sLine, ITagTypeZZZ objTagType) throws ExceptionZZZ{
+	public static boolean isExpression(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, objTagType.getTagPartStarting(), false);
+			boolean btemp = StringZZZ.contains(sExpression, objTagType.getTagPartStarting(), false);
 			if(btemp) {
-				btemp = StringZZZ.contains(sLine, objTagType.getTagPartClosing(), false);
+				btemp = StringZZZ.contains(sExpression, objTagType.getTagPartClosing(), false);
 				if(btemp==false) break main;
 			}else {
-				btemp = StringZZZ.contains(sLine, objTagType.getTagPartEmpty(), false);
+				btemp = StringZZZ.contains(sExpression, objTagType.getTagPartEmpty(), false);
 				if(btemp==false) break main;
 			}
 												
@@ -245,10 +245,10 @@ public class XmlUtilZZZ {
 		return bReturn;
 	}
 	
-	public static boolean isExpression4TagXml(String sLineWithExpression, String sTagName){
+	public static boolean isExpression4TagXml(String sExpression, String sTagName){
 		boolean bReturn = false;
 		main:{			
-			bReturn = XmlUtilZZZ.containsTag(sLineWithExpression, sTagName, false);
+			bReturn = XmlUtilZZZ.containsTag(sExpression, sTagName, false);
 			if(bReturn) break main;
 			
 		}//end main
@@ -261,10 +261,10 @@ public class XmlUtilZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 20.07.2024, 07:48:25
 	 */
-	public static boolean isExpression4Tag(String sLineWithExpression, String sTagStarting, String sTagClosing){
+	public static boolean isExpression4Tag(String sExpression, String sTagStarting, String sTagClosing){
 		boolean bReturn = false;
 		main:{			
-			bReturn=StringZZZ.containsAsTag(sLineWithExpression, sTagStarting, sTagClosing, false);
+			bReturn=StringZZZ.containsAsTag(sExpression, sTagStarting, sTagClosing, false);
 			if(bReturn) break main;
 			
 		}//end main
@@ -279,18 +279,27 @@ public class XmlUtilZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 05.09.2024, 18:30:57
 	 */
-	public static boolean isSurroundedByTag(String sLineWithExpression, String sTagStarting, String sTagClosing){
+	public static boolean isSurroundedByTag(String sExpression, String sTagStarting, String sTagClosing){
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 		
-			boolean bSurroundedLeft = StringZZZ.startsWithIgnoreCase(sLineWithExpression, sTagStarting);
-			boolean bSurroundedRight = StringZZZ.endsWithIgnoreCase(sLineWithExpression, sTagClosing);
+			boolean bSurroundedLeft = StringZZZ.startsWithIgnoreCase(sExpression, sTagStarting);
+			boolean bSurroundedRight = StringZZZ.endsWithIgnoreCase(sExpression, sTagClosing);
 			
 			if(bSurroundedLeft && bSurroundedRight) bReturn = true;
 		}//end main:
 		return bReturn;
+	}
+	
+	public static Vector<String>parseFirstVector(String sExpression, String sTagStarting, String sTagClosing, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{
+			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagStarting, sTagClosing, !bRemoveSurroundingSeparators, false);			
+		}
+		return vecReturn;
 	}
 	
 }

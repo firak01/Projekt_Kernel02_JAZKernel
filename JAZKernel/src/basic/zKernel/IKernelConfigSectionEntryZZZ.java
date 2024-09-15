@@ -93,7 +93,11 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Formula
 	public boolean isFormula();
-	abstract void isFormula(boolean bIsFormula);
+	abstract void isFormula(boolean bIsFormulaSolved);
+	
+	public boolean isFormulaSolved();
+	abstract void isFormulaSolved(boolean bIsFormulaSolved);
+	
 	
 	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
 	public String getValueFormulaSolvedAndConverted();
@@ -160,8 +164,14 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isCall();
 	abstract void isCall(boolean bIsCall);
 	
+	public boolean isCallSolved();
+	abstract void isCallSolved(boolean bIsCallSolved);
+	
 	public boolean isJavaCall();
 	abstract void isJavaCall(boolean bIsJavaCall);
+	
+	
+	
 	
 	//Falls ein Wert einen Aufruf enthält hier die Details ablegen
 	public String getCallingClassname();
@@ -170,6 +180,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public String getCallingMethodname();
 	public void setCallingMethodname(String sJavaCallingMethodName);
 		
+	public String getValueCallSolved();
+	public void setValueCallSolved(String sValueCallSolved);
+	
 	public String getValueCallSolvedAsExpression();
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression);
 	

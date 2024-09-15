@@ -127,7 +127,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Nun die Gesamtberechnung durchführen				
-				IKernelConfigSectionEntryZZZ objEntry = objExpressionCallSolver.parseAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry = objExpressionCallSolver.parseAsEntryNew(sLineWithExpression);
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
@@ -139,7 +139,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Anwenden der ersten Formel		
 				objExpressionCallSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird
 				objExpressionCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						
-				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionCallSolver.parseAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionCallSolver.parseAsEntryNew(sLineWithExpression);
 				sValue = objEntry2.getValue();
 				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");
@@ -195,7 +195,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Nun die Gesamtberechnung durchführen				
-				IKernelConfigSectionEntryZZZ objEntry = objExpressionCallSolver.parseAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry = objExpressionCallSolver.parseAsEntryNew(sLineWithExpression);
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
@@ -206,7 +206,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Anwenden der ersten Formel		
 				objExpressionCallSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird
 				objExpressionCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						
-				IKernelConfigSectionEntryZZZ objEntrySolved = objExpressionCallSolver.parseAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntrySolved = objExpressionCallSolver.parseAsEntryNew(sLineWithExpression);
 				sValue = objEntrySolved.getValue();
 				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");

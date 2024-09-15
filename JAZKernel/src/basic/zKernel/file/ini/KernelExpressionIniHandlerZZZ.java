@@ -1,11 +1,14 @@
 package basic.zKernel.file.ini;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
@@ -119,41 +122,64 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 //	 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
 //	 */	
 	@Override
-	public int parse(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
-		int iReturn = -1;
-		boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-		if(objReturn==null) {
-			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-			objReturnReference.set(objReturn);
+	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		
+		//TODOGOON20240915: Das kommt nach solveFirstVector(), groesstenteils
+		//      Der Rest kommt nach parseFirstVector().
+		//      parseFirstVector() ruft also solveFirstVector() auf 
+		//      und macht dann mit parse() erst das implode um die Werte links und rechts zusammenzufassen.
+		//
+		//      Problem: Rueckgabewert int irgendwie bilden aus den gesetzten is... Werten.
+		//
+		//      Merke:
+		//      solve() wird nur den vec.getIndex(1) zurueckliefern.
+		
+		int iReturn = 0;
+		String sReturn = sExpression;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+		if(objReturnReferenceIn==null) {
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+		}else {
+			objEntry = objReturnReferenceIn.get();
 		}
-		objReturn.setRaw(sLineWithExpression);
-		String sReturn = sLineWithExpression;
+		
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+		}	
+		
+		
+		objEntry.setRaw(sExpression);
+		objReturnReference.set(objEntry);		
+	
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
+			if(StringZZZ.isEmpty(sExpression)) break main;			
 
-			
+			boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
 			//TODOGOON20240810; //jetzt sollte eigentlich hier super.parse()
 								//und diese Anpassung in .parseFirstVector() mit Referenz IKernelConfigSectionEntryZZZ passieren.
 						        //und darin dann das machen...
 			
 			//Aber <z:Null/> und <z:Empty/> muessen auch behandelt werden durch die Expression verarbeitung
-			boolean bIsConversion = this.isConvertRelevant(sLineWithExpression); 
+			boolean bIsConversion = this.isConvertRelevant(sExpression); 
 			if(bIsConversion) {
-				objReturn.isConversion(true);
+				objEntry.isConversion(true);
 			}
 			
 			//Behandle die konkreten Tags dieses Ausdrucks <Z>
-			boolean bIsExpression = this.isExpression(sLineWithExpression);
+			boolean bIsExpression = this.isExpression(sExpression);
 			if(bIsExpression){
-				objReturn.isExpression(true);	
+				objEntry.isExpression(true);	
 			}
 			if(! (bIsExpression  | bIsConversion)) break main;						
 			
-			solver:{
-			iReturn=0;
-			
+			solver:{			
 			boolean bUseExpressionSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
@@ -164,7 +190,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//Zuerst einmal <Z> - Tag herausrechen.
 			//Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
 			//String sLineWithExpressionUsed = vec.get(1);
-			String sLineWithExpressionUsed = sLineWithExpression;
+			String sExpressionUsed = sExpression;
 			
 			//Darin dann weiterrechnen...										
 			if(bUseFormula | bUseExpressionSolver) {
@@ -182,7 +208,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
  				//BZW. jetzt solle ein .solve(...) unter Verwendung eines Solves reichen....
 				//Aber: Das entfernt nicht die Tags drumherum, darum parse()...
 				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
-				int iReturnSolver = objFormulaSolver.parse(sLineWithExpressionUsed, objReturnReference);//solve(sLineWithExpressionUsed, objReturnReference); //
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceParse.set(objEntry);
+				int iReturnSolver = objFormulaSolver.parse(sExpressionUsed, objReturnReferenceParse);//solve(sLineWithExpressionUsed, objReturnReference); //
 				iReturn = iReturn + iReturnSolver;
 				
 //				TODOGOON20240810; //Das sollte dann wegfallen koennen, bzw. wird im obigen solve erledig.
@@ -208,11 +236,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
 				
 				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-				boolean bForFurtherProcessing = false; 
-				bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceCall.set(objEntry);
+				boolean bForFurtherProcessing = false; 				
+				bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceCall);
 				if(bAnyCall) {
-					objReturn = objReturnReference.get();
-					objReturn.isCall(true);																						
+					objEntry = objReturnReferenceCall.get();
+					objEntry.isCall(true);																						
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
 			}
 										
@@ -226,24 +256,22 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 				ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 				ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
-				iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
-				if(iReturnJson==5) {
-					objReturn = objReturnReference.get();
-					objReturn.isJsonArray(true);
-					objReturn.isJson(true);
-					objReturn.isExpression(true);
-					objReturn.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
-					objReturn.setValue(objalsReturnValueJsonSolved.getArrayList());												
+				iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+				if(iReturnJson==5) {					
+					objEntry.isJsonArray(true);
+					objEntry.isJson(true);
+					objEntry.isExpression(true);
+					objEntry.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
+					objEntry.setValue(objalsReturnValueJsonSolved.getArrayList());												
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
 			
 			
 				if(iReturnJson==6) {
-					objReturn = objReturnReference.get();
-					objReturn.isJsonMap(true);
-					objReturn.isJson(true);
-					objReturn.isExpression(true);
-					objReturn.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
-					objReturn.setValue(objhmReturnValueJsonSolved.get());					
+					objEntry.isJsonMap(true);
+					objEntry.isJson(true);
+					objEntry.isExpression(true);
+					objEntry.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
+					objEntry.setValue(objhmReturnValueJsonSolved.get());					
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
 				
 				iReturn = iReturn + iReturnJson;						
@@ -254,70 +282,333 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
 				
 				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-				boolean bForFurtherProcessing = false; 
-				bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+				boolean bForFurtherProcessing = false;
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceEncryption.set(objEntry);
+				bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
 				if(bAnyEncryption) {
-					objReturn.isRawEncrypted(true);
-					String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-					if(sLineWithExpressionUsed.equals(sLineDecrypted)) {
-						objReturn = objReturnReference.get();
-						objReturn.isDecrypted(false);
+					objEntry = objReturnReferenceEncryption.get();
+					objEntry.isRawEncrypted(true);
+					String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+					if(sExpressionUsed.equals(sLineDecrypted)) {						
+						objEntry.isDecrypted(false);
 					}else {
-						objReturn = objReturnReference.get();
-						objReturn.isDecrypted(true);
-						objReturn.setRawDecrypted(sLineDecrypted);
-						objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+						objEntry.isDecrypted(true);
+						objEntry.setRawDecrypted(sLineDecrypted);
+						objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
 					}
-					sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
 			}
 			
 			
 			} //end solver:
 			
-			sReturn = objReturn.getValue();
+			sReturn = objEntry.getValue();
 			if(bRemoveSurroundingSeparators) {
 				String sTagStart = this.getTagStarting();
 				String sTagEnd = this.getTagClosing();				
 				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
                 sReturn = sValue;												
 			}
+			
+			if(bAnyEncryption) {				
+				iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
+			}
+			if(bAnyCall) {
+				iReturn = iReturn+100;
+			}
 		}//end main:
 		
-		objReturn.setValue(sReturn);
-		if(!sLineWithExpression.equals(sReturn)) {
-			objReturn.isParsed(true);
+		objEntry.setValue(sReturn);
+		if(!sExpression.equals(sReturn)) {
+			objEntry.isParsed(true);
 		}
-		
-		if(bAnyEncryption) {				
-			iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
-		}
-		if(bAnyCall) {
-			iReturn = iReturn+100;
-		}
-		objReturnReference.set(objReturn);
+				
+		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		return iReturn;
 	}
+	
+	
+	@Override
+	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		
+		//TODO: Das kommt nach solveFirstVector(), groesstenteils
+		//      Der Rest kommt nach parseFirstVector().
+		//      parseFirstVector() ruft also solveFirstVector() auf 
+		//      und macht dann mit parse() erst das implode um die Werte links und rechts zusammenzufassen.
+		//
+		//      Merke:
+		//      solve() wird nur den vec.getIndex(1) zurueckliefern.
+		
+		Vector<String> vecReturn = null;
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		String sReturn = sExpression;						
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+						
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+			if(objReturnReferenceIn==null) {
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}
+			
+			if(objEntry==null) {
+				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//objEntry = this.getEntry();
+				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			}	
+			objEntry.setRaw(sExpression);
+			objReturnReference.set(objEntry);
+			
+			
+			boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
+			//TODOGOON20240810; //jetzt sollte eigentlich hier super.parse()
+								//und diese Anpassung in .parseFirstVector() mit Referenz IKernelConfigSectionEntryZZZ passieren.
+						        //und darin dann das machen...
+			
+			//Aber <z:Null/> und <z:Empty/> muessen auch behandelt werden durch die Expression verarbeitung
+			boolean bIsConversion = this.isConvertRelevant(sExpression); 
+			if(bIsConversion) {
+				objEntry.isConversion(true);
+			}
+			
+			//Behandle die konkreten Tags dieses Ausdrucks <Z>
+			boolean bIsExpression = this.isExpression(sExpression);
+			if(bIsExpression){
+				objEntry.isExpression(true);	
+			}
+			if(! (bIsExpression  | bIsConversion)) break main;						
+			
+			vecReturn = new Vector<String>();
+			sReturn = objEntry.getValue();
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();				
+				String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);			
+                sReturn = sValue;												
+			}
+			
+//			if(bAnyEncryption) {				
+//				iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
+//			}
+//			if(bAnyCall) {
+//				iReturn = iReturn+100;
+//			}
+		}//end main:
 
-//	/* Muss das noch ausprogrammiert werden? 
-//	 * Ich habe erst mal die SimpleTag-Lösung eingesetzt.
-//	 * 
-//	 * (non-Javadoc)
-//	 * @see basic.zKernel.file.ini.AbstractKernelIniTagCascadedZZZ#computeExpressionAllVector(java.lang.String)
-//	 */
-//	@Override
-//	public Vector<String>solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//						
-//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-//			vecReturn = this.parseFirstVector(sLineWithExpression);			
-//			
-//		}
-//		return vecReturn;
-//	}
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(vecReturn!=null) {
+			if(vecReturn.size()==0) vecReturn.add(0, "");
+						
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
+			
+			if(vecReturn.size()==2) vecReturn.add(2, "");
+			
+			sReturn = VectorZZZ.implode(vecReturn);
+		}	
+				
+		if(!sExpression.equals(sReturn)) objEntry.isParsed(true);
+		
+		this.setValue(sReturn);
+		if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
+		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);		
+		return vecReturn;		
+	}
+
+	/* Hier die konkrete Auspraegung:
+	 * Methode wird bei .solve(...) von der abstrakten Klasse aus aufgerufen.
+	 * Dann ruft diese die Elternmethode auf.
+	 * Anschliessend die fuer diese Implementierung notwendige solve-Loesung, also ggfs. andere Solver.
+	 * 
+	 * (non-Javadoc)
+	 * @see basic.zKernel.file.ini.AbstractKernelIniTagCascadedZZZ#computeExpressionAllVector(java.lang.String)
+	 */
+	@Override
+	public Vector<String> solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		//TODO: Das kommt nach solveFirstVector(), groesstenteils
+				//      Der Rest kommt nach parseFirstVector().
+				//      parseFirstVector() ruft also solveFirstVector() auf 
+				//      und macht dann mit parse() erst das implode um die Werte links und rechts zusammenzufassen.
+				//
+				//      Merke:
+				//      solve() wird nur den vec.getIndex(1) zurueckliefern.
+		
+		Vector<String> vecReturn = null;
+		String sReturn = sExpressionIn;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {				
+		}else {
+			objEntry = objReturnReferenceIn.get();
+		}
+		if(objEntry==null) {
+			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objEntry.setRaw(sExpressionIn);
+			
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
+			
+			vecReturn = new Vector<String>();										
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
+			
+			String sExpression = sExpressionIn;
+			
+			//Löse Pfade, etc. auf
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReference.set(objEntry);
+			Vector<String> vecAll = super.solveFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);
+			if(vecAll!=null) {
+				String sExpressionUsed = VectorZZZ.implode(vecAll); //Aussnahme im Solver(). Fasse hier noch einmal zusammen, da ja jetzt andere Solver ausgeführt werden sollen.
+				objEntry.setRaw(sExpressionUsed);
+				
+				//Löse nun die anderen Solver auf.
+				boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+				boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+				boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
+				if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+																	
+				if(bUseFormula) {				
+					//Hier KernelZFormulIniSolverZZZ verwenden
+					KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
+					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+					
+					KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceFormula = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					objReturnReferenceFormula.set(objEntry);
+					int iReturnSolver = objFormulaSolver.parse(sExpressionUsed, objReturnReferenceFormula);//solve(sLineWithExpressionUsed, objReturnReference); //
+					objEntry = objReturnReferenceFormula.get();
+					if(iReturnSolver>=1){
+						objEntry.isExpression(true);
+						objEntry.isFormulaSolved(true);																					
+						objEntry.setValueFormulaSolvedAndConverted(objEntry.getValue());
+						
+						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
+				}//end bUseFormula
+				
+									
+				if(bUseCall){
+					//Hier KernelCallIniSolverZZZ verwenden
+					KernelCallIniSolverZZZ<T> callDummy = new KernelCallIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
+					
+					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					boolean bForFurtherProcessing = false; 
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					objReturnReferenceSolverCall.set(objEntry);
+					boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
+					objEntry = objReturnReferenceSolverCall.get();
+					if(bAnyCall) {
+						objEntry.isExpression(true);
+						objEntry.isCallSolved(true);
+						objEntry.setValueCallSolved(objEntry.getValue());
+						
+						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
+				}
+											
+				
+				if(bUseJson) {
+					//Hier KernelJsonInisolverZZZ verwenden 
+					int iReturnJson=0;
+					
+					KernelJsonIniSolverZZZ<T> exDummy03 = new KernelJsonIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+					
+					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
+					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
+					
+					//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
+					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
+					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.					
+					iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+					if(iReturnJson==5) {
+						objEntry.isExpression(true);
+						objEntry.isJson(true);
+						objEntry.isJsonArray(true);
+						objEntry.setValue(objalsReturnValueJsonSolved.getArrayList());
+						objEntry.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
+						
+						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
+				
+				
+					if(iReturnJson==6) {
+						objEntry.isExpression(true);
+						objEntry.isJson(true);
+						objEntry.isJsonMap(true);					
+						objEntry.setValue(objhmReturnValueJsonSolved.get());	
+						objEntry.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
+						
+						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten					
+				}									
+									
+				if(bUseEncryption) {
+					KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
+					
+					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					boolean bForFurtherProcessing = false;
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					objReturnReferenceEncryption.set(objEntry);
+					boolean bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
+					objEntry = objReturnReferenceEncryption.get();
+					if(bAnyEncryption) {
+						
+						objEntry.isRawEncrypted(true);
+						String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+						if(!sExpressionUsed.equals(sLineDecrypted)) {													
+							objEntry.isDecrypted(true);
+							objEntry.setRawDecrypted(sLineDecrypted);
+							objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+						}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Verschluesselung enthalten
+						
+						sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+					}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
+				}
+				sReturn = sExpressionUsed;
+			}//end if vecAll!=null								
+		}//end main:
+				
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+		if(vecReturn!=null) {
+			if(vecReturn.size()==0) vecReturn.add(0, "");
+						
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
+			
+			if(vecReturn.size()==2) vecReturn.add(2, "");
+			
+			//Nein: Beim Solver nur den Einzelwert setzen sReturn = VectorZZZ.implode(vecReturn);
+			sReturn = vecReturn.get(1);
+		}	
+		this.setValue(sReturn);
+		//if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
+		if(objEntry!=null) objEntry.setValue(sReturn); //solve liefert nur den einzelnen Wert zurueck und kein implode
+		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		return vecReturn;				
+	}
 	
 //	@Override
 //	public ArrayList<String> parseAsArrayList(String sLineWithExpression)throws ExceptionZZZ{

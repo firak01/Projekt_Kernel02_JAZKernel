@@ -65,7 +65,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 19.12.2019, 11:18:39
 	 */
-	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
+	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
 			if(objFileIni==null){
@@ -75,20 +75,23 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-			if(objReturn==null) {
-				objReturn = new KernelConfigSectionEntryZZZ();
-				objReturnReference.set(objReturn);
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}			
+			if(objEntry==null) {
+				objEntry = new KernelConfigSectionEntryZZZ();				
 			}
 			
 			String sRawExpressionSolved = null;
 			ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>("");			
 			boolean bExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
-				objReturnReference.get().isExpression(true);
-				if(bUseFormula) objReturnReference.get().isFormula(true);
+				objEntry.isExpression(true);
+				if(bUseFormula) objEntry.isFormula(true);
 				String sValueSolved = objsReturnValueExpressionSolved.get();					
-				objReturnReference.get().setValueAsExpression(sValueSolved);				
+				objEntry.setValueAsExpression(sValueSolved);				
 				sRawExpressionSolved = sValueSolved;
 				iReturn = iReturn + 1;
 			}else {
@@ -99,18 +102,19 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>("");
 			boolean bConverted = KernelConfigSectionEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
 			if(bConverted) {				
-				objReturnReference.get().isConverted(true);
+				objEntry.isConverted(true);
 				
 				
-				String sValueAsConversion= objReturnReference.get().getValue();
-				objReturnReference.get().setValueAsConversion(sValueAsConversion);
+				String sValueAsConversion= objEntry.getValue();
+				objEntry.setValueAsConversion(sValueAsConversion);
 				
 				sRawConverted = objsReturnValueConverted.get();				
 				iReturn = iReturn + 2;
 			}else {
 				sRawConverted = sRawExpressionSolved;
 			}
-			objReturnReference.get().setValue(sRawConverted);
+			objEntry.setValue(sRawConverted);
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);					
 		}//end main:
 		return iReturn;
 	}
@@ -162,8 +166,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 *  
 	 * 
 	 */
-	 //public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved, ReferenceZZZ<ICryptZZZ>objobjReturn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
-	public static boolean getValueCallSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+	public static boolean getValueCallSolved(FileIniZZZ objFileIni, String sRawIn, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
 		 boolean bReturn = false;
 		 main:{			 			 								
 	 		if(!bUseCall)break main;
@@ -175,46 +178,53 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				throw ez;
 			}
 
-		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-
-			boolean bAnyFormula = false;
+	 		IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {				
+			}else {
+				objEntry = objReturnReferenceIn.get();
+			}
+			if(objEntry==null) objEntry = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objEntry.setRaw(sRawIn);
 			
+			boolean bAnyCall = false;
+			
+			String sRaw = sRawIn;
+			String sRawOld = "";
 			KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
-			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
-				objReturn.setRaw(sRaw);
-				bAnyFormula = true;
+			while(objDummy.isSolve(sRaw) && !sRawOld.equals(sRaw)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
+				bAnyCall = true;
 									
 				IKernelZZZ objKernel = null;
 				if(objFileIni!=null) {
 					objKernel = objFileIni.getKernelObject();
 				}
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
-				ex.setEntry(objReturn);
-				String sValue = null; String sFall=null;
-				if(!bForFurtherProcessing) {
-					sFall = "computeAsEntry";
-					objReturn= ex.parseAsEntry(sRaw);
-					sValue = objReturn.getValue();
-					
-				}else {
-					sFall = "computeAsExpression";
-					sValue = ex.parseAsExpression(sRaw);
-					objReturn = ex.getEntry();					
-				}
+				ex.setEntry(objEntry);
+												
+				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sRaw, ex.getTagStarting(), ex.getTagClosing(), !bForFurtherProcessing);
+				String sValue = vecValue.get(1);
 				
 				if(!StringZZZ.equals(sValue,sRaw)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " - " + sFall + ": Value durch CallIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
-					objReturn.setRaw(sRaw);					
-				}					
-				sRaw=sValue;//Sonst Endlosschleife.							
+					ex.solveFirstVector(sValue, objReturnReferenceIn, !bForFurtherProcessing);
+					
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
+					objEntry.setRaw(sRaw);					
+				}
+				sRawOld = sRaw;
+				sRaw=sValue;//Sonst Endlosschleife.					
 			}
 
-			if(bAnyFormula){
+			if(bAnyCall){
+				objEntry.isCall(true);
 				bReturn = true;
-			}				
+			}		
+			if(!sRawIn.equalsIgnoreCase(sRaw)) {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sRawIn + "' nach '" + sRaw +"'");
+				objEntry.isSolved(true);
+				objEntry.setValue(sRaw);
+			}
 					
-			objReturnReference.set(objReturn);
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		 }//end main:
 		 return bReturn;
 	 }
@@ -287,7 +297,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturn = ex.parseAsEntry(sRaw);
+					objReturn = ex.parseAsEntryNew(sRaw);
 					sValue = objReturn.getValue();
 					
 				}else {
