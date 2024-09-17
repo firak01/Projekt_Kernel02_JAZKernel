@@ -138,28 +138,25 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		String sReturn = sExpression;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {
-			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();				
 		}else {
-			objEntry = objReturnReferenceIn.get();
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
 		}
 		
 		if(objEntry==null) {
-			//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			//objEntry = this.getEntry();
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-		}	
-		
-		
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			objReturnReference.set(objEntry);	
+		}	//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin dann ggfs getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.				
 		objEntry.setRaw(sExpression);
-		objReturnReference.set(objEntry);		
-	
+				
 		main:{
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			if(StringZZZ.isEmpty(sExpression)) break main;			
+			if(StringZZZ.isEmpty(sExpression)) break main;	
+			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;				
 
 			boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
 			//TODOGOON20240810; //jetzt sollte eigentlich hier super.parse()
@@ -348,22 +345,24 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 						
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 			if(objReturnReferenceIn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
 				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
 			}else {
-				objEntry = objReturnReferenceIn.get();
+				objReturnReference = objReturnReferenceIn;
+				objEntry = objReturnReference.get();
 			}
 			
 			if(objEntry==null) {
-				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 				//objEntry = this.getEntry();
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturnReference.set(objEntry);
 			}	
 			objEntry.setRaw(sExpression);
-			objReturnReference.set(objEntry);
 			
 			
 			boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
@@ -435,6 +434,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 */
 	@Override
 	public Vector<String> solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.solveFirstVector_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector<String> solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//TODO: Das kommt nach solveFirstVector(), groesstenteils
 				//      Der Rest kommt nach parseFirstVector().
 				//      parseFirstVector() ruft also solveFirstVector() auf 

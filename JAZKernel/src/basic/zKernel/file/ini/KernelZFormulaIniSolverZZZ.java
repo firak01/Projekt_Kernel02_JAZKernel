@@ -279,10 +279,14 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//############################################
 	@Override
-	public Vector<String> solveFirstVector(String sLineWithExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+	public Vector<String> solveFirstVector(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveFirstVector_(sExpression, objReturnReference);
+	}
+	
+	private Vector<String> solveFirstVector_(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
 	     //Darin können also auch Variablen, etc. sein
 		Vector<String> vecReturn = null;
-		String sReturn = sLineWithExpression;
+		String sReturn = sExpression;
 		
 		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 		if(objReturn==null) {
@@ -290,15 +294,15 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objReturnReference.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objReturn.setRaw(sLineWithExpression);
+		objReturn.setRaw(sExpression);
 		
 		main:{			
 			//!!! Pfade und Variablen ersetzen !!!
-			vecReturn = super.solveFirstVector(sLineWithExpression, objReturnReference);
+			vecReturn = super.solveFirstVector(sExpression, objReturnReference);
 			if(vecReturn==null) break main;
 			
 			sReturn = VectorZZZ.implode(vecReturn);							
-			if(!sLineWithExpression.equals(sReturn)) {
+			if(!sExpression.equals(sReturn)) {
 				objReturn.isSolved(true);
 				objReturn.setValueFormulaSolvedAndConverted(sReturn);
 				objReturn.setValue(sReturn);
@@ -368,25 +372,29 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parse(sLineWithExpression, true);
+	public String parse(String sExpression) throws ExceptionZZZ{
+		return this.parse_(sExpression, true);
 	}
 	
 	@Override
-	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturn = sExpression;
 		
 		//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
 		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-		objReturn.setRaw(sLineWithExpression);
+		objReturn.setRaw(sExpression);
 		
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 					
 			
-			Vector<String> vecAll = this.parseAllVectorAsExpression(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
+			Vector<String> vecAll = this.parseAllVectorAsExpression(sExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
 			sReturn = VectorZZZ.implode(vecAll);
 			objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen
 						

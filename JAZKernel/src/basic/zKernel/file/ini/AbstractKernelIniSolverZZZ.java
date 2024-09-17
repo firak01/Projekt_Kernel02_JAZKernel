@@ -190,16 +190,21 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 */
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, null, true);
+		return this.parseFirstVector_(sLineWithExpression, null, true);
 	}
 	
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{		
-		return this.parseFirstVector(sLineWithExpression, objReturnReference, true);
+		return this.parseFirstVector_(sLineWithExpression, objReturnReference, true);
 	}
 	
 	@Override
 	public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	
+	private Vector<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
 		Vector<String>vecReturn = new Vector<String>();
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		String sReturn = sExpression;						
@@ -210,29 +215,29 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+			}else {
+				objReturnReference = objReturnReferenceIn;
+				objEntry = objReturnReference.get();
+			}
+						
+			if(objEntry==null) {
 				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"				
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
-			}else {
-				objEntry = objReturnReferenceIn.get();
-			}
-			
-			if(objEntry==null) {
-				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-				//objEntry = this.getEntry();
-				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-			}	
+				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturnReference.set(objEntry);
+			}	//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry.setRaw(sExpression);
-			objReturnReference.set(objEntry);
+			
 			
 						
 			//Hole zuerst den Tag-Inhalt, lasse die umgebenden Tags drin. Sie werden für die anderen Solver gebraucht.
 			//Es wird also nur der Z-Tag rausgenommen (und was vorne/am Ende steht).
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParser= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParser.set(objEntry);			
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParser, false);
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParser); //entferne den umgebenden Tag...
 			objEntry = objReturnReferenceParser.get();
 			this.setEntry(objEntry);			
 			if(vecReturn==null)break main;
@@ -256,13 +261,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					vecReturn.add(1, "");
 				}
 				
-				if(vecReturn.size()==2) vecReturn.add(2, "");				
+				if(vecReturn.size()==2) vecReturn.add(2, "");	
+				
+				sReturn = VectorZZZ.implode(vecReturn);
 		//	}
 									
 			sReturn = sExpressionSolved;//Wir sind gerade beim Aufloesen/Parsen des ersten Werts. ... Also nicht zusammenfassen....//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);			
 		}//end main;
 		this.setValue(sReturn);
-		if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
+		if(objEntry!=null) objEntry.setValue(sReturn);
 		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		return vecReturn;		
 	}
@@ -312,11 +319,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	@Override
 	public String solve(String sExpression) throws ExceptionZZZ{
-		return this.solve(sExpression, true);
+		return this.solve_(sExpression, true);
 	}
 	
 	@Override
 	public String solve(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+		return this.solve_(sExpression, bRemoveSuroundingSeparators);
+	}
+	
+	private String solve_(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
 		String sReturn = sExpression;
 		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
@@ -342,22 +353,26 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 
 	@Override
 	public Vector<String> solveFirstVector(String sExpression) throws ExceptionZZZ {
-		return this.solveFirstVector(sExpression, true);
+		return this.solveFirstVector_(sExpression, null, true);
 	}
 
 	@Override
 	public Vector<String> solveFirstVector(String sExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
-		return this.solveFirstVector(sExpression, null, bRemoveSurroundingSeparators);
+		return this.solveFirstVector_(sExpression, null, bRemoveSurroundingSeparators);
 	}
 
 	//### IKernelEntryReferenceSolveUserZZZ	
 	@Override
 	public int solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
-		return this.solve(sLineWithExpression, objReturnReference, true);
+		return this.solve_(sLineWithExpression, objReturnReference, true);
 	}
 	
 	@Override
 	public int solve(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.solve_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private int solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		int iReturn=0;
 		String sReturn=sExpressionIn;
 				 
@@ -422,12 +437,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 */
 	@Override
 	public Vector<String> solveFirstVector(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
-		return this.solveFirstVector(sExpression, objReturnReference, true);
+		return this.solveFirstVector_(sExpression, objReturnReference, true);
 	}
 	
 	/* Aufloesen der INI-Pfade und Variablen. */
 	@Override
 	public Vector<String> solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveFirstVector_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+
+	private Vector<String> solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		//Merke: Ein solve() ruft nicht direkt ein parse() auf.
 		Vector<String> vecReturn = null;
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
@@ -536,6 +555,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		return vecReturn;	
 	}
+
 	
 	//###### Getter / Setter
 	

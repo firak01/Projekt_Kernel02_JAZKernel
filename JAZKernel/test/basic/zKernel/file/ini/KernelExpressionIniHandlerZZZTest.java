@@ -579,8 +579,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertNotNull(objSectionEntry);
 			assertFalse(objSectionEntry.isCall());
 
-			
-			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		

@@ -90,7 +90,12 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
 	
+	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ {
+		return this.parse_(sLineWithExpression);
+	}
+	
+	private String parse_(String sLineWithExpression) throws ExceptionZZZ {
 		String sReturn = new String("");
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

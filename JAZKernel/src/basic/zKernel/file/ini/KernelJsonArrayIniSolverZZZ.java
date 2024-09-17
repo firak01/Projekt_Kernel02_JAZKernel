@@ -88,7 +88,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
 	 */
+	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parse_(sLineWithExpression);
+	}
+	
+	private String parse_(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

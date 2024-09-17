@@ -540,7 +540,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagStart)) break main;
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
-			Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorZZZ.implode(vecReturn);
@@ -557,7 +558,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagStart)) break main;
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
-			Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorZZZ.implode(vecReturn);

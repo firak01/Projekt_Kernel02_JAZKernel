@@ -434,12 +434,23 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @return the string entry at the section for the specified property
 	 @throws ExceptionZZZ
 	 */
-	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {	
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			//Aber hier keine Tag, sondern ein FileIni, darum geht nicht objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                             //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objReturn = objReturnReference.get();
+		}
 		if(objReturn==null) {
-			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										    //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objReturnReference.set(objReturn);
-		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.	
+		}//Achtung: Das objReturn Objekt NICHT generell aus dem FileIni-Objekt uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			
 		main:{
 			String sSection; String sProperty;
 			check:{
@@ -505,7 +516,6 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können.
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			//if(! this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 			
 			//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
 			KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();

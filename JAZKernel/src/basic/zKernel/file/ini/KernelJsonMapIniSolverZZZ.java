@@ -105,12 +105,16 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	//### aus IParseEnabled
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
+		return this.parseFirstVector_(sLineWithExpression, true);
 	}
 	
 	//Analog zu KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
 	@Override
 	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();
 		String sReturn = sLineWithExpression;
 		boolean bUseExpression=false;

@@ -127,11 +127,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	@Override
 	public String parse(String sLExpression) throws ExceptionZZZ{
-		return this.parse(sLExpression, true);
+		return this.parse_(sLExpression, true);
 	}	
 	
 	@Override
 	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sExpression, bRemoveSurroundingSeparators);
+	}	
+	
+	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
@@ -159,7 +163,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 */
 	@Override
 	public Vector<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sExpression, true);
+		return this.parseFirstVector_(sExpression, true);
 	}
 	
 	/**
@@ -172,6 +176,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 */
 	@Override
 	public Vector<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bRemoveSurroundingSeparators);
+	}
+
+	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
+	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		
+	private Vector<String>parseFirstVector_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
@@ -185,10 +196,6 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		}
 		return vecReturn;
 	}
-
-	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
-	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		
 	
 	//### aus IExpressionUserZZZ
 	@Override
@@ -259,7 +266,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 
 	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return sLine; //Also was reinkommt wieder rausgeben, keine spezielle Konvertierung. Die muss in der erbenden Klasse implementiert werden.
-	}
+	public String convert(String sExpression) throws ExceptionZZZ {
+		return sExpression;
+	}	
 }

@@ -70,8 +70,13 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-			
-	public Vector solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	
+	@Override
+	public Vector parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		return this.parseFirstVector_(sLineWithExpression);
+	}
+	
+	private Vector parseFirstVector_(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

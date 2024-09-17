@@ -70,11 +70,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//######## Getter / Setter #################
 	
 	//### aus IConvertableZZZ
-	@Override
-	public String convert(String sExpression) throws ExceptionZZZ {
-		return sExpression;
-	}	
-	
+		
 	/* IDEE: convertable != parseable.
     convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
     parsable würde dann lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
@@ -101,11 +97,15 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sExpression) throws ExceptionZZZ{
-		return this.parse(sExpression, true);
+		return this.parse_(sExpression, true);
 	}	
 	
 	@Override
 	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sExpression;
 		main:{
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;

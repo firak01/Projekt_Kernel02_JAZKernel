@@ -101,10 +101,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ {
-		String sReturn = sLineWithExpression;
+	public String parse(String sExpression) throws ExceptionZZZ {
+		return this.parse_(sExpression);
+	}
+	
+	private String parse_(String sExpression) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)==false) break main;
 			
 			//1.+ 2. Kein Versuch als HashMap oder ArrayList
@@ -121,7 +125,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
 			KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
-			sReturn=objJavaCallSolver.parse(sLineWithExpression);		
+			sReturn=objJavaCallSolver.parse(sExpression);		
 										
 		}
 		return sReturn;
@@ -176,6 +180,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 */
 	@Override
 	public Vector<String>solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.solveFirstVector_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector<String>solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector<String> vecReturn = null;
 		String sReturn = sExpressionIn;
 		
@@ -306,6 +314,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return vecReturn;	
 	
 	}
+	
 
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			

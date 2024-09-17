@@ -1262,6 +1262,21 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
+	public static Vector<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, true);
+	}
+	
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
 	public static Vector<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
@@ -1324,40 +1339,97 @@ public class StringZZZ implements IConstantZZZ{
 			
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
+//			if(vecReturn!=null) {
+//				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+//					vecReturn.add(0, sLeft);					
+//	
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+//					vecReturn.add(1, sLeftSep + sMid + sRightSep);			
+//				
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+//					vecReturn.add(2, sRight);	
+//				}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+//					vecReturn.add(0, sLeft);
+//					
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+//					vecReturn.add(1, sMid);
+//					
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
+//					vecReturn.add(2, sRight);
+//					
+//				}else {
+//					if(vecReturn.size()==0) vecReturn.add(0, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
+////					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+////					vecReturn.add("");
+//					
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+//					vecReturn.add(1, sStringToParse);
+//					
+//					if(vecReturn.size()==2) vecReturn.add(2, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
+////					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
+////					vecReturn.add("");
+//				}
+			
+			
 			if(vecReturn!=null) {
+				//Nun die Werte in den ErgebnisVector zusammenfassen
 				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-					vecReturn.add(0, sLeft);					
-	
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-					vecReturn.add(1, sLeftSep + sMid + sRightSep);			
-				
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-					vecReturn.add(2, sRight);	
-				}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
 					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-					vecReturn.add(0, sLeft);
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
+										
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sLeftSep + sMid + sRightSep);
 					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);											
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
+				}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
+					
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
 					vecReturn.add(1, sMid);
 					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
-					vecReturn.add(2, sRight);
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
+				
+				} else {
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					if(!StringZZZ.isEmpty(sLeft)){
+						vecReturn.add(0, sLeft);
+					}else {
+						vecReturn.add(0, "");
+					}
 					
-				}else {
-					if(vecReturn.size()==0) vecReturn.add(0, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
-//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-//					vecReturn.add("");
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					vecReturn.add(1, sMid);
 					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-					vecReturn.add(1, sStringToParse);
-					
-					if(vecReturn.size()==2) vecReturn.add(2, ""); //nicht den Wert austauschen, sondern nur sicherstellen, dass ein Wert gefuellt ist.
-//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
-//					vecReturn.add("");
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+					if(!StringZZZ.isEmpty(sRight)){
+						vecReturn.add(2, sRight);
+					}else {
+						vecReturn.add(2, "");
+					}
 				}
-			}
-		}
+			}//end vecReturn != null			
+		}//end main:
 		return vecReturn;		
 	}
 	
@@ -1560,8 +1632,8 @@ public class StringZZZ implements IConstantZZZ{
 						vecReturn.add(2, "");
 					}
 				}
-			}
-		}
+			}//end vecReturn!=null
+		}//end main:
 		return vecReturn;
 	}
 	

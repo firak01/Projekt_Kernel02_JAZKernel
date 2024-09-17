@@ -311,80 +311,35 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.getEntry().isArrayValue(bIsArrayValue);
 	}
 	
-//	//### aus IIniTagBasicZZZ
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-//			objReturn.setRaw(sExpression);
-//			
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			objReturnReference.set(objReturn);					
-//			int iReturn = this.parse(sExpression, objReturnReference);
-//			objReturn = objReturnReference.get();
-//		}//end main:		
-//		return objReturn;
-//	}
-//	
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
-//		return this.parseAsEntry(sExpression, null);
-//	}
-//	
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
-//		return this.parseAsEntry(sExpression, objReturnReferenceIn, true);
-//	}
-//	
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-//			if(objReturnReferenceIn==null) {
-//				objReturn = this.parseAsEntryNew(sExpression);
-//				break main;
-//			}
-//			
-//			IKernelConfigSectionEntryZZZ objEntry = objReturnReferenceIn.get();
-//			if(objEntry==null) {
-//				objReturn =  this.parseAsEntryNew(sExpression);							
-//			}else {			
-//				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-//				objReturnReference.set(objEntry);
-//				
-//				int iReturn = this.parse(sExpression, objReturnReference, bRemoveSurroundingSeparators);
-//				objReturn = objReturnReference.get();						
-//			}
-//			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
-//			
-//		}//end main:		
-//		return objReturn;
-//	}
 	
 	//### Aus IKernelEntryExpressionUserZZZ
 	@Override
 	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parse(sExpression, objReturnReference, true);
+		return this.parse_(sExpression, objReturnReference, true);
 	}
 	
 	@Override
 	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parse_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private int parse_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{		
 			IKernelConfigSectionEntryZZZ objEntry = null;
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			if(objReturnReferenceIn==null) {				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+			if(objReturnReferenceIn==null) {	
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			}else {
-				objEntry = objReturnReferenceIn.get();
+				objReturnReference = objReturnReferenceIn;
+				objEntry = objReturnReference.get();
 			}
 			if(objEntry==null) {
-				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
-			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry.setRaw(sExpression);
-			objReturnReference.set(objEntry);
+				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objReturnReference.set(objEntry);								
+			}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sExpression);			
 							
 			Vector<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
@@ -407,19 +362,23 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	//### aus IParseEnabledZZZ
 	@Override
-	public Vector<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector(sLineWithExpression, null, bRemoveSurroundingSeparators);
+		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, objReturnReference, true);
+	public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, objReturnReference, true);
 	}
 
 	@Override
 	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		Vector<String>vecReturn = new Vector<String>();
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		String sReturn = sExpression;
@@ -427,51 +386,46 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
 			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 			if(objReturnReferenceIn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
 				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
 			}else {
-				objEntry = objReturnReferenceIn.get();
+				objReturnReference = objReturnReferenceIn;
+				objEntry = objReturnReference.get();
 			}
 			
 			if(objEntry==null) {
-				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 				//objEntry = this.getEntry();
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturnReference.set(objEntry);
 			}	
 			objEntry.setRaw(sExpression);
-			objReturnReference.set(objEntry);
-						
-			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-			if (vecReturn==null)break main;			
+									
+//			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+//			if (vecReturn==null)break main;
+//			sReturn = vecReturn.get(1);
+//			
+//			if(vecReturn.size()==0) vecReturn.add(0, "");
+//			
+//			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//			if(!StringZZZ.isEmpty(sReturn)){
+//				vecReturn.add(1, sReturn);
+//			}else {
+//				vecReturn.add(1, "");
+//			}
+//				
+//			if(vecReturn.size()==2) vecReturn.add(2, "");
 			
-
-//			String sReturn = VectorZZZ.implode(vecReturn);
-//			this.setValue(sReturn);						
-//			objEntry.setValue(sReturn);
-
-						
-			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen			
-			//Nein, muss ja irgendwie weitergehen und das tut es nicht, wenn wieder 1:1 alles zurückgegeben wird.
-			//sReturn = VectorZZZ.implode(vecReturn);
-			sReturn = vecReturn.get(1);
-				
-			if(vecReturn.size()==0) vecReturn.add(0, "");
-							
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-				
-			if(vecReturn.size()==2) vecReturn.add(2, "");
+			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);		
 		}				
 		
 		this.setValue(sReturn);
-		if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));			
+		//if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));			
+		if(objEntry!=null) objEntry.setValue(sReturn);
 		if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		return vecReturn;
 	}
@@ -500,7 +454,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 								
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+			//vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+			vecReturn = this.parseFirstVector(sExpression, false);
 				
 		}//end main:			
 		return vecReturn;
@@ -527,11 +482,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	//### aus IConvertableZZZ
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return sLine;
-	}	
-	
+		
 	/* IDEE: convertable != parasable.
     convertable bedeutet DER GANZE STRING Wird ersetzt, also nur wenn nix davor oder dahniter steht.
     parsable würde dann lediglich den Wert aus der Mitte (s. Vector.getIndex(1) ) durch ein Leerzeichen ersetzen
