@@ -227,6 +227,16 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
+	public Vector<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, null, true);
+	}
+	
+	@Override
+	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
 	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
@@ -278,12 +288,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
 			if(!StringZZZ.isEmpty(sValue)){
+				TODOGOON20240918;
+				sValue = StringZZZ.replaceLeft(sValue, "<<", "<").//falsch, nur doppelte <<sollen durch ein einfaches ersetzt werden... stripLeft(sValue, "<"); //Das vorhin hinzugefuegte < wieder wegnehmen.
 				vecReturn.add(2, sValue);
 			}else {
 				vecReturn.add(2, "");
 			}
 			
-			//2. Vorne den Tag zu haben ist gut, hinten aber muss der DummyTag "<" entfernt werden.
+			//2. Vorne den Tag zu haben ist gut, hinten aber muss der DummyTag auch "<" entfernt werden.
 			sValue = vecReturn.get(1);
 			sValue = StringZZZ.stripRight(sValue, "<");
 			

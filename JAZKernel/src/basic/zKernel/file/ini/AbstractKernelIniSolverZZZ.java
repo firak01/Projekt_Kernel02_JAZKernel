@@ -237,7 +237,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Es wird also nur der Z-Tag rausgenommen (und was vorne/am Ende steht).
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParser= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParser.set(objEntry);			
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParser); //entferne den umgebenden Tag...
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParser, bRemoveSurroundingSeparators); //extrahiere das Innere des Tag...
 			objEntry = objReturnReferenceParser.get();
 			this.setEntry(objEntry);			
 			if(vecReturn==null)break main;
@@ -485,15 +485,20 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
 					
-				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed);
+				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
 				while(objVariable.isExpression(sReturn)){
-					sExpressionTemp = objVariable.parse(sReturn, false); //beim reinen Aufloesen die Z-Tags drin belassen, ausserdem ist das ein einfacher Tag OHNE IKernelConfigSectionEntry.
-					if(StringZZZ.isEmpty(sExpressionTemp)) {
+					Vector<String> vecExpressionTemp =  objVariable.parseFirstVector(sReturn); //beim reinen Aufloesen die Z-Tags drin belassen, ausserdem ist das ein einfacher Tag OHNE IKernelConfigSectionEntry.
+					if(vecExpressionTemp!=null) {
+						sExpressionTemp = vecExpressionTemp.get(1);
+						if(StringZZZ.isEmpty(sExpressionTemp)) {
+							break;
+						}else if(sReturn.equals(sExpressionTemp)) {
+							break;
+						}else{
+							sReturn = VectorZZZ.implode(vecExpressionTemp);					
+						}
+					}else {
 						break;
-					}else if(sReturn.equals(sExpressionTemp)) {
-						break;
-					}else{
-						sReturn = sExpressionTemp;							
 					}
 				} //end while
 				objEntry.setValue(sReturn);
@@ -515,14 +520,19 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 								
 				KernelZFormulaIni_PathZZZ<T> objIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 				while(objIniPath.isExpression(sReturn)){
-						sExpressionTemp = objIniPath.parse(sReturn, true);//Da wir den Ausdruck komplett ersetzen wollen unbedingt die Z-Tags raus.	
-						if(StringZZZ.isEmpty(sExpressionTemp)) {
+						Vector<String> vecExpressionTemp = objIniPath.parseFirstVector(sReturn);//Da wir den Ausdruck komplett ersetzen wollen unbedingt die Z-Tags raus.
+						if(vecExpressionTemp!=null) {
+							sExpressionTemp = vecExpressionTemp.get(1);
+							if(StringZZZ.isEmpty(sExpressionTemp)) {
+								break;
+							}else if(sReturn.equals(sExpressionTemp)) {
+								break;
+							}else{
+								sReturn = VectorZZZ.implode(vecExpressionTemp);							
+							}
+						}else {
 							break;
-						}else if(sReturn.equals(sExpressionTemp)) {
-							break;
-						}else{
-							sReturn = sExpressionTemp;							
-						}
+						}						
 				} //end while
 				objEntry.setValue(sReturn);
 				if(!sExpressionOld.equals(sReturn)) {

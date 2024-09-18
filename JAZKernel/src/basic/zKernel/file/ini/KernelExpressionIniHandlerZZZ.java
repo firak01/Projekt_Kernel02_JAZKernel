@@ -34,41 +34,41 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		
 	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelExpressionIniSolverNew_(null, null);
+		KernelExpressionIniHandlerNew_(null, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniHandlerNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject(), saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniHandlerNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniHandlerNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniHandlerNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni, saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniHandlerNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
+		KernelExpressionIniHandlerNew_(objFileIni, hmVariable);
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
+	private boolean KernelExpressionIniHandlerNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
 			if(this.getFlag("init")==true){
@@ -120,9 +120,19 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 //	 * @return
 //	 * @throws ExceptionZZZ
 //	 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
-//	 */	
+//	 */
+	@Override
+	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
+		return this.parse_(sExpression, objReturnReferenceIn, true);
+	}
+	
+	
 	@Override
 	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private int parse_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		
 		//TODOGOON20240915: Das kommt nach solveFirstVector(), groesstenteils
 		//      Der Rest kommt nach parseFirstVector().
@@ -207,7 +217,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceParse.set(objEntry);
-				int iReturnSolver = objFormulaSolver.parse(sExpressionUsed, objReturnReferenceParse);//solve(sLineWithExpressionUsed, objReturnReference); //
+				int iReturnSolver = objFormulaSolver.parse(sExpressionUsed, objReturnReferenceParse, false);//!!! Extrahiere das innere des Tags, lasse umgebende Tags drin.
 				iReturn = iReturn + iReturnSolver;
 				
 //				TODOGOON20240810; //Das sollte dann wegfallen koennen, bzw. wird im obigen solve erledig.

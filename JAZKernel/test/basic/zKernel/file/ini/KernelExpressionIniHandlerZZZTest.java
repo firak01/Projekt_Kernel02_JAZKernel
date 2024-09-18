@@ -569,7 +569,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 	
-			TODOGOON20240915;//Trotz eingeschalter Flags wird der Pfad nicht aufgeloest
+			//TODOGOON20240915;//Trotz eingeschalter Flags wird der Pfad nicht aufgeloest
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpression = sExpressionSource;
 			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
