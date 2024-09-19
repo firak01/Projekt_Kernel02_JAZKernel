@@ -199,7 +199,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertFalse(objExpressionHandler.getFlag("init")==true); //Nun wäre init falsch
 			
 			String[] saFlag = objExpressionHandler.getFlagZ();
-			assertEquals(11,saFlag.length);
+			assertEquals(14,saFlag.length);
 			
 			boolean bFlagAvailable = objExpressionHandler.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -234,6 +234,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			String sLineWithValue = objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
 			assertEquals("Testvalue1 to be found",sLineWithValue);
+			
+			TODOGOON20240919;//JUnitTest schlägt fehl.
 			
 			//+++ Anwenden der ersten Formel, mit Berechnung
 			objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
@@ -570,8 +572,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 	
-			//TODOGOON20240919;//also zwischendurch wird zuviel gemacht. in objEntry.sVecValue sieht man immer wieder das Ergebnis und den Ausgangswert.
-			
 			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus UND Z:Call-Tag auch raus
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;						
 			sExpression = EnvironmentZZZ.getHostName(); ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
