@@ -248,25 +248,24 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolver= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolver.set(objEntry);
 			int iReturn = this.solve(sExpressionToSolve, objReturnReferenceSolver, bRemoveSurroundingSeparators);
-			this.setEntry(objEntry);			
-			//if(iReturn>=1) {  //gehe auch damit um, wenn nix aufgeloest wurde.
-				String sExpressionSolved = objEntry.getValue();
-				
+			this.setEntry(objEntry);						
+			sReturn = objEntry.getValue();
+			
+			if(vecReturn!=null) {
 				if(vecReturn.size()==0) vecReturn.add(0, "");
-				
+					
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				if(!StringZZZ.isEmpty(sExpressionSolved)){
-					vecReturn.add(1, sExpressionSolved);
+				if(!StringZZZ.isEmpty(sReturn)){
+					vecReturn.add(1, sReturn);
 				}else {
 					vecReturn.add(1, "");
 				}
-				
+					
 				if(vecReturn.size()==2) vecReturn.add(2, "");	
-				
-				sReturn = VectorZZZ.implode(vecReturn);
-		//	}
-									
-			sReturn = sExpressionSolved;//Wir sind gerade beim Aufloesen/Parsen des ersten Werts. ... Also nicht zusammenfassen....//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);			
+					
+				//Wir sind gerade beim Parsen also zusammenfassen... Merke beim Solven keine Zussammenfassung mit solve//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);
+				sReturn = VectorZZZ.implode(vecReturn); 
+			}			
 		}//end main;
 		this.setValue(sReturn);
 		if(objEntry!=null) objEntry.setValue(sReturn);
@@ -561,8 +560,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}
 		this.setValue(sReturn);
 		//nein, solve liefert nur 1 Wert zurueck if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
-		if(objEntry!=null) objEntry.setValue(sReturn);
-		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		if(objEntry!=null) {
+			//objEntry.setValue(VectorZZZ.implode(vecReturn));			
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		}
 		return vecReturn;	
 	}
 

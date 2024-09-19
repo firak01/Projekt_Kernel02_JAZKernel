@@ -21,6 +21,7 @@ import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -403,26 +404,29 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 				objReturnReference.set(objEntry);
 			}	
-			objEntry.setRaw(sExpression);
-									
-//			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-//			if (vecReturn==null)break main;
-//			sReturn = vecReturn.get(1);
-//			
-//			if(vecReturn.size()==0) vecReturn.add(0, "");
-//			
-//			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//			if(!StringZZZ.isEmpty(sReturn)){
-//				vecReturn.add(1, sReturn);
-//			}else {
-//				vecReturn.add(1, "");
-//			}
-//				
-//			if(vecReturn.size()==2) vecReturn.add(2, "");
-			
+			objEntry.setRaw(sExpression);			
 			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);		
-		}				
+		}//end main:				
 		
+		if(vecReturn!=null) {
+			if(vecReturn.size()==0) vecReturn.add(0, "");	
+			
+			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+			if(!StringZZZ.isEmpty(sReturn)){
+				vecReturn.add(1, sReturn);
+			}else {
+				vecReturn.add(1, "");
+			}
+			
+			if(vecReturn.size()==2) vecReturn.add(2, "");
+			
+			//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart="<Z>";
+				String sTagEnd="</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			}
+		}		
 		this.setValue(sReturn);
 		//if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));			
 		if(objEntry!=null) objEntry.setValue(sReturn);

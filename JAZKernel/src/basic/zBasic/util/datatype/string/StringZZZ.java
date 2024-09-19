@@ -172,6 +172,62 @@ public class StringZZZ implements IConstantZZZ{
 		  return buffer.toString();
 	  }
 	  
+	  /**Diese Methode ersetzt am Anfang eines Strings alle gesuchten String durch einen neuen Teilstring.
+	   */
+	  public static String replaceLeft(String sString, String sOld, String sNew) {
+		  String sReturn = sString;
+			main:{
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sOld)) break main;
+				
+				int iCounter = 0;
+				boolean bGoon = false;		
+				while(!bGoon){
+					if(sReturn.startsWith(sOld)){ //das waere dann .strip(...) :    && sReturn.length()>=2){
+						iCounter++;
+						sReturn = StringZZZ.rightback(sReturn, sOld.length());													
+					}else{
+						bGoon = true;
+					}
+				}
+				
+				//Nun den String von vorne wieder aufbauen
+				for(int i=0;i<iCounter;i++) {
+					sReturn = sNew + sReturn;
+				}
+			}//end main:
+			return sReturn;
+	  }
+	  
+	  /**Diese Methode ersetzt am Anfang eines Strings alle gesuchten String durch einen neuen Teilstring.
+	   */
+	  public static String replaceRight(String sString, String sOld, String sNew) {
+		  String sReturn = sString;
+			main:{
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sOld)) break main;
+				
+				int iCounter = 0;
+				boolean bGoon = false;		
+				while(!bGoon){
+					if(sReturn.endsWith(sOld)){ //das waere dann .strip(...) :    && sReturn.length()>=2){
+						iCounter++;
+						sReturn = StringZZZ.left(sReturn, (sReturn.length() - sOld.length()));													
+					}else{
+						bGoon = true;
+					}
+				}
+				
+				//Nun den String von vorne wieder aufbauen
+				for(int i=0;i<iCounter;i++) {
+					sReturn = sReturn + sNew;
+				}
+			}//end main:
+			return sReturn;
+	  }
+	  
+	  
+	  
 	  /** Ersetze in einem String alle Teilstrings durch den neuen Teilstring. ABER: Keine Ersetzung, wenn das Ziel schon in dem Teilstring vorkommt.
 	   * Bsp: 
 	   * Aus "aaabcbaaaa" soll c durch bcb ersetzt werden.
@@ -879,6 +935,14 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	public static boolean startsWith(String sString, String sMatch, boolean bExactMatch){		
+		if(bExactMatch) {
+			return StringZZZ.startsWith(sString, sMatch);
+		}else {				
+			return StringZZZ.startsWithIgnoreCase(sString, sMatch);
+		}			
+	}
+	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
 	public static boolean startsWithIgnoreCase(String sString, String sMatch){
 		boolean bReturn = false;
@@ -1554,23 +1618,25 @@ public class StringZZZ implements IConstantZZZ{
 				sMid = "";
 				sRight = sRemainingTagged;
 			}else {
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
+				//hmm...bei path ist das falsch, da man ein Zeichen hinzumogelt, korrektur auch woanders gut?
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length());
 			}
 			
 			if(vecReturn!=null) {
 				//Nun die Werte in den ErgebnisVector zusammenfassen
 				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
 					if(!StringZZZ.isEmpty(sLeft)){
 						vecReturn.add(0, sLeft + sLeftSep);
 					}else {
 						vecReturn.add(0, sLeftSep);
 					}
 										
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
 					vecReturn.add(1, sMid);//zentral wichtig: In der Mitte immer das "Extrakt".
 					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);											
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);											
 					if(!StringZZZ.isEmpty(sRight)){
 						vecReturn.add(2, sRightSep + sRight);
 					}else {

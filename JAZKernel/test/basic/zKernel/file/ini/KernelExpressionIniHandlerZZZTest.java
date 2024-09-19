@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
@@ -569,15 +570,20 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 	
-			//TODOGOON20240915;//Trotz eingeschalter Flags wird der Pfad nicht aufgeloest
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpression = sExpressionSource;
+			//TODOGOON20240919;//also zwischendurch wird zuviel gemacht. in objEntry.sVecValue sieht man immer wieder das Ergebnis und den Ausgangswert.
+			
+			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus UND Z:Call-Tag auch raus
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;						
+			sExpression = EnvironmentZZZ.getHostName(); ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
+
 			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
 			assertEquals(sExpression, sValue);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
-			assertFalse(objSectionEntry.isCall());
+			assertTrue(objSectionEntry.isCall());
+			assertTrue(objSectionEntry.isJavaCall());
+						
 
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

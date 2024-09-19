@@ -204,8 +204,10 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}				
 		
 		this.setValue(sReturn);		
-		if(objEntry!=null) objEntry.setValue(sReturn);
-		if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		if(objEntry!=null) {					
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		}
 		return vecReturn;
 	}
 	

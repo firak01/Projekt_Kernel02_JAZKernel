@@ -104,20 +104,20 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 	
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sLineWithExpression) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			objReturn.setRaw(sLineWithExpression);
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			objReturn.setRaw(sExpression);
 			
-			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
+			Vector<String>vecAll = this.parseFirstVector(sExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); 
 			
 			objReturn.setValue(sReturn);	
-			if(!sLineWithExpression.equals(sReturn)) {
+			if(!sExpression.equals(sReturn)) {
 				objReturn.isParsed(true);
 			}
 		}//end main:

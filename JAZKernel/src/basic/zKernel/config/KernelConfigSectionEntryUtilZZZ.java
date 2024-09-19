@@ -166,7 +166,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 *  
 	 * 
 	 */
-	public static boolean getValueCallSolved(FileIniZZZ objFileIni, String sRawIn, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
+	public static boolean getValueCallSolved(FileIniZZZ objFileIni, String sExpressionIn, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
 		 boolean bReturn = false;
 		 main:{			 			 								
 	 		if(!bUseCall)break main;
@@ -179,19 +179,37 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}
 
 	 		IKernelConfigSectionEntryZZZ objEntry = null;
-			if(objReturnReferenceIn==null) {				
+			IKernelConfigSectionEntryZZZ objReturn = objEntry; //new KernelConfigSectionEntryZZZ<T>(this);
+						
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
+			if(objReturnReferenceIn==null) {
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+				                                                                                    //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objEntry = new KernelConfigSectionEntryZZZ();
 			}else {
+				objReturnReference = objReturnReferenceIn;
 				objEntry = objReturnReferenceIn.get();
 			}
-			if(objEntry==null) objEntry = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-			objEntry.setRaw(sRawIn);
 			
+			if(objEntry==null) {
+				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//objEntry = this.getEntry();
+				//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objEntry = new KernelConfigSectionEntryZZZ();
+			}	
+			objEntry.setRaw(sExpression);
+			objReturnReference.set(objEntry);
+						
 			boolean bAnyCall = false;
 			
-			String sRaw = sRawIn;
-			String sRawOld = "";
+			String sExpressionOld = "";
 			KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
-			while(objDummy.isSolve(sRaw) && !sRawOld.equals(sRaw)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
+			while(objDummy.isSolve(sExpression) && !sExpressionOld.equals(sExpression)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
 				bAnyCall = true;
 									
 				IKernelZZZ objKernel = null;
@@ -201,27 +219,31 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
 				ex.setEntry(objEntry);
 												
-				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sRaw, ex.getTagStarting(), ex.getTagClosing(), !bForFurtherProcessing);
+				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagStarting(), ex.getTagClosing(), !bForFurtherProcessing);
 				String sValue = vecValue.get(1);
 				
-				if(!StringZZZ.equals(sValue,sRaw)){
+				
+				if(!StringZZZ.equals(sValue,sExpression)){
 					ex.solveFirstVector(sValue, objReturnReferenceIn, !bForFurtherProcessing);
+					sExpression = ex.getValue();
+					objEntry = objReturnReferenceIn.get();
 					
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
-					objEntry.setRaw(sRaw);					
+					
+					if(!StringZZZ.equals(sValue,sExpression)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sExpression + "' nach '" + sValue +"'");
+					}
 				}
-				sRawOld = sRaw;
-				sRaw=sValue;//Sonst Endlosschleife.					
-			}
+				sExpressionOld = sExpression;
+				sExpression=sValue;//Sonst Endlosschleife.					
+			}//end while
 
 			if(bAnyCall){
 				objEntry.isCall(true);
 				bReturn = true;
 			}		
-			if(!sRawIn.equalsIgnoreCase(sRaw)) {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sRawIn + "' nach '" + sRaw +"'");
+			if(!sExpressionIn.equalsIgnoreCase(sExpression)) {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Abschliessend) Value durch CallIniSolverZZZ verändert von '" + sExpressionIn + "' nach '" + sExpression +"'");
 				objEntry.isSolved(true);
-				objEntry.setValue(sRaw);
 			}
 					
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -649,7 +671,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}//end while
 				
 			//ggfs. aus dem Mittleren Teil auch entfernen
-			//Merke, hier zu beachten: Der Tag faengt qusi mitten im String an, darum nicht mit startWith.. endsWith..
+			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
 			Vector<String> vecMid = StringZZZ.vecMid(sValue, sTagStart, sTagEnd, false);
 			sBefore=vecMid.get(0);
 			sValue = vecMid.get(1);

@@ -186,6 +186,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 			if(! (bIsExpression  | bIsConversion)) break main;						
 			
+			
+			String sExpressionUsed = sExpression;
 			solver:{			
 			boolean bUseExpressionSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
@@ -194,16 +196,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(!(bUseExpressionSolver | bUseFormula | bUseCall | bUseJson | bUseEncryption )) break solver;
 			
-			//Zuerst einmal <Z> - Tag herausrechen.
-			//Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
-			//String sLineWithExpressionUsed = vec.get(1);
-			String sExpressionUsed = sExpression;
-			
 			//Darin dann weiterrechnen...										
 			if(bUseFormula | bUseExpressionSolver) {
 			
 				//Hier KernelZFormulIniSolverZZZ
-				//und KernelJsonInisolverZZZ verwenden
 				//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
 				//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
 				//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
@@ -211,30 +207,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 				
-//				TODOGOON20240810; //ÄHEM das muss anders sein: Vorher werden Variablen aufgeloest und hier wird keine "FormulaSolver" verwendet.
- 				//BZW. jetzt solle ein .solve(...) unter Verwendung eines Solves reichen....
-				//Aber: Das entfernt nicht die Tags drumherum, darum parse()...
+				//Hier werden Variablen aufgeloest und anschliessend auch Ini-Pfade
+				//Aber: Solve entfernt die Tags drumherum, darum parse()... Es muss ja anschliessend weiterverarbeitet werden.
 				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceParse.set(objEntry);
 				int iReturnSolver = objFormulaSolver.parse(sExpressionUsed, objReturnReferenceParse, false);//!!! Extrahiere das innere des Tags, lasse umgebende Tags drin.
 				iReturn = iReturn + iReturnSolver;
 				
-//				TODOGOON20240810; //Das sollte dann wegfallen koennen, bzw. wird im obigen solve erledig.
-//				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
-//				int iReturnExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
-//				if(iReturnExpression>=1){	
-//					bAnyFormula = true;
-//					iReturn = iReturn + iReturnExpression;
-//				}
-//				if(bAnyFormula) {
-//					objReturn = objReturnReference.get();
-//					objReturn.isFormula(true);														
-//					sLineWithExpressionUsed = objReturn.getValue();							
-//					objReturn.setValueFormulaSolvedAndConverted(sLineWithExpressionUsed);
-//					objReturn.setValue(sLineWithExpressionUsed);							
-//					objReturnReference.set(objReturn);
-//				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
+				objEntry = objReturnReferenceParse.get();
+				if(objEntry!=null) sExpressionUsed = objEntry.getValue(); 
 			}//end bUseFormula
 			
 								
@@ -248,9 +230,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				boolean bForFurtherProcessing = false; 				
 				bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceCall);
 				if(bAnyCall) {
-					objEntry = objReturnReferenceCall.get();
-					objEntry.isCall(true);																						
-				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
+					objEntry = objReturnReferenceCall.get();				
+					if(objEntry!=null) {
+						objEntry.isCall(true);															
+						sExpressionUsed = objEntry.getValue(); 
+					}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
+				}
 			}
 										
 			
@@ -264,16 +249,20 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 				ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
 				iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
-				if(iReturnJson==5) {					
-					objEntry.isJsonArray(true);
-					objEntry.isJson(true);
-					objEntry.isExpression(true);
-					objEntry.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
-					objEntry.setValue(objalsReturnValueJsonSolved.getArrayList());												
+				if(iReturnJson==5) {	
+					//Nein, objEntry muss es schon vorher geben.... objEntry ist nicht Bestandteil von objalsReturnValueJsonSolved.get();
+					if(objEntry!=null) {
+						objEntry.isJsonArray(true);
+						objEntry.isJson(true);
+						objEntry.isExpression(true);
+						objEntry.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
+						objEntry.setValue(objalsReturnValueJsonSolved.getArrayList());
+					}
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
 			
 			
 				if(iReturnJson==6) {
+					//Nein, objEntry muss es schon vorher geben.... objEntry ist nicht Bestandteil von objalsReturnValueJsonSolved.get();
 					objEntry.isJsonMap(true);
 					objEntry.isJson(true);
 					objEntry.isExpression(true);
@@ -295,23 +284,25 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
 				if(bAnyEncryption) {
 					objEntry = objReturnReferenceEncryption.get();
-					objEntry.isRawEncrypted(true);
-					String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-					if(sExpressionUsed.equals(sLineDecrypted)) {						
-						objEntry.isDecrypted(false);
-					}else {
-						objEntry.isDecrypted(true);
-						objEntry.setRawDecrypted(sLineDecrypted);
-						objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
-					}
-					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+						if(objEntry!=null) {
+						objEntry.isRawEncrypted(true);
+						String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+						if(sExpressionUsed.equals(sLineDecrypted)) {						
+							objEntry.isDecrypted(false);
+						}else {
+							objEntry.isDecrypted(true);
+							objEntry.setRawDecrypted(sLineDecrypted);
+							objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+						}
+						sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
+					}							
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
 			}
 			
 			
 			} //end solver:
 			
-			sReturn = objEntry.getValue();
+			sReturn = sExpressionUsed;
 			if(bRemoveSurroundingSeparators) {
 				String sTagStart = this.getTagStarting();
 				String sTagEnd = this.getTagClosing();				

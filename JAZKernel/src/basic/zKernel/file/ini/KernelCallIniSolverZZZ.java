@@ -222,7 +222,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			Vector<String>vecValue = super.solveFirstVector(sExpression, objReturnReferenceSuper,bRemoveSurroundingSeparators); 
 			if(vecValue==null) break main;
 		
-			//Nun das Aufloesen dieses konkreten Solvers.
+			//Nun das Aufloesen dieses konkreten Solvers... der CallIniSolverZZZ
 			String sExpression1 = vecValue.get(1);
 			if(!StringZZZ.isEmpty(sExpression1)& !sExpression.equals(sExpression1)) {
 				sReturn = sExpression1;
