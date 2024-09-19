@@ -966,10 +966,10 @@ public void testVecMid(){
 public void testVecMidFirst(){
 	try{
 		String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
-		Vector vec = StringZZZ.vecMidFirst(sTest, "[", "]", false);
+		Vector vec = StringZZZ.vecMidFirst(sTest, "[", "]", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 		assertEquals(vec.size(), 3);
 		
-		//Es soll noch 1x der umgebenden Tags mehr vorhanden sein.
+		//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
 		String sProof = VectorZZZ.implode(vec);
 		assertEquals(StringZZZ.count(sProof, "["),1);
 		assertEquals(StringZZZ.count(sProof, "]"),1);

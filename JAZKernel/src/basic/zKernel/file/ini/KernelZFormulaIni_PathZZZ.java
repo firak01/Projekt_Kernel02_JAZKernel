@@ -298,6 +298,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sRight = vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sRight)) {
 				sRight = StringZZZ.replaceRight(sRight, sRightSep, ""); 
+				
+				//UND wg. dem "<" fehlt am Anfang eben diese Zeichen. Intern wird naemlich auf Laenge gegangen.
+				sRight = sRightSep + sRight;
 			}
 			
 			

@@ -1619,8 +1619,10 @@ public class StringZZZ implements IConstantZZZ{
 				sRight = sRemainingTagged;
 			}else {
 				//hmm...bei path ist das falsch, da man ein Zeichen hinzumogelt, korrektur auch woanders gut?
-				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length());
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
+				
+				//das ist allgemein ein Fehler, funktioniert nur explizit beim IniPathSolver!!!
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length());
 			}
 			
 			if(vecReturn!=null) {
