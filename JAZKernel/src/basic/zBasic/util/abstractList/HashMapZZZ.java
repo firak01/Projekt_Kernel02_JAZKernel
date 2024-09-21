@@ -82,7 +82,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			if(map==null)break main;
 			
 			Set<?> setKey = map.keySet();
-			objReturn = SetZZZ.getByIndex(setKey, iIndex);
+			objReturn = SetUtilZZZ.getByIndex(setKey, iIndex);
 		}
 		return objReturn;
 	}
@@ -130,7 +130,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			if(map==null)break main;
 			
 			Set<?> setKey = map.keySet();
-			objReturn = SetZZZ.getFirst(setKey);
+			objReturn = SetUtilZZZ.getFirst(setKey);
 		}
 		return objReturn;
 	}
@@ -146,7 +146,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			if(map==null)break main;
 			
 			Set<?> setKey = map.keySet();
-			objReturn = SetZZZ.getLast(setKey);
+			objReturn = SetUtilZZZ.getLast(setKey);
 		}
 		return objReturn;
 	}
@@ -218,7 +218,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			Set<String> setStrToBeSorted = map.keySet();			
 			if(setStrToBeSorted.size()==0) break main;
 						
-			List<Integer> listIntSorted = SetZZZ.sortToInteger(setStrToBeSorted, iSortDirection);
+			List<Integer> listIntSorted = SetUtilZZZ.sortToInteger(setStrToBeSorted, iSortDirection);
 			
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
@@ -249,7 +249,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			Set<String> setStrToBeSorted = map.keySet();			
 			if(setStrToBeSorted.size()==0) break main;
 			
-			List<Integer> listIntSorted = SetZZZ.sortToInteger(setStrToBeSorted);
+			List<Integer> listIntSorted = SetUtilZZZ.sortToInteger(setStrToBeSorted);
 			
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
@@ -280,7 +280,7 @@ public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 			Set<Integer> setIntToBeSorted = map.keySet();			
 			if(setIntToBeSorted.size()==0) break main;
 			
-			List<Integer> listIntSorted = SetZZZ.sortToInteger(setIntToBeSorted);
+			List<Integer> listIntSorted = SetUtilZZZ.sortToInteger(setIntToBeSorted);
 					
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {

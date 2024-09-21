@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -301,7 +301,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			vecReturn = super.solveFirstVector(sExpression, objReturnReference);
 			if(vecReturn==null) break main;
 			
-			sReturn = VectorZZZ.implode(vecReturn);							
+			sReturn = VectorUtilZZZ.implode(vecReturn);							
 			if(!sExpression.equals(sReturn)) {
 				objReturn.isSolved(true);
 				objReturn.setValueFormulaSolvedAndConverted(sReturn);
@@ -395,7 +395,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					
 			
 			Vector<String> vecAll = this.parseAllVectorAsExpression(sExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.			
-			sReturn = VectorZZZ.implode(vecAll);
+			sReturn = VectorUtilZZZ.implode(vecAll);
 			objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen
 						
 			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA)) {
@@ -425,7 +425,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				vecAll.remove(1);
 				vecAll.add(1, sExpressionWithTags);
 				
-				sReturn = VectorZZZ.implode(vecAll);
+				sReturn = VectorUtilZZZ.implode(vecAll);
 				objReturn.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen				
 			}
 			

@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -212,7 +212,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			}
 		}	
 		this.setValue(sReturn);
-		if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
+		if(objEntry!=null) objEntry.setValue(VectorUtilZZZ.implode(vecReturn));
 		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		return vecReturn;						
 	}

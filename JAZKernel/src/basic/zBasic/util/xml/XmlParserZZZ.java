@@ -4,9 +4,9 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagStringZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
@@ -33,11 +33,11 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	}
 	
 	@Override
-	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
-		IVectorExtended4XmlZZZ<?> vecReturn = null;
+	public IVector4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
+		IVector4XmlZZZ<?> vecReturn = null;
 		main:{			
 			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
-			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);			
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((Vector4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);			
 		}
 		return vecReturn;
 	}
@@ -46,11 +46,11 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	 * @see basic.zBasic.util.xml.IParserXmlZZZ#parse(java.lang.String)
 	 */
 	@Override
-	public IVectorExtended4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ{
-		IVectorExtended4XmlZZZ<?> vecReturn = null; 
+	public IVector4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ{
+		IVector4XmlZZZ<?> vecReturn = null; 
 		main:{								
 			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);			
-			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);			
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((Vector4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);			
 		}
 		return vecReturn;
 	}

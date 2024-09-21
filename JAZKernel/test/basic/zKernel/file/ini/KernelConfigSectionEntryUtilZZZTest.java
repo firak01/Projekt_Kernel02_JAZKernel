@@ -3,7 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
 
@@ -29,7 +29,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
 			
 
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertEquals(sExpressionOld, sExpression);
 			
@@ -47,7 +47,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			vecExpressionSource.add(sTagEndZ);
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
 			
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertEquals(sExpressionOld, sExpression);
 						
@@ -64,7 +64,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			vecExpressionSource.add(sTagEndZ);
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
 			
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertEquals(sExpressionOld, sExpression);
 			
@@ -105,7 +105,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
 			assertTrue(sExpression.contains(sTagStartZ));
@@ -126,7 +126,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
 			assertFalse(sExpression.contains(sTagStartZ));
@@ -150,7 +150,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
 			assertFalse(sExpression.contains(sTagStartZ));
@@ -173,7 +173,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertNotNull(sExpression);
 			assertTrue(sExpression.contains(sTagStartZ));
@@ -199,7 +199,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertFalse(sExpression.contains(sTagStartZ));
 			assertFalse(sExpression.contains(sTagStartZ));
@@ -220,7 +220,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertTrue(sExpression.contains(sTagStartZ));
 			assertTrue(sExpression.contains(sTagStartZ));
@@ -241,7 +241,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";	
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, bDirectionFromInToOut);					
-			sExpression = VectorZZZ.implode(vecExpressionSource);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertFalse(sExpression.contains(sTagStartZ));
 			assertFalse(sExpression.contains(sTagStartZ));

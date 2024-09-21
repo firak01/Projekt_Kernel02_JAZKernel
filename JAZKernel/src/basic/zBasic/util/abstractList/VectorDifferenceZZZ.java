@@ -9,14 +9,14 @@ import java.util.Vector;
  * @author Fritz Lindhauer, 28.06.2024, 09:28:49
  * 
  */
-public class VectorExtendedDifferenceZZZ<T> extends VectorExtendedZZZ<T> implements IVectorExtendedDifferenceZZZ<T>{
+public class VectorDifferenceZZZ<T> extends VectorZZZ<T> implements IVectorDifferenceZZZ<T>{
 	private static final long serialVersionUID = -5014357017632523225L;
 
-	public VectorExtendedDifferenceZZZ(Vector initVector) {
+	public VectorDifferenceZZZ(Vector initVector) {
 		super(initVector);
 	}
 
-	public VectorExtendedDifferenceZZZ() {
+	public VectorDifferenceZZZ() {
 	}
 	
 	

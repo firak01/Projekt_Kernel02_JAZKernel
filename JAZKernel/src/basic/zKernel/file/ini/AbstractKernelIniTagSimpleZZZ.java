@@ -8,8 +8,8 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -227,7 +227,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 
 	//### Aus IValueBufferedUserZZZ
 	@Override
-	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ {
+	public VectorDifferenceZZZ<String> getValueVector() throws ExceptionZZZ {
 		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr.
 		return this.getEntry().getValueVector();
 	}
@@ -271,7 +271,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//####################################################
     //### aus IValueComputedBufferedUserZZZ
 	@Override
-	public VectorExtendedDifferenceZZZ<String> getRawVector() throws ExceptionZZZ {
+	public VectorDifferenceZZZ<String> getRawVector() throws ExceptionZZZ {
 		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().getRawVector();
 	}
@@ -345,7 +345,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			Vector<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
 						
-			String sReturn = VectorZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
+			String sReturn = VectorUtilZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
 			this.setValue(sReturn);
 			
 			objEntry.setValue(sReturn);				

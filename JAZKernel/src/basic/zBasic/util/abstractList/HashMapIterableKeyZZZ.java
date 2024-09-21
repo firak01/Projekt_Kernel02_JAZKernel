@@ -176,8 +176,8 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 		this.hmIndexedKey=hmIndexedKey;
 	}
 	
-	public VectorExtendedZZZ<Integer> getVectorIndex() {
-		VectorExtendedZZZ<Integer> vecReturn = null;
+	public VectorZZZ<Integer> getVectorIndex() {
+		VectorZZZ<Integer> vecReturn = null;
 		main:{
 			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
 			if(hmIndexed!=null) {
@@ -212,7 +212,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 	            public boolean hasNext() {
 	            	boolean bReturn = false;
 	            	main:{
-		            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+		            	VectorZZZ<Integer> vec = getVectorIndex();
 		            	if(vec==null)break main;
 		            	if(!vec.hasAnyElement())break main;
 		            	
@@ -237,7 +237,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 	            public T next() {
 	                T objReturn = null;
 	                main:{
-	                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+	                	VectorZZZ<Integer> vec = getVectorIndex();
 		            	if(vec==null)break main;
 		            	if(!vec.hasAnyElement())break main;
 		            	

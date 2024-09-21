@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import custom.zKernel.ConfigZZZ;

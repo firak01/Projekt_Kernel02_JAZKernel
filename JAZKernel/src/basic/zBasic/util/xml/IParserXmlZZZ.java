@@ -5,9 +5,9 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagStringZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
@@ -15,8 +15,8 @@ import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 public interface IParserXmlZZZ {
 
 	//Merke: also entweder nebeneinander liegende Tags, oder auch Tags, die Kindtags haben (d.h. sie enthalten auch einen Vector von Tags)
-	public IVectorExtended4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ;
-	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ;
+	public IVector4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ;
+	public IVector4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ;
 		
 	public HashMapMultiIndexedZZZ<String,String> parseToMap(String sText) throws ExceptionZZZ;
 	public ITreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ;

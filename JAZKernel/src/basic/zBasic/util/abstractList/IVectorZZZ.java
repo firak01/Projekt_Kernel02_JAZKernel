@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IOutputDebugNormedZZZ;
 
-public interface IVectorExtendedZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICollectionConstantZZZ {
+public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICollectionConstantZZZ {
 	
 	int getIndexOfString(String string, boolean ignoreCase, int fromIndex);
 	public T getEntryLast();

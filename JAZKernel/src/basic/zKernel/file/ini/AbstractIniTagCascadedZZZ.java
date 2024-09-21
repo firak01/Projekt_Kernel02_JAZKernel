@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -38,7 +38,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			Vector<String>vecAll = this.parseFirstVector(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
+			sReturn = VectorUtilZZZ.implode(vecAll);
 			
 		}//end main:
 		return sReturn;
@@ -60,7 +60,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 													//Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
 			
 			// ...bei verschachtelten (CASCADED) Werten aber zusammenfassen.
-			String sExpressionWithTags = VectorZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
+			String sExpressionWithTags = VectorUtilZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
 			
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			String sTagStart = this.getTagStarting();

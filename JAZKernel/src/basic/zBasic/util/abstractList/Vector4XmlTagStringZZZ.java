@@ -2,7 +2,7 @@ package basic.zBasic.util.abstractList;
 
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
 
 /** Funktionalität:
  *  Das Hinzugefuegte Object wird mit den angegebenen XML-Tags umgeben.
@@ -11,7 +11,7 @@ import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
  * @author Fritz Lindhauer, 09.06.2024, 09:19:40
  * 
  */
-public class VectorExtended4XmlTagStringZZZ<T> extends VectorExtendedZZZ<T> implements IVectorExtended4XmlZZZ<T> {
+public class Vector4XmlTagStringZZZ<T> extends VectorZZZ<T> implements IVector4XmlZZZ<T> {
 	private static final long serialVersionUID = -3251609755562628308L;
 
 	

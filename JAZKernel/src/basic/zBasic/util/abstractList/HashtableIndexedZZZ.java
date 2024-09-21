@@ -19,7 +19,7 @@ import basic.zBasic.ReflectCodeZZZ;
  */
 public class HashtableIndexedZZZ<T,X>  extends AbstractObjectZZZ{	
 	private Hashtable<Integer,Object> objHt=null;
-	private VectorExtendedZZZ<Integer> objVx=null;	
+	private VectorZZZ<Integer> objVx=null;	
 	private int iIndex=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
 	
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
@@ -223,9 +223,9 @@ public class HashtableIndexedZZZ<T,X>  extends AbstractObjectZZZ{
 		this.objHt=objHt;
 	}
 	
-	public VectorExtendedZZZ<Integer> getVectorIndex() {
+	public VectorZZZ<Integer> getVectorIndex() {
 		if(this.objVx==null) {
-			this.objVx = new VectorExtendedZZZ<Integer>();
+			this.objVx = new VectorZZZ<Integer>();
 		}
 		return this.objVx;
 	}
@@ -234,7 +234,7 @@ public class HashtableIndexedZZZ<T,X>  extends AbstractObjectZZZ{
 	 * @author Fritz Lindhauer, 19.02.2020, 08:32:25
 	 */
 	private void setVectorIndex(Vector<Integer>objV) {
-		VectorExtendedZZZ<Integer> objVx = new VectorExtendedZZZ<Integer>(objV);		
+		VectorZZZ<Integer> objVx = new VectorZZZ<Integer>(objV);		
 		this.objVx = objVx;
 	}
 	
@@ -263,7 +263,7 @@ public class HashtableIndexedZZZ<T,X>  extends AbstractObjectZZZ{
 	
 	@SuppressWarnings("unchecked")
 	public void put(Integer intIndex, Object objValue) throws ExceptionZZZ {		
-		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+		VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 		boolean bExists = vecIndex.contains(intIndex);
 		
 		if(bExists) {

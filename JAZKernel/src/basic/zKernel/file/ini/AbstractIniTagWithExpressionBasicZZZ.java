@@ -8,8 +8,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -32,10 +32,10 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String vewendet werden.
 	//aus IValueArrayUserZZZ
-	protected VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
+	protected VectorDifferenceZZZ<ArrayList<String>> vecalValue = new VectorDifferenceZZZ<ArrayList<String>>();
 	protected boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
 		
-	protected VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();
+	protected VectorDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorDifferenceZZZ<HashMap<String,String>>();
 	protected boolean bMapValue = false; //Falls eine ArrayList gesetzt wurde.
 	
 	public AbstractIniTagWithExpressionBasicZZZ() throws ExceptionZZZ{
@@ -330,7 +330,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//###############################################
 	//### aus IValueArrayUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector() throws ExceptionZZZ{
+	public VectorDifferenceZZZ<ArrayList<String>> getValueArrayListVector() throws ExceptionZZZ{
 		return this.vecalValue;
 	}
 	
@@ -366,7 +366,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//###############################################
 	//### aus IValueMapUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ{
+	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ{
 		return this.vechmValue;
 	}
 		
@@ -419,7 +419,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-			sReturn = VectorZZZ.implode(vecAll);
+			sReturn = VectorUtilZZZ.implode(vecAll);
 			this.setValue(vecAll.get(1));
 			
 		}//end main:

@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -147,7 +147,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				
 				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.						
 				this.setValue(vecAll.get(1));
-				sReturn = VectorZZZ.implode(vecAll);
+				sReturn = VectorUtilZZZ.implode(vecAll);
 			}									
 		}//end main:
 		return sReturn;
@@ -191,7 +191,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
 			if(vecReturn==null)break main;			
 			
-			String sReturn = VectorZZZ.implode(vecReturn);
+			String sReturn = VectorUtilZZZ.implode(vecReturn);
 			this.setValue(sReturn);
 		}
 		return vecReturn;
@@ -219,7 +219,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			Vector<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-			sReturn = VectorZZZ.implode(vecAll);
+			sReturn = VectorUtilZZZ.implode(vecAll);
 			this.setValue(vecAll.get(1));
 			
 		}//end main:

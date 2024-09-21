@@ -20,7 +20,7 @@ import basic.zBasic.ReflectCodeZZZ;
 public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implements Iterable<V>,Serializable{	
 	private static final long serialVersionUID = 8726987571013127695L;
 	private HashMap<Integer,V> hmIndexed=null;
-	private VectorExtendedZZZ<Integer> vecIndex=null;	
+	private VectorZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
 	
 	private String sDummy=null;
@@ -76,7 +76,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 	public Integer getKeyFirst() throws ExceptionZZZ{
 		Integer intReturn = null;
 //		try{
-			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();		
+			VectorZZZ<Integer> vecIndex = this.getVectorIndex();		
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex  =  (Integer) vecIndex.elementAt(0);			
@@ -106,7 +106,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 	public Integer getKeyLast() throws ExceptionZZZ{
 		Integer intReturn = null;
 //		try{
-			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+			VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex=(Integer) vecIndex.lastElement();
@@ -133,7 +133,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 		Integer intReturn = null;
 		main:{
 			//try{
-				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 				if(vecIndex!=null){
 					if(vecIndex.hasAnyElement()) {
 						int iIndexTest = this.getIndexCurrent() + 1;
@@ -164,7 +164,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 		Integer intReturn = null;
 		main:{
 //			try{
-				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 				if(vecIndex!=null){
 					if(vecIndex.hasAnyElement()) {
 						int iIndexTest = this.getIndexCurrent() + 1;
@@ -251,7 +251,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 				if(intKey==null) break main;
 				
 				//Das Key-Objekt muss ja im Vektor vorhanden sein
-				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 				if(vecIndex==null) break main;
 				if(!vecIndex.hasAnyElement()) break main;				
 				if(!vecIndex.contains(intKey)) break main;
@@ -293,7 +293,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
 				}
-				VectorExtendedZZZ<Integer> vexIndex = this.getVectorIndex();
+				VectorZZZ<Integer> vexIndex = this.getVectorIndex();
 				if(!vecIndex.hasAnyElement()) {
 					ExceptionZZZ ez = new ExceptionZZZ("no element exists iIndex cann not be set.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 					  //doesn�t work. Only works when > JDK 1.4
@@ -342,9 +342,9 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 		this.hmIndexed=hmIndexed;
 	}
 	
-	public VectorExtendedZZZ<Integer> getVectorIndex() {
+	public VectorZZZ<Integer> getVectorIndex() {
 		if(this.vecIndex==null) {
-			this.vecIndex = new VectorExtendedZZZ<Integer>();
+			this.vecIndex = new VectorZZZ<Integer>();
 		}
 		return this.vecIndex;
 	}
@@ -353,20 +353,20 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 	 * @author Fritz Lindhauer, 19.02.2020, 08:32:25
 	 */
 	private void setVectorIndex(Vector<Integer>vecIndexed) {
-		VectorExtendedZZZ<Integer> vecIndexedZZZ= new VectorExtendedZZZ<Integer>(vecIndexed);		
+		VectorZZZ<Integer> vecIndexedZZZ= new VectorZZZ<Integer>(vecIndexed);		
 		this.vecIndex=vecIndexedZZZ;
 	}
 	/**Ist private, da der Vector immer sortiert sein muss, also darf man ihn von Aussen nicht setzen.
 	 * @param objV
 	 * @author Fritz Lindhauer, 19.02.2020, 08:32:25
 	 */
-	private void setVectorIndex(VectorExtendedZZZ<Integer>vecIndex) {			
+	private void setVectorIndex(VectorZZZ<Integer>vecIndex) {			
 		this.vecIndex=vecIndex;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void put(Integer intIndex, V objValue) throws ExceptionZZZ {		
-		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+		VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 		
 		boolean bExists = false;		
 		if(vecIndex.hasAnyElement()) {
@@ -389,7 +389,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
 	
 	@SuppressWarnings("unchecked")
 	public void put(V objValue) throws ExceptionZZZ {		
-		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+		VectorZZZ<Integer> vecIndex = this.getVectorIndex();
 		int iMax = -1;
 		
 		if(vecIndex.hasAnyElement()) {
@@ -548,7 +548,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
             public boolean hasNext() {
             	boolean bReturn = false;
             	main:{
-	            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+	            	VectorZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
 	            	if(!vec.hasAnyElement())break main;
 	            	
@@ -567,7 +567,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implement
             public V next() {
                 V objReturn = null;
                 main:{
-                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+                	VectorZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
 	            	if(!vec.hasAnyElement())break main;
 	            	

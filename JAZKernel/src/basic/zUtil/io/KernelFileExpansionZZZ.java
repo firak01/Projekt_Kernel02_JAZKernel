@@ -6,7 +6,7 @@ import java.util.Iterator;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.integer.IntegerZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

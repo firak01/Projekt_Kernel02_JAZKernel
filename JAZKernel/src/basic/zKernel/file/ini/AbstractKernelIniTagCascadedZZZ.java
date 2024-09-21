@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -121,7 +121,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			Vector<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
 						
-			String sReturn = VectorZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
+			String sReturn = VectorUtilZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
 			this.setValue(sReturn);
 			
 			objEntry.setValue(sReturn);				
@@ -200,7 +200,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			if(vecReturn.size()==2) vecReturn.add(2, "");
 			
 			//sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
-			sReturn = VectorZZZ.implode(vecReturn);
+			sReturn = VectorUtilZZZ.implode(vecReturn);
 		}				
 		
 		this.setValue(sReturn);		

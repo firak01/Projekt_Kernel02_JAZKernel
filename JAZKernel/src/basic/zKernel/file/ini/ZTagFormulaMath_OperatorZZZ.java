@@ -4,8 +4,8 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
@@ -191,7 +191,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				Vector vecAll = this.solveFirstVector(sLineWithExpression);
 										
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-				sReturn = VectorZZZ.implode(vecAll);
+				sReturn = VectorUtilZZZ.implode(vecAll);
 				
 				this.setValue(sReturn);
 			}//end main:

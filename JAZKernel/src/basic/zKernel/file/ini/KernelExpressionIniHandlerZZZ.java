@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
@@ -414,13 +414,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			
 			if(vecReturn.size()==2) vecReturn.add(2, "");
 			
-			sReturn = VectorZZZ.implode(vecReturn);
+			sReturn = VectorUtilZZZ.implode(vecReturn);
 		}	
 				
 		if(!sExpression.equals(sReturn)) objEntry.isParsed(true);
 		
 		this.setValue(sReturn);
-		if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
+		if(objEntry!=null) objEntry.setValue(VectorUtilZZZ.implode(vecReturn));
 		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);		
 		return vecReturn;		
 	}
@@ -475,7 +475,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturnReference.set(objEntry);
 			Vector<String> vecAll = super.solveFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 			if(vecAll!=null) {
-				String sExpressionUsed = VectorZZZ.implode(vecAll); //Aussnahme im Solver(). Fasse hier noch einmal zusammen, da ja jetzt andere Solver ausgeführt werden sollen.
+				String sExpressionUsed = VectorUtilZZZ.implode(vecAll); //Aussnahme im Solver(). Fasse hier noch einmal zusammen, da ja jetzt andere Solver ausgeführt werden sollen.
 				objEntry.setRaw(sExpressionUsed);
 				
 				//Löse nun die anderen Solver auf.

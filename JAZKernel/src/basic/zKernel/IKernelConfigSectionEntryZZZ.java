@@ -9,7 +9,7 @@ import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zBasic.IValueUserZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
@@ -43,16 +43,16 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public String getSystemNumber();
 	public void setSystemNumber(String sSystemNumber);
 	
-	public VectorExtendedDifferenceZZZ<String> getValueAsExpressionVector();
+	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
 	public void setValueAsExpression(String sValueAsExpression);
 	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce);
 			
-	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
+	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
 	public HashMap<String,String> getValueHashMap();
 	public void setValue(HashMap<String,String> hmValue);
 	
-	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector();
+	public VectorDifferenceZZZ<ArrayList<String>> getValueArrayListVector();
 	public ArrayList<String> getValueArrayList();
 	public void setValue(ArrayList<String> alValue);
 	
@@ -86,7 +86,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isConverted();
 	abstract void isConverted(boolean bIsConverted);
 	
-	public VectorExtendedDifferenceZZZ<String> getValueAsConversionVector();
+	public VectorDifferenceZZZ<String> getValueAsConversionVector();
 	public String getValueAsConversion();
 	public void setValueAsConversion(String sValueConverted);
 	
@@ -99,7 +99,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isFormulaSolved(boolean bIsFormulaSolved);
 	
 	
-	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
+	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
 	public String getValueFormulaSolvedAndConverted();
 	public String getValueFormulaSolvedAndConvertedAsExpression(); 
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
@@ -130,7 +130,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isDecrypted();
 	abstract void isDecrypted(boolean bIsDecrypted);
 	
-	public VectorExtendedDifferenceZZZ<String> getRawDecryptedVector();	
+	public VectorDifferenceZZZ<String> getRawDecryptedVector();	
 	public String getRawDecrypted();
 	abstract void setRawDecrypted(String sRaw);
 	
@@ -143,17 +143,17 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isRawEncrypted();
 	abstract void isRawEncrypted(boolean bIsRawEncrypted);
 	
-	public VectorExtendedDifferenceZZZ<String> getRawEncryptedVector();
+	public VectorDifferenceZZZ<String> getRawEncryptedVector();
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
 	public String getRawEncryptedAsExpression();
 	abstract void setRawEncrypted(String sRaw);
 	
-	public VectorExtendedDifferenceZZZ<String> getValueEncryptedVector(); 
+	public VectorDifferenceZZZ<String> getValueEncryptedVector(); 
 	public String getValueEncrypted();
 	public String getValueEncryptedAsExpression();
 	public void setValueEncrypted(String sValueEncryptd);
 	
-	public VectorExtendedDifferenceZZZ<String> getValueDecryptedVector();
+	public VectorDifferenceZZZ<String> getValueDecryptedVector();
 	public String getValueDecrypted();
 	public String getValueDecryptedAsExpression();
 	public void setValueDecrypted(String sValueEncryptd);

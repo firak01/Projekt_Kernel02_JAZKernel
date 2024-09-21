@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 
 public class VectorZZZTest  extends TestCase{
     private Vector vec = null;
@@ -21,24 +21,24 @@ public class VectorZZZTest  extends TestCase{
     public void testTrim(){
 		try {
 			//1. unver�ndert
-			Vector vecNew = VectorZZZ.unique(vec);
+			Vector vecNew = VectorUtilZZZ.unique(vec);
 			assertEquals(vec.size(), vecNew.size());
 	    	
 			
 			//2. "doppelte Eintr�ge"
 			vec.add("a");
-			Vector vecNew2 = VectorZZZ.unique(vec);
+			Vector vecNew2 = VectorUtilZZZ.unique(vec);
 			assertEquals(vec.size() - 1 , vecNew2.size());
 			
 			vec.add("c");
-			Vector vecNew3 = VectorZZZ.unique(vec);
+			Vector vecNew3 = VectorUtilZZZ.unique(vec);
 			assertEquals(vec.size() - 2 , vecNew3.size());
 			
 			Vector vec4Append = new Vector();
     		vec4Append.add("a");
     		vec4Append.add("c");
-    		Vector vecNew4temp = VectorZZZ.append(vec, vec4Append);
-			Vector vecNew4 = VectorZZZ.unique(vecNew4temp);
+    		Vector vecNew4temp = VectorUtilZZZ.append(vec, vec4Append);
+			Vector vecNew4 = VectorUtilZZZ.unique(vecNew4temp);
 			assertEquals(vec.size() - 2, vecNew4.size());
     		
     		
@@ -55,7 +55,7 @@ public class VectorZZZTest  extends TestCase{
     		vec2Append.add("d");
     		vec2Append.add("e");
     		
-    		Vector vecNew = VectorZZZ.append(vec, vec2Append);
+    		Vector vecNew = VectorUtilZZZ.append(vec, vec2Append);
     		assertEquals(vecNew.size(), vec.size() + vec2Append.size());
     		
     		
@@ -73,7 +73,7 @@ public class VectorZZZTest  extends TestCase{
     		vec.add("c");
     		vec.add("d");
     		
-    		Vector vecNew = VectorZZZ.reverse(vec);
+    		Vector vecNew = VectorUtilZZZ.reverse(vec);
     		assertEquals(vecNew.size(), vec.size() );
     		assertEquals(vecNew.get(0), vec.get(vec.size()-1));
     		assertEquals(vecNew.get(vecNew.size()-1), vec.get(0));

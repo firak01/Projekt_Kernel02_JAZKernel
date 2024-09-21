@@ -15,7 +15,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
+public class SetUtilZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 	private static final long serialVersionUID = 4127464724750442138L;
 
 	
@@ -115,12 +115,12 @@ public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 		main:{
 			if(setToBeSorted==null)break main;
 			
-			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
-				listReturn = SetZZZ.sortAsString(setToBeSorted);
-			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
-				listReturn = SetZZZ.sortAsStringReversed(setToBeSorted);
+			if(iSortDirection==SetUtilZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetUtilZZZ.sortAsString(setToBeSorted);
+			}else if (iSortDirection==SetUtilZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetUtilZZZ.sortAsStringReversed(setToBeSorted);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;
 			}
 		}//end main:
@@ -179,12 +179,12 @@ public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 		main:{
 			if(setToBeSorted==null)break main;
 			
-			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
-				listReturn = SetZZZ.sortToString(setToBeSorted);
-			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
-				listReturn = SetZZZ.sortToStringReversed(setToBeSorted);
+			if(iSortDirection==SetUtilZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetUtilZZZ.sortToString(setToBeSorted);
+			}else if (iSortDirection==SetUtilZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetUtilZZZ.sortToStringReversed(setToBeSorted);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;
 			}
 		}//end main:
@@ -243,12 +243,12 @@ public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 		main:{
 			if(setToBeSorted==null)break main;
 			
-			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
-				listReturn = SetZZZ.sortAsInteger(setToBeSorted);
-			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
-				listReturn = SetZZZ.sortAsIntegerReversed(setToBeSorted);
+			if(iSortDirection==SetUtilZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetUtilZZZ.sortAsInteger(setToBeSorted);
+			}else if (iSortDirection==SetUtilZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetUtilZZZ.sortAsIntegerReversed(setToBeSorted);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;
 			}
 		}//end main:
@@ -307,12 +307,12 @@ public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 		main:{
 			if(setToBeSorted==null)break main;
 			
-			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
-				listReturn = SetZZZ.sortToInteger(setToBeSorted);
-			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
-				listReturn = SetZZZ.sortToIntegerReversed(setToBeSorted);
+			if(iSortDirection==SetUtilZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetUtilZZZ.sortToInteger(setToBeSorted);
+			}else if (iSortDirection==SetUtilZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetUtilZZZ.sortToIntegerReversed(setToBeSorted);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;
 			}
 		}//end main:
@@ -332,7 +332,7 @@ public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 			if(setToBeSorted==null)break main;
 						
 			//      Falls hier dann der Datentyp nicht passt... wird der Fehler geworfen...
-			List<Integer> numbersList = SetZZZ.toListInteger(setToBeSorted);					
+			List<Integer> numbersList = SetUtilZZZ.toListInteger(setToBeSorted);					
 			Collections.sort(numbersList);//Sort the list
 			listReturn = numbersList;
 		}//end main:

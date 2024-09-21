@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import junit.framework.TestCase;
 
@@ -970,7 +970,7 @@ public void testVecMidFirst(){
 		assertEquals(vec.size(), 3);
 		
 		//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
-		String sProof = VectorZZZ.implode(vec);
+		String sProof = VectorUtilZZZ.implode(vec);
 		assertEquals(StringZZZ.count(sProof, "["),1);
 		assertEquals(StringZZZ.count(sProof, "]"),1);
 		

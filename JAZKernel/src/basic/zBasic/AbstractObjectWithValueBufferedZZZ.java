@@ -1,11 +1,11 @@
 package basic.zBasic;
 
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 
 public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObjectWithValueZZZ<T> implements IValueBufferedUserZZZ{
 	private static final long serialVersionUID = -2430016737090603862L;
 	
-	protected VectorExtendedDifferenceZZZ<String> vecValue = null;
+	protected VectorDifferenceZZZ<String> vecValue = null;
 	
 	public AbstractObjectWithValueBufferedZZZ() throws ExceptionZZZ{	
 		super();
@@ -17,9 +17,9 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 	
 	//### Aus IValueBufferedUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueVector(){
+	public VectorDifferenceZZZ<String> getValueVector(){
 		if(this.vecValue==null) {
-			this.vecValue = new VectorExtendedDifferenceZZZ<String>();
+			this.vecValue = new VectorDifferenceZZZ<String>();
 		}
 		return this.vecValue;
 	}

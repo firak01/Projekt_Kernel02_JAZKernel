@@ -8,7 +8,7 @@ import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -264,7 +264,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				if(vecReturn.size()==2) vecReturn.add(2, "");	
 					
 				//Wir sind gerade beim Parsen also zusammenfassen... Merke beim Solven keine Zussammenfassung mit solve//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);
-				sReturn = VectorZZZ.implode(vecReturn); 
+				sReturn = VectorUtilZZZ.implode(vecReturn); 
 			}			
 		}//end main;
 		this.setValue(sReturn);
@@ -406,7 +406,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				objReturnReferenceIn.set(objEntry);
 				this.setEntry(objEntry);
 				
-				sReturn = VectorZZZ.implode(vecAll);
+				sReturn = VectorUtilZZZ.implode(vecAll);
 				if(!sExpression.equals(sReturn)) {
 					objEntry.isSolved(true);
 				}
@@ -494,7 +494,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						}else if(sReturn.equals(sExpressionTemp)) {
 							break;
 						}else{
-							sReturn = VectorZZZ.implode(vecExpressionTemp);					
+							sReturn = VectorUtilZZZ.implode(vecExpressionTemp);					
 						}
 					}else {
 						break;
@@ -527,7 +527,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 							}else if(sReturn.equals(sExpressionTemp)) {
 								break;
 							}else{
-								sReturn = VectorZZZ.implode(vecExpressionTemp);							
+								sReturn = VectorUtilZZZ.implode(vecExpressionTemp);							
 							}
 						}else {
 							break;

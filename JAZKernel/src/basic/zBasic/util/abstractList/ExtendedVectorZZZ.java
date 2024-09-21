@@ -29,7 +29,7 @@ import basic.zBasic.ExceptionZZZ;
 /** 20200219: Dies ist eine alte Klasse, die nicht generisch ist.
  *            Neuer Klassename analog zur HashMapExtended gewählt. 
  */
-public class ExtendedVectorZZZ extends VectorExtendedZZZ {
+public class ExtendedVectorZZZ extends VectorZZZ {
 	
 	public ExtendedVectorZZZ(Vector initVector) {
 		for (int i=0; i<initVector.size(); i++)

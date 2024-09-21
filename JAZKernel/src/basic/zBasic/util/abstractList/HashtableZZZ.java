@@ -15,7 +15,7 @@ public class HashtableZZZ extends AbstractObjectZZZ{
 			hmReturn=new HashMap<String,String>();
 			
 			//Prüfe, ob überhaupt ein Objekt in der Hashtable (im Index) steht.
-			VectorExtendedZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
+			VectorZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
 			if(vecIndex==null) break main;
 			if(!vecIndex.hasAnyElement()) break main;
 	
@@ -46,7 +46,7 @@ public class HashtableZZZ extends AbstractObjectZZZ{
 			hmReturn=new HashMap<String,String>();
 			
 			//Prüfe, ob überhaupt ein Objekt in der Hashtable (im Index) steht.
-			VectorExtendedZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
+			VectorZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
 			if(vecIndex==null) break main;
 			if(!vecIndex.hasAnyElement()) break main;
 	
@@ -77,7 +77,7 @@ public class HashtableZZZ extends AbstractObjectZZZ{
 			hmReturn=new HashMap<String,Object>();
 			
 			//Prüfe, ob überhaupt ein Objekt in der Hashtable (im Index) steht.
-			VectorExtendedZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
+			VectorZZZ<Integer> vecIndex = htIndexed.getVectorIndex();
 			if(vecIndex==null) break main;
 			if(!vecIndex.hasAnyElement()) break main;
 	

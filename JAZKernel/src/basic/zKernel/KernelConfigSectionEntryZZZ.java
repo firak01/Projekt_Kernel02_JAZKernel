@@ -10,7 +10,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -29,11 +29,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected IIniStructurePositionZZZ objIniPosition = null;
 	protected String sSystemNumber = null;
-	protected VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
-	protected VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecRaw = new VectorDifferenceZZZ<String>();	
+	protected VectorDifferenceZZZ<String> vecValueAsExpression = new VectorDifferenceZZZ<String>();
 	
-	protected VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();	
-	protected VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
+	protected VectorDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorDifferenceZZZ<HashMap<String,String>>();	
+	protected VectorDifferenceZZZ<ArrayList<String>> vecalValue = new VectorDifferenceZZZ<ArrayList<String>>();
 	protected boolean bSectionExists = false;
 	protected boolean bAnySectionExists = false;
 	protected boolean bPropertyExists = false;
@@ -45,7 +45,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected boolean bCrypt = false;
 	
-	protected VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
 
 	protected boolean bParsed = false;
 	
@@ -57,7 +57,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected boolean bConversion = false;
 	protected boolean bConverted = false;
-	protected VectorExtendedDifferenceZZZ<String> vecValueAsConversion = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueAsConversion = new VectorDifferenceZZZ<String>();
 	
 	
 	
@@ -79,13 +79,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected boolean bEncrypted = false;
 	protected boolean bRawEncrypted = false;
-	protected VectorExtendedDifferenceZZZ<String> vecRawEncrypted = new VectorExtendedDifferenceZZZ<String>();
-	protected VectorExtendedDifferenceZZZ<String> vecValueEncrypted = new VectorExtendedDifferenceZZZ<String>();
-	protected VectorExtendedDifferenceZZZ<String> vecValueDecrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecRawEncrypted = new VectorDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueEncrypted = new VectorDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueDecrypted = new VectorDifferenceZZZ<String>();
 	
 	protected boolean bDecrypted = false;
 	protected boolean bRawDecrypted = false;	
-	protected VectorExtendedDifferenceZZZ<String> vecRawDecrypted = new VectorExtendedDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecRawDecrypted = new VectorDifferenceZZZ<String>();
 	
 	protected String sKey = null;
 	
@@ -300,7 +300,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	//###############################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getRawVector(){
+	public VectorDifferenceZZZ<String> getRawVector(){
 		return this.vecRaw;
 	}
 	
@@ -351,7 +351,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//#################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueAsExpressionVector(){
+	public VectorDifferenceZZZ<String> getValueAsExpressionVector(){
 		return this.vecValueAsExpression;
 	}
 	
@@ -382,7 +382,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//#####################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueAsConversionVector(){
+	public VectorDifferenceZZZ<String> getValueAsConversionVector(){
 		return this.vecValueAsConversion;
 	}
 	
@@ -398,7 +398,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//###############################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector(){
+	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector(){
 		return this.vecValueFormulaSolvedAndConverted;
 	}
 	
@@ -421,7 +421,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//################################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueEncryptedVector(){
+	public VectorDifferenceZZZ<String> getValueEncryptedVector(){
 		return this.vecValueEncrypted;
 	}
 	
@@ -443,7 +443,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//############################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueDecryptedVector(){
+	public VectorDifferenceZZZ<String> getValueDecryptedVector(){
 		return this.vecValueDecrypted;
 	}
 	
@@ -465,7 +465,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//###############################################
 	@Override 
-	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector(){
+	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector(){
 		return this.vechmValue;
 	}
 	
@@ -492,7 +492,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	//###############################################
 	//### aus IValueArrayUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector(){
+	public VectorDifferenceZZZ<ArrayList<String>> getValueArrayListVector(){
 		return this.vecalValue;
 	}
 	
@@ -840,7 +840,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public VectorExtendedDifferenceZZZ<String> getRawDecryptedVector(){
+	public VectorDifferenceZZZ<String> getRawDecryptedVector(){
 		return this.vecRawDecrypted;
 	}
 	
@@ -869,7 +869,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public VectorExtendedDifferenceZZZ<String> getRawEncryptedVector(){
+	public VectorDifferenceZZZ<String> getRawEncryptedVector(){
 		return this.vecRawEncrypted;
 	}
 	

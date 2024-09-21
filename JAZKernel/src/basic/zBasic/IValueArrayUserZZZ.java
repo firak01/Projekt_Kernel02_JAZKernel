@@ -2,12 +2,12 @@ package basic.zBasic;
 
 import java.util.ArrayList;
 
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 
 public interface IValueArrayUserZZZ{
 
 	//Der bis dahin (ggfs. durch aufloesen einer Formel) ermittelte Wert
-	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector() throws ExceptionZZZ;
+	public VectorDifferenceZZZ<ArrayList<String>> getValueArrayListVector() throws ExceptionZZZ;
 	
 	public ArrayList<String> getValueArrayList() throws ExceptionZZZ;
 	public void setValue(ArrayList<String> listasValue) throws ExceptionZZZ;

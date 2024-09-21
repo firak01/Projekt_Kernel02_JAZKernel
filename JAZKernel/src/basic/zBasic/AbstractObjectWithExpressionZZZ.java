@@ -2,8 +2,8 @@ package basic.zBasic;
 
 import java.util.Vector;
 
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
@@ -13,12 +13,12 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	private static final long serialVersionUID = 4049221887081114236L;
 		
 	//+++ fuer IValueBufferedUserZZZ
-	protected VectorExtendedDifferenceZZZ<String> vecValue = null;
+	protected VectorDifferenceZZZ<String> vecValue = null;
 	protected boolean bAnyValueInObjectWithExpression = false;
 	protected boolean bNullValueInObjectWithExpression = false;
 	
 	//IValueSolvedUserZZZ
-	protected VectorExtendedDifferenceZZZ<String> vecRaw = null;
+	protected VectorDifferenceZZZ<String> vecRaw = null;
 	
 	public AbstractObjectWithExpressionZZZ() throws ExceptionZZZ{
 		this("init");
@@ -56,9 +56,9 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	
 	//### Aus IValueBufferedUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
+	public VectorDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
 		if(this.vecValue==null) {
-			this.vecValue = new VectorExtendedDifferenceZZZ<String>();
+			this.vecValue = new VectorDifferenceZZZ<String>();
 		}
 		return this.vecValue;
 	}
@@ -114,9 +114,9 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	//####################################################
 	//### Aus IValueComputedBufferedUserZZZ
 	@Override 
-	public VectorExtendedDifferenceZZZ<String> getRawVector() throws ExceptionZZZ{
+	public VectorDifferenceZZZ<String> getRawVector() throws ExceptionZZZ{
 		if(this.vecRaw==null) {
-			this.vecRaw = new VectorExtendedDifferenceZZZ<String>();
+			this.vecRaw = new VectorDifferenceZZZ<String>();
 		}
 		return this.vecRaw;
 	}

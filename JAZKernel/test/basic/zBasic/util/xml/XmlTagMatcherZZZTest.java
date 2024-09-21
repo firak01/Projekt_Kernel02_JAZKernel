@@ -8,8 +8,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -239,7 +239,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		 try{
 			 String sTest;
 			 //VectorExtendedZZZ<String> vecTag=null;
-			 IVectorExtended4XmlZZZ<?> vecTag=null;
+			 IVector4XmlZZZ<?> vecTag=null;
 			 
 //			 In einer Schleife die TESTVALUE Enum durchgehen
 //			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
@@ -388,7 +388,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
  			 String[]saValue=null;
 			 //VectorExtendedZZZ<String> vecTag=null;
- 			IVectorExtended4XmlZZZ<?> vecTag=null;
+ 			IVector4XmlZZZ<?> vecTag=null;
 			 
 			sTest= objEnumTestType.getXml();
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);								

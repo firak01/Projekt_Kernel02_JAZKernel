@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
@@ -67,7 +67,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			Vector<String> vecParse = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecParse!=null) {
 				this.setValue(vecParse.get(1)); //uebernimm also das 1. Element			
-				sReturn = VectorZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
+				sReturn = VectorUtilZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
 			}
 		}
 		return sReturn;

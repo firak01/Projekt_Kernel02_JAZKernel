@@ -9,9 +9,9 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.IHashMapMultiZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagStringZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -33,7 +33,7 @@ public class XmlParserZZZTest extends TestCase{
 	 public void testParseToVectorTagString(){
 		 try{
 			 String sTest;
-			 VectorExtended4XmlTagStringZZZ<String> vecTag=null;
+			 Vector4XmlTagStringZZZ<String> vecTag=null;
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			
 			 //Hole die XML Strings aus dem Enum
@@ -91,7 +91,7 @@ public class XmlParserZZZTest extends TestCase{
 			 System.out.println("### AS VectorExtended4XmlTagStringZZZ #########################");			
 							 
 			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
-			vecTag = (VectorExtended4XmlTagStringZZZ<String>) objParserTest.parseToVectorTagString(sTest);
+			vecTag = (Vector4XmlTagStringZZZ<String>) objParserTest.parseToVectorTagString(sTest);
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
 			
@@ -109,7 +109,7 @@ public class XmlParserZZZTest extends TestCase{
 	 public void testParseToVectorTagSimple(){
 		 try{
 			 String sTest;
-			 VectorExtended4XmlTagSimpleZZZ<String> vecTag=null;
+			 Vector4XmlTagSimpleZZZ<String> vecTag=null;
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			
 			 //Hole die XML Strings aus dem Enum
@@ -166,7 +166,7 @@ public class XmlParserZZZTest extends TestCase{
 			System.out.println("### AS VectorExtended4XmlTagSimpleZZZ #########################");
 			
 			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
-			vecTag = (VectorExtended4XmlTagSimpleZZZ<String>) objParserTest.parseToVectorTagSimple(sTest);
+			vecTag = (Vector4XmlTagSimpleZZZ<String>) objParserTest.parseToVectorTagSimple(sTest);
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
 			System.out.println("###########################################");
@@ -193,7 +193,7 @@ public class XmlParserZZZTest extends TestCase{
 			sTest= objEnumTestType.getXml();
 			System.out.println("'" + sTest +"'");
 
-			IVectorExtended4XmlZZZ vecTag = null;
+			IVector4XmlZZZ vecTag = null;
 			if(bVectorAsTagString) {			
 			//VectorExtended4XmlTagSimpleZZZ<String> vecTag=null;
 				vecTag = objParserTest.parseToVectorTagString(sTest);

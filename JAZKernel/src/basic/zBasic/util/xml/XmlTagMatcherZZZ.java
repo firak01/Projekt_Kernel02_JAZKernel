@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedZZZ;
+import basic.zBasic.util.abstractList.IVector4XmlZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.Vector4XmlTagStringZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
@@ -142,43 +142,43 @@ public class XmlTagMatcherZZZ {
 	}
 	
 	//##################################################
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(String sXml) throws ExceptionZZZ {
+	public static IVector4XmlZZZ<?> parseElementsAsVector(String sXml) throws ExceptionZZZ {
 		return XmlTagMatcherZZZ.parseElementsAsVectorTagString(sXml);
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ{		
+	public static IVector4XmlZZZ<?> parseElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ{		
 		return XmlTagMatcherZZZ.parseElementsAsVectorTagString(sXml, bWithText);
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(VectorExtended4XmlTagStringZZZ<String> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
+	public static IVector4XmlZZZ<?> parseElementsAsVector(Vector4XmlTagStringZZZ<String> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
 		return XmlTagMatcherZZZ.parseElementsAsVectorTagString(vec, sXml, bWithText);
 	}
 	
 	//############################################################################
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagString(String sXml) throws ExceptionZZZ {
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagString(String sXml) throws ExceptionZZZ {
 		return parseElementsAsVector_(null, true, sXml, true);
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagString(String sXml, boolean bWithText) throws ExceptionZZZ{		
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagString(String sXml, boolean bWithText) throws ExceptionZZZ{		
 		return parseElementsAsVector_(null, true, sXml, bWithText);
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagString(VectorExtended4XmlTagStringZZZ<String> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagString(Vector4XmlTagStringZZZ<String> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
 		return parseElementsAsVector_(vec, true, sXml, bWithText);
 	}
 
 	//############################################################################
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml) throws ExceptionZZZ{
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml) throws ExceptionZZZ{
 		return parseElementsAsVector_(null, false, sXml, true); 		
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml, boolean bWithText) throws ExceptionZZZ{
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml, boolean bWithText) throws ExceptionZZZ{
 		return parseElementsAsVector_(null, false, sXml, bWithText); 		
 	}
 	
-	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> vec, String sXml, boolean bWithText) throws ExceptionZZZ{			
+	public static IVector4XmlZZZ<?> parseElementsAsVectorTagSimple(Vector4XmlTagSimpleZZZ<ITagSimpleZZZ> vec, String sXml, boolean bWithText) throws ExceptionZZZ{			
 		return parseElementsAsVector_(vec, false, sXml, bWithText); 		
 	}
 	
@@ -197,8 +197,8 @@ public class XmlTagMatcherZZZ {
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.06.2024, 08:57:55
 	 */
-	private static IVectorExtended4XmlZZZ<?> parseElementsAsVector_(IVectorExtended4XmlZZZ<?> vecReturnIn, boolean bAsTagStringWhenVectorNull, String sXml, boolean bWithText) throws ExceptionZZZ{
-		IVectorExtended4XmlZZZ<?> vecReturn = null;
+	private static IVector4XmlZZZ<?> parseElementsAsVector_(IVector4XmlZZZ<?> vecReturnIn, boolean bAsTagStringWhenVectorNull, String sXml, boolean bWithText) throws ExceptionZZZ{
+		IVector4XmlZZZ<?> vecReturn = null;
 		main:{
 			boolean bVecFilledBefore;
 			
@@ -213,9 +213,9 @@ public class XmlTagMatcherZZZ {
 				if(sXml==null) break main;
 
 				if(bAsTagStringWhenVectorNull) {
-					vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
+					vecReturn = new Vector4XmlTagStringZZZ<String>();
 				}else {
-					vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
+					vecReturn = new Vector4XmlTagSimpleZZZ<ITagSimpleZZZ>();
 				}
 								
 				if(sXml.equals("")) break main;

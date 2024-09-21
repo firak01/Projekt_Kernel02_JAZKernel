@@ -2,12 +2,12 @@ package basic.zBasic;
 
 import java.util.HashMap;
 
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 
 public interface IValueMapUserZZZ{
 
 	//Der bis dahin (ggfs. durch aufloesen einer Formel) ermittelte Wert
-	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ;
+	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ;
 	
 	public HashMap<String,String> getValueHashMap() throws ExceptionZZZ;
 	public void setValue(HashMap<String,String> mapssValue) throws ExceptionZZZ;
