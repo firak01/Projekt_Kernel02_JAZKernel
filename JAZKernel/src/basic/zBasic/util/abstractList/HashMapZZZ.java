@@ -12,8 +12,13 @@ import java.util.Set;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 
-public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
+public class HashMapZZZ<T,X> extends AbstractObjectZZZ<T> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5610843229626979439L;
+
 	private HashMapZZZ(){
 	}
 	
