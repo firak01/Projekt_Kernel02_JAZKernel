@@ -30,10 +30,15 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IOutputDebugNormedZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.log.LogStringZZZ;
 
 /** 20170725: Diese Klasse Generisch gemacht. Dabei den Klassennamen analog zur HashMapExtended gewählt. 
  *                    Die alte Klasse beibehalten als nicht generisch...
@@ -44,6 +49,8 @@ import basic.zBasic.ReflectCodeZZZ;
 @SuppressWarnings("rawtypes")
 public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	private static final long serialVersionUID = 1L;
+	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
+	
 	protected int iIndexUsedLast=-1;
 	
 	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
@@ -106,7 +113,11 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	
 	
 	
-	
+	//###################
+	@Override
+	public int sizeNext() {
+		return this.size() + 1;
+	}
 	
 	//##################
 	//
@@ -375,6 +386,53 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		return iReturn;
 	}
 
+    
+    /**Overwritten and using an object of jakarta.commons.lang
+	 * to create this string using reflection. 
+	 * Remark: this is not yet formated. A style class is available in jakarta.commons.lang. 
+	 */
+	@Override
+	public String toString(){
+		String sReturn = "";
+		sReturn = ReflectionToStringBuilder.toString(this);
+		return sReturn;
+	}
+	
+	//### aus Clonable
+//	@Override
+	//https://www.geeksforgeeks.org/clone-method-in-java-2/
+	//Hier wird also "shallow clone" gemacht. Statt einem deep Clone.
+	//Beim Deep Clone müssten alle intern verwendeten Objekte ebenfalls neu erstellt werden.	
+//	public Object clone() throws CloneNotSupportedException{
+//		return super.clone();
+//	}
+	
+	//### aus IObjectZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		return this.objException;
+	} 
+
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException = objException;
+	}
+	
+	
+	//Meine Variante Objekte zu clonen, aber erzeugt nur einen "Shallow Clone".
+	@Override
+	public Object clonez() throws ExceptionZZZ {
+//		try {
+			return this.clone();
+//		}catch(CloneNotSupportedException e) {
+//			ExceptionZZZ ez = new ExceptionZZZ(e);
+//			throw ez;
+//				
+//		}
+	}
+	
+	
+    
     //### aus IOutputDebugNormed
 	@Override
 	public String computeDebugString() throws ExceptionZZZ{		
@@ -417,4 +475,104 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	public void setDebugEntryDelimiter(String sEntryDelimiter) {
 		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
 	}	
+	
+	//### aus ILogZZZ	
+		@Override
+		public void logLineDate(String sLog) throws ExceptionZZZ {
+			ObjectZZZ.logLineDate(this, sLog);
+		}
+		
+		//++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public synchronized void logProtocolString(String[] saLog) throws ExceptionZZZ{
+			this.logProtocolString(this, saLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+		}
+		
+		@Override
+		public synchronized void logProtocolString(String sLog) throws ExceptionZZZ{
+			this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+		}
+		
+		@Override
+		public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
+			main:{
+				if(ArrayUtilZZZ.isNull(saLog)) break main;
+				
+				if(obj==null) {
+					for(String sLog : saLog) {
+						this.logProtocolString(sLog);
+					}
+				}else {
+					for(String sLog : saLog) {
+						this.logProtocolString(obj, sLog);
+					}	
+				}
+				
+			}//end main:
+		}
+		
+		@Override
+		public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
+			String sLogUsed;
+			if(obj==null) {
+				sLogUsed = LogStringZZZ.getInstance().compute(sLog);			
+			}else {
+				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);			
+			}
+			System.out.println(sLogUsed);
+		}
+
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public synchronized void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+			this.logProtocolString(this, saLog, ienumaMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+		}
+		
+		@Override
+		public synchronized void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+			this.logProtocolString(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+		}
+		
+		@Override
+		public synchronized void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+			main:{
+				if(ArrayUtilZZZ.isNull(saLog)) break main;
+				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+					this.logProtocolString(saLog);
+					break main;
+				}
+				
+				int iIndex=0;
+				if(obj==null) {			
+					for(String sLog : saLog) {
+						if(ienumaMappedLogString.length>iIndex) {
+							this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+							iIndex++;
+						}else {
+							this.logProtocolString(saLog);
+						}
+					}
+				}else {
+					for(String sLog : saLog) {
+						if(ienumaMappedLogString.length>iIndex) {
+							this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
+							iIndex++;
+						}else {
+							this.logProtocolString(saLog);
+						}
+					}			
+				}
+			}//end main:
+		}
+		
+		@Override
+		public synchronized void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+			String sLogUsed;
+			if(obj==null) {
+				sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+			}else {
+				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+			}
+			System.out.println(sLogUsed);
+		}
 }

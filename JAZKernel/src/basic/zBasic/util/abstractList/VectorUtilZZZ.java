@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -76,6 +77,29 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 			bReturn = vecExtended.containsString(sToFind,bIgnoreCase);
 		}//end main:
 		return bReturn;		
+	}
+	
+	/**Merke: Ensure Methoden werfen sofort die ExceptionZZZ
+	 * @param vecIn
+	 * @param iSize
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.09.2024, 09:01:00
+	 */
+	public static boolean ensureSize(Vector vecIn, int iSize) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(vecIn==null) break main;
+			if(iSize<=0) break main;
+			
+			if(vecIn.size()!=iSize) {
+				ExceptionZZZ ez = new ExceptionZZZ("Vector has invalid size: '" + vecIn.size() +"'", iERROR_PARAMETER_VALUE, VectorUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+				
+			bReturn = true;
+		}//end main:
+		return bReturn;
 	}
 	
 	public static Vector rightOfString(Vector vecIn, String sToFind, boolean bIgnoreCase) throws ExceptionZZZ{

@@ -4,9 +4,11 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ILogZZZ;
+import basic.zBasic.IObjectZZZ;
 import basic.zBasic.IOutputDebugNormedZZZ;
 
-public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICollectionConstantZZZ {
+public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICollectionConstantZZZ, IObjectZZZ, ILogZZZ {
 	
 	int getIndexOfString(String string, boolean ignoreCase, int fromIndex);
 	public T getEntryLast();
@@ -17,7 +19,7 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	
 	public int getIndexHigh();
 	public int getIndexNext();
-	
+
 	public int indexOfString(String string);
 	public int indexOfString(String string, int fromIndex);
 	public int indexOfString(String string, boolean ignoreCase);
@@ -39,5 +41,8 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	public boolean isEmpty();
 	public Object get(int iIndex);
 	public int size();
-
+	
+	public int sizeNext(); //ergaenzt
+	
+	
 }

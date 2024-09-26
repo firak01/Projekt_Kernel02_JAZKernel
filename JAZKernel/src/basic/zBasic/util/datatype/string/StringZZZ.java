@@ -34,6 +34,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
@@ -1326,7 +1327,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
 		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, true);
 	}
 	
@@ -1341,39 +1342,39 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
 	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
 	* @param sStringToParse
-	* @param sLeftSep
-	* @param sRightSep
+	* @param sSepLeft
+	* @param sSepRight
 	* @param bReturnSeperators
 	* @return
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
-			if(StringZZZ.isEmpty(sLeftSep)){
+			if(StringZZZ.isEmpty(sSepLeft)){
 				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(StringZZZ.isEmpty(sRightSep)){
+			if(StringZZZ.isEmpty(sSepRight)){
 				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.left(sStringToParse, sLeftSep, bExactMatch);
+			String sLeft = StringZZZ.left(sStringToParse, sSepLeft, bExactMatch);
 			if(sLeft==null) sLeft="";
 						
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
-			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sRightSep, bExactMatch);
+			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.add("");
 				vecReturn.add(sStringToParse);
@@ -1390,88 +1391,90 @@ public class StringZZZ implements IConstantZZZ{
 			//nun gibt es einen Ausdruck			
 			//String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length()); //Das wuerde bei verschachtelten XML Strings funktionieren
 			//String sMid = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
-			String sMid = StringZZZ.leftback(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";
 				sRight = sRemainingTagged;
 			}else {
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
 				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
 				if(sRight==null) sRight = "";
 			}
 						
 			if(vecReturn!=null) {
 				//Nun die Werte in den ErgebnisVector zusammenfassen
-				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft + sLeftSep);
-					}else {
-						vecReturn.add(0, sLeftSep);
-					}
-										
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-					vecReturn.add(1, sMid); //zentral wichtig: In der Mitte immer das "Extrakt"
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);											
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRightSep + sRight);
-					}else {
-						vecReturn.add(2, sRightSep);
-					}
-				}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft);
-					}else {
-						vecReturn.add(0, "");
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-					vecReturn.add(1, sMid);
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRight);
-					}else {
-						vecReturn.add(2, "");
-					}
-				} else if(bReturnSeparators ==true && StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft + sLeftSep);
-					}else {
-						vecReturn.add(0, sLeftSep);
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-					vecReturn.add(1, "");
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRightSep + sRight);
-					}else {
-						vecReturn.add(2, sRightSep);
-					}
-				} else {
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft);
-					}else {
-						vecReturn.add(0, "");
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-					vecReturn.add(1, sMid);
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRight);
-					}else {
-						vecReturn.add(2, "");
-					}
-				}
+				vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);
+				
+//				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+//					if(!StringZZZ.isEmpty(sLeft)){
+//						vecReturn.add(0, sLeft + sLeftSep);
+//					}else {
+//						vecReturn.add(0, sLeftSep);
+//					}
+//										
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+//					vecReturn.add(1, sMid); //zentral wichtig: In der Mitte immer das "Extrakt"
+//					
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);											
+//					if(!StringZZZ.isEmpty(sRight)){
+//						vecReturn.add(2, sRightSep + sRight);
+//					}else {
+//						vecReturn.add(2, sRightSep);
+//					}
+//				}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+//					if(!StringZZZ.isEmpty(sLeft)){
+//						vecReturn.add(0, sLeft);
+//					}else {
+//						vecReturn.add(0, "");
+//					}
+//					
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+//					vecReturn.add(1, sMid);
+//					
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+//					if(!StringZZZ.isEmpty(sRight)){
+//						vecReturn.add(2, sRight);
+//					}else {
+//						vecReturn.add(2, "");
+//					}
+//				} else if(bReturnSeparators ==true && StringZZZ.isEmpty(sMid)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+//					if(!StringZZZ.isEmpty(sLeft)){
+//						vecReturn.add(0, sLeft + sLeftSep);
+//					}else {
+//						vecReturn.add(0, sLeftSep);
+//					}
+//					
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+//					vecReturn.add(1, "");
+//					
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+//					if(!StringZZZ.isEmpty(sRight)){
+//						vecReturn.add(2, sRightSep + sRight);
+//					}else {
+//						vecReturn.add(2, sRightSep);
+//					}
+//				} else {
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+//					if(!StringZZZ.isEmpty(sLeft)){
+//						vecReturn.add(0, sLeft);
+//					}else {
+//						vecReturn.add(0, "");
+//					}
+//					
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+//					vecReturn.add(1, sMid);
+//					
+//					if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+//					if(!StringZZZ.isEmpty(sRight)){
+//						vecReturn.add(2, sRight);
+//					}else {
+//						vecReturn.add(2, "");
+//					}
+//				}
 			}//end vecReturn != null			
 		}//end main:
 		return vecReturn;		
@@ -1488,7 +1491,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String> vecMidFirst(String sStringToParse, String sMidSep, boolean bReturnSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String> vecMidFirst(String sStringToParse, String sMidSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		return StringZZZ.vecMidFirst(sStringToParse, sMidSep, bReturnSeparators, true);
 	}
 	
@@ -1503,59 +1506,24 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String>vecMidFirst(String sStringToParse, String sMidSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
+	public static Vector3ZZZ<String>vecMidFirst(String sStringToParse, String sSepMid, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{			
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
-			if(StringZZZ.isEmpty(sMidSep)){
+			if(StringZZZ.isEmpty(sSepMid)){
 				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.left(sStringToParse, sMidSep,bExactMatch);
+			String sLeft = StringZZZ.left(sStringToParse, sSepMid,bExactMatch);
 			if(sLeft==null) sLeft="";
 						
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sMidSep.length());
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepMid.length());
 			String sRight = sRemainingTagged;
 									
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			if(bReturnSeparators ==true){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
-				if(!StringZZZ.isEmpty(sLeft)){
-					vecReturn.add(0, sLeft);
-				}else {
-					vecReturn.add(0, "");
-				}
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-				vecReturn.add(1, sMidSep); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				if(!StringZZZ.isEmpty(sRight)){
-					vecReturn.add(2, sRight);
-				}else {
-					vecReturn.add(2, "");
-				}
-				
-			}else if(bReturnSeparators == false){
-				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);										
-				if(!StringZZZ.isEmpty(sLeft)){
-					vecReturn.add(0, sLeft);
-				}else {
-					vecReturn.add(0, "");
-				}
-				
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-				vecReturn.add(1, "");  //Also ein Leerstring
-				
-				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);										
-				if(!StringZZZ.isEmpty(sRight)){
-					vecReturn.add(2, sRight);
-				}else {
-					vecReturn.add(2, "");
-				}
-			}
-		}
+			vecReturn.replace(sLeft, sRight, bReturnSeparators, sSepMid);
+		}//end main:
 		return vecReturn;
 	}
 	
@@ -1569,7 +1537,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String> vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String> vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		return StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
 	
@@ -1583,8 +1551,8 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector<String>vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
+	public static Vector3ZZZ<String>vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{			
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
 			if(StringZZZ.isEmpty(sLeftSep)){
@@ -1702,13 +1670,13 @@ public class StringZZZ implements IConstantZZZ{
 		return vecReturn;
 	}
 	
-	public static Vector<String>vecSplitFirst(String sStringToParse, String sSeparator, boolean bReturnSeparators) throws ExceptionZZZ {		
+	public static Vector3ZZZ<String>vecSplitFirst(String sStringToParse, String sSeparator, boolean bReturnSeparators) throws ExceptionZZZ {		
 		return StringZZZ.vecSplitFirst(sStringToParse, sSeparator, bReturnSeparators, true);
 	}
 	
-	public static Vector<String>vecSplitFirst(String sStringToParse, String sSeparator, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ {
+	public static Vector3ZZZ<String>vecSplitFirst(String sStringToParse, String sSeparator, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ {
 		
-		Vector<String> vecReturn = new Vector<String>();
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{			
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
 			if(StringZZZ.isEmpty(sSeparator)){				

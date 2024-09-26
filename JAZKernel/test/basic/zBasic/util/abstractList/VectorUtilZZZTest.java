@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 
-public class VectorZZZTest  extends TestCase{
+public class VectorUtilZZZTest<T>  extends TestCase{
     private Vector vec = null;
 	
     protected void setUp(){
@@ -20,7 +20,7 @@ public class VectorZZZTest  extends TestCase{
 
     public void testTrim(){
 		try {
-			//1. unver�ndert
+			//1. unveraendert
 			Vector vecNew = VectorUtilZZZ.unique(vec);
 			assertEquals(vec.size(), vecNew.size());
 	    	

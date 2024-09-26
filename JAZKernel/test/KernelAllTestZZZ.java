@@ -16,7 +16,9 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
 import basic.zBasic.util.abstractList.HashMapZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
-import basic.zBasic.util.abstractList.VectorZZZTest;
+import basic.zBasic.util.abstractList.Vector3ZZZTest;
+import basic.zBasic.util.abstractList.VectorLimitedZZZTest;
+import basic.zBasic.util.abstractList.VectorUtilZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAsciiFactoryZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAsciiSingletonZZZTest;
@@ -114,7 +116,9 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(CounterByCharacterAscii_AlphanumericSignificantZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiFactoryZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiSingletonZZZTest.class);
-		objReturn.addTestSuite(VectorZZZTest.class);
+		objReturn.addTestSuite(VectorUtilZZZTest.class);
+		objReturn.addTestSuite(VectorLimitedZZZTest.class);
+		objReturn.addTestSuite(Vector3ZZZTest.class);
 		
 		objReturn.addTestSuite(DataStoreZZZTest.class);
 		objReturn.addTestSuite(DateTimeZZZTest.class);
