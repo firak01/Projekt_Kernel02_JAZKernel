@@ -8,6 +8,7 @@ import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -189,23 +190,23 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression, null, true);
 	}
 	
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{		
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{		
 		return this.parseFirstVector_(sLineWithExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
 	
-	private Vector<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
-		Vector<String>vecReturn = new Vector<String>();
+	private Vector3ZZZ<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{					
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		String sReturn = sExpression;						
 		main:{
@@ -244,28 +245,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			
 			//Mache nun die Aufloesung des speziellen Solvers, Elternsolvers, etc. .  Also auch Aufloesung von Pfaden etc. 
-			String sExpressionToSolve = vecReturn.get(1);
+			String sExpressionToSolve = (String) vecReturn.get(1);
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolver= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolver.set(objEntry);
 			int iReturn = this.solve(sExpressionToSolve, objReturnReferenceSolver, bRemoveSurroundingSeparators);
 			this.setEntry(objEntry);						
 			sReturn = objEntry.getValue();
 			
-			if(vecReturn!=null) {
-				if(vecReturn.size()==0) vecReturn.add(0, "");
-					
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				if(!StringZZZ.isEmpty(sReturn)){
-					vecReturn.add(1, sReturn);
-				}else {
-					vecReturn.add(1, "");
-				}
-					
-				if(vecReturn.size()==2) vecReturn.add(2, "");	
-					
-				//Wir sind gerade beim Parsen also zusammenfassen... Merke beim Solven keine Zussammenfassung mit solve//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);
-				sReturn = VectorUtilZZZ.implode(vecReturn); 
-			}			
+			vecReturn.replace(sReturn);
+			
+			//Wir sind gerade beim Parsen also zusammenfassen... Merke beim Solven keine Zussammenfassung mit solve//VectorZZZ.implode(vecReturn);//beim Parsen implode machen..., beim Solven vecReturn.get(1);
+			sReturn = VectorUtilZZZ.implode(vecReturn); 
 		}//end main;
 		this.setValue(sReturn);
 		if(objEntry!=null) objEntry.setValue(sReturn);
@@ -284,8 +274,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = null;		
+	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = null;		
 		main:{
 			vecReturn = super.parseFirstVectorAsExpression(sExpression);
 					
@@ -293,13 +283,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(vecReturn!=null) {
 				String sExpressionToSolve = (String) vecReturn.get(1);						
 				String sExpressionSolved = this.solve(sExpressionToSolve);
-																		
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				if(!StringZZZ.isEmpty(sExpressionSolved)){
-					vecReturn.add(1, sExpressionSolved);
-				}else {
-					vecReturn.add(1, "");
-				}					
+				vecReturn.replace(sExpressionSolved);				
 			}
 		}
 		return vecReturn;

@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -99,8 +100,8 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	
 	//### aus IIniTagWithExpressionZZZ (siehe auch: IExpressionUserZZZ)
 	@Override
-	public Vector<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
+	public Vector3ZZZ<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
@@ -121,8 +122,8 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
+	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);

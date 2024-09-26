@@ -8,6 +8,7 @@ import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
@@ -212,8 +213,8 @@ public class XmlUtilZZZ {
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public static Vector computeExpressionFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
+	public static Vector3ZZZ<String> computeExpressionFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			if(objTagType==null) break main;
 			
@@ -293,8 +294,8 @@ public class XmlUtilZZZ {
 		return bReturn;
 	}
 	
-	public static Vector<String>parseFirstVector(String sExpression, String sTagStarting, String sTagClosing, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
+	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagStarting, String sTagClosing, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagStarting, sTagClosing, !bRemoveSurroundingSeparators, false);			

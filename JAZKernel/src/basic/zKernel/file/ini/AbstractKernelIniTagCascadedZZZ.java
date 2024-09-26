@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -139,25 +140,25 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	
 	//### aus IParseEnabledZZZ
 	@Override
-	public Vector<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
 		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators, true);
 	}
 	
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override
-	public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
 		return this.parseFirstVector_(sExpression, objReturnReference, true, true);
 	}
 
 	@Override
-	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators, true);
 	}
 	
 	
-	private Vector<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
-		Vector<String>vecReturn = new Vector<String>();
+	private Vector3ZZZ<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		String sReturn = sExpression;
 		main:{
@@ -186,18 +187,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
 			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 			if (vecReturn==null)break main;
-			sReturn = vecReturn.get(1);
 			
-			if(vecReturn.size()==0) vecReturn.add(0, "");
-			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-				
-			if(vecReturn.size()==2) vecReturn.add(2, "");
+			vecReturn.replace(sReturn);
+			sReturn = (String) vecReturn.get(1);
 			
 			//sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
 			sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -223,13 +215,13 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = null;
+	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = null;
 
 		main:{
 			if(sExpression==null) break main;
 			
-			vecReturn = new Vector<String>();
+			vecReturn = new Vector3ZZZ<String>();
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;

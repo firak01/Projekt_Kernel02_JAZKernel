@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -72,17 +73,17 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	 }//end function KernelExpressionMathSolverNew_
 	
 	@Override
-	public Vector parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression);
 	}
 	
-	private Vector parseFirstVector_(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	private Vector3ZZZ<String> parseFirstVector_(String sLineWithExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector vecSection = this.parseFirstVectorAsExpression(sLineWithExpression);	
+			Vector3ZZZ<String> vecSection = this.parseFirstVectorAsExpression(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -110,26 +111,9 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
 					
 					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
-					if(sValue!=null){
-						
-						//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-						if(!StringZZZ.isEmpty(sBefore)){
-							if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-							vecReturn.add(0, sBefore);
-						}else{
-							vecReturn.add(0,"");
-						}
-																
-						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-						vecReturn.add(1, sValue);
-						
-						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
-						if(!StringZZZ.isEmpty(sRest)){							
-							vecReturn.add(2, sRest); //Fallls vorhanden einen Restwert eintragen.
-						}else{
-							vecReturn.add(2,"");
-						}		
-				}//end if sValue!=null
+					if(sValue!=null){						
+						vecReturn.replace(sBefore, sValue, sRest);
+					}//end if sValue!=null
 									
 			}//end if isempty(sSection)
 			
@@ -137,36 +121,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		return vecReturn;
 	}
 	
-//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-//	* @param sLineWithExpression
-//	* @return
-//	* 
-//	* lindhaueradmin; 06.03.2007 11:20:34
-//	 * @throws ExceptionZZZ 
-//	 */
-//	public Vector parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector vecReturn = new Vector();		
-//		main:{
-//			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(ZTagFormulaIni_NullZZZ.sTAG_NAME), XmlUtilZZZ.computeTagPartClosing(ZTagFormulaIni_NullZZZ.sTAG_NAME), false,false);
-//		}
-//		return vecReturn;
-//	}
-	
-	//###### Getter / Setter
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-//	public static String getExpressionTagName(){
-//		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
-//	}
-//	public static String getExpressionTagStarting(){
-//		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">";
-//	}
-//	public static String getExpressionTagClosing(){
-//		return "</" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">"; 
-//	}	
-//	public static String getExpressionTagEmpty(){
-//		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + "/>";
-//	}
-	
+
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
@@ -176,13 +131,6 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 
 	
 	//### Aus Interface IConvertable
-//	@Override
-//	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-//		boolean bReturn=false;
-//		if(sStringToProof==null) bReturn = true;
-//		return bReturn;
-//	}
-	
 	@Override
 	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithoutExpression;

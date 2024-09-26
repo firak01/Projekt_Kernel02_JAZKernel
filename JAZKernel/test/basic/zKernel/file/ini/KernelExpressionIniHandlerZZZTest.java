@@ -235,7 +235,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			String sLineWithValue = objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
 			assertEquals("Testvalue1 to be found",sLineWithValue);
 			
-			TODOGOON20240919;//JUnitTest schlägt fehl.
+			//TODOGOON20240919;//JUnitTest schlägt fehl.
 			
 			//+++ Anwenden der ersten Formel, mit Berechnung
 			objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 

@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -59,12 +60,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
-	public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
-		Vector<String>vecReturn = null;
+	private Vector3ZZZ<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+		Vector3ZZZ<String>vecReturn = null;
 		String sReturn = sExpression;
 		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false;
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -179,19 +180,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				
 		//#################################
 		
-		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(sReturn!=null){
-			if(vecReturn.size()==0) vecReturn.add(0,"");
-			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-			
-			if(vecReturn.size()==2) vecReturn.add(2,"");										
-		}			
+		vecReturn.replace(sReturn);
 				
 		// Z-Tags entfernen.
 		if(bRemoveSurroundingSeparators) {

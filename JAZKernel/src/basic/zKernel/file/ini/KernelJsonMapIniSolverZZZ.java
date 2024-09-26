@@ -7,6 +7,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -104,18 +105,18 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		
 	//### aus IParseEnabled
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression, true);
 	}
 	
 	//Analog zu KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();
+	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sLineWithExpression;
 		boolean bUseExpression=false;
 		main:{
@@ -158,19 +159,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(sReturn!=null){
-			if(vecReturn.size()==0) vecReturn.add(0,"");
-			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-			
-			if(vecReturn.size()==2) vecReturn.add(2,"");			
-		}	
-		this.setValue(sReturn);
+		vecReturn.replace(sReturn);
 		
 		// Z-Tags entfernen.
 		if(bRemoveSurroundingSeparators) {
@@ -180,6 +169,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
 		}	
+		this.setValue((String) vecReturn.get(1));
 		return vecReturn;
 	}
 	

@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -227,22 +228,22 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public Vector<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, null, true);
 	}
 	
 	@Override
-	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
 	}
 	
 	@Override
-	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		Vector<String> vecReturn = null;
+	private Vector3ZZZ<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		Vector3ZZZ<String> vecReturn = null;
 		//20240919: Dummy debug
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>";			
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>nochnemethod</Z></Z:Method></Z:Java></Z:Call>";			
@@ -251,7 +252,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			vecReturn = new Vector<String>();
+			vecReturn = new Vector3ZZZ<String>();
 			
 			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
@@ -278,16 +279,16 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//++++++++++++++++++++++++++++++++++++++
 			boolean bReturnSeparators = !bRemoveSurroundingSeparators;
-			String sLeftSep = this.getTagStarting();
-			String sRightSep = "<";
+			String sSepLeft = this.getTagStarting();
+			String sSepRight = "<";
 			
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
-			vecReturn = StringZZZ.vecMidFirst(sExpression + sRightSep, sLeftSep, sRightSep, false,false);
-			String sLeft = vecReturn.get(0);
+			vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
+			String sLeft = (String) vecReturn.get(0);
 			
-			String sMid = vecReturn.get(1);
+			String sMid = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sMid)) {
 				sMid = this.getTagStarting()+ sMid; //Besonderheit. Wg. Weiterverarbeitung (Section holen) muss hier das Starttäg drinbleiben.
 			}
@@ -295,92 +296,18 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Erforderliche Nacharbeiten, weil es halt besondere Tags sind:
 			//1. den oben geklauten Anfangstag - des nachfolgenden Ausdrucks - wieder hinzufuegen
 			//   und den zuviel gesetzten < wegnehmen am Ende.
-			String sRight = vecReturn.get(2);			
+			String sRight = (String) vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sRight)) {
-				sRight = StringZZZ.replaceRight(sRight, sRightSep, ""); 
+				sRight = StringZZZ.replaceRight(sRight, sSepRight, ""); 
 				
 				//UND wg. dem "<" fehlt am Anfang eben diese Zeichen. Intern wird naemlich auf Laenge gegangen.
-				sRight = sRightSep + sRight;
+				sRight = sSepRight + sRight;
 			}
 			
 			
 			//#########################
-			if(vecReturn!=null) {
-				//Nun die Werte in den ErgebnisVector zusammenfassen
-				if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft + sLeftSep);
-					}else {
-						vecReturn.add(0, sLeftSep);
-					}
-										
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-					vecReturn.add(1, sMid);//zentral wichtig: In der Mitte immer das "Extrakt".
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);											
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRightSep + sRight);
-					}else {
-						vecReturn.add(2,  sRightSep);
-					}
-				}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft);
-					}else {
-						vecReturn.add(0, "");
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-					vecReturn.add(1, sMid);
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRight);
-					}else {
-						vecReturn.add(2, "");
-					}
-				
-				} else if(bReturnSeparators ==true && StringZZZ.isEmpty(sMid)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft + sLeftSep);
-					}else {
-						vecReturn.add(0, sLeftSep);
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-					vecReturn.add(1, "");
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRightSep + sRight);
-					}else {
-						vecReturn.add(2, sRightSep);
-					}
-				}  else {
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);						
-					if(!StringZZZ.isEmpty(sLeft)){
-						vecReturn.add(0, sLeft);
-					}else {
-						vecReturn.add(0, "");
-					}
-					
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-					vecReturn.add(1, "");
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);						
-					if(!StringZZZ.isEmpty(sRight)){
-						vecReturn.add(2, sRight);
-					}else {
-						vecReturn.add(2, "");
-					}
-				}
-			}//end vecReturn!=null
-			
-			
-			
+			vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);
+
 			//##########################
 	
 			//Problem: Parsen und solven sind hier zusammen...
@@ -424,7 +351,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Merke: Es gibt: KernelZZZ.computeSectionFromSystemSection(sSystemSection)
 			//                Damit wird eine Section aus abcsection!01 geholt. 
 						
-			String sSectionTotal = vecReturn.get(1);
+			String sSectionTotal = (String) vecReturn.get(1);
 			
 			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
 			String sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
@@ -434,29 +361,17 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 		}//end main:
 		
-		if(vecReturn!=null) {			
-			if(vecReturn.size()==0) vecReturn.add(0, "");	
+		vecReturn.replace(sReturn);
 			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-			
-			if(vecReturn.size()==2) vecReturn.add(2, "");
-			
-			//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			//...aber nur, wenn ein Pfad gefunden wurde.
-			if(bRemoveSurroundingSeparators & bExpressionFound) {
-				String sTagStart="<Z>";
-				String sTagEnd="</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-			}
-
-			
+		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+		//...aber nur, wenn ein Pfad gefunden wurde.
+		if(bRemoveSurroundingSeparators & bExpressionFound) {
+			String sTagStart="<Z>";
+			String sTagEnd="</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 		}
-		this.setValue(vecReturn.get(1));
+
+		this.setValue((String) vecReturn.get(1));
 		if(objEntry!=null) {
 			objEntry.setValue(sReturn);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);

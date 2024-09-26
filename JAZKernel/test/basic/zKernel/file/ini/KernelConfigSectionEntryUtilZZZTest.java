@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
@@ -12,7 +13,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	public void testGetValueExpressionTagSurroundingRemoved_SingleTag(){
 		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
 		String sExpressionSource; String sExpression; String sExpressionOld;
-		Vector<String> vecExpressionSource;
+		Vector3ZZZ<String> vecExpressionSource;
 		try{	
 			//die JSON Map ist schoen verschachtelt
 			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
@@ -22,7 +23,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpressionOld = sExpression;
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartZ);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndZ);
@@ -41,7 +42,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpressionOld = sExpression;
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartZ);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndZ);
@@ -58,7 +59,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpressionOld = sExpression;
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartZ);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndZ);
@@ -77,7 +78,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	public void testGetValueExpressionTagSurroundingRemoved_MultiTags(){
 		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
 		String sExpressionSource; String sExpression; String sExpressionOld;
-		Vector<String> vecExpressionSource; boolean bDirectionFromInToOut;
+		Vector3ZZZ<String> vecExpressionSource; boolean bDirectionFromInToOut;
 		try{	
 			//Hier der Test für "mehrere Tags auf anderen Positionen des Vectors".
 			
@@ -97,7 +98,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndSource);
@@ -118,7 +119,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndSource);
@@ -141,7 +142,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndSource);
@@ -164,7 +165,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z><JSON><JSON:MAP>";
 			sTagEndSource = "</JSON:MAP></JSON></Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add(sExpression);
 			vecExpressionSource.add(sTagEndSource);
@@ -190,7 +191,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z><JSON>";
 			sTagEndSource = "</JSON></Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add("<JSON:MAP>" + sExpression + "</JSON:MAP>");
 			vecExpressionSource.add(sTagEndSource);
@@ -211,7 +212,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z>";
 			sTagEndSource = "</Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add("<JSON><JSON:MAP>" + sExpression + "</JSON:MAP></JSON>");
 			vecExpressionSource.add(sTagEndSource);
@@ -232,7 +233,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagStartSource = "<Z>";
 			sTagEndSource = "</Z>";	
 			
-			vecExpressionSource = new Vector<String>();
+			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.add(sTagStartSource);
 			vecExpressionSource.add("<JSON><JSON:MAP>" + sExpression + "</JSON:MAP></JSON>");
 			vecExpressionSource.add(sTagEndSource);

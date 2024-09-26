@@ -9,6 +9,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
@@ -563,7 +564,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			Vector<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -581,7 +582,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			Vector<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -592,13 +593,13 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static void getValueExpressionTagSurroundingRemoved(Vector<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
+	public static void getValueExpressionTagSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
 		main:{
 		KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true);
 		}//end main
 	}	
 	
-	public static void getValueExpressionTagSurroundingRemoved(Vector<String>vecReturn, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut) throws ExceptionZZZ {		
+	public static void getValueExpressionTagSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut) throws ExceptionZZZ {		
 		main:{
 			if(bDirectionFromInToOut) {
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd);
@@ -609,16 +610,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	}	
 	
 	
-	public static void getValueExpressionTagSurroundingRemovedFromInToOut(Vector<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
+	public static void getValueExpressionTagSurroundingRemovedFromInToOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
 		main:{
 			if(vecReturn==null)break main;
 			if(StringZZZ.isEmpty(sTagEnd) && StringZZZ.isEmpty(sTagStart))break main;
 			
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			String sBefore = vecReturn.get(0);
-			String sValue = vecReturn.get(1);
-			String sRest = vecReturn.get(2);
+			String sBefore = (String) vecReturn.get(0);
+			String sValue = (String) vecReturn.get(1);
+			String sRest = (String) vecReturn.get(2);
 			
 			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
 			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
@@ -672,20 +673,19 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 			//ggfs. aus dem Mittleren Teil auch entfernen
 			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
-			Vector<String> vecMid = StringZZZ.vecMid(sValue, sTagStart, sTagEnd, false);
-			sBefore=vecMid.get(0);
-			sValue = vecMid.get(1);
-			sRest = vecMid.get(2);
+			Vector3ZZZ<String> vecMid = StringZZZ.vecMid(sValue, sTagStart, sTagEnd, false);
+			sBefore=(String) vecMid.get(0);
+			sValue = (String) vecMid.get(1);
+			sRest = (String) vecMid.get(2);
 
 			sValue = sBefore + sValue + sRest;
 			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			vecReturn.add(1, sValue);
+			vecReturn.replace(sValue);
 			
 		}//end main
 	}	
 		
-	public static void getValueExpressionTagSurroundingRemovedFromOutToIn(Vector<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
+	public static void getValueExpressionTagSurroundingRemovedFromOutToIn(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
 		main:{
 		    //Verglichen mit ...FromIntoOut gilt also:
 			//Alle endsWith werden zu startWith und alle startWith werden zu endsWith.
@@ -696,9 +696,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			String sBefore = vecReturn.get(0);
-			String sValue = vecReturn.get(1);
-			String sRest = vecReturn.get(2);
+			String sBefore = (String) vecReturn.get(0);
+			String sValue = (String) vecReturn.get(1);
+			String sRest = (String) vecReturn.get(2);
 			
 			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
 			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
@@ -764,8 +764,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}										
 		}//end while
 			
-		if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-		vecReturn.add(1, sValue);
+		vecReturn.replace(sValue);
 		
 		}//end main
 	}	

@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -83,7 +84,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
 		return this.parseFirstVector(sExpression, true);
 	}
 	
@@ -97,12 +98,12 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = XmlUtilZZZ.parseFirstVector(sExpression, this.getTagStarting(), this.getTagClosing(), bRemoveSurroundingSeparators);
-			this.setValue(vecReturn.get(1));
+			this.setValue((String) vecReturn.get(1));
 		}
 		return vecReturn;
 	}

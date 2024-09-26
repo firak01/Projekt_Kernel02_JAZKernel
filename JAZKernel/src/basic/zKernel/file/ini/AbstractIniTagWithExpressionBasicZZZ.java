@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -123,7 +124,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			objReturn.setRaw(sExpression);
 			
-			Vector<String>vecAll = this.parseFirstVector(sExpression);
+			Vector3ZZZ<String>vecAll = this.parseFirstVector(sExpression);
 			
 			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
@@ -206,8 +207,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				sDelimiter = sDelimiterIn;
 			}
 			
-			Vector<String> vecParsed = this.parseFirstVector(sLineWithExpression);
-			String sParsed = vecParsed.get(1);
+			Vector3ZZZ<String> vecParsed = this.parseFirstVector(sLineWithExpression);
+			String sParsed = VectorUtilZZZ.implode(vecParsed);
 			
 			String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
 			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
@@ -215,7 +216,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			
 			//Fasse nun zusammen.
 			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
-			listasReturnParsed.add(vecParsed.get(0));
+			listasReturnParsed.add((String) vecParsed.get(0));
 			
 			//Fuer den Wert lediglich
 			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
@@ -226,7 +227,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				listasReturnParsed.add(sValue);
 				listasValueParsed.add(sValue);
 			}
-			listasReturnParsed.add(vecParsed.get(2));
+			listasReturnParsed.add((String) vecParsed.get(2));
 			
 			this.setValue(listasValueParsed);
 			saReturn = listasReturnParsed.toStringArray();				
@@ -247,48 +248,6 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		}//end main
 		return bReturn;
 	}
-		
-//	@Override
-//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//				
-//			//Bei einfachen Tags den Ersten Vektor holen
-//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
-//			
-//			//Bei einfachen Tags, den Wert zurückgeben
-//			sReturn = (String) vecAll.get(1);
-//			this.setValue(sReturn);
-//			
-//			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
-//			String sExpressionImploded = VectorZZZ.implode(vecAll);
-//			sReturn = sExpressionImploded; //Der zurückgegebene Wert unterscheide sich also von dem Wert des Tags!!!
-//		}//end main:
-//		return sReturn;
-//	}	
-		
-	
-	
-//	/**
-//	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
-//	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
-//	 * ist der Ausdruck NACH der ersten Expression.
-//	 * 
-//	 * @param sLineWithExpression
-//	 * @throws ExceptionZZZ
-//	 */
-//	@Override
-//	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String>vecReturn = new Vector<String>();		
-//		main:{
-//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-//		}
-//		return vecReturn;
-//	}
-	
-	
 	
 	//### aus IIniStructurePositionUserZZZ
 	@Override
@@ -427,8 +386,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}
 	
 	@Override
-	public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();
+	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)

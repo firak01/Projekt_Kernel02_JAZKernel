@@ -112,17 +112,17 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 				this.add(2,  sSepRight);
 			}
 		}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
-			if(this.size()>=1) this.removeElementAt(1);						
+			if(this.size()>=1) this.removeElementAt(0);						
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
 				this.add(0, "");
 			}
 			
-			if(this.size()>=2) this.removeElementAt(2);						
+			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, sMid);
 			
-			if(this.size()>=3) this.removeElementAt(3);						
+			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
@@ -130,34 +130,34 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			}
 		
 		} else if(bReturnSeparators ==true && StringZZZ.isEmpty(sMid)){
-			if(this.size()>=1) this.removeElementAt(1);						
+			if(this.size()>=1) this.removeElementAt(0);						
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft + sSepLeft);
 			}else {
 				this.add(0, sSepLeft);
 			}
 			
-			if(this.size()>=2) this.removeElementAt(2);						
+			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, "");
 			
-			if(this.size()>=3) this.removeElementAt(3);						
+			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sSepRight + sRight);
 			}else {
 				this.add(2, sSepRight);
 			}
 		}  else {
-			if(this.size()>=1) this.removeElementAt(1);						
+			if(this.size()>=1) this.removeElementAt(0);						
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
 				this.add(0, "");
 			}
 			
-			if(this.size()>=2) this.removeElementAt(2);						
+			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, "");
 			
-			if(this.size()>=3) this.removeElementAt(3);						
+			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {

@@ -1495,6 +1495,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); //Damit der Wert NICHT sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 			
+			TODOGOON20240926;//JUnit schlaegt fehl
 			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
 			hmVariable.put("myTestVariableString","Test erfolgreich");
 			hmVariable.put("myTestVariableFloat","2.5");

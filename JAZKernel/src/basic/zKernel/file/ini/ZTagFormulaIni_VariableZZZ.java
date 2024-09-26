@@ -1,5 +1,6 @@
 package basic.zKernel.file.ini;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
@@ -8,6 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.xml.tagexpression.AbstractTagWithExpressionBasicZZZ;
@@ -71,17 +73,17 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression, true);
 	}
 	
 	@Override
-	public Vector<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();
+	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sLineWithExpression;
 		boolean bUseExpression = false;
 		main:{
@@ -94,7 +96,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			if(!bUseExpressionPath) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			Vector<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
 			
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;
@@ -119,15 +121,8 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			}
 				
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-			vecReturn.add(0,vecSection.get(0));
-													
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			vecReturn.add(1, sValue);
+			vecReturn.replace(vecSection.get(0), sValue, vecSection.get(2));
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-			vecReturn.add(2,vecSection.get(2));	
-							
 			// Z-Tags entfernen.
 			if(bRemoveSurroundingSeparators) {
 				String sTagStartZ = "<Z>";
@@ -135,60 +130,10 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
 			
-			this.setValue(vecReturn.get(1));
+			this.setValue((String) vecReturn.get(1));
 		} //end main
 		return vecReturn;
 	}
-		
-	
-//	/* (non-Javadoc)
-//	 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#computeExpressionAllVector(java.lang.String)
-//	 * 
-//	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
-//	 */
-//	@Override
-//	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();		
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//			
-//			//Nun die Section suchen
-//			Vector<String> vecSection = this.parseFirstVector(sLineWithExpression);	
-//								
-//			String sVariableName = (String) vecSection.get(1);
-//		    String sValue = null;
-//			if(!(StringZZZ.isEmpty(sVariableName))){
-//				sValue = this.getVariable(sVariableName);									
-////				HashMapCaseInsensitiveZZZ<String,String> hmVariableValue = this.getHashMapVariable();
-////					if(hmVariableValue==null){
-////						ExceptionZZZ ez = new ExceptionZZZ("HashMapCaseInsensitiveZZZ VariableValuei", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-////						throw ez;
-////					}
-////					
-////					//Nicht caseSensitive Variablen
-////					sReturn = (String) hmVariableValue.get(sVariableName);
-//					
-//			}//end if isempty(sVariableName)
-//			
-//			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen						
-//			//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
-//			if(sValue==null){
-//				//Setze den Variablennamen dort ein
-//				sValue = sVariableName;
-//			}
-//				
-//				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-//				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//				vecReturn.add(0,vecSection.get(0));
-//														
-//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//				vecReturn.add(1, sValue);
-//				
-//				if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//				vecReturn.add(2,vecSection.get(2));	
-//		}//end main:
-//		return vecReturn;
-//	}
 	
 	//###### Getter / Setter	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
@@ -237,77 +182,43 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 		return false;
 	}
 
-
-	
-
-	
-
-	//### Aus Interface IKernelExpressionIniZZZ
-		
-		/* (non-Javadoc)
-		 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#compute(java.lang.String)
-		 * 
-		 * Besonderheit: Hier wird der Vector mit implode zusammengefasst.
-		 */
-//		@Override
-//		public String compute(String sLineWithExpression) throws ExceptionZZZ{
-//			String sReturn = null;
-//			main:{
-//				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//				
-//				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-//				
-////				sReturn = (String) vecAll.get(1);
-////				this.setValue(sReturn);
-//				
-//				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-//				sReturn = VectorZZZ.implode(vecAll);
-//				
-//			}//end main:
-//			return sReturn;
-//		}
-	
-	
 	//###################################
-		//### FLAG Handling
-		
-		//### aus IKernelZVariableIniSolverZZZ	
-		@Override
-		public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		@Override
-		public boolean setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean[] setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
-					int iCounter=-1;
-					for(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagExists(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
-
-		
+	//### FLAG Handling
 	
+	//### aus IKernelZVariableIniSolverZZZ	
+	@Override
+	public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
 }//End class

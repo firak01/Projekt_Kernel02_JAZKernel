@@ -5,6 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -162,7 +163,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
 		return this.parseFirstVector_(sExpression, true);
 	}
 	
@@ -175,15 +176,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		return this.parseFirstVector_(sExpression, bRemoveSurroundingSeparators);
 	}
 
 	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
 	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		
-	private Vector<String>parseFirstVector_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();		
+	private Vector3ZZZ<String>parseFirstVector_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 		
@@ -216,19 +217,19 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
-			Vector<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
+			Vector3ZZZ<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 			sReturn = VectorUtilZZZ.implode(vecAll);
-			this.setValue(vecAll.get(1));
+			this.setValue((String) vecAll.get(1));
 			
 		}//end main:
 		return sReturn;
 	}
 	
 	@Override
-	public Vector<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector<String>();
+	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
@@ -237,23 +238,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
 			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
 		}//end main:
-		
-		//NUN DEN INNERHALB DER SOLVE BERECHNUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-		if(!StringZZZ.isEmpty(sReturn)){
-			vecReturn.add(1, sReturn);
-		}else {
-			vecReturn.add(1, "");
-		}
-		this.setValue(vecReturn.get(1));
+		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
 		return vecReturn;	
 	}
 	
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public Vector<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
+	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 						
@@ -261,7 +254,8 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
 			vecReturn = this.parseFirstVectorAsExpression(sExpression);			
 			
-		}
+		}//end main:
+		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
 		return vecReturn;
 	}
 

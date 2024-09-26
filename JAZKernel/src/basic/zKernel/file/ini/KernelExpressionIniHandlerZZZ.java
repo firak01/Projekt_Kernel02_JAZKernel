@@ -8,6 +8,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
@@ -329,7 +330,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	
 	@Override
-	public Vector<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		
 		//TODO: Das kommt nach solveFirstVector(), groesstenteils
 		//      Der Rest kommt nach parseFirstVector().
@@ -339,7 +340,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		//      Merke:
 		//      solve() wird nur den vec.getIndex(1) zurueckliefern.
 		
-		Vector<String> vecReturn = null;
+		Vector3ZZZ<String> vecReturn = null;
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		String sReturn = sExpression;						
 		main:{
@@ -384,7 +385,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 			if(! (bIsExpression  | bIsConversion)) break main;						
 			
-			vecReturn = new Vector<String>();
+			vecReturn = new Vector3ZZZ<String>();
 			sReturn = objEntry.getValue();
 			if(bRemoveSurroundingSeparators) {
 				String sTagStart = this.getTagStarting();
@@ -402,20 +403,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//end main:
 
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(vecReturn!=null) {
-			if(vecReturn.size()==0) vecReturn.add(0, "");
-						
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-			
-			if(vecReturn.size()==2) vecReturn.add(2, "");
-			
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-		}	
+		vecReturn.replace(sReturn);
 				
 		if(!sExpression.equals(sReturn)) objEntry.isParsed(true);
 		
@@ -434,11 +422,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 * @see basic.zKernel.file.ini.AbstractKernelIniTagCascadedZZZ#computeExpressionAllVector(java.lang.String)
 	 */
 	@Override
-	public Vector<String> solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.solveFirstVector_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector<String> solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	private Vector3ZZZ<String> solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//TODO: Das kommt nach solveFirstVector(), groesstenteils
 				//      Der Rest kommt nach parseFirstVector().
 				//      parseFirstVector() ruft also solveFirstVector() auf 
@@ -447,7 +435,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				//      Merke:
 				//      solve() wird nur den vec.getIndex(1) zurueckliefern.
 		
-		Vector<String> vecReturn = null;
+		Vector3ZZZ<String> vecReturn = null;
 		String sReturn = sExpressionIn;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -464,7 +452,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 			
-			vecReturn = new Vector<String>();										
+			vecReturn = new Vector3ZZZ<String>();										
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 			
@@ -592,21 +580,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(vecReturn!=null) {
-			if(vecReturn.size()==0) vecReturn.add(0, "");
-						
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
+		vecReturn.replace(sReturn);
 			
-			if(vecReturn.size()==2) vecReturn.add(2, "");
+		//Nein: Beim Solver nur den Einzelwert setzen sReturn = VectorZZZ.implode(vecReturn);
+		sReturn = (String) vecReturn.get(1);
 			
-			//Nein: Beim Solver nur den Einzelwert setzen sReturn = VectorZZZ.implode(vecReturn);
-			sReturn = vecReturn.get(1);
-		}	
 		this.setValue(sReturn);
 		//if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
 		if(objEntry!=null) objEntry.setValue(sReturn); //solve liefert nur den einzelnen Wert zurueck und kein implode
@@ -614,29 +592,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		return vecReturn;				
 	}
 	
-//	@Override
-//	public ArrayList<String> parseAsArrayList(String sLineWithExpression)throws ExceptionZZZ{
-//		ArrayList<String> alsReturn=  new ArrayList<String>();
-//		main:{
-//			
-//			//Hier KernelJsonInisolverZZZ verwenden
-//			
-//		}//end main;
-//		return alsReturn;
-//		
-//	}
-	
-//	@Override
-//	public HashMap<String,String> parseAsHashMap(String sLineWithExpression)throws ExceptionZZZ{
-//		HashMap<String,String> hmReturn=  new HashMap<String,String>();
-//		main:{
-//			
-//			//Hier KernelJsonInisolverZZZ verwenden				
-//			
-//		}//end main;
-//		return hmReturn;
-//		
-//	}
 	
 	//### Aus ITagBasicZZZ
 	@Override
