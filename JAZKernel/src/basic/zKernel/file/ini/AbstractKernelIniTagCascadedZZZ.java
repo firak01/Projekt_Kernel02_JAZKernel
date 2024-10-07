@@ -17,6 +17,7 @@ import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -92,19 +93,24 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	
 	//### Aus IKernelEntryExpressionUserZZZ
 	@Override
-	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parse_(sExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.parse_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private int parse_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		int iReturn = 0;
-		main:{		
-			IKernelConfigSectionEntryZZZ objEntry = null;
+	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		String sReturn = sExpressionIn;
+		String sExpressionUsed = sExpressionIn;
+		main:{
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
+			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 			if(objReturnReferenceIn==null) {	
 				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -117,22 +123,36 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 				objReturnReference.set(objEntry);								
 			}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry.setRaw(sExpression);			
+			objEntry.setRaw(sExpressionUsed);			
 							
-			Vector<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceParse.set(objEntry);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionUsed, objReturnReferenceParse, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
-						
-			String sReturn = VectorUtilZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
+			objEntry = objReturnReferenceParse.get();
+			
+			sReturn = (String) vecReturn.get(1);	
 			this.setValue(sReturn);
 			
-			objEntry.setValue(sReturn);				
-			if(!sExpression.equals(sReturn)) {
-				objEntry.isParsed(true);			
-				iReturn = 1;
+			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart=this.getTagStarting(); //"<Z>";
+				String sTagEnd=this.getTagClosing();    //"</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 			}
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);			
+			
+			
+			
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(objEntry!=null) {
+				objEntry.setValue(sReturn);	
+				if(sExpressionIn!=null) {
+					if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+				}				
+				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			}		
 		}//end main:
-		return iReturn;
+		return sReturn;
 	}
 	
 	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
@@ -156,14 +176,17 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators, true);
 	}
 	
-	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
+	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		IKernelConfigSectionEntryZZZ objEntry = null;
-		String sReturn = sExpression;
+		String sReturn = sExpressionIn;
+		String sExpressionUsed = sExpressionIn;
 		main:{
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
+			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 			if(objReturnReferenceIn==null) {
@@ -182,23 +205,32 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 				objReturnReference.set(objEntry);
 			}	
-			objEntry.setRaw(sExpression);
+			objEntry.setRaw(sExpressionUsed);
 						
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
-			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
+			vecReturn = StringZZZ.vecMid(sExpressionUsed, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 			if (vecReturn==null)break main;
 			
-			vecReturn.replace(sReturn);
 			sReturn = (String) vecReturn.get(1);
 			
-			//sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart=this.getTagStarting(); //"<Z>";
+				String sTagEnd=this.getTagClosing();    //"</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			}
 		}				
-		
-		this.setValue(sReturn);		
+				
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);	
+		vecReturn.replace(sReturn);
+		sReturn  = VectorUtilZZZ.implode(vecReturn);
 		if(objEntry!=null) {					
 			objEntry.setValue(sReturn);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}			
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 		}
 		return vecReturn;
 	}

@@ -252,7 +252,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 					ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					objReturnReference.set(objReturn);
 					
-					int iReturn = super.parse(sLineWithExpression, objReturnReference);		
+					String sReturn = super.parse(sLineWithExpression, objReturnReference);		
 					objReturn = objReturnReference.get();
 					
 					String sValue = objReturn.getValue();

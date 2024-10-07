@@ -66,8 +66,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 19.12.2019, 11:18:39
 	 */
-	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
-		int iReturn = 0;
+	public static String getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
+		String sReturn = sRaw;
 		main:{
 			if(objFileIni==null){
 				String stemp = "'IniFile'";
@@ -93,11 +93,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				if(bUseFormula) objEntry.isFormula(true);
 				String sValueSolved = objsReturnValueExpressionSolved.get();					
 				objEntry.setValueAsExpression(sValueSolved);				
-				sRawExpressionSolved = sValueSolved;
-				iReturn = iReturn + 1;
+				sRawExpressionSolved = sValueSolved;				
 			}else {
 				sRawExpressionSolved = sRaw;
 			}
+			sReturn = sRawExpressionSolved;
 
 			String sRawConverted = null;
 			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>("");
@@ -109,15 +109,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValueAsConversion= objEntry.getValue();
 				objEntry.setValueAsConversion(sValueAsConversion);
 				
-				sRawConverted = objsReturnValueConverted.get();				
-				iReturn = iReturn + 2;
+				sRawConverted = objsReturnValueConverted.get();								
 			}else {
 				sRawConverted = sRawExpressionSolved;
 			}
+			sReturn = sRawConverted;
+			
 			objEntry.setValue(sRawConverted);
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);					
 		}//end main:
-		return iReturn;
+		return sReturn;
 	}
 	
 	public static boolean getValueExpressionSolved(FileIniZZZ objFileIni, String sRawIn, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved) throws ExceptionZZZ{
@@ -362,8 +363,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 *  
 	 * 
 	 */
-	 public static int getValueJsonSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved,ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
-		 int iReturn = 0;
+	 public static String getValueJsonSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved,ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
+		 String sReturn = sRaw;
 		 main:{			 			 								
 			 		if(!bUseJson)break main;
 			 		
@@ -372,6 +373,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, KernelConfigSectionEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
+					}
+			 		
+			 		IKernelConfigSectionEntryZZZ objEntry = null;
+					if(objReturnReferenceIn==null) {				
+					}else {
+						objEntry = objReturnReferenceIn.get();
+					}			
+					if(objEntry==null) {
+						objEntry = new KernelConfigSectionEntryZZZ();				
 					}
 			 		
 			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
@@ -383,13 +393,13 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						KernelJsonArrayIniSolverZZZ exDummy03 = new KernelJsonArrayIniSolverZZZ();
 						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
 					
-						
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
 						boolean bAnyJsonArray = KernelConfigSectionEntryUtilZZZ.getValueJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed03, objalsReturnValueJsonSolved);			
 						if(bAnyJsonArray) {
-							iReturn = 5;
+							objEntry.isJson(true);
+							objEntry.isJsonArray(true);
+							sReturn = objEntry.getValue();
 							break main;
-						}else {										
 						}					
 					}
 			 		
@@ -401,20 +411,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						KernelJsonMapIniSolverZZZ exDummy03 = new KernelJsonMapIniSolverZZZ();
 						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
 					
-						
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.				                   
 						boolean bAnyJsonMap = KernelConfigSectionEntryUtilZZZ.getValueJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed03, objhmReturnValueJsonSolved);			
 						if(bAnyJsonMap) {
-							iReturn = 6;
+							objEntry.isJson(true);
+							objEntry.isJsonMap(true);
+							sReturn = objEntry.getValue();
 							break main;
-						}else {										
 						}
-					}
-					
-					
-			 		 			 
+					} 			 
 		 }//end main:
-		 return iReturn;
+		 return sReturn;
 	 }
 	
 	 /*

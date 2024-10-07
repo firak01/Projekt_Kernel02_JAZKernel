@@ -314,19 +314,30 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	
+	//### Aus IParseEnabledZZZ	
+	@Override
+	public String parse(String sExpression) throws ExceptionZZZ{
+		return this.parse_(sExpression, null, true);
+	}	
+	
+	@Override
+	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+		
 	//### Aus IKernelEntryExpressionUserZZZ
 	@Override
-	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parse_(sExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public int parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		return this.parse_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private int parse_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		int iReturn = 0;
+	private String parse_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		String sReturn = "";
 		main:{		
 			IKernelConfigSectionEntryZZZ objEntry = null;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -343,20 +354,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry.setRaw(sExpression);			
 							
-			Vector<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
-						
-			String sReturn = VectorUtilZZZ.implode(vecReturn);	//Merke: Implode nur bei parse(), solve() gibt vecReturn.get(1) zurueck.						
-			this.setValue(sReturn);
-			
-			objEntry.setValue(sReturn);				
-			if(!sExpression.equals(sReturn)) {
-				objEntry.isParsed(true);			
-				iReturn = 1;
+											
+			this.setValue((String) vecReturn.get(1));   //Der eigene Wert, ohne drumherum
+				
+			if(objEntry!=null) {
+				sReturn = VectorUtilZZZ.implode(vecReturn);	
+				objEntry.setValue(sReturn);				
+				if(!sExpression.equals(sReturn)) objEntry.isParsed(true);			
+				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			}
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);			
 		}//end main:
-		return iReturn;
+		return sReturn;
 	}
 	
 	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
@@ -406,22 +416,24 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				objReturnReference.set(objEntry);
 			}	
 			objEntry.setRaw(sExpression);			
-			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);		
+			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 		}//end main:				
 		
-		vecReturn.replace(sReturn);
 			
-		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+		//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 		if(bRemoveSurroundingSeparators) {
-			String sTagStart="<Z>";
-			String sTagEnd="</Z>";
+			String sTagStart=this.getTagStarting(); //"<Z>";
+			String sTagEnd=this.getTagClosing();    //"</Z>";
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 		}
-		sReturn = (String) vecReturn.get(1);	
+		sReturn = (String) vecReturn.get(1); //der eingene Wert ohne drumherum	
 		this.setValue(sReturn);
-		//if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));			
-		if(objEntry!=null) objEntry.setValue(sReturn);
-		if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		
+		if(objEntry!=null) {
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		}		
 		return vecReturn;
 	}
 	

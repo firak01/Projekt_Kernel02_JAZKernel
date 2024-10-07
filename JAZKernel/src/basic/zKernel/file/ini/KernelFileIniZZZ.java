@@ -525,8 +525,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
 				
 			objReturnReference.set(objReturn);
-			int iReturnValue = objExpressionHandler.parse(sReturnRaw,objReturnReference);//Extrahiere das innere	
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
+			String sReturnValue = objExpressionHandler.parse(sReturnRaw,objReturnReference);//Extrahiere das innere	
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression: '" + sReturnValue + "'");
 			objReturn = objReturnReference.get();			
 		}//end main:
 		objReturnReference.set(objReturn);

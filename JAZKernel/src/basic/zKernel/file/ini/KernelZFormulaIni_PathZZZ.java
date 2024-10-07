@@ -217,9 +217,6 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	
 	//### Aus IParseEnabledZZZ	
-		
-	//### aus IKernelEntryExpressionUserZZZ
-	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -233,6 +230,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	//### aus IKernelEntryExpressionUserZZZ
+	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
 	}
@@ -242,17 +245,19 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		Vector3ZZZ<String> vecReturn = null;
-		//20240919: Dummy debug
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		
+		//20240919: Dummy debug mit diesen statischen Werten
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>";			
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>nochnemethod</Z></Z:Method></Z:Java></Z:Call>";			
-		String sReturn = sExpression;
+		String sReturn = sExpressionIn;
+		String sExpressionUsed = sExpressionIn;
+		
 		boolean bExpressionFound = false;				
-		IKernelConfigSectionEntryZZZ objEntry = null;
 		main:{
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			vecReturn = new Vector3ZZZ<String>();
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
 			
 			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
@@ -273,8 +278,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 				objReturnReference.set(objEntry);
 			}							
-			objEntry.setRaw(sExpression);
-			bExpressionFound = this.isExpression(sExpression); 
+			objEntry.setRaw(sExpressionUsed);
+			bExpressionFound = this.isExpression(sExpressionUsed); 
 			if(!bExpressionFound)break main;
 			
 			//++++++++++++++++++++++++++++++++++++++
@@ -285,7 +290,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
-			vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
+			vecReturn = StringZZZ.vecMidFirst(sExpressionUsed + sSepRight, sSepLeft, sSepRight, false,false);
 			String sLeft = (String) vecReturn.get(0);
 			
 			String sMid = (String) vecReturn.get(1);
@@ -306,7 +311,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			
 			//#########################
-			vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);
+			//vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);
+			vecReturn.replace(sLeft, sMid, sRight);
 
 			//##########################
 	
@@ -354,7 +360,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sSectionTotal = (String) vecReturn.get(1);
 			
 			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
-			String sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
+			
+			//Erste Annahme: Path Ausdruck hat noch die Z-Tags drumherum, also "<"
+			String sProperty = StringZZZ.midLeftRightback(sSectionTotal +this.getTagClosing(), sSection + this.getTagClosing(), sSepRight);
+			if(StringZZZ.isEmpty(sProperty)) { //dann ggfs. nur diesen Path Ausdruck uebergeben ohne etwas am Ende
+				sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
+			}
+			
 			
 			sReturn =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			
@@ -365,7 +377,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 		//...aber nur, wenn ein Pfad gefunden wurde.
-		if(bRemoveSurroundingSeparators & bExpressionFound) {
+		if(bRemoveSurroundingSeparators) {// & bExpressionFound) {
 			String sTagStart="<Z>";
 			String sTagEnd="</Z>";
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
@@ -373,9 +385,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 
 		this.setValue((String) vecReturn.get(1));
 		if(objEntry!=null) {
-			objEntry.setValue(sReturn);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
-		}
+			objEntry.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}			
 		return vecReturn;
 	}
 	

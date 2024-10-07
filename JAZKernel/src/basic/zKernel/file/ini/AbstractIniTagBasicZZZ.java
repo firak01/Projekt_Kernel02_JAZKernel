@@ -211,7 +211,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-			this.setValue((ArrayList<String>) vecReturn.get(1));
+			this.setValue((String) vecReturn.get(1));
 		}
 		return vecReturn;
 	}

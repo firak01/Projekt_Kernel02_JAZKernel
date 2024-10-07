@@ -17,6 +17,8 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	public T getEntryLow();
 	public T getEntryHigh();
 	
+	public T getEntry(int iIndex);
+	
 	public int getIndexHigh();
 	public int getIndexNext();
 
@@ -27,7 +29,7 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	
 	public boolean addSorted(Integer intNew, int iSortDirectionAscDesc) throws ExceptionZZZ;
 	
-	public Vector rightOfString(String string, boolean ignoreCase, int fromIndex) throws ExceptionZZZ;
+	public Vector<String> rightOfString(String string, boolean ignoreCase, int fromIndex) throws ExceptionZZZ;
 	public boolean containsString(String string);
 	public boolean containsString(String string, boolean ignoreCase);	
 	
@@ -36,6 +38,8 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	public int compareToLastElement(Integer intToCompare) throws ExceptionZZZ;
 	
 	public T getElementByIndex(int iIndex); //zur Vereinheitlichung, weil das in HashMapExtendedZZZ auch verwendet wird.
+	
+	public Object replace(int iIndex, Object obj) throws ExceptionZZZ;
 	
 	//eigentlich aus Vector
 	public boolean isEmpty();

@@ -12,16 +12,27 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	private int iSizeMax=0;
 	
 	
-	public VectorLimitedZZZ(int iSizeMax) {
+	public VectorLimitedZZZ(int iSizeMax) throws ExceptionZZZ {
 		super();
-		this.setSizeMax(iSizeMax);
+		this.setSizeMax(iSizeMax);		
+		this.reset(); //setze defaultobject... 		
 	}
 	
 	//## aus IVectorLimitedZZZ
 	@Override 
+	public Object getObjectDefaultNew() throws ExceptionZZZ {
+		return new String("");
+	}
+	
+	@Override 
 	public int sizeMax() {
 		return this.iSizeMax;
 	}
+	
+	@Override 
+	public int getSizeMax() {
+		return this.sizeMax();
+	}	
 	private void setSizeMax(int iSize) {
 		this.iSizeMax = iSize;
 	}
@@ -50,6 +61,43 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 		
 		ExceptionZZZ ez = new ExceptionZZZ("New Index is invalid: '" + iIndex +"'", iERROR_PARAMETER_VALUE, ObjectUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
+	}
+	
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		for(int i=0; i<=this.getSizeMax()-1;i++) {
+			Object objDefault = this.getObjectDefaultNew();
+			if(this.getEntry(i)!=null) {				
+				this.replace(i, objDefault);
+			}else {
+				this.add(i, objDefault);
+			}
+		}	
+		return true;
+	}
+	
+	@Override
+	public boolean reset(Object objDefault) throws ExceptionZZZ{
+		for(int i=0; i<=this.getSizeMax()-1;i++) {
+			if(this.getEntry(i)!=null) {
+				this.replace(i, objDefault);
+			}else {
+				this.add(i, objDefault);
+			}
+		}	
+		return true;
+	}
+	
+	
+		
+	@Override
+	public Object replace(int iIndex, Object obj) throws ExceptionZZZ{
+		Object objReturn = null;
+		this.ensureValidIndex(iIndex);
+		
+		super.replace(iIndex, obj);
+		
+		return objReturn;		
 	}
 	
 	//### ueberschriebene Vector Originale

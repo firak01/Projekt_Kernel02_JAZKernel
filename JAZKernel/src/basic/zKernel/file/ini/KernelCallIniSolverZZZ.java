@@ -1,17 +1,11 @@
 package basic.zKernel.file.ini;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorUtilZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -170,70 +164,98 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		
 	//### Andere Interfaces
 	
+	//### Aus ISolveEnabled	
+	@Override
+	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveParsed_(sExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit Call-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
 	/**Methode ersetzt in der Zeile alle CALL Werte.
-	 * Methode überschreibt den abstrakten "solver", weil erst einmal keine Pfade oder Variablen ersetzt werden sollen.
+	 * Methode überschreibt den abstrakten "solver", weil erst einmal Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	@Override
-	public Vector<String>solveFirstVector(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return this.solveFirstVector_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
-	}
-	
-	private Vector<String>solveFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector<String> vecReturn = null;
-		String sReturn = sExpressionIn;
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
 		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
-		if(objReturnReferenceIn==null) {				
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		}else {
-			objEntry = objReturnReferenceIn.get();
+			objReturnReference = objReturnReferenceIn;
 		}
+		objEntry = objReturnReference.get();
 		if(objEntry==null) {
 			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.				
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objEntry.setRaw(sExpressionIn);
+			
+		main:{			
+			//Aufloesen von Pfaden und ini-Variablen
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSolverSuper.set(objEntry);
+			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+			objEntry = objReturnReferenceSolverSuper.get();
+			
+			//Aufloesen des Math-Tags
+			sReturn = this.solveParsed_Call_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);			
+			objEntry = objReturnReference.get();								
+		}//end main
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);		
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		}
+		return sReturn;	
+	}
+	
+	private String solveParsed_Call_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+		String sReturn = sExpressionIn;
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		objEntry.setRaw(sExpressionIn);
 			
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
-			
-			vecReturn = new Vector<String>();
-			
-			boolean bAnyCall = false; boolean bAnyJavaCall = false; boolean bAnyJavaClass = false; boolean bAnyJavaMethod = false;
+		
+			boolean bAnyJavaCall = false; boolean bAnyJavaClass = false; boolean bAnyJavaMethod = false;
 						
 			//Fuer den abschliessenden Aufruf selbst.
 			String sClassnameWithPackage=null; String sMethodname=null;
-			
-			//Nein: Nicht die Parse-Methoden der Klasse aufrufen, ... die machen ja auch solve...
-//			vecReturn = this.parseFirstVector(sExpression);//Alle Z:Call Ausdruecke ersetzen						
-//			String sExpression1 = (String) vecReturn.get(1);
-//			if(!StringZZZ.isEmpty(sExpression1)& !sExpression.equals(sExpression1)) {
-//				bAnyCall = true;
-//			}
-			
-			//Statt dessen "Elternsolver" aufrufen.
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSuper = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSuper.set(objEntry);
-			Vector<String>vecValue = super.solveFirstVector(sExpression, objReturnReferenceSuper,bRemoveSurroundingSeparators); 
-			if(vecValue==null) break main;
-		
-			//Nun das Aufloesen dieses konkreten Solvers... der CallIniSolverZZZ
-			String sExpression1 = vecValue.get(1);
-			if(!StringZZZ.isEmpty(sExpression1)& !sExpression.equals(sExpression1)) {
-				sReturn = sExpression1;
-			}
-			
+							
 			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
             //Aber jetzt entfernen wir das einfach so:
 			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
-			Vector<String>vecReturn2 = StringZZZ.vecMid(sExpression1, "<Z:Java>", "</Z:Java>", false, false);//Alle z:Java Ausdruecke ersetzen
-			String sExpression2= vecReturn2.get(1);
-			if(!StringZZZ.isEmpty(sExpression2)& !sExpression1.equals(sExpression2)) {							
+			Vector3ZZZ<String>vecReturn2 = StringZZZ.vecMid(sExpression, "<Z:Java>", "</Z:Java>", false, false);//Alle z:Java Ausdruecke ersetzen
+			String sExpression2= (String) vecReturn2.get(1);
+			if(!StringZZZ.isEmpty(sExpression2)& !sExpression.equals(sExpression2)) {							
 				bAnyJavaCall = true;
 				sReturn = sExpression2;
 			}
@@ -294,25 +316,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			} //end if bAnyJavaCall
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(vecReturn!=null) {
-			if(vecReturn.size()==0) vecReturn.add("");
-			
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-			if(!StringZZZ.isEmpty(sReturn)){
-				vecReturn.add(1, sReturn);
-			}else {
-				vecReturn.add(1, "");
-			}
-			
-			if(vecReturn.size()<=2) vecReturn.add("");
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);		
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
-		this.setValue(sReturn);
-		//nein, solve liefert nur 1 Wert zurueck if(objEntry!=null) objEntry.setValue(VectorZZZ.implode(vecReturn));
-		if(objEntry!=null) objEntry.setValue(sReturn);
-		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-		return vecReturn;	
-	
+		return sReturn;
 	}
 	
 

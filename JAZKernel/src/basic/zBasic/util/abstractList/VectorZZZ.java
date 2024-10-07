@@ -62,8 +62,7 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 
 	public VectorZZZ() {
 	}
-	
-	
+
 	//### Ueberschriebene Originalmethoden, um noch weitere Funktionen zu bieten
 	@SuppressWarnings("unchecked")
 	@Override
@@ -113,10 +112,25 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	
 	
 	
-	//###################
+	//### aus IVectorZZZ
 	@Override
 	public int sizeNext() {
 		return this.size() + 1;
+	}
+	
+	@Override
+	public Object replace(int iIndex, Object obj) throws ExceptionZZZ{
+		Object objReturn = null;
+		
+		main:{
+			if(this.get(iIndex)!=null) {
+				this.remove(iIndex);
+			}
+			this.add(iIndex, obj);
+			objReturn = obj;
+		}//end main:
+		
+		return objReturn;
 	}
 	
 	//##################
@@ -210,6 +224,15 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getEntry(int iIndex) {  //stellt einfach sicher, dass keine Exception geworfen wird, falls der Index nicht passt.
+		if(this.size()>=iIndex+1) {
+			return (T) this.get(iIndex);
+		}else {
+			return null;
+		}
+	}
 	
 	
 	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintr�ge rechts von dem Suchstring zur�ck. 

@@ -22,7 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>{
 	private static final long serialVersionUID = -4863797296442866090L;
 
-	public Vector3ZZZ() {
+	public Vector3ZZZ() throws ExceptionZZZ {
 		super(3);
 	}
 	
@@ -45,16 +45,16 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	
 	private void replace_(String sValue) throws ExceptionZZZ{
 		
-		if(this.size()==0) this.add(0, "");
+		if(this.size()==0) this.add(0, this.getObjectDefaultNew());
 		
 		if(this.size()>=2) this.removeElementAt(1);
 		if(!StringZZZ.isEmpty(sValue)){
 			this.add(1, sValue);
 		}else {
-			this.add(1, "");
+			this.add(1, this.getObjectDefaultNew());
 		}
 			
-		if(this.size()==2) this.add(2, "");
+		if(this.size()==2) this.add(2, this.getObjectDefaultNew());
 	}
 	
 	
@@ -116,7 +116,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
@@ -126,7 +126,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		
 		} else if(bReturnSeparators ==true && StringZZZ.isEmpty(sMid)){
@@ -138,7 +138,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
-			this.add(1, "");
+			this.add(1, this.getObjectDefaultNew());
 			
 			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
@@ -151,17 +151,17 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
-			this.add(1, "");
+			this.add(1, this.getObjectDefaultNew());
 			
 			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		}
 	}

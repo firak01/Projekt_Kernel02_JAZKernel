@@ -1,13 +1,10 @@
 package basic.zKernel.file.ini;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 3096748072633354679L;
@@ -66,7 +63,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 //				
 //			}
 			
-			String sOp = "+";
+			String sOp = "+"; //+ als Default
 			if(!StringZZZ.isEmpty(sOperator)){
 				sOp = sOperator.trim();				
 			}
@@ -113,8 +110,8 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return sReturn;
 	}
 	
-	public Vector<String> solveFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector();
+	public Vector3ZZZ<String> computeFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sLineWithExpression;
 		boolean bIsError = false;
 		main:{
@@ -135,38 +132,14 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				}					
 			} //end if sExpression = ""
 				
-							
+			if(bIsError) sReturn = sLineWithExpression;					
 		}//end main:
 		
-		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-		if(bIsError){
-			sReturn = sLineWithExpression;				
-		}
-		
-		//if(vecReturn.size()==0) vecReturn.add(0,"");					
-		if(vecReturn.size()>=1) {
-			vecReturn.remove(0);
-			vecReturn.add(0,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
-		}else if(vecReturn.size()==0) {
-			vecReturn.add(0,"");
-		}
-		
-		if(vecReturn.size()>=2) vecReturn.remove(1);
-		vecReturn.add(1, sReturn);
-		
-		if(vecReturn.size()>=3) {
-			vecReturn.remove(2);
-			vecReturn.add(2,"");//Anders als normal, hier den 0er Wert leersetzen, da nur noch das Ergebnis aus compute(...,...) uebrigbleiben soll
-		}else if(vecReturn.size()==2) {
-			vecReturn.add(2,"");
-		}								
+		//Wichtig, die Werte drum herum leer setzen
+		vecReturn.replace("",sReturn,"");				
 		return vecReturn;
 	}
-
-	
-	
-	
 
 	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
@@ -188,7 +161,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 					sLineWithExpression = objValue02.parse(sLineWithExpression);						
 				}	
 				
-				Vector vecAll = this.solveFirstVector(sLineWithExpression);
+				Vector3ZZZ<String> vecAll = this.computeFirstVector(sLineWithExpression);
 										
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturn = VectorUtilZZZ.implode(vecAll);
