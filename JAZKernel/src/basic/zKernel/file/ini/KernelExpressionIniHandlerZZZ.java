@@ -431,7 +431,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators, true);
 	}
 	
-	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
+	/**Methode ueberschreibt das parsen des cascaded Tags.
+	 * Loest nun INI-Pfade und INI-Variablen auf, 
+	 * ABER: macht kein vollständiges solve()!!!
+	 **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
@@ -458,8 +461,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry.setRaw(sExpressionIn);
 				
-		
-			
 			//Aufloesen von Pfaden und ini-Variablen VOR den anderen SOLVERN, darum schon beim Parsen.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolverSuper.set(objEntry);
@@ -467,12 +468,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry = objReturnReferenceSolverSuper.get();
 			sExpressionUsed = sReturn; //da noch weiter verarbeitet werden muss.
 			
-
-					
-			
-			
-			
-			//Aufloesen des Z-Tags, d.h. Teil vorher, Teil dahinter.
+			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParserSuper.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionUsed, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
@@ -480,13 +476,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			
 			sReturn = (String) vecReturn.get(1);
 			//sExpressionUsed = sReturn; //falls noch weiterverarbeitet werden muesste
+			
+			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
+			//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	
-		vecReturn.replace(sReturn);
-		sReturn = VectorUtilZZZ.implode(vecReturn);
-		if(objEntry!=null) {					
+		vecReturn.replace(sReturn);		
+		if(objEntry!=null) {		
+			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);

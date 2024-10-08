@@ -343,6 +343,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//+++ Wichtig: Diese geclonte objFileIni nur fuer eine direkte Suche nutzen.
 			//    Daher unbedingt darin die Flags so setzen, dass keine Aufloesung von Expressions passiert.
 			//objFileIniUsed.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false);//USEEXPRESSION muss bleiben, sonst wird nix verarbeitet
+			objFileIniUsed.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,false);
+			objFileIniUsed.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false);
 			objFileIniUsed.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);			
 			//INIT=false, USEEXPRESSION_PATH=true, USEEXPRESSION=true, USEEXPRESSION_SOLVER=false
 			

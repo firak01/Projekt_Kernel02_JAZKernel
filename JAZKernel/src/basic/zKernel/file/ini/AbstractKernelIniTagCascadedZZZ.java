@@ -223,9 +223,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	
-		vecReturn.replace(sReturn);
-		sReturn  = VectorUtilZZZ.implode(vecReturn);
-		if(objEntry!=null) {					
+		vecReturn.replace(sReturn);		
+		if(objEntry!=null) {		
+			sReturn  = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);

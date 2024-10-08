@@ -336,7 +336,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
-
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -357,31 +358,30 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;			
 						
 			//Rufe nun parse() auf...
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);  //TODOGOON20241004; !!! wenn man den Solver nutzen möchte, muss man die Tags drin lassen
 			//String sExpressionParsed = this.parse(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			String sExpressionParsed = (String) vecReturn.get(1);
 			sReturn = sExpressionParsed; //Zwischenstand.			
 			objEntry = objReturnReferenceParse.get();
+			
+			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;			
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			String sExpressionSolved = this.solveParsed(sExpressionParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			sReturn = sExpressionSolved; //Zwischenstand.	
-			objEntry = objReturnReferenceSolve.get();				
-			
-			vecReturn.replace(sReturn);
-			sReturn = VectorUtilZZZ.implode(vecReturn);			
+			objEntry = objReturnReferenceSolve.get();															
 		}//end main;
-		
-		
+				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);		
-		if(objEntry!=null) {					
+		vecReturn.replace(sReturn);
+		if(objEntry!=null) {			
+			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
@@ -433,16 +433,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 								
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 						
 			if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
 				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
 									
-				//Merke: Als einfaches Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
-				//ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
-				//String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-				
+				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
+				//       Hier aber ein 
 				String sExpressionOld = sExpressionUsed;
 				String sExpressionTemp;					
 				
@@ -504,7 +501,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					objEntry.isPathSolved(true);
 				}
 				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
-			}//end if .getFlag(..USE_...Path...)									
+			}//end if .getFlag(..USE_...Path...)
+			
+			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
+			//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
+			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen

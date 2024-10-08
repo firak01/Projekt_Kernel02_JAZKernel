@@ -223,14 +223,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 												
 				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagStarting(), ex.getTagClosing(), !bForFurtherProcessing);
 				String sValue = vecValue.get(1);
-				
-				
+								
 				if(!StringZZZ.equals(sValue,sExpression)){
-					ex.solveFirstVector(sValue, objReturnReferenceIn, !bForFurtherProcessing);
-					sExpression = ex.getValue();
+					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
 					objEntry = objReturnReferenceIn.get();
-					
-					
+										
 					if(!StringZZZ.equals(sValue,sExpression)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sExpression + "' nach '" + sValue +"'");
 					}
