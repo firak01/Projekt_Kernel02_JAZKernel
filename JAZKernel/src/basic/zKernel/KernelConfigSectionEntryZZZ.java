@@ -10,6 +10,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -90,6 +91,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected String sKey = null;
 	
 	protected boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
+	protected boolean bMapValue = false;   //Falls eine HashMap gesetzt wurde.
 	protected boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
 	protected int iIndex = 0;            //dito
 		
@@ -487,6 +489,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setValue(HashMap<String, String> hmValue) {
 		this.getValueHashMapVector().add(hmValue);
+		if(!HashMapUtilZZZ.isEmpty(hmValue)) {				
+			this.isMapValue(true);
+			this.setValue(hmValue.toString());
+		}else {
+			this.isMapValue(false);
+			this.setValue("");
+		}
 	}
 
 	//###############################################
@@ -518,9 +527,12 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.getValueArrayListVector().add(alValue);
 		if(!ArrayListZZZ.isEmpty(alValue)) {				
 			this.isArrayValue(true);
+			if(alValue!=null) this.setValue(alValue.toString());
 		}else {
 			this.isArrayValue(false);
+			this.setValue("");
 		}
+		
 	}
 	
 	@Override
@@ -531,6 +543,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override 
 	public void isArrayValue(boolean bIsArrayValue) {
 		this.bArrayValue = bIsArrayValue;
+	}
+	
+	
+	@Override
+	public boolean isMapValue() {
+		return this.bMapValue;
+	}
+	
+	@Override 
+	public void isMapValue(boolean bIsMapValue) {
+		this.bMapValue = bIsMapValue;
 	}
 
 	//##############################################

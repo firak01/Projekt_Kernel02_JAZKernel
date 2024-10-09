@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -12,6 +13,20 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class HashMapUtilZZZ {
 	
+	public static boolean isEmpty(HashMap hm) {
+		boolean bReturn = false;
+		main:{
+			if(hm==null) {
+				bReturn = true;
+				break main;
+			}
+			if(hm.size()==0) {
+				bReturn = true;
+				break main;
+			}
+		}
+		return bReturn;
+	}
 	
 	//### fuer IOutputNormedZZ	
 	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.

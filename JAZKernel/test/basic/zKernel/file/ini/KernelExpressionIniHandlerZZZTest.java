@@ -181,13 +181,28 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//#################
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
 			objExpressionHandlerInit = new KernelExpressionIniHandlerZZZ(objKernel, objFileIniTest, saFlagInit);
 			
-			String[] saFlag = {""};
+			//#### Das konkrete TestObject
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
+			
+			String[] saFlag = {""}; //Merke: Die Flags des Testobjekts selbst werden in den einzelnen Tests explizit gesetzt.
 			objExpressionHandler = new KernelExpressionIniHandlerZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -981,18 +996,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-			
-			TODOGOON20241008;
-			
+								
 			//################################################################
 			//### Varianten JSON-HashMap aufzuloesen
 			//#################################################################
+			//..........
+			
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
 			hmExpressionSolved = new HashMap();
+			sExpressionSolved = "<Z>{UIText01=TESTWERT2DO2JSON01, UIText02=TESTWERT2DO2JSON02}</Z>";
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonMap_(sExpressionSource, hmExpressionSolved, false, false);
-			//btemp = testCompute_HashMap_(sExpressionSource, hmExpressionSolved, false, true);
+			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, hmExpressionSolved, false, true);
 			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -1049,10 +1063,27 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#################################################################
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			hmExpressionSolved = new HashMap();
+			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonMap_(sExpressionSource, hmExpressionSolved, false, false);
-			//btemp = testCompute_HashMap_(sExpressionSource, hmExpressionSolved, false, true);
+			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, hmExpressionSolved, false, false);
 			
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			hmExpressionSolved = new HashMap();
+			sExpressionSolved = "<Z>{UIText01=TESTWERT2DO2JSON01, UIText02=TESTWERT2DO2JSON02}</Z>";
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, hmExpressionSolved, false, true);
+			
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			hmExpressionSolved = new HashMap();
+			sExpressionSolved = sExpressionSource;
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolvedTagless, hmExpressionSolved, true, false);
+			
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			hmExpressionSolved = new HashMap();
+			sExpressionSolved = "{UIText01=TESTWERT2DO2JSON01, UIText02=TESTWERT2DO2JSON02}";
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolvedTagless, hmExpressionSolved, true, true);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -1193,34 +1224,34 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_JsonMap_(String sExpressionSourceIn, HashMap hmExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
+	private boolean testCompute_JsonMap_(String sExpressionSourceIn, String sExpressionSolvedIn, HashMap hmExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
 		boolean bReturn = false;
 		
 		main:{
 			try {
 				boolean btemp; String stemp;
 				
-				String sExpressionSource; HashMap hmExpressionSolved; String sExpressionSolved; String sValue;				
+				String sExpressionSource; String sExpressionSolved; HashMap hmExpressionSolved; String sValue;				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
-				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
+				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 				
-				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);  
+				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 								
-				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 				
-				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
+				btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
 			
 				//... mit Berechnung MATH
-				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); 
+				btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 					
 				//... mit Berechnung JSON
@@ -1236,7 +1267,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(!bSolve) {
 					sExpressionSource = sExpressionSourceIn;
 					hmExpressionSolved = hmExpressionSolvedIn;		
-					sExpressionSolved = hmExpressionSolved.toString();
+					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
@@ -1247,7 +1278,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bSolve) {
 					sExpressionSource = sExpressionSourceIn;
 					hmExpressionSolved = hmExpressionSolvedIn;
-					sExpressionSolved = hmExpressionSolved.toString();
+					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);

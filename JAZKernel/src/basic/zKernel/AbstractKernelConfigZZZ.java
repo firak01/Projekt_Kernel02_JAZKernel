@@ -140,8 +140,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		try {
 			if(bUseExpression && bUseFormula) {	
 				FileIniZZZ objFileIniConfig = new FileIniZZZ();
-				int iConvertionType = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(objFileIniConfig, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
-				sReturn = objReturnReference.get().getValue();
+				sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(objFileIniConfig, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
 			}else {
 				sReturn  = sDirectoryNameRead;
 			}

@@ -299,7 +299,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 
 	@Override
 	public void setValue(ArrayList<String> listasValue) throws ExceptionZZZ{
-		this.getEntry().setValue(listasValue);
+		this.getEntry().setValue(listasValue);		
 	}
 	
 	@Override

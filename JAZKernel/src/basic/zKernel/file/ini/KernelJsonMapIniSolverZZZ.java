@@ -143,15 +143,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			this.getEntry().setRaw(sExpression);
-			
-			
-			//++++++++++++++++++++++++++++++
-		    //Das Ziel ist, nun die JSON:MAP umzuwandeln
-//				HashMap<String,String> hmReturn = this.computeHashMapFromJson(sExpression);
-//				if(hmReturn!=null) {
-//					sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
-//				}
-			
+				
+			//++++++++++++++++++++++++++++++			
 			//Hier nur den String so zurückgeben. Für die Umwandlung in den Debug - String oder die HashMap selbst gibt es andere Methoden.
 			sReturn = sExpression;
 		}//end main:
@@ -203,7 +196,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				while(objMathSolver.isExpression(sRaw)){
 					bAnyFormula = true;
 						
-					String sValueMath = objMathSolver.parse(sReturn);										
+					String sValueMath = objMathSolver.solve(sReturn);										
 					if(!StringZZZ.equals(sRaw, sValueMath)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + sValueMath +"'");
 					}else {
@@ -236,25 +229,37 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
-			String sReturn = "";
+			String sReturn = "";  //Hole den Wert innerhalb von JSON:MAP. Merke: Ausgangswert ist normalerweise schon ein nach Z-Tag geparster Wert.
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
 			
-			//Beschränke das ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			//Beschränke das Ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
 			sReturn = vecAll.get(1);
-			if(this.getFlag("useFormula_math")==true){				
+			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+				KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objMathSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+								
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed); 
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
-				while(objMathSolver.isExpression(sReturn)){
-					String sValueMath = objMathSolver.parse(sReturn);
-					sReturn=sValueMath;				
-				}	
+				String sExpression = sReturn;
+				String sExpressionOld = sExpression;
+				while(objMathSolver.isExpression(sExpression)){
+					String sValueMath = objMathSolver.solve(sExpression);
+					if(sExpression.equals(sValueMath)) break; //Sicherheitsmassnahme gegen Endlosschleife
+					sExpression = sValueMath;						
+				}					
+				if(!sExpressionOld.equals(sExpression)) {
+					//TODO GOON;//20241009: Eigentlich muss hier noch objReference uebergeben werden und dort objEntry raus geholt werden...
+					objEntry.isFormulaMathSolved(true);
+					objEntry.setValueFormulaSolvedAndConverted(sExpression);
+				}
+				sReturn=sExpression;				
 				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
@@ -263,7 +268,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			//Ziel: Die Reihenfolge berücksichtige		
 			hmReturn = (LinkedHashMap<String, String>) JsonEasyZZZ.toLinkedHashMap(sReturn);
-			
+			this.setValue(hmReturn);
+			this.setValue(sReturn);
+			//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;
+			//this.setValue(hmReturn.toString());
+			//this.setValueJson(sReturn);
 			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
 		}//end main:
 		return hmReturn;

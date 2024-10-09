@@ -6,6 +6,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IValueArrayUserZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
+import basic.zBasic.IValueMapUserZZZ;
 import basic.zBasic.IValueUserZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
@@ -28,7 +29,7 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUserZZZ, IValueUserZZZ, IValueArrayUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, IIniStructurePositionZZZ, IIniStructurePositionUserZZZ, Cloneable{		
+public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUserZZZ, IValueUserZZZ, IValueArrayUserZZZ, IValueMapUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, IIniStructurePositionZZZ, IIniStructurePositionUserZZZ, Cloneable{		
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
 	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap();
 	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.

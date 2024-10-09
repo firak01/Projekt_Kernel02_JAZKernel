@@ -600,13 +600,17 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						if(objEntry.isJsonArray()) {
 							this.getEntry().isJsonArray(true);								
 							this.setValue(objalsReturnValueJsonSolved.getArrayList());
-							this.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));						
+							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
+							//der wird automatisch beim Setzen der ArrayList mitgesetzt.
+							//this.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));						
 						}
 						
 						if(objEntry.isJsonMap()) {	
 							this.getEntry().isJsonMap(true);
 							this.setValue(objhmReturnValueJsonSolved.get());	
-							this.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
+							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
+							//der wird automatisch beim Setzen der HashMap mitgesetzt. 
+							//this.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
 						}
 						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
 					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
