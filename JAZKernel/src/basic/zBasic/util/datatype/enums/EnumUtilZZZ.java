@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
 public class EnumUtilZZZ {
 	public static String[] toString(Enum[] enuma) {
@@ -18,7 +18,7 @@ public class EnumUtilZZZ {
 				listasReturn.add(s);
 			}
 			
-			saReturn = ArrayListZZZ.toStringArray(listasReturn);
+			saReturn = ArrayListUtilZZZ.toStringArray(listasReturn);
 		}//end main:
 		return saReturn;
 	}

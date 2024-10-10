@@ -16,12 +16,17 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
+public class JsonUtilZZZ  implements IConstantZZZ{
+	
+	private JsonUtilZZZ() { 
+		//Zum Verstecken des Konsruktors
+	} //static methods only
 	
 	/**Ein Json-Parser wird verwendet. 
 	 * Intern arbeitet er so: Wenn er einen Fehler wirft, ist es kein valides Json. Dieser Fehler wird abgefangen.
@@ -34,7 +39,7 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sJson)){
-				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -54,7 +59,7 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		String sReturn = null;
 		main:{
 			if(saValue==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No array provided.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No array provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 							
@@ -71,7 +76,7 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 			JsonParser parser = new JsonParser();
 			objReturn = parser.parse(s);
 			}catch(JsonSyntaxException jse) {
-				ExceptionZZZ ez = new ExceptionZZZ("JsonSyntaxException: " + jse.getMessage(), iERROR_RUNTIME, JsonEasyZZZ.class, jse);
+				ExceptionZZZ ez = new ExceptionZZZ("JsonSyntaxException: " + jse.getMessage(), iERROR_RUNTIME, JsonUtilZZZ.class, jse);
 				throw ez;
 			}
 		}//end main;
@@ -84,7 +89,7 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 			Gson gson=new GsonBuilder().create();
 			String jsonArray=gson.toJson(sa);
 	    
-			objReturn = JsonEasyZZZ.toJson(jsonArray);
+			objReturn = JsonUtilZZZ.toJson(jsonArray);
 	    
 		}//end main;
 		return objReturn;
@@ -95,11 +100,11 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		JsonArray objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(s)){
-				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			JsonElement objJson = JsonEasyZZZ.toJson(s);				
+			JsonElement objJson = JsonUtilZZZ.toJson(s);				
 			objReturn = objJson.getAsJsonArray();											
 		}//end main
 		return objReturn;
@@ -109,11 +114,11 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		JsonArray objReturn = null;
 		main:{
 			if(sa==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			JsonElement objJson = JsonEasyZZZ.toJsonElement(sa);
+			JsonElement objJson = JsonUtilZZZ.toJsonElement(sa);
 			objReturn = objJson.getAsJsonArray();									
 		}
 		return objReturn;
@@ -136,11 +141,11 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		HashMap<?,?> hmReturn = null; 
 		main:{
 			if(StringZZZ.isEmpty(sJson)){
-				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(!JsonEasyZZZ.isJsonValid(sJson)) {
-				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			if(!JsonUtilZZZ.isJsonValid(sJson)) {
+				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -159,11 +164,11 @@ public class JsonEasyZZZ extends AbstractObjectWithFlagZZZ{
 		LinkedHashMap<?,?> hmReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sJson)){
-				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(!JsonEasyZZZ.isJsonValid(sJson)) {
-				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			if(!JsonUtilZZZ.isJsonValid(sJson)) {
+				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 	

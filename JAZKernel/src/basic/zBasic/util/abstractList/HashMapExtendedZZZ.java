@@ -123,7 +123,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	        listasObject.add(o);
 	      }
 	    }
-	    saReturn = ArrayListZZZ.toStringArray(listasObject);
+	    saReturn = ArrayListUtilZZZ.toStringArray(listasObject);
 	    return saReturn;
 	  }
 	
@@ -164,7 +164,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 					}
 				}
 			}
-			saReturn = ArrayListZZZ.toStringArray(listasObject);			
+			saReturn = ArrayListUtilZZZ.toStringArray(listasObject);			
 		}//end main:
 		return saReturn;
 	}
@@ -183,7 +183,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	        listasObject.add(o.toString());
 	      }
 	    }
-	    return ArrayListZZZ.toStringArray(listasObject);
+	    return ArrayListUtilZZZ.toStringArray(listasObject);
 	  }
 	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 

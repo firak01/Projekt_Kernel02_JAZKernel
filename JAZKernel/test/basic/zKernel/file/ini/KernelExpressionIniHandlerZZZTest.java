@@ -325,8 +325,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//b) solve
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			sExpressionFormulaMathSolved = sExpressionSourceFormulaMath;
-			btemp = testCompute_MATH(sExpressionSourceFormulaMath, sExpressionFormulaMathSolved, false, true);	
-
+			btemp = testCompute_MATHunsolved(sExpressionSourceFormulaMath, sExpressionFormulaMathSolved, false, true);	
 
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			sExpressionFormulaMathSolved = sExpressionSourceFormulaMath;
@@ -726,28 +725,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//#########################################################
 				//### Mit Berechnung MATH 
 				//#########################################################
-				
-				//+++ ohne Berechnung (math)
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-				
-				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-				
-				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,false);  
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-				
-				btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-				
-				btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);  
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-				
-				btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,false); 
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
-					
-				
-				
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//... mit Berechnung (math)
@@ -1298,86 +1275,159 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	public void testComputeCall(){
-		String sValue; int iValue; 
-		String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
-		String sTagStartZ; String sTagEndZ;
+	public void testComputeCallJava(){
+		
 		boolean btemp; int itemp;
+		
+		String sSection; String sProperty;
+		String sExpressionSource; 
+		String sExpressionSolved; String sExpressionSolvedTagless;
 		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
 	
-		try {						
-			//####################################################################################
-			//### EXPRESSION - INI Handler .solve
-			//####################################################################################
+		String sValue;
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";	
+		
+		try {		
+		
+		
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-//			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-//			sExpression = sExpressionSource;
-//			
-//			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
-//			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-//							
-//			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
-//			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-//		
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-//		
-//			objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			iValue = objExpressionHandler.solve(sExpression, objSectionEntryReference);
-//			assertEquals(0,iValue); //0 es wird halt nix errechnet
-//			
-//			objEntry = objSectionEntryReference.get();
-//			assertNotNull(objEntry);
-//			assertFalse(objEntry.isCall());
-//			assertFalse(objEntry.isJavaCall());
-//			assertNull(objEntry.getCallingClassname());
-//			assertNull(objEntry.getCallingMethodname());
-//			
-//			//###################################################			
-//			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-//			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-//			sExpression = sExpressionSource;
-//			
-//			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-//			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-//			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-//							
-//			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false); 
-//			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
-//			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
-//			
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-//		
-//			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-//		
-//			objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			iValue = objExpressionHandler.solve(sExpression, objSectionEntryReference);
-//			assertEquals(0,iValue);  //0 es wird halt noch nix aufgeloest
-//			
-//			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z>HannibalDEV04bVM</Z>";			
+			btemp = testComputeCallJava_Expression(sExpressionSource, sExpressionSolved, false, true);
+			
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+			
+			//###########################
+		    //### objExpression
+			//#########################
+			
+			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolvedTagless = "<Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt //INI-Pfade werden trotzdem ersetzt
+			sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
+			assertEquals(sExpressionSolvedTagless, sValue);
+			
+			//+ Voraussetzungen fuer Aufruf in .ini pruefen
+			String sClassName = null;
+			String sMethodName = null;
+			
+			String sSectionParameter = "ArgumentSection for testCallComputed";
+			String sProperty_className = "JavaClass";
+			String sExpressionSolved_className = "basic.zBasic.util.machine.EnvironmentZZZ";
+			objEntry = objFileIniTest.getPropertyValueDirectLookup(sSectionParameter, sProperty_className);
+			sValue = objEntry.getValue();
+			assertEquals(sExpressionSolved_className, sValue);
+			sClassName = sValue;
+			
+			String sProperty_methodName = "JavaMethod";
+			String sExpressionSolved_methodName = "getHostName";
+			objEntry = objFileIniTest.getPropertyValueDirectLookup(sSectionParameter, sProperty_methodName);
+			sValue = objEntry.getValue();
+			assertEquals(sExpressionSolved_methodName, sValue);
+			sMethodName = sValue;
+			
+			String sExpressionCallSolved = EnvironmentZZZ.getHostName();
+			assertNotNull(sExpressionCallSolved);
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Ohne jegliche Expression-Berechnung
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionSource;
+			btemp = testComputeCallJava_ExpressionUnsolved(sExpressionSource, sExpressionSolved, false, false);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionSource; 			
+			btemp = testComputeCallJava_ExpressionUnsolved(sExpressionSource, sExpressionSolved, false, true);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionSource;			
+			btemp = testComputeCallJava_ExpressionUnsolved(sExpressionSource, sExpressionSolved, true, false);
+						
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionSource;
+			btemp = testComputeCallJava_ExpressionUnsolved(sExpressionSource, sExpressionSolved, true, true);
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Ohne Call-Berechung
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			btemp = testComputeCallJava_SolverUnsolved(sExpressionSource, sExpressionSolved, false, false);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt 			
+			btemp = testComputeCallJava_SolverUnsolved(sExpressionSource, sExpressionSolved, false, true);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			btemp = testComputeCallJava_SolverUnsolved(sExpressionSource, sExpressionSolvedTagless, true, false);
+					
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			btemp = testComputeCallJava_SolverUnsolved(sExpressionSource, sExpressionSolvedTagless, true, true);
+			
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Mit CALL-Berechnung
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";						
+			btemp = testComputeCallJava_Expression(sExpressionSource, sExpressionSolved, false, false);
+						
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z>" + sExpressionCallSolved + "</Z>";			
+			btemp = testComputeCallJava_Expression(sExpressionSource, sExpressionSolved, false, true);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testComputeCallJava_Expression(sExpressionSource, sExpressionSolvedTagless, true, false);
+						
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionCallSolved;
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testComputeCallJava_Expression(sExpressionSource, sExpressionSolvedTagless, true, true);
+			
+			
+			//#####################################
+			//### INI FILE
+			//#####################################
+			
+			TODOGOON20241010;
+			
+			//+++ ohne CALL-Berechnung
+			sSection = "Section for testCall";
+			sProperty = "WertCalled";
+			sExpressionSolved = "";
+			btemp = testComputeCallJava_IniUsedUnsolved(sSection, sProperty, sExpressionSolved, false);
+			
+			sSection = "Section for testCall";
+			sProperty = "WertCalled";
+			sExpressionSolved = "";
+			btemp = testComputeCallJava_IniUsedUnsolved(sSection, sProperty, sExpressionSolved, true);
+									
+			//+++ mit CALL-Berechnung
+			//wie, wo? das abbilden... noch weitere Parameter fuer die private-Methode?
+//			assertEquals(,objEntry.getCallingClassname());
+//			assertEquals(,objEntry.getCallingMethodname());
+			
+			//+ Aufruf durchfuehren
+			sSection = "Section for testCall";
+			sProperty = "WertCalled";
+			sExpressionSolved = "";
+			btemp = testComputeCallJava_IniUsed(sSection, sProperty, sExpressionSolved, false);
+			
+			
+			sSection = "Section for testCall";
+			sProperty = "WertCalled";
+			sExpressionSolved=EnvironmentZZZ.getHostName();
+			btemp = testComputeCallJava_IniUsed(sSection, sProperty, sExpressionSolved, true);
+			
+			//			
 //			//###################################################			
 //			//Anwenden der ersten Formel, mit Berechnung oder Formelersetzung
 //			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -1413,37 +1463,369 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 //			assertNotNull(objEntry);
 //			assertTrue(objEntry.isCall());
 //			assertTrue(objEntry.isJavaCall());
-//			assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",objEntry.getCallingClassname());
-//			assertEquals("getHostName",objEntry.getCallingMethodname());
+
 //
 //			
-			//##################################################################################
-			//### FILE INI
-			//##################################################################################
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	}
+	
+	private boolean testComputeCallJava_ExpressionUnsolved(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+			
+			
+			//####################################################################################
+			//### EXPRESSION - NICHT EXPRESSION BEHANDLUNG .solve
+			//####################################################################################
+			
+			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
+			sExpressionSource = sExpressionSourceIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 						
+			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+			
+			
+			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
+			if(!bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;		
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+				
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+				
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			
+			
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		return bReturn;
+	}
+	
+	private boolean testComputeCallJava_SolverUnsolved(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+			
+			
+			//####################################################################################
+			//### EXPRESSION - CALL NICHT .solve
+			//####################################################################################
+						
+			//Anwenden des Ausdrucks ohne Solver - Aufruf
+			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+						
+			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
+			if(!bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;		
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		return bReturn;
+	}
+	
+	private boolean testComputeCallJava_Expression(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+			
+			
+			//####################################################################################
+			//### EXPRESSION .solve
+			//####################################################################################
+			
+			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
+			sExpressionSource = sExpressionSourceIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+									
+			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+			
+			
+			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
+			if(!bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;		
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+				
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(bSolve) {
+				sExpressionSource = sExpressionSourceIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+				
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				assertTrue(objEntry.isCall());
+				assertTrue(objEntry.isJavaCall());
+				assertNotNull(objEntry.getCallingClassname());
+				assertNotNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		return bReturn;
+	}
+		
+	private boolean testComputeCallJava_IniUsedUnsolved(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; String stemp;
+			
+			String sSection; String sProperty; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+			
+			
+			//####################################################################################
+			//### EXPRESSION - INI Handler .solve
+			//####################################################################################
+			
+			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
+			sSection = sSectionIn;
+			sProperty = sPropertyIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
 			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-//			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-//			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
-//			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-//							
-//			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //sollte dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-//			
-//			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); 
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-//			
-//			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
-//			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
-//			
-//			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
-//			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
-//			
-//			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-//		
-//			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
-//			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-//	
+			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+							
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //sollte dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, false); 
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+	
+			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+			assertEquals(sExpressionSolved, sValue);
+			
+			objEntry = objFileIniTest.getEntry();
+			assertNotNull(objEntry);
+			assertNotNull(objEntry);
+			assertFalse(objEntry.isCall());
+			assertFalse(objEntry.isJavaCall());
+						
+			
+			//########################################################################################
+			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
+			sSection = sSectionIn;
+			sProperty = sPropertyIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			//Anwenden der ersten Formel, Mit Berechnung oder Formelersetzung
+			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,false); 
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //soll dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+			
+			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+			assertEquals(sExpressionSolved, sValue);
+			
+			objEntry = objFileIniTest.getEntry();
+			assertNotNull(objEntry);
+			assertTrue(objEntry.isCall());
+			assertFalse(objEntry.isJavaCall());
+						
+
+			
+			//###############################################################
+						
+			
+			
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		return bReturn;
+	}
+	
+	
+	private boolean testComputeCallJava_IniUsed(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; String stemp;
+			
+			String sSection; String sProperty; String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+			
+			
+			//####################################################################################
+			//### EXPRESSION - INI Handler
+			//####################################################################################
+			
+			//Anwenden der ersten Formel, MIT BERECHNUNG				
+			sSection = sSectionIn;
+			sProperty = sPropertyIn;
+			sExpressionSolved = sExpressionSolvedIn;
 			
 			//Anwenden der ersten Formel, Mit Berechnung oder Formelersetzung
 			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
@@ -1470,13 +1852,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 			
-			
-			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus UND Z:Call-Tag auch raus
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;						
-			sExpression = EnvironmentZZZ.getHostName(); ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
-
-			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
-			assertEquals(sExpression, sValue);
+			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+			assertEquals(sExpressionSolved, sValue);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
@@ -1484,16 +1861,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue(objSectionEntry.isJavaCall());
 						
 
+			
+			bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		}		
+		}
+		return bReturn;
 	}
 	
 	/**void, Test: Reading an entry in a section of the ini-file
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	public void testComputeCallComputed(){
+	public void testComputeCallJavaComputed(){
 
 		try {	
 			//Hole den RAW Wert aus der Ini Datei

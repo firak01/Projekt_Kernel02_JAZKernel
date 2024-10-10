@@ -22,7 +22,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -151,7 +151,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					}
 				}								
 				
-				objaReturn = ArrayListZZZ.toZipEntryArray(objaZipEntry); 
+				objaReturn = ArrayListUtilZZZ.toZipEntryArray(objaZipEntry); 
 				
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -578,7 +578,7 @@ File[] objaReturn = null;
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 						objaEntryTemp.add(zeTemp);
 				}
-				objaReturn = ArrayListZZZ.toZipEntryArray(objaEntryTemp);				
+				objaReturn = ArrayListUtilZZZ.toZipEntryArray(objaEntryTemp);				
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -981,7 +981,7 @@ File[] objaReturn = null;
 					File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 					objaFileTempInTemp.add(objFileTemp);
 				}
-				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+				objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);
 				
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
@@ -1316,7 +1316,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JD) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 			   	
-				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+				objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);
 			} catch (IOException e) {
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (J ERROR) XXXXXXXXXXXXXX.";
@@ -1523,7 +1523,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 						}
 						objaFileTempInTemp.add(objFileTemp);
 					}	
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+					objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);
 				}else { //Nur Verzeichnis-Fall PEEK
 					objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceFilePath);
 																		
@@ -1549,8 +1549,8 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 						}
 						objaFileTempInTemp.add(objFileTemp);
 					}
-					objaFileTempInTemp = (ArrayList<File>) ArrayListZZZ.unique(objaFileTempInTemp);//Auch wenn mehrere Dateien in einem Verzeichnis sind, nur 1x das Verzeichnis zurückgeben.
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+					objaFileTempInTemp = (ArrayList<File>) ArrayListUtilZZZ.unique(objaFileTempInTemp);//Auch wenn mehrere Dateien in einem Verzeichnis sind, nur 1x das Verzeichnis zurückgeben.
+					objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);
 				}
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -1688,7 +1688,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					}
 				}
 										
-				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);					
+				objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);					
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1747,7 +1747,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					objaFileTempInTemp.add(fileTemp);
 				}
 			}
-			objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);	
+			objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);	
 		}//end main:
 		return objaReturn;
 	}
@@ -1802,7 +1802,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					objaFileTempInTemp.add(objReturn);
 				}
 			}
-			objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);	
+			objaReturn = ArrayListUtilZZZ.toFileArray(objaFileTempInTemp);	
 		}//end main:
 		return objaReturn;
 	}

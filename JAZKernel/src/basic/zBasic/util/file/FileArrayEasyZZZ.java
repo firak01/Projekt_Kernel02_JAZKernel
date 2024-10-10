@@ -41,7 +41,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.AbstractKernelObjectZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -62,7 +62,7 @@ public static File[] add(File[] objaFile, File objFile) {
 	main:{
 		ArrayList<File> listaFile = new ArrayListExtendedZZZ<File>(objaFile);		
 		listaFile.add(objFile);
-		objaReturn = ArrayListZZZ.toFileArray(listaFile);
+		objaReturn = ArrayListUtilZZZ.toFileArray(listaFile);
 	}//end main:
 	return objaReturn;
 }

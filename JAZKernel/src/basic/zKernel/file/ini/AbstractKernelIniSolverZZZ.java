@@ -177,80 +177,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCrypt = objCrypt;
 	}
-	
-	
-//	//### aus IParseEnabledZZZ
-//	@Override
-//	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-//		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-//		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators, true);
-//	}
-//	
-//	//### Aus IKernelEntryExpressionUserZZZ	
-//	@Override
-//	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
-//		return this.parseFirstVector_(sExpression, objReturnReference, true, true);
-//	}
-//
-//	@Override
-//	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-//		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators, true);
-//	}
-//	
-//	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
-//	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
-//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-//		IKernelConfigSectionEntryZZZ objEntry = null;
-//		String sReturn = sExpressionIn;
-//		String sExpressionUsed = sExpressionIn;
-//		main:{
-//			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-//			
-//			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
-//			if(!bUseExpression) break main;
-//			
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
-//			if(objReturnReferenceIn==null) {
-//				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
-//				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-//				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
-//			}else {
-//				objReturnReference = objReturnReferenceIn;
-//				objEntry = objReturnReference.get();
-//			}
-//			
-//			if(objEntry==null) {
-//				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-//				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-//				//objEntry = this.getEntry();
-//				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-//				objReturnReference.set(objEntry);
-//			}	
-//			objEntry.setRaw(sExpressionUsed);
-//						
-//			vecReturn = super.parseFirstVector(sExpressionUsed, objReturnReference, bRemoveSurroundingSeparators);			
-//			sReturn = this.solveParsed(vecReturn);	
-//						
-//			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-//			if(bRemoveSurroundingSeparators) {
-//				String sTagStart=this.getTagStarting(); //"<Z>";
-//				String sTagEnd=this.getTagClosing();    //"</Z>";
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-//			}
-//		}				
-//				
-//		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-//		this.setValue(sReturn);	
-//		vecReturn.replace(sReturn);
-//		if(objEntry!=null) {					
-//			objEntry.setValue(sReturn);
-//			if(sExpressionIn!=null) {
-//				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-//			}			
-//			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-//		}
-//		return vecReturn;
-//	}
 		
 	//### Aus ISolveEnabled
 	@Override
@@ -375,7 +301,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			String sExpressionSolved = this.solveParsed(sExpressionParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			sReturn = sExpressionSolved; //Zwischenstand.	
 			objEntry = objReturnReferenceSolve.get();															
-		}//end main;
+		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);		
@@ -448,7 +374,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					
 				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
 				while(objVariable.isExpression(sExpressionUsed)){
-					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, false); //beim reinen Aufloesen die Z-Tags drin belassen, ausserdem ist das ein einfacher Tag OHNE IKernelConfigSectionEntry.
+					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
 					if(vecExpressionTemp==null) break;
 					
 					sExpressionTemp = (String) vecExpressionTemp.get(1);
@@ -481,7 +407,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 								
 				KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 				while(objFormulaIniPath.isExpression(sExpressionUsed)){
-						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, false);//Da wir den Ausdruck komplett ersetzen wollen unbedingt die Z-Tags raus.
+						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
 						if(vecExpressionTemp==null) break;
 						
 						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	

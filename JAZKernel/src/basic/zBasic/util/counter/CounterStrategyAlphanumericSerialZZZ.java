@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrategyAlphanumericZZZ{
@@ -178,7 +178,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 				
 				//Idee: Wenn inksorientert, dann hier Umsortieren der Liste.
 				if(bLeftAligned){ 
-					ArrayListZZZ.reverse(listas);
+					ArrayListUtilZZZ.reverse(listas);
 				}
 
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						

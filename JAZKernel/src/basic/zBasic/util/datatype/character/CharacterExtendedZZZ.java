@@ -6,7 +6,7 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -134,7 +134,7 @@ public class CharacterExtendedZZZ extends AbstractObjectZZZ implements ICharacte
 		String sReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isNull(iaPosition))break main;
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -157,7 +157,7 @@ public class CharacterExtendedZZZ extends AbstractObjectZZZ implements ICharacte
 		String sReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isNull(iaPosition))break main;
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());

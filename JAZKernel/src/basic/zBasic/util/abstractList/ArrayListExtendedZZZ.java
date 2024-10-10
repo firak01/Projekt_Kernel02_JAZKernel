@@ -74,7 +74,7 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 	
 	public void addAllUnique(ArrayList<?> lista) throws ExceptionZZZ {
 		main:{
-			if(ArrayListZZZ.isEmpty(lista))break main;
+			if(ArrayListUtilZZZ.isEmpty(lista))break main;
 			
 			for(Object obj : lista) {
 				this.addUnique(obj);

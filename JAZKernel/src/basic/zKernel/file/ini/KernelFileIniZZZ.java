@@ -546,13 +546,23 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return objReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();		
+	private IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn=null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {	
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			//Aber hier keine Tag, sondern ein FileIni, darum geht nicht objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                             //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objReturn = objReturnReference.get();
+		}
 		if(objReturn==null) {
-			objReturn = this.getEntry(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										    //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objReturnReference.set(objReturn);
-		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		
+		}//Achtung: Das objReturn Objekt NICHT generell aus dem FileIni-Objekt uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	

@@ -127,6 +127,7 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 				this.remove(iIndex);
 			}
 			this.add(iIndex, obj);
+			this.iIndexUsedLast = iIndex;
 			objReturn = obj;
 		}//end main:
 		

@@ -391,35 +391,36 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	private Vector3ZZZ<String> parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		IKernelConfigSectionEntryZZZ objEntry = null;
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		String sReturn = sExpression;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
+		if(objReturnReferenceIn==null) {
+			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		
+		if(objEntry==null) {
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}	
+		objEntry.setRaw(sExpression);
+		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
-			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
-			if(objReturnReferenceIn==null) {
-				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
-				objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-				                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
-			}else {
-				objReturnReference = objReturnReferenceIn;
-				objEntry = objReturnReference.get();
-			}
-			
-			if(objEntry==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-				//objEntry = this.getEntry();
-				objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objReturnReference.set(objEntry);
-			}	
-			objEntry.setRaw(sExpression);			
+									
 			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 		}//end main:				
 		
-			
 		//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 		if(bRemoveSurroundingSeparators) {
 			String sTagStart=this.getTagStarting(); //"<Z>";

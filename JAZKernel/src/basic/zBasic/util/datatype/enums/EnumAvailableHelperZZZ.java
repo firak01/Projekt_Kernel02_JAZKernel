@@ -10,7 +10,7 @@ import basic.zBasic.ReflectInterfaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
@@ -55,7 +55,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			
 			Class objClass = objForClass.getClass();
 			ArrayList<IEnumSetMappedZZZ> listae = EnumAvailableHelperZZZ.searchEnumMappedList(objClass, sEnumName, bScanInterfaceImmidiate);
-			if(ArrayListZZZ.isEmpty(listae)) break main;
+			if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 			
 			for(IEnumSetMappedZZZ obje : listae) {
 				String sName = obje.getName();
@@ -298,9 +298,9 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 						}
 					}
 				}
-				if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
-					if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedZZZ>();				
-					listaeByInterface = (ArrayList<IEnumSetMappedZZZ>) ArrayListZZZ.join(listaeByInterface, listaeByInterfaceTemp);
+				if(!ArrayListUtilZZZ.isEmpty(listaeByInterfaceTemp)) {
+					if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedZZZ>();				
+					listaeByInterface = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByInterface, listaeByInterfaceTemp);
 				}
 			}
 			
@@ -317,26 +317,26 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				//Rekursion durchfuehren !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				//ArrayList<Collection<? extends Enum<?>>> listaStatusByClassSuper = new ArrayList<Collection<? extends Enum<?>>>();
 				ArrayList<IEnumSetMappedZZZ> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
-				listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 			}
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByDirect)) {		
+		if(!ArrayListUtilZZZ.isEmpty(listaeByDirect)) {		
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 			listaeReturn.addAll(listaeByDirect);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
+		if(!ArrayListUtilZZZ.isEmpty(listaeByInterface)) {
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 			listaeReturn.addAll(listaeByInterface);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByClassSuper)) {
+		if(!ArrayListUtilZZZ.isEmpty(listaeByClassSuper)) {
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 			listaeReturn.addAll(listaeByClassSuper);
 		}
 		
-		listaeReturn = (ArrayList<IEnumSetMappedZZZ>) ArrayListZZZ.unique(listaeReturn);
+		listaeReturn = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.unique(listaeReturn);
 	}//end main:
 	return listaeReturn;
 	}
@@ -390,8 +390,8 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 						}
 					}			
 				}
-				if(!ArrayListZZZ.isEmpty(listasByInterfaceTemp)) {
-					if(ArrayListZZZ.isEmpty(listasByInterface)) listasByInterface = new ArrayList<String>();				
+				if(!ArrayListUtilZZZ.isEmpty(listasByInterfaceTemp)) {
+					if(ArrayListUtilZZZ.isEmpty(listasByInterface)) listasByInterface = new ArrayList<String>();				
 					listasByInterface.addAll(listasByInterfaceTemp);
 				}
 			}
@@ -406,29 +406,29 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.
 				//Darum: Von der Vererbungshierarchie des Interface implementiert.
 				ArrayList<String> listasByParentTemp = EnumAvailableHelperZZZ.searchList(objcls, sEnumName, bScanInterfaceImmidiate, bScanParentClassImmidiate);
-				if(!ArrayListZZZ.isEmpty(listasByParentTemp)) {
-					if(ArrayListZZZ.isEmpty(listasByParent)) listasByParent = new ArrayList<String>();				
+				if(!ArrayListUtilZZZ.isEmpty(listasByParentTemp)) {
+					if(ArrayListUtilZZZ.isEmpty(listasByParent)) listasByParent = new ArrayList<String>();				
 					listasByParent.addAll(listasByParentTemp);
 				}			
 			}
 		}
 				
-		if(!ArrayListZZZ.isEmpty(listasByDirect)) {
+		if(!ArrayListUtilZZZ.isEmpty(listasByDirect)) {
 			if(listasReturn==null) listasReturn = new ArrayList<String>();
 			listasReturn.addAll(listasByDirect);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listasByInterface)) {
+		if(!ArrayListUtilZZZ.isEmpty(listasByInterface)) {
 			if(listasReturn==null) listasReturn = new ArrayList<String>();
 			listasReturn.addAll(listasByInterface);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listasByParent)) {
+		if(!ArrayListUtilZZZ.isEmpty(listasByParent)) {
 			if(listasReturn==null) listasReturn = new ArrayList<String>();
 			listasReturn.addAll(listasByParent);
 		}
 		
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
+		listasReturn = (ArrayList<String>) ArrayListUtilZZZ.unique(listasReturn);
 	}//end main:
 	return listasReturn;
 	}
@@ -442,7 +442,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		}
 	
 		ArrayList<String> listas = searchList(cls, sEnumName);
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -456,7 +456,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		}
 		
 		ArrayList<String> listas = EnumAvailableHelperZZZ.searchListDirect(cls, sEnumName);			
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -470,7 +470,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		}
 		
 		ArrayList<String> listas = EnumAvailableHelperZZZ.searchList(cls, sEnumName);					
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -634,7 +634,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			//+++++++++++++++++++++++++++++++++++
 			//1. Direkte die Klasse abfragen
 			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			if(!ArrayListZZZ.isEmpty(listaClass)) {				
+			if(!ArrayListUtilZZZ.isEmpty(listaClass)) {				
 				for(Class objClass : listaClass) {
 					String sEnumClass = objClass.getName();				
 					if(sEnumClass.endsWith(sEnumInnerName)) {
@@ -714,9 +714,9 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		main:{
 			
 			ArrayList<IEnumSetMappedZZZ> listaMappedReturn = EnumAvailableHelperZZZ.searchEnumMappedList(classToCheck, sEnumName,bScanInterfaceImmidiate,bScanParentClassImmidiate);
-			if(ArrayListZZZ.isEmpty(listaMappedReturn))break main;
+			if(ArrayListUtilZZZ.isEmpty(listaMappedReturn))break main;
 			
-			enumaReturn = ArrayListZZZ.toEnumMappedArrayByMapped(listaMappedReturn);	
+			enumaReturn = ArrayListUtilZZZ.toEnumMappedArrayByMapped(listaMappedReturn);	
 		}//end main
 		return enumaReturn;
 	}
@@ -779,7 +779,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			}
 			
 			ArrayList<E> listae = EnumAvailableHelperZZZ.searchEnumList(classToCheck, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);					
-			enumaReturn = ArrayListZZZ.toEnumArray(listae);
+			enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
 		}//end main:
 		return enumaReturn;
 	}
@@ -945,14 +945,14 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				}
 			}else {
 				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-				if(!ArrayListZZZ.isEmpty(listaClass)) {
+				if(!ArrayListUtilZZZ.isEmpty(listaClass)) {
 					for(Class objClass : listaClass) {
 						String sEnumClass = objClass.getName();				
 						if(sEnumClass.endsWith(sEnumInnerName)) {
 							Object[] obja = objClass.getEnumConstants();
 							
 							for(Object obj : obja) {
-								if(ArrayListZZZ.isEmpty(listaeByClass)) listaeByClass = new ArrayList<E>();
+								if(ArrayListUtilZZZ.isEmpty(listaeByClass)) listaeByClass = new ArrayList<E>();
 								Enum e = (Enum) obj;
 								listaeByClass.add((E) e);
 							}
@@ -971,18 +971,18 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				ArrayList<Class<?>> listaInterfaceByClass=new ArrayList<Class<?>>();
 				ReflectClassZZZ.scanInterfacesSuper(classToCheck, listaInterfaceByClass);
 				
-				if(!ArrayListZZZ.isEmpty(listaInterfaceByClass)) {					
+				if(!ArrayListUtilZZZ.isEmpty(listaInterfaceByClass)) {					
 					for(Class objClassInterface : listaInterfaceByClass) {
 						
 						//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
 						ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
-						if(!ArrayListZZZ.isEmpty(listaClassByInterface)) {
+						if(!ArrayListUtilZZZ.isEmpty(listaClassByInterface)) {
 							for(Class objClass : listaClassByInterface) {
 								String sEnumClass = objClass.getName();				
 								if(sEnumClass.endsWith(sEnumInnerName)) {
 									Object[] obja = objClass.getEnumConstants();
 									for(Object obj : obja) {
-										if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<E>();
+										if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<E>();
 										//20240403, warum wird hier gemappt? IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) obj;
 										//                                   listaeByInterface.add((E) e);
 										listaeByInterface.add((E) obj);
@@ -1003,29 +1003,29 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				for(Class<?> objclsSuper : listaClassSuper) {
 					//!!!Rekursion
 					ArrayList<E> listaeBySuperclassTemp=EnumAvailableHelperZZZ.searchEnumList(objclsSuper, sEnumName,bScanInterfaceImidiate,bScanSuperclassImidiate);
-					listaeBySuperclass = (ArrayList<E>) ArrayListZZZ.join(listaeBySuperclass, listaeBySuperclassTemp);			
+					listaeBySuperclass = (ArrayList<E>) ArrayListUtilZZZ.join(listaeBySuperclass, listaeBySuperclassTemp);			
 				}			
 			}
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++
-			if(!ArrayListZZZ.isEmpty(listaeByClass)) {		
+			if(!ArrayListUtilZZZ.isEmpty(listaeByClass)) {		
 				if(listaeReturn==null) listaeReturn = new ArrayList<E>();
 				listaeReturn.addAll(listaeByClass);
 			}
 		
-			if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
+			if(!ArrayListUtilZZZ.isEmpty(listaeByInterface)) {
 				if(listaeReturn==null) listaeReturn = new ArrayList<E>();
 				listaeReturn.addAll(listaeByInterface);
 			}
 			
-			if(!ArrayListZZZ.isEmpty(listaeBySuperclass)) {
+			if(!ArrayListUtilZZZ.isEmpty(listaeBySuperclass)) {
 				if(listaeReturn==null) listaeReturn = new ArrayList<E>();
 				listaeReturn.addAll(listaeBySuperclass);
 			}
 			
 		
-			listaeReturn = (ArrayList<E>) ArrayListZZZ.unique(listaeReturn);
+			listaeReturn = (ArrayList<E>) ArrayListUtilZZZ.unique(listaeReturn);
 		}//end main:
 		return listaeReturn;
 	}

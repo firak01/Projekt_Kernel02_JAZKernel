@@ -13,7 +13,7 @@ import debug.zBasic.MyPrivilegedAction;
 import basic.javareflection.mopex.Mopex;
 import basic.javareflection.mopex.UQueue;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ReflectClassZZZ implements IConstantZZZ{

@@ -22,7 +22,7 @@ import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
@@ -597,7 +597,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			ArrayList<String> listasModuleSection = AbstractKernelObjectZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = AbstractKernelObjectZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
-			listasModuleSection = (ArrayList<String>) ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			listasModuleSection = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
 			
 			IniFile objIni = objConfigIni.getFileIniObject();
 			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
@@ -645,7 +645,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			ArrayList<String> listasModuleSection = AbstractKernelObjectZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = AbstractKernelObjectZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
-			listasModuleSection = (ArrayList<String>) ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			listasModuleSection = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
 			
 			IniFile objIni = objConfigIni.getFileIniObject();
 			objReturn = this.KernelSearchFileConfigDirectLookupInWorkspace_(objConfig, objIni, sModule, listasModuleSection);
@@ -825,7 +825,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection2use = sApplicationKey + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgram;			
 			alsReturn.add(sSection2use);									
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListUtilZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 		
 	}
@@ -870,23 +870,23 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sModuleAlias = AbstractKernelObjectZZZ.searchAliasForModule(objFileIniConfig, sModule, sApplicationOrModule, sSystemNumber);
 			ArrayList<String> alsModuleAlias = AbstractKernelObjectZZZ.computeSystemSectionNames(sModuleAlias, sSystemNumber);
 			if(alsModuleAlias!=null) {
-            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
+            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModuleAlias);
             }
 			
 			//2. Dann Systemkeys mit dem Modulnamen
 			ArrayList<String> alsModule = AbstractKernelObjectZZZ.computeSystemSectionNames(sModule, sSystemNumber);
             if(alsModule!=null) {
-            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
+            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
         	//3. Applicationkeys
 			ArrayList<String> alsApplication = AbstractKernelObjectZZZ.computeSystemSectionNames(sApplicationOrModule, sSystemNumber);
 			if(alsApplication!=null) {
-				alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplication);
+				alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsApplication);
 			}
           
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListUtilZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
@@ -992,7 +992,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				if(!StringZZZ.isEmpty(sModuleAlias)) {
 					ArrayList<String> alsModuleAliasProgramAlias = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleAlias, sSystemNumberUsed);
 		            if(alsModuleAliasProgramAlias!=null) {
-		            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAliasProgramAlias);
+		            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModuleAliasProgramAlias);
 		            }
 				}else {
 					//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -1001,14 +1001,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//b) Modulname
 				ArrayList<String> alsModuleProgramAlias = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleUsed, sSystemNumberUsed);
 	            if(alsModuleProgramAlias!=null) {
-	            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleProgramAlias);
+	            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModuleProgramAlias);
 	            }
 	            
 	            
 	          //2. Danach auf Applikationsebene	            
 	          ArrayList<String> alsApplicationProgramAlias = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sApplicationAliasIn, sSystemNumberUsed);
 	          if(alsApplicationProgramAlias!=null) {
-	        	  alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
+	        	  alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
 	          }	          	            
 			}//end if !isempty(sProgramAlias)
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1018,7 +1018,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(!StringZZZ.isEmpty(sModuleAlias)) {
 				ArrayList<String> alsModuleAlias = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleAlias, sSystemNumberUsed);
 	            if(alsModuleAlias!=null) {
-	            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
+	            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModuleAlias);
 	            }
 			}else {
 				//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -1027,13 +1027,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//b) Modulname
 			ArrayList<String> alsModule = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleUsed, sSystemNumberUsed);
             if(alsModule!=null) {
-            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
+            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
             //2. auf Applikationsebene mit dem Programnamen
             ArrayList<String> alsApplicationProgram = AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sApplicationAliasIn, sSystemNumberUsed);
             if(alsApplicationProgram!=null) {
-            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
+            	alsReturn = (ArrayList<String>) ArrayListUtilZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
             }
             
             //#############
@@ -1077,7 +1077,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListUtilZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
@@ -1173,7 +1173,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				alsReturn.add(sModuleTemp);
 			}
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListUtilZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
@@ -5134,7 +5134,7 @@ MeinTestParameter=blablaErgebnis
 					String sEntry = objEntry.getValue();					
 					listasEntry.add(sEntry);
 				}
-				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
+				saReturn = ArrayListUtilZZZ.toStringArray(listasEntry);			
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
 				throw ez;
@@ -5197,7 +5197,7 @@ MeinTestParameter=blablaErgebnis
 					String sEntry = objEntry.getValue();					
 					listasEntry.add(sEntry);
 				}
-				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
+				saReturn = ArrayListUtilZZZ.toStringArray(listasEntry);			
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
 				throw ez;
@@ -6345,7 +6345,7 @@ MeinTestParameter=blablaErgebnis
 						}
 						
 						//Alle ggf. doppelt vorkommenden Eintraege entfernen
-						listaReturn = ArrayListZZZ.unique(listaConfigured);
+						listaReturn = ArrayListUtilZZZ.unique(listaConfigured);
 						break;
 					case 2:
 						//######## Von allen gefundenen Moduldateien ausgehend diejenigen, deren Konfiguration fehlt
@@ -6427,7 +6427,7 @@ MeinTestParameter=blablaErgebnis
 						}
 					
 						//Nun doppelte Modulnamen entfernen
-						listaReturn = ArrayListZZZ.unique(listaFile);
+						listaReturn = ArrayListUtilZZZ.unique(listaFile);
 						break;
 					case 3:
 						//+++ Von den konfigurierten Modulen diejenigen, deren Konfigurationsdatei fehlt
@@ -6471,7 +6471,7 @@ MeinTestParameter=blablaErgebnis
 						 }
 						
 						//Nun die Module trimmen
-						listaFile = ArrayListZZZ.unique(listaConfigured);
+						listaFile = ArrayListUtilZZZ.unique(listaConfigured);
 						
 						//Aus der liste nun diejenigen wieder entfernen, die  existieren, bzw: Diejenigen, die FEHLEN HINZUF�GEN
 						listaReturn = new ArrayList();
@@ -6557,7 +6557,7 @@ MeinTestParameter=blablaErgebnis
 							if(!stemp.equals("")) listaFile.add(stemp);	
 						}
 						
-						listaReturn = ArrayListZZZ.join(listaConfigured, listaFile, true);
+						listaReturn = ArrayListUtilZZZ.join(listaConfigured, listaFile, true);
 															
 						break;						
 					default:

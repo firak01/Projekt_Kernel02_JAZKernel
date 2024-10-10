@@ -9,7 +9,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
-import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
@@ -211,10 +211,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen
-			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
+			if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
 			
 			//Merke: Die Reihenfolge nicht berücksichtige		
-			hmReturn = JsonEasyZZZ.toHashMap(sReturn);
+			hmReturn = JsonUtilZZZ.toHashMap(sReturn);
 			
 			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
 		}//end main:
@@ -264,10 +264,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen
-			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
+			if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
 			
 			//Ziel: Die Reihenfolge berücksichtige		
-			hmReturn = (LinkedHashMap<String, String>) JsonEasyZZZ.toLinkedHashMap(sReturn);
+			hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturn);
 			this.setValue(hmReturn);
 			this.setValue(sReturn);
 			//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;

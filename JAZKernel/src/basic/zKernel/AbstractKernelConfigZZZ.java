@@ -15,7 +15,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -170,10 +170,10 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		HashMap<String, Boolean> hmReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sJSON)) break main;
-			if(!JsonEasyZZZ.isJsonValid(sJSON)) break main;
+			if(!JsonUtilZZZ.isJsonValid(sJSON)) break main;
 						
 			TypeToken<HashMap<String, Boolean>> typeToken = new TypeToken<HashMap<String, Boolean>>(){};
-			hmReturn = (HashMap<String, Boolean>) JsonEasyZZZ.toHashMap(sJSON);												
+			hmReturn = (HashMap<String, Boolean>) JsonUtilZZZ.toHashMap(sJSON);												
 		}//end main
 		return hmReturn;
 	}

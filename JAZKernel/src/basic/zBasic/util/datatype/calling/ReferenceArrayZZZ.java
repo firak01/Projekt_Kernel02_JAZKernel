@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
 /*
  * https://stackoverflow.com/questions/7884581/how-can-i-simulate-pass-by-reference-in-java
@@ -74,15 +74,15 @@ public class ReferenceArrayZZZ<T> {
 
     public T[] get() throws ExceptionZZZ {
     	//Wg. cannot Cast... Fehler hier ggfs. auf die InstanceOf mit meiner heuristischen Loesung prufen
-    	if(ArrayListZZZ.isInstanceOf(listaReferent, String.class)) {
+    	if(ArrayListUtilZZZ.isInstanceOf(listaReferent, String.class)) {
     		return this.getAsString();
     	}else {
-    		return (T[]) ArrayListZZZ.toArray(listaReferent);//!!! GEFÄHRLICH !!! FRAGLICH !!! listaReferent.toArray(T);
+    		return (T[]) ArrayListUtilZZZ.toArray(listaReferent);//!!! GEFÄHRLICH !!! FRAGLICH !!! listaReferent.toArray(T);
     	}
     }
     
     public T[] getAsString() {
-    	return (T[]) ArrayListZZZ.toStringArray(listaReferent);
+    	return (T[]) ArrayListUtilZZZ.toStringArray(listaReferent);
     }
     
     public ArrayList<T> getArrayList(){

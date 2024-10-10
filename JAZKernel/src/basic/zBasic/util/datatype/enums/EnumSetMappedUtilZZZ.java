@@ -18,7 +18,7 @@ import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -611,7 +611,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedZZZ> listae){
 			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
 			main:{
-				if(ArrayListZZZ.isEmpty(listae)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 				
 				for(IEnumSetMappedZZZ objMapped : listae) {
 					if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
@@ -624,11 +624,11 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static <E extends Enum> E[] toEnumArray(ArrayList<?> listae) throws ExceptionZZZ{
 			E[] objaeReturn = null;
 			main:{
-				if(ArrayListZZZ.isEmpty(listae)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 
 				//Hier ein Arra<ListZZZ.getInstanceOf() verwenden und nach der Klasse die Fallunterscheidung machen.
 				//Das spart 1x dieses durchsehen der Liste....
-				ArrayList<Class<?>> listaInstance = ArrayListZZZ.getInstanceOfList(listae);
+				ArrayList<Class<?>> listaInstance = ArrayListUtilZZZ.getInstanceOfList(listae);
 				if(listaInstance.contains(IEnumSetMappedZZZ.class)) {
 					objaeReturn=EnumSetMappedUtilZZZ.toEnumArrayByMapped((ArrayList<IEnumSetMappedZZZ>) listae);
 				}else if(listaInstance.contains(IEnumSetMappedStatusZZZ.class)) {
@@ -654,7 +654,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
 			E[] objaeReturn = null;
 			main:{
-				if(ArrayListZZZ.isEmpty(listae)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 				
 				//1. Versuch: Direkt per Cast.
 				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
@@ -676,7 +676,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				}
 				
 				//3.
-				objaeReturn = ArrayListZZZ.toEnumArray(listaeTemp);
+				objaeReturn = ArrayListUtilZZZ.toEnumArray(listaeTemp);
 			}
 			
 			return objaeReturn;
@@ -687,7 +687,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static <E extends Enum> E[] toEnumArrayByMappedStatus(ArrayList<IEnumSetMappedStatusZZZ> listae){		
 			E[] objaeReturn = null;
 			main:{
-				if(ArrayListZZZ.isEmpty(listae)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 				
 				//1. Versuch: Direkt per Cast.
 				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
@@ -709,7 +709,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				}
 				
 				//3.
-				objaeReturn = ArrayListZZZ.toEnumArray(listaeTemp);
+				objaeReturn = ArrayListUtilZZZ.toEnumArray(listaeTemp);
 			}
 			
 			return objaeReturn;
@@ -756,7 +756,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static IEnumSetMappedZZZ[] toEnumMapped(ArrayList<IEnumSetMappedZZZ> listae){
 			IEnumSetMappedZZZ[] objaReturn = null;
 			main:{
-				objaReturn = (IEnumSetMappedZZZ[]) ArrayListZZZ.toArray(listae);
+				objaReturn = (IEnumSetMappedZZZ[]) ArrayListUtilZZZ.toArray(listae);
 			}
 			return objaReturn;
 		}
@@ -775,7 +775,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				
 				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
-				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
 				
 				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedZZZ[listeReturnTemp.size()]);
 			}//end main:
@@ -831,7 +831,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				
 				ArrayList<IEnumSetMappedStatusZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(enuma);
-				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;
+				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
 				
 				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedStatusZZZ[listeReturnTemp.size()]);
 			}//end main:
@@ -849,7 +849,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				//if(!(listae instanceof IEnumSetMappedStatusZZZ)) break main;
 				
 				//Also eigener, heuristischer Ansatz
-				boolean bInstanceOfMappedStatus = ArrayListZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class);
+				boolean bInstanceOfMappedStatus = ArrayListUtilZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class);
 				if(!bInstanceOfMappedStatus)break main;
 				
 				enumaReturn = listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);

@@ -7,6 +7,21 @@ import basic.zBasic.IVectorLimitedZZZ;
 import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
+/** Zu beachten, problematisch:
+ *  - es werden sofort alle indexposition mit einem Defaultwert belegt.
+ *    Damit fuehrt ein .add(...) automatisch immer zu einem Fehler "ungueltige Indexposition".
+ *    
+ * - somit wird addAll(Collection ...) unsinnig.
+ * 
+ * - Loesungsansaetze:
+ *   a) addAll führt immer ein Replace aus, beginnend von dem gewuenschten Index.
+ *   b) man definiert den Vector-Inhalt quasi wie einen CicularBuffer. D.h. wird der hoechste erlaubte Indexwert erreicht faengt man wieder mit Index 0 an.
+ *   
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 10.10.2024, 12:15:24
+ * 
+ */
 public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZZZ{
 	private static final long serialVersionUID = -4483450165450297325L;
 	private int iSizeMax=0;
@@ -48,7 +63,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	@Override
 	public boolean ensureValidSize(int iSize) throws ExceptionZZZ{
 		if(iSize<0) return false;
-		if(this.sizeNext()<= this.sizeMax()) return true;
+		if(iSize<= this.sizeMax()) return true;
 		
 		ExceptionZZZ ez = new ExceptionZZZ("New Size is invalid: '" + iSize +"'", iERROR_PARAMETER_VALUE, ObjectUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
@@ -158,19 +173,23 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	@Override
 	public boolean addAll(Collection col) {
 		boolean bReturn = false;
-		try {
-			this.ensureValidSize(this.sizeNext());
-			
-			bReturn = super.addAll(col);
-			this.iIndexUsedLast = this.size()-1;
-			
-		}catch(ExceptionZZZ ez) {
+		main:{
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e) {
-				e.printStackTrace();
+				if(col==null)break main;
+				
+				this.ensureValidSize(col.size());
+				
+				bReturn = super.addAll(col);
+				this.iIndexUsedLast = this.size()-1;
+				
+			}catch(ExceptionZZZ ez) {
+				try {
+					this.logProtocolString(ez.getDetailAllLast());
+				} catch (ExceptionZZZ e) {
+					e.printStackTrace();
+				}
 			}
-		}
+		}//end main:
 		return bReturn;
 	}
 	
@@ -178,18 +197,22 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	@Override
 	public boolean addAll(int iIndex, Collection col) {
 		boolean bReturn = false;
-		try {
-			this.ensureValidSize(this.sizeNext());
-			
-			bReturn = super.addAll(iIndex, col);
-			this.iIndexUsedLast = this.size()-1;
-		}catch(ExceptionZZZ ez) {
+		main:{
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e) {
-				e.printStackTrace();
+				if(col==null)break main;
+			
+				this.ensureValidSize((iIndex+1) + col.size());
+				
+				bReturn = super.addAll(iIndex, col);
+				this.iIndexUsedLast = this.size()-1;
+			}catch(ExceptionZZZ ez) {
+				try {
+					this.logProtocolString(ez.getDetailAllLast());
+				} catch (ExceptionZZZ e) {
+					e.printStackTrace();
+				}
 			}
-		}
+		}//end main:
 		return bReturn;
 	}
 	

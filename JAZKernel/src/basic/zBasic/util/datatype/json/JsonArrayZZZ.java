@@ -45,11 +45,11 @@ public class JsonArrayZZZ<T> extends AbstractObjectZZZ  implements Iterable<T>{
 		}
 	}
 	public JsonArrayZZZ(String sJsonArray) throws ExceptionZZZ {
-		JsonArray objJsonArray = JsonEasyZZZ.toJsonArray(sJsonArray);
+		JsonArray objJsonArray = JsonUtilZZZ.toJsonArray(sJsonArray);
 		JsonArrayNew_(objJsonArray);
 	}
 	public JsonArrayZZZ(String[] saJsonArray) throws ExceptionZZZ {
-		JsonArray objJsonArray = JsonEasyZZZ.toJsonArray(saJsonArray);
+		JsonArray objJsonArray = JsonUtilZZZ.toJsonArray(saJsonArray);
 		JsonArrayNew_(objJsonArray);
 	}
 	

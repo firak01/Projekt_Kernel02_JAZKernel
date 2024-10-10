@@ -35,7 +35,7 @@ public class ArrayListZZZTest extends TestCase{
     public void testGetInstanceOfList() {
  	   try {
 	 	   DummyTestObjecWithDefaultValuesZZZ obj = new DummyTestObjecWithDefaultValuesZZZ();	 	  
-	 	   ArrayList<Class<?>>listaInstance = ArrayListZZZ.getInstanceOfList(obj);
+	 	   ArrayList<Class<?>>listaInstance = ArrayListUtilZZZ.getInstanceOfList(obj);
 	 	   assertNull(listaInstance); //Weil es keine Liste ist...
 	 	   
 
@@ -56,7 +56,7 @@ public class ArrayListZZZTest extends TestCase{
 	   ArrayList<Enum> listaEnum = listaEnumExtended.toArrayList();
 	   
 	   //Test: Aus der ArrayList ein Enum machen
-	   Object[] objaResultToArray = ArrayListZZZ.toArray(listaEnum);
+	   Object[] objaResultToArray = ArrayListUtilZZZ.toArray(listaEnum);
 	   assertNotNull(objaResultToArray);
 	   assertTrue(objaResultToArray.length==3);
 	   assertTrue(objaResultToArray[0] instanceof IEnumSetMappedZZZ);
@@ -85,7 +85,7 @@ public class ArrayListZZZTest extends TestCase{
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	   //Test: Aus der ArrayList ein Enum-Array machen
-	   Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumArray(listaEnum);
+	   Enum[]  objaResultToEnumArray = ArrayListUtilZZZ.toEnumArray(listaEnum);
 	   assertNotNull(objaResultToEnumArray);
 	   assertTrue(objaResultToEnumArray.length==3);
 	   assertTrue(objaResultToEnumArray instanceof Enum[]);
@@ -112,7 +112,7 @@ public class ArrayListZZZTest extends TestCase{
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	   //Test: Aus der ArrayList ein Enum-Array machen
-	   Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumArrayByMapped(listaEnum);
+	   Enum[]  objaResultToEnumArray = ArrayListUtilZZZ.toEnumArrayByMapped(listaEnum);
 	   assertNotNull(objaResultToEnumArray);
 	   assertTrue(objaResultToEnumArray.length==3);
 	   assertTrue(objaResultToEnumArray instanceof Enum[]);
@@ -141,7 +141,7 @@ public class ArrayListZZZTest extends TestCase{
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	   //Test: Aus der ArrayList ein Enum-Array machen
 	   //Das gibt eine Class Cast Exception... Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
-	   IEnumSetMappedZZZ[]  objaResultToEnumMappedArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
+	   IEnumSetMappedZZZ[]  objaResultToEnumMappedArray = ArrayListUtilZZZ.toEnumMappedArrayByMapped(listaEnum);
 	   assertNotNull(objaResultToEnumMappedArray);
 	   assertTrue(objaResultToEnumMappedArray.length==3);
 	   assertTrue(objaResultToEnumMappedArray instanceof IEnumSetMappedZZZ[]);
@@ -171,7 +171,7 @@ public class ArrayListZZZTest extends TestCase{
 	   //Test: Aus der ArrayList ein Enum-Array machen
 	   //Das gibt eine Class Cast Exception... Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
 	   //Das gibt eine java.lang.ArrayStoreException   
-	   Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumArrayByMappedStatus(listaEnum);
+	   Enum[]  objaResultToEnumArray = ArrayListUtilZZZ.toEnumArrayByMappedStatus(listaEnum);
 	   assertNotNull(objaResultToEnumArray);
 	   assertTrue(objaResultToEnumArray.length==3);
 	   
@@ -207,7 +207,7 @@ public class ArrayListZZZTest extends TestCase{
 	   //Test: Aus der ArrayList ein Enum-Array machen
 	   //Das gibt eine Class Cast Exception... Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
 	   //Das gibt eine java.lang.ArrayStoreException   
-	   IEnumSetMappedStatusZZZ[]  objaResultToEnumMappedStatusArray = ArrayListZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithoutStatus);
+	   IEnumSetMappedStatusZZZ[]  objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithoutStatus);
 	   assertNull(objaResultToEnumMappedStatusArray); //weil EnumSetMappedTestTypeZZZ als Klasse nur ein Enum hat vom Typ IEnumSetMappedZZZ
 	   
 	   
@@ -221,7 +221,7 @@ public class ArrayListZZZTest extends TestCase{
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnumWithStatus = listaEnumExtendedWithStatus.toArrayList();
 	 
 	   //Test: Aus der ArrayList ein Enum-Array machen		  
-	   objaResultToEnumMappedStatusArray = ArrayListZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithStatus);	   
+	   objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithStatus);	   
 	   assertNotNull(objaResultToEnumMappedStatusArray);
 	   assertTrue(objaResultToEnumMappedStatusArray.length==3);
 	   

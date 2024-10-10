@@ -11,7 +11,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -337,7 +337,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		listasReturn.addAll(listasDirect);
 //		listasReturn.addAll(listasParent);
 //		listasReturn.addAll(listasInterface);
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);							
+		listasReturn = (ArrayList<String>) ArrayListUtilZZZ.unique(listasReturn);							
 		
 	}//end main:
 	return listasReturn;
@@ -565,7 +565,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		}
 
 		ArrayList<String> listas = getFlagsZList(cls);
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -579,7 +579,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		}
 
 		ArrayList<String> listas = getFlagsZLocalListAvailable(cls);
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -594,7 +594,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		}
 		
 		ArrayList<String> listas = FlagZHelperZZZ_BACKUP20240403.getFlagsZListDirectAvailable(cls);			
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -608,7 +608,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		}
 		
 		ArrayList<String> listas = FlagZHelperZZZ_BACKUP20240403.getFlagsZLocalListDirectAvailable(cls);			
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -622,7 +622,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 			}
 			
 			ArrayList<String> listas = FlagZHelperZZZ_BACKUP20240403.getFlagsZListInheritedAvailable(cls);					
-			saReturn = ArrayListZZZ.toStringArray(listas);
+			saReturn = ArrayListUtilZZZ.toStringArray(listas);
 		}//end main:
 		return saReturn;
 		}
@@ -636,7 +636,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 			}
 			
 			ArrayList<String> listas = FlagZHelperZZZ_BACKUP20240403.getFlagsZLocalListInheritedAvailable(cls);					
-			saReturn = ArrayListZZZ.toStringArray(listas);
+			saReturn = ArrayListUtilZZZ.toStringArray(listas);
 		}//end main:
 		return saReturn;
 		}
@@ -660,7 +660,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 						}
 					 }
 				}
-				enumaReturn = ArrayListZZZ.toEnumArray(listae);
+				enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
 			}
 			return enumaReturn;
 		}
@@ -701,7 +701,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 					}
 				 }
 			}
-			enumaReturn = ArrayListZZZ.toEnumArray(listae);
+			enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
 		}
 		return enumaReturn;
 	}

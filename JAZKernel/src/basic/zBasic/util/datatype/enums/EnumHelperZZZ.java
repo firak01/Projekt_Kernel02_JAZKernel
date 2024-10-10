@@ -10,7 +10,7 @@ import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -42,7 +42,7 @@ public class EnumHelperZZZ implements IConstantZZZ{
 					}
 				 }
 			}
-			enumaReturn = ArrayListZZZ.toEnumArray(listae);
+			enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
 		}
 		return enumaReturn;
 	}

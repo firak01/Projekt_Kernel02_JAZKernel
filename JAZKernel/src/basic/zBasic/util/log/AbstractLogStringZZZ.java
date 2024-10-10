@@ -10,7 +10,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -203,7 +203,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			listas.add(sLog02);
 		}
 		
-		String[]saLog = ArrayListZZZ.toStringArray(listas);
+		String[]saLog = ArrayListUtilZZZ.toStringArray(listas);
 		
 		return this.compute(obj, saLog, ienumFormatLogString);
 	}
@@ -418,7 +418,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			listas.add(sLog02);
 		}
 				
-		String[]saLog = ArrayListZZZ.toStringArray(listas);
+		String[]saLog = ArrayListUtilZZZ.toStringArray(listas);
 		
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat=new IEnumSetMappedLogStringFormatZZZ[1];
 		iaFormat[0] = ienumaFormatLogString;

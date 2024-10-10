@@ -145,7 +145,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 			Object obj = null;        //F�r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
 			//1. Kann ja nur Teilmenge sein, wenn die �bergebene Hashmap gleich ist.
-			boolean	btemp = ArrayListZZZ.isSameSize(this.toArrayList(), objAL);
+			boolean	btemp = ArrayListUtilZZZ.isSameSize(this.toArrayList(), objAL);
 			if(!btemp){
 				bReturn = false;
 				break main;
@@ -407,10 +407,10 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 	}	
 	
 	public String[] toStringArray() {
-		return ArrayListZZZ.toStringArray(this);
+		return ArrayListUtilZZZ.toStringArray(this);
 	}
 	
 	public int[] toIntArray() {
-		return ArrayListZZZ.toIntArray(this);
+		return ArrayListUtilZZZ.toIntArray(this);
 	}
 	}//end class

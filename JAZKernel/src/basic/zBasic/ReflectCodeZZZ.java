@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import base.collections.CollectionUtil;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.LogString4ReflectCodeZZZ;
@@ -955,7 +955,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;	  
 				}//end Java Version
-			  saReturn = ArrayListZZZ.toStringArray( listasTemp);
+			  saReturn = ArrayListUtilZZZ.toStringArray( listasTemp);
 		}//end main
 		return saReturn;
 	}

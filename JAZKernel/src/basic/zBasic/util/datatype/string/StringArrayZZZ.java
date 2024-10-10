@@ -10,13 +10,14 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 /**
@@ -28,7 +29,7 @@ import basic.zBasic.util.math.MathZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 //Generisch ist nicht sinnvoll, bei den statischen Methoden  public class StringArrayZZZ<T> implements IConstantZZZ{
-public class StringArrayZZZ implements IConstantZZZ{
+public class StringArrayZZZ extends AbstractObjectZZZ{
 	private String[] saIntern;
 	private boolean bIsString = false;
 
@@ -556,7 +557,7 @@ output:
 			 		listaint.add(new Integer(iCounter));
 			 	}				
 			}
-			iaReturn = ArrayListZZZ.toIntArray(listaint);
+			iaReturn = ArrayListUtilZZZ.toIntArray(listaint);
 			
 		}//end main:				
 		return iaReturn;
@@ -576,7 +577,7 @@ output:
 					listas.add(sTemp);
 				}
 			}//end for
-			saReturn = ArrayListZZZ.toStringArray(listas);						
+			saReturn = ArrayListUtilZZZ.toStringArray(listas);						
 		}//end main:
 		return saReturn;
 	}
@@ -933,8 +934,8 @@ output:
 					
 			if(bIgnoreCase){
 				ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
-				ArrayListZZZ.remove(listas, sStringToRemove, true);
-				objReturn = ArrayListZZZ.toStringArray(listas);
+				ArrayListUtilZZZ.remove(listas, sStringToRemove, true);
+				objReturn = ArrayListUtilZZZ.toStringArray(listas);
 			}else{
 				objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
 			}		
@@ -1099,7 +1100,7 @@ output:
 	public static String toJson(String[] saValue) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{							
-		    sReturn = JsonEasyZZZ.toJson(saValue);
+		    sReturn = JsonUtilZZZ.toJson(saValue);
 		}//end main:
 		return sReturn;
 	}

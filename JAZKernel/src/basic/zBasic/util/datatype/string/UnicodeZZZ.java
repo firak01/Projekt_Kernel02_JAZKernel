@@ -52,6 +52,13 @@ to UTF-8 - since this seems to be the most commonly used Unicode encoding.
  * 
  */
 public class UnicodeZZZ implements IConstantZZZ{
+	
+	private UnicodeZZZ() { 
+		//Zum Verstecken des Konsruktors
+	} //static methods only
+	
+
+	
 	/** 
 	 * You can also write unicode characters directly in strings in the code, by escaping the with "\\u". (only 1 backslash, the second backslash her is for escaping the unicode)
 	 * Here is an example:

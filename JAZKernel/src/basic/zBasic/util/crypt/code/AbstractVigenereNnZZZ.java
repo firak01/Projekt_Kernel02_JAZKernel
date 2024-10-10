@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
@@ -185,7 +185,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		int[] iaReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -221,7 +221,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				break main;
 			}
 			
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -311,7 +311,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		int[] iaReturn = null;
 		main:{			
 			if(StringZZZ.isEmpty(sInput)) break main;
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -351,7 +351,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				break main;
 			}
 			
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -408,7 +408,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				break main;
 			}
 			
-			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+			if(ArrayListUtilZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -554,7 +554,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 
 	@Override
 	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
-		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
+		if(ArrayListUtilZZZ.isEmpty(this.listasCharacterPool)) {
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
@@ -693,8 +693,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}
 			
 			//Nun Array ggfs. wieder "zusammenfassen"
-			ArrayListZZZ.remove(listaInt, new Integer(-1000));
-			iaReturn = ArrayListZZZ.toIntArray(listaInt);
+			ArrayListUtilZZZ.remove(listaInt, new Integer(-1000));
+			iaReturn = ArrayListUtilZZZ.toIntArray(listaInt);
 			
 		}//end main:
 		return iaReturn;				

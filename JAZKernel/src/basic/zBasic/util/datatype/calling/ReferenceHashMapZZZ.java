@@ -4,7 +4,7 @@ package basic.zBasic.util.datatype.calling;
 
 import java.util.HashMap;
 
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
 /*
  * https://stackoverflow.com/questions/7884581/how-can-i-simulate-pass-by-reference-in-java

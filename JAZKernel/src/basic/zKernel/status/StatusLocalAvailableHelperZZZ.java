@@ -11,7 +11,7 @@ import basic.zBasic.ReflectInterfaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapKeepFirstZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
@@ -186,7 +186,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			ArrayList<IEnumSetMappedZZZ> listae = EnumAvailableHelperZZZ.searchEnumMappedListDirect(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate);
 			if(listae==null)break main;
 			
-			listaeReturn = ArrayListZZZ.toEnumMappedStatusArrayListByMapped(listae);
+			listaeReturn = ArrayListUtilZZZ.toEnumMappedStatusArrayListByMapped(listae);
 		}//end main:
 		return listaeReturn;
 	}
@@ -222,7 +222,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			for(IEnumSetMappedStatusZZZ objEnum : enuma) {
 				int iGroupIdByEnum = objEnum.getStatusGroupId();
 				if(iGroupIdByEnum == iGroupId) {
-					if(ArrayListZZZ.isEmpty(listaeByDirect)) listaeByDirect = new ArrayList<IEnumSetMappedStatusZZZ>();
+					if(ArrayListUtilZZZ.isEmpty(listaeByDirect)) listaeByDirect = new ArrayList<IEnumSetMappedStatusZZZ>();
 					if(!listaeByDirect.contains(objEnum)) {
 						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
 						listaeByDirect.add(objEnum);
@@ -253,8 +253,8 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 							listaeByInterfaceTemp.add(objEnum);
 						}
 					}
-					if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
-						if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();				
+					if(!ArrayListUtilZZZ.isEmpty(listaeByInterfaceTemp)) {
+						if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();				
 						listaeByInterface.addAll(listaeByInterfaceTemp);
 					}
 				}
@@ -270,26 +270,26 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				
 				//!!!Rekursion
 				ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuperTemp=StatusLocalAvailableHelperZZZ.searchForGroupList(objclsSuper, iGroupId, bScanInterfaceImmediate, bScanSuperclassImmediate);			
-				listaeByClassSuper = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 			}	
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByDirect)) {		
+		if(!ArrayListUtilZZZ.isEmpty(listaeByDirect)) {		
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
 			listaeReturn.addAll(listaeByDirect);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
+		if(!ArrayListUtilZZZ.isEmpty(listaeByInterface)) {
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
 			listaeReturn.addAll(listaeByInterface);
 		}
 		
-		if(!ArrayListZZZ.isEmpty(listaeByClassSuper)) {
+		if(!ArrayListUtilZZZ.isEmpty(listaeByClassSuper)) {
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
 			listaeReturn.addAll(listaeByClassSuper);
 		}
 		
-		listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);		
+		listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListUtilZZZ.unique(listaeReturn);		
 	}//end main:
 	return listaeReturn;
 	}
@@ -374,7 +374,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			ArrayList<IEnumSetMappedZZZ>listae = EnumAvailableHelperZZZ.searchEnumMappedList(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate, bScanSuperclassImmediate);
 			if(listae==null)break main;
 			
-			listaeReturn = ArrayListZZZ.toEnumMappedStatusArrayListByMapped(listae);
+			listaeReturn = ArrayListUtilZZZ.toEnumMappedStatusArrayListByMapped(listae);
 	}//end main:
 	return listaeReturn;
 	}
@@ -421,7 +421,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		}
 
 		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchList(cls,bScanInterfaceImmediate, bScanSuperclassImmediate);
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -446,7 +446,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		}
 		
 		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchListDirect(cls, bScanInterfaceImmediate);			
-		saReturn = ArrayListZZZ.toStringArray(listas);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
@@ -504,7 +504,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				for(IEnumSetMappedStatusZZZ objEnum : enuma) {					
 					int iEnumGroupId = objEnum.getStatusGroupId();
 					if(iEnumGroupId==iGroupId) {
-						if(ArrayListZZZ.isEmpty(listaeByDirect)) listaeByDirect = new ArrayList<IEnumSetMappedStatusZZZ>();
+						if(ArrayListUtilZZZ.isEmpty(listaeByDirect)) listaeByDirect = new ArrayList<IEnumSetMappedStatusZZZ>();
 						if(!listaeByDirect.contains(objEnum)) {
 							//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
 							listaeByDirect.add(objEnum);
@@ -524,7 +524,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 						for(IEnumSetMappedStatusZZZ objEnum : enumaByInterface) {
 							int iGroupIdByEnum = objEnum.getStatusGroupId();
 							if(iGroupIdByEnum == iGroupId) {
-								if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();
+								if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();
 								if(!listaeByInterface.contains(objEnum)) {
 									//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
 									listaeByInterface.add(objEnum);
@@ -539,12 +539,12 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			//... eben nicht, da nur direkt gesucht wird ......
 			
 			
-			if(!ArrayListZZZ.isEmpty(listaeByDirect)) {		
+			if(!ArrayListUtilZZZ.isEmpty(listaeByDirect)) {		
 				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
 				listaeReturn.addAll(listaeByDirect);
 			}
 			
-			if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
+			if(!ArrayListUtilZZZ.isEmpty(listaeByInterface)) {
 				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
 				listaeReturn.addAll(listaeByInterface);
 			}
@@ -554,7 +554,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 //				listasReturn.addAll(listasByClassSuper);
 //			}
 			
-			listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);
+			listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListUtilZZZ.unique(listaeReturn);
 		}//end main:
 		return listaeReturn;
 	}	
@@ -866,7 +866,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	
 			ArrayList<IEnumSetMappedStatusZZZ> lista = searchForGroupList(cls, iGroupId, bScanInterfaceImmidiate);
 			ArrayList<String>listasReturn = null;
-			if(!ArrayListZZZ.isEmpty(lista)) {
+			if(!ArrayListUtilZZZ.isEmpty(lista)) {
 				listasReturn = new ArrayList<String>();
 				for(IEnumSetMappedStatusZZZ objEnum : lista) {
 					
@@ -876,8 +876,8 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 					}
 				}
 			}
-			listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
-			saReturn = ArrayListZZZ.toStringArray(listasReturn);
+			listasReturn = (ArrayList<String>) ArrayListUtilZZZ.unique(listasReturn);
+			saReturn = ArrayListUtilZZZ.toStringArray(listasReturn);
 		}//end main:
 		return saReturn;
 	}
@@ -1179,7 +1179,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				}
 			}else {
 				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-				if(!ArrayListZZZ.isEmpty(listaClass)) {
+				if(!ArrayListUtilZZZ.isEmpty(listaClass)) {
 					listaeReturnByClass = new ArrayList<E>();
 					for(Class objClass : listaClass) {
 						String sEnumClass = objClass.getName();				
@@ -1202,13 +1202,13 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);
 				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
 			
-				if(!ArrayListZZZ.isEmpty(listaInterfaceByClass)) {
+				if(!ArrayListUtilZZZ.isEmpty(listaInterfaceByClass)) {
 					listaeReturnByInterface = new ArrayList<E>();
 					for(Class objClassInterface : listaInterfaceByClass) {
 						
 						//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
 						ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
-						if(!ArrayListZZZ.isEmpty(listaClassByInterface)) {
+						if(!ArrayListUtilZZZ.isEmpty(listaClassByInterface)) {
 							for(Class objClass : listaClassByInterface) {
 								String sEnumClass = objClass.getName();				
 								if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
@@ -1226,7 +1226,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			}//end if
 			
 			//Verbinde beides
-			listaReturn = (ArrayList<E>) ArrayListZZZ.join(listaeReturnByClass, listaeReturnByInterface);
+			listaReturn = (ArrayList<E>) ArrayListUtilZZZ.join(listaeReturnByClass, listaeReturnByInterface);
 			
 		}//end main:
 		return listaReturn;

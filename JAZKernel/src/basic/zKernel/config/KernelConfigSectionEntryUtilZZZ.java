@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -592,8 +593,35 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		
 	}
 	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagName) throws ExceptionZZZ {
+		return getValueExpressionTagSurroundingRemoved(sValueExpression, sTagName, true);
+	}
+	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		String sReturn = sValueExpression;		
+		main:{
+			if(StringZZZ.isEmpty(sValueExpression)) break main;
+			if(StringZZZ.isEmpty(sTagName)) break main;
+						
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sTagStart; String sTagEnd;
+			sTagStart = XmlUtilZZZ.computeTagPartStarting(sTagName);
+			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
+					
+			sReturn = getValueExpressionTagSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, bDirectionFromInToOut);
+		}//end main;
+		return sReturn;
+	}
+		
+	
 	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd) throws ExceptionZZZ {
-		return getValueExpressionTagSurroundingRemovedFromInToOut(sValueExpression, sTagStart, sTagEnd);
+		return getValueExpressionTagSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, true);
 	}
 	
 	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut) throws ExceptionZZZ {
@@ -611,6 +639,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sValueExpression)) break main;
 			if(StringZZZ.isEmpty(sTagStart)) break main;
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
+			
+			if(!XmlUtilZZZ.isTag(sTagStart)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			if(!XmlUtilZZZ.isTag(sTagEnd)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
@@ -630,9 +669,19 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagStart)) break main;
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
+			if(!XmlUtilZZZ.isTag(sTagStart)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			if(!XmlUtilZZZ.isTag(sTagEnd)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
@@ -644,7 +693,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	
 	public static void getValueExpressionTagSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
 		main:{
-		KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true);
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true);
 		}//end main
 	}	
 	
@@ -669,6 +718,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sBefore = (String) vecReturn.get(0);
 			String sValue = (String) vecReturn.get(1);
 			String sRest = (String) vecReturn.get(2);
+			
+			//Merke 20241010: Stand jetzt ist es so, dass flogendes nur beim Loeschen der Tags von innen nach aussen notwendig ist
+			//nicht aber beim Loeschen der Tags von aussen nach innen:			
 			
 			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
 			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
@@ -749,23 +801,25 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sValue = (String) vecReturn.get(1);
 			String sRest = (String) vecReturn.get(2);
 			
-			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
-			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
-			//         Will man sie loswerden, dann muessen halt die inneren Z: - Tags aufgeloest werden.
-			//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
-			boolean bSkip = false;
-			if(StringZZZ.contains(sValue, "<Z:")) {
-				if(StringZZZ.startsWithIgnoreCase(sBefore, "<Z>")) {
-					if(!bSkip) bSkip = true;
-				}
-				if(StringZZZ.endsWithIgnoreCase(sRest, "</Z>")) {
-					if(!bSkip) bSkip = true;
-				}
-			}
-			if(bSkip) {
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Weitere Formeln im String vermutet. Entferne aeusser Z-Tags nicht.");
-				break main;
-			}
+//Merke 20241010: Stand jetzt ist es so, dass dies nur beim Loeschen der Tags von innen nach aussen notwendig ist
+//			      nicht aber beim Loeschen der Tags von aussen nach innen.			
+//			//WICHTIG: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden.
+//			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
+//			//         Will man sie loswerden, dann muessen halt die inneren Z: - Tags aufgeloest werden.
+//			//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
+//			boolean bSkip = false;
+//			if(StringZZZ.contains(sValue, "<Z:")) {
+//				if(StringZZZ.startsWithIgnoreCase(sBefore, "<Z>")) {
+//					if(!bSkip) bSkip = true;
+//				}
+//				if(StringZZZ.endsWithIgnoreCase(sRest, "</Z>")) {
+//					if(!bSkip) bSkip = true;
+//				}
+//			}
+//			if(bSkip) {
+//				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Weitere Formeln im String vermutet. Entferne aeusser Z-Tags nicht.");
+//				break main;
+//			}
 				
 				
 			String sBeforeOld = sBefore;

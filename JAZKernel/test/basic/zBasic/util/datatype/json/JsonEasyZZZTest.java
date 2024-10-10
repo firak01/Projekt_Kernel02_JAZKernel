@@ -51,7 +51,7 @@ public class JsonEasyZZZTest extends TestCase implements IConstantZZZ {
 			boolean bErg;
 			String sValue = "[[\"110917       \", 3.0099999999999998, -0.72999999999999998, 2.8500000000000001, 2.96, 685.0, 38603.0], [\"110917    \", 2.71, 0.20999999999999999, 2.8199999999999998, 2.8999999999999999, 2987.0, 33762.0]]";
 		
-			bErg = JsonEasyZZZ.isJsonValid(sValue);
+			bErg = JsonUtilZZZ.isJsonValid(sValue);
 			
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -85,12 +85,12 @@ public class JsonEasyZZZTest extends TestCase implements IConstantZZZ {
 			assertNotNull(sErg);
 			
 			String sValue = "[[\"110917       \", 3.0099999999999998, -0.72999999999999998, 2.8500000000000001, 2.96, 685.0, 38603.0], [\"110917    \", 2.71, 0.20999999999999999, 2.8199999999999998, 2.8999999999999999, 2987.0, 33762.0]]";
-			JsonArray objaJson = JsonEasyZZZ.toJsonArray(sValue);
+			JsonArray objaJson = JsonUtilZZZ.toJsonArray(sValue);
 			JsonElement objJsonElement = objaJson.get(0);
 			stemp = objJsonElement.toString();
 			System.out.println(stemp);
 			
-			JsonArray objArrayInner = JsonEasyZZZ.toJsonArray(stemp);
+			JsonArray objArrayInner = JsonUtilZZZ.toJsonArray(stemp);
 			
 			int iCounter = 0;
 			JsonArrayZZZ objJsonArray = new JsonArrayZZZ(objArrayInner);			

@@ -2,7 +2,7 @@ package basic.zBasic.util.math;
 import java.util.ArrayList;
 import java.util.List;
 
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
 public class PrimeFactorizationZZZ {
 
@@ -38,7 +38,7 @@ public class PrimeFactorizationZZZ {
     
     public static int[] primeFactorsAsIntArray(int n) {
     	List<Integer>lista=primeFactors(n);
-    	return ArrayListZZZ.toIntArray((ArrayList<Integer>) lista);
+    	return ArrayListUtilZZZ.toIntArray((ArrayList<Integer>) lista);
     }
 
     public static void main(String[] args) {

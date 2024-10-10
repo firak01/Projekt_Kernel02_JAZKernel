@@ -7,7 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
@@ -525,7 +525,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setValue(ArrayList<String> alValue) {
 		this.getValueArrayListVector().add(alValue);
-		if(!ArrayListZZZ.isEmpty(alValue)) {				
+		if(!ArrayListUtilZZZ.isEmpty(alValue)) {				
 			this.isArrayValue(true);
 			if(alValue!=null) this.setValue(alValue.toString());
 		}else {

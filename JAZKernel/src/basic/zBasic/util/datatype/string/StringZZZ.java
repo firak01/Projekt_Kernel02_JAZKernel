@@ -33,12 +33,12 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
-import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
@@ -1309,7 +1309,7 @@ public class StringZZZ implements IConstantZZZ{
 				ArrayList<String> listaTemp = StringArrayZZZ.toArrayList(saTemp2);
 				
 				//Nun das Ergebnis zu dem bisherigen hinzufuegen
-				listaStringFound = (ArrayList<String>) ArrayListZZZ.join(listaStringFound, listaTemp, false);
+				listaStringFound = (ArrayList<String>) ArrayListUtilZZZ.join(listaStringFound, listaTemp, false);
 			}		
 			saReturn = new String[listaStringFound.size()-1];
 			saReturn = (String[]) listaStringFound.toArray(saReturn);
@@ -1784,7 +1784,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static boolean isJson(String sString) throws ExceptionZZZ {
-		return JsonEasyZZZ.isJsonValid(sString);
+		return JsonUtilZZZ.isJsonValid(sString);
 	}
 	
 	public static boolean isWhitespace(String sString){

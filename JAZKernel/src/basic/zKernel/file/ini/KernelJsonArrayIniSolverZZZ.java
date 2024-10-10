@@ -8,7 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -140,11 +140,11 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			}
 			
 			//ANSCHLIESSEND die ArrayList erstellen
-			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
+			if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
 			
 			
 			//JsonArray ja = JsonEasyZZZ.toJsonArray(sReturn);
-			alsReturn = JsonEasyZZZ.toArrayListString(sReturn);
+			alsReturn = JsonUtilZZZ.toArrayListString(sReturn);
 			
 			//Verwendete Lösung für die HashMap
 //			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};

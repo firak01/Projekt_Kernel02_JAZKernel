@@ -8,16 +8,18 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectClassZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
-public class ArrayListZZZ<T> extends AbstractObjectZZZ {
-	private ArrayListZZZ() { } //static methods only
+public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
+	private ArrayListUtilZZZ() { 
+		//Zum Verstecken des Konsruktors
+	} //static methods only
+	
 	public static boolean isEmpty(ArrayList<?> objAL) {
 		boolean bReturn = false;
 		main:{
@@ -146,7 +148,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		ArrayList<Class<?>>listaReturn=null;
 		main:{			
 			if(objAsList instanceof List){
-				if(ArrayListZZZ.isEmpty((ArrayList<?>) objAsList))break main;
+				if(ArrayListUtilZZZ.isEmpty((ArrayList<?>) objAsList))break main;
 				
 				ArrayListExtendedZZZ<Class<?>> listaExtended = new ArrayListExtendedZZZ<Class<?>>();
 				for(Object obj : (List)objAsList) {					
@@ -170,7 +172,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 			if(objClass==null)break main;
 			
 			if(objAsList instanceof List){
-				if(ArrayListZZZ.isEmpty((ArrayList<?>) objAsList))break main;
+				if(ArrayListUtilZZZ.isEmpty((ArrayList<?>) objAsList))break main;
 				
 //			    if(((List)obj).size()>0 && (((List)obj).get(0) instanceof MeineTolleKlasse)){
 //			        // The object is of List<MyObject> and is not empty. Do something with it.
@@ -206,7 +208,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		boolean bReturn = false;
 		main:{			
 			if(objClass==null)break main;
-			if(ArrayListZZZ.isEmpty(lista))break main;
+			if(ArrayListUtilZZZ.isEmpty(lista))break main;
 		
 			for(Object obj : lista) {
 				Class<? extends Object> classTemp = obj.getClass();//Das funktioniert aber nicht mit Interfaces
@@ -228,7 +230,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 	
 		
 	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2){
-		return ArrayListZZZ.join(lista1, lista2, false);
+		return ArrayListUtilZZZ.join(lista1, lista2, false);
 	}
 	
 	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
@@ -254,7 +256,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 				
 			}else{
 				//Wenn 'uniqued' werden soll, dann ist "keepFirst" die default-Strategie
-				listaReturn = ArrayListZZZ.joinKeepFirst(lista1,lista2);		
+				listaReturn = ArrayListUtilZZZ.joinKeepFirst(lista1,lista2);		
 				break main;
 			}//End if (bFlagUnique ....
 			
@@ -280,7 +282,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 				}
 			}		
 			
-			listaReturn = ArrayListZZZ.uniqueKeepFirst(listaTemp);			
+			listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(listaTemp);			
 		}//END main:
 		return listaReturn;
 	}
@@ -303,7 +305,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 				}
 			}		
 			
-			listaReturn = ArrayListZZZ.uniqueKeepLast(listaTemp);			
+			listaReturn = ArrayListUtilZZZ.uniqueKeepLast(listaTemp);			
 		}//END main:
 		return listaReturn;
 	}
@@ -629,7 +631,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 	public static ArrayList<?> unique(ArrayList<?> lista){
 		ArrayList listaReturn = null;
 		main:{
-			listaReturn = ArrayListZZZ.uniqueKeepFirst(lista);
+			listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(lista);
 		}//End main:
 		return listaReturn;
 	}
@@ -656,7 +658,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		
 			//Strategie: KeepLast
 			//Erst einmal die Listenreihenfolge umdrehen
-			ArrayList<?> listaReversed = (ArrayList<?>) ArrayListZZZ.reverse(lista);
+			ArrayList<?> listaReversed = (ArrayList<?>) ArrayListUtilZZZ.reverse(lista);
 			
 			ArrayList listaReturnReversed=new ArrayList();
 			for(int icount=0; icount < listaReversed.size(); icount++ ){
@@ -664,7 +666,7 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 			}	
 			
 			//Nach der Verarbeitung die Listenreihenfolge wieder zurückdrehen
-			listaReturn = (ArrayList) ArrayListZZZ.reverse(listaReturnReversed);
+			listaReturn = (ArrayList) ArrayListUtilZZZ.reverse(listaReturnReversed);
 			
 		}//End main:
 		return listaReturn;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.doublevalue.DoubleZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -113,7 +113,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 		
 		//Idee: Wenn nicht linksorientert, dann hier Umsortieren der Liste.
 		if(bLeftAligned==false){ 
-			listasReturn = (ArrayList<String>) ArrayListZZZ.reverse(listasReturn);
+			listasReturn = (ArrayList<String>) ArrayListUtilZZZ.reverse(listasReturn);
 		}
 		
 		return listasReturn;
@@ -155,7 +155,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 //				sReturn = ArrayListZZZ.implodeReversed(listas,"");												
 //			}else{
 				//von rechts beginnend gefüllt, wenn rechtsbündig
-				sReturn = ArrayListZZZ.implode(listas, "");						
+				sReturn = ArrayListUtilZZZ.implode(listas, "");						
 //			}
 		}//end main:
 		return sReturn;
