@@ -64,9 +64,9 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String>vecReturn = null;
-		String sReturn = sExpression;
+		String sReturn = sExpressionIn;
 		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -87,11 +87,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
 		}	
-		objEntry.setRaw(sExpression);		
+		objEntry.setRaw(sExpressionIn);		
 		
 		
 		main:{			
-			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
@@ -103,7 +104,9 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			boolean bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);		
 			if(!bUseCallJava) break main;
-								
+					
+			String sExpression = sExpressionIn;
+			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
@@ -203,8 +206,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			}
 		}	
 		this.setValue(sReturn);
-		if(objEntry!=null) objEntry.setValue(VectorUtilZZZ.implode(vecReturn));
-		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		if(objEntry!=null) {
+			objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}		
 		return vecReturn;						
 	}
 	

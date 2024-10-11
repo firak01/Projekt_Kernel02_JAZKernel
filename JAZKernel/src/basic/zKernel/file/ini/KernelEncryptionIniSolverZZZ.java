@@ -56,15 +56,36 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
+		return this.parseFirstVector_(sLineWithExpression, null, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn=sLineWithExpression;
+		String sReturn=sExpressionIn;
 		boolean bUseExpression=false;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}							
+		objEntry.setRaw(sExpressionIn);
+	
 		main:{			
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
@@ -75,16 +96,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
 			if(!bUseEncryption) break main;
 			
+			String sExpression = sExpressionIn;
+			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:Encryption drumherum entfernen
-			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
-			String sExpression = (String) vecReturn.get(1);				
+			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);			
+			sExpression = (String) vecReturn.get(1);				
 			if(!StringZZZ.isEmpty(sExpression)){
 			
 			this.getEntry().setRaw(sExpression);
 				
-				
+			//TODOGOON 20241011; //Das muss in solveParsed verschoben werden!!!!	
 			//++++++++++++++++++++++++++++++++++++++++++++
 			String sCode=null;
 				
@@ -212,19 +235,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		
 	//#################################
 	//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-	if(sReturn!=null){
-		if(vecReturn.size()==0) vecReturn.add(0,"");
-		
-		if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-		if(!StringZZZ.isEmpty(sReturn)){
-			vecReturn.add(1, sReturn);
-		}else {
-			vecReturn.add(1, "");
-		}
-		
-		if(vecReturn.size()==2) vecReturn.add(2,"");										
-	}	
-	this.setValue(sReturn);
+	vecReturn.replace(sReturn);
 	
 	// Z-Tags entfernen.
 	if(bRemoveSurroundingSeparators) {
@@ -234,6 +245,15 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 		}
 	}		
+
+	this.setValue((String) vecReturn.get(1));
+	if(objEntry!=null) {
+		objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
+		if(sExpressionIn!=null) {
+			if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+		}				
+		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+	}
 	return vecReturn;
 	}
 	

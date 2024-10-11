@@ -664,22 +664,22 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override 
-	public boolean isPathSolved() {
+	public boolean isPathSubstituted() {
 		return this.bPathSolved;
 	}
 	
 	@Override
-	public void isPathSolved(boolean bPathSolved) {
+	public void isPathSubstituted(boolean bPathSolved) {
 		this.bPathSolved = bPathSolved;
 	}
 	
 	@Override
-	public boolean isVariableSolved() {
+	public boolean isVariableSubstituted() {
 		return this.bVariableSolved;
 	}
 	
 	@Override
-	public void isVariableSolved(boolean bVariableSolved) {
+	public void isVariableSubstiuted(boolean bVariableSolved) {
 		this.bVariableSolved = bVariableSolved;
 	}
 	

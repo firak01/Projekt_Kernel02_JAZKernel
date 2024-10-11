@@ -74,11 +74,11 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isSolved();
 	abstract void isSolved(boolean bIsSolved);
 	
-	public boolean isPathSolved();
-	abstract void isPathSolved(boolean bIsPathSolved);
+	public boolean isPathSubstituted();
+	abstract void isPathSubstituted(boolean bIsPathSolved);
 	
-	public boolean isVariableSolved();
-	abstract void isVariableSolved(boolean bIsVariableSolved);
+	public boolean isVariableSubstituted();
+	abstract void isVariableSubstiuted(boolean bIsVariableSolved);
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isConversion();

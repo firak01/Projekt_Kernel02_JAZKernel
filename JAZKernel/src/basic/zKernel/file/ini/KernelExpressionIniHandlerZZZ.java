@@ -657,6 +657,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
 		return sReturn;				

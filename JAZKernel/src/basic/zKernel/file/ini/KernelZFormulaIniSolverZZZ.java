@@ -342,6 +342,9 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			this.setValue(sReturn);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
+				if(sExpressionIn!=null) {
+					if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				}
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			}
 			return sReturn;	
@@ -416,6 +419,9 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		this.setValue(sReturn);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
 		return sReturn;	

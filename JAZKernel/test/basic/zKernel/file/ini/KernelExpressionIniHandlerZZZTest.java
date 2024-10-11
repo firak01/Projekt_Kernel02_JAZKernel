@@ -1843,23 +1843,66 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	 */
 	public void testCompute_CallJavaEntry_Detail(){
 
-		try {	
-			//Hole den RAW Wert aus der Ini Datei
+//		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+		
+			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+			//TODO 20241011: Source und Solved und solvedTagless etc. an die Methoden von aussen uebergeben, so dass die verschiednesten String sgetestet werden koennen.
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+			
+			btemp = testCompute_CallJavaEntry_Detail_CallUnsolved_();
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+			
+			
+			
+			btemp = testCompute_CallJavaEntry_Detail_SolverUnsolved_();
+			
+			btemp = testCompute_CallJavaEntry_Detail_CallUnsolved_();
+			
+			btemp = testCompute_CallJavaEntry_Detail_();
+		
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}		
+	}
+	
+	private boolean testCompute_CallJavaEntry_Detail_SolverUnsolved_() {
+		boolean bReturn = false;
+		
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+		
+			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+			
+			
 			
 			//###########################################################
 			//Anwenden der ersten Formel, ohne Berechnung
-			boolean bFlagAvailable = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
+				
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", btemp);
+		
 			
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
-			
-			String sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
-			String sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
+			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
 			assertEquals(sExpressionSolved, sValue);			
 			
 			//Wert mit Entry-Wert vergleichen
-			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getEntry();
+			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
 			assertEquals(sValue, objEntry.getValue());			
 			assertTrue(objEntry.isExpression()); //Zumindest die PATH Anweisungen wurden ersetzt
@@ -1872,17 +1915,43 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertNull(objEntry.getCallingMethodname());
 			
 			//Wert mit speziellen Entry-Formelwert vergleichen
-			String sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
 			assertNull(sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
 						
-			String sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		
+		return bReturn;
+	}
+	
+	private boolean testCompute_CallJavaEntry_Detail_CallUnsolved_() {
+		boolean bReturn = false;
+		
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+		
+			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.			
-			bFlagAvailable = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", btemp);
+		
+			
 			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
 			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
 			assertEquals(sExpressionSolved,sValue);
@@ -1894,14 +1963,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue(objEntry.isExpression()); //Zumindest die PATH Anweisungen wurden ersetzt
 			
 			assertFalse(objEntry.isFormula());
-			assertTrue(objEntry.isSolved());  TODOGOON20241011;//Schwierig, wenn der Solver ausgefuehrt wird sollte eigentlich der Wert verändert sein, wenn auch noch nicht per JAVACAll aufgelöst.
+			assertTrue(objEntry.isSolved()); //TODOGOON20241011;//Schwierig, wenn der Solver ausgefuehrt wird sollte eigentlich der Wert verändert sein, wenn auch noch nicht per JAVACAll aufgelöst.
 			
 			assertFalse(objEntry.isCall());
 			assertFalse(objEntry.isJavaCall());
 			assertNull(objEntry.getCallingClassname());
 			assertNull(objEntry.getCallingMethodname());
-			
-			
+						
 			//Wert mit speziellen Entry-Formelwert vergleichen
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
 			assertNull(sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
@@ -1909,23 +1977,44 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		
+		return bReturn;
+	}
+	
+	private boolean testCompute_CallJavaEntry_Detail_() {
+		boolean bReturn = false;
+		
+		try {
+			boolean btemp; 
+			
+			String sExpressionSource; 
+			String sExpressionSolved; String sValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry;
+		
+			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+			
 			
 			
 			//###################################################		
 			//Berechne die erste Formel, DIRECT			
 			String sHostName = EnvironmentZZZ.getHostName();
 			
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
-			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true);
-			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);			
-			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
-			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
+			btemp = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
+			btemp = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
+			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", btemp);
+			btemp = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true);
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", btemp);			
+			btemp = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", btemp);
 			
 			String sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT; 
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference);			
 			assertEquals(sHostName,sValue);
 			
@@ -1948,10 +2037,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
-			
+		
+		bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		}		
+		}
+		
+		return bReturn;
 	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file

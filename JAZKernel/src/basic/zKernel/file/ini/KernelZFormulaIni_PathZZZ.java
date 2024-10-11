@@ -278,9 +278,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
 			if(!bUseExpressionPath) break main;
 
-			String sExpressionUsed = sExpressionIn;
+			String sExpression = sExpressionIn;
 			
-			bExpressionFound = this.isExpression(sExpressionUsed); 
+			bExpressionFound = this.isExpression(sExpression); 
 			if(!bExpressionFound)break main;
 			
 			//++++++++++++++++++++++++++++++++++++++
@@ -291,7 +291,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
-			vecReturn = StringZZZ.vecMidFirst(sExpressionUsed + sSepRight, sSepLeft, sSepRight, false,false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
 			String sLeft = (String) vecReturn.get(0);
 			
 			String sMid = (String) vecReturn.get(1);
@@ -388,7 +388,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 
 		this.setValue((String) vecReturn.get(1));
 		if(objEntry!=null) {
-			objEntry.setValue(sReturn);	
+			objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
 			}				

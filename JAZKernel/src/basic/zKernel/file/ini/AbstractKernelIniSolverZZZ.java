@@ -401,7 +401,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				objEntry.setValue(sReturn);
 				if(sReturn!=sExpressionOld) {
 					objEntry.isParsed(true);
-					objEntry.isVariableSolved(true);
+					objEntry.isVariableSubstiuted(true);
 				}
 				sExpressionUsed = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
 			}	
@@ -434,7 +434,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				objEntry.setValue(sReturn);
 				if(!sExpressionOld.equals(sReturn)) {
 					objEntry.isParsed(true);
-					objEntry.isPathSolved(true);
+					objEntry.isPathSubstituted(true);
 				}
 				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
 			}//end if .getFlag(..USE_...Path...)
@@ -448,6 +448,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
+			objEntry.setValue(sReturn);	
+//20241011: Nein, diese Aufloesung hat mit den eigentlichen Solvern nix zu tun!!!
+//			if(sExpressionIn!=null) {
+//				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+//			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
 		return sReturn;	
