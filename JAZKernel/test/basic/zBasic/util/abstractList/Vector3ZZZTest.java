@@ -10,7 +10,11 @@ public class Vector3ZZZTest  extends TestCase{
     private Vector3ZZZ<String> vec = null;
 	
     protected void setUp(){
-		vec = new Vector3ZZZ<String>();
+    	try {
+    		vec = new Vector3ZZZ<String>();
+    	} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
     }//END setup
     
     public void testReplace_1(){

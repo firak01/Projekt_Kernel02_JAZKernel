@@ -287,20 +287,30 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 			//Rufe nun parse() auf...
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParse.set(objEntry);  //TODOGOON20241004; !!! wenn man den Solver nutzen möchte, muss man die Tags drin lassen
-			//String sExpressionParsed = this.parse(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			String sExpressionParsed = (String) vecReturn.get(1);
-			sReturn = sExpressionParsed; //Zwischenstand.			
 			objEntry = objReturnReferenceParse.get();
 			
+			String sExpressionParsed = (String) vecReturn.get(1);
+			if(!sExpressionIn.equals(sExpressionParsed)) {				
+				objEntry.isParsed(true);
+			}
+			sReturn = sExpressionParsed; //Zwischenstand.			
+			
+			
+			//Rufe nun solveParsed() auf...
 			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;			
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			String sExpressionSolved = this.solveParsed(sExpressionParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			objEntry = objReturnReferenceSolve.get();
+			
+			if(!sExpressionParsed.equals(sExpressionSolved)) {
+				objEntry.isSolved(true);
+			}			
 			sReturn = sExpressionSolved; //Zwischenstand.	
-			objEntry = objReturnReferenceSolve.get();															
+																		
 		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -310,7 +320,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isExpression(true);
 			}			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 		}

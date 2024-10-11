@@ -91,12 +91,12 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 					//TODOGOON20240418;//Nutze einen KernelExpressionIniSolverZZZ, den es erst noch zu schreiben gilt.
 					//                   Der ohne IniFile nur fuer eine Zeile gilt.
 					//                   s. KernelJavaCallIniSolverZZZ
-					if(StringZZZ.equalsIgnoreCase(sActionAlias,XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))) {
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,XmlUtilZZZ.computeTagNull())) {
 		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
 		//				objReturnReferenceLog.add(sLog);				
 						break main;
 					}		
-					if(StringZZZ.equalsIgnoreCase(sActionAlias,XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))) {
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,XmlUtilZZZ.computeTagEmpty())) {
 		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
 		//				objReturnReferenceLog.add(sLog);
 						break main;

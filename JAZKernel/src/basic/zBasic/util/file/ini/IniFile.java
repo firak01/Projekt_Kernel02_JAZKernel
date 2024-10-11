@@ -627,8 +627,9 @@ protected boolean addSection(String sSection){
    * @param subject the subject heading (e.g. "Widget Settings")
    * @param variable the variable name (e.g. "Color")
    * @return the value of the variable (e.g. "green"), empty string if not found
+ * @throws ExceptionZZZ 
    */
-   public String getValue(String subject, String variable)
+   public String getValue(String subject, String variable) throws ExceptionZZZ
    {
 	   String sReturn = null;       //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zurückgeben
 	   main:{
@@ -643,7 +644,8 @@ protected boolean addSection(String sSection){
 	         sReturn = (String)(valVector.elementAt(valueIndex));
 	         if(StringZZZ.isEmpty(sReturn)) {
 	        	//FGL 20191218: Wenn der Wert Konfiguriert wurde, aber ein Leerstring enthalten soll, dann kann man ihn nur mit diesem "Formelausdruck" erkennen.
-		    	sReturn = XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);        }	    	 
+		    	sReturn = XmlUtilZZZ.computeTagEmpty();
+		    }	    	 
 	      }
 	   }//end main:
       return sReturn;
@@ -654,8 +656,9 @@ protected boolean addSection(String sSection){
  * @param variable
  * @return
  * @author Fritz Lindhauer, 08.04.2020, 08:28:33
+ * @throws ExceptionZZZ 
  */
-public String[] getValueAsArray(String subject, String variable) {
+public String[] getValueAsArray(String subject, String variable) throws ExceptionZZZ {
 	 String[] saReturn = null;
 	   main:{
 		   saReturn = this.getValueAsArray(subject, variable, null);
@@ -663,7 +666,7 @@ public String[] getValueAsArray(String subject, String variable) {
 	   return saReturn;
  }
 
-public String[] getValueAsArray(String subject, String variable, String sSeparatorIn) {
+public String[] getValueAsArray(String subject, String variable, String sSeparatorIn) throws ExceptionZZZ {
 	   String[] saReturn = null;
 	   main:{
 		   String sSeparator;

@@ -310,7 +310,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					if(objValue!=null) {
 						sReturn = objValue.toString();					
 					}else {
-						sReturn = XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);
+						sReturn = XmlUtilZZZ.computeTagNull();
 					}					
 				}				
 			} //end if bAnyJavaCall

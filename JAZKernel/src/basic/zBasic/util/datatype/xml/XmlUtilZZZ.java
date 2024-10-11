@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -14,7 +16,9 @@ import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 /**Einfache Klasse, in der ohne ein XML-Dokument zu haben
  * Statt dessen mit den Interfaces ITagZZZ, bzw. ITagTypeZZZ arbeiten. 
@@ -25,14 +29,15 @@ import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
  * wird hier nicht JDom oder ein XML - Dokument gebraucht.
  *
  */
-public class XmlUtilZZZ {
-	public static String computeTag(String sTagName, String sTagValue) {
+public class XmlUtilZZZ implements IConstantZZZ{
+	public static String computeTag(String sTagName, String sTagValue) throws ExceptionZZZ {
 		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sTagName)) break main;
-			
-			
+		main:{				
 			if(sTagValue==null) {
+				//Das enthaelt nicht den TagNamen  sReturn = XmlUtilZZZ.computeTagNull();
+				//Die aufrufende Methode kann ggfs. diesen Z:Null - Tag verwenden, wenn null zurueckkommt.
+				break main;
+			}else if(sTagValue.equals("")) {
 				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
 				break main;
 			}
@@ -44,15 +49,19 @@ public class XmlUtilZZZ {
 		return sReturn;
 	}
 	
-	public static String computeTagAsHashMapEntry(String sTagName, String sTagValue) {
+	public static String computeTagAsHashMapEntry(String sTagName, String sTagValue) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sTagName)) break main;
-						
-//			if(sTagValue==null) {
-//				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
-//				break main;
-//			}
+			
+			if(sTagValue==null) {
+				//Das enthaelt nicht den TagNamen  sReturn = XmlUtilZZZ.computeTagNull();
+				//Die aufrufende Methode kann ggfs. diesen Z:Null - Tag verwenden, wenn null zurueckkommt.
+				break main;
+			}else if(sTagValue.equals("")) {
+				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
+				break main;
+			}
 
 			sReturn = HashMapUtilZZZ.computeAsHashMapEntry(sTagName, sTagValue);
 		}
@@ -66,42 +75,62 @@ public class XmlUtilZZZ {
 	
 	
 	//++++++++++++++++++++++
-	public static String computeTagEmpty(String sTagName) {
+	public static String computeTagNull() throws ExceptionZZZ {
+		return XmlUtilZZZ.computeTagPartEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME);
+	}	
+	
+	public static String computeTagEmpty() throws ExceptionZZZ {
+		return XmlUtilZZZ.computeTagPartEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);
+	}
+	
+	public static String computeTagEmpty(String sTagName) throws ExceptionZZZ {
 		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
 	}
 	
 	//++++++++++++++++++++++
-	public static String computeTagPartStarting(String sTagName) {
+	public static String computeTagPartStarting(String sTagName) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";
 		}else {
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			return "<" + sTagName + ">";
 		}
 	}
 	
-	public static String computeTagPartEmpty(String sTagName) {
+	public static String computeTagPartEmpty(String sTagName) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";		
 		}else {
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}						
 			return "<" + sTagName + "/>"; 
 		}
 	}
 	
-	public static String computeTagPartClosing(String sTagName) {
+	public static String computeTagPartClosing(String sTagName) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";		
 		}else {
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			return "</" + sTagName + ">"; 
 		}
 	}
 	
 	//################################
-	public static boolean containsTag(String sExpression, String sTagName) {
+	public static boolean containsTag(String sExpression, String sTagName) throws ExceptionZZZ {
 		return XmlUtilZZZ.containsTag(sExpression, sTagName, true);
 	}
 
 		
-	public static boolean containsTag(String sExpression, String sTagName, boolean bExactMatch) {
+	public static boolean containsTag(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String sMatchTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
@@ -112,7 +141,7 @@ public class XmlUtilZZZ {
 			String sMatchTagEmpty = XmlUtilZZZ.computeTagEmpty(sTagName);
 			bReturn=StringZZZ.containsAsTag(sExpression, sMatchTagEmpty, "", bExactMatch);
 			if(bReturn) break main;
-			
+								
 		}//end main
 		return bReturn;
 	}
@@ -246,7 +275,7 @@ public class XmlUtilZZZ {
 		return bReturn;
 	}
 	
-	public static boolean isExpression4TagXml(String sExpression, String sTagName){
+	public static boolean isExpression4TagXml(String sExpression, String sTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
 			bReturn = XmlUtilZZZ.containsTag(sExpression, sTagName, false);

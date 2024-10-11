@@ -46,8 +46,8 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
-	public void setValueAsExpression(String sValueAsExpression);
-	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce);
+	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
+	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ;
 			
 	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
 	public HashMap<String,String> getValueHashMap();
@@ -102,9 +102,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
 	public String getValueFormulaSolvedAndConverted();
-	public String getValueFormulaSolvedAndConvertedAsExpression(); 
+	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ; 
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
-	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce);
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isFormulaMathSolved();
@@ -146,17 +146,17 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	public VectorDifferenceZZZ<String> getRawEncryptedVector();
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
-	public String getRawEncryptedAsExpression();
+	public String getRawEncryptedAsExpression() throws ExceptionZZZ;
 	abstract void setRawEncrypted(String sRaw);
 	
 	public VectorDifferenceZZZ<String> getValueEncryptedVector(); 
 	public String getValueEncrypted();
-	public String getValueEncryptedAsExpression();
+	public String getValueEncryptedAsExpression() throws ExceptionZZZ;
 	public void setValueEncrypted(String sValueEncryptd);
 	
 	public VectorDifferenceZZZ<String> getValueDecryptedVector();
 	public String getValueDecrypted();
-	public String getValueDecryptedAsExpression();
+	public String getValueDecryptedAsExpression() throws ExceptionZZZ;
 	public void setValueDecrypted(String sValueEncryptd);
 		
 		
@@ -185,7 +185,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public void setValueCallSolved(String sValueCallSolved);
 	
 	public String getValueCallSolvedAsExpression();
-	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression);
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	//SONSTIGES:

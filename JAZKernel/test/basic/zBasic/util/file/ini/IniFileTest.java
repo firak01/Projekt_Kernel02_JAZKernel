@@ -131,12 +131,14 @@ public class IniFileTest extends TestCase{
 	}
 		
 	public void testGetValue(){
-		
-		//Hole einen Wert mit deutschen Umlauten
-		String sValue1 = objIniFileTest.getValue("Section C", "Testentry1");
-		assertEquals("Testvalü1",sValue1);
-		assertEquals(9,sValue1.length());//Ein (heuristischer) Indikator für die "Nichtumcodierung" der Zeichen ist, dass die Länge des Strings gleich bleibt. 
-	
+		try {
+			//Hole einen Wert mit deutschen Umlauten
+			String sValue1 = objIniFileTest.getValue("Section C", "Testentry1");
+			assertEquals("Testvalü1",sValue1);
+			assertEquals(9,sValue1.length());//Ein (heuristischer) Indikator für die "Nichtumcodierung" der Zeichen ist, dass die Länge des Strings gleich bleibt. 
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testSetValue(){

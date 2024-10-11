@@ -30,12 +30,12 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 			String sReturnFilePathTotal="";
 			
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-			if(sFilePath==null || XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME).equals(sFilePath)){
+			if(sFilePath==null || XmlUtilZZZ.computeTagNull().equals(sFilePath)){
 				String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
 				sReturnRoot = "";
 				sReturnFilePath = sWorkspace;				
 				sReturnFilePathTotal = sWorkspace;
-			}else if(sFilePath.equals("") || XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME).equals(sFilePath)){					
+			}else if(sFilePath.equals("") || XmlUtilZZZ.computeTagEmpty().equals(sFilePath)){					
 				sReturnRoot = FileEasyZZZ.getFileRootPath();
 				sReturnFilePath="";
 				sReturnFilePathTotal=sReturnRoot;	
@@ -45,10 +45,10 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 				sReturnFilePathTotal=sReturnRoot;
 			}else {				
 				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {			
-					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME) + sDirectorySeparator);
+					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),XmlUtilZZZ.computeTagNull() + sDirectorySeparator);
 					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && btemp ) {
 						sReturnRoot = FileEasyZZZ.getDirectoryOfExecutionAsString();
-						sReturnFilePath = StringZZZ.rightback(sFilePath, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME)+sDirectorySeparator,false);
+						sReturnFilePath = StringZZZ.rightback(sFilePath, XmlUtilZZZ.computeTagNull()+sDirectorySeparator,false);
 						if(bReturnAsRelativePath) {
 							sReturnFilePathTotal = sReturnFilePath;
 						}else {

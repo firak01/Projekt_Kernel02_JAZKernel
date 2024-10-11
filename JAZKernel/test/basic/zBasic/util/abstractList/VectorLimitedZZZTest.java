@@ -10,7 +10,11 @@ public class VectorLimitedZZZTest  extends TestCase{
     private VectorLimitedZZZ<String> vec = null;
 	
     protected void setUp(){
-		vec = new VectorLimitedZZZ<String>(4);
+    	try {
+    		vec = new VectorLimitedZZZ<String>(4);
+    	} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
     }//END setup
     
     public void testAdd(){

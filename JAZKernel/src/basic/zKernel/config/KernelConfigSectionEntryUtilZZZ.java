@@ -577,12 +577,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Anders als Tags sind NULL und EMPTY Werte Conversions. 
 			//Sie entstehen sogar, wenn nur der Leerstring konfiguriert wird
-			boolean bIsEmptyTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
+			boolean bIsEmptyTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagEmpty());
 			if(bIsEmptyTag) {
 				bReturn = true;
 				break main;
 			}
-			boolean bIsNullTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
+			boolean bIsNullTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagNull());
 			if(bIsNullTag) {
 				bReturn = true;
 				break main;
@@ -874,25 +874,42 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 
 		
 		
-	public static String computeAsExpressionReflected(String sValue) {
-		if(sValue.startsWith("<Z>") && sValue.endsWith("</Z>")) {
-			//dann ist hier schon eine Expression drin
-			return sValue;
-		}else {
-			//Merke: Das Problem ist: Wenn im String selbst vorher schon ein Z-Tag war und nicht nur am Anfang, dann wird hier trotzdem noch etwas drumgesetzt.
-			
-			//Suche, ob ein Z-Tag im String enthalten ist. 
-			boolean bZExistsStart = StringZZZ.contains(sValue, "<Z>");
-			boolean bZExistsEnd = StringZZZ.contains(sValue, "</Z>");
-			if(bZExistsStart && bZExistsEnd){
-				return sValue;
-			}
-		}	
-			
-		return KernelConfigSectionEntryUtilZZZ.computeAsExpression(sValue);
+	public static String computeAsExpressionReflected(String sValue) throws ExceptionZZZ {
+		String sReturn = sValue;
+		main:{
+			if(sValue!=null) {			
+				if(sValue.startsWith("<Z>") && sValue.endsWith("</Z>")) {
+					//dann ist hier schon eine Expression drin
+					sReturn = sValue;
+					break main;
+				}else {
+					//Merke: Das Problem ist: Wenn im String selbst vorher schon ein Z-Tag war und nicht nur am Anfang, dann wird hier trotzdem noch etwas drumgesetzt.
+					
+					//Suche, ob ein Z-Tag im String enthalten ist. 
+					boolean bZExistsStart = StringZZZ.contains(sValue, "<Z>");
+					boolean bZExistsEnd = StringZZZ.contains(sValue, "</Z>");
+					if(bZExistsStart && bZExistsEnd){
+						sReturn = sValue;
+						break main;
+					}
+				}	
+			}	
+			sReturn = KernelConfigSectionEntryUtilZZZ.computeAsExpression(sValue);
+		}//end main:
+		return sReturn;
 	}
 	
-	public static String computeAsExpression(String sValue) {
-		return "<Z>" + sValue + "</Z>";
+	public static String computeAsExpression(String sValue) throws ExceptionZZZ {
+		String sReturn = sValue;
+		main:{
+			if(sValue==null) {
+				sReturn = XmlUtilZZZ.computeTagNull();
+			}else if(sValue.equals("")) {
+				sReturn = XmlUtilZZZ.computeTagEmpty();
+			}else {
+				sReturn = XmlUtilZZZ.computeTag("Z", sValue);
+			}			
+		}//end main:
+		return sReturn;
 	}
 }

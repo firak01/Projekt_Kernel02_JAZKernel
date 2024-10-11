@@ -363,16 +363,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override 
-	public void setValueAsExpression(String sValueAsExpression) {
+	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ {
 		this.setValueAsExpression_(sValueAsExpression, true);
 	}
 	
 	@Override 
-	public void setValueAsExpression(String sValueAsExpression, boolean bReflected) {
+	public void setValueAsExpression(String sValueAsExpression, boolean bReflected) throws ExceptionZZZ {
 		this.setValueAsExpression_(sValueAsExpression, bReflected);
 	}
 	
-	private void setValueAsExpression_(String sValueAsExpression, boolean bReflected) {
+	private void setValueAsExpression_(String sValueAsExpression, boolean bReflected) throws ExceptionZZZ {
 		if(bReflected) {
 			String sValueAsExpressionNew = KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValueAsExpression);
 			this.getValueAsExpressionVector().add(sValueAsExpressionNew);
@@ -411,7 +411,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public String getValueFormulaSolvedAndConvertedAsExpression() {
+	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ {
 		String sValue = this.getValueFormulaSolvedAndConverted();
 		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
 	}
@@ -433,7 +433,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public String getValueEncryptedAsExpression() {
+	public String getValueEncryptedAsExpression() throws ExceptionZZZ {
 		String sValue = this.getValueEncrypted();
 		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
 	}
@@ -455,7 +455,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public String getValueDecryptedAsExpression() {
+	public String getValueDecryptedAsExpression() throws ExceptionZZZ {
 		String sValue = this.getValueDecrypted();
 		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
 	}
@@ -902,7 +902,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public String getRawEncryptedAsExpression() {
+	public String getRawEncryptedAsExpression() throws ExceptionZZZ {
 		String sValue = this.getRawEncrypted();
 		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
 	}
@@ -951,16 +951,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) {
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) throws ExceptionZZZ {
 		this.setValueCallSolvedAsExpression_(sValueCallSolvedAsExpression, false);
 	}
 	
 	@Override
-	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) {
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ {
 		this.setValueCallSolvedAsExpression_(sValueCallSolvedAsExpression, bEnforce);
 	}
 	
-	private void setValueCallSolvedAsExpression_(String sValueCallSolvedAsExpression, boolean bEnforce) {
+	private void setValueCallSolvedAsExpression_(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ {
 		if(bEnforce) {
 			String sValueAsExpressionNew = KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValueCallSolvedAsExpression);
 			this.sValueCallSolvedAsExpression = sValueAsExpressionNew;

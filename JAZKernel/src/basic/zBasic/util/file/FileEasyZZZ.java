@@ -2587,12 +2587,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))){			
+				if(sPathIn.startsWith(XmlUtilZZZ.computeTagNull())){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
-				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME))){		
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagNull());
+				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty())){		
 					bUseClasspathSource=true;
-					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty());
 				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
@@ -2722,12 +2722,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))){			
+				if(sPathIn.startsWith(XmlUtilZZZ.computeTagNull())){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
-				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME))){		
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagNull());
+				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty())){		
 					bUseClasspathSource=true;
-					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty());
 				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
