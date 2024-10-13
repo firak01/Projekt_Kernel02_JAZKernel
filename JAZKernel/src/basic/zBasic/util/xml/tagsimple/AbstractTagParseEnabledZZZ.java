@@ -43,7 +43,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 
 	//### aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
+	public boolean isParse(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;

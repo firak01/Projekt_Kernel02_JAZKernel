@@ -52,7 +52,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		
 	//### Aus IParseEnabledZZZ
 	@Override
-	public abstract boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ;
+	public abstract boolean isParse(String sExpressionToProof) throws ExceptionZZZ;
 	
 	//### Aus IValueBufferedUserZZZ
 	@Override 

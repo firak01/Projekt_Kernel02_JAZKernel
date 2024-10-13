@@ -191,22 +191,34 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	@Override
 	public String solveParsed(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.solveParsed_(vecExpression, true);
+		return this.solveParsed_(vecExpression, null, true);
 	}
 
 	@Override
 	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-		return this.solveParsed_(vecExpression, bRemoveSuroundingSeparators);
+		return this.solveParsed_(vecExpression, null, bRemoveSuroundingSeparators);
+	}
+	
+	@Override
+	public String solveParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+		return this.solveParsed_(vecExpression, objReturnReference, bRemoveSuroundingSeparators);
 	}
 
-	private String solveParsed_(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+	private String solveParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			if(vecExpression==null) break main;
 			
 			String sExpression = (String) vecExpression.get(1);
-			sReturn = this.solveParsed(sExpression, bRemoveSuroundingSeparators);
-						
+			sReturn = this.solveParsed(sExpression, objReturnReference, bRemoveSuroundingSeparators);
+			
+			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+			this.setValue(sReturn);		
+			vecExpression.replace(sReturn);
+			if(objEntry!=null) {			
+				sReturn = VectorUtilZZZ.implode(vecExpression);
+				objEntry.setValue(sReturn);				
+			}						
 		}//end main:
 		return sReturn;
 	}
@@ -370,74 +382,74 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 								
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 						
-			if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
-									
-				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
-				//       Hier aber ein 
-				String sExpressionOld = sExpressionUsed;
-				String sExpressionTemp;					
-				
-				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-					
-				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
-				while(objVariable.isExpression(sExpressionUsed)){
-					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
-					if(vecExpressionTemp==null) break;
-					
-					sExpressionTemp = (String) vecExpressionTemp.get(1);
-					if(StringZZZ.isEmpty(sExpressionTemp)) {
-						break;
-					}else if(sExpressionUsed.equals(sExpressionTemp)) {
-						break;
-					}else{
-						sExpressionUsed = VectorUtilZZZ.implode(vecExpressionTemp);					
-					}
-				} //end while
-				sReturn = sExpressionUsed;
-				this.setValue(sReturn);
-				objEntry.setValue(sReturn);
-				if(sReturn!=sExpressionOld) {
-					objEntry.isParsed(true);
-					objEntry.isVariableSubstiuted(true);
-				}
-				sExpressionUsed = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
-			}	
+//			if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
+//				//ZUERST: Löse ggfs. übergebene Variablen auf.
+//				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
+//									
+//				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
+//				//       Hier aber ein 
+//				String sExpressionOld = sExpressionUsed;
+//				String sExpressionTemp;					
+//				
+//				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
+//				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+//					
+//				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
+//				while(objVariable.isExpression(sExpressionUsed)){
+//					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+//					if(vecExpressionTemp==null) break;
+//					
+//					sExpressionTemp = (String) vecExpressionTemp.get(1);
+//					if(StringZZZ.isEmpty(sExpressionTemp)) {
+//						break;
+//					}else if(sExpressionUsed.equals(sExpressionTemp)) {
+//						break;
+//					}else{
+//						sExpressionUsed = VectorUtilZZZ.implode(vecExpressionTemp);					
+//					}
+//				} //end while
+//				sReturn = sExpressionUsed;
+//				this.setValue(sReturn);
+//				objEntry.setValue(sReturn);
+//				if(sReturn!=sExpressionOld) {
+//					objEntry.isParsed(true);
+//					objEntry.isVariableSubstiuted(true);
+//				}
+//				sExpressionUsed = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
+//			}	
 			
-			if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {	
-				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-				String sExpressionOld = sExpressionUsed;
-				String sExpressionTemp;
-				
-				KernelZFormulaIni_PathZZZ<T> exDummy = new KernelZFormulaIni_PathZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-								
-				KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-				while(objFormulaIniPath.isExpression(sExpressionUsed)){
-						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-						if(vecExpressionTemp==null) break;
-						
-						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
-						if(StringZZZ.isEmpty(sExpressionTemp)) {
-							break;
-						}else if(sExpressionUsed.equals(sExpressionTemp)) {
-							break;
-						}else{
-							sExpressionUsed = sExpressionTemp;						
-						}											
-				} //end while
-				sReturn = sExpressionUsed;
-				this.setValue(sReturn);
-				objEntry.setValue(sReturn);
-				if(!sExpressionOld.equals(sReturn)) {
-					objEntry.isParsed(true);
-					objEntry.isPathSubstituted(true);
-				}
-				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
-			}//end if .getFlag(..USE_...Path...)
+//			if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {	
+//				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+//				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+//				String sExpressionOld = sExpressionUsed;
+//				String sExpressionTemp;
+//				
+//				KernelZFormulaIni_PathZZZ<T> exDummy = new KernelZFormulaIni_PathZZZ<T>();
+//				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+//								
+//				KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+//				while(objFormulaIniPath.isExpression(sExpressionUsed)){
+//						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+//						if(vecExpressionTemp==null) break;
+//						
+//						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
+//						if(StringZZZ.isEmpty(sExpressionTemp)) {
+//							break;
+//						}else if(sExpressionUsed.equals(sExpressionTemp)) {
+//							break;
+//						}else{
+//							sExpressionUsed = sExpressionTemp;						
+//						}											
+//				} //end while
+//				sReturn = sExpressionUsed;
+//				this.setValue(sReturn);
+//				objEntry.setValue(sReturn);
+//				if(!sExpressionOld.equals(sReturn)) {
+//					objEntry.isParsed(true);
+//					objEntry.isPathSubstituted(true);
+//				}
+//				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
+//			}//end if .getFlag(..USE_...Path...)
 			
 			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
 			//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;

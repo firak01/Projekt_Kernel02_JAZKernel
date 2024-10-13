@@ -204,12 +204,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 		main:{			
 			//Aufloesen von Pfaden und ini-Variablen
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSolverSuper.set(objEntry);
-			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-			objEntry = objReturnReferenceSolverSuper.get();
+			//2021012: Passiert jetzt nur noch im KernelExpressionHandler
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//			objReturnReferenceSolverSuper.set(objEntry);
+//			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+//			objEntry = objReturnReferenceSolverSuper.get();
 			
-			//Aufloesen des Math-Tags
+			//Aufloesen des CALL-Tags
 			sReturn = this.solveParsed_Call_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReference.get();								
 		}//end main
@@ -343,7 +344,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
+	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	
@@ -425,4 +426,5 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
 }//End class

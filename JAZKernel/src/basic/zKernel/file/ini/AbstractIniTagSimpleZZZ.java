@@ -77,7 +77,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(!this.isParseRelevant(sLineWithExpression)) break main;
+			if(!this.isParse(sLineWithExpression)) break main;
 			
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
 			

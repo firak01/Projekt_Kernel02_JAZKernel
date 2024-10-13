@@ -111,9 +111,14 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return sReturn;
 	}
 	
-	//### Aus IParseEnabledZZZ	
+	//### Aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
+	public boolean isParseRelevant() {
+		return true;
+	}
+	
+	@Override
+	public boolean isParse(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
@@ -123,8 +128,16 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			
 		}//end main
-	return bReturn;
+		return bReturn;
 	}
+	
+	//Damit man fuer das einfache Pruefen nicht immer ein Objekt erzeugen muss!
+	public static boolean isParseStatic(String sExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	} 
+	TODOGOON20241013;//ODER XmlUtilZZZ.isParse(sExpression, sTagName, false); dann einsetzen...
+	                                 //und bei sTagName den static .sTagName verwenden..
 	
 	@Override
 	public String parse(String sLExpression) throws ExceptionZZZ{

@@ -3,6 +3,7 @@ package basic.zKernel;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
 import basic.zKernel.file.ini.ISolveUserZZZ;
@@ -14,5 +15,7 @@ public interface IKernelEntryReferenceSolveUserZZZ extends IKernelConfigSectionE
 	
 	public String solveParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ;		
 	public String solveParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	
+	public String solveParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
 		
 }

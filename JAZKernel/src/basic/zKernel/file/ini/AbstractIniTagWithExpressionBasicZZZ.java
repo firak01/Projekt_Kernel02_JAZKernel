@@ -237,7 +237,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;

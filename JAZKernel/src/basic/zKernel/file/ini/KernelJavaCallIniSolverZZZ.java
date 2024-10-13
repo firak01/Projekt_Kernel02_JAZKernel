@@ -362,4 +362,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 
 
+
+
 }//End class

@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import junit.framework.TestCase;
 
 public class KernelCallIniSolverZZZTest  extends TestCase {
-		protected final static String sEXPRESSION_CALL01COMPUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
+		protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
 		protected final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";		
 		//protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 		
@@ -71,7 +71,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 */
 		public void testCompute01(){
 			try {						
-				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT;
+				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				
 				boolean bFlagAvailable = objExpressionCallSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -111,7 +111,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 */
 		public void testCompute01asEntry(){
 			try {				
-				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
+				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
 								
 				boolean bFlagAvailable = objExpressionCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -179,7 +179,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		public void testCompute01withPrePost(){
 			try {				
 				//Merke: Die Auflösung einer "Pfadformel" [...] findet im ExpressionIniHandler statt. Darum wird hier der Computed Wert verwendet, in dem schon Klassennamen, Methodenname enthalten ist.
-				String sLineWithExpression = "PRE" + KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT + "POST";//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
+				String sLineWithExpression = "PRE" + KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + "POST";//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
 								
 				boolean bFlagAvailable = objExpressionCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
