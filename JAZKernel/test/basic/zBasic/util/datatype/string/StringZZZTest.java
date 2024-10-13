@@ -5,6 +5,8 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.file.ini.KernelCallIniSolverZZZTest;
+import basic.zKernel.file.ini.KernelZFormulaIni_PathZZZ;
 import junit.framework.TestCase;
 
 public class StringZZZTest extends TestCase{
@@ -1335,6 +1337,47 @@ public void testVecMidFirst(){
 		assertEquals(2, intaIndex[4].intValue());
 		assertEquals(5, intaIndex[5].intValue());
 		assertEquals(14, intaIndex[6].intValue());
+	}
+	
+	
+	public void testMatchesPattern_ForIniExpression(){
+		try{
+			//#########################################################
+			//1. Methode: Ermittle ob ein Ausdruck wie im Kernel-Ini-Expression-Path vorkommt
+			String sPattern = KernelZFormulaIni_PathZZZ.sTAG_NAME;
+			String sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			
+
+			sString ="this is text";
+			sPattern = "this is text";
+			boolean btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			
+			sString ="this is text";
+			sPattern = ".*is.*";
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			
+			
+//			sString="\n//zum verzweifeln\n";
+//			sPattern = "//[^\\r\\n]*[\\r\\n]"; //contains a Java or C# slash-slash comment. Merke fuer Java Ausfuehurung die Backslashe im String escaped.
+//			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+//			assertTrue(btemp);
+			
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sPattern = ".*[\\[]*[\\]]*.";  //finde einen Ausdruck in eckigen Klammern
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			
+			
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sPattern = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text 
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			
+	}catch(ExceptionZZZ ez){
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	}
 	
 	public void testMatchesPattern(){

@@ -41,6 +41,11 @@ import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
+	
+	private KernelConfigSectionEntryUtilZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
 	/** Die statischen Methoden dieser Klasse leisten mehr als nur die ...Solver... aufzurufen.
 	 *  Durch den Rückgabewert können dann die Details im letztendlich benötigten IKernelConfigSectionEntryZZZ object gesetzt werden.
 	 *  Also z.B. bJson, bJsonMap, etc...

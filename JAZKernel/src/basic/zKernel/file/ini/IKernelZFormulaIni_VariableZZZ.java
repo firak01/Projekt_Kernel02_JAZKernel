@@ -6,7 +6,7 @@ import basic.zBasic.component.IModuleZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 
 public interface IKernelZFormulaIni_VariableZZZ {
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
+	//Merke: Erst ab Java 8 können static Methoden in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()
 	//getExpressionTagClosing()

@@ -30,6 +30,20 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
  *
  */
 public class XmlUtilZZZ implements IConstantZZZ{
+	public static boolean containsRegEx(String sExpression, String sRegEx) throws ExceptionZZZ{
+		return StringZZZ.matchesPattern(sExpression, sRegEx, true);
+	}
+	
+	public static boolean containsRegEx(String sExpression, String sRegEx, boolean bExactMatch) throws ExceptionZZZ{
+		return StringZZZ.matchesPattern(sExpression, sRegEx, bExactMatch);	
+	}
+	
+	public static boolean containsRegEx_(String sExpression, String sRegEx, boolean bExactMatch) throws ExceptionZZZ{
+		return StringZZZ.matchesPattern(sExpression, sRegEx, bExactMatch);
+	}
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static String computeTag(String sTagName, String sTagValue) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{				

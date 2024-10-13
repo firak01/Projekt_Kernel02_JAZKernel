@@ -238,15 +238,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//aus IParseEnabledZZZ
 	@Override
 	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		
-			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
-			if(bReturn) break main;
-						
-		}//end main
-		return bReturn;
+		return ExpressionIniUtilZZZ.isParse(sExpressionToProof, this.getNameDefault() , false);
 	}
 	
 	//### aus IIniStructurePositionUserZZZ

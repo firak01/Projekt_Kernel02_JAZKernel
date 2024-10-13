@@ -66,7 +66,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	private StringZZZ(){
 		//zum 'Verstecken" des Konstruktors
-	}
+	}//only static methods
 	
 
 	
@@ -83,8 +83,44 @@ public class StringZZZ implements IConstantZZZ{
 		}//end main
 		return sReturn;
 	}
-	
 		
+	/** 
+	 * Merke: In RegEx Ausdruechen muessen eckige Klammern mit Backslash escaped werden.
+	 * @param sString
+	 * @param sRegEx
+	 * @param bExactMatch
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.10.2024, 18:15:39
+	 */
+	public static boolean matchesPattern(String sString, String sRegEx, boolean bExactMatch) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sRegEx)){
+				ExceptionZZZ ez = new ExceptionZZZ("No pattern-RegEx-string provided", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(bExactMatch) {
+				bReturn = sString.matches(sRegEx);
+			}else {
+				String s = sString.toLowerCase();
+				System.out.println(("s="+s));
+				String sPattern = sRegEx.toLowerCase();
+				System.out.println("sPattern="+sPattern);
+				
+				bReturn = s.matches(sPattern);
+				
+			}
+			
+		}//end main:
+		return bReturn;		
+	}
+	
 	/** Prueft die Zeichen des Strings gegen die Zeichen des uebergebenen Pattern
 	 *   Zur Steuerung dient iFlag:
 	 *   = -1  => der String enthaelt nur Zeichen, die im Pattern  enthalten sind
@@ -124,7 +160,7 @@ public class StringZZZ implements IConstantZZZ{
 			if(iFlag == 1){
 				//Behandle den Pattern String als RegEx
 				try{
-				bReturn = sString.matches(sPattern);
+					bReturn = sString.matches(sPattern);
 				}catch(PatternSyntaxException pex){
 					ExceptionZZZ ez = new ExceptionZZZ("Pattern seems to be no valid RegEx - PatternSyntaxException: " + pex.getMessage(), iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;

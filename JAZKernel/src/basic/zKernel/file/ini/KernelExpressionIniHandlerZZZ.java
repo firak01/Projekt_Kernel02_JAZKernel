@@ -134,14 +134,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	@Override
 	public boolean isSubstitutePath(String sExpression) throws ExceptionZZZ {
-		return XmlUtilZZZ.isParse(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false);
-		return KernelZFormulaIni_PathZZZ.isParseStatic(sExpression);
+		return ExpressionIniUtilZZZ.isParse(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false);
 	}
 	
 	@Override
 	public boolean isSubstituteVariable(String sExpression) throws ExceptionZZZ {
-		return XmlUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false);
-		return ZTagFormulaIni_VariableZZZ.isParseStatic(sExpression);
+		return ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false);
 	}
 	@Override
 	public String substitute(String sExpression) throws ExceptionZZZ {
@@ -276,7 +274,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	/* Aufloesen der INI-Pfade und Variablen. */
 	private String substituteParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		String sExpressionUsed = sExpressionIn;
+		String sExpression = sExpressionIn;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -299,72 +297,82 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 						
 			if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
-									
-				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
-				//       Hier aber ein 
-				String sExpressionOld = sExpressionUsed;
-				String sExpressionTemp;					
 				
-				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
+				if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
+				
+					//ZUERST: Löse ggfs. übergebene Variablen auf.
+					//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
+										
+					//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
+					//       Hier aber ein 
+					String sExpressionOld = sExpression;
+					String sExpressionTemp;					
 					
-				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
-				while(objVariable.isExpression(sExpressionUsed)){
-					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
-					if(vecExpressionTemp==null) break;
-					
-					sExpressionTemp = (String) vecExpressionTemp.get(1);
-					if(StringZZZ.isEmpty(sExpressionTemp)) {
-						break;
-					}else if(sExpressionUsed.equals(sExpressionTemp)) {
-						break;
-					}else{
-						sExpressionUsed = VectorUtilZZZ.implode(vecExpressionTemp);					
+					ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+						
+					ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
+					while(objVariable.isExpression(sExpression)){
+						Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+						if(vecExpressionTemp==null) break;
+						
+						sExpressionTemp = (String) vecExpressionTemp.get(1);
+						if(StringZZZ.isEmpty(sExpressionTemp)) {
+							break;
+						}else if(sExpression.equals(sExpressionTemp)) {
+							break;
+						}else{
+							sExpression = VectorUtilZZZ.implode(vecExpressionTemp);					
+						}
+					} //end while
+					sReturn = sExpression;
+					this.setValue(sReturn);
+					objEntry.setValue(sReturn);
+					if(sReturn!=sExpressionOld) {
+						objEntry.isParsed(true);
+						objEntry.isVariableSubstiuted(true);
 					}
-				} //end while
-				sReturn = sExpressionUsed;
-				this.setValue(sReturn);
-				objEntry.setValue(sReturn);
-				if(sReturn!=sExpressionOld) {
-					objEntry.isParsed(true);
-					objEntry.isVariableSubstiuted(true);
+					sExpression = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
 				}
-				sExpressionUsed = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
 			}	
 			
 			if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {	
-				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-				String sExpressionOld = sExpressionUsed;
-				String sExpressionTemp;
 				
-				KernelZFormulaIni_PathZZZ<T> exDummy = new KernelZFormulaIni_PathZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-								
-				KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-				while(objFormulaIniPath.isExpression(sExpressionUsed)){
-						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-						if(vecExpressionTemp==null) break;
-						
-						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
-						if(StringZZZ.isEmpty(sExpressionTemp)) {
-							break;
-						}else if(sExpressionUsed.equals(sExpressionTemp)) {
-							break;
-						}else{
-							sExpressionUsed = sExpressionTemp;						
-						}											
-				} //end while
-				sReturn = sExpressionUsed;
-				this.setValue(sReturn);
-				objEntry.setValue(sReturn);
-				if(!sExpressionOld.equals(sReturn)) {
-					objEntry.isParsed(true);
-					objEntry.isPathSubstituted(true);
-				}
-				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
+				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
+				if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
+					
+					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+					String sExpressionOld = sExpression;
+					String sExpressionTemp;
+					
+					KernelZFormulaIni_PathZZZ<T> exDummy = new KernelZFormulaIni_PathZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+									
+					KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+					while(objFormulaIniPath.isExpression(sExpression)){
+							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+							if(vecExpressionTemp==null) break;
+							
+							sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
+							if(StringZZZ.isEmpty(sExpressionTemp)) {
+								break;
+							}else if(sExpression.equals(sExpressionTemp)) {
+								break;
+							}else{
+								sExpression = sExpressionTemp;						
+							}											
+					} //end while
+					sReturn = sExpression;
+					this.setValue(sReturn);
+					objEntry.setValue(sReturn);
+					if(!sExpressionOld.equals(sReturn)) {
+						objEntry.isParsed(true);
+						objEntry.isPathSubstituted(true);
+					}
+					sExpression = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
+				}//end if .isParseRegEx();
 			}//end if .getFlag(..USE_...Path...)
 			
 			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag

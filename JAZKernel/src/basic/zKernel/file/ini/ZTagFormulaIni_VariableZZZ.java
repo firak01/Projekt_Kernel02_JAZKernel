@@ -1,24 +1,13 @@
 package basic.zKernel.file.ini;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
-import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.xml.tagexpression.AbstractTagWithExpressionBasicZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
-import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 
 /**
  * @author fl86kyvo
@@ -29,7 +18,7 @@ import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 //Merke: Klasse benötigt Flags, aber keinen Kernel...
 public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelZFormulaIni_VariableZZZ{
 	private static final long serialVersionUID = 6370617551800139734L;
-	public static String sTAG_NAME = "z:Var"; 
+	public static String sTAG_NAME = "z:Var";
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 		
 	public ZTagFormulaIni_VariableZZZ() throws ExceptionZZZ{
@@ -174,7 +163,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
-		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
+		return sTAG_NAME;
 	}
 
 	@Override

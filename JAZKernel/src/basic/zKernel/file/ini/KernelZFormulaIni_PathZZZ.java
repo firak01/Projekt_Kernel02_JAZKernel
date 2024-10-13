@@ -9,6 +9,7 @@ import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -25,7 +26,11 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelFileIniUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIni_PathZZZ{
 	private static final long serialVersionUID = -6403139308573148654L;
-	public static String sTAG_NAME = ""; //Hier kein Tag-Name
+	
+	//Hier kein Tag-Name sondern eine RegEx. Der Tag ist definiert als [section]property
+	//Merke: In RegEx Ausdruechen muessen eckige Klammern mit Backslash escaped werden. 
+	public static String sTAG_NAME = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text
+	
 		
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
 		super("init");
@@ -216,7 +221,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	
-	//### Aus IParseEnabledZZZ	
+	//### Aus IParseEnabledZZZ			
+	@Override
+	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {
+		return ExpressionIniUtilZZZ.isParseRegEx(sExpressionToProof, this.getNameDefault(), false);
+	}
+		
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -423,7 +433,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//### Aus ITagBasicZZZ
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
-		return KernelZFormulaIni_PathZZZ.sTAG_NAME;
+		return sTAG_NAME;
 	}
 
 	//### Aus IConvertable
