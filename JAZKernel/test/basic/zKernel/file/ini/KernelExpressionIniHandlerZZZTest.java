@@ -1290,12 +1290,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		String sTagEndZ = "</Z>";	
 		
 		try {		
-		
+			String sHostName = EnvironmentZZZ.getHostName();
+			assertNotNull(sHostName);
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z>HannibalDEV04bVM</Z>";			
+			sExpressionSolved = "<Z>"+sHostName+"</Z>";			
 			btemp = testCompute_CallJava_Expression_(sExpressionSource, sExpressionSolved, false, true);
 			
 			
@@ -1329,9 +1330,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sValue = objEntry.getValue();
 			assertEquals(sExpressionSolved_methodName, sValue);
 			sMethodName = sValue;
-			
-			String sExpressionCallSolved = EnvironmentZZZ.getHostName();
-			assertNotNull(sExpressionCallSolved);
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
@@ -1380,7 +1378,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = testCompute_CallJava_Expression_(sExpressionSource, sExpressionSolved, false, false);
 						
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z>" + sExpressionCallSolved + "</Z>";			
+			sExpressionSolved = "<Z>" + sHostName + "</Z>";			
 			btemp = testCompute_CallJava_Expression_(sExpressionSource, sExpressionSolved, false, true);
 			
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -1389,7 +1387,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = testCompute_CallJava_Expression_(sExpressionSource, sExpressionSolvedTagless, true, false);
 						
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = sExpressionCallSolved;
+			sExpressionSolved = sHostName;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_CallJava_Expression_(sExpressionSource, sExpressionSolvedTagless, true, true);
 			
