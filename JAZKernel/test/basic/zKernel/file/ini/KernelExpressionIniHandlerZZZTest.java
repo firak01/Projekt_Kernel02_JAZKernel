@@ -995,22 +995,22 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_Json_Unsolved_(sExpressionSource, sExpressionSolved, false, false);
+			btemp = testCompute_JsonMapJson_Unsolved_(sExpressionSource, sExpressionSolved, false, false);
 			
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_Json_Unsolved_(sExpressionSource, sExpressionSolved, false, true);
+			btemp = testCompute_JsonMapJson_Unsolved_(sExpressionSource, sExpressionSolved, false, true);
 			
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_Json_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
+			btemp = testCompute_JsonMapJson_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
 			
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_Json_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, true);
+			btemp = testCompute_JsonMapJson_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, true);
 			
 			
 			//################################################################
@@ -1068,7 +1068,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}		
 	}
 	
-	private boolean testCompute_Json_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
+	private boolean testCompute_JsonMapJson_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
 		boolean bReturn = false;
 		
 		main:{
