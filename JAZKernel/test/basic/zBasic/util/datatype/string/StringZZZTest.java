@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelCallIniSolverZZZTest;
+import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelZFormulaIni_PathZZZ;
 import junit.framework.TestCase;
 
@@ -1374,6 +1375,36 @@ public void testVecMidFirst(){
 			sPattern = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text 
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Aber in einem JSON-ARRAY String wird obiges auch fuendig.
+			//Daher die Hochkommata ausschliessen.
+			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sPattern = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text 
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			
+			
+			//#
+			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sPattern = ".*<Z>.*[\\[][\"]+1*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf jeden Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist).
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			//#
+			
+			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sPattern = ".*<Z>.*[\\[]][^\"]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text ABER KEIN Hochkkomma.
+			                                               //Merke: Hochkkomma hier mit Backslash escaped.
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertFalse(btemp);
+			
+			TODOGOON20241014; 
+			
+			//Das gleiche(!) Pattern muss aber bei einem INI-Pfad wiederum funktionieren
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertTrue(btemp);
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 	}catch(ExceptionZZZ ez){
 		fail("Method throws an exception." + ez.getMessageLast());

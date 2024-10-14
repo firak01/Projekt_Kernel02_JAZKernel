@@ -352,7 +352,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 									
 					KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 					while(objFormulaIniPath.isExpression(sExpression)){
-							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+TODOGOON20241014;//Problem [ ] aus dem JSON:ARRAY (Z.B.: <Z><JSON><JSON:ARRAY>["TESTWERT2DO2JSON01","TESTWERT2DO2JSON02"]</JSON:ARRAY></JSON></Z> )
+				              //sind auch Bestandteile des INI-Pfads (z.B. [SECTION]Property )
+						      //Der INI-Pfad wird per RegEx-Ausdruck definiert.
+						      //IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
+				   
+					Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
 							if(vecExpressionTemp==null) break;
 							
 							sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	

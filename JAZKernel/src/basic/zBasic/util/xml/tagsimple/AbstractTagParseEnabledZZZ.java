@@ -40,8 +40,13 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 		
 	//######## Getter / Setter ##################
-
-	//### aus IParseEnabledZZZ
+	
+	//### Aus IParseEnabledZZZ
+	@Override
+	public boolean isParseRelevant() {
+		return true;
+	}
+	
 	@Override
 	public boolean isParse(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;

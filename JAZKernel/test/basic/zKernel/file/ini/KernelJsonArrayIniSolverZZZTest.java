@@ -12,7 +12,7 @@ import basic.zKernel.KernelZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
+	public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
 	
 	private IKernelZZZ objKernel;
 	
