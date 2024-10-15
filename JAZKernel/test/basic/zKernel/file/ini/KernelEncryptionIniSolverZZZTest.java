@@ -80,6 +80,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01(){
+		TODOGOON20241015;//Mache testCompute... mit den entsprechenden Unterfunktionen _unsolved_ etc und uebergib die Werte von ausssen
+		                 //dann wuerde testCompute04 auch ueberfluessig und nur noch ein weiterer Funktionsaufruf, mit anderen Parametern...
+		
 		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 		String sTagStartZ; String sTagEndZ;
 		boolean btemp;
