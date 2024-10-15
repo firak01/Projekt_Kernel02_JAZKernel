@@ -115,7 +115,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";	
-			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;			
+			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;	//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!!		
 			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, true);
 			
 			
