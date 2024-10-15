@@ -218,8 +218,8 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		
 			//Z...-Tags "am Rand entfernen (von aussen nach innen)"... Wichtig für das Ergebnis eines Parsens
 			if(bRemoveSurroundingSeparators) {
-				String sTagStart=this.getTagStarting(); //"<Z>";
-				String sTagEnd=this.getTagClosing();    //"</Z>";
+				String sTagStart=this.getTagStarting();
+				String sTagEnd=this.getTagClosing();
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
 			}
 			sReturn = (String) vecReturn.get(1);
