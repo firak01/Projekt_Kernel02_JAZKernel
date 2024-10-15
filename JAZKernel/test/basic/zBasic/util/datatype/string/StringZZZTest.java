@@ -1385,25 +1385,35 @@ public void testVecMidFirst(){
 			assertTrue(btemp);
 			
 			
-			//#
+			//# Das waere das Pattern fuer das JSONARRAY
 			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sPattern = ".*<Z>.*[\\[][\"]+1*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf jeden Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist).
+			sPattern = ".*<Z>.*\\[\".*\"\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf jeden Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito umgekehrt fuer die geschlossene eckige Klammer.
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
-			//#
 			
-			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sPattern = ".*<Z>.*[\\[]][^\"]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text ABER KEIN Hochkkomma.
-			                                               //Merke: Hochkkomma hier mit Backslash escaped.
+			//## Das gleiche(!) Pattern darf aber bei einem INI-Pfad nichts finden
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertFalse(btemp);
 			
-			TODOGOON20241014; 
+			//##
 			
-			//Das gleiche(!) Pattern muss aber bei einem INI-Pfad wiederum funktionieren
+			//### Wir muessen aber ein Pattern entwickeln, das eine Pfad findet, ein JSONARRAY aber nicht		
+			sString = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sPattern = ".*<Z>.*\\[[^\"].*[^\"]\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf jeden Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist).
+			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
+			assertFalse(btemp);
+			
+			//#### 	Das gleiche Pattern muss aber eine Path finden
 			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
+			
+			//####
+			
+		
+			
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 	}catch(ExceptionZZZ ez){

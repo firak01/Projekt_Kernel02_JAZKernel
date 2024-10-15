@@ -25,8 +25,14 @@ public class VectorDifferenceZZZ<T> extends VectorZZZ<T> implements IVectorDiffe
 	public void addElement(Object obj) {
 		if(this.isEmpty()) {
 			super.addElement(obj);
-		}else {
-			if(this.getEntryHigh().equals(obj)) {
+		}else {	
+			if(this.getEntryHigh()==null) {
+				if(obj==null) {
+					//Mache halt nix
+				}else {
+					super.addElement(obj);
+				}
+			}else if(this.getEntryHigh().equals(obj)) {
 				//Mache halt nix
 			}else {
 				super.addElement(obj);
@@ -39,7 +45,14 @@ public class VectorDifferenceZZZ<T> extends VectorZZZ<T> implements IVectorDiffe
 		if(this.isEmpty()) {
 			return super.add(obj);
 		}else {
-			if(this.getEntryHigh().equals(obj)) {
+			if(this.getEntryHigh()==null) {
+				if(obj==null) {
+					//Mache halt nix
+					return false;
+				}else {
+					return super.add(obj);
+				}
+			}else if(this.getEntryHigh().equals(obj)) {
 				//Mache halt nix
 				return false;
 			}else {
@@ -52,8 +65,14 @@ public class VectorDifferenceZZZ<T> extends VectorZZZ<T> implements IVectorDiffe
 	public void add(int iIndex, Object obj) {
 		if(this.isEmpty()) {
 			super.add(iIndex, obj);
-		}else {				
-			if(this.getElementByIndex(iIndex).equals(obj)) {
+		}else {	
+			if(this.getElementByIndex(iIndex)==null) {
+				if(obj==null) {
+					//Mache halt nix
+				}else {
+					super.add(iIndex,obj);
+				}
+			}else if(this.getElementByIndex(iIndex).equals(obj)) {
 				//Mache halt nix
 			}else {
 				super.add(iIndex, obj);
@@ -65,8 +84,14 @@ public class VectorDifferenceZZZ<T> extends VectorZZZ<T> implements IVectorDiffe
 	public void insertElementAt(Object obj, int iIndex) {
 		if(this.isEmpty()) {
 			super.insertElementAt(obj, iIndex);
-		}else {				
-			if(this.getElementByIndex(iIndex).equals(obj)) {
+		}else {	
+			if(this.getElementByIndex(iIndex)==null) {
+				if(obj==null) {
+					//Mache halt nix
+				}else {
+					super.insertElementAt(obj, iIndex);
+				}
+			}else if(this.getElementByIndex(iIndex).equals(obj)) {
 				//Mache halt nix
 			}else {
 				super.insertElementAt(obj, iIndex);

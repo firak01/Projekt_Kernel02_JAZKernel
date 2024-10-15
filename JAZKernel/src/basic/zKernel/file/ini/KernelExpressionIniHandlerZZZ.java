@@ -352,7 +352,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 									
 					KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 					while(objFormulaIniPath.isExpression(sExpression)){
-TODOGOON20241014;//Problem [ ] aus dem JSON:ARRAY (Z.B.: <Z><JSON><JSON:ARRAY>["TESTWERT2DO2JSON01","TESTWERT2DO2JSON02"]</JSON:ARRAY></JSON></Z> )
+//TODOGOON20241014;//Problem [ ] aus dem JSON:ARRAY (Z.B.: <Z><JSON><JSON:ARRAY>["TESTWERT2DO2JSON01","TESTWERT2DO2JSON02"]</JSON:ARRAY></JSON></Z> )
 				              //sind auch Bestandteile des INI-Pfads (z.B. [SECTION]Property )
 						      //Der INI-Pfad wird per RegEx-Ausdruck definiert.
 						      //IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!

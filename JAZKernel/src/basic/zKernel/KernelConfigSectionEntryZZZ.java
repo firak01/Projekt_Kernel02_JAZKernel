@@ -123,8 +123,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			//Darum in diesem Tag beim Holen der Werte ueber as KernelConfigSectionEntry-Objekt
 			//unbedingt immer auf objEntry==null abprüfen und dann ggfs. auch null oder false zurückliefern.
 			
-			this.setValue(objTag.getValue());
-			this.setValue(objTag.getValueArrayList());
+			String sFromTag = objTag.getValue();
+			if(sFromTag!=null) {
+				this.setValue(sFromTag);
+			}
+			
+			
+			ArrayList<String>alFromTag = objTag.getValueArrayList();
+			if(alFromTag!=null) {
+				this.setValue(alFromTag);
+			}
 			
 			//Das geht mit IIniTagBasicZZZ nicht....
 			//this.setValueAsExpression(objTag.getValueAsExpression());

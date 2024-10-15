@@ -487,10 +487,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					objEntry.isExpression(true);
 					objEntry.isJson(true);
 					objEntry.isJsonArray(true);
-					ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
-					objEntry.setValue(listas); //Dabei wird auch der String-Wert gesetzt
+					//ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
+					//objEntry.setValue(listas); //Dabei wird auch der String-Wert gesetzt
 				
 					objalsReturnValueJsonSolved.set(alstemp);	
+					objEntry.setValue(alstemp);
 					bReturn = true;
 				}												
 			}else{
@@ -552,10 +553,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				objEntry.isExpression(true);
 				objEntry.isJson(true);
 				objEntry.isJsonMap(true);
-				HashMap<String,String> hm = objhmReturnValueJsonSolved.get();
-				objEntry.setValue(hm); //Dabei wird auch der String-Wert gesetzt
+				//HashMap<String,String> hm = objhmReturnValueJsonSolved.get();
+				//objEntry.setValue(hm); //Dabei wird auch der String-Wert gesetzt
 								
-				objhmReturnValueJsonSolved.set(hmtemp);					
+				objhmReturnValueJsonSolved.set(hmtemp);
+				objEntry.setValue(hmtemp);
 				bReturn = true;
 			}													
 		}//end main:
