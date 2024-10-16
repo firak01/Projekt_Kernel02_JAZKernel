@@ -67,7 +67,10 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn=sExpressionIn;
-		boolean bUseExpression=false;
+		boolean bUseExpression = false;
+		boolean bUseSolver = false;
+		boolean bUseEncryption = false;		
+		
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -90,27 +93,137 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
-			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
+			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
 			if(!bUseEncryption) break main;
 			
 			String sExpression = sExpressionIn;
+			String sExpressionUsed = sExpression;
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:Encryption drumherum entfernen
-			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);			
-			sExpression = (String) vecReturn.get(1);				
-			if(!StringZZZ.isEmpty(sExpression)){
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceParse.set(objEntry);
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);	
+			objEntry = objReturnReferenceParse.get();
 			
-			this.getEntry().setRaw(sExpression);
+			sExpressionUsed = (String) vecReturn.get(1);				
+			if(StringZZZ.isEmpty(sExpressionUsed)){
 				
-			//TODOGOON 20241011; //Das muss in solveParsed verschoben werden!!!!	
-			//++++++++++++++++++++++++++++++++++++++++++++
+				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
+				KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+				if(objValue.isExpression(sExpression)){						
+					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
+					sExpressionUsed = objValue.parse(sExpression);					
+				}						
+				this.getEntry().setValueDecrypted(sExpressionUsed);//Zwischenstand festhalten													
+			}		
+			
+			sExpression = sExpressionUsed;
+			sReturn = sExpressionUsed;					
+		}//end main:
+	
+			
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		vecReturn.replace(sReturn);
+		
+		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
+		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseEncryption) {
+			String sTagStart = this.getTagStarting();
+			String sTagEnd = this.getTagClosing();
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);												
+		}	
+		
+		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+		if(bRemoveSurroundingSeparators & bUseExpression) {
+			String sTagStart = "<Z>";
+			String sTagEnd = "</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!												
+		}	
+	
+		this.setValue((String) vecReturn.get(1));
+		if(objEntry!=null) {
+			objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return vecReturn;
+	}
+	
+	
+	//### Aus ISolveEnabled		
+	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
+	 * @param sLineWithExpression
+	 * @param objEntryReference
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+	 */	
+	@Override
+	public String solveParsed(String sExpression) throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveParsed_(sExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		String sReturn = sExpressionIn;
+		boolean bUseExpression = false; 
+		boolean bUseSolver = false;
+		boolean bUseEncryption = false;
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		objEntry.setRaw(sExpressionIn);
+			
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
+			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
+			if(!bUseEncryption) break main;
+			
+			String sExpression = sExpressionIn;
+			String sExpressionUsed = sExpression;
+			
 			String sCode=null;
-				
+			
 			//Nun den z:cipher Tag suchen				
 			KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
 			if(objCipher.isExpression(sExpression)){						
@@ -213,49 +326,48 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				 if(!StringZZZ.isEmpty(sCode)) {
 					 //Das ist der reine kodierte Wert. Er gehört in objEntry.getValueEncrypted().
 					 this.getEntry().setValueEncrypted(sCode);	//Zwischenstand festhalten
-					 sReturn = objAlgorithm.decrypt(sCode);
-					 this.getEntry().setValueDecrypted(sReturn); //Zwischenstand festhalten
-				 }
-				 
-			}else{
-				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-				KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
-				if(objValue.isExpression(sExpression)){						
-					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
-					String sRemaining = objValue.parse(sExpression);
-					sCode = objValue.getValue();
-				}						
-				this.getEntry().setValueDecrypted(sCode);//Zwischenstand festhalten
-				sReturn = sCode;						
-			}													
-		}
-	}//end main:
-	
+					 sExpressionUsed = objAlgorithm.decrypt(sCode);
+					 if(sExpressionUsed!=null) {
+						if(!sExpressionUsed.equals(sCode)) {
+							objEntry.isDecrypted(true);
+							objEntry.setValueDecrypted(sExpressionUsed);
+						}							
+					}					
+				 }											
+			}
+			
+			sReturn = sExpressionUsed;							
+		}//end main:
 		
-	//#################################
-	//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-	vecReturn.replace(sReturn);
-	
-	// Z-Tags entfernen.
-	if(bRemoveSurroundingSeparators) {
-		if(bUseExpression) {
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+//      //Merke: Wird in aufrufender Methode anhand von .isSolved() gemacht		
+//		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
+//		if(bUseExpression & bUseSolver & bUseEncryption) {
+//			String sTagStart = this.getTagStarting();
+//			String sTagEnd = this.getTagClosing();
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
+//			sReturn = sValue;
+//		}	
+		
+		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
+		if(bRemoveSurroundingSeparators & bUseExpression) {
+			String sTagStart = "<Z>";
+			String sTagEnd = "</Z>";
+			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
+			sReturn = sValue;
 		}
-	}		
-
-	this.setValue((String) vecReturn.get(1));
-	if(objEntry!=null) {
-		objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
-		if(sExpressionIn!=null) {
-			if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-		}				
-		if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-	}
-	return vecReturn;
-	}
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturn);
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+			}
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+		}
+		return sReturn;	
+			
+		}
 	
 	
 //	@Override
