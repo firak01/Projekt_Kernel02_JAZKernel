@@ -54,17 +54,29 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	 }//end function KernelEncryptionIniSolverNew_
 	
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
+	//### aus ISolveEnabled
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bRemoveSurroundingSeparators);
+	public String parseFirstVectorParsed(String sExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorParsed_(sExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public String parseFirstVectorParsed(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorParsed_(sLineWithExpression, null, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	//### aus IKernelEntryReferenceSolveUserZZZ
+	@Override
+	public String parseFirstVectorParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorParsed_(sLineWithExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public String parseFirstVectorParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorParsed_(sLineWithExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private String parseFirstVectorParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn=sExpressionIn;
 		boolean bUseExpression = false;
@@ -96,9 +108,6 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
-			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
-			if(!bUseEncryption) break main;
-			
 			String sExpression = sExpressionIn;
 			String sExpressionUsed = sExpression;
 			
@@ -109,6 +118,11 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);	
 			objEntry = objReturnReferenceParse.get();
+			
+			
+			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
+			if(!bUseEncryption) break main;
+			
 			
 			sExpressionUsed = (String) vecReturn.get(1);				
 			if(StringZZZ.isEmpty(sExpressionUsed)){
@@ -132,6 +146,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		vecReturn.replace(sReturn);
 		
+		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
 		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
 		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseEncryption) {
 			String sTagStart = this.getTagStarting();
@@ -147,14 +162,15 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}	
 	
 		this.setValue((String) vecReturn.get(1));
+		sReturn = VectorUtilZZZ.implode(vecReturn);
 		if(objEntry!=null) {
-			objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
+			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
 			}				
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
-		return vecReturn;
+		return sReturn;
 	}
 	
 	
@@ -642,6 +658,4 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	public boolean proofFlagSetBefore(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-	
-		
 }//End class

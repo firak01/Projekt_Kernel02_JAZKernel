@@ -134,12 +134,13 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objEntry = objReturnReferenceParse.get();			
 			if(vecReturn==null) break main;
 			
+//			Darf hier nicht passieren, falls der solver selbst deaktiviert ist, muessen die Tags erhalten bleiben
 			//Z...-Tags "am Rande (von aussen nach innen) entfernen"... Wichtig für das Ergebnis eines Parsens
-			if(bRemoveSurroundingSeparators) {
-				String sTagStart=this.getTagStarting(); //"<Z>";
-				String sTagEnd=this.getTagClosing();    //"</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
-			}
+//			if(bRemoveSurroundingSeparators) {
+//				String sTagStart=this.getTagStarting(); //"<Z>";
+//				String sTagEnd=this.getTagClosing();    //"</Z>";
+//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
+//			}
 			
 			sReturn = (String) vecReturn.get(1);	
 			this.setValue(sReturn);
@@ -216,12 +217,13 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 			if (vecReturn==null)break main;
 		
+			//Nein, darf hier nicht passieren, z.B. problematisch wenn ein Solver deaktiviert ist.
 			//Z...-Tags "am Rand entfernen (von aussen nach innen)"... Wichtig für das Ergebnis eines Parsens
-			if(bRemoveSurroundingSeparators) {
-				String sTagStart=this.getTagStarting();
-				String sTagEnd=this.getTagClosing();
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
-			}
+//			if(bRemoveSurroundingSeparators) {
+//				String sTagStart=this.getTagStarting();
+//				String sTagEnd=this.getTagClosing();
+//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
+//			}
 			sReturn = (String) vecReturn.get(1);
 			
 		}//end main:				

@@ -4,6 +4,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 
 public interface ISolveEnabledZZZ{
+	public String parseFirstVectorParsed(String sExpression) throws ExceptionZZZ;
+	public String parseFirstVectorParsed(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	
 	public String solve(String sExpression) throws ExceptionZZZ;	//ruft parse() auf... und anschliessend solveParsed()....
 	public String solve(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
 
