@@ -133,18 +133,15 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();			
 			if(vecReturn==null) break main;
+									
+			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
+			this.setValue(sReturn);   
 			
-//			Darf hier nicht passieren, falls der solver selbst deaktiviert ist, muessen die Tags erhalten bleiben
-			//Z...-Tags "am Rande (von aussen nach innen) entfernen"... Wichtig für das Ergebnis eines Parsens
-//			if(bRemoveSurroundingSeparators) {
-//				String sTagStart=this.getTagStarting(); //"<Z>";
-//				String sTagEnd=this.getTagClosing();    //"</Z>";
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
-//			}
-			
-			sReturn = (String) vecReturn.get(1);	
+			vecReturn = this.parseFirstVectorCustomPost(vecReturn, bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
 			this.setValue(sReturn);
-			
+						
 			sReturn = VectorUtilZZZ.implode(vecReturn);	
 		}//end main:
 		
@@ -217,15 +214,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 			if (vecReturn==null)break main;
 		
-			//Nein, darf hier nicht passieren, z.B. problematisch wenn ein Solver deaktiviert ist.
-			//Z...-Tags "am Rand entfernen (von aussen nach innen)"... Wichtig für das Ergebnis eines Parsens
-//			if(bRemoveSurroundingSeparators) {
-//				String sTagStart=this.getTagStarting();
-//				String sTagEnd=this.getTagClosing();
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false);
-//			}
-			sReturn = (String) vecReturn.get(1);
-			
+			sReturn = (String) vecReturn.get(1);	
 		}//end main:				
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -241,6 +230,8 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}
 		return vecReturn;
 	}
+	
+	
 	
 	
 	

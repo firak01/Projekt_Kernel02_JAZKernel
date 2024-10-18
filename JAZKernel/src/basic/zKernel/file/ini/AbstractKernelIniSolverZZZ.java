@@ -604,8 +604,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
 				
-		
-		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				
@@ -635,23 +633,19 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Z:Encryption drumherum entfernen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);	
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, false);	
 			objEntry = objReturnReferenceParse.get();
-			
-			sExpressionUsed = (String) vecReturn.get(1);
-			sExpression = sExpressionUsed;
-			sReturn = sExpressionUsed;
-			
+						
 			//++++++++++++++++++++++++
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParseThis.set(objEntry);
-			sExpressionUsed = this.parseFirstVectorParsed(sExpression, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
+			vecReturn = this.parseFirstVectorSolverCustomPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
 			objEntry = objReturnReferenceParseThis.get();
-			sExpression = sExpressionUsed;
-			sReturn = sExpressionUsed;	
+			
+			sReturn = (String)vecReturn.get(1);	
 		}//end main:
 	
 			

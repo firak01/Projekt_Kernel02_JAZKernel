@@ -11,9 +11,14 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
 import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
+import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelEncryption_CodeZZZ;
 
 public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
 	private static final long serialVersionUID = -367756957686201953L;
@@ -142,20 +147,26 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return this.parse_(sExpression, bRemoveSurroundingSeparators);
 	}	
 	
-	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sExpression;
+	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturn = sExpressionIn;
 		main:{
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			//Bei einfachen Tags den Ersten Vektor holen
-			Vector<String> vecAll = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-			if(vecAll!=null) {
+			String sExpression = sExpressionIn;
+			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+			if(vecExpression==null) break main;
+			
+			sReturn = (String) vecExpression.get(1);
+			this.setValue(sReturn);
 				
-				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.						
-				this.setValue(vecAll.get(1));
-				sReturn = VectorUtilZZZ.implode(vecAll);
-			}									
+			vecExpression = this.parseFirstVectorCustomPost(vecExpression, bRemoveSurroundingSeparators);
+			sReturn = (String) vecExpression.get(1);
+			this.setValue(sReturn);
+				
+			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
+			sReturn = VectorUtilZZZ.implode(vecExpression);									
 		}//end main:
 		return sReturn;
 	}	
@@ -203,6 +214,21 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		}
 		return vecReturn;
 	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorCustomPost_(vecExpression, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorCustomPost_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return vecExpression;
+	}
+	
 	
 	//### aus IExpressionUserZZZ
 	@Override

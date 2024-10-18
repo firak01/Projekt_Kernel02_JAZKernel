@@ -520,10 +520,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			String sExpressionSolved; String sValue;				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry;
-		
-			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
-			
-			
+					
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.		
 			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 

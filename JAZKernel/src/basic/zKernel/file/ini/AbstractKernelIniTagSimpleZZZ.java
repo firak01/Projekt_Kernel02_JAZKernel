@@ -356,9 +356,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							
 			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, objReturnReference, bRemoveSurroundingSeparators);						
 			if(vecReturn==null) break main;
-											
-			this.setValue((String) vecReturn.get(1));   //Der eigene Wert, ohne drumherum
 				
+			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
+			this.setValue(sReturn);   
+			
+			vecReturn = this.parseFirstVectorCustomPost(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
+			this.setValue(sReturn);  
+			
 			if(objEntry!=null) {
 				sReturn = VectorUtilZZZ.implode(vecReturn);	
 				objEntry.setValue(sReturn);				
@@ -374,12 +379,18 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	//### aus IParseEnabledZZZ
 	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
+		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
+		return this.parseFirstVector_(sExpression, null, true);
+	}
+	
+	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
 		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators);
 	}
 	
-	//### Aus IKernelEntryExpressionUserZZZ	
+	//### Aus IKernelEntryReferenceExpressionUserZZZ	
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
 		return this.parseFirstVector_(sExpression, objReturnReference, true);
@@ -438,8 +449,71 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return vecReturn;
 	}
 	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorCustomPost_(vecExpression, objReturnReference, true);
+	}
 	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorCustomPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
 	
+	private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sExpressionIn = null;		
+		boolean bUseExpression = false;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}							
+		
+		main:{			
+			if(vecExpressionIn==null) break main;
+			
+			sExpressionIn = (String) vecExpressionIn.get(1);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+			objEntry.setRaw(sExpressionIn);
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			String sExpression = sExpressionIn;
+			String sExpressionUsed = sExpression;
+									
+			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+			if(bRemoveSurroundingSeparators & bUseExpression) {
+				String sTagStart = "<Z>";
+				String sTagEnd = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!												
+			}	
+			
+			sReturn = (String) vecReturn.get(1);					
+		}//end main:
+				
+		//#################################
+		this.setValue(sReturn);
+		if(objEntry!=null) {
+			objEntry.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return vecReturn;
+	}
+
 	
 	//### aus IExpressionUserZZZ	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.

@@ -56,29 +56,32 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	//### aus ISolveEnabled
 	@Override
-	public String parseFirstVectorParsed(String sExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorParsed_(sExpression, null, true);
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, true);
 	}
 	
 	@Override
-	public String parseFirstVectorParsed(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorParsed_(sLineWithExpression, null, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	//### aus IKernelEntryReferenceSolveUserZZZ
 	@Override
-	public String parseFirstVectorParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorParsed_(sLineWithExpression, objReturnReference, true);
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public String parseFirstVectorParsed(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorParsed_(sLineWithExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private String parseFirstVectorParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn=sExpressionIn;
+	private Vector3ZZZ<String> parseFirstVectorSolverCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		vecReturn=vecExpressionIn;
+		
+		String sReturn = null;
+		String sExpressionIn=null;
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
 		boolean bUseEncryption = false;		
@@ -99,27 +102,19 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}							
 		objEntry.setRaw(sExpressionIn);
 	
-		main:{			
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-			
+		main:{	
+			if(vecExpressionIn==null) break main;
+						
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
+			sExpressionIn = (String) vecExpressionIn.get(1);
 			String sExpression = sExpressionIn;
 			String sExpressionUsed = sExpression;
-			
-			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
-			//Z:Encryption drumherum entfernen
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);	
-			objEntry = objReturnReferenceParse.get();
-			
-			
+				
 			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
 			if(!bUseEncryption) break main;
 			
@@ -154,23 +149,16 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);												
 		}	
 		
-		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-		if(bRemoveSurroundingSeparators & bUseExpression) {
-			String sTagStart = "<Z>";
-			String sTagEnd = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!												
-		}	
-	
 		this.setValue((String) vecReturn.get(1));
-		sReturn = VectorUtilZZZ.implode(vecReturn);
 		if(objEntry!=null) {
+			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
 			}				
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
-		return sReturn;
+		return vecReturn;
 	}
 	
 	

@@ -13,5 +13,9 @@ public interface IParseEnabledZZZ {
 	public String parse(String sExpression) throws ExceptionZZZ;
 	public String parse(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
 	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ;
-	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;	
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	
 }
