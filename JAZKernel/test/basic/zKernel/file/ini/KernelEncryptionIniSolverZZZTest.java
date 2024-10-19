@@ -91,12 +91,27 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		}
 	}
 	
+	public void testCompute_Encyrption() {
+		String sExpressionSource=null;
+//		try {
+			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			testCompute_Encryption_(sExpressionSource);
+			
+			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+			testCompute_Encryption_(sExpressionSource);
+			
+			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
+			testCompute_Encryption_(sExpressionSource);
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+	}
 	
 	/**void, Test: Reading an entry in a section of the ini-file
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	public void testCompute_Encryption(){
+	private void testCompute_Encryption_(String sExpressionSourceIn){
 		
 		boolean btemp; int itemp;
 		
@@ -113,16 +128,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//++++ ohne encryption Berechnung
-			//.
-			//..
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-			sExpressionSolved = sExpressionSource; //<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>
-			//Nein, beim Parsen ohne encryption muss doch dieser Tag drinbleiben    sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
-			
+			//+++ Ohne Encryption-Berechung
+			sExpressionSource = sExpressionSourceIn;
+			sExpressionSolved = sExpressionSource;
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, false);
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -134,62 +143,58 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, false);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource; 			
 			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, true);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;			
 			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, false);
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, true);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne Solver-Berechung
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, false);
-			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			//+++ Ohne Solver-Berechung		
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, true);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource; //<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
+			//sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
 					
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, true);
 			
 			//+++ Ohne Encryption-Berechung
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, false);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, true);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource; //<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>
 			//Nein, beim Parsen ohne encryption muss doch dieser Tag drinbleiben    sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
 					
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;	
 			//Nein, beim Solven ohne encryption muss doch dieser Tag drinbleiben    sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
@@ -199,22 +204,22 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Mit Encryption-Berechnung
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource; //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>"; //"abcde";						
 			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, false);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";	
 			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;	//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!!		
 			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, true);
 			
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;		
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolvedTagless, true, false);
 
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
 			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, true);
 							
@@ -222,6 +227,127 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
+	
+//	/**void, Test: Reading an entry in a section of the ini-file
+//	 * 
+//	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
+//	 */
+//	public void testCompute_Encryption02(){
+//		
+//		boolean btemp; int itemp;
+//		
+//		String sSection; String sProperty;
+//		String sExpressionSource; 
+//		String sExpressionSolved; String sExpressionSolvedTagless;
+//		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
+//	
+//		String sValue;
+//		String sTagStartZ = "<Z>";
+//		String sTagEndZ = "</Z>";	
+//		
+//		try {		
+//					
+//			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+//			
+//			//+++ Ohne Encryption-Berechung
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, false);
+//			
+//			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+//			
+//			
+//			
+//			//###########################
+//		    //### objExpression
+//			//#########################
+//			
+//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			//+++ Ohne jegliche Expression-Berechnung
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, false);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource; 			
+//			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, true);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;			
+//			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, false);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, true);
+//			
+//			
+//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			//+++ Ohne Solver-Berechung		
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, true);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource; //<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>
+//			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
+//			//sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
+//					
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, true);
+//			
+//			//+++ Ohne Encryption-Berechung
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, false);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;
+//			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, true);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource; //<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>
+//			//Nein, beim Parsen ohne encryption muss doch dieser Tag drinbleiben    sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, false);
+//					
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;	
+//			//Nein, beim Solven ohne encryption muss doch dieser Tag drinbleiben    sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
+//			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, true);
+//			
+//			
+//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			//+++ Mit Encryption-Berechnung
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource; //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>"; //"abcde";						
+//			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, false);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";	
+//			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;	//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!!		
+//			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, true);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = sExpressionSource;		
+//			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
+//			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+//			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolvedTagless, true, false);
+//
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
+//			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, true);
+//							
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}		
+//	}
 	
 	private boolean testCompute_Encryption_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, boolean bSolve) {
 		boolean bReturn = false;
@@ -460,7 +586,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed());
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntry.isParsed());
+				}else {
+					assertFalse(objEntry.isParsed());
+				}
 				assertFalse(objEntry.isSolved());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -611,67 +741,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		
 	
 	
-	/** void, Test: Reading an entry in a section of the ini-file
-	* Lindhauer; 22.04.2006 12:54:32
-	 */
-	public void testCompute01(){
-		//TODOGOON20241015;//Mache testCompute... mit den entsprechenden Unterfunktionen _unsolved_ etc und uebergib die Werte von ausssen
-		                 //dann wuerde testCompute04 auch ueberfluessig und nur noch ein weiterer Funktionsaufruf, mit anderen Parametern...
-		
-		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
-		String sTagStartZ; String sTagEndZ;
-		boolean btemp;
-		sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-		
-		try {
-
-			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-			
-			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			
-			//Nun erst werden Pfade ersetzt
-			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-						
-			//Nun erst werden Variablen ersetzt			
-			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-			
-			//noch nicht sofort entschluesseln
-			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-			
-			
-			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-			
-			
-			//### Nun die Gesamtberechnung durchführen
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";
-			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
-			sValue = objExpressionSolver.parse(sExpressionSource);
-			assertEquals(sExpression, sValue);
-		
-			//Anwenden der ersten Formel, nun Entschluesselung	
-			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-		
-			sExpression = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
-			sValue = objExpressionSolver.parse(sExpressionSource);			
-			assertEquals(sExpression, sValue);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
-	}
+	
 	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
@@ -722,126 +792,66 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	}
 	
 	
-	/** void, Test: Reading an entry in a section of the ini-file
-	* Lindhauer; 22.04.2006 12:54:32
-	 */
-	public void testCompute02(){
-		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
-		String sTagStartZ;	String sTagEndZ;
-		boolean btemp;
-		sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
-		
-		try {
-			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-			
-			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
-			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-			
-			//Nun erst werden Pfade ersetzt
-			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-						
-			//Nun erst werden Variablen ersetzt			
-			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-			
-			//noch nicht sofort entschluesseln
-			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-						
-			//Teilberechnungen durchführen
-			//Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.			
-			
-			//Gesamtberechnung durchführen
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";
-			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
-			
-			sValue = objExpressionSolver.parse(sExpressionSource);
-			assertEquals(sExpression, sValue);
-		
-			
-			//#############################################################
-			//Sofort entschluesseln
-			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-										
-			sExpression = "abcde";			
-			
-			sValue = objExpressionSolver.parse(sExpressionSource);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-			assertEquals(sExpression, sValue);
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
-	}
 	
-	/** void, Test: Reading an entry in a section of the ini-file
-	* Lindhauer; 22.04.2006 12:54:32
-	 */
-	public void testCompute03(){				
-			String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
-			String sTagStartZ;	String sTagEndZ;
-			boolean btemp;
-			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
-			try {				
-				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
-				
-				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
-				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
-				
-				//Nun erst werden Pfade ersetzt
-				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-							
-				//Nun erst werden Variablen ersetzt			
-				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
-				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-				
-				//noch nicht sofort entschluesseln
-				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-											
-				//### Teilberechnungen durchführen
-				Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-				assertTrue(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-				assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.		
-				
-				//### Gesamtberechnung durchführen
-				sTagStartZ = "<Z>";
-				sTagEndZ = "</Z>";
-				sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
-				
-				sValue = objExpressionSolver.parse(sExpressionSource);
-				assertEquals(sExpression, sValue);
-			
-				//#############################################################
-				//Sofort entschluesseln
-				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
-												
-				sExpression = "abcde";			
-				
-				sValue = objExpressionSolver.parse(sExpressionSource);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-				assertEquals(sExpression, sValue);
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++				
-				
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
-	}
+	
+//	/** void, Test: Reading an entry in a section of the ini-file
+//	* Lindhauer; 22.04.2006 12:54:32
+//	 */
+//	public void testCompute03(){				
+//			String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+//			String sTagStartZ;	String sTagEndZ;
+//			boolean btemp;
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
+//			try {				
+//				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+//				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+//				
+//				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+//				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+//				
+//				//Nun erst werden Pfade ersetzt
+//				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //muss egal sein, da EXPRESION = FALSE //muss egal sein, wenn EXPRESIONSOLVER = FALSE
+//				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+//							
+//				//Nun erst werden Variablen ersetzt			
+//				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);
+//				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+//				
+//				//noch nicht sofort entschluesseln
+//				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
+//				assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
+//											
+//				//### Teilberechnungen durchführen
+//				Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
+//				assertTrue(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+//				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+//				assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.		
+//				
+//				//### Gesamtberechnung durchführen
+//				sTagStartZ = "<Z>";
+//				sTagEndZ = "</Z>";
+//				sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+//				
+//				sValue = objExpressionSolver.parse(sExpressionSource);
+//				assertEquals(sExpression, sValue);
+//			
+//				//#############################################################
+//				//Sofort entschluesseln
+//				btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //Ansonsten wird der Wert sofort ausgerechnet
+//				assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "' sollte zur Verfügung stehen.", btemp);
+//												
+//				sExpression = "abcde";			
+//				
+//				sValue = objExpressionSolver.parse(sExpressionSource);
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+//				assertEquals(sExpression, sValue);
+//				
+//				//++++++++++++++++++++++++++++++++++++++++++++++++++				
+//				
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+//	}
 	
 //	/** void, Test: Reading an entry in a section of the ini-file
 //	* Lindhauer; 22.04.2006 12:54:32

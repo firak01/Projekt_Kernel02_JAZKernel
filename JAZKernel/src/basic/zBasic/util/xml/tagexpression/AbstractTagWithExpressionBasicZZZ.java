@@ -200,16 +200,16 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
 	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		
-	private Vector3ZZZ<String>parseFirstVector_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+		String sReturn = sExpressionIn;
 		main:{
-			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 		
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpressionIn, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
 			if(vecReturn==null)break main;			
-			
-			String sReturn = VectorUtilZZZ.implode(vecReturn);
+			sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);
 		}
 		return vecReturn;
@@ -225,8 +225,36 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return this.parseFirstVectorCustomPost_(vecExpression, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return vecExpression;
+	private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sExpressionIn = null;		
+		boolean bUseExpression = false;
+		
+		main:{			
+			if(vecExpressionIn==null) break main;
+			
+			sExpressionIn = (String) vecExpressionIn.get(1);
+			sReturn = sExpressionIn;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+						
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+										
+			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+			if(bRemoveSurroundingSeparators & bUseExpression) {
+				String sTagStart = "<Z>";
+				String sTagEnd = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
+				
+				sReturn = (String) vecReturn.get(1);
+			}												
+		}//end main:
+				
+		//#################################
+		this.setValue(sReturn);
+		
+		return vecReturn;
 	}
 	
 	

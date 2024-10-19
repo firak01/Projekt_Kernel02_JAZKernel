@@ -77,9 +77,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 	
 	private Vector3ZZZ<String> parseFirstVectorSolverCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = vecExpressionIn;
-		vecReturn=vecExpressionIn;
-		
+		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
 		String sExpressionIn=null;
 		boolean bUseExpression = false;
@@ -104,52 +102,53 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 		main:{	
 			if(vecExpressionIn==null) break main;
-						
+			vecReturn=vecExpressionIn;			
+			sReturn = (String) vecReturn.get(1);
+			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
-			sExpressionIn = (String) vecExpressionIn.get(1);
-			String sExpression = sExpressionIn;
-			String sExpressionUsed = sExpression;
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			String sExpression = (String) vecExpressionIn.get(1);;
+			sReturn = sExpression; //Zwischenstand
 				
 			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
 			if(!bUseEncryption) break main;
-			
-			
-			sExpressionUsed = (String) vecReturn.get(1);				
-			if(StringZZZ.isEmpty(sExpressionUsed)){
+							
+			if(StringZZZ.isEmpty(sExpression)){
 				
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 				KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 				if(objValue.isExpression(sExpression)){						
 					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
-					sExpressionUsed = objValue.parse(sExpression);					
+					sReturn = objValue.parse(sExpression);					
 				}						
-				this.getEntry().setValueDecrypted(sExpressionUsed);//Zwischenstand festhalten													
-			}		
-			
-			sExpression = sExpressionUsed;
-			sReturn = sExpressionUsed;					
+				this.getEntry().setValueDecrypted(sReturn);//Zwischenstand festhalten													
+			}							
 		}//end main:
 	
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		this.setValue(sReturn);
 		vecReturn.replace(sReturn);
+		
 		
 		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
 		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
 		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseEncryption) {
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);												
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
 		}	
-		
-		this.setValue((String) vecReturn.get(1));
+				
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
