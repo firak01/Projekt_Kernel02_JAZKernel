@@ -6,12 +6,14 @@ import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -165,6 +167,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	//### Andere Interfaces
 	
 	//### Aus ISolveEnabled	
+	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
+	
 	@Override
 	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
 		return this.solveParsed_(sExpression, objReturnReference, true);
@@ -332,19 +336,21 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return sReturn;
 	}
 	
-
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	//Merke: Mit folgender Methode wird über das konkrete Flag dieser Solver ein-/ausgeschaltet. 
+	//       Z.B. wichtig für das Entfernen der geparsten Tags, oder halt dieses Entfernen weglassen.
+	//Merke: Folgende Methoden muessen im konkreten Solver implementiert werden, da der abstrakte Solver die konkreten Flags zur deaktivierung diese konkreten Solvers nicht kennt.
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			
-		return false;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {			
-		return null;
-	}
-
-	@Override
-	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	
@@ -426,5 +432,4 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
 }//End class

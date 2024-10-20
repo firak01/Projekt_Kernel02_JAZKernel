@@ -18,6 +18,7 @@ import basic.zBasic.util.file.ini.IniStructurePositionZZZ;
 import basic.zBasic.util.xml.tagsimple.AbstractTagParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 //DIES IST NICHT DER FLAG - WEG, sondern der reine Objekt Weg: AbstractObjectZZZ -> AbstractObjectWithValueBufferedZZZ -> AbstractTagParseEnabledZZZ -> AbstractIniTagBasicZZZ
 //ALLES WAS IN AbstractIniTagWithExpressionBasicZZZ steht dort rein
@@ -67,44 +68,6 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	//### aus IIniTagBasicZZZ  
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
-		return this.parseAsEntry(sExpression, null);
-	}
-	
-	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
-		return this.parseAsEntry(sExpression, objReturnReferenceIn, true);
-	}
-	
-	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		//IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-			if(objReturnReferenceIn==null) {
-				objReturn = this.parseAsEntryNew(sExpression);
-				break main;
-			}
-			
-			IKernelConfigSectionEntryZZZ objEntry = objReturnReferenceIn.get();
-			if(objEntry==null) {
-				objReturn =  this.parseAsEntryNew(sExpression);							
-			}else {			
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-				objReturnReference.set(objEntry);
-				
-				String sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
-				objReturn = objReturnReference.get();
-				objReturn.setValue(sReturn);
-			}
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
-			
-		}//end main:		
-		return objReturn;
-	}
-	
-	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
 		main:{
@@ -123,7 +86,72 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			}
 		}//end main:
 		return objReturn;
-	}	
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, null, true);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = null;
+		String sReturn = sExpressionIn;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objReturnReferenceIn==null) {
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this); //geht hier nicht... this.getEntryNew(); ausserdem gingen alle Informationen verloren								                                                      //nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+																		//nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			}else {
+				objReturn = objReturnReferenceIn.get();				
+			}
+				
+			if(objReturn==null) {
+				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+			}
+			objReturn.setRaw(sExpressionIn);
+			
+			//Hier Methode nur ohne Reference... String sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
+			//ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
+			//objReturnReference.set(objReturn)
+			String sExpression = sExpressionIn;
+			sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
+			//objReturn = objReturnReference.get();			
+			this.setValue(sReturn);
+			
+			
+		}//end main:		
+		if(objReturn!=null) {
+			objReturn.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
+		}					
+		return objReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++
 	
 	@Override
 	public String[] parseAsArray(String sLineWithExpression) throws ExceptionZZZ{
@@ -176,25 +204,34 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//### Aus IParseEnabledZZZ	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parse(sLineWithExpression, true);
+		return this.parse_(sLineWithExpression, true);
 	}
 				
 	@Override
 	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sLineWithExpression, bRemoveSurroundingSeparators);
+	}	
+	
+	private String parse_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
-			if(vecAll!=null) {
-				sReturn = VectorUtilZZZ.implode(vecAll);			
-				this.setValue(vecAll.get(1));				
-			}
+			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
+			if(vecExpression==null) break main;
+
+			sReturn = (String) vecExpression.get(1);
+			this.setValue(sReturn);
+				
+			vecExpression = this.parseFirstVectorCustomPost(vecExpression, bRemoveSurroundingSeparators);
+			sReturn = (String) vecExpression.get(1);
+			this.setValue(sReturn);
+				
+			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
+			sReturn = VectorUtilZZZ.implode(vecExpression);									
 		}//end main:
 		return sReturn;
 	}	
-	
-		
 	
 	
 	/**
@@ -216,6 +253,52 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return vecReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+			return this.parseFirstVectorCustomPost_(vecExpression, true);
+		}
+		
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+			return this.parseFirstVectorCustomPost_(vecExpression, bRemoveSurroundingSeparators);
+		}
+		
+		private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+			Vector3ZZZ<String> vecReturn = vecExpressionIn;
+			String sReturn = null;
+			String sExpressionIn = null;		
+			boolean bUseExpression = false;
+			
+			main:{			
+				if(vecExpressionIn==null) break main;
+				
+				sExpressionIn = (String) vecExpressionIn.get(1);
+				sReturn = sExpressionIn;
+				if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+						
+				//Anders als bei TagWithExpressionBasic gibt es in diesem Vererbungszweig keine Flags
+				//bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+				//if(!bUseExpression) break main;
+											
+				//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+				if(bRemoveSurroundingSeparators & bUseExpression) {
+					String sTagStart = "<Z>";
+					String sTagEnd = "</Z>";
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
+					
+					sReturn = (String) vecReturn.get(1);
+				}												
+			}//end main:
+					
+			//#################################
+			this.setValue(sReturn);
+			
+			return vecReturn;
+		}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus IIniStructurePositionUserZZZ
 	@Override
 	public IIniStructurePositionZZZ getIniStructurePosition() throws ExceptionZZZ{

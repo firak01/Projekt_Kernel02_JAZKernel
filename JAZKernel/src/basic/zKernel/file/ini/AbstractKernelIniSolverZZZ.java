@@ -260,6 +260,30 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	public String solveParsed(String sExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
 		return this.solveParsed_(sExpression, null, bRemoveSurroundingSeparators);
 	}
+	
+	//+++++++++++++++++++++
+	//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
+	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
+	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	
+	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
+	@Override
+	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
+	
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	//+++++++++++++++++++++++	
 
 	//### IKernelEntryReferenceSolveUserZZZ	
 	@Override
@@ -491,6 +515,100 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}
 		return sReturn;	
 	}
+	
+	//+++++++++++++++++++++
+	//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
+	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
+	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorSolverCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = null;		
+		String sReturn = null;
+		String sExpressionIn=null;
+		boolean bUseExpression = false;
+		boolean bUseSolver = false;
+		boolean bUseSolverThis = false;		
+		
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}							
+		objEntry.setRaw(sExpressionIn);
+	
+		main:{	
+			if(vecExpressionIn==null) break main;
+			vecReturn=vecExpressionIn;			
+			sReturn = (String) vecReturn.get(1);
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			String sExpression = (String) vecExpressionIn.get(1);;
+			sReturn = sExpression; //Zwischenstand
+				
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseSolverThis) break main;
+														
+		}//end main:
+	
+			
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		this.setValue(sReturn);
+		vecReturn.replace(sReturn);
+		
+		
+		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
+		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
+		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
+			String sTagStart = this.getTagStarting();
+			String sTagEnd = this.getTagClosing();
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
+		}	
+				
+		if(objEntry!=null) {
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return vecReturn;
+	}
+	
+	//+++++++++++++++++++++++	
+
 
 	
 	//###### Getter / Setter
@@ -634,8 +752,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, false); //nur in dieser aufrufenden Methode entscheiden, ob Tags entfernt werden sollen.	
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn==null) break main;
-			sReturn = (String)vecReturn.get(1);			
+			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);			
 			
 			//++++++++++++++++++++++++
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
@@ -646,13 +763,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn = this.parseFirstVectorSolverCustomPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
 			objEntry = objReturnReferenceParseThis.get();
 			if(vecReturn==null) break main;
-			sReturn = (String)vecReturn.get(1);	
+			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);	
 		}//end main:
 	
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		vecReturn.replace(sReturn);
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		this.setValue(sReturn);		
 		
 		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
@@ -661,7 +778,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			String sTagEnd = "</Z>";
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
 			
-			sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null)sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);
 		}	
 	
@@ -675,6 +792,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}
 		return vecReturn;
 	}
+	
+	
 	
 	//##################################
 	//### Flag handling

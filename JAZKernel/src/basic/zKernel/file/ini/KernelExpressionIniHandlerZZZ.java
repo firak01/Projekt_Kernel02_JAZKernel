@@ -479,8 +479,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturnReferenceParserSuper.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionUsed, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParserSuper.get();
-			
-			sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			//sExpressionUsed = sReturn; //falls noch weiterverarbeitet werden muesste
 			
 			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
@@ -489,7 +488,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	
-		vecReturn.replace(sReturn);		
+		if(vecReturn!=null) vecReturn.replace(sReturn);		
 		if(objEntry!=null) {		
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);

@@ -114,7 +114,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);			
-			sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sReturn)) break main;
 			
 			objEntry.setRaw(sReturn);
@@ -183,9 +183,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			sReturn = sValue;									
 		}//end main:	
 				
-		//#################################
-		
-		vecReturn.replace(sReturn);
+		//#################################		
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 				
 		// Z-Tags entfernen.
 		if(bRemoveSurroundingSeparators) {
@@ -248,6 +247,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
 	}
+	
+	//### aus ISolverEnablezZZZ
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+	}
+
 
 	//### Aus IKernelIniSolver
 	@Override
@@ -360,8 +366,4 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-
-
-
 }//End class

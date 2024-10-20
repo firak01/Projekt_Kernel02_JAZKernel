@@ -131,11 +131,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return vecReturn;
 	}
 	
-	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 //	@Override

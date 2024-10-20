@@ -12,6 +12,7 @@ public interface ISolveEnabledZZZ{
 	public String solveParsed(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
 	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
 	
+	boolean isSolverEnabledThis() throws ExceptionZZZ; //prueft intern ab, ob das Flag fuer den konkreten Solver gesetzt ist.
 	boolean isSolveRelevant(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
 	
 	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;

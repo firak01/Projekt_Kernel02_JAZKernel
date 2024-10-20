@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{

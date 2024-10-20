@@ -115,12 +115,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sLineWithExpression;
+		String sReturn = sExpressionIn;
 		boolean bUseExpression=false;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
@@ -134,19 +134,20 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);		
 			if(!bUseJsonMap) break main;
 			
+			this.getEntry().setRaw(sExpressionIn);
+			
+			String sExpression;
+			sExpression = sExpressionIn;
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:math drumherum entfernen
-			vecReturn = super.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);			
-			String sExpression = (String) vecReturn.get(1);
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			
-			this.getEntry().setRaw(sExpression);
-				
+			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);			
+			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			if(StringZZZ.isEmpty(sReturn)) break main;
+							
 			//++++++++++++++++++++++++++++++			
 			//Hier nur den String so zurückgeben. Für die Umwandlung in den Debug - String oder die HashMap selbst gibt es andere Methoden.
-			sReturn = sExpression;
 		}//end main:
 		
 		
@@ -279,6 +280,18 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 
 	//### Andere Interfaces
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//### aus ISolveEnabledZZZ
+	//Merke: Mit folgender Methode wird über das konkrete Flag dieser Solver ein-/ausgeschaltet. 
+	//       Z.B. wichtig für das Entfernen der geparsten Tags, oder halt dieses Entfernen weglassen.
+	//Merke: Folgende Methoden muessen im konkreten Solver implementiert werden, da der abstrakte Solver die konkreten Flags zur deaktivierung diese konkreten Solvers nicht kennt.
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+	}
+		
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {
 		return false;

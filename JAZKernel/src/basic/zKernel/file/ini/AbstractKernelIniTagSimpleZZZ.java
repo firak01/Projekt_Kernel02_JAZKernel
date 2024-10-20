@@ -347,7 +347,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ<T>(this);
+		IKernelConfigSectionEntryZZZ objReturn = null;
 		String sReturn = sExpressionIn;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -498,8 +498,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
 									
 			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-			if(vecReturn==null) break main;
-			sReturn = (String)vecReturn.get(1);
+			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);
 			
 		}//end main:				
 		
@@ -509,7 +508,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			String sTagEnd=this.getTagClosing();    //"</Z>";
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 		}
-		sReturn = (String) vecReturn.get(1); //der eingene Wert ohne drumherum	
+		if(vecReturn!=null) sReturn = (String) vecReturn.get(1); //der eingene Wert ohne drumherum	
 		this.setValue(sReturn);
 		
 		if(objEntry!=null) {
@@ -520,6 +519,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return vecReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++
 	@Override
 	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parseFirstVectorCustomPost_(vecExpression, objReturnReference, true);

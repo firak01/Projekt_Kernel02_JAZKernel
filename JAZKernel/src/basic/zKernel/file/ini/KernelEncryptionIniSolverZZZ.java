@@ -56,6 +56,11 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	//### aus ISolveEnabled
 	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+	}
+	
+	@Override
 	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
 		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, true);
 	}
@@ -82,7 +87,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		String sExpressionIn=null;
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
-		boolean bUseEncryption = false;		
+		boolean bUseSolverThis = false;		
 		
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -115,9 +120,10 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			String sExpression = (String) vecExpressionIn.get(1);;
 			sReturn = sExpression; //Zwischenstand
 				
-			bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
-			if(!bUseEncryption) break main;
+			bUseSolverThis = this.isSolverEnabledThis();		
+			if(!bUseSolverThis) break main;
 							
+			TODOGOON20241020;//bisherige customMethode ohne custom umbenennen und folgenden speziellen code in eine neue echte custom Methode packen...
 			if(StringZZZ.isEmpty(sExpression)){
 				
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
@@ -135,17 +141,17 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		this.setValue(sReturn);
-		vecReturn.replace(sReturn);
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		
 		
 		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
 		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
-		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseEncryption) {
+		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 			
-			sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);
 		}	
 				

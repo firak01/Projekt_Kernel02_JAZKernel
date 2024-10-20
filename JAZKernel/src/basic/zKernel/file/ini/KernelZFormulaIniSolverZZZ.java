@@ -105,6 +105,19 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	
 	//### Andere Interfaces
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//### aus ISolveEnabledZZZ
+	//Merke: Mit folgender Methode wird über das konkrete Flag dieser Solver ein-/ausgeschaltet. 
+	//       Z.B. wichtig für das Entfernen der geparsten Tags, oder halt dieses Entfernen weglassen.
+	//Merke: Folgende Methoden muessen im konkreten Solver implementiert werden, da der abstrakte Solver die konkreten Flags zur deaktivierung diese konkreten Solvers nicht kennt.
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+	}
+	
+	
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
