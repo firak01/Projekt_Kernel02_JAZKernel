@@ -274,14 +274,27 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, true);
+	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPost_(vecExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverCustomPost_(vecExpression, null, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverPost_(vecExpression, null, bRemoveSurroundingSeparators);
 	}
+	
+	//++++++++++++++++++++++
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
 	
 	//+++++++++++++++++++++++	
 
@@ -525,16 +538,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, true);
+	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPost_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverCustomPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorSolverCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parseFirstVectorSolverPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
 		String sExpressionIn=null;
@@ -555,7 +568,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
-		}							
+		}	
+		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 		objEntry.setRaw(sExpressionIn);
 	
 		main:{	
@@ -568,14 +582,21 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
-			
-			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
-			String sExpression = (String) vecExpressionIn.get(1);;
+						
+			String sExpression = (String) vecExpressionIn.get(1);
 			sReturn = sExpression; //Zwischenstand
 				
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
-														
+			
+			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
+			vecReturn = this.parseFirstVectorSolverPostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
+			objEntry = objReturnReference.get();
+			sExpressionIn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setRaw(sExpressionIn);
+			
+			sExpression = (String) vecReturn.get(1);;
+			sReturn = sExpression; //Zwischenstand
 		}//end main:
 	
 			
@@ -608,6 +629,24 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	//+++++++++++++++++++++++	
+	//+++ Folgende Methoden koennen ueberschrieben werden um fuer den konkreten Solver eine Loesung einzubauen.
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorSolverPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return vecExpressionIn;
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++
+	
 
 
 	
@@ -760,7 +799,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParseThis.set(objEntry);
-			vecReturn = this.parseFirstVectorSolverCustomPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
+			vecReturn = this.parseFirstVectorSolverPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
 			objEntry = objReturnReferenceParseThis.get();
 			if(vecReturn==null) break main;
 			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);	
