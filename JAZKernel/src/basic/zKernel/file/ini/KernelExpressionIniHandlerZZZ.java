@@ -551,7 +551,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 												
 			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-			if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
+			if(!this.isSolverEnabledThis()) break main;
 			
 			String sExpression = sExpressionIn;
 

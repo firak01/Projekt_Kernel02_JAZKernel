@@ -190,6 +190,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
+		boolean bUseExpression = false; 
+		boolean bUseSolver = false;
+		boolean bUseCall = false;
+		boolean bUseCallJava = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -214,8 +218,21 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
 //			objEntry = objReturnReferenceSolverSuper.get();
 			
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+						
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
+			bUseCall = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseCall) break main;
+						
+			String sExpression = sExpressionIn;
+						
 			//Aufloesen des CALL-Tags
-			sReturn = this.solveParsed_Call_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);			
+			sReturn = this.solveParsed_Call_(sExpression, objReturnReference, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReference.get();								
 		}//end main
 		
@@ -233,6 +250,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	private String solveParsed_Call_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		String sReturn = sExpressionIn;
+		boolean bUseCallJava = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -257,9 +275,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 						
 			//Fuer den abschliessenden Aufruf selbst.
 			String sClassnameWithPackage=null; String sMethodname=null;
-							
+													
 			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
             //Aber jetzt entfernen wir das einfach so:
+			
+			bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(!bUseCallJava) break main;
+			
 			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
 			Vector3ZZZ<String>vecReturn2 = StringZZZ.vecMid(sExpression, "<Z:Java>", "</Z:Java>", false, false);//Alle z:Java Ausdruecke ersetzen
 			String sExpression2= (String) vecReturn2.get(1);
