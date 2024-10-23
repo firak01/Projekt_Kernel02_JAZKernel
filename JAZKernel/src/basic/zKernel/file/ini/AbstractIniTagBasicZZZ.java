@@ -223,7 +223,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			sReturn = (String) vecExpression.get(1);
 			this.setValue(sReturn);
 				
-			vecExpression = this.parseFirstVectorCustomPost(vecExpression, bRemoveSurroundingSeparators);
+			vecExpression = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
 			sReturn = (String) vecExpression.get(1);
 			this.setValue(sReturn);
 				
@@ -256,12 +256,12 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		@Override
-		public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
 			return this.parseFirstVectorCustomPost_(vecExpression, true);
 		}
 		
 		@Override
-		public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 			return this.parseFirstVectorCustomPost_(vecExpression, bRemoveSurroundingSeparators);
 		}
 		

@@ -29,6 +29,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 		protected void setUp(){
 			try {			
+				
+				TODOGOON20241023;//Mache eine utility Klasse TestUtilZZZ.createKernelFileUsed()
+				                 //Dannn sollten alle Tests diese verwenden und nicht mehr die im projekt hinterlegte ini-Datei.
+				                 //Hintergrund: Es fehlen sonst ggfs. Einträge / Pfade, bzw. die sind nicht mehr aktuell!!!!
+				
 							
 				objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 				
@@ -71,10 +76,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		public void testCompute_Call() {
 			String sExpressionSource=null;
 //			try {
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-				testCompute_Call_(sExpressionSource);
+				//Test ohne notwendige Pfadersetzung
+//				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+//				testCompute_Call_(sExpressionSource);
 				
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; //Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
+				//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
+				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
 				testCompute_Call_(sExpressionSource);
 				
 
@@ -103,14 +110,19 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			String sTagEndZ = "</Z>";	
 			
 			try {		
+				String sHostName = EnvironmentZZZ.getHostName();
+				assertNotNull(sHostName);
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Ohne Call-Berechnung
+				//+++ Mit Call-Berechnung
+				//.
+				//..
 				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSource;
-				//Beim Solven ohne call, bleibt alles an Tags drin.
-				btemp = testCompute_Call_CallUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				sExpressionSolved = sTagStartZ + sHostName + sTagEndZ; 
+				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
+				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
+				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -195,17 +207,18 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSource;
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
 				btemp = testCompute_Call_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
-				//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.   //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
+				sExpressionSolved = sTagStartZ + sHostName + sTagEndZ; 
+				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
+				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
 				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
+				sExpressionSolved = sHostName;			
 				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 								
 			} catch (ExceptionZZZ ez) {
@@ -294,13 +307,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isParsed());
 					assertTrue(objEntry.isSolved());
 					
-					assertTrue(objEntry.isDecrypted());
-					assertNotNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
+					assertFalse(objEntry.isDecrypted());
+					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
 									
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertTrue(objEntry.isCall());
+					assertTrue(objEntry.isJavaCall());
+					assertNotNull(objEntry.getCallingClassname());
+					assertNotNull(objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -325,10 +338,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertFalse(objEntryUsed.isDecrypted()); //Ist kein solve-Schritt involviert.
 					assertNull(objEntryUsed.getValueDecrypted());  				
 					
-					assertFalse(objEntryUsed.isCall());
-					assertFalse(objEntryUsed.isJavaCall());
-					assertNull(objEntryUsed.getCallingClassname());
-					assertNull(objEntryUsed.getCallingMethodname());
+					assertTrue(objEntryUsed.isCall());
+					assertTrue(objEntryUsed.isJavaCall());
+					assertNotNull(objEntryUsed.getCallingClassname());
+					assertNotNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				
