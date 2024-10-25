@@ -189,9 +189,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 		if(objReturnReferenceIn==null) {
-			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();															
 		}else {
 			objReturnReference = objReturnReferenceIn;
 			objEntry = objReturnReference.get();
@@ -201,7 +199,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
 			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			//objEntry = this.getEntry();
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			
+			//nein, dann gehen alle Informationen verloren
+			//objReturn = this.parseAsEntryNew(sExpression);
+			
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
 			objReturnReference.set(objEntry);
 		}	
 		objEntry.setRaw(sExpressionIn);
@@ -221,6 +223,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			sExpression = sReturn;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSubstitute.set(objEntry);
 			sReturn = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSubstitute.get();
 			this.setValue(sReturn);

@@ -324,9 +324,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		objEntry = objReturnReference.get();
 		if(objEntry==null) {
-			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										   //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			//unten objEntry immer an das ReferenceOjekt zurueckgeben
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			
+			//nein, dann gehen alle Informationen verloren
+			//objReturn = this.parseAsEntryNew(sExpression);
+			
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
+			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		objEntry.setRaw(sExpressionIn);
 		
@@ -644,8 +650,86 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	
-	//+++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++ siehe analog zu AbstractIniTagWithExpressionBasicZZZ
+	@Override
+	public IKernelConfigSectionEntryZZZ solveAsEntryNew(String sExpression) throws ExceptionZZZ {
+		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		//und damit sind bestehende Eintragswerte ggfs. uebernommen IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();		
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			objReturn.setRaw(sExpression);
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSolve.set(objReturn);
+			objReturn = this.solveAsEntry_(sExpression, objReturnReferenceSolve, true);
+			
+		}//end main:
+		return objReturn;
+	}
+
+	@Override
+	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression) throws ExceptionZZZ {
+		return this.solveAsEntry_(sExpression, null, true);
+	}
+
+	@Override
+	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.solveAsEntry_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+
+	@Override
+	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+		return this.solveAsEntry_(sExpression, objReturnReferenceIn, true);
+	}
+
+	@Override
+	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveAsEntry_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
 	
+	private IKernelConfigSectionEntryZZZ solveAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ<T>(this);
+		String sReturn = sExpressionIn;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+						
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objReturnReferenceIn==null) {
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this); //geht hier nicht... this.getEntryNew(); ausserdem gingen alle Informationen verloren				
+				                                                      //nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+			}else {
+				objReturn = objReturnReferenceIn.get();				
+			}
+			
+			if(objReturn==null) {
+				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+			}
+			objReturn.setRaw(sExpressionIn);
+						
+			
+			//Merke: Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
+			objReturnReferenceSolve.set(objReturn);
+			String sExpression = sExpressionIn;
+			sReturn = this.solve(sExpression, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			objReturn = objReturnReferenceSolve.get();			
+			this.setValue(sReturn);
+			
+		}//end main:
+		
+
+		if(objReturn!=null) {
+			objReturn.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
+		}					
+		return objReturn;
+	}
 
 
 	
@@ -728,8 +812,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry = objReturnReference.get();
 		}
 		if(objEntry==null) {
-			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			
+			//nein, dann gehen alle Informationen verloren
+			//objReturn = this.parseAsEntryNew(sExpression);
+			
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
 			objReturnReference.set(objEntry);
 		}							
 		objEntry.setRaw(sExpressionIn);
@@ -790,6 +880,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}
 		return vecReturn;
 	}
+	
 	
 	
 	

@@ -10,7 +10,8 @@ public enum EnumSetMappedTestCaseSolverTypeZZZ implements IEnumSetMappedTestCase
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
 	PARSE("parse","p","Variante: 'Parse'"),
 	SOLVE("solve","s","Variante: 'Solve'"),
-	PARSE_AS_ENTRY("parse_as_entry","pae","Variante: 'Parse as entry'");
+	PARSE_AS_ENTRY("parse_as_entry","pae","Variante: 'Parse as entry'"),
+	SOLVE_AS_ENTRY("solve_as_entry","sae","Variante: 'Solve as entry'");
 	
 
 private String name, abbr;

@@ -67,26 +67,42 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//######## Getter / Setter #################
 	
 	//### aus IIniTagBasicZZZ  
+//	@Override
+//	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
+//		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+//			objReturn.setRaw(sExpression);
+//			
+//			Vector<String>vecAll = this.parseFirstVector(sExpression);
+//			
+//			//Das ist bei einfachen Tag Werten so
+//			String sReturn = (String) vecAll.get(1);
+//			this.setValue(sReturn); 
+//			
+//			objReturn.setValue(sReturn);	
+//			if(!sExpression.equals(sReturn)) {
+//				objReturn.isParsed(true);
+//			}
+//		}//end main:
+//		return objReturn;
+//	}
+	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		//und damit sind bestehende Eintragswerte ggfs. uebernommen IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();						
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			objReturn.setRaw(sExpression);
-			
-			Vector<String>vecAll = this.parseFirstVector(sExpression);
-			
-			//Das ist bei einfachen Tag Werten so
-			String sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn); 
-			
-			objReturn.setValue(sReturn);	
-			if(!sExpression.equals(sReturn)) {
-				objReturn.isParsed(true);
-			}
+
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSolve.set(objReturn);
+			objReturn = this.parseAsEntry_(sExpression, objReturnReferenceSolve, true);			
 		}//end main:
 		return objReturn;
-	}
+	}	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override

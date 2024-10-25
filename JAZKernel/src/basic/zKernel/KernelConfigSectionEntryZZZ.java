@@ -51,8 +51,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bParsed = false;
 	
 	protected boolean bSolved = false;
-	protected boolean bPathSolved = false;
-	protected boolean bVariableSolved = false;
+	protected boolean bPathSubstituted = false;
+	protected boolean bVariableSubstituted = false;
 	
 	protected boolean bFormulaMathSolved = false;
 	
@@ -673,22 +673,22 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override 
 	public boolean isPathSubstituted() {
-		return this.bPathSolved;
+		return this.bPathSubstituted;
 	}
 	
 	@Override
-	public void isPathSubstituted(boolean bPathSolved) {
-		this.bPathSolved = bPathSolved;
+	public void isPathSubstituted(boolean bPathSubstituted) {
+		this.bPathSubstituted = bPathSubstituted;
 	}
 	
 	@Override
 	public boolean isVariableSubstituted() {
-		return this.bVariableSolved;
+		return this.bVariableSubstituted;
 	}
 	
 	@Override
-	public void isVariableSubstiuted(boolean bVariableSolved) {
-		this.bVariableSolved = bVariableSolved;
+	public void isVariableSubstiuted(boolean bVariableSubstituted) {
+		this.bVariableSubstituted = bVariableSubstituted;
 	}
 	
 	//#####################################

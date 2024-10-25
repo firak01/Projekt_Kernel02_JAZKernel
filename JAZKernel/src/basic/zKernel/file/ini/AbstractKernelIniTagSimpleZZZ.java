@@ -324,7 +324,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	
-	//### Aus IParseEnabledZZZ	
+	//### Aus IParseEnabledZZZ		
 	@Override
 	public String parse(String sExpression) throws ExceptionZZZ{
 		return this.parse_(sExpression, null, true);
@@ -336,6 +336,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
+		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		//und damit sind bestehende Eintragswerte ggfs. uebernommen IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();						
+		main:{			
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			objReturn.setRaw(sExpression);
+					
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSolve.set(objReturn);
+			objReturn = this.parseAsEntry_(sExpression, objReturnReferenceSolve, true);			
+		}//end main:
+		return objReturn;
+	}	
+	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ{
 		return this.parseAsEntry_(sExpression, null, true);
@@ -361,31 +377,42 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = sExpressionIn;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-						
+									
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			if(objReturnReferenceIn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this); //geht hier nicht... this.getEntryNew(); ausserdem gingen alle Informationen verloren				
-				                                                      //nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();				
 			}else {
-				objReturn = objReturnReferenceIn.get();				
+				objReturnReference =  objReturnReferenceIn;
+				objReturn = objReturnReference.get();				
 			}
 			
 			if(objReturn==null) {
-				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//objEntry = this.getEntry();
+				
+				//nein, dann gehen alle Informationen verloren
+				//objReturn = this.parseAsEntryNew(sExpression);
+				
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this);  
+				objReturnReference.set(objReturn);
 			}
 			objReturn.setRaw(sExpressionIn);
 			
+			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
+			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+			
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 			//Merke: in Elternklassen gibt es diese Methode nur ohne Reference, da ohne KernelEbene das Objekt nicht vorhanden ist.
 			//       Darum wird die Methode auch hier ueberschrieben.
 			//Hier Methode nur ohne Reference... String sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-			objReturnReference.set(objReturn);
+			objReturnReferenceParse.set(objReturn);
 			String sExpression = sExpressionIn;
 			sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			objReturn = objReturnReference.get();			
+			objReturn = objReturnReferenceParse.get();			
 			
 			this.setValue(sReturn);
 			
@@ -426,15 +453,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry = objReturnReference.get();
 		}
 		if(objEntry==null) {
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			objReturnReference.set(objEntry);								
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			
+			//nein, dann gehen alle Informationen verloren
+			//objReturn = this.parseAsEntryNew(sExpression);
+			
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
+			objReturnReference.set(objEntry);							
 		}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		objEntry.setRaw(sExpressionIn);			
 			
 		main:{		
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-						
+			
+			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
 			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
@@ -462,9 +496,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
 				}				
 				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-			}	
-			return sReturn;
-
+			}				
 		}//end main:
 		return sReturn;
 	}
@@ -933,22 +965,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 										
 						KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 						while(objFormulaIniPath.isExpression(sExpression)){
-	//TODOGOON20241014;//Problem [ ] aus dem JSON:ARRAY (Z.B.: <Z><JSON><JSON:ARRAY>["TESTWERT2DO2JSON01","TESTWERT2DO2JSON02"]</JSON:ARRAY></JSON></Z> )
-					              //sind auch Bestandteile des INI-Pfads (z.B. [SECTION]Property )
-							      //Der INI-Pfad wird per RegEx-Ausdruck definiert.
-							      //IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
+							//Problem [ ] aus dem JSON:ARRAY (Z.B.: <Z><JSON><JSON:ARRAY>["TESTWERT2DO2JSON01","TESTWERT2DO2JSON02"]</JSON:ARRAY></JSON></Z> )
+					        //sind auch Bestandteile des INI-Pfads (z.B. [SECTION]Property )
+							//Der INI-Pfad wird per RegEx-Ausdruck definiert.
+							//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
 					   
-						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-								if(vecExpressionTemp==null) break;
+							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+							if(vecExpressionTemp==null) break;
 								
-								sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
-								if(StringZZZ.isEmpty(sExpressionTemp)) {
-									break;
-								}else if(sExpression.equals(sExpressionTemp)) {
-									break;
-								}else{
-									sExpression = sExpressionTemp;						
-								}											
+							sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
+							if(StringZZZ.isEmpty(sExpressionTemp)) {
+								break;
+							}else if(sExpression.equals(sExpressionTemp)) {
+								break;
+							}else{
+								sExpression = sExpressionTemp;						
+							}											
 						} //end while
 						sReturn = sExpression;
 						this.setValue(sReturn);
@@ -970,7 +1002,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
-				objEntry.setValue(sReturn);	
 	//20241011: Nein, diese Aufloesung hat mit den eigentlichen Solvern nix zu tun!!!
 //				if(sExpressionIn!=null) {
 //					if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
