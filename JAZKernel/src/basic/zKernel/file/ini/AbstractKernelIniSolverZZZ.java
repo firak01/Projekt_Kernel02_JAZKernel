@@ -364,7 +364,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);		
+		this.setValue(sReturn);	
 		vecReturn.replace(sReturn);
 		
 		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen (unabhaengig von bRemoveSurroundingSeperators)

@@ -63,31 +63,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return true;
 	}
 	
-			
-	//######## Getter / Setter #################
-	
-	//### aus IIniTagBasicZZZ  
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-//			objReturn.setRaw(sExpression);
-//			
-//			Vector<String>vecAll = this.parseFirstVector(sExpression);
-//			
-//			//Das ist bei einfachen Tag Werten so
-//			String sReturn = (String) vecAll.get(1);
-//			this.setValue(sReturn); 
-//			
-//			objReturn.setValue(sReturn);	
-//			if(!sExpression.equals(sReturn)) {
-//				objReturn.isParsed(true);
-//			}
-//		}//end main:
-//		return objReturn;
-//	}
-	
+	//### aus IIniTagBasicZZZ  	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
 		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
@@ -141,22 +117,40 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			}
 				
 			if(objReturn==null) {
-				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+				//objEntry = this.getEntry();
+				
+				//nein, dann gehen alle Informationen verloren
+				//objReturn = this.parseAsEntryNew(sExpression);
+				
+				objReturn = new KernelConfigSectionEntryZZZ<T>(this);  
+				objReturnReference.set(objReturn);
 			}
 			objReturn.setRaw(sExpressionIn);
 			
+//!!!Nicht der Flag-Vererbungsweg //Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
+//			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+//			if(!bUseExpression) break main;
+			
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+			//Merke: in Elternklassen gibt es diese Methode nur ohne Reference, da ohne KernelEbene das Objekt nicht vorhanden ist.
+			//       Darum wird die Methode auch hier von erbenden Klassen ueberschrieben.
 			//Hier Methode nur ohne Reference... String sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
 			//ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-			//objReturnReference.set(objReturn)
+			//objReturnReferenceParse.set(objReturn);
+			//String sExpression = sExpressionIn;
+			//sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			//objReturn = objReturnReferenceParse.get();			
+			
 			String sExpression = sExpressionIn;
 			sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
-			//objReturn = objReturnReference.get();			
-			this.setValue(sReturn);
 			
-			
-		}//end main:		
+			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
+			//this.setValue(sReturn);						
+		}//end main:
+		
 		if(objReturn!=null) {
 			objReturn.setValue(sReturn);	
 			if(sExpressionIn!=null) {
@@ -238,6 +232,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 
 			sReturn = (String) vecExpression.get(1);
 			this.setValue(sReturn);
+			
 				
 			vecExpression = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
 			sReturn = (String) vecExpression.get(1);
@@ -299,7 +294,8 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				//if(!bUseExpression) break main;
 											
 				//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-				if(bRemoveSurroundingSeparators & bUseExpression) {
+				//if(bRemoveSurroundingSeparators & bUseExpression) {
+				if(bRemoveSurroundingSeparators) {
 					String sTagStart = "<Z>";
 					String sTagEnd = "</Z>";
 					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!

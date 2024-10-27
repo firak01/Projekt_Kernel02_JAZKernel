@@ -367,8 +367,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sExpressionSource = sExpressionSourceIn;
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					
-					TODOGOON20241025;//Hier werden die z:class und z:method Tags beim solven nicht entfernt!!!
+										
 					objEntryUsed = objExpressionSolver.solveAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
 					assertNotNull(objEntryUsed);
 					
@@ -378,17 +377,17 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					}else {
 						assertFalse(objEntryUsed.isParsed());
 					}					
-					assertFalse(objEntryUsed.isSolved()); //Ist kein solve-Schritt involviert.				
+					assertTrue(objEntryUsed.isSolved());				
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 				
 					assertFalse(objEntryUsed.isDecrypted()); //Ist kein solve-Schritt involviert.
 					assertNull(objEntryUsed.getValueDecrypted());  				
 					
-					assertFalse(objEntryUsed.isCall());
-					assertFalse(objEntryUsed.isJavaCall());
-					assertNull(objEntryUsed.getCallingClassname());
-					assertNull(objEntryUsed.getCallingMethodname());
+					assertTrue(objEntryUsed.isCall());
+					assertTrue(objEntryUsed.isJavaCall());
+					assertNotNull(objEntryUsed.getCallingClassname());
+					assertNotNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				
@@ -845,10 +844,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
 				
-				//+++ Ohne jegliche Expression-Berechnung
+				//+++ Mit Call-Berechnung, und SOLVEN!!!
 				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSource;
-				btemp = testCompute_Call_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				sExpressionSolved = sExpressionSolved = sTagStartZ + sHostName + sTagEndZ;  						
+				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 				
 							
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE

@@ -159,11 +159,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			if(vecExpression==null) break main;
 			
 			sReturn = (String) vecExpression.get(1);
-			this.setValue(sReturn);
+			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
+			//this.setValue(sReturn);	
 				
 			vecExpression = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
 			sReturn = (String) vecExpression.get(1);
-			this.setValue(sReturn);
+			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
+			//this.setValue(sReturn);	
 				
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
 			sReturn = VectorUtilZZZ.implode(vecExpression);									

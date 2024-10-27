@@ -1,8 +1,9 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
+public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//AbstractIniTagWithExpressionBasicZZZ<T>{
 	private static final long serialVersionUID = 8437140852114172576L;
 	public static String sTAG_NAME = "Z:Method";
 	
@@ -34,5 +35,5 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
 		return false;
-	}						
+	}					
 }//End class

@@ -300,13 +300,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				String sExpressionOld="";
 				KernelJavaCall_ClassZZZ<T> objClassname = new KernelJavaCall_ClassZZZ<T>();
 				while(objClassname.isExpression(sExpression)&& !sExpressionOld.equals(sExpression)){
-						IKernelConfigSectionEntryZZZ objEntryClassname = objClassname.parseAsEntryNew(sExpression2);	
-						sExpression = objEntryClassname.getValue();
+						IKernelConfigSectionEntryZZZ objEntryClassname = objClassname.parseAsEntryNew(sExpression2);							
+						sExpression = objEntryClassname.getValue(); //!!!Nein, das ist der gesamte Entry. Wir wollen hier nur den Solved-Teil!!!
+						//Nein, hier kein Solver am Werk... sExpression = objEntryClassname.getValueFormulaSolvedAndConverted();
 						if(StringZZZ.isEmpty(sExpression)) {							
 							break;
 						}else{
 							sExpressionOld = sExpression;
-							sClassnameWithPackage = sExpression;							
+							sClassnameWithPackage = objClassname.getValue();							
 							bAnyJavaClass=true;
 						}
 				} //end while
@@ -321,20 +322,36 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					while(objMethodname.isExpression(sExpression)&& !sExpressionOld.equals(sExpression)){
 							IKernelConfigSectionEntryZZZ objEntryMethod = objMethodname.parseAsEntryNew(sExpression);
 							sExpression = objEntryMethod.getValue();
+							//Nein, hier kein Solver am Werk... sExpression = objEntryClassname.getValueFormulaSolvedAndConverted();
 							if(StringZZZ.isEmpty(sExpression)) {								
 								break;
 							}else{
 								sExpressionOld = sExpression;
-								sMethodname = sExpression;							
+								sMethodname = objMethodname.getValue();							
 								bAnyJavaMethod=true;
 							}
 					} //end while											
 				}//end if sExpression3 = ""
 
-				if(bAnyJavaClass) this.getEntry().setCallingClassname(sClassnameWithPackage);
-				if(bAnyJavaMethod)this.getEntry().setCallingMethodname(sMethodname);
+				if(bAnyJavaClass) {
+					this.getEntry().setCallingClassname(sClassnameWithPackage);
+					objEntry.setCallingClassname(sClassnameWithPackage); //auch noch an die Reference zurueckgeben
+				}
+				
+				if(bAnyJavaMethod) {
+					this.getEntry().setCallingMethodname(sMethodname);
+					objEntry.setCallingMethodname(sMethodname);//auch noch an die Reference zurueckgeben
+				}
 				
 				if(bAnyJavaClass && bAnyJavaMethod) {
+					//Egal, ob der Call funktioniert oder nicht, hier schon mal die Flags setzten
+					this.getEntry().isCall(true);
+					objEntry.isCall(true);//auch noch an die Reference zurueckgeben
+					
+					this.getEntry().isJavaCall(true);
+					objEntry.isJavaCall(true);//auch noch an die Reference zurueckgeben
+					
+					
 					//Abschliessend die Berechung durchführen.
 					Object objValue = ReflectUtilZZZ.invokeStaticMethod(sClassnameWithPackage, sMethodname);
 					if(objValue!=null) {
