@@ -937,34 +937,66 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		* Lindhauer; 22.04.2006 12:54:32
 		 */
 		public void testCompute01(){
-			try {						
-				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				
-				boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
-				bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
-				
-				
-				//### Teilberechnungen durchführen
-				Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
-				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-				
-				
-				//### Nun die Gesamtberechnung durchführen
-				String sValue = objExpressionSolver.parse(sLineWithExpression);
-				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
-				//Anwenden der ersten Formel	
-				bFlagAvailable = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
-				bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird				
-				assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
+			boolean btemp; int itemp;
+			String sLineWithExpression = null;
+			try {																		
+				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+
+				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+			
+				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+										
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 				
-				sValue = objExpressionSolver.parse(sLineWithExpression);			
+				btemp = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+				
+				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+				
+		
+				//### Ohne Substitution durchführen
+				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				
+				Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+				assertNotNull(vecReturn);
+				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+								
+				String sValue = objExpressionSolver.parse(sLineWithExpression);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
+				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturn.get(1), sValue);
+
+				//################################
+				//### Mit Substitution
+				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+				
+				Vector<String> vecReturnSubstituted = objExpressionSolver.parseFirstVector(sLineWithExpression);
+				assertNotNull(vecReturnSubstituted);
+				assertFalse(StringZZZ.isEmpty(vecReturnSubstituted.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+								
+				String sValueSubstituted = objExpressionSolver.parse(sLineWithExpression);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValueSubstituted + "'\n");
+				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturn.get(1), sValue);
+				
+				assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT, sValueSubstituted);
+				TODOGOON20241028; //parse und solve sollen unterschiedlich sein.
+				
+				//###############################
+				//### Nun die Gesamtberechnung, d.h. incl. Aufloesen durchführen
+				//Anwenden der ersten Formel: Erst jetzt kommt das Ergebnis raus	
+				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+				
+				sValue = objExpressionSolver.solve(sLineWithExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-				
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
+								
+				String sHostName = EnvironmentZZZ.getHostName();
+				assertEquals(sHostName, sValue);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
 				
