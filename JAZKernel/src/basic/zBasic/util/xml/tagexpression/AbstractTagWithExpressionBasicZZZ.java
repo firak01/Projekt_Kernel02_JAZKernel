@@ -246,8 +246,8 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 										
 			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
 			if(bRemoveSurroundingSeparators & bUseExpression) {
-				String sTagStart = "<Z>";
-				String sTagEnd = "</Z>";
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
 				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
 				
 				sReturn = (String) vecReturn.get(1);

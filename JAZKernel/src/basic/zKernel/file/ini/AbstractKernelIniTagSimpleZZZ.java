@@ -485,9 +485,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setValue(sReturn);   
 					
 			//Nacharbeiten, Z-Tags drumherum entfernen
-			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
-			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
-			this.setValue(sReturn);  
+//			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
+//			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
+//			this.setValue(sReturn);  
 						
 			if(objEntry!=null) {
 				sReturn = VectorUtilZZZ.implode(vecReturn);	
@@ -570,7 +570,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 									
 		}//end main:				
 		
-		if(vecReturn!=null) sReturn = (String) vecReturn.get(1); //der eingene Wert ohne drumherum	
+		if(vecReturn!=null) sReturn = (String) vecReturn.get(1); //der eigene Wert ohne drumherum	
 		this.setValue(sReturn);
 		
 		if(objEntry!=null) {
@@ -583,16 +583,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorCustomPost_(vecExpression, objReturnReference, true);
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorPostCustom_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorCustomPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorPostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorCustomPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sExpressionIn = null;		

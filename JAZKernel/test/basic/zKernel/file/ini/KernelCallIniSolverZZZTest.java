@@ -936,7 +936,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		/** void, Test: Reading an entry in a section of the ini-file
 		* Lindhauer; 22.04.2006 12:54:32
 		 */
-		public void testCompute01(){
+		public void testCompute01ParseVsSolve(){
 			
 			boolean btemp; int itemp;
 			String sLineWithExpression = null;
@@ -984,7 +984,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturn.get(1), sValue);
 				
 				assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT, sValueSubstituted);
-				TODOGOON20241028; //parse und solve sollen unterschiedlich sein.
 				
 				//###############################
 				//### Nun die Gesamtberechnung, d.h. incl. Aufloesen durchführen

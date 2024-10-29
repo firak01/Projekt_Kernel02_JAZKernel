@@ -165,6 +165,12 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	
 	//### aus IParseEnabledZZZ
 	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
+		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
+		return this.parseFirstVector_(sExpression, null, true, true);
+	}
+	
+	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
 		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators, true);
