@@ -6,8 +6,10 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -939,8 +941,18 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		public void testCompute01ParseVsSolve(){
 			
 			boolean btemp; int itemp;
-			String sLineWithExpression = null;
-			try {																		
+			Vector3ZZZ<String> vecReturn = null; Vector3ZZZ<String> vecReturnSubstituted = null;
+			String sLineWithExpression = null; String sExpressionSolvedTagless = null;
+			String sValue; String sValueSubstituted;
+			String sTagStart; String sTagEnd;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";				
+			try {									
+				String sHostName = EnvironmentZZZ.getHostName();
+				
+				
+				
 				btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
@@ -959,15 +971,23 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
-		
+				
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+	
+				
+				
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+				
+				
+				
 				//### Ohne Substitution durchführen
 				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				
-				Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+				vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
 				assertNotNull(vecReturn);
-				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+				assertFalse(StringZZZ.isEmpty((String)vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 								
-				String sValue = objExpressionSolver.parse(sLineWithExpression);
+				sValue = objExpressionSolver.parse(sLineWithExpression);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
 				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturn.get(1), sValue);
 
@@ -975,15 +995,27 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//### Mit Substitution
 				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 				
-				Vector<String> vecReturnSubstituted = objExpressionSolver.parseFirstVector(sLineWithExpression);
+				vecReturnSubstituted = objExpressionSolver.parseFirstVector(sLineWithExpression);
 				assertNotNull(vecReturnSubstituted);
-				assertFalse(StringZZZ.isEmpty(vecReturnSubstituted.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+				assertFalse(StringZZZ.isEmpty((String)vecReturnSubstituted.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 								
-				String sValueSubstituted = objExpressionSolver.parse(sLineWithExpression);
+				sValueSubstituted = objExpressionSolver.parse(sLineWithExpression);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValueSubstituted + "'\n");
-				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturn.get(1), sValue);
+				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein.",vecReturnSubstituted.get(1), sValueSubstituted);
 				
-				assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT, sValueSubstituted);
+				
+				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT, sTagStartZ, sTagEndZ, false);
+				
+				sTagStart = XmlUtilZZZ.computeTagPartStarting(KernelCallIniSolverZZZ.sTAG_NAME);
+				sTagEnd = XmlUtilZZZ.computeTagPartClosing(KernelCallIniSolverZZZ.sTAG_NAME);
+				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolvedTagless, sTagStart, sTagEnd, false);				
+				
+				sTagStart = XmlUtilZZZ.computeTagPartStarting(KernelJavaCallIniSolverZZZ.sTAG_NAME);
+				sTagEnd = XmlUtilZZZ.computeTagPartClosing(KernelJavaCallIniSolverZZZ.sTAG_NAME);
+				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolvedTagless, sTagStart, sTagEnd, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sExpressionSolvedTagless + "'\n");
+				assertEquals(sExpressionSolvedTagless, sValueSubstituted);
+					
 				
 				//###############################
 				//### Nun die Gesamtberechnung, d.h. incl. Aufloesen durchführen
@@ -994,8 +1026,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
 								
-				String sHostName = EnvironmentZZZ.getHostName();
+				sHostName = EnvironmentZZZ.getHostName();
 				assertEquals(sHostName, sValue);
+				
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
 				

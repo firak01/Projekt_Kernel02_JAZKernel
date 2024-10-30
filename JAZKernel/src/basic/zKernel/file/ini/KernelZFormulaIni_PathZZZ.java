@@ -393,9 +393,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 		//...aber nur, wenn ein Pfad gefunden wurde.
 		if(bRemoveSurroundingSeparators) {// & bExpressionFound) {
-			String sTagStart="<Z>";
-			String sTagEnd="</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+			String sTagStartZ="<Z>";
+			String sTagEndZ="</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 		}
 
 		this.setValue((String) vecReturn.get(1));

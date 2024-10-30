@@ -198,7 +198,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);			
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sReturn)) break main;
-			
+			objEntry = objReturnReferenceParse.get();
 			objEntry.setRaw(sReturn);
 			
 			
@@ -217,14 +217,21 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				IKernelZZZ objKernel = this.getKernelObject();
 				
 				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
-				sReturn=objJavaCallSolver.parse(sExpression);		
+				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
+				
+				//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
+				sReturn=objJavaCallSolver.parse(sExpression, bRemoveSurroundingSeparators);
+				String sReturnJavaCall=objJavaCallSolver.getValue();
+				if(!sExpression.equals(sReturnJavaCall)) {
+					objEntry.isCall(true);
+					objEntry.isJavaCall(true);
+				}
 			}		
 			
 			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
-			if(!sExpression.equals(sReturn)) {
-				objEntry.isParsed(true);
-				objEntry.isCall(true);							
+			if(!sExpressionIn.equals(sReturn)) {				
+				objEntry.isParsed(true);		
+				objEntry.isCall(true);
 			}
 			
 			//Code verlagert in eine extra Methode, aber in parse wird nie solve aufgerufen!!!  
