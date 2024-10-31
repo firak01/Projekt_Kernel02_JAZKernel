@@ -16,6 +16,7 @@ import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -242,7 +243,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
-		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false;
+		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -277,11 +278,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseCall) break main;
 			
-			boolean bUseSolverThis = this.isSolverEnabledThis();		
+			bUseSolverThis = this.isSolverEnabledThis();		
 			if(!bUseSolverThis) break main;
 					
 			String sExpression = sExpressionIn;
-			
+			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
+				objEntry.isJavaCall(true);
+			}
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
@@ -291,31 +294,35 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);			
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sReturn)) break main;
-			
-			objEntry.setRaw(sReturn);
-			
-			//+++ Nun das umgebende Tag dieses Solves entfernen.
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			objReturnReferenceParseThis.set(objEntry);
-//			vecReturn = this.parseFirstVectorSolverPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
-//			objEntry = objReturnReferenceParseThis.get();
-//			if(vecReturn==null) break main;
-//			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);	
-			
-			
-			//++++ Alle bisherigen Flags setzen
-			if(!sExpression.equals(sReturn)) {
-				objEntry.isParsed(true);
-				objEntry.isCall(true);
-				objEntry.isJavaCall(true);				
-			}
-			
-			//Code verlagert in eine extra Methode, aber in parse wird nie solve aufgerufen!!!  
-			//sReturn = this.solveParsed(sReturn);
-				
-			vecReturn.replace(sReturn);	
 		}//end main:
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		if(vecReturn!=null) vecReturn.replace(sReturn);
+		this.setValue(sReturn);	
+		
+		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen
+		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
+		}
+				
+		if(objEntry!=null) {			
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setValue(sReturn);
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isExpression(true);
+					objEntry.isParsed(true);			
+				}				
+			}			
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+		}					
 		return vecReturn;
+
 	}
 	
 	@Override

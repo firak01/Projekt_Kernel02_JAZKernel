@@ -608,7 +608,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		this.setValue(sReturn);
-		vecReturn.replace(sReturn);
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		
 		
 		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
@@ -892,8 +892,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn=sExpressionIn;
-		boolean bUseExpression = false;
-		boolean bUseSolver = false;
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 				
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -938,6 +937,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
+			bUseSolverThis = this.isSolverEnabledThis();		
+			if(!bUseSolverThis) break main;
+						
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParseThis.set(objEntry);
 			vecReturn = this.parseFirstVectorSolverPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
