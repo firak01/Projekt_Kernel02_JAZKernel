@@ -1,20 +1,12 @@
 package basic.zKernel.file.ini;
 
-import java.util.EnumSet;
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
-import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
-import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -109,14 +101,20 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
-						
+			
+			String sExpression = sExpressionIn;
+			
+			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
+				objEntry.isJavaCall(true);
+			}
+			
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
 			if(!bUseSolverThis) break main;
 			
-			String sExpression = sExpressionIn;
+			
 						
 			///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			String sValue=null;  
@@ -130,14 +128,9 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				sExpression = objJavaCallClass.parse(sExpression);
 				sJavaCallClass = objJavaCallClass.getValue();
 				if(StringZZZ.isEmpty(sJavaCallClass)) break main;
-				
+
+				//Merke: wenn die Klasse nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
 				objEntry.setCallingClassname(sJavaCallClass);
-				
-				//NEIN, wenn die Klasse nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
-				//Mit diesem Klassennamen nun das Class-Objekt erstellen
-				//objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
-				//if(objClass==null) break main;
-								
 				
 			}else{
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
@@ -156,11 +149,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				
 				objEntry.setCallingMethodname(sJavaCallMethod);
 				
-				//NEIN, wenn die Methode nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
-				//Mit diesem Klassennamen nun das Method-Objekt erstellen
-				//objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
-				//if(objMethod==null) break main;
-
 			}else{
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 				sValue = sExpression;
@@ -184,13 +172,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
 			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
 			if(bUseExpression) {
-				if(bUseSolver) {
-					if(bUseSolverThis) {
-						String sTagStartZCall = "<Z:Call>";
-						String sTagEndZCall = "</Z:Call>";
-						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
-					}
-				}
+//				if(bUseSolver) {
+//					if(bUseSolverThis) {
+//						String sTagStartZCall = "<Z:Call>";
+//						String sTagEndZCall = "</Z:Call>";
+//						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
+//					}
+//				}
 								
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
@@ -271,7 +259,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
-						
+			
+			if(XmlUtilZZZ.containsTag(sExpressionIn, this.getName(), false)){
+				objEntry.isJavaCall(true);
+			}
+			
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
@@ -282,16 +274,15 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(!bUseSolverThis) break main;
 					
 			String sExpression = sExpressionIn;
-			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
-				objEntry.isJavaCall(true);
-			}
+			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:call drumherum entfernen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);			
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			objEntry = objReturnReferenceParse.get();
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sReturn)) break main;
 		}//end main:
@@ -322,7 +313,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 		}					
 		return vecReturn;
-
 	}
 	
 	@Override

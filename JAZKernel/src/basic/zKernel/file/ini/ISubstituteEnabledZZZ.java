@@ -13,8 +13,8 @@ public interface ISubstituteEnabledZZZ  extends IValueVariableUserZZZ, IKernelZF
 	public String substitute(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 
 	public String substituteParsed(String sExpression) throws ExceptionZZZ;
-	public String substituteParsed(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	public String substituteParsed(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 	
 	public String substituteParsed(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
-	public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 }

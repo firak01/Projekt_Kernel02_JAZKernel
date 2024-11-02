@@ -730,7 +730,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override
 	public void isCall(boolean bCall) {
-		this.bCall = true;
+		this.bCall = bCall;
 	}
 	
 	@Override
@@ -740,7 +740,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override
 	public void isCallSolved(boolean bCallSolved) {
-		this.bCallSolved = true;
+		this.bCallSolved = bCallSolved;
 	}
 	
 	@Override

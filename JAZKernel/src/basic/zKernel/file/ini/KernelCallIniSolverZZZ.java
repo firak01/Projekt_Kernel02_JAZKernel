@@ -2,7 +2,6 @@ package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
@@ -95,41 +94,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
 		return this.hmVariable;
 	}
-	
-//	@Override
-//	public String parse(String sExpression) throws ExceptionZZZ {
-//		return this.parse_(sExpression);
-//	}
-//	
-//	private String parse_(String sExpression) throws ExceptionZZZ {
-//		String sReturn = sExpression;
-//		main:{
-//			if(StringZZZ.isEmpty(sExpression)) break main;
-//			if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)==false) break main;
-//			
-//			sReturn = super.parse(sExpression);
-//			
-////			//1.+ 2. Kein Versuch als HashMap oder ArrayList
-////			
-////			//3. Versuch als Einzelwert
-////			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)){
-////			
-////				//WICHTIG: DIE FLAGS VERERBEN !!!
-////				KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
-////				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
-////				
-////				//FileIniZZZ objFileIni = this.getFileIni();
-////				IKernelZZZ objKernel = this.getKernelObject();
-////				
-////				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-////				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
-////				sReturn=objJavaCallSolver.parse(sExpression);		
-////			}							
-//		}
-//		return sReturn;
-//	}
-	
-	
+		
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
@@ -183,17 +148,21 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 						
 			String sExpression = sExpressionIn;
 			
+			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
+				objEntry.isCall(true);
+			}
+			
+			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
-			//Z:call drumherum entfernen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);			
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
 			if(StringZZZ.isEmpty(sReturn)) break main;
 			objEntry = objReturnReferenceParse.get();
-			objEntry.setRaw(sReturn);
-						
+			//objEntry.setRaw(sReturn);
+					
 			//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
@@ -201,11 +170,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseSolverThis = this.isSolverEnabledThis();		
 			if(!bUseSolverThis) break main;
 			
-			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
-				objEntry.isCall(true);
-			}
-			
-			
+		
 			//1.+ 2. Kein Versuch als HashMap oder ArrayList
 			
 			//3. Versuch als Einzelwert
@@ -326,10 +291,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		boolean bUseExpression = false; 
-		boolean bUseSolver = false;
-		boolean bUseCall = false;
-		boolean bUseCallJava = false;
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
+		
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -346,14 +309,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		objEntry.setRaw(sExpressionIn);
 			
-		main:{			
-			//Aufloesen von Pfaden und ini-Variablen
-			//2021012: Passiert jetzt nur noch im KernelExpressionHandler
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			objReturnReferenceSolverSuper.set(objEntry);
-//			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-//			objEntry = objReturnReferenceSolverSuper.get();
-			
+		main:{						
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
@@ -362,8 +318,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
-			bUseCall = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-			if(!bUseCall) break main;
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseSolverThis) break main;
 						
 			String sExpression = sExpressionIn;
 						
@@ -406,119 +362,31 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
-		
-			boolean bAnyJavaCall = false; boolean bAnyJavaClass = false; boolean bAnyJavaMethod = false;
-						
-			//Fuer den abschliessenden Aufruf selbst.
-			String sClassnameWithPackage=null; String sMethodname=null;
-													
-			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
-            //Aber jetzt entfernen wir das einfach so:
-			
+														
 			bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-			if(!bUseCallJava) break main;
-			
-			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
-			Vector3ZZZ<String>vecReturn2 = StringZZZ.vecMid(sExpression, "<Z:Java>", "</Z:Java>", false, false);//Alle z:Java Ausdruecke ersetzen
-			String sExpression2= (String) vecReturn2.get(1);
-			if(!StringZZZ.isEmpty(sExpression2)& !sExpression.equals(sExpression2)) {							
-				bAnyJavaCall = true;
-				sReturn = sExpression2;
-			}
-			
-			//Darin sind einfache Tags, die dürfen geparsed werden...., sie machen kein solve()
-			if(bAnyJavaCall){
-				this.getEntry().isCall(true);
-				this.getEntry().isJavaCall(true);
-				
-				//++++++++++++++++++++++++++++++++++++++++++++				
+			if(bUseCallJava) {
+								
+				//Analog zum vorgehen in parseFirstVector(...), nur hier wird vom JavaCallIniSolver.solveParsed() aufgerufen.
 				sExpression = sReturn;
-				String sExpressionOld="";
-				KernelJavaCall_ClassZZZ<T> objClassname = new KernelJavaCall_ClassZZZ<T>();
-				while(objClassname.isExpression(sExpression)&& !sExpressionOld.equals(sExpression)){
-						IKernelConfigSectionEntryZZZ objEntryClassname = objClassname.parseAsEntryNew(sExpression2);							
-						sExpression = objEntryClassname.getValue(); //!!!Nein, das ist der gesamte Entry. Wir wollen hier nur den Solved-Teil!!!
-						//Nein, hier kein Solver am Werk... sExpression = objEntryClassname.getValueFormulaSolvedAndConverted();
-						if(StringZZZ.isEmpty(sExpression)) {							
-							break;
-						}else{
-							sExpressionOld = sExpression;
-							sClassnameWithPackage = objClassname.getValue();							
-							bAnyJavaClass=true;
-						}
-				} //end while
-			
-			
-				//Darin sind einfache Tags, die dürfen geparsed werden...., sie machen kein solve()
-				String sExpression3 = sReturn;			
-				if(!StringZZZ.isEmpty(sExpression3)){									
-					sExpression = sExpression3;
-					sExpressionOld = "";
-					KernelJavaCall_MethodZZZ<T> objMethodname = new KernelJavaCall_MethodZZZ<T>();
-					while(objMethodname.isExpression(sExpression)&& !sExpressionOld.equals(sExpression)){
-							IKernelConfigSectionEntryZZZ objEntryMethod = objMethodname.parseAsEntryNew(sExpression);
-							sExpression = objEntryMethod.getValue();
-							//Nein, hier kein Solver am Werk... sExpression = objEntryClassname.getValueFormulaSolvedAndConverted();
-							if(StringZZZ.isEmpty(sExpression)) {								
-								break;
-							}else{
-								sExpressionOld = sExpression;
-								sMethodname = objMethodname.getValue();							
-								bAnyJavaMethod=true;
-							}
-					} //end while											
-				}//end if sExpression3 = ""
-
-				if(bAnyJavaClass) {
-					this.getEntry().setCallingClassname(sClassnameWithPackage);
-					objEntry.setCallingClassname(sClassnameWithPackage); //auch noch an die Reference zurueckgeben
-				}
 				
-				if(bAnyJavaMethod) {
-					this.getEntry().setCallingMethodname(sMethodname);
-					objEntry.setCallingMethodname(sMethodname);//auch noch an die Reference zurueckgeben
-				}
+				//WICHTIG: DIE FLAGS VERERBEN !!!
+				KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
 				
-				if(bAnyJavaClass && bAnyJavaMethod) {
-					//Egal, ob der Call funktioniert oder nicht, hier schon mal die Flags setzten
-					this.getEntry().isCall(true);
-					objEntry.isCall(true);//auch noch an die Reference zurueckgeben
-					
-					this.getEntry().isJavaCall(true);
-					objEntry.isJavaCall(true);//auch noch an die Reference zurueckgeben
-					
-					
-					//Abschliessend die Berechung durchführen.
-					Object objValue = ReflectUtilZZZ.invokeStaticMethod(sClassnameWithPackage, sMethodname);
-					if(objValue!=null) {
-						sReturn = objValue.toString();					
-					}else {
-						sReturn = XmlUtilZZZ.computeTagNull();
-					}					
-				}				
+				//FileIniZZZ objFileIni = this.getFileIni();
+				IKernelZZZ objKernel = this.getKernelObject();
+				
+				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
+				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
+				
+				//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceJavaCall.set(objEntry);
+				sReturn=objJavaCallSolver.solveParsed(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+				objEntry = objReturnReferenceJavaCall.get();
 			} //end if bAnyJavaCall
 		}//end main:
-		
-		
-		// Z-Tags entfernen.
-//		if(bRemoveSurroundingSeparators) {
-//			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
-//			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
-//			if(bUseExpression) {
-//				if(bUseSolver) {
-//					if(bUseSolverThis) {
-//						String sTagStartZCall = "<Z:Call>";
-//						String sTagEndZCall = "</Z:Call>";
-//						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
-//					}
-//				}
-//								
-//				String sTagStartZ = "<Z>";
-//				String sTagEndZ = "</Z>";
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZ, sTagEndZ);
-//			}
-//		}	
-		
+				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);		
 		if(objEntry!=null) {		

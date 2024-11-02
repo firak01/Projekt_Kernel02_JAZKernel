@@ -228,12 +228,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public String solve(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-		return this.solve_(sExpression, bRemoveSuroundingSeparators);
+	public String solve(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.solve_(sExpression, bRemoveSurroundingSeparators);
 	}
 	
 	/** Methoder ruft erst parse() auf, dann solvedParsed()**/
-	private String solve_(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+	private String solve_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = sExpression;
 		
 		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
@@ -244,7 +244,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
 			
-			sReturn = this.solve(sExpression, objReturnReference, bRemoveSuroundingSeparators);
+			sReturn = this.solve(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 		}//end main:						
 		return sReturn;
 
@@ -311,8 +311,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false;
-		boolean bUseSolver = false;
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -354,7 +353,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
-									
+			
+			bUseSolverThis = this.isSolverEnabledThis();
+			if(!bUseSolverThis) break main;
+			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			String sExpressionSolved = this.solveParsed(sExpressionParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
@@ -367,10 +369,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setValue(sReturn);	
 		vecReturn.replace(sReturn);
 		
-		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen (unabhaengig von bRemoveSurroundingSeperators)
-		//Merke: Weil hier auf abstrakter Ebene nicht auf bUseEncryption (also das spezielle Solver Flag) abgefragt werden kann, dies hier nicht machen.
-		//       Statt dessen uf objEntry.isSolved() pruefen.
-		if(bUseExpression & bUseSolver & objEntry.isSolved()) {
+		//Als echten Ergebniswert aber die <Z>-CALL Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
+		if(bUseExpression & bUseSolver & bUseSolverThis){
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
@@ -379,7 +379,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.setValue(sReturn);
 		}	
 		
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen
+		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -405,6 +405,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
+	 * Nachfolgender Code ist also eine Art Blaupause.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
 	 * @return
@@ -421,11 +422,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 
-	/* Aufloesen der INI-Pfade und Variablen. */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		String sExpressionUsed = sExpressionIn;
-		
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
+	
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -443,97 +443,34 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
-								
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+				
+			String sExpressionUsed = sExpressionIn;
+			
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
 						
-//			if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
-//				//ZUERST: Löse ggfs. übergebene Variablen auf.
-//				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
-//									
-//				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
-//				//       Hier aber ein 
-//				String sExpressionOld = sExpressionUsed;
-//				String sExpressionTemp;					
-//				
-//				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
-//				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-//					
-//				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
-//				while(objVariable.isExpression(sExpressionUsed)){
-//					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
-//					if(vecExpressionTemp==null) break;
-//					
-//					sExpressionTemp = (String) vecExpressionTemp.get(1);
-//					if(StringZZZ.isEmpty(sExpressionTemp)) {
-//						break;
-//					}else if(sExpressionUsed.equals(sExpressionTemp)) {
-//						break;
-//					}else{
-//						sExpressionUsed = VectorUtilZZZ.implode(vecExpressionTemp);					
-//					}
-//				} //end while
-//				sReturn = sExpressionUsed;
-//				this.setValue(sReturn);
-//				objEntry.setValue(sReturn);
-//				if(sReturn!=sExpressionOld) {
-//					objEntry.isParsed(true);
-//					objEntry.isVariableSubstiuted(true);
-//				}
-//				sExpressionUsed = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
-//			}	
+			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
 			
-//			if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {	
-//				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-//				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-//				String sExpressionOld = sExpressionUsed;
-//				String sExpressionTemp;
-//				
-//				KernelZFormulaIni_PathZZZ<T> exDummy = new KernelZFormulaIni_PathZZZ<T>();
-//				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-//								
-//				KernelZFormulaIni_PathZZZ<T> objFormulaIniPath = new KernelZFormulaIni_PathZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-//				while(objFormulaIniPath.isExpression(sExpressionUsed)){
-//						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpressionUsed, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-//						if(vecExpressionTemp==null) break;
-//						
-//						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
-//						if(StringZZZ.isEmpty(sExpressionTemp)) {
-//							break;
-//						}else if(sExpressionUsed.equals(sExpressionTemp)) {
-//							break;
-//						}else{
-//							sExpressionUsed = sExpressionTemp;						
-//						}											
-//				} //end while
-//				sReturn = sExpressionUsed;
-//				this.setValue(sReturn);
-//				objEntry.setValue(sReturn);
-//				if(!sExpressionOld.equals(sReturn)) {
-//					objEntry.isParsed(true);
-//					objEntry.isPathSubstituted(true);
-//				}
-//				sExpressionUsed = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
-//			}//end if .getFlag(..USE_...Path...)
-			
-			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
-			//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseSolverThis) break main;
+
+			//mache nun die Aufloesung
 			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
+		this.setValue(sReturn);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
-//			objEntry.setValue(sReturn);	
-//20241011: Nein, diese Aufloesung hat mit den eigentlichen Solvern nix zu tun!!!
-//			if(sExpressionIn!=null) {
-//				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
-//			}
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
-		return sReturn;	
+		return sReturn;
 	}
-	
+
 	//+++++++++++++++++++++
 	//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
@@ -612,7 +549,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		
 		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
-		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
+		//Als echten Ergebniswert aber die <Z>-Tags des konkreten Solvers rausrechnen
 		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
@@ -746,30 +683,31 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 						
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
 			if(objReturnReferenceIn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this); //geht hier nicht... this.getEntryNew(); ausserdem gingen alle Informationen verloren				
-				                                                      //nein, dann gehen alls Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			}else {
-				objReturn = objReturnReferenceIn.get();				
+				objReturnReference = objReturnReferenceIn;
 			}
-			
-			if(objReturn==null) {
-				// =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this);
-			}
-			objReturn.setRaw(sExpressionIn);
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sExpressionIn);
+				
 						
-			
 			//Merke: Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-			objReturnReferenceSolve.set(objReturn);
 			String sExpression = sExpressionIn;
-			sReturn = this.solve(sExpression, objReturnReferenceSolve, bRemoveSurroundingSeparators);
-			objReturn = objReturnReferenceSolve.get();			
-			this.setValue(sReturn);
 			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
+			objReturnReferenceSolve.set(objEntry);
+			sReturn = this.solve(sExpression, objReturnReferenceSolve, bRemoveSurroundingSeparators);					
+			this.setValue(sReturn);
+			objEntry = objReturnReferenceSolve.get();
+			objReturn = objEntry;
 		}//end main:
 		
 
@@ -939,7 +877,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			bUseSolverThis = this.isSolverEnabledThis();		
 			if(!bUseSolverThis) break main;
-						
+			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParseThis.set(objEntry);
 			vecReturn = this.parseFirstVectorSolverPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	

@@ -377,27 +377,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = sExpressionIn;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-									
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
 			if(objReturnReferenceIn==null) {
-				objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();				
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			}else {
-				objReturnReference =  objReturnReferenceIn;
-				objReturn = objReturnReference.get();				
+				objReturnReference = objReturnReferenceIn;
 			}
-			
-			if(objReturn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-				//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-				//objEntry = this.getEntry();
-				
-				//nein, dann gehen alle Informationen verloren
-				//objReturn = this.parseAsEntryNew(sExpression);
-				
-				objReturn = new KernelConfigSectionEntryZZZ<T>(this);  
-				objReturnReference.set(objReturn);
-			}
-			objReturn.setRaw(sExpressionIn);
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry.setRaw(sExpressionIn);
+			objReturn = objEntry;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
 			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
@@ -409,23 +404,23 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Hier Methode nur ohne Reference... String sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
-			objReturnReferenceParse.set(objReturn);
+			objReturnReferenceParse.set(objEntry);
 			String sExpression = sExpressionIn;
 			sReturn = this.parse(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			objReturn = objReturnReferenceParse.get();			
-			
-			this.setValue(sReturn);
-			
+			objEntry = objReturnReferenceParse.get();
+			objReturn = objEntry;
 		}//end main:
 		
-
-		if(objReturn!=null) {
-			objReturn.setValue(sReturn);	
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);		
+		if(objReturn!=null) {		
+			objReturn.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
-			}				
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
-		}					
+			}
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objReturn);
+		}
 		return objReturn;
 	}
 	
@@ -763,8 +758,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}
 
 		@Override
-		public String substitute(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-			return this.substitute_(sExpression, null, bRemoveSuroundingSeparators);
+		public String substitute(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+			return this.substitute_(sExpression, null, bRemoveSurroundingSeparators);
 		}
 			
 		//### aus IKernelEntryReferenceSubstituteUserZZZ
@@ -870,13 +865,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}
 
 		@Override
-		public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-			return this.substituteParsed_(vecExpression, null, bRemoveSuroundingSeparators);
+		public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+			return this.substituteParsed_(vecExpression, null, bRemoveSurroundingSeparators);
 		}
 		
 		@Override
-		public String substituteParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-			return this.substituteParsed_(vecExpression, objReturnReference, bRemoveSuroundingSeparators);
+		public String substituteParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+			return this.substituteParsed_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 		}
 		
 		@Override
@@ -1011,13 +1006,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			return sReturn;	
 		}
 		
-		private String substituteParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+		private String substituteParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 			String sReturn = "";
 			main:{
 				if(vecExpression==null) break main;
 				
 				String sExpression = (String) vecExpression.get(1);
-				sReturn = this.substituteParsed(sExpression, objReturnReferenceIn, bRemoveSuroundingSeparators);
+				sReturn = this.substituteParsed(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 					
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 				this.setValue(sReturn);		
