@@ -23,6 +23,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpressionOld = sExpression;
 			
+			//20241103: Einfacher Fall, ohne pre - post Werte
 			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.replace(0, sTagStartZ);
 			vecExpressionSource.replace(1, sExpression);
@@ -34,8 +35,25 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			assertEquals(sExpressionOld, sExpression);
 			
+			//############################
+			//20241103: Aber jetzt mit pre - post Werten
+			TODOGOON20241103;//Beim Call solver kommt eine Situation vor, hier abbilden
+			vecExpressionSource = new Vector3ZZZ<String>();
+			vecExpressionSource.replace(0, "PRE" +sTagStartZ);
+			vecExpressionSource.replace(1, sExpression);
+			vecExpressionSource.replace(2, sTagEndZ + "POST");
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			
+
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
+			assertNotNull(sExpression);
+			assertEquals(sExpressionOld, sExpression);
+			
+			
+			
 			
 			//########################################################################
+			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
 			sTagStartZ = "<JSON:MAP>";
 			sTagEndZ = "</JSON:MAP>";			
 			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);

@@ -365,8 +365,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 																		
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);	
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
 		vecReturn.replace(sReturn);
 		
 		//Als echten Ergebniswert aber die <Z>-CALL Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
@@ -375,8 +374,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			String sTagEnd = this.getTagClosing();
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 			
-			sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
+			sReturn = (String) vecReturn.get(1);			
 		}	
 		
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
@@ -386,8 +384,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
 			
 			sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
 		}
+		this.setValue(sReturn);
 				
 		if(objEntry!=null) {			
 			sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -543,11 +541,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 			
 		//#################################
-		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		this.setValue(sReturn);
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		if(vecReturn!=null) vecReturn.replace(sReturn);
-		
-		
+				
 		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
 		//Als echten Ergebniswert aber die <Z>-Tags des konkreten Solvers rausrechnen
 		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
@@ -556,8 +552,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 			
 			sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
 		}	
+		this.setValue(sReturn);
 				
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -889,8 +885,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(vecReturn!=null) vecReturn.replace(sReturn);
-		this.setValue(sReturn);		
+		if(vecReturn!=null) vecReturn.replace(sReturn);		
 		
 		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
 		if(bRemoveSurroundingSeparators & bUseExpression) {
@@ -899,8 +894,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
 			
 			if(vecReturn!=null)sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
 		}	
+		this.setValue(sReturn);
 	
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);

@@ -52,42 +52,42 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ {
 		super(); //Elternklasse kennt keinen Kernel
-		AbstractKernelIniTagNew_(null, null);
+		AbstractKernelIniTagSimpleNew_(null, null);
 	}
 
 	public AbstractKernelIniTagSimpleZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag); //Elternklasse kennt keinen Kernel
-		AbstractKernelIniTagNew_(null, null);
+		AbstractKernelIniTagSimpleNew_(null, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);	//Elternklasse kennt keinen Kernel
-		AbstractKernelIniTagNew_(null, null);
+		AbstractKernelIniTagSimpleNew_(null, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
 		super(""); //Elternklasse kennt keinen Kernel, aber mit super() wuerde "init"-Flag gesetzt. Also Leerzeichen setzen.
-		AbstractKernelIniTagNew_(objKernel, null);
+		AbstractKernelIniTagSimpleNew_(objKernel, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ {
 		super(sFlag);
-		AbstractKernelIniTagNew_(objKernel, null);
+		AbstractKernelIniTagSimpleNew_(objKernel, null);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
-		AbstractKernelIniTagNew_(objKernel, null);
+		AbstractKernelIniTagSimpleNew_(objKernel, null);
 	}
 
 	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super(""); //Elternklasse kennt keinen Kernel, aber mit super() wuerde "init"-Flag gesetzt. Also Leerzeichen setzen.
-		AbstractKernelIniTagNew_(null, objKernelUsing);
+		AbstractKernelIniTagSimpleNew_(null, objKernelUsing);
 	}
 	
 	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
-		AbstractKernelIniTagNew_(null, objKernelUsing);
+		AbstractKernelIniTagSimpleNew_(null, objKernelUsing);
 	}
 	
 	
@@ -101,7 +101,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.07.2024, 07:10:15
 	 */
-	private boolean AbstractKernelIniTagNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	private boolean AbstractKernelIniTagSimpleNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		boolean bReturn = false;		
 		main: {			
 			if(this.getFlag("INIT")==true){
@@ -438,6 +438,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = sExpressionIn;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		boolean bUseExpression = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -464,7 +466,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;
@@ -472,27 +474,35 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);						
+			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);						
 			objEntry = objReturnReferenceParse.get();			
 			if(vecReturn==null) break main;
 				
 			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
-			this.setValue(sReturn);   
-					
-			//Nacharbeiten, Z-Tags drumherum entfernen
-//			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
-//			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
-//			this.setValue(sReturn);  
-						
-			if(objEntry!=null) {
-				sReturn = VectorUtilZZZ.implode(vecReturn);	
-				objEntry.setValue(sReturn);	
-				if(sExpressionIn!=null) {
-					if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-				}				
-				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-			}				
+							
 		}//end main:
+				
+	
+		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		if(bRemoveSurroundingSeparators & bUseExpression) {
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			
+			sReturn = (String) vecReturn.get(1);							
+		}
+		this.setValue(sReturn);   
+		
+
+	
+		if(objEntry!=null) {
+			sReturn = VectorUtilZZZ.implode(vecReturn);	
+			objEntry.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
+			}				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}		
 		return sReturn;
 	}
 	
@@ -618,26 +628,30 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 				
-			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			if(bRemoveSurroundingSeparators & bUseExpression) {
-				String sTagStart=this.getTagStarting();
-				String sTagEnd=this.getTagClosing();   
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-			}
 			
-			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-			if(bRemoveSurroundingSeparators & bUseExpression) {
-				String sTagStart = "<Z>";
-				String sTagEnd = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
-				
-				sReturn = (String) vecReturn.get(1);
-			}	
 										
 		}//end main:
 				
 		//#################################
+		
+		//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+		if(bRemoveSurroundingSeparators & bUseExpression) {
+			String sTagStart=this.getTagStarting();
+			String sTagEnd=this.getTagClosing();   
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+		}
+		
+		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+		if(bRemoveSurroundingSeparators & bUseExpression) {
+			String sTagStart = "<Z>";
+			String sTagEnd = "</Z>";
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
+			
+			sReturn = (String) vecReturn.get(1);
+		}
 		this.setValue(sReturn);
+		
+		
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	

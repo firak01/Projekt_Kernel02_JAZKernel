@@ -293,18 +293,19 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				//bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 				//if(!bUseExpression) break main;
 											
-				//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-				//if(bRemoveSurroundingSeparators & bUseExpression) {
-				if(bRemoveSurroundingSeparators) {
-					String sTagStart = "<Z>";
-					String sTagEnd = "</Z>";
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
-					
-					sReturn = (String) vecReturn.get(1);
-				}												
+															
 			}//end main:
 					
 			//#################################
+			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+			//if(bRemoveSurroundingSeparators & bUseExpression) {
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = "<Z>";
+				String sTagEnd = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
+				
+				sReturn = (String) vecReturn.get(1);
+			}			
 			this.setValue(sReturn);
 			
 			return vecReturn;
