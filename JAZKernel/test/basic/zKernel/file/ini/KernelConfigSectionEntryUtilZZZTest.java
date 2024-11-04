@@ -12,7 +12,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		
 	public void testGetValueExpressionTagSurroundingRemoved_SingleTag(){
 		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
-		String sExpressionSource; String sExpression; String sExpressionOld;
+		String sExpressionSource; String sExpressionTarget; String sValue; String sExpression; String sExpressionOld;
 		Vector3ZZZ<String> vecExpressionSource;
 		try{	
 			//die JSON Map ist schoen verschachtelt
@@ -47,21 +47,17 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			  und<Z>
               bzw </Z> soll entfernt werden.
 			*/
-			vecExpressionSource = new Vector3ZZZ<String>();
-//			vecExpressionSource.replace(0, "PRE" +sTagStartZ);
-//			vecExpressionSource.replace(1, sExpression);
-//			vecExpressionSource.replace(2, sTagEndZ + "POST");
-			
+			vecExpressionSource = new Vector3ZZZ<String>();			
 			vecExpressionSource.replace(0, "PRE<Z><Z:Call>");
 			vecExpressionSource.replace(1, "<Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>");
 			vecExpressionSource.replace(2, "</Z:Call></Z>POST");
 			
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
 			
-
-			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
-			assertNotNull(sExpression);
-//			assertEquals(sExpressionOld, sExpression);
+			sExpressionTarget = "PRE<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>POST";
+			sValue = VectorUtilZZZ.implode(vecExpressionSource);
+			assertNotNull(sValue);
+			assertEquals(sValue, sExpressionTarget);
 			
 			
 			

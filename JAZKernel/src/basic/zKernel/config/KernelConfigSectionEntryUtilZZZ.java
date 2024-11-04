@@ -1044,13 +1044,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 				String sBeforeOld = sBefore;
 				String sRestOld = sRest;
-				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
 				
 					if(!StringZZZ.isEmpty(sBefore)){
 						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
 									
-						if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
-							sBefore = StringZZZ.leftback(sBefore, sTagStart);
+						if(StringZZZ.contains(sBefore, sTagStart, false)) {
+						//if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
+							//sBefore = StringZZZ.leftback(sBefore, sTagStart);
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+							vecTemp.replace(1,"");
+							sBefore = VectorUtilZZZ.implode(vecTemp);
 						}
 						vecReturn.add(0, sBefore);
 					}else{
@@ -1060,8 +1064,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
 					if(!StringZZZ.isEmpty(sRest)){	
 					
-						if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-							sRest = StringZZZ.rightback(sRest, sTagEnd);
+						if(StringZZZ.contains(sRest, sTagEnd, false)) {
+						//if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+							//sRest = StringZZZ.rightback(sRest, sTagEnd);
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+							vecTemp.replace(1,"");
+							sRest = VectorUtilZZZ.implode(vecTemp);
 						}
 						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 					}else{
@@ -1130,8 +1138,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				if(!StringZZZ.isEmpty(sBefore)){
 					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
 									
-					if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
-						sBefore = StringZZZ.right(sBefore, sTagStart);
+					if(StringZZZ.contains(sBefore, sTagStart, false)) {
+					//if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
+						//sBefore = StringZZZ.right(sBefore, sTagStart);
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+						vecTemp.replace(1,"");
+						sBefore = VectorUtilZZZ.implode(vecTemp);
 					}
 					vecReturn.add(0, sBefore);
 				}else{
@@ -1141,8 +1153,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(2); 
 				if(!StringZZZ.isEmpty(sRest)){	
 					
-					if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
-						sRest = StringZZZ.left(sRest, sTagEnd);
+					if(StringZZZ.contains(sRest, sTagEnd, false)) {
+					//if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
+						//sRest = StringZZZ.left(sRest, sTagEnd);
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+						vecTemp.replace(1,"");
+						sRest = VectorUtilZZZ.implode(vecTemp);
 					}
 					vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 				}else{
