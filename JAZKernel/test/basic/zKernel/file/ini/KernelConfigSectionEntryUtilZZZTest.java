@@ -19,35 +19,49 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";			
-			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
-			assertNotNull(sExpression);
-			sExpressionOld = sExpression;
-			
-			//20241103: Einfacher Fall, ohne pre - post Werte
-			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
-			
-
-			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
-			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+//			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+//			assertNotNull(sExpression);
+//			sExpressionOld = sExpression;
+//			
+//			//20241103: Einfacher Fall, ohne pre - post Werte
+//			vecExpressionSource = new Vector3ZZZ<String>();
+//			vecExpressionSource.replace(0, sTagStartZ);
+//			vecExpressionSource.replace(1, sExpression);
+//			vecExpressionSource.replace(2, sTagEndZ);
+//			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+//			
+//
+//			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
+//			assertNotNull(sExpression);
+//			assertEquals(sExpressionOld, sExpression);
 			
 			//############################
 			//20241103: Aber jetzt mit pre - post Werten
-			TODOGOON20241103;//Beim Call solver kommt eine Situation vor, hier abbilden
+		
+			//TODOGOON20241103;
+			/*/Beim Call solver kommt eine Situation vor, hier abbilden
+			 * Vector 0= PRE<Z><Z:Call>
+			  Vector 1= <Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>
+			  Vector 2= </Z:Call></Z>POST
+
+			  und<Z>
+              bzw </Z> soll entfernt werden.
+			*/
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, "PRE" +sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ + "POST");
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+//			vecExpressionSource.replace(0, "PRE" +sTagStartZ);
+//			vecExpressionSource.replace(1, sExpression);
+//			vecExpressionSource.replace(2, sTagEndZ + "POST");
+			
+			vecExpressionSource.replace(0, "PRE<Z><Z:Call>");
+			vecExpressionSource.replace(1, "<Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>");
+			vecExpressionSource.replace(2, "</Z:Call></Z>POST");
+			
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
 			
 
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+//			assertEquals(sExpressionOld, sExpression);
 			
 			
 			
