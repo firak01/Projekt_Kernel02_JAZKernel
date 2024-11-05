@@ -119,21 +119,21 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//++++++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++
 	//### aus IIniTagBasicZZZ  	
-//	@Override
-//	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
-//		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
-//		//und damit sind bestehende Eintragswerte ggfs. uebernommen IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
-//		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();						
-//		main:{			
-//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-//			objReturn.setRaw(sExpression);
-//					
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			objReturnReferenceSolve.set(objReturn);
-//			objReturn = this.parseAsEntry_(sExpression, objReturnReferenceSolve, true);			
-//		}//end main:
-//		return objReturn;
-//	}	
+	@Override
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
+		//Nein, das setzt das Entry-Objekt des Solvers zurueck IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew();
+		//und damit sind bestehende Eintragswerte ggfs. uebernommen IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>(this);
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();						
+		main:{			
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			objReturn.setRaw(sExpression);
+					
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSolve = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSolve.set(objReturn);
+			objReturn = this.parseAsEntry_(sExpression, objReturnReferenceSolve, true);			
+		}//end main:
+		return objReturn;
+	}	
 		
 	//!!! Methoden der Elternklasse ueberschreiben, weil das hier der Flag-Vererbungsweg ist!!!
 	@Override
