@@ -797,6 +797,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				throw ez;
 			}			
 			
+			//TODOGOON: Iregendwie fehlt hier noch die Schärfe, wo der Unterschied ist!!!!
 			if(!bAnyPosition) {
 				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 				vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
@@ -806,6 +807,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 
 			}else {
 				
+				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				
+				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
+				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+
 				
 				
 			}

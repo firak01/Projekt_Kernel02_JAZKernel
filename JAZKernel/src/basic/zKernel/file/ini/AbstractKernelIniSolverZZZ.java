@@ -366,7 +366,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
-		vecReturn.replace(sReturn);
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		
 		//Als echten Ergebniswert aber die <Z>-CALL Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
 		if(bUseExpression & bUseSolver & bUseSolverThis){
@@ -381,7 +381,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
 			sReturn = (String) vecReturn.get(1);
 		}
@@ -891,7 +891,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
 			if(vecReturn!=null)sReturn = (String) vecReturn.get(1);
 		}	

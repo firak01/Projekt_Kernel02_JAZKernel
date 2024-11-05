@@ -203,7 +203,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolverThis) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
 			sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);

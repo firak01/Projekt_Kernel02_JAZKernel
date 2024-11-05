@@ -140,8 +140,15 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-			
-			
+				//+++ Ohne Solver-Berechung		
+				
+				//d)
+				sExpressionSource = sPre + sExpressionSourceIn + sPost;
+				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
+				btemp = testCompute_Call_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				
@@ -1684,7 +1691,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//d)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sHostName +sPre;			
+				sExpressionSolved = sPre + sHostName +sPost;			
 				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 								
 			} catch (ExceptionZZZ ez) {

@@ -487,14 +487,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false); //also von aussen nach innen!!!
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
 			sReturn = (String) vecReturn.get(1);							
 		}
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		this.setValue(sReturn);   
 		
-
-	
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);	
 			objEntry.setValue(sReturn);	
@@ -645,7 +644,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStart = "<Z>";
 			String sTagEnd = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, false); //also von aussen nach innen!!!
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 			
 			sReturn = (String) vecReturn.get(1);
 		}
