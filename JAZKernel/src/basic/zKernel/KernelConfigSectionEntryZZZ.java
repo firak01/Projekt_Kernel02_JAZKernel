@@ -49,6 +49,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected VectorDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
 
 	protected boolean bParsed = false;
+	protected boolean bParsedChanged = false;
 	
 	protected boolean bSolved = false;
 	protected boolean bPathSubstituted = false;
@@ -82,7 +83,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bRawEncrypted = false;
 	protected VectorDifferenceZZZ<String> vecRawEncrypted = new VectorDifferenceZZZ<String>();
 	protected VectorDifferenceZZZ<String> vecValueEncrypted = new VectorDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueEncryptedPart = new VectorDifferenceZZZ<String>();
 	protected VectorDifferenceZZZ<String> vecValueDecrypted = new VectorDifferenceZZZ<String>();
+	protected VectorDifferenceZZZ<String> vecValueDecryptedPart = new VectorDifferenceZZZ<String>();
 	
 	protected boolean bDecrypted = false;
 	protected boolean bRawDecrypted = false;	
@@ -451,6 +454,22 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.getValueEncryptedVector().addElement(sValueEncrypted);
 	}
 	
+	//################################################
+	@Override 
+	public VectorDifferenceZZZ<String> getValueEncryptedPartVector(){
+		return this.vecValueEncryptedPart;
+	}
+	
+	@Override
+	public String getValueEncryptedPart() {
+		return this.getValueEncryptedPartVector().getEntryHigh();
+	}
+	
+	@Override
+	public void setValueEncryptedPart(String sValueEncrypted) {
+		this.getValueEncryptedPartVector().addElement(sValueEncrypted);
+	}
+	
 	//############################################
 	@Override 
 	public VectorDifferenceZZZ<String> getValueDecryptedVector(){
@@ -459,7 +478,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override
 	public String getValueDecrypted() {
-		return this.getValueEncryptedVector().getEntryHigh();
+		return this.getValueDecryptedVector().getEntryHigh();
 	}
 	
 	@Override
@@ -471,6 +490,22 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setValueDecrypted(String sValueDecrypted) {
 		this.getValueDecryptedVector().add(sValueDecrypted);
+	}
+	
+	//################################################
+	@Override 
+	public VectorDifferenceZZZ<String> getValueDecryptedPartVector(){
+		return this.vecValueDecryptedPart;
+	}
+	
+	@Override
+	public String getValueDecryptedPart() {
+		return this.getValueDecryptedPartVector().getEntryHigh();
+	}
+	
+	@Override
+	public void setValueDecryptedPart(String sValueDecrypted) {
+		this.getValueDecryptedPartVector().addElement(sValueDecrypted);
 	}
 	
 	//###############################################
@@ -659,6 +694,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isParsed(boolean bParsed) {
 		this.bParsed = bParsed;
+	}
+	
+	@Override 
+	public boolean isParsedChanged() {
+		return this.bParsedChanged;
+	}
+	
+	@Override
+	public void isParsedChanged(boolean bParsedChanged) {
+		this.bParsedChanged = bParsedChanged;
 	}
 	
 	@Override 

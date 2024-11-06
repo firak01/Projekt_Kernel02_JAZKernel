@@ -70,6 +70,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isParsed();
 	abstract void isParsed(boolean bIsParsed);
 	
+	public boolean isParsedChanged();
+	abstract void isParsedChanged(boolean bIsParsedChanged);
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isSolved();
 	abstract void isSolved(boolean bIsSolved);
@@ -154,11 +157,18 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public String getValueEncryptedAsExpression() throws ExceptionZZZ;
 	public void setValueEncrypted(String sValueEncryptd);
 	
+	public VectorDifferenceZZZ<String> getValueEncryptedPartVector(); 
+	public String getValueEncryptedPart();	
+	public void setValueEncryptedPart(String sValueEncryptd);
+	
 	public VectorDifferenceZZZ<String> getValueDecryptedVector();
 	public String getValueDecrypted();
 	public String getValueDecryptedAsExpression() throws ExceptionZZZ;
 	public void setValueDecrypted(String sValueEncryptd);
 		
+	public VectorDifferenceZZZ<String> getValueDecryptedPartVector();
+	public String getValueDecryptedPart();	
+	public void setValueDecryptedPart(String sValueDecryptd);
 		
 	//++++++++++++++++++++++++++++++++++++++++++++
 	//CALL

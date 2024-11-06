@@ -84,7 +84,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	private Vector3ZZZ<String> parseFirstVectorSolverPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
-		String sExpressionIn=null;
+		String sExpressionIn=null; String sExpression;
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
 		boolean bUseSolverThis = false;		
@@ -110,9 +110,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
 						
-			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
-			String sExpression = (String) vecExpressionIn.get(1);;
-							
+			sExpression = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
+			sReturn = sExpression;
+													
 			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
 			if(StringZZZ.isEmpty(sExpression)){
 				
@@ -137,8 +137,10 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-			}				
+				objEntry.isExpression(true);
+				objEntry.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;
@@ -312,12 +314,17 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 									                 
 				 if(!StringZZZ.isEmpty(sCode)) {
 					 //Das ist der reine kodierte Wert. Er gehört in objEntry.getValueEncrypted().
-					 this.getEntry().setValueEncrypted(sCode);	//Zwischenstand festhalten
+					 this.getEntry().isEncrypted(true);
+					 objEntry.isEncrypted(true);
+					 this.getEntry().setValueEncryptedPart(sCode);	//Zwischenstand festhalten
+					 objEntry.setValueEncryptedPart(sCode);
 					 sExpressionUsed = objAlgorithm.decrypt(sCode);
 					 if(sExpressionUsed!=null) {
 						if(!sExpressionUsed.equals(sCode)) {
+							this.getEntry().isDecrypted(true);
 							objEntry.isDecrypted(true);
-							objEntry.setValueDecrypted(sExpressionUsed);
+							this.getEntry().setValueDecryptedPart(sExpressionUsed);
+							objEntry.setValueDecryptedPart(sExpressionUsed);
 						}							
 					}					
 				 }											
@@ -347,8 +354,15 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
+			if(objEntry.isEncrypted()) {
+				this.getEntry().setValueDecrypted(sReturn);
+				objEntry.setValueDecrypted(sReturn);
+			}
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) {
+					this.getEntry().isSolved(true);
+					objEntry.isSolved(true);
+				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}

@@ -484,6 +484,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 	
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		if(vecReturn!=null) vecReturn.replace(sReturn);
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -491,15 +492,17 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			sReturn = (String) vecReturn.get(1);							
 		}
-		if(vecReturn!=null) vecReturn.replace(sReturn);
 		this.setValue(sReturn);   
 		
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);	
-			objEntry.setValue(sReturn);	
+			objEntry.setValue(sReturn);
+			objEntry.isParsed(true);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-			}				
+				objEntry.isExpression(true);
+				objEntry.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}		
 		return sReturn;
@@ -655,8 +658,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsed(true);
-			}				
+				objEntry.isExpression(true);
+				objEntry.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;
