@@ -514,10 +514,24 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSurroundingSeparators);
 				assertNotNull(objEntryUsed);
 				
-				if(bRemoveSurroundingSeparators) {
-					assertTrue(objEntryUsed.isParsed());  
+//				if(bRemoveSurroundingSeparators) {
+//					assertTrue(objEntryUsed.isParsed());  
+//				}else {
+//					assertFalse(objEntryUsed.isParsed());
+//				}
+				
+				
+				//Falls Pfade substituiert werden, gibt es ebenfalls einen Unterschied, der fuer isParsedChanged sorgt.
+//				if(bRemoveSurroundingSeparators | objEntry.isPathSubstituted()) {
+//					assertTrue(objEntry.isParsed());
+//				}else {
+//					assertFalse(objEntry.isParsed());
+//				}
+				assertTrue(objEntryUsed.isParsed());
+				if(sExpressionSource.equals(sExpressionSolved)) {
+					assertFalse(objEntryUsed.isParsedChanged());						
 				}else {
-					assertFalse(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParsedChanged());
 				}
 				
 				assertFalse(objEntryUsed.isSolved());				
@@ -644,12 +658,24 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 				
-				if(bRemoveSuroundingSeparators) {
-					assertTrue(objEntryUsed.isParsed());
+//				if(bRemoveSuroundingSeparators) {
+//					assertTrue(objEntryUsed.isParsed());
+//				}else {
+//					assertFalse(objEntryUsed.isParsed());
+//				}
+				
+				//Falls Pfade substituiert werden, gibt es ebenfalls einen Unterschied, der fuer isParsedChanged sorgt.
+//				if(bRemoveSurroundingSeparators | objEntry.isPathSubstituted()) {
+//					assertTrue(objEntry.isParsed());
+//				}else {
+//					assertFalse(objEntry.isParsed());
+//				}
+				assertTrue(objEntryUsed.isParsed());
+				if(sExpressionSource.equals(sExpressionSolved)) {
+					assertFalse(objEntryUsed.isParsedChanged());						
 				}else {
-					assertFalse(objEntryUsed.isParsed());
-				}
-											
+					assertTrue(objEntryUsed.isParsedChanged());
+				}							
 				assertFalse(objEntryUsed.isSolved()); //Ist kein solve-Schritt involviert.				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
@@ -804,12 +830,25 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntryUsed);
 				
 				
-				if(bRemoveSuroundingSeparators) {
-					assertTrue(objEntryUsed.isParsed());  
+//				if(bRemoveSuroundingSeparators) {
+//					assertTrue(objEntryUsed.isParsed());  
+//				}else {
+//					assertFalse(objEntryUsed.isParsed());
+//				}
+				//Falls Pfade substituiert werden, gibt es ebenfalls einen Unterschied, der fuer isParsedChanged sorgt.
+//				if(bRemoveSurroundingSeparators | objEntry.isPathSubstituted()) {
+//					assertTrue(objEntry.isParsed());
+//				}else {
+//					assertFalse(objEntry.isParsed());
+//				}
+				assertTrue(objEntryUsed.isParsed());
+				if(sExpressionSource.equals(sExpressionSolved)) {
+					assertFalse(objEntryUsed.isParsedChanged());						
 				}else {
-					assertFalse(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParsedChanged());
 				}
-				assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+				assertFalse(objEntryUsed.isSolved());
+				
 				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);

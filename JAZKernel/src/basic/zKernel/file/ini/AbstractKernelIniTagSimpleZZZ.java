@@ -413,14 +413,18 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);		
-		if(objReturn!=null) {		
+		this.setValue(sReturn);				
+		if(objReturn!=null) {
+			//sReturn = VectorUtilZZZ.implode(vecReturn);	
 			objReturn.setValue(sReturn);
+			objReturn.isParsed(true);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objReturn);
-		}
+				objReturn.isExpression(true);
+				objReturn.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
+		}		
 		return objReturn;
 	}
 	
