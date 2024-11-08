@@ -18,11 +18,11 @@ public interface ISolveEnabledZZZ{
 	public String solveParsed(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
 	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 	
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 	
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 	
 	//Merke: Das steht fuer parse in IIniTagBasicZZZ
 	public IKernelConfigSectionEntryZZZ solveAsEntryNew(String sExpression) throws ExceptionZZZ;

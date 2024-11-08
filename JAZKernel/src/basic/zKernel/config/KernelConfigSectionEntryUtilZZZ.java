@@ -861,6 +861,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			
 			String sBeforeOld = sBefore;
+			String sValueOld = sValue;
 			String sRestOld = sRest;
 			
 			if(!bRemoveAnyPosition) {
@@ -888,6 +889,24 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					sBeforeOld=sBefore;
 					sRestOld=sRest;
 				}//end while
+				
+				//ggfs. aus dem Mittleren Teil auch entfernen
+				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+		
+						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+							sBefore = StringZZZ.right(sValue, sTagStart);
+							sValue = sBefore;
+						}
+						
+						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+							sRest = StringZZZ.left(sValue, sTagEnd);
+							sValue = sRest;
+						}	
+						
+						if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
+						sValueOld = sValue;
+				}//end while
+			
 			}else {
 				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
 					
@@ -919,6 +938,22 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					sRestOld=sRest;
 				}//end while
 			
+				//ggfs. aus dem Mittleren Teil auch entfernen
+				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+		
+						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+							sBefore = StringZZZ.right(sValue, sTagStart);
+							sValue = sBefore;
+						}
+						
+						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+							sRest = StringZZZ.left(sValue, sTagEnd);
+							sValue = sRest;
+						}	
+						
+						if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
+						sValueOld = sValue;
+				}//end while
 			}//end if bRemoveAnyPosition	
 			
 			//ggfs. aus dem Mittleren Teil auch entfernen
@@ -953,7 +988,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sRest = (String) vecReturn.get(2);
 			
 			String sBeforeOld = sBefore;
+			String sValueOld = sValue;
 			String sRestOld = sRest;
+
 			
 			//Merke 20241010: Stand jetzt ist es so, dass dies nur beim Loeschen der Tags von innen nach aussen notwendig ist
 			//			      nicht aber beim Loeschen der Tags von aussen nach innen.			
@@ -1015,7 +1052,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
 						sRest = StringZZZ.left(sValue, sTagEnd);
 						sValue = sRest;
-					}										
+					}	
+					
+					if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
+					sValueOld = sValue;
 			}//end while
 		
 		}else{
@@ -1057,13 +1097,18 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagStart, true);
 					vecTemp.replace(1,"");
 					sBefore = VectorUtilZZZ.implode(vecTemp);
+					sValue = sBefore;
 				}
 					
 				if(StringZZZ.contains(sValue, sTagEnd, false)) {						
 					Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagEnd, true);
 					vecTemp.replace(1,"");
 					sRest = VectorUtilZZZ.implode(vecTemp);
-				}									
+					sValue = sRest;
+				}		
+				
+				if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
+				sValueOld = sValue;
 			}//end while									
 		}//end if bRemoveAnyPosition
 			

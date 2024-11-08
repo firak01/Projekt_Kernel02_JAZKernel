@@ -168,23 +168,23 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		//if(vecReturn!=null) vecReturn.replace(sReturn);
 				
 		// Z-Tags entfernen.
-		if(bRemoveSurroundingSeparators) {
-			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
-			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
-			if(bUseExpression) {
-//				if(bUseSolver) {
-//					if(bUseSolverThis) {
-//						String sTagStartZCall = "<Z:Call>";
-//						String sTagEndZCall = "</Z:Call>";
-//						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
-//					}
-//				}
-								
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZ, sTagEndZ);
-			}
-		}	
+//		if(bRemoveSurroundingSeparators) {
+//			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
+//			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
+//			if(bUseExpression) {
+////				if(bUseSolver) {
+////					if(bUseSolverThis) {
+////						String sTagStartZCall = "<Z:Call>";
+////						String sTagEndZCall = "</Z:Call>";
+////						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
+////					}
+////				}
+//								
+//				String sTagStartZ = "<Z>";
+//				String sTagEndZ = "</Z>";
+//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZ, sTagEndZ);
+//			}
+//		}	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);
@@ -264,18 +264,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				objEntry.isJavaCall(true);
 			}
 			
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
-						
-			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-			if(!bUseCall) break main;
-			
-			bUseSolverThis = this.isSolverEnabledThis();		
-			if(!bUseSolverThis) break main;
-					
 			String sExpression = sExpressionIn;
-			
-			
+				
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			//Z:call drumherum entfernen
@@ -284,34 +274,35 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
-			if(StringZZZ.isEmpty(sReturn)) break main;
+			
+			//Fuer das Parsen sind die Solver Einstellungen egal
+//			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+//			if(!bUseSolver) break main;
+//						
+////			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+////			if(!bUseCall) break main;
+//			
+//			bUseSolverThis = this.isSolverEnabledThis();		
+//			if(!bUseSolverThis) break main;
+					
+		
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		if(vecReturn!=null) vecReturn.replace(sReturn);
 		this.setValue(sReturn);	
-		
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen
-		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
-			sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
-		}
-				
-		if(objEntry!=null) {			
+		if(objEntry!=null) {						
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
+			if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
-					objEntry.isParsed(true);			
-				}				
+				objEntry.isExpression(true);
+				objEntry.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-		}					
+		}				
 		return vecReturn;
 	}
 	

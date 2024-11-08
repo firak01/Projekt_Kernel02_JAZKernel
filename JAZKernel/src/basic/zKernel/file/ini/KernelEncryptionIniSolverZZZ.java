@@ -61,27 +61,27 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, true);
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	//### aus IKernelEntryReferenceSolveUserZZZ
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, true);
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorSolverPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
 		String sExpressionIn=null; String sExpression;

@@ -273,29 +273,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPost_(vecExpression, null, true);
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.solvePost_(vecExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPost_(vecExpression, null, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePost_(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	//++++++++++++++++++++++
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
-	}
-	
-	
-	//+++++++++++++++++++++++	
 
 	//### IKernelEntryReferenceSolveUserZZZ	
 	@Override
@@ -344,11 +331,20 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Rufe nun parse() auf...
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
-			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, false);//!!! Die Z-Tags drin lassen, ggfs. benoetigt fuer weitere Berechnungen.
+			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);//!!! false... Die Z-Tags drin lassen, ggfs. benoetigt fuer weitere Berechnungen.
 			objEntry = objReturnReferenceParse.get();
+			
+			//Da wir hier verkuerzt parseFirstVector aufrufen... Das machen parsePost() ausfuehren.
+			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
+			if(bRemoveSurroundingSeparators & bUseExpression) { // & bUseSolver & bUseSolverThis) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!							
+			}			
 			
 			String sExpressionParsed = (String) vecReturn.get(1);
 			sReturn = sExpressionParsed; //Zwischenstand
+			this.setValue(sReturn);
 			
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
@@ -362,29 +358,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			String sExpressionSolved = this.solveParsed(sExpressionParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceSolve.get();		
 			sReturn = sExpressionSolved; //Zwischenstand.	
-																		
+			
+			if(vecReturn!=null) vecReturn.replace(sReturn);
+			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1);
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		if(vecReturn!=null) vecReturn.replace(sReturn);
-		
-		//Als echten Ergebniswert aber die <Z>-CALL Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
-		if(bUseExpression & bUseSolver & bUseSolverThis){
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-			
-			sReturn = (String) vecReturn.get(1);			
-		}	
-		
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
-		if(bRemoveSurroundingSeparators & bUseExpression) {
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
-			
-			sReturn = (String) vecReturn.get(1);
-		}
 		this.setValue(sReturn);
 				
 		if(objEntry!=null) {						
@@ -478,16 +459,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPost_(vecExpression, objReturnReference, true);
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.solvePost_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorSolverPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> solvePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
 		String sExpressionIn=null;
@@ -515,44 +496,43 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{	
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
-			sReturn = (String) vecReturn.get(1);
+			sReturn = sExpressionIn;
 			
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
-						
-			String sExpression = (String) vecExpressionIn.get(1);
-			sReturn = sExpression; //Zwischenstand
-				
+										
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
 			
-			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
-			vecReturn = this.parseFirstVectorSolverPostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			objEntry = objReturnReference.get();
-			sExpressionIn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setRaw(sExpressionIn);
 			
-			sExpression = (String) vecReturn.get(1);;
-			sReturn = sExpression; //Zwischenstand
+			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
+			if(bUseExpression & bUseSolver & bUseSolverThis){
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);							
+			}	
+			
+			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+			if(bRemoveSurroundingSeparators & bUseExpression) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!				
+			}
+			
+			
+			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
+			vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
+			objEntry = objReturnReference.get();			
+			sReturn = (String) vecReturn.get(1);;
 		}//end main:
 	
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
-		if(vecReturn!=null) vecReturn.replace(sReturn);
-				
-		//Merke: Folgendes kann nur im konkreten Solver passieren. Der Abstrakte Solver kennt das Flag des konkreten Solvers nicht!!!
-		//Als echten Ergebniswert aber die <Z>-Tags des konkreten Solvers rausrechnen
-		if(bRemoveSurroundingSeparators & bUseExpression & bUseSolver & bUseSolverThis) {
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-			
-			sReturn = (String) vecReturn.get(1);
-		}	
+		if(vecReturn!=null) vecReturn.replace(sReturn);						
 		this.setValue(sReturn);
 				
 		if(objEntry!=null) {
@@ -572,12 +552,22 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//+++ Folgende Methoden koennen ueberschrieben werden um fuer den konkreten Solver eine Loesung einzubauen.
 	//+++ Als Standard werden hier die Z-Tags des Solvers entfernt.
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, true);
+	}
+
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorSolverPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
@@ -777,38 +767,36 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	
-	@Override
-	public String parse(String sExpression) throws ExceptionZZZ {
-		return this.parse_(sExpression);
-	}
-	
-	private String parse_(String sExpression) throws ExceptionZZZ {
-		String sReturn = sExpression;
-		main:{
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			if(!this.isSolverEnabledThis()) break main;
-			
-			sReturn = super.parse(sExpression);
-			
-//			//1.+ 2. Kein Versuch als HashMap oder ArrayList
+//	@Override
+//	public String parse(String sExpression) throws ExceptionZZZ {
+//		return this.parse_(sExpression);
+//	}
+//	
+//	private String parse_(String sExpression) throws ExceptionZZZ {
+//		String sReturn = sExpression;
+//		boolean bUseExpression = false;
+//		main:{
+//			if(StringZZZ.isEmpty(sExpression)) break main;
 //			
-//			//3. Versuch als Einzelwert
-//			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)){
+//			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+//			if(!bUseExpression) break main;
 //			
-//				//WICHTIG: DIE FLAGS VERERBEN !!!
-//				KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
-//				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
-//				
-//				//FileIniZZZ objFileIni = this.getFileIni();
-//				IKernelZZZ objKernel = this.getKernelObject();
-//				
-//				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-//				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed); 
-//				sReturn=objJavaCallSolver.parse(sExpression);		
-//			}							
-		}
-		return sReturn;
-	}
+//			//Fuer das Parsen sind Solver-Einstellungen egal
+//			//if(!this.isSolverEnabledThis()) break main;
+//			
+//			sReturn = super.parse(sExpression);						
+//		}
+//		//this.setValue(sTagValue);
+//
+//		String sTagValue = sReturn;
+//		if(bUseExpression) { //bRemoveSurroundingSeparators & bUseExpression) { // & bUseSolver & bUseSolverThis) {
+//			String sTagStartZ = "<Z>";
+//			String sTagEndZ = "</Z>";
+//			sTagValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
+//			
+//		}
+//		return sReturn;
+//	}
 	
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	@Override
@@ -872,18 +860,18 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);			
 			
 			//++++++++++++++++++++++++
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
-			
-			bUseSolverThis = this.isSolverEnabledThis();		
-			if(!bUseSolverThis) break main;
-			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParseThis.set(objEntry);
-			vecReturn = this.parseFirstVectorSolverPost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
-			objEntry = objReturnReferenceParseThis.get();
-			if(vecReturn==null) break main;
-			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);	
+//			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+//			if(!bUseSolver) break main;
+//			
+//			bUseSolverThis = this.isSolverEnabledThis();		
+//			if(!bUseSolverThis) break main;
+//			
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParseThis = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//			objReturnReferenceParseThis.set(objEntry);
+//			vecReturn = this.solvePost(vecReturn, objReturnReferenceParseThis, bRemoveSurroundingSeparators);	
+//			objEntry = objReturnReferenceParseThis.get();
+//			if(vecReturn==null) break main;
+//			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);	
 		}//end main:
 	
 			
