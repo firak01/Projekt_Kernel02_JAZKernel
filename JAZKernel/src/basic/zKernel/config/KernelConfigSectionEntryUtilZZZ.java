@@ -646,9 +646,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return getValueExpressionTagSurroundingRemoved(sValueExpression, sTagName, true, true);
 	}
 	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		return getValueExpressionTagSurroundingRemoved(sValueExpression, sTagName, true, bDirectionFromInToOut);
+	}
 	
-	
-		
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
 	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagName, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
 		String sReturn = sValueExpression;		
