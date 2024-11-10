@@ -160,9 +160,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//b)
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//c)
 			sExpressionSource = sExpressionSourceIn;
@@ -173,9 +173,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//d)
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_SolverUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//+++ Ohne Encryption-Berechung
 			//a)
@@ -186,9 +186,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//b)
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource; 
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
 			sExpressionSource = sExpressionSourceIn;
@@ -199,9 +199,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//d)
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSource;	
-			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -406,7 +406,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
 			
-			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+						
 			//####################################################################################
 			//### EXPRESSION - CALL NICHT .solve
 			//####################################################################################
@@ -435,6 +437,13 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
+				
+				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);								
+				sValue = objExpressionSolver.getValue();
+				assertEquals(sExpressionSolved, sValue);
+				
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
