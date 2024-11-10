@@ -84,11 +84,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
-		String sExpressionIn=null; String sExpression;
-		boolean bUseExpression = false;
-		boolean bUseSolver = false;
-		boolean bUseSolverThis = false;		
-		
+		String sExpressionIn=null; String sExpression;	
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -104,7 +100,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			objReturnReference.set(objEntry);
 		}	
 		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
-		objEntry.setRaw(sExpressionIn);
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+		
 	
 		main:{	
 			if(vecExpressionIn==null) break main;
@@ -118,7 +116,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-				KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
 				if(objValue.isExpression(sExpression)){						
 					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
 					sReturn = objValue.parse(sExpression);					
@@ -142,6 +140,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			if(objEntry!=null) {						
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);
+				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
+				if(sExpressionIn!=null) {
+					objEntry.isExpression(true);
+					objEntry.isParsed(true); 								
+					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				}			
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
+			}
 		}
 		return vecReturn;
 	}
@@ -190,12 +200,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}
 		objEntry = objReturnReference.get();
 		if(objEntry==null) {
-			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objEntry.setRaw(sExpressionIn);
-			
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+					
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
@@ -214,40 +226,43 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			String sCode=null;
 			
 			//Nun den z:cipher Tag suchen				
-			KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
+			KernelEncryption_CipherZZZ<T> objCipher = new KernelEncryption_CipherZZZ<T>();
 			if(objCipher.isExpression(sExpression)){						
-				String sRemaining = objCipher.parse(sExpression);
+				String sRemaining = objCipher.parse(sExpression); //wichtig: Erst parsen, bevor man den Wert holen kann.
 				String sCipher = objCipher.getValue();
 				 
-				 //START: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
-				 EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
-				 //wie verwenden???? EnumSetUtilZZZ.readEnumConstant_IndexValue(, "ROT13");
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//START: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
+				EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
+				//wie verwenden???? EnumSetUtilZZZ.readEnumConstant_IndexValue(, "ROT13");
 				 
-				 EnumSet<?> objEnumSet2 =CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();					 
-				 CryptAlgorithmMappedValueZZZ objEnums = new CryptAlgorithmMappedValueZZZ();
-				 Class enumClass = objEnums.getEnumClassStatic();					
-				 int itest = EnumSetUtilZZZ.readEnumConstant_IndexValue(enumClass, "ROT13");	
-				 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ itest="+itest);
+				EnumSet<?> objEnumSet2 =CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();					 
+				CryptAlgorithmMappedValueZZZ objEnums = new CryptAlgorithmMappedValueZZZ();
+				Class enumClass = objEnums.getEnumClassStatic();					
+				int itest = EnumSetUtilZZZ.readEnumConstant_IndexValue(enumClass, "ROT13");	
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ itest="+itest);
 			 
-				 String stest = EnumSetUtilZZZ.readEnumConstant_StringValue(enumClass, "ROT13");
-				 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
-				 stest = EnumSetUtilZZZ.readEnumConstant_NameValue(enumClass, "ROT13");
-				 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
-				 //ENDE: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++
+				String stest = EnumSetUtilZZZ.readEnumConstant_StringValue(enumClass, "ROT13");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
+				stest = EnumSetUtilZZZ.readEnumConstant_NameValue(enumClass, "ROT13");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
+				//ENDE: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				//Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
+				KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
+				ICryptZZZ objAlgorithm = objFactory.createAlgorithmType(sCipher);
+				this.setCryptAlgorithmType(objAlgorithm); //Damit kann der gefundene Wert durch einen anderen Wert ersetzt werden ohne die CryptAlgorithmFactoryZZZ neu zu bemuehen.
 			 
-				 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
-				 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
-				 ICryptZZZ objAlgorithm = objFactory.createAlgorithmType(sCipher);
-				 this.setCryptAlgorithmType(objAlgorithm); //Damit kann der gefundene Wert durch einen anderen Wert ersetzt werden ohne die CryptAlgorithmFactoryZZZ neu zu bemuehen.
-			 
-				 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				 //+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.
-				 //das ist einfacher als den konstruktor direkt aufzurufen
-				 //ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.
+				//das ist einfacher als den konstruktor direkt aufzurufen
+				//ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
 										
-				 KernelEncryption_KeyNumberZZZ objKeyNumber = new KernelEncryption_KeyNumberZZZ();
-				 if(objKeyNumber.isExpression(sExpression)){					
-					String sRemainig = objKeyNumber.parse(sExpression);
+				KernelEncryption_KeyNumberZZZ<T> objKeyNumber = new KernelEncryption_KeyNumberZZZ<T>();
+				if(objKeyNumber.isExpression(sExpression)){					
+					String sRemaining2 = objKeyNumber.parse(sExpression); //wichtig: Erst parsen, bevor man den Wert holen kann.
 					String sKeyNumber = objKeyNumber.getValue();
 					if(!StringZZZ.isEmptyTrimmed(sKeyNumber)) {
 						if(StringZZZ.isNumeric(sKeyNumber)) {
@@ -257,9 +272,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					}													
 			 	}
 			 
-			 	ZTagEncryption_KeyStringZZZ objKeyString = new ZTagEncryption_KeyStringZZZ();
+			 	ZTagEncryption_KeyStringZZZ<T> objKeyString = new ZTagEncryption_KeyStringZZZ<T>();
 				if(objKeyString.isExpression(sExpression)){					
-					String sRemaining2 = objKeyString.parse(sExpression);
+					String sRemaining2 = objKeyString.parse(sExpression);//wichtig: Erst parsen, bevor man den Wert holen kann.
 					String sKeyString = objKeyString.getValue();
 					if(!StringZZZ.isEmptyTrimmed(sKeyString)) {
 							objAlgorithm.setCryptKey(sKeyString);											
@@ -267,28 +282,27 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			 	}
 			 
 			 					
-				 KernelEncryption_CharacterPoolZZZ objCharacterPool = new KernelEncryption_CharacterPoolZZZ();
+				 KernelEncryption_CharacterPoolZZZ<T> objCharacterPool = new KernelEncryption_CharacterPoolZZZ<T>();
 				 if(objCharacterPool.isExpression(sExpression)){					
-				 	String sRemaining3 = objCharacterPool.parse(sExpression);
+				 	String sRemaining2 = objCharacterPool.parse(sExpression);//wichtig: Erst parsen, bevor man den Wert holen kann.
 				 	String sCharacterPool = objCharacterPool.getValue();
 					if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
 						objAlgorithm.setCharacterPoolBase(sCharacterPool);
 					}																											
 			 	}
 			 
-				 KernelEncryption_CharacterPoolAdditionalZZZ objCharacterPoolAdditional = new KernelEncryption_CharacterPoolAdditionalZZZ();
+				 KernelEncryption_CharacterPoolAdditionalZZZ<T> objCharacterPoolAdditional = new KernelEncryption_CharacterPoolAdditionalZZZ<T>();
 				 if(objCharacterPoolAdditional.isExpression(sExpression)){					
-				 	String sRemaining4 = objCharacterPoolAdditional.parse(sExpression);
+				 	String sRemaining2 = objCharacterPoolAdditional.parse(sExpression);//wichtig: Erst parsen, bevor man den Wert holen kann.
 				 	String sCharacterPoolAdditional = objCharacterPoolAdditional.getValue();
 					if(!StringZZZ.isEmpty(sCharacterPoolAdditional)) {							
 						objAlgorithm.setCharacterPoolAdditional(sCharacterPoolAdditional);
 					}																											
 			 	}
 			 
-				 //saFlagcontrol verarbeiten, Also der String ist mit "," getrennt. 
-				 String sFlagControl="";
-				 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
-				 if(objFlagControl.isExpression(sExpression)){					
+				//saFlagcontrol verarbeiten, Also der String ist mit "," getrennt. 
+				Kernel_FlagControlZZZ<T> objFlagControl = new Kernel_FlagControlZZZ<T>();
+				if(objFlagControl.isExpression(sExpression)){					
 					String[] saControl = objFlagControl.parseAsArray(sExpression,",");						
 					boolean[] baFound = objAlgorithm.setFlag(saControl, true);
 					if(!ArrayUtilZZZ.isNull(baFound)) {
@@ -302,10 +316,10 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					}													
 				 }
 								 
-			 	KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+			 	KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
 				if(objValue.isExpression(sExpression)){
 					this.getEntry().setValueEncrypted(sExpression);	//Zwischenstand festhalten
-					sRemaining = objValue.parse(sExpression);
+					String sRemaining2 = objValue.parse(sExpression);//wichtig: Erst parsen, bevor man den Wert holen kann.
 					sCode = objValue.getValue();
 //							String sDebug = (String) vecValue.get(1);
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
@@ -331,16 +345,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			}
 			
 			sReturn = sExpressionUsed;							
-		}//end main:
-		
-//      //Merke: Wird in aufrufender Methode anhand von .isSolved() gemacht		
-//		//Als echten Ergebniswert aber die <Z>-Encryption Tags rausrechnen
-//		if(bUseExpression & bUseSolver & bUseEncryption) {
-//			String sTagStart = this.getTagStarting();
-//			String sTagEnd = this.getTagClosing();
-//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
-//			sReturn = sValue;
-//		}	
+		}//end main:	
 		
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
 		if(bRemoveSurroundingSeparators & bUseExpression) {
@@ -363,11 +368,11 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					this.getEntry().isSolved(true);
 					objEntry.isSolved(true);
 				}
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			}						
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			this.adoptEntryValuesMissing(objEntry);			
 		}
-		return sReturn;	
-			
+		return sReturn;				
 	}
 	
 	//### aus ITagBasicZZZ

@@ -900,16 +900,34 @@ public void testFindSorted(){
 public void testVecMid(){
 	try{
 		String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
-		Vector<String> vec = StringZZZ.vecMid(sTest, "<Z>", "</Z>", false);
+		
+		//##################################################
+		//Test wenn die Tags nicht enthalten sind
+		Vector<String> vec = StringZZZ.vecMid(sTest, "<nixda>", "</nixda>", false);
 		assertEquals(vec.size(), 3);
 		
 		String sFormula0 = (String) vec.get(0);
 		assertEquals("", sFormula0);
 		
 		String sFormula1 = (String) vec.get(1);
-		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula1);
+		assertEquals(sTest, sFormula1);
 		
 		String sFormula2 = (String) vec.get(2);
+		assertEquals("", sFormula2);
+		
+		
+		
+		//##################################################
+		vec = StringZZZ.vecMid(sTest, "<Z>", "</Z>", false);
+		assertEquals(vec.size(), 3);
+		
+		sFormula0 = (String) vec.get(0);
+		assertEquals("", sFormula0);
+		
+		sFormula1 = (String) vec.get(1);
+		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula1);
+		
+		sFormula2 = (String) vec.get(2);
 		assertEquals("", sFormula2);
 		
 		
@@ -969,7 +987,26 @@ public void testVecMid(){
 public void testVecMidFirst(){
 	try{
 		String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
-		Vector vec = StringZZZ.vecMidFirst(sTest, "[", "]", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+		
+		//#####################################################################
+		//Test wenn die Tags nicht enthalten sind
+		Vector<String> vec = StringZZZ.vecMidFirst(sTest, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+		assertEquals(vec.size(), 3);
+		
+		String sFormula0 = (String) vec.get(0);
+		assertEquals("", sFormula0);
+		
+		String sFormula1 = (String) vec.get(1);
+		assertEquals(sTest, sFormula1);
+		
+		String sFormula2 = (String) vec.get(2);
+		assertEquals("", sFormula2);
+
+
+		
+		
+		//##############################
+		vec = StringZZZ.vecMidFirst(sTest, "[", "]", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 		assertEquals(vec.size(), 3);
 		
 		//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
@@ -978,13 +1015,13 @@ public void testVecMidFirst(){
 		assertEquals(StringZZZ.count(sProof, "]"),1);
 		
 
-		String sFormula0 = (String) vec.get(0);
+		sFormula0 = (String) vec.get(0);
 		assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
 		
-		String sFormula1 = (String) vec.get(1);
+		sFormula1 = (String) vec.get(1);
 		assertEquals("ArgumentSection for testCallComputed", sFormula1);
 		
-		String sFormula2 = (String) vec.get(2);
+		sFormula2 = (String) vec.get(2);
 		assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
 
 		//###############################

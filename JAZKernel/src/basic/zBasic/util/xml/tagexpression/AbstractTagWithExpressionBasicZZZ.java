@@ -244,21 +244,18 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 										
-															
+			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				
+				sReturn = (String) vecReturn.get(1);
+			}			
+			this.setValue(sReturn);											
 		}//end main:
 				
-		//#################################
-		//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-		if(bRemoveSurroundingSeparators & bUseExpression) {
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-			
-			sReturn = (String) vecReturn.get(1);
-		}
-		
-		this.setValue(sReturn);
-		
+		//################################
 		return vecReturn;
 	}
 	

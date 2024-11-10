@@ -81,7 +81,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isPathSubstituted(boolean bIsPathSolved);
 	
 	public boolean isVariableSubstituted();
-	abstract void isVariableSubstiuted(boolean bIsVariableSolved);
+	abstract void isVariableSubstituted(boolean bIsVariableSolved);
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isConversion();
@@ -91,6 +91,8 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isConverted(boolean bIsConverted);
 	
 	public VectorDifferenceZZZ<String> getValueAsConversionVector();
+	public void setValueAsConversionVector(VectorDifferenceZZZ<String> vecValueConversion);
+	
 	public String getValueAsConversion();
 	public void setValueAsConversion(String sValueConverted);
 	
@@ -104,9 +106,12 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	
 	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
+	public void setValueFormulaSolvedAndConvertedVector(VectorDifferenceZZZ<String> vecValueSolvedAndConverted);
+	
 	public String getValueFormulaSolvedAndConverted();
-	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ; 
-	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
+	abstract void setValueFormulaSolvedAndConverted(String sValueFormulaSolvedAndConverted);
+	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ;
+		
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -134,7 +139,8 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isDecrypted();
 	abstract void isDecrypted(boolean bIsDecrypted);
 	
-	public VectorDifferenceZZZ<String> getRawDecryptedVector();	
+	public VectorDifferenceZZZ<String> getRawDecryptedVector();
+	public void setRawDecryptedVector(VectorDifferenceZZZ<String> vecRawDecrypted);
 	public String getRawDecrypted();
 	abstract void setRawDecrypted(String sRaw);
 	
@@ -148,25 +154,30 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isRawEncrypted(boolean bIsRawEncrypted);
 	
 	public VectorDifferenceZZZ<String> getRawEncryptedVector();
+	public void setRawEncryptedVector(VectorDifferenceZZZ<String> vecRawEncrypted);
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
-	public String getRawEncryptedAsExpression() throws ExceptionZZZ;
 	abstract void setRawEncrypted(String sRaw);
+	public String getRawEncryptedAsExpression() throws ExceptionZZZ;
 	
-	public VectorDifferenceZZZ<String> getValueEncryptedVector(); 
+	public VectorDifferenceZZZ<String> getValueEncryptedVector();
+	abstract void setValueEncryptedVector(VectorDifferenceZZZ<String> vecValueEncrypted);	
 	public String getValueEncrypted();
-	public String getValueEncryptedAsExpression() throws ExceptionZZZ;
 	public void setValueEncrypted(String sValueEncryptd);
+	public String getValueEncryptedAsExpression() throws ExceptionZZZ;
 	
-	public VectorDifferenceZZZ<String> getValueEncryptedPartVector(); 
+	public VectorDifferenceZZZ<String> getValueEncryptedPartVector();
+	abstract void setValueEncryptedPartVector(VectorDifferenceZZZ<String> vecValueEncryptedPart);
 	public String getValueEncryptedPart();	
 	public void setValueEncryptedPart(String sValueEncryptd);
 	
 	public VectorDifferenceZZZ<String> getValueDecryptedVector();
-	public String getValueDecrypted();
-	public String getValueDecryptedAsExpression() throws ExceptionZZZ;
+	abstract void setValueDecryptedVector(VectorDifferenceZZZ<String> vecValueDecrypted);
+	public String getValueDecrypted();	
 	public void setValueDecrypted(String sValueEncryptd);
-		
+	public String getValueDecryptedAsExpression() throws ExceptionZZZ;	
+	
 	public VectorDifferenceZZZ<String> getValueDecryptedPartVector();
+	abstract void setValueDecryptedPartVector(VectorDifferenceZZZ<String> vecValueDecryptedPart);
 	public String getValueDecryptedPart();	
 	public void setValueDecryptedPart(String sValueDecryptd);
 		
@@ -181,9 +192,6 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isJavaCall();
 	abstract void isJavaCall(boolean bIsJavaCall);
 	
-	
-	
-	
 	//Falls ein Wert einen Aufruf enthält hier die Details ablegen
 	public String getCallingClassname();
 	public void setCallingClassname(String sJavaCallingClassName);
@@ -193,7 +201,6 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 		
 	public String getValueCallSolved();
 	public void setValueCallSolved(String sValueCallSolved);
-	
 	public String getValueCallSolvedAsExpression();
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) throws ExceptionZZZ;
 	
@@ -202,6 +209,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
 	public boolean isExploded();
 	abstract void isExploded(boolean bIsExploded);
+	
 	public int getIndex();
 	abstract void setIndex(int iIndex);
 	
@@ -224,6 +232,4 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	//In clonable protected
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;
-	
-	
 }

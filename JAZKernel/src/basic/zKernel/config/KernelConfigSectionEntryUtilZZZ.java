@@ -46,6 +46,181 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		//zum 'Verstecken" des Konstruktors
 	}//only static Methods
 	
+	
+	public static void adoptEntryValuesMissing(ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTargetIn,  ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSourceIn) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntrySource = null;
+		IKernelConfigSectionEntryZZZ objEntryTarget = null;
+		
+		main:{
+			if(objReturnReferenceSourceIn==null) {				
+			}else {
+				objEntrySource = objReturnReferenceSourceIn.get();
+			}			
+			if(objEntrySource==null) break main; //ohne Souce hat das ja keinen Zweck.
+							
+			if(objReturnReferenceTargetIn==null) {				
+			}else {
+				objEntryTarget = objReturnReferenceTargetIn.get();
+			}			
+			if(objEntryTarget==null) {
+				objEntryTarget = new KernelConfigSectionEntryZZZ();				
+			}
+			
+			//######################################
+			//Da die Werte immer nur von false nach true wechseln, also nur die übernehme, die im Target false sind.
+			//Einfach die Methoden in IKernelConfigSectionEntryZZZ durchgehen.
+			if(objEntrySource.isParsed()) {
+				objEntryTarget.isParsed(objEntrySource.isParsed());
+			}
+		
+			if(objEntrySource.isParsedChanged()) {
+				objEntryTarget.isParsedChanged(objEntrySource.isParsedChanged());
+			}
+		
+			if(objEntrySource.isSolved()) {
+				objEntryTarget.isSolved(objEntrySource.isSolved());
+			}
+			
+			if(objEntrySource.isPathSubstituted()) {
+				objEntryTarget.isPathSubstituted(objEntrySource.isPathSubstituted());
+			}
+			
+			if(objEntrySource.isVariableSubstituted()) {
+				objEntryTarget.isVariableSubstituted(objEntrySource.isVariableSubstituted());
+			}
+			
+			if(objEntrySource.isSolved()) {
+				objEntryTarget.isSolved(objEntrySource.isSolved());
+			}
+			
+			if(objEntrySource.isConversion()) {
+				objEntryTarget.isConversion(objEntrySource.isConversion());
+			}
+			
+			if(objEntrySource.isConverted()) {
+				objEntryTarget.isConverted(objEntrySource.isConverted());
+			}
+			
+			if(!objEntrySource.getValueAsConversionVector().isEmpty()) {
+				objEntryTarget.setValueAsConversionVector(objEntrySource.getValueAsConversionVector());
+			}
+		
+			
+			if(objEntrySource.isFormula()) {
+				objEntryTarget.isFormula(objEntrySource.isFormula());
+			}
+			
+			if(objEntrySource.isFormulaSolved()) {
+				objEntryTarget.isFormulaSolved(objEntrySource.isFormulaSolved());
+			}
+			
+			if(!objEntrySource.getValueFormulaSolvedAndConvertedVector().isEmpty()) {
+				objEntryTarget.setValueFormulaSolvedAndConvertedVector(objEntrySource.getValueFormulaSolvedAndConvertedVector());
+			}
+			
+			if(objEntrySource.isFormulaMathSolved()) {
+				objEntryTarget.isFormulaMathSolved(objEntrySource.isFormulaMathSolved());
+			}
+			
+			if(objEntrySource.isJson()) {
+				objEntryTarget.isJson(objEntrySource.isJson());
+			}
+			
+			if(objEntrySource.isJsonMap()) {
+				objEntryTarget.isJsonMap(objEntrySource.isJsonMap());
+			}
+			
+			if(!objEntryTarget.isJsonArray()) {
+				objEntryTarget.isJsonArray(objEntrySource.isJsonArray());
+			}
+			
+			if(objEntrySource.isCrypt()) {
+				objEntryTarget.isCrypt(objEntrySource.isCrypt());
+			}
+			
+			if(objEntrySource.isDecrypted()) {
+				objEntryTarget.isDecrypted(objEntrySource.isDecrypted());
+			}
+			
+			if(!objEntrySource.getRawDecryptedVector().isEmpty()) {
+				objEntryTarget.setRawDecryptedVector(objEntrySource.getRawDecryptedVector());
+			}
+			
+			if(objEntrySource.isEncrypted()) {
+				objEntryTarget.isEncrypted(objEntrySource.isEncrypted());
+			}
+
+			if(objEntrySource.isRawDecrypted()) {
+				objEntryTarget.isRawDecrypted(objEntrySource.isRawDecrypted());
+			}
+
+			if(objEntrySource.isRawEncrypted()) {
+				objEntryTarget.isRawEncrypted(objEntrySource.isRawEncrypted());
+			}
+
+			if(!objEntrySource.getRawEncryptedVector().isEmpty()) {
+				objEntryTarget.setRawEncryptedVector(objEntrySource.getRawEncryptedVector());
+			}
+
+			if(!objEntrySource.getValueEncryptedVector().isEmpty()) {
+				objEntryTarget.setValueEncryptedVector(objEntrySource.getValueEncryptedVector());
+			}
+
+			if(!objEntrySource.getValueEncryptedPartVector().isEmpty()) {
+				objEntryTarget.setValueEncryptedPartVector(objEntrySource.getValueEncryptedPartVector());
+			}
+
+			if(!objEntrySource.getValueDecryptedVector().isEmpty()) {
+				objEntryTarget.setValueDecryptedVector(objEntrySource.getValueDecryptedVector());
+			}
+
+			if(objEntrySource.isCall()) {
+				objEntryTarget.isCall(objEntrySource.isCall());
+			}
+
+			if(objEntrySource.isCallSolved()) {
+				objEntryTarget.isCallSolved(objEntrySource.isCallSolved());
+			}
+
+			if(objEntrySource.isJavaCall()) {
+				objEntryTarget.isJavaCall(objEntrySource.isJavaCall());
+			}
+
+			if(objEntrySource.getCallingClassname()!=null) {
+				objEntryTarget.setCallingClassname(objEntrySource.getCallingClassname());
+			}
+
+			if(objEntrySource.getCallingMethodname()!=null) {
+				objEntryTarget.setCallingMethodname(objEntrySource.getCallingMethodname());
+			}
+
+			if(objEntrySource.getValueCallSolved()!=null) {
+				objEntryTarget.setValueCallSolved(objEntrySource.getValueCallSolved());
+			}
+	
+			if(objEntrySource.isExploded()) {
+				objEntryTarget.isExploded(objEntrySource.isExploded());
+			}
+			
+			if(objEntrySource.getIndex()>=0) {
+				objEntryTarget.setIndex(objEntrySource.getIndex());
+			}
+
+			if(objEntrySource.getKey()!=null) {
+				objEntryTarget.setKey(objEntrySource.getKey());
+			}
+
+			if(objEntrySource.sectionExists()) {
+				objEntryTarget.sectionExists(objEntrySource.sectionExists());
+			}
+
+			if(objEntrySource.propertyExists()) {
+				objEntryTarget.propertyExists(objEntrySource.propertyExists());
+			}		
+		}//end main:
+		
+	}
+	
 	/** Die statischen Methoden dieser Klasse leisten mehr als nur die ...Solver... aufzurufen.
 	 *  Durch den Rückgabewert können dann die Details im letztendlich benötigten IKernelConfigSectionEntryZZZ object gesetzt werden.
 	 *  Also z.B. bJson, bJsonMap, etc...

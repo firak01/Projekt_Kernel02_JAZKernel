@@ -257,8 +257,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				}					
 				if(!sExpressionOld.equals(sExpression)) {
 					//TODO GOON;//20241009: Eigentlich muss hier noch objReference uebergeben werden und dort objEntry raus geholt werden...
-					objEntry.isFormulaMathSolved(true);
-					objEntry.setValueFormulaSolvedAndConverted(sExpression);
+					objEntryInner.isFormulaMathSolved(true);
+					objEntryInner.setValueFormulaSolvedAndConverted(sExpression);
 				}
 				sReturn=sExpression;				
 				//sReturn = VectorZZZ.implode(vecAll);

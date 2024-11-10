@@ -279,7 +279,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
 		}							
-		objEntry.setRaw(sExpressionIn);
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			

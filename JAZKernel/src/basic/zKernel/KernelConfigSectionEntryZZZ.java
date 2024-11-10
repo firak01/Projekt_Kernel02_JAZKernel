@@ -399,6 +399,10 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return this.vecValueAsConversion;
 	}
 	
+	public void setValueAsConversionVector(VectorDifferenceZZZ<String> vecValueConversion) {
+		this.vecValueAsConversion = vecValueConversion;
+	}
+	
 	@Override
 	public void setValueAsConversion(String sValueConverted) {
 		this.getValueAsConversionVector().add(sValueConverted);
@@ -406,7 +410,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override 
 	public String getValueAsConversion() {
-		return this.getValueAsExpressionVector().getEntryHigh();
+		return this.getValueAsConversionVector().getEntryHigh();
 	}
 	
 	//###############################################
@@ -415,10 +419,19 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return this.vecValueFormulaSolvedAndConverted;
 	}
 	
+	@Override
+	public void setValueFormulaSolvedAndConvertedVector(VectorDifferenceZZZ<String> vecValueSolvedAndConverted) {
+		this.vecValueFormulaSolvedAndConverted = vecValueSolvedAndConverted;
+	}
 	
 	@Override 
 	public String getValueFormulaSolvedAndConverted() {
 		return this.getValueFormulaSolvedAndConvertedVector().getEntryHigh();
+	}
+	
+	@Override
+	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted) {
+		this.getValueFormulaSolvedAndConvertedVector().add(sValueSolvedAndConverted);
 	}
 	
 	@Override
@@ -427,15 +440,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
 	}
 	
-	@Override
-	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted) {
-		this.getValueFormulaSolvedAndConvertedVector().add(sValueSolvedAndConverted);
-	}
+	
 	
 	//################################################
 	@Override 
 	public VectorDifferenceZZZ<String> getValueEncryptedVector(){
 		return this.vecValueEncrypted;
+	}
+	
+	@Override
+	public void setValueEncryptedVector(VectorDifferenceZZZ<String> vecValueEncrypted) {
+		this.vecValueEncrypted = vecValueEncrypted;
 	}
 	
 	@Override
@@ -461,6 +476,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public void setValueEncryptedPartVector(VectorDifferenceZZZ<String> vecValueEncryptedPart) {
+		this.vecValueEncryptedPart = vecValueEncryptedPart;
+	}
+	
+	@Override
 	public String getValueEncryptedPart() {
 		return this.getValueEncryptedPartVector().getEntryHigh();
 	}
@@ -474,6 +494,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override 
 	public VectorDifferenceZZZ<String> getValueDecryptedVector(){
 		return this.vecValueDecrypted;
+	}
+	
+	@Override
+	public void setValueDecryptedVector(VectorDifferenceZZZ<String> vecValueDecrypted) {
+		this.vecValueDecrypted = vecValueDecrypted;
 	}
 	
 	@Override
@@ -496,6 +521,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override 
 	public VectorDifferenceZZZ<String> getValueDecryptedPartVector(){
 		return this.vecValueDecryptedPart;
+	}
+	
+	@Override
+	public void setValueDecryptedPartVector(VectorDifferenceZZZ<String> vecValueDecryptedPart) {
+		this.vecValueDecryptedPart = vecValueDecryptedPart;
 	}
 	
 	@Override
@@ -732,7 +762,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isVariableSubstiuted(boolean bVariableSubstituted) {
+	public void isVariableSubstituted(boolean bVariableSubstituted) {
 		this.bVariableSubstituted = bVariableSubstituted;
 	}
 	
@@ -920,6 +950,10 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return this.vecRawDecrypted;
 	}
 	
+	@Override
+	public void setRawDecryptedVector(VectorDifferenceZZZ<String> vecRawDecrypted) {
+		this.vecRawDecrypted = vecRawDecrypted;
+	}
 	
 	@Override
 	public String getRawDecrypted() {
@@ -947,6 +981,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public VectorDifferenceZZZ<String> getRawEncryptedVector(){
 		return this.vecRawEncrypted;
+	}
+	
+	@Override
+	public void setRawEncryptedVector(VectorDifferenceZZZ<String> vecRawEncrypted) {
+		this.vecRawEncrypted = vecRawEncrypted;
 	}
 	
 	@Override

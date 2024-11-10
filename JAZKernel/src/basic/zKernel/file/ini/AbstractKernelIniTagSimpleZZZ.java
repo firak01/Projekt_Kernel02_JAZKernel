@@ -48,7 +48,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	//Fuer Interface IKernelConfigSectionEntryUserZZZ
-	protected volatile IKernelConfigSectionEntryZZZ objEntry = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.	
+	protected volatile IKernelConfigSectionEntryZZZ objEntryInner = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.	
 			
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ {
 		super(); //Elternklasse kennt keinen Kernel
@@ -212,24 +212,38 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//### aus IKernelConfigSectionEntryUserZZZ 	
 	@Override
 	public IKernelConfigSectionEntryZZZ getEntryNew() throws ExceptionZZZ {
-		this.objEntry = null; //Also explizit leer setzen, um etwas neues zu holen. Ist wichtig für Objekte, die eine 2te Verarbeitung starten. z.B. KernelFileIni.
+		this.objEntryInner = null; //Also explizit leer setzen, um etwas neues zu holen. Ist wichtig für Objekte, die eine 2te Verarbeitung starten. z.B. KernelFileIni.
 		return this.getEntry();
 	}
 				
 	@Override
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ{
-		if(this.objEntry==null) {
+		if(this.objEntryInner==null) {
 			//!!! Endlosschleifengefahr.
 			//Damit der Tag selbst uebegeben werden kann muss beim 
 			//holen der Werte mit getValue() unbedigt auf this.objEntry==null geprueft werden.
-			this.objEntry = new KernelConfigSectionEntryZZZ<T>(this);		
+			this.objEntryInner = new KernelConfigSectionEntryZZZ<T>(this);		
 		}
-		return this.objEntry;
+		return this.objEntryInner;
 	}
 	
 	@Override
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
-		this.objEntry = objEntry;
+		this.objEntryInner = objEntry;
+	}
+	
+	@Override 
+	public void adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReferenceTarget.set(this.getEntry());
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSource = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReferenceSource.set(objEntry);
+		KernelConfigSectionEntryUtilZZZ.adoptEntryValuesMissing(objReturnReferenceTarget, objReturnReferenceSource);
+		
+		IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
+		this.setEntry(objEntryTarget);
 	}
 		
 	// Die Methoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
@@ -239,13 +253,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//### Aus IValueBufferedUserZZZ
 	@Override
 	public VectorDifferenceZZZ<String> getValueVector() throws ExceptionZZZ {
-		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr.
+		if(this.objEntryInner==null)return null; //!!!Sonst Endlosschleifengefahr.
 		return this.getEntry().getValueVector();
 	}
 	
 	@Override
 	public String getValue() throws ExceptionZZZ {
-		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().getValue();
 	}
 
@@ -256,7 +270,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	@Override
 	public boolean hasAnyValue() throws ExceptionZZZ {
-		if(this.objEntry==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().hasAnyValue();
 	}	
 	
@@ -269,7 +283,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	@Override
 	public boolean hasNullValue() throws ExceptionZZZ {
-		if(this.objEntry==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().hasNullValue();
 	}
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 
@@ -283,19 +297,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
     //### aus IValueComputedBufferedUserZZZ
 	@Override
 	public VectorDifferenceZZZ<String> getRawVector() throws ExceptionZZZ {
-		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().getRawVector();
 	}
 
 	@Override
 	public String getRaw() throws ExceptionZZZ {
-		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().getRaw();
 	}
 
 	@Override
 	public void setRaw(String sRaw) throws ExceptionZZZ {
-		this.getEntry().setValue(sRaw);
+		this.getEntry().setRaw(sRaw);
 	}
 	
 	//##############################
@@ -303,7 +317,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
 	@Override	
 	public ArrayList<String> getValueArrayList() throws ExceptionZZZ{
-		if(this.objEntry==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return null; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().getValueArrayList();
 	}
 
@@ -314,7 +328,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	@Override
 	public boolean isArrayValue() throws ExceptionZZZ {
-		if(this.objEntry==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
+		if(this.objEntryInner==null)return false; //!!!Sonst Endlosschleifengefahr. Wg. Konstruktor mit diesem Objekt selbst als Uebergabe (this)
 		return this.getEntry().isArrayValue();
 	}
 
@@ -373,29 +387,34 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null;
+		IKernelConfigSectionEntryZZZ objReturn = null;		
 		String sReturn = sExpressionIn;
+		boolean bUseExpression = false;
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);
+		objReturn = objEntry;
+	
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
-			IKernelConfigSectionEntryZZZ objEntry = null;
-			if(objReturnReferenceIn==null) {
-				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			}else {
-				objReturnReference = objReturnReferenceIn;
-			}
-			objEntry = objReturnReference.get();
-			if(objEntry==null) {
-				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-				objReturnReference.set(objEntry);
-			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry.setRaw(sExpressionIn);
-			objReturn = objEntry;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -411,20 +430,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objReturn = objEntry;
 		}//end main:
 		
-		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);				
-		if(objReturn!=null) {
-			//sReturn = VectorUtilZZZ.implode(vecReturn);	
-			objReturn.setValue(sReturn);
-			objReturn.isParsed(true);
-			if(sExpressionIn!=null) {
-				objReturn.isExpression(true);
-				objReturn.isParsed(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-			}			
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
-		}		
+		if(objEntry!=null) {	
+			objEntry.setValue(sReturn);
+			objEntry.isParsed(true); 								
+			if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+						
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			this.adoptEntryValuesMissing(objEntry);
+		}	
 		return objReturn;
 	}
 	
@@ -454,17 +467,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry = objReturnReference.get();
 		}
 		if(objEntry==null) {
-			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			//objEntry = this.getEntry();
-			
-			//nein, dann gehen alle Informationen verloren
-			//objReturn = this.parseAsEntryNew(sExpression);
-			
-			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);							
 		}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objEntry.setRaw(sExpressionIn);			
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
 			
 		main:{		
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -482,10 +491,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry = objReturnReferenceParse.get();			
 			if(vecReturn==null) break main;
 				
-			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum
-							
+			sReturn = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum							
 		}//end main:
-				
+		this.setValue(sReturn);
 	
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 		if(vecReturn!=null) vecReturn.replace(sReturn);
@@ -494,10 +502,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			String sTagEndZ = "</Z>";
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 			
-			sReturn = (String) vecReturn.get(1);							
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
 		}
-		this.setValue(sReturn);   
-		
+		   
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);	
 			objEntry.setValue(sReturn);
@@ -508,6 +516,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			this.adoptEntryValuesMissing(objEntry);
 		}		
 		return sReturn;
 	}
@@ -526,6 +535,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
 		return this.parseFirstVector_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null);
+	}
+
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	//### Aus IKernelEntryReferenceExpressionUserZZZ	
@@ -594,6 +613,82 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sExpressionIn = null;		
+		boolean bUseExpression = false;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}							
+		
+		main:{			
+			if(vecExpressionIn==null) break main;
+		
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			this.setRaw(sExpressionIn);
+			objEntry.setRaw(sExpressionIn);
+			
+			sReturn = (String) vecExpressionIn.get(1);
+					
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+			
+			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
+			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
+			
+			//Als echten Ergebniswert immer die <Z>-Tags ggfs. rausrechnen
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = "<Z>";
+				String sTagEnd = "</Z>";
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				
+				sReturn = (String) vecReturn.get(1);
+			}
+			this.setValue(sReturn);
+		}//end main:
+				
+		//#################################
+	
+		if(objEntry!=null) {
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setValue(sReturn);	
+			if(sExpressionIn!=null) {
+				objEntry.isExpression(true);
+				objEntry.isParsed(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return vecReturn;
+	}
+
+	
+	//+++++++++++++++++++++++++++++++++++++++
+	@Override
 	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
 		return this.parseFirstVectorPostCustom_(vecExpression, objReturnReference, true);
 	}
@@ -626,11 +721,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		main:{			
 			if(vecExpressionIn==null) break main;
 			
-			sExpressionIn = (String) vecExpressionIn.get(1);
-			sReturn = sExpressionIn;
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);
 			
+			sReturn = (String) vecExpressionIn.get(1);
+					
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 				
@@ -813,6 +910,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 											   //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 				//unten objEntry immer an das ReferenceOjekt zurueckgeben
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);
 			
 			main:{
@@ -860,6 +958,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					if(!sExpressionIn.equals(sReturn)) objEntry.isExpression(true);
 				}			
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
 			}
 			return sReturn;	
 		}
@@ -915,12 +1014,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}
 			objEntry = objReturnReference.get();
 			if(objEntry==null) {
-				objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-											 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
 				objReturnReference.set(objEntry);
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			objEntry.setRaw(sExpressionIn);
-				
+			this.setRaw(sExpressionIn);
+			objEntry.setRaw(sExpressionIn);	
+							
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 									
@@ -961,7 +1062,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						objEntry.setValue(sReturn);
 						if(sReturn!=sExpressionOld) {
 							objEntry.isParsed(true);
-							objEntry.isVariableSubstiuted(true);
+							objEntry.isVariableSubstituted(true);
 						}
 						sExpression = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
 					}
@@ -1039,9 +1140,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 				this.setValue(sReturn);		
 				vecExpression.replace(sReturn);
-				if(objEntry!=null) {			
+				if(objEntryInner!=null) {			
 					sReturn = VectorUtilZZZ.implode(vecExpression);
-					objEntry.setValue(sReturn);				
+					objEntryInner.setValue(sReturn);				
 				}	
 			}//end main:
 			return sReturn;

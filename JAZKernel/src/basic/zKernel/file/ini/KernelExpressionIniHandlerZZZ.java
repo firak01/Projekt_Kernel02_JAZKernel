@@ -454,12 +454,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}
 		objEntry = objReturnReference.get();
 		if(objEntry==null) {
-			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objEntry.setRaw(sExpressionIn);
-			
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+					
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -505,6 +507,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}		
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			this.adoptEntryValuesMissing(objEntry);
 		}
 		return vecReturn;
 	}
@@ -544,12 +547,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}
 		objEntry = objReturnReference.get();
 		if(objEntry==null) {
-			objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objEntry.setRaw(sExpressionIn);
-			
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+					
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 												
@@ -696,6 +701,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			this.adoptEntryValuesMissing(objEntry);
 		}
 		return sReturn;				
 	}
@@ -708,13 +714,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//### Interface aus IKernelExpressionIniSolver
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
-		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ<T>(this);			
+		if(this.objEntryInner==null) {
+			this.objEntryInner = new KernelConfigSectionEntryZZZ<T>(this);			
 		}
-		return this.objEntry;
+		return this.objEntryInner;
 	}
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
-		this.objEntry = objEntry;
+		this.objEntryInner = objEntry;
 	}
 	
 	//##############################################

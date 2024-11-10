@@ -1476,6 +1476,11 @@ public class StringZZZ implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			if(!StringZZZ.contains(sStringToParse, sSepMid,bReturnSeparators)) {
+				vecReturn.replace(sStringToParse);
+				break main;
+			}
+			
 			
 			String sLeft = StringZZZ.left(sStringToParse, sSepMid,bExactMatch);
 			if(sLeft==null) sLeft="";
