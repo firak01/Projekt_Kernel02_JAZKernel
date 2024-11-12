@@ -343,7 +343,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return false;
 	}
 	
-	//### aus ISolverEnablezZZZ
+	//### aus ISolveEnablezZZZ
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
 		return this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
@@ -461,5 +461,4 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
 }//End class

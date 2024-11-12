@@ -280,7 +280,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
 			String sReturn = null;
 			String sExpressionIn = null;		
-			boolean bUseExpression = false;
+			boolean bUseExpression = false; boolean bUseParse;
 			
 			main:{			
 				if(vecExpressionIn==null) break main;
@@ -288,26 +288,17 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				sExpressionIn = (String) vecExpressionIn.get(1);
 				sReturn = sExpressionIn;
 				if(StringZZZ.isEmpty(sExpressionIn)) break main;			
-						
-				//Anders als bei TagWithExpressionBasic gibt es in diesem Vererbungszweig keine Flags
-				//bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+					
+				//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
+				//bUseExpression = this.isExpressionEnabledAny(); 
 				//if(!bUseExpression) break main;
-											
-															
+				
+				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+				
+				this.setValue(sReturn);											
 			}//end main:
 					
-			//#################################
-			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-			//if(bRemoveSurroundingSeparators & bUseExpression) {
-			if(bRemoveSurroundingSeparators) {
-				String sTagStart = "<Z>";
-				String sTagEnd = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-				
-				sReturn = (String) vecReturn.get(1);
-			}			
-			this.setValue(sReturn);
-			
+			//################################
 			return vecReturn;
 		}
 	

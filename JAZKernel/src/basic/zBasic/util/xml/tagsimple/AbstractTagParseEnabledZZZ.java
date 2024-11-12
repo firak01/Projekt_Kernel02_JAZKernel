@@ -43,7 +43,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 	//### Aus IParseEnabledZZZ
 	@Override
-	public boolean isParseRelevant() {
+	public boolean isParseRelevant() throws ExceptionZZZ{
 		return true;
 	}
 	

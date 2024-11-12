@@ -6,6 +6,7 @@ import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
 //Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
@@ -49,6 +50,12 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		return bReturn;
 	 }//end function AbstractObjectWithExpressionNew_
 	//++++++++++++++++++++++++
+	
+	//### Aus IObjectWithExpression
+	@Override
+	public boolean isExpressionEnabledAny() throws ExceptionZZZ{
+		return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+	}
 		
 	//### Aus IParseEnabledZZZ
 	@Override

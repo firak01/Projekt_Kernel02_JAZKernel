@@ -177,7 +177,34 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.objCrypt = objCrypt;
 	}
 		
+	//### Aus IObject with Expression
+	
+	
+	
+	//### Aus IParseEnabled
+	@Override
+	public boolean isParserEnabledThis() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = this.isSolverEnabledAny();
+			if(!bReturn) break main;
+			
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+		}//end main:
+		return bReturn;
+	}
+	
 	//### Aus ISolveEnabled
+	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
+	@Override
+	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
+	
+	@Override
+	public boolean isSolverEnabledAny() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+		
 	@Override
 	public boolean isSolveRelevant(String sExpression) throws ExceptionZZZ {
 		return this.isSolve(sExpression);
@@ -266,12 +293,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
-	
-	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
-	@Override
-	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
-	
-	
+		
 	@Override
 	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
 		return this.solvePost_(vecExpression, null, true);
@@ -348,7 +370,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.setValue(sReturn);
 			
 			//Rufe nun solveParsed() auf...
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledAny();
 			if(!bUseSolver) break main;
 			
 			bUseSolverThis = this.isSolverEnabledThis();

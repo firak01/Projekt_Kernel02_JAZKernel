@@ -122,7 +122,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
-		boolean bUseExpression = false;
+		boolean bUseExpression = false; boolean bUseSolverThis = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -145,14 +145,23 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledAny(); 
 			if(!bUseExpression) break main;
-						
+					
 			String sExpression = sExpressionIn;
 			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			bUseParse = this.isParserEnabledThis();
+		
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
-			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
-			if (vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			if(bUseParse) {
+				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
+				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
+			}else {
+				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, !bIgnoreCase);
+				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
+			}
+		
 			
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			sExpression = sReturn;

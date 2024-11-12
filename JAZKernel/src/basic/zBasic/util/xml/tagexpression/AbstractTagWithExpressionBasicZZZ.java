@@ -116,6 +116,11 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return sReturn;
 	}
 	
+	
+	//### Aus IObjectWithExpression
+	
+	
+	
 	//### Aus IParseEnabledZZZ
 	@Override
 	public boolean isParseRelevant() {
@@ -228,11 +233,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
 	}
 	
+	//Methode ohne Refernce-Objekt
 	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sExpressionIn = null;		
-		boolean bUseExpression = false;
+		boolean bUseExpression = false; boolean bUseParse;
 		
 		main:{			
 			if(vecExpressionIn==null) break main;
@@ -241,17 +247,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sReturn = sExpressionIn;
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
 						
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledAny(); 
 			if(!bUseExpression) break main;
-										
-			//Als echten Ergebniswert die <Z>-Tags ggfs. rausrechnen
-			if(bRemoveSurroundingSeparators) {
-				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-				
-				sReturn = (String) vecReturn.get(1);
-			}			
+			
+			
+			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+			
+			
 			this.setValue(sReturn);											
 		}//end main:
 				
