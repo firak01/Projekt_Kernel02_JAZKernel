@@ -521,10 +521,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturn = VectorUtilZZZ.implode(vecReturn);	
 			objEntry.setValue(sReturn);
 			objEntry.isParsed(true);
-			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			if(sExpressionIn!=null) {				 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				if(bUseExpression) objEntry.isExpression(true);
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);

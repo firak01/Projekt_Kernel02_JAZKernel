@@ -395,10 +395,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+			objEntry.isParsed(true); 
 			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				if(bUseExpression)objEntry.isExpression(true);																								
 			}			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);
