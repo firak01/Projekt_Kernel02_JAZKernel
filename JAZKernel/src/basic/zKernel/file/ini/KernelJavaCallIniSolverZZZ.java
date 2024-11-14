@@ -16,10 +16,10 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = 6579389159644435205L;
-	public static String sTAG_NAME = "Z:Java";
-	public ICryptZZZ objCryptAlgorithmLast = null;
+	public static String sTAG_NAME = "Z:Java";	
 	public KernelJavaCallIniSolverZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
+		KernelJavaCallIniSolverNew_();
 	}
 		
 	public KernelJavaCallIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
@@ -46,7 +46,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	
+	//### Aus ITagBasicZZZ	
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
+	}
+		
 	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sLineWithExpression
@@ -206,11 +211,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return sReturn;
 	}
 	
-	//### Aus ITagBasicZZZ	
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
-	}
+	
 	
 	
 	//### aus IParseEnabled		

@@ -580,31 +580,29 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//+++ Als Standard werden hier die Z-Tags des Solvers entfernt.
 	@Override
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, true);
+		return this.solvePostCustom_(vecExpression, null, true);
 	}
 
 	@Override
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+		return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, true);
+		return this.solvePostCustom_(vecExpression, objReturnReference, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorSolverPostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+		return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorSolverPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
 		String sExpressionIn=null;
-//		boolean bUseSolverThis = false;		
-		
-		
+			
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				

@@ -184,7 +184,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";
 			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			
+			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionParsed, objExpressionJavaCallSolver.getName());
 			sValue = objExpressionJavaCallSolver.parse(sExpression);
 			assertEquals(sExpressionParsed, sValue);
 			
@@ -221,7 +221,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//Hier findet nur parse() statt. Darum wird nix aufgeloest, egal welche Flags gesetzt sind.
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);															
+			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionParsed, objExpressionJavaCallSolver.getName());
 			sValue = objExpressionJavaCallSolver.parse(sExpression);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			assertEquals(sExpressionParsed, sValue);
@@ -424,6 +425,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, "Z");
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionJavaCallSolver.getName());
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein, abzueglich der Z-Tags, die wg. Parse wegfallen.",sExpressionSolved, sValue);
 
 			//Merke: Da der Call-Solver nicht verwendet wird, kann hier nur false sein...

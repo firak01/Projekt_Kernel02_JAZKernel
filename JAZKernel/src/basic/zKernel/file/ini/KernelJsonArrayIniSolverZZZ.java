@@ -35,12 +35,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		KernelJsonArrayIniSolverNew_(null);
 	}
 	
-	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
 		super(objFileIni);
 		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 	
-	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni, saFlag);
 		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
@@ -50,12 +50,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		KernelJsonArrayIniSolverNew_(null);
 	}
 	
-	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
 		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 		
-	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
+	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ<T> objFileIn) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
 			if(this.getFlag("init")==true){
@@ -63,21 +63,36 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 				break main;
 			}
 					
-			if(objFileIni==null) {
-				//Kann ggfs. später aus dem Kernel-Objekt geholt werden.							
+			FileIniZZZ<T> objFile=null;
+			if(objFileIn==null ){
+				objFile = this.getKernelObject().getFileConfigKernelIni();
+				if(objFile==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez; 
+				}
 			}else {
-				this.setFileConfigKernelIni(objFileIni);
-				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+				objFile = objFileIn;
 			}
-										
+
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+			
+			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+			this.setFileConfigKernelIni(objFile);	
+			if(objFile.getHashMapVariable()!=null){
+				this.setHashMapVariable(objFile.getHashMapVariable());			
+			}
+			
+			bReturn = true;							
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonMapIniSolverNew_
 		
 	//###### Getter / Setter
 	
-	
-	public String getNameDefault(){
+	//### aus ITagBasicZZZ
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 

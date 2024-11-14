@@ -22,8 +22,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelEncryptionIniSolverZZZ{
 	private static final long serialVersionUID = 5426925764480431586L;
-	public static String sTAG_NAME = "Z:Encrypted";
-	public ICryptZZZ objCryptAlgorithmLast = null;
+	public static String sTAG_NAME = "Z:Encrypted";	
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelEncryptionIniSolverNew_();
@@ -52,6 +51,13 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}//end main:
 		return bReturn;
 	 }//end function KernelEncryptionIniSolverNew_
+	
+	//### aus ITagBasicZZZ
+	@Override
+	public String getNameDefault() throws ExceptionZZZ{
+		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
+	}
+	
 	
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	//### aus ISolveEnabled
@@ -375,11 +381,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return sReturn;				
 	}
 	
-	//### aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
-	}
+	
 
 	//### Aus Interface IParseEnabledZZZ		
 	@Override
@@ -439,17 +441,6 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			}									
 		}//end main:
 		return objReturn;
-	}
-	
-	//### Aus Inteface ICryptUserZZZ
-	@Override
-	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-		return this.objCryptAlgorithmLast;
-	}
-
-	@Override
-	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-		this.objCryptAlgorithmLast = objCrypt;
 	}
 	
 	//###### Getter / Setter

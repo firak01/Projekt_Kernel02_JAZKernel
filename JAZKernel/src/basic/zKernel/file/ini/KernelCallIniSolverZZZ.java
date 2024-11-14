@@ -24,8 +24,6 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = -8017698515311079738L;
 	public static String sTAG_NAME = "Z:Call";
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-	
 	
 	public KernelCallIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
@@ -70,31 +68,31 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}else {
 				objFile = objFileIn;
 			}
+
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 			
+			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
 			this.setFileConfigKernelIni(objFile);	
 			if(objFile.getHashMapVariable()!=null){
 				this.setHashMapVariable(objFile.getHashMapVariable());			
 			}
+			
+			bReturn = true;
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonIniSolverNew_
 					
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault(){
+	
+	//### aus ITagBasicZZZ
+		@Override
+		public String getNameDefault() throws ExceptionZZZ {
+		
 		return KernelCallIniSolverZZZ.sTAG_NAME;
 	}
 	
-	@Override
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		this.hmVariable = hmVariable;
-	}
 	
-	@Override
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-		return this.hmVariable;
-	}
-		
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
