@@ -261,7 +261,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
 			if(XmlUtilZZZ.containsTag(sExpressionIn, this.getName(), false)){

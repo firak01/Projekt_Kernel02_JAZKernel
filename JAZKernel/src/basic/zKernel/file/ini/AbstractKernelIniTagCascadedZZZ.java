@@ -11,6 +11,7 @@ import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
@@ -145,9 +146,15 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.isExpressionEnabledAny(); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
-					
+			
+			//Zentrale Stelle, um den String als Expression zu kennzeichnen.
+			if(XmlUtilZZZ.containsTag(sExpressionIn, "Z", false)){
+				objEntry.isExpression(true);
+			}	
+			objEntry.isParsed(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
+			
 			String sExpression = sExpressionIn;
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
@@ -162,7 +169,6 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
 			}
 		
-			
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			sExpression = sReturn;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -184,9 +190,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		if(objEntry!=null) {		
 			sReturn  = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
-			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+			if(sExpressionIn!=null) {							
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}		
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.

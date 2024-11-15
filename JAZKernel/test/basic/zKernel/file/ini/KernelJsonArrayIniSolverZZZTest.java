@@ -6,6 +6,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
@@ -64,30 +65,141 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute(){
-		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+		try {			
+			boolean btemp;
+			String sValue; Vector3ZZZ<String> vecValue;
+			String sExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
+			String sExpressionSolved;
 			
-			String sLineWithExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
+			//##########################################
+			//### Expression unsolved Fall
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
-			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-			
-			
-			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.parse(sLineWithExpression);
-			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 		
-			//Anwenden der ersten Formel
-			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
-			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
-			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
-			objExpressionSolver.setFlag("usejson_array", true); //Damit der Wert sofort ausgerechnet wird
-			sValue = objExpressionSolver.parse(sLineWithExpression);			
-			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);//Sollte dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+			
+			//+++ Teilberechnungen durchführen
+			vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//+++ Nun die Gesamtberechnung durchführen
+			sValue = objExpressionSolver.parse(sExpression);
+			assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+		
+			//+++ Aufloesung
+			sValue = objExpressionSolver.solve(sExpression);
+			
+			//#################################################################################
+			//JSON unsolvedFall
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+		
+		
+			//+++ Teilberechnungen durchführen
+			vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//+++ Nun die Gesamtberechnung durchführen
+			sValue = objExpressionSolver.parse(sExpression);
+			assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+		
+			//+++ Aufloesung
+			sValue = objExpressionSolver.solve(sExpression);
+			
+			//#####################################################
+			//### JSON-Array unsolved Fall
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+		
+			//+++ Teilberechnungen durchführen
+			vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//+++ Nun die Gesamtberechnung durchführen
+			sValue = objExpressionSolver.parse(sExpression);
+			assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+		
+			//+++ Aufloesung
+			sValue = objExpressionSolver.solve(sExpression);
+			
+			
+			//#####################################################
+			//### JSON-Array SOLVED Fall
+			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+			
+			//+++ Teilberechnungen durchführen
+			vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//+++ Nun die Gesamtberechnung durchführen
+			sValue = objExpressionSolver.parse(sExpression);
+			assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+		
+			//+++ Aufloesung
+			sValue = objExpressionSolver.solve(sExpression);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -101,20 +213,20 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			String sLineWithExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
+			String sExpression = sEXPRESSION_JSONARRAY01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			ArrayList<String>ls1 = objExpressionSolver.computeArrayList(sLineWithExpression);
+			ArrayList<String>ls1 = objExpressionSolver.computeArrayList(sExpression);
 			assertTrue("Ohne Auflösung soll es keine HashMap geben",ls1.size()==0);
 				
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
 			objExpressionSolver.setFlag("usejson_array", true); //Damit der Wert sofort ausgerechnet wird
-			ArrayList<String>ls2 = objExpressionSolver.computeArrayList(sLineWithExpression);
+			ArrayList<String>ls2 = objExpressionSolver.computeArrayList(sExpression);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",ls2.size()==2);
 
 			String sValue = ArrayListExtendedZZZ.debugString(ls2);	

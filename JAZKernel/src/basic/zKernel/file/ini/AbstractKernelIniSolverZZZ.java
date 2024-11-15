@@ -184,15 +184,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//### Aus IParseEnabled
 	@Override
 	public boolean isParserEnabledThis() throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			bReturn = this.isSolverEnabledAny();
-			if(!bReturn) break main;
-			
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
-		}//end main:
-		return bReturn;
+		return this.isSolverEnabledEveryRelevant();
 	}
 	
 	//### Aus ISolveEnabled
@@ -201,8 +193,23 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
 	
 	@Override
-	public boolean isSolverEnabledAny() throws ExceptionZZZ{
+	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+	
+	@Override 
+	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also eine extra Abfrage bleiben.
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			bReturn = this.isSolverEnabledGeneral();
+			if(!bReturn) break main;						
+		}//end main:
+		return bReturn;
 	}
 		
 	@Override
@@ -370,7 +377,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.setValue(sReturn);
 			
 			//Rufe nun solveParsed() auf...
-			bUseSolver = this.isSolverEnabledAny();
+			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
 			
 			bUseSolverThis = this.isSolverEnabledThis();

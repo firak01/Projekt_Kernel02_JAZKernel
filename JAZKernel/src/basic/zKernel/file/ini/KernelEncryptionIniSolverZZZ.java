@@ -195,7 +195,6 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		String sReturn = sExpressionIn;
 		boolean bUseExpression = false; 
 		boolean bUseSolver = false;
-		boolean bUseEncryption = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -217,15 +216,12 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 						
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
-			
-			bUseEncryption = this.isSolverEnabledThis(); //this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
-			if(!bUseEncryption) break main;
-			
+						
 			String sExpression = sExpressionIn;
 			String sExpressionUsed = sExpression;
 			

@@ -247,7 +247,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sReturn = sExpressionIn;
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
 						
-			bUseExpression = this.isExpressionEnabledAny(); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
 			

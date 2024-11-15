@@ -162,7 +162,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//objEntry.setRaw(sReturn);
 					
 			//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledGeneral();//getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
 			bUseSolverThis = this.isSolverEnabledThis();		

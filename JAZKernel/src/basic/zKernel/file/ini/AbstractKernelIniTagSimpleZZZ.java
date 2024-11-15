@@ -479,7 +479,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			bUseExpression = this.isExpressionEnabledAny();
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;
@@ -663,7 +663,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturn = (String) vecExpressionIn.get(1);
 			this.setValue(sReturn);
 			
-			bUseExpression = this.isExpressionEnabledAny(); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 							
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht

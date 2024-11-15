@@ -53,7 +53,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	
 	//### Aus IObjectWithExpression
 	@Override
-	public boolean isExpressionEnabledAny() throws ExceptionZZZ{
+	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 	}
 		

@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.Vector3ZZZ;
 public interface IParseEnabledZZZ {
 	boolean isParserEnabledThis() throws ExceptionZZZ;
 	boolean isParseRelevant() throws ExceptionZZZ;
-	boolean isParse(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
+	boolean isParse(String sExpression) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
 	//geht erst ab Java 1.8 oder so... static boolean isParseStatic(String sExpressionToProof) throws ExceptionZZZ;
 	
 	public String parse(String sExpression) throws ExceptionZZZ;
