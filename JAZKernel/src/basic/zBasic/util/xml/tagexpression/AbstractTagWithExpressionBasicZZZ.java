@@ -14,6 +14,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
+import basic.zKernel.file.ini.ExpressionIniUtilZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
 import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
@@ -122,20 +123,28 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	
 	//### Aus IParseEnabledZZZ
-	@Override
-	public boolean isParseRelevant() {
-		return true;
-	}
 	
 	@Override
-	public boolean isParse(String sExpression) throws ExceptionZZZ {
+	public abstract boolean isParserEnabledThis() throws ExceptionZZZ;
+	
+	@Override
+	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-		
-			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
-			if(bReturn) break main;
 			
+			bReturn = this.isParseRelevant();
+			if(!bReturn) break main;
+			
+			//Merke: Das waere der Ausdruck für Tags, die nicht dem nomalen XML-Tag-Konzept entsprechen.
+			//bReturn = ExpressionIniUtilZZZ.isParseRegEx(sExpression, this.getName(), false);
+			
+			//Fuer Tags, die dem nomalen XML-Tag-Konzept entsprechen.
+			bReturn = ExpressionIniUtilZZZ.isParse(sExpression, sExpression, false);
+			
+			//Auf dieser Ebene gibt es dann erstmals Tags
+			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
+			if(!bReturn) break main;
 			
 		}//end main
 		return bReturn;
@@ -223,43 +232,43 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPostCustom_(vecExpression, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
-	}
-	
-	//Methode ohne Refernce-Objekt
-	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = vecExpressionIn;
-		String sReturn = null;
-		String sExpressionIn = null;		
-		boolean bUseExpression = false; boolean bUseParse;
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+			return this.parseFirstVectorPostCustom_(vecExpression, true);
+		}
 		
-		main:{			
-			if(vecExpressionIn==null) break main;
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+			return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
+		}
+		
+		//Methode ohne Refernce-Objekt
+		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+			Vector3ZZZ<String> vecReturn = vecExpressionIn;
+			String sReturn = null;
+			String sExpressionIn = null;		
+			boolean bUseExpression = false; 
 			
-			sExpressionIn = (String) vecExpressionIn.get(1);
-			sReturn = sExpressionIn;
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
-						
-			bUseExpression = this.isExpressionEnabledGeneral(); 
-			if(!bUseExpression) break main;
-			
-			
-			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
-			
-			
-			this.setValue(sReturn);											
-		}//end main:
+			main:{			
+				if(vecExpressionIn==null) break main;
 				
-		//################################
-		return vecReturn;
-	}
+				sExpressionIn = (String) vecExpressionIn.get(1);
+				sReturn = sExpressionIn;
+				if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+							
+				bUseExpression = this.isExpressionEnabledGeneral(); 
+				if(!bUseExpression) break main;
+				
+				
+				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+				
+				
+				this.setValue(sReturn);											
+			}//end main:
+					
+			//################################
+			return vecReturn;
+		}
 	
 	
 	//### aus IExpressionUserZZZ
@@ -268,60 +277,70 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return XmlUtilZZZ.isExpression4TagXml(sExpression, this.getName());
 	}	
 	
-	@Override
-	public String parseAsExpression() throws ExceptionZZZ {
-		String sExpression = this.getValue();
-		return this.parseAsExpression(sExpression);
-	}	
-
 
 	@Override
-	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
-		String sReturn = sExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-			
-			Vector3ZZZ<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-			sReturn = VectorUtilZZZ.implode(vecAll);
-			this.setValue((String) vecAll.get(1));
-			
-		}//end main:
-		return sReturn;
+	public String makeAsExpression(String sString) throws ExceptionZZZ{
+		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());
 	}
 	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpression;
-		main:{
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-			
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-		}//end main:
-		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
-		return vecReturn;	
-	}
+	/* (non-Javadoc)
+	 * @see basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ#isParserEnabledThis()
+	 */
+		
+//	@Override
+//	public String parseAsExpression() throws ExceptionZZZ {
+//		String sExpression = this.getValue();
+//		return this.parseAsExpression(sExpression);
+//	}	
+//
+//
+//	@Override
+//	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
+//		String sReturn = sExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+//			
+//			Vector3ZZZ<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
+//			
+//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
+//			sReturn = VectorUtilZZZ.implode(vecAll);
+//			this.setValue((String) vecAll.get(1));
+//			
+//		}//end main:
+//		return sReturn;
+//	}
+	
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+//		String sReturn = sExpression;
+//		main:{
+//			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+//			
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
+//			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+//		}//end main:
+//		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
+//		return vecReturn;	
+//	}
 	
 	
 	//### aus IExpressionUserZZZ
-	@Override
-	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		main:{
-			if(StringZZZ.isEmpty(sExpression)) break main;
-						
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVectorAsExpression(sExpression);			
-			
-		}//end main:
-		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+//		main:{
+//			if(StringZZZ.isEmpty(sExpression)) break main;
+//						
+//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+//			vecReturn = this.parseFirstVectorAsExpression(sExpression);			
+//			
+//		}//end main:
+//		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
+//		return vecReturn;
+//	}
 
 	@Override
 	public String convert(String sExpression) throws ExceptionZZZ {

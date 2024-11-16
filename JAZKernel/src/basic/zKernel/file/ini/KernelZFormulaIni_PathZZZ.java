@@ -223,10 +223,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	
-	//### Aus IParseEnabledZZZ			
+	//### Aus IParseEnabledZZZ		
 	@Override
-	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParseRegEx(sExpressionToProof, this.getNameDefault(), false);
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		//Ueberschreibt den Standard, da der Name nicht so ist wie ein normales Tag
+		return ExpressionIniUtilZZZ.isParseRegEx(sExpressionToProof, this.getName(), false);
 	}
 		
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.

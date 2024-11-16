@@ -250,19 +250,19 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	/* (non-Javadoc)
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
 	 */
-	@Override
-	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
-		String sReturn = sExpression;
-		main:{			
-			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
-			if(bUseCall) {
-				sReturn = super.parseAsExpression(sExpression);
-			}else {
-				sReturn = sExpression;
-			}									
-		}//end main:
-		return sReturn;
-	}
+//	@Override
+//	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
+//		String sReturn = sExpression;
+//		main:{			
+//			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+//			if(bUseCall) {
+//				sReturn = super.parseAsExpression(sExpression);
+//			}else {
+//				sReturn = sExpression;
+//			}									
+//		}//end main:
+//		return sReturn;
+//	}
 		
 	//### Andere Interfaces
 	

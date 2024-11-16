@@ -97,6 +97,11 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### Aus IParseEnabledZZZ	
 	@Override
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //kann von anderen Klassen ueberschreiben werden.
+	}
+
+	@Override
 	public String parse(String sExpression) throws ExceptionZZZ{
 		return this.parse_(sExpression, true);
 	}	
@@ -114,6 +119,20 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorPost_(vecExpression, true);
+	}
+
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return vecExpression;
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++
@@ -394,11 +413,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 //		return saReturn;
 //	}
 	
-	//aus IParseEnabledZZZ
-	@Override
-	public boolean isParse(String sExpressionToProof) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParse(sExpressionToProof, this.getNameDefault() , false);
-	}
+	//### aus IParseEnabledZZZ
+
 	
 	//### aus IIniStructurePositionUserZZZ
 	@Override
@@ -513,39 +529,44 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
 	
-	@Override
-	public String parseAsExpression() throws ExceptionZZZ {
-		String sExpression = this.getValue();
-		return this.parseAsExpression(sExpression);
-	}	
-
-
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-			sReturn = VectorUtilZZZ.implode(vecAll);
-			this.setValue(vecAll.get(1));
-			
-		}//end main:
-		return sReturn;
-	}
+//	@Override
+//	public String parseAsExpression() throws ExceptionZZZ {
+//		String sExpression = this.getValue();
+//		return this.parseAsExpression(sExpression);
+//	}	
+//
+//
+//	@Override
+//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//			
+//			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
+//			
+//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
+//			sReturn = VectorUtilZZZ.implode(vecAll);
+//			this.setValue(vecAll.get(1));
+//			
+//		}//end main:
+//		return sReturn;
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+//		main:{
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
+//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+//		}
+//		return vecReturn;
+//			
+//	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-		}
-		return vecReturn;
-			
+	public String makeAsExpression(String sString) throws ExceptionZZZ{
+		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());
 	}
 
 	

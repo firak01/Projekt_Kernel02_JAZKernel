@@ -325,19 +325,19 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return saReturn;
 	}
 	
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{			
-			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-			if(bUse) {
-				sReturn = super.parseAsExpression(sLineWithExpression);
-			}else {
-				sReturn = sLineWithExpression;
-			}									
-		}//end main:
-		return sReturn;
-	}
+//	@Override
+//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{			
+//			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+//			if(bUse) {
+//				sReturn = super.parseAsExpression(sLineWithExpression);
+//			}else {
+//				sReturn = sLineWithExpression;
+//			}									
+//		}//end main:
+//		return sReturn;
+//	}
 
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		

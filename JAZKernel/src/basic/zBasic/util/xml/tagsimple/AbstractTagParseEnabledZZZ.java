@@ -48,13 +48,16 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 	
 	@Override
-	public boolean isParse(String sExpression) throws ExceptionZZZ {
+	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 		
+			bReturn = this.isParseRelevant();
+			if(!bReturn) break main;
+			
 			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
-			if(bReturn) break main;
+			if(!bReturn) break main;
 			
 			
 		}//end main
@@ -112,6 +115,60 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		}
 		return vecReturn;
 	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorPost_(vecExpression, true);
+	}
+
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return vecExpression;
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+			return this.parseFirstVectorPostCustom_(vecExpression, true);
+		}
+		
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+			return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
+		}
+		
+		//Methode ohne Refernce-Objekt
+		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+			Vector3ZZZ<String> vecReturn = vecExpressionIn;
+			String sReturn = null;
+			String sExpressionIn = null;		
+			
+			main:{			
+				if(vecExpressionIn==null) break main;
+				
+				sExpressionIn = (String) vecExpressionIn.get(1);
+				sReturn = sExpressionIn;
+				if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+				
+				//Erst bei AbstractTagWithExpression basic an oder ausstellen mit Flag
+				//bUseExpression = this.isExpressionEnabledGeneral(); 
+				//if(!bUseExpression) break main;
+				
+				
+				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+				
+				
+				this.setValue(sReturn);											
+			}//end main:
+					
+			//################################
+			return vecReturn;
+		}
 	
 	//### Analog zu AbstractTagBasicZZZ
 	//### aus ITagBasicZZZ

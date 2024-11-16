@@ -26,7 +26,6 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
-	private FileIniZZZ objFileIni=null;
 		
 	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{	
 		super("init");
@@ -67,7 +66,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 				break main;
 			}										
 				
-			this.setFileIni(objFileIni);
+			this.setFileConfigKernelIni(objFileIni);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
@@ -83,7 +82,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector3ZZZ<String> vecSection = this.parseFirstVectorAsExpression(sLineWithExpression);	
+			Vector3ZZZ<String> vecSection = super.parseFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -100,7 +99,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 						sProperty = StringZZZ.left(sProperty, sMathValueTag);												
 					}
 										
-					FileIniZZZ objFileIni = this.getFileIni();
+					FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 					if(objFileIni==null){
 						ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
@@ -120,16 +119,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		}//end main:
 		return vecReturn;
 	}
-	
-
-	public void setFileIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileIni(){
-		return this.objFileIni;
-	}
-
-	
+		
 	//### Aus Interface IConvertable
 	@Override
 	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
@@ -193,6 +183,4 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-	
 }//End class

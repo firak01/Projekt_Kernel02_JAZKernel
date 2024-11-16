@@ -209,22 +209,22 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	@Override
-	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = null;
-
-		main:{
-			if(sExpression==null) break main;
-			
-			vecReturn = new Vector3ZZZ<String>();
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-								
-			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
-			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-				
-		}//end main:			
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = null;
+//
+//		main:{
+//			if(sExpression==null) break main;
+//			
+//			vecReturn = new Vector3ZZZ<String>();
+//			if(StringZZZ.isEmpty(sExpression)) break main;
+//			
+//			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+//								
+//			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
+//			vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+//				
+//		}//end main:			
+//		return vecReturn;
+//	}
 }// End class

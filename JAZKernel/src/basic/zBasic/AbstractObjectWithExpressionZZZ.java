@@ -59,7 +59,23 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		
 	//### Aus IParseEnabledZZZ
 	@Override
-	public abstract boolean isParse(String sExpressionToProof) throws ExceptionZZZ;
+	public boolean isParseRelevant() {
+		//Kann ggfs. von einem konkreten Tag uberschrieben werden.
+		return true;
+	}
+	
+	@Override
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = this.isParseRelevant();
+			if(!bReturn)break main;
+			
+			//auf dieser Ebene gibt es keine Tags
+			//bReturn = XmlUtilZZZ.containsTag(sExpression, this.getTagName(());
+		}//end main:
+		return bReturn;
+	}
 	
 	//### Aus IValueBufferedUserZZZ
 	@Override 

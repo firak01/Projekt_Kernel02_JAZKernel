@@ -804,45 +804,45 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	@Override
-	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = null;
-
-		main:{
-			if(sExpression==null) break main;
-			
-			vecReturn = new Vector3ZZZ<String>();
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-								
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			//vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-			vecReturn = this.parseFirstVector(sExpression, false);
-				
-		}//end main:			
-		return vecReturn;
-	}
-	
-	@Override
-	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = null;		
-		main:{
-			if(sExpression==null) break main;
-			
-			vecReturn = new Vector3ZZZ<String>();
-			if(StringZZZ.isEmpty(sExpression)) break main;
-			
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-								
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVectorAsExpression(sExpression); 			
-			
-		}//end main:
-		
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = null;
+//
+//		main:{
+//			if(sExpression==null) break main;
+//			
+//			vecReturn = new Vector3ZZZ<String>();
+//			if(StringZZZ.isEmpty(sExpression)) break main;
+//			
+//			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+//								
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			//vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+//			vecReturn = this.parseFirstVector(sExpression, false);
+//				
+//		}//end main:			
+//		return vecReturn;
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = null;		
+//		main:{
+//			if(sExpression==null) break main;
+//			
+//			vecReturn = new Vector3ZZZ<String>();
+//			if(StringZZZ.isEmpty(sExpression)) break main;
+//			
+//			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+//								
+//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+//			vecReturn = this.parseFirstVectorAsExpression(sExpression); 			
+//			
+//		}//end main:
+//		
+//		return vecReturn;
+//	}
 	
 	//### aus IConvertableZZZ
 		

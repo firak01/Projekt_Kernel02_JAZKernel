@@ -35,7 +35,7 @@ public class ExpressionIniUtilZZZ {
 		main:{
 			//Finde den ersten Tag... Ist das der angegebene...von vorne, dito von hinten.
 			//was liefert das zurueck?
-			XmlUtilZZZ.getTagNext(sTagName, sString);
+			sReturn = XmlUtilZZZ.getTagNext(sTagStarting, sString);
 			
 			//neue methoden
 			XmlUtilZZZ.getTagNextStarting(sTagStarting, sString);

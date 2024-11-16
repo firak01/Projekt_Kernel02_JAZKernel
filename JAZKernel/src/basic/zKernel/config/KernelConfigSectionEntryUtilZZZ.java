@@ -24,6 +24,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
+import basic.zKernel.file.ini.ExpressionIniUtilZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
@@ -500,13 +501,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturn = ex.parseAsEntryNew(sRaw);
+					objReturn = ex.solveAsEntryNew(sRaw);
 					sValue = objReturn.getValue();
 					
 				}else {
 					sFall = "computeAsExpression";
-					sValue = ex.parseAsExpression(sRaw);
-					objReturn = ex.getEntry();					
+					objReturn = ex.solveAsEntryNew(sRaw);
+					sValue = objReturn.getValue();
+					sValue = ExpressionIniUtilZZZ.makeAsExpression(sValue);					
+
 				}
 				
 				if(!StringZZZ.equals(sValue,sRaw)){

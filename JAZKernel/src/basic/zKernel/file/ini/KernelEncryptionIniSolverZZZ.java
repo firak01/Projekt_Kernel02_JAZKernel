@@ -397,21 +397,21 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 
 	//### aus IExpressionUserZZZ
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{	
-			
-			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-			if(bUseEncryption) {
-				sReturn = super.parseAsExpression(sLineWithExpression);
-			}else {
-				sReturn = sLineWithExpression;
-			}									
-		}//end main:
-		return sReturn;
-	}
+//	@Override
+//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{	
+//			
+//			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
+//			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+//			if(bUseEncryption) {
+//				sReturn = super.parseAsExpression(sLineWithExpression);
+//			}else {
+//				sReturn = sLineWithExpression;
+//			}									
+//		}//end main:
+//		return sReturn;
+//	}
 	
 	//### aus IConvertableZZZ
 	@Override

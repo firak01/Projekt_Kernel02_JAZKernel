@@ -68,26 +68,31 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public String parseAsExpression() throws ExceptionZZZ {
-		String sExpression = this.getValue();
-		return this.parseAsExpression(sExpression);
-	}	
-
-	@Override
-	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(!this.isParse(sLineWithExpression)) break main;
-			
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorUtilZZZ.implode(vecAll);
-			this.setValue(vecAll.get(1));
-			
-		}//end main:
-		return sReturn;
-	}	
+	public String makeAsExpression(String sString) throws ExceptionZZZ{
+		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());
+	}
+	
+//	@Override
+//	public String parseAsExpression() throws ExceptionZZZ {
+//		String sExpression = this.getValue();
+//		return this.parseAsExpression(sExpression);
+//	}	
+//
+//	@Override
+//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		String sReturn = sLineWithExpression;
+//		main:{
+//			if(!this.isParse(sLineWithExpression)) break main;
+//			
+//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
+//			
+//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+//			sReturn = VectorUtilZZZ.implode(vecAll);
+//			this.setValue(vecAll.get(1));
+//			
+//		}//end main:
+//		return sReturn;
+//	}	
 	
 //	/* (non-Javadoc)
 //	 * @see basic.zKernel.file.ini.AbstractIniTagBasicZZZ#isExpression(java.lang.String)
@@ -99,19 +104,19 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	
 	
 	//### aus IIniTagWithExpressionZZZ (siehe auch: IExpressionUserZZZ)
-	@Override
-	public Vector3ZZZ<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
-			
-		}
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+//						
+//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+//			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
+//			
+//		}
+//		return vecReturn;
+//	}
 	
 	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
@@ -121,15 +126,15 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	@Override
-	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
-		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-		}
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+//		main:{
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
+//		}
+//		return vecReturn;
+//	}
 	
 	
 	
@@ -174,6 +179,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	//### Aus IParseEnabledZZZ
 	@Override
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		//Merke: Mit Klassen auf dem Flag-Weg koennen hier das Flag abfragen.
 		return true;
 	}
 
