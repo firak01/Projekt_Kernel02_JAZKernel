@@ -202,7 +202,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		boolean bReturn = false;
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
-			//       Muss also eine extra Abfrage bleiben.
+			//       Muss also immer eine extra Abfrage bleiben.
 			bReturn = this.isSolverEnabledThis();
 			if(!bReturn) break main;
 			

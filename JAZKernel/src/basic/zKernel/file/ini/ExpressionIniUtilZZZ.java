@@ -10,6 +10,45 @@ public class ExpressionIniUtilZZZ {
 		//zum 'Verstecken" des Konstruktors
 	}//only static Methods
 	
+	/* Setze Z-Tags um den Ausdruck rum, falls noch nicht vorhanden. 
+	 */
+	public static String makeAsExpression(String sString) throws ExceptionZZZ {
+		return ExpressionIniUtilZZZ.makeAsExpression(sString, "Z");
+	}
+	
+	/* Setze den angegebenen Tag um den Ausdruck rum, falls noch nicht vorhanden. 
+	 */
+	public static String makeAsExpression(String sString, String sTagName) throws ExceptionZZZ {
+		String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
+		String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagStarting, sTagClosing);
+	}
+	
+	/* Setze den angegebenen Tag um den Ausdruck rum, falls noch nicht vorhanden. 
+	 */
+	public static String makeAsExpression(String sString, String  sTagStarting, String sTagClosing) throws ExceptionZZZ {
+		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagStarting, sTagClosing);
+	}
+	
+	private static String makeAsExpression_(String sString, String sTagStarting, String sTagClosing) throws ExceptionZZZ {
+		String sReturn = sString;
+		main:{
+			//Finde den ersten Tag... Ist das der angegebene...von vorne, dito von hinten.
+			//was liefert das zurueck?
+			XmlUtilZZZ.getTagNext(sTagName, sString);
+			
+			//neue methoden
+			XmlUtilZZZ.getTagNextStarting(sTagStarting, sString);
+			XmlUtilZZZ.getTagNextClosing(sTagClosing, sString);
+			
+			TODOGOON20241116;
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	//++++++++++
+	
 	public static boolean isParse(String sExpression, String sTagName) throws ExceptionZZZ {
 		return ExpressionIniUtilZZZ.isParse_(sExpression, sTagName, true);
 	}	

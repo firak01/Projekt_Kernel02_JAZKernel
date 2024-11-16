@@ -236,6 +236,10 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
+						
+			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)){
+				objEntry.isJson(true);
+			}
 			
 			//wg. dieser boolean Zuweisung als eigene Methode, die dann nur die Elternmethode aufruft.
 			if(XmlUtilZZZ.containsTag(sExpressionIn, this.getName(), false)){
@@ -288,7 +292,15 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	//Merke: Folgende Methoden muessen im konkreten Solver implementiert werden, da der abstrakte Solver die konkreten Flags zur deaktivierung diese konkreten Solvers nicht kennt.
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+		boolean bReturn = false;
+		main:{
+		  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+		  if(!bReturn) break main;
+		  
+		  bReturn = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+		  if(!bReturn) break main;		  
+		}//end main:
+		return bReturn;
 	}
 	
 		

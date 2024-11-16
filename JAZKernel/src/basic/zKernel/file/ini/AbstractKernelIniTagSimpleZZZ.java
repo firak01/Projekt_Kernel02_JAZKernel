@@ -506,7 +506,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//end main:
 		this.setValue(sReturn);
 	
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 		if(vecReturn!=null) vecReturn.replace(sReturn);
 		if(bRemoveSurroundingSeparators & bUseExpression) {
 			String sTagStartZ = "<Z>";
@@ -689,15 +689,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);
 			
+//NEIN: Wir sind hier im ParseFirstVector - teil... da bleibt der Z-Tag drin !!!
 			//Als echten Ergebniswert immer die <Z>-Tags ggfs. rausrechnen
-			if(bRemoveSurroundingSeparators) {
-				String sTagStart = "<Z>";
-				String sTagEnd = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-				
-				sReturn = (String) vecReturn.get(1);
-			}
-			this.setValue(sReturn);
+//			if(bRemoveSurroundingSeparators) {
+//				String sTagStart = "<Z>";
+//				String sTagEnd = "</Z>";
+//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+//				
+//				sReturn = (String) vecReturn.get(1);
+//			}
+//			this.setValue(sReturn);
 		}//end main:
 				
 		//#################################

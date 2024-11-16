@@ -316,7 +316,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	/** Also der String beginnt mit dem Starting Tag und enedet mit dem Closing Tag
+	/** Also der String beginnt mit dem Starting Tag und endet mit dem Closing Tag
 	 * @param sLineWithExpression
 	 * @param sTagStarting
 	 * @param sTagClosing

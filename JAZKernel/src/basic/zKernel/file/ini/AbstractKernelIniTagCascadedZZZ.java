@@ -123,7 +123,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
-		boolean bUseExpression = false; boolean bUseSolverThis = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -162,9 +162,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
 			if(bUseParse) {
+				//Mit speziellenm Parser "enabled" wird der Tag ggfs. entfernt
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
 			}else {
+				//Ohne speziellen Parser "enabled" bleibt der Tag auf jeden Fall drin
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, !bIgnoreCase);
 				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
 			}
