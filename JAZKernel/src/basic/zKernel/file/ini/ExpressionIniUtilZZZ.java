@@ -33,6 +33,15 @@ public class ExpressionIniUtilZZZ {
 	private static String makeAsExpression_(String sString, String sTagStarting, String sTagClosing) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
+			if(XmlUtilZZZ.isSurroundedByTag(sString, sTagStarting, sTagClosing)) {
+				//mache nix
+			}else {
+				//umgib den String mit den gewuenschten Tags
+				sReturn = sTagStarting + sString + sTagClosing;
+			}
+			
+			/*
+			//TODOGOON20241116;
 			//Finde den ersten Tag... Ist das der angegebene...von vorne, dito von hinten.
 			//was liefert das zurueck?
 			sReturn = XmlUtilZZZ.getTagNext(sTagStarting, sString);
@@ -41,7 +50,8 @@ public class ExpressionIniUtilZZZ {
 			XmlUtilZZZ.getTagNextStarting(sTagStarting, sString);
 			XmlUtilZZZ.getTagNextClosing(sTagClosing, sString);
 			
-			TODOGOON20241116;
+			
+			*/
 			
 		}//end main:
 		return sReturn;

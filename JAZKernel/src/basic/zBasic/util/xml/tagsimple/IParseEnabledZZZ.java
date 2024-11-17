@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface IParseEnabledZZZ {
 	boolean isParserEnabledThis() throws ExceptionZZZ;
@@ -13,6 +15,12 @@ public interface IParseEnabledZZZ {
 	
 	public String parse(String sExpression) throws ExceptionZZZ;
 	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+
 	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ;
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 	

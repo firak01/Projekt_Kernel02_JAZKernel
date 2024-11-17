@@ -358,20 +358,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;		
 						
-			//Rufe nun parse() auf...
+			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);//!!! false... Die Z-Tags drin lassen, ggfs. benoetigt fuer weitere Berechnungen.
 			objEntry = objReturnReferenceParse.get();
-//			
-//			//Da wir hier verkuerzt parseFirstVector aufrufen... Das machen parsePost() ausfuehren.
-//			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
-//			if(bRemoveSurroundingSeparators & bUseExpression) { // & bUseSolver & bUseSolverThis) {
-//				String sTagStartZ = "<Z>";
-//				String sTagEndZ = "</Z>";
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!							
-//			}			
 			
+//			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
+//			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
+			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);
+
 			String sExpressionParsed = (String) vecReturn.get(1);
 			sReturn = sExpressionParsed; //Zwischenstand
 			this.setValue(sReturn);

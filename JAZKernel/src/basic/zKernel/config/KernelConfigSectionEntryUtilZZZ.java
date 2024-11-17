@@ -1044,51 +1044,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sValueOld = sValue;
 			String sRestOld = sRest;
 			
-			if(!bRemoveAnyPosition) {
-				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-				
-					if(!StringZZZ.isEmpty(sBefore)){									
-						if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
-							sBefore = StringZZZ.leftback(sBefore, sTagStart);
-						}
-						vecReturn.replace(0, sBefore);
-					}else{
-						vecReturn.replace(0,"");
-					}
-					
-					if(!StringZZZ.isEmpty(sRest)){						
-						if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-							sRest = StringZZZ.rightback(sRest, sTagEnd);
-						}
-						vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
-					}else{
-						vecReturn.replace(2,"");
-					}
-					
-					if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
-					sBeforeOld=sBefore;
-					sRestOld=sRest;
-				}//end while
-				
-				//ggfs. aus dem Mittleren Teil auch entfernen
-				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-		
-						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-							sBefore = StringZZZ.right(sValue, sTagStart);
-							sValue = sBefore;
-						}
-						
-						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-							sRest = StringZZZ.left(sValue, sTagEnd);
-							sValue = sRest;
-						}	
-						
-						if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
-						sValueOld = sValue;
-				}//end while
-			
-			}else {
-				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
+			if(bRemoveAnyPosition) {
+		while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
 					
 					if(!StringZZZ.isEmpty(sBefore)){							
 						if(StringZZZ.contains(sBefore, sTagStart, false)) {
@@ -1134,7 +1091,51 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
 						sValueOld = sValue;
 				}//end while
-			}//end if bRemoveAnyPosition	
+
+			}else {
+				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+					
+					if(!StringZZZ.isEmpty(sBefore)){									
+						if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
+							sBefore = StringZZZ.leftback(sBefore, sTagStart);
+						}
+						vecReturn.replace(0, sBefore);
+					}else{
+						vecReturn.replace(0,"");
+					}
+					
+					if(!StringZZZ.isEmpty(sRest)){						
+						if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+							sRest = StringZZZ.rightback(sRest, sTagEnd);
+						}
+						vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
+					}else{
+						vecReturn.replace(2,"");
+					}
+					
+					if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
+					sBeforeOld=sBefore;
+					sRestOld=sRest;
+				}//end while
+				
+				//ggfs. aus dem Mittleren Teil auch entfernen
+				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+		
+						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+							sBefore = StringZZZ.right(sValue, sTagStart);
+							sValue = sBefore;
+						}
+						
+						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+							sRest = StringZZZ.left(sValue, sTagEnd);
+							sValue = sRest;
+						}	
+						
+						if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
+						sValueOld = sValue;
+				}//end while
+		
+					}//end if bRemoveAnyPosition	
 			
 			//ggfs. aus dem Mittleren Teil auch entfernen
 			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
@@ -1192,104 +1193,106 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//				break main;
 			//			}
 			
-			if(!bRemoveAnyPosition) {
+			if(bRemoveAnyPosition) {
 				
-				while(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
-				
-				if(!StringZZZ.isEmpty(sBefore)){
-													
-					if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
-						sBefore = StringZZZ.right(sBefore, sTagStart);
-					}
-					vecReturn.replace(0, sBefore);
-				}else{
-					vecReturn.replace(0,"");
-				}
-					 
-				if(!StringZZZ.isEmpty(sRest)){	
+				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
 					
-					if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
-						sRest = StringZZZ.left(sRest, sTagEnd);
+					if(!StringZZZ.isEmpty(sBefore)){
+										
+						if(StringZZZ.contains(sBefore, sTagStart, false)) {
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+							vecTemp.replace(1,"");
+							sBefore = VectorUtilZZZ.implode(vecTemp);
+						}
+						vecReturn.replace(0, sBefore);
+					}else{
+						vecReturn.replace(0,"");
 					}
-					vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
-				}else{
-					vecReturn.add(2,"");
-				}
-				
-				if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
-				sBeforeOld=sBefore;
-				sRestOld=sRest;
-			}//end while
-			
-			//ggfs. aus dem Mittleren Teil auch entfernen
-			while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-	
-					if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-						sBefore = StringZZZ.right(sValue, sTagStart);
+						
+					if(!StringZZZ.isEmpty(sRest)){	
+						
+						if(StringZZZ.contains(sRest, sTagEnd, false)) {						
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+							vecTemp.replace(1,"");
+							sRest = VectorUtilZZZ.implode(vecTemp);
+						}
+						vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
+					}else{
+						vecReturn.replace(2,"");
+					}
+					
+					if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
+					sBeforeOld=sBefore;
+					sRestOld=sRest;
+				}//end while
+					
+				//ggfs. aus dem Mittleren Teil auch entfernen
+				while(StringZZZ.contains(sValue, sTagStart, false) & StringZZZ.contains(sValue, sTagEnd, false)) {
+
+					if(StringZZZ.contains(sValue, sTagStart, false)) {
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagStart, true);
+						vecTemp.replace(1,"");
+						sBefore = VectorUtilZZZ.implode(vecTemp);
 						sValue = sBefore;
 					}
-					
-					if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-						sRest = StringZZZ.left(sValue, sTagEnd);
+						
+					if(StringZZZ.contains(sValue, sTagEnd, false)) {						
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagEnd, true);
+						vecTemp.replace(1,"");
+						sRest = VectorUtilZZZ.implode(vecTemp);
 						sValue = sRest;
-					}	
+					}		
 					
 					if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
 					sValueOld = sValue;
-			}//end while
-		
+				}//end while									
+					
 		}else{
-			while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
-				
-				if(!StringZZZ.isEmpty(sBefore)){
-									
-					if(StringZZZ.contains(sBefore, sTagStart, false)) {
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
-						vecTemp.replace(1,"");
-						sBefore = VectorUtilZZZ.implode(vecTemp);
-					}
-					vecReturn.replace(0, sBefore);
-				}else{
-					vecReturn.replace(0,"");
-				}
-					
-				if(!StringZZZ.isEmpty(sRest)){	
-					
-					if(StringZZZ.contains(sRest, sTagEnd, false)) {						
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
-						vecTemp.replace(1,"");
-						sRest = VectorUtilZZZ.implode(vecTemp);
-					}
-					vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
-				}else{
-					vecReturn.replace(2,"");
-				}
-				
-				if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
-				sBeforeOld=sBefore;
-				sRestOld=sRest;
-			}//end while
-				
-			//ggfs. aus dem Mittleren Teil auch entfernen
-			while(StringZZZ.contains(sValue, sTagStart, false) & StringZZZ.contains(sValue, sTagEnd, false)) {
 
-				if(StringZZZ.contains(sValue, sTagStart, false)) {
-					Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagStart, true);
-					vecTemp.replace(1,"");
-					sBefore = VectorUtilZZZ.implode(vecTemp);
+			while(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
+			
+			if(!StringZZZ.isEmpty(sBefore)){
+												
+				if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
+					sBefore = StringZZZ.right(sBefore, sTagStart);
+				}
+				vecReturn.replace(0, sBefore);
+			}else{
+				vecReturn.replace(0,"");
+			}
+				 
+			if(!StringZZZ.isEmpty(sRest)){	
+				
+				if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
+					sRest = StringZZZ.left(sRest, sTagEnd);
+				}
+				vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
+			}else{
+				vecReturn.add(2,"");
+			}
+			
+			if(sBeforeOld.equals(sBefore) | sRestOld.equals(sRest)) break; //sonst ggfs. Endlosschleifengefahr.
+			sBeforeOld=sBefore;
+			sRestOld=sRest;
+		}//end while
+		
+		//ggfs. aus dem Mittleren Teil auch entfernen
+		while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+
+				if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
+					sBefore = StringZZZ.right(sValue, sTagStart);
 					sValue = sBefore;
 				}
-					
-				if(StringZZZ.contains(sValue, sTagEnd, false)) {						
-					Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagEnd, true);
-					vecTemp.replace(1,"");
-					sRest = VectorUtilZZZ.implode(vecTemp);
+				
+				if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+					sRest = StringZZZ.left(sValue, sTagEnd);
 					sValue = sRest;
-				}		
+				}	
 				
 				if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
 				sValueOld = sValue;
-			}//end while									
+		}//end while
+
 		}//end if bRemoveAnyPosition
 			
 		vecReturn.replace(sValue);
