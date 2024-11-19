@@ -51,9 +51,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bParsed = false;
 	protected boolean bParsedChanged = false;
 	
-	protected boolean bSolved = false;
 	protected boolean bPathSubstituted = false;
 	protected boolean bVariableSubstituted = false;
+	
+	protected boolean bSolved = false;
+	protected boolean bSolvedChanged = false;
 	
 	protected boolean bFormulaMathSolved = false;
 	
@@ -567,7 +569,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			this.setValue(hmValue.toString());
 		}else {
 			this.isMapValue(false);
-			this.setValue("");
+			this.setValue((String)null);
 		}
 	}
 
@@ -603,7 +605,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			if(alValue!=null) this.setValue(alValue.toString());
 		}else {
 			this.isArrayValue(false);
-			this.setValue("");
+			this.setValue((String)null);
 		}
 		
 	}
@@ -736,15 +738,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bParsedChanged = bParsedChanged;
 	}
 	
-	@Override 
-	public boolean isSolved() {
-		return this.bSolved;
-	}
-	
-	@Override
-	public void isSolved(boolean bSolved) {
-		this.bSolved = bSolved;
-	}
+	//################################
 	
 	@Override 
 	public boolean isPathSubstituted() {
@@ -766,6 +760,28 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bVariableSubstituted = bVariableSubstituted;
 	}
 	
+	//########################################
+	
+	@Override 
+	public boolean isSolved() {
+		return this.bSolved;
+	}
+	
+	@Override
+	public void isSolved(boolean bSolved) {
+		this.bSolved = bSolved;
+	}
+	
+	
+	@Override
+	public boolean isSolvedChanged() {
+		return this.bSolvedChanged; 
+	}
+
+	@Override
+	public void isSolvedChanged(boolean bIsSolvedChanged) {
+		this.bSolvedChanged = bIsSolvedChanged;
+	}
 	//#####################################
 	
 	@Override
@@ -1169,4 +1185,6 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 				this.getPropertiesSearchedHashMap().putAsLast(sProperty, bExists);
 			}
 		}
+
+		
 }

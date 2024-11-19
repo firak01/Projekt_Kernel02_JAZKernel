@@ -1,6 +1,7 @@
 package basic.zKernel.file.ini;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -336,7 +337,41 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public void isArrayValue(boolean bIsArrayValue) throws ExceptionZZZ {
 		this.getEntry().isArrayValue(bIsArrayValue);
 	}
+			
+	//###############################################
+	//### aus IValueMapUserZZZ
+	@Override 
+	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector() throws ExceptionZZZ{
+		return this.getEntry().getValueHashMapVector();
+	}
+		
+	@Override
+	public HashMap<String,String> getValueHashMap() throws ExceptionZZZ {		
+		if(this.hasNullValue()){
+			return null;		
+		}else if (!this.hasAnyValue()){
+			return new HashMap<String,String>(); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
+		}else {
+			return this.getValueHashMapVector().getEntryHigh();
+		}
+	}
+
+	@Override
+	public void setValue(HashMap<String,String> hmValue) throws ExceptionZZZ {
+		this.getValueHashMapVector().add(hmValue);
+		this.isMapValue(true);
+	}
 	
+	@Override
+	public boolean isMapValue() throws ExceptionZZZ {
+		return this.getEntry().isMapValue();
+	}
+	
+	@Override 
+	public void isMapValue(boolean bIsMapValue) throws ExceptionZZZ {
+		this.getEntry().isMapValue(bIsMapValue);
+	}
+
 	
 	//### Aus IParseEnabledZZZ		
 	@Override

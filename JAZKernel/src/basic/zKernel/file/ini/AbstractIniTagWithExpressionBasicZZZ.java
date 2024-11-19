@@ -514,12 +514,12 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}
 	
 	@Override
-	public boolean isMapValue() {
+	public boolean isMapValue() throws ExceptionZZZ {
 		return this.bMapValue;
 	}
 	
 	@Override 
-	public void isMapValue(boolean bIsMapValue) {
+	public void isMapValue(boolean bIsMapValue) throws ExceptionZZZ {
 		this.bMapValue = bIsMapValue;
 	}
 	

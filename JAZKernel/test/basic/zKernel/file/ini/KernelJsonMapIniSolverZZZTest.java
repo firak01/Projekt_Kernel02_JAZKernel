@@ -19,6 +19,8 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
+	//Problem dabei: Die Reihenfolge der Einträge in der HashMap ist nicht fest vorgegeben.
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT_SOLVED = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}";
 	protected final static String sEXPRESSION_JSONMAP01_CONTENT = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}";
 	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT +"</JSON:MAP></JSON></Z>";
 	
@@ -82,7 +84,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01(){
-		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+		String sValue; String sExpressionSolved; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 		String sTagStartZ;	String sTagEndZ;
 		boolean btemp; IKernelConfigSectionEntryZZZ objEntryTemp;
 		sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
@@ -103,22 +105,23 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			//### Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.		
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.		
 			
 			//### Gesamtberechnung durchführen
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";
-			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
 		
 			sValue = objExpressionSolver.parse(sExpressionSource);
-			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpressionSolved, sValue);
 		
 			//Entry auswerten
 			objEntryTemp = objExpressionSolver.getEntry();
-			assertFalse(objEntryTemp.isJson());
-			assertFalse(objEntryTemp.isJsonMap());
+			assertTrue(objEntryTemp.isParsed());
+			assertTrue(objEntryTemp.isJson()); //das hat der Parser alles herausgefunden.
+			assertTrue(objEntryTemp.isJsonMap());
 			
 			//### Anwenden der ersten Formel
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
@@ -127,15 +130,31 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
 			
-			sValue = objExpressionSolver.parse(sExpressionSource);			
+//			sTagStartZ = "<Z>";
+//			sTagEndZ = "</Z>";
+//			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+//		
+//			sTagStartZ = objExpressionSolver.getTagStarting();
+//			sTagEndZ = objExpressionSolver.getTagClosing();
+//			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+		
+			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED;
+			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+			sValue = objExpressionSolver.solve(sExpressionSource);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-			assertEquals(sExpression, sValue);
+			
+			assertEquals(sExpressionSolved, sValue);
 
 			//Entry auswerten
 			objEntryTemp = objExpressionSolver.getEntry();
-			assertFalse(objEntryTemp.isJson());
-			assertFalse(objEntryTemp.isJsonMap());
+			assertTrue(objEntryTemp.isParsed());
+			assertTrue(objEntryTemp.isParsedChanged());
 			
+			assertTrue(objEntryTemp.isJson());
+			assertTrue(objEntryTemp.isJsonMap());
+			
+			assertTrue(objEntryTemp.isSolved());
+			assertTrue(objEntryTemp.isSolvedChanged());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -577,13 +596,15 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"						
+				assertFalse(objEntry.isPathSubstituted());//es wird ja nix gemacht, also immer "unveraendert"
+				assertFalse(objEntry.isVariableSubstituted());//es wird ja nix gemacht, also immer "unveraendert"
+									
 			
-				assertFalse(objEntry.isSolved());
-								
+				assertTrue(objEntry.isSolved());//es wird ja nix gemacht, also immer "unveraendert"
+				assertFalse(objEntry.isSolvedChanged());		
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -774,7 +795,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved()); //.solve() wird ja ausgefuert, s. .parse()
+				assertFalse(objEntry.isSolvedChanged()); //ist ja nix wirklich aufgeloest
 				
 				assertTrue(objEntry.isJson());
 				assertFalse(objEntry.isJsonArray());
@@ -810,7 +832,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());														
 			
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());			
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -850,8 +873,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 	
-				assertFalse(objEntryUsed.isSolved());
-						
+				assertTrue(objEntryUsed.isSolved()); //.solve() wird ja ausgefuert, s. .parse()
+				assertFalse(objEntryUsed.isSolvedChanged()); //ist ja nix wirklich aufgeloest
+				
+				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolvedChanged());		
+				
 				assertTrue(objEntryUsed.isJson());
 				assertFalse(objEntryUsed.isJsonArray());
 				assertTrue(objEntryUsed.isJsonMap());
@@ -987,8 +1014,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
-								
+				assertTrue(objEntry.isSolved()); //wird ja ausgefürht
+				//assertTrue(objEntry.isSolvedChanged());				
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -1055,8 +1083,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 					
-				assertFalse(objEntryUsed.isSolved());
-								
+				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolvedChanged());				
+				
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -1189,8 +1218,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				
 										
 			
-				assertFalse(objEntry.isSolved());
-								
+				assertTrue(objEntry.isSolved());
+				//assertTrue(objEntry.isSolvedChanged());
+												
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -1390,7 +1420,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved());
+				//assertTrue(objEntry.isSolvedChanged());
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1489,20 +1520,24 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute01Map(){
 		boolean btemp;
-		String sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
+		String sExpression; String sExpressionSolved;
+		String sValue; Vector<String> vecValue;
+		HashMap<String,String>hm;
 		try {					
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
 		
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
+			vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty(vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			HashMap<String,String>hm1 = objExpressionSolver.computeHashMapFromJson(sExpression);
-			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm1.size()==0);
+			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
+			hm = objExpressionSolver.computeHashMapFromJson(sExpression);
+			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm.size()==0);
 				
 			
 			
@@ -1526,12 +1561,27 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'", btemp);
 		
-			HashMap<String,String>hm2 = objExpressionSolver.computeHashMapFromJson(sExpression);
-			assertTrue("Mit Auflösung des String soll die ArrayList entsprechende Größe haben. ",hm2.size()==2);
+			sExpression = sEXPRESSION_JSONMAP01_CONTENT;
+			hm = objExpressionSolver.computeHashMapFromJson(sExpression);
+			assertNotNull(hm);
+			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm.size()==2);
 
-			String sValue = HashMapExtendedZZZ.computeDebugString(hm2);	
+			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
+			
+			//++++++++++++++++++++++++++++++
+			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = objExpressionSolver.solve(sExpression);
+			hm =objExpressionSolver.getValueHashMap();
+			assertNotNull(hm);
+			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm.size()==2);
+
+			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			
+			
+			//#############################################################
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

@@ -131,8 +131,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				objEntryTarget.isJsonMap(objEntrySource.isJsonMap());
 			}
 			
-			if(!objEntryTarget.isJsonArray()) {
+			if(objEntrySource.getValueHashMap()!=null){
+				objEntryTarget.setValue(objEntrySource.getValueHashMap());
+			}
+			
+			if(objEntryTarget.isJsonArray()) {
 				objEntryTarget.isJsonArray(objEntrySource.isJsonArray());
+			}
+			
+			if(objEntrySource.getValueArrayList()!=null){
+				objEntryTarget.setValue(objEntrySource.getValueArrayList());
 			}
 			
 			if(objEntrySource.isCrypt()) {
