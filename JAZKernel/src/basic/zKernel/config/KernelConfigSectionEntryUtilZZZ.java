@@ -1197,25 +1197,21 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
 					
-					if(!StringZZZ.isEmpty(sBefore)){
-										
-						if(StringZZZ.contains(sBefore, sTagStart, false)) {
-							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
-							vecTemp.replace(1,"");
-							sBefore = VectorUtilZZZ.implode(vecTemp);
-						}
+					if(!StringZZZ.isEmpty(sBefore)){										
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+						vecTemp.replace(1,"");
+						sBefore = VectorUtilZZZ.implode(vecTemp);
+						
 						vecReturn.replace(0, sBefore);
 					}else{
 						vecReturn.replace(0,"");
 					}
 						
-					if(!StringZZZ.isEmpty(sRest)){	
+					if(!StringZZZ.isEmpty(sRest)){																		
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+						vecTemp.replace(1,"");
+						sRest = VectorUtilZZZ.implode(vecTemp);
 						
-						if(StringZZZ.contains(sRest, sTagEnd, false)) {						
-							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
-							vecTemp.replace(1,"");
-							sRest = VectorUtilZZZ.implode(vecTemp);
-						}
 						vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
 					}else{
 						vecReturn.replace(2,"");

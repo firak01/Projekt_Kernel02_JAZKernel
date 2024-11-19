@@ -350,7 +350,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		String sReturn = new String("");
 		main:{		
 			String sEntryDelimiter = AbstractArrayListZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;			
-			sReturn = AbstractArrayListZZZ.debugString(this, sEntryDelimiter);
+			sReturn = AbstractArrayListZZZ.computeDebugString(this, sEntryDelimiter);
 		}//end main
 		return sReturn;
 	}
@@ -364,16 +364,16 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 			}else {
 				sEntryDelimiter = sDebugEntryDelimiterIn;
 			}					
-			sReturn = AbstractArrayListZZZ.debugString(this, sEntryDelimiter);
+			sReturn = AbstractArrayListZZZ.computeDebugString(this, sEntryDelimiter);
 		}//end main
 		return sReturn;
 	}
 	
-	public static String debugString(ArrayList<?>lista) {
-		return AbstractArrayListZZZ.debugString(lista, null);
+	public static String computeDebugString(ArrayList<?>lista) {
+		return AbstractArrayListZZZ.computeDebugString(lista, null);
 	}
 	
-	public static String debugString(ArrayList<?>lista, String sEntryDelimiterIn) {
+	public static String computeDebugString(ArrayList<?>lista, String sEntryDelimiterIn) {
 		String sReturn = new String("");
 		main:{
 			if(lista==null)break main;

@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,8 +44,7 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				throw ez;
 			}
 			
-			try {
-				
+			try {				
 				JsonParser parser = new JsonParser();
 				JsonElement objReturn = parser.parse(sJson);
 				bReturn = true;
@@ -54,6 +54,111 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 		}//end main:
 		return bReturn;
 	}
+	
+	//Damit nicht x-mal geparsed werden muss
+	public static JsonElement getJsonValidElement(String sJson) throws ExceptionZZZ {
+		JsonElement objReturn = null;
+		main:
+			{if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			try {				
+				JsonParser parser = new JsonParser();
+				objReturn = parser.parse(sJson);
+			}catch(JsonSyntaxException jse) {
+				//Mache nix
+			}					
+		}//end main:
+		return objReturn;		
+	}
+	
+	public static boolean isJsonPrimitive(String sJson) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			JsonElement objElement = JsonUtilZZZ.getJsonValidElement(sJson);
+			if(objElement==null) break main;
+			
+			try {
+				JsonPrimitive primitive = objElement.getAsJsonPrimitive();
+				if(primitive==null) break main;
+			
+				bReturn = true;
+			}catch(IllegalStateException e) {
+				//NOT a JSON Primitive
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	//Damit nicht x-mal geparsed werden muss
+	public static JsonPrimitive getJsonValidElementPrimitive(String sJson) throws ExceptionZZZ {
+		JsonPrimitive objReturn = null;
+		main:
+			{if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			JsonElement element = JsonUtilZZZ.getJsonValidElement(sJson);
+			if(element == null) break main;
+		
+			if(!element.isJsonPrimitive()) break main;			
+			try {				
+				objReturn = element.getAsJsonPrimitive();
+			}catch(JsonSyntaxException jse) {
+				//Mache nix
+			}					
+		}//end main:
+		return objReturn;		
+	}
+	
+	
+	public static boolean isString(String sJson) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			bReturn = JsonUtilZZZ.isJsonValid(sJson);
+			if(!bReturn) break main;
+			
+			JsonPrimitive primitive = JsonUtilZZZ.getJsonValidElementPrimitive(sJson);
+			if(primitive==null) break main;
+			
+			if(primitive.isString()) bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	public static boolean isJsonObject(String sJson) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string provided.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			JsonElement element = JsonUtilZZZ.getJsonValidElement(sJson);
+			if(element == null) break main;
+			
+			if(element.isJsonObject()) bReturn = true;
+			
+			//Merke: Eine Map ist kein Primitives Objekt, darum ist diese Abfrage dann doch zuviel.
+			//JsonPrimitive primitive = JsonUtilZZZ.getJsonValidElementPrimitive(sJson);
+			//if(primitive==null) break main;
+			
+			//if(primitive.isJsonObject()) bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	
 	
 	public static String toJson(String[] saValue) throws ExceptionZZZ {
 		String sReturn = null;
@@ -144,11 +249,10 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(!JsonUtilZZZ.isJsonValid(sJson)) {
-				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
 			
+			if(!JsonUtilZZZ.isJsonObject(sJson)) {
+				break main;
+			}
 			
 			//Das berücksichtigt nicht die Reihenfolge!!
 			TypeToken<HashMap<?,?>> typeToken = new TypeToken<HashMap<?,?>>(){};
@@ -167,9 +271,8 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(!JsonUtilZZZ.isJsonValid(sJson)) {
-				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+			if(!JsonUtilZZZ.isJsonPrimitive(sJson)) {
+				break main;
 			}
 	
 			TypeToken<LinkedHashMap<?,?>> typeToken = new TypeToken<LinkedHashMap<?,?>>(){};
@@ -195,10 +298,16 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 //		return alsReturn;
 //	}
 	
-	public static ArrayList<String> toArrayListString(String sJson){
+	public static ArrayList<String> toArrayListString(String sJson) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();     
 		main:{			
-			if(StringZZZ.isEmpty(sJson))break main;
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			if(!JsonUtilZZZ.isJsonPrimitive(sJson)) {
+				break main;
+			}
 			
 		    Gson gson = new Gson();
 		    Type type = new TypeToken<List<String>>(){}.getType();
@@ -211,11 +320,17 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 		return alsReturn;
 	}
 
-	public static <T> ArrayList<T> toArrayList(TypeToken typeToken, String sJson){
+	public static <T> ArrayList<T> toArrayList(TypeToken typeToken, String sJson)throws ExceptionZZZ{
 		ArrayList<T> alsReturn = new ArrayList<T>();     
-		main:{			
-			if(StringZZZ.isEmpty(sJson))break main;
-			
+		main:{						
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(!JsonUtilZZZ.isJsonPrimitive(sJson)) {
+				break main;
+			}
+						
 		    Gson gson = new Gson();
 		    Type type = typeToken.getType();
 		    List<?> ls = gson.fromJson(sJson, type);

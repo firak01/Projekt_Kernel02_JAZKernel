@@ -248,26 +248,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			
 			String sExpression = sExpressionIn;
 			
-			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Mehrere Z-Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
-			//Z:call drumherum entfernen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
-			
-			//Fuer das Parsen sind die Solver Einstellungen egal
-//			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-//			if(!bUseSolver) break main;
-//						
-////			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-////			if(!bUseCall) break main;
-//			
-//			bUseSolverThis = this.isSolverEnabledThis();		
-//			if(!bUseSolverThis) break main;
-					
-		
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -303,7 +290,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return bReturn;
 	}
 	
-		
+	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
@@ -370,19 +357,20 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 
 			alsReturn = this.computeArrayList(sExpression);
 			if(alsReturn!=null) {
-				sReturn = ArrayListExtendedZZZ.debugString(alsReturn);
+				sReturn = ArrayListExtendedZZZ.computeDebugString(alsReturn);
 			}
 			
 			sReturn = sExpressionUsed;							
 		}//end main:	
 		
+		//Wird in solvePost() gemacht...
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
-		if(bRemoveSurroundingSeparators & bUseExpression) {
-			String sTagStart = "<Z>";
-			String sTagEnd = "</Z>";
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
-			sReturn = sValue;
-		}
+//		if(bRemoveSurroundingSeparators & bUseExpression) {
+//			String sTagStart = "<Z>";
+//			String sTagEnd = "</Z>";
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
+//			sReturn = sValue;
+//		}
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	

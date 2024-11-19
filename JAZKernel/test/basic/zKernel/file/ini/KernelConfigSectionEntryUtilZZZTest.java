@@ -15,6 +15,59 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		String sExpressionSource; String sExpressionTarget; String sValue; String sExpression; String sExpressionOld;
 		Vector3ZZZ<String> vecExpressionSource;
 		try{	
+			
+			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";			
+			sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+			assertNotNull(sExpression);
+			sExpressionOld = sExpression;
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++
+			sTagStartZ = "<Z><Z:Encrypted>";
+			sTagEndZ = "</Z:Encrypted></Z>";
+			sExpression = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			vecExpressionSource = new Vector3ZZZ<String>();
+			vecExpressionSource.replace(0, sTagStartZ);
+			vecExpressionSource.replace(1, sExpression);
+			vecExpressionSource.replace(2, sTagEndZ);
+			
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";	
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, true, false);
+			
+
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
+			assertNotNull(sExpression);
+			assertEquals(sExpressionOld, sExpression);
+			
+		
+			//+++++++++++++++++++++++++++++++++++++++++++++++
+			sTagStartZ = "<Z><Z:Encrypted>";
+			sTagEndZ = "</Z:Encrypted></Z>";
+			sExpression = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			vecExpressionSource = new Vector3ZZZ<String>();
+			vecExpressionSource.replace(0, sTagStartZ);
+			vecExpressionSource.replace(1, sExpression);
+			vecExpressionSource.replace(2, sTagEndZ);
+			
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";	
+			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			
+
+			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
+			assertNotNull(sExpression);
+			assertEquals(sExpressionOld, sExpression);
+
+			
+			
+			
+			
+			
+					
+			//#########################################
 			//die JSON Map ist schoen verschachtelt
 			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
 			sTagStartZ = "<Z>";
@@ -96,6 +149,9 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
 			assertEquals(sExpressionOld, sExpression);
+			
+			
+			
 			
 			
 		} catch (ExceptionZZZ ez) {

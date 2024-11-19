@@ -855,18 +855,18 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
 	 */
+	/* (non-Javadoc)
+	 * @see basic.zBasic.IOutputDebugNormedZZZ#computeDebugString()
+	 */
+	@Override
 	public String computeDebugString(){
-		String sReturn = new String("");
-		main:{
-			sReturn = this.computeDebugString(null, null);
-			
-		}//end main
-		return sReturn;
+		return this.computeDebugString((String)null, (String)null);		
 	}
 	
 
@@ -878,21 +878,18 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	 * @return
 	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
 	 */
+	/* (non-Javadoc)
+	 * @see basic.zBasic.IOutputDebugNormedZZZ#computeDebugString(java.lang.String)
+	 */
 	@Override
 	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
-		String sReturn = new String("");
-		main:{		
-			String sKeyDelimiter = this.getDebugKeyDelimiter();
-			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
-		}//end main
-		return sReturn;
+		return this.computeDebugString((String)null, sEntryDelimiter);
 	}
+	
 	
 	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
 		String sReturn = new String("");
 		main:{
-			
-			
 			String sKeyDelimiter;
 			if(sKeyDelimiterIn==null){
 				sKeyDelimiter = this.getDebugKeyDelimiter();
@@ -907,20 +904,42 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 				sEntryDelimiter = sEntryDelimiterIn;
 			}
 			
-			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
+			sReturn = HashMapUtilZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
 			
 		}//end main
 		return sReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static String computeDebugString(HashMap hmDebug){
 		return HashMapUtilZZZ.computeDebugString(hmDebug, null, null);
 	}
 	
-	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
-		return HashMapUtilZZZ.computeDebugString(hmDebug, sKeyDelimiterIn, sEntryDelimiterIn);
+	public static String computeDebugString(HashMap hmDebug, String sEntryDelimiterIn){
+		return HashMapUtilZZZ.computeDebugString(hmDebug, null, sEntryDelimiterIn);
 	}
 	
+	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+		
+		String sKeyDelimiter;
+		if(sKeyDelimiterIn==null){
+			sKeyDelimiter = IHashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+		}else {
+			sKeyDelimiter = sKeyDelimiterIn;
+		}
+		
+		String sEntryDelimiter; 
+		if(sEntryDelimiterIn==null){
+			sEntryDelimiter = IHashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = sEntryDelimiterIn;
+		}
+		
+		return HashMapUtilZZZ.computeDebugString(hmDebug, sKeyDelimiter, sEntryDelimiter);
+	}
+	
+	
+
 	//#######################################################################
 	
 	

@@ -349,13 +349,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			sReturn = sExpressionUsed;							
 		}//end main:	
 		
+		//Das wird in parsePost gemacht
 		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
-		if(bRemoveSurroundingSeparators & bUseExpression) {
-			String sTagStart = "<Z>";
-			String sTagEnd = "</Z>";
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
-			sReturn = sValue;
-		}
+//		if(bRemoveSurroundingSeparators & bUseExpression) {
+//			String sTagStart = "<Z>";
+//			String sTagEnd = "</Z>";
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
+//			sReturn = sValue;
+//		}
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	

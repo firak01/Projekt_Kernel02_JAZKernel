@@ -111,7 +111,21 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-				
+			
+			
+			
+			//!!!!!!!!!!! BERECHTIGTES PROBLEM Z-Tag aussen sollte nicht mehr da sein...
+			
+			
+			//+++ Mit Encryption-Berechnung
+		
+			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+			sExpressionSource = sExpressionSourceIn;
+			sExpressionSolved = sExpressionSource;			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
+			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+	
 				
 			
 			
@@ -336,11 +350,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntryUsed);
 							
 				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"						
-			
+										
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
 								
 				sValueUsed = objEntryUsed.getValue();
@@ -369,9 +384,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
 				assertFalse(objEntryUsed.isPathSubstituted());
+				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				assertFalse(objEntryUsed.isVariableSubstituted());
 
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"						
+									
 					
 				assertFalse(objEntryUsed.isSolved());
 								

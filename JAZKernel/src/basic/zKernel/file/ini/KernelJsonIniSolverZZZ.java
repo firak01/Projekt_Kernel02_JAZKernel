@@ -111,7 +111,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//1. Versuch als Array
 			ArrayList<String> als = this.computeArrayList(sLineWithExpression);
 			if(!als.isEmpty()) {
-				sReturn = ArrayListExtendedZZZ.debugString(als);
+				sReturn = ArrayListExtendedZZZ.computeDebugString(als);
 				break main;
 			}
 			
