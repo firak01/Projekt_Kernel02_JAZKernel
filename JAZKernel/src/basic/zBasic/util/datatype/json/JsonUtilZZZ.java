@@ -140,6 +140,8 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 	}
 	
 	
+	
+	
 	public static boolean isString(String sJson) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -295,7 +297,7 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			if(!JsonUtilZZZ.isJsonPrimitive(sJson)) {
+			if(!JsonUtilZZZ.isJsonObject(sJson)) {
 				break main;
 			}
 	

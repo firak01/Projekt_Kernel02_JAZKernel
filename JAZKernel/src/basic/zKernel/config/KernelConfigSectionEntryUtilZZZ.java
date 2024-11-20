@@ -733,7 +733,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 								
 				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlag);
 				hmtemp = ex.computeLinkedHashMap(sRaw); //TODO GOON 20241009; //Eingentlich muss noch eine Reference fuer objEntry uebergeben werden.
-				if(hmtemp.isEmpty()) {				
+				if(hmtemp==null || hmtemp.isEmpty()) {				
 				}else{
 					bAnyJson = true;
 				}
