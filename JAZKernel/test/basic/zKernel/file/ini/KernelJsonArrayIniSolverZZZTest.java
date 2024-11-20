@@ -115,18 +115,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
 			//+++ Mit JsonArray-Berechnung
-	
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]";
 			
-			//Wichtig: JSON:ARRAY soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
+			//d)
+			sExpressionSource = sExpressionSourceIn;
+			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
+
 			sExpressionSolvedTemp = sExpressionSolved;
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
-			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().  
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolvedTemp, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
+			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolvedTemp, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+		
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -253,7 +252,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//c)
 			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]";
+			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
 			
 			//Wichtig: JSON:ARRAY soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
 			sExpressionSolvedTemp = sExpressionSolved;
@@ -264,7 +263,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 
 			//d)
 			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]"; 
+			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
 
 			sExpressionSolvedTemp = sExpressionSolved;
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
@@ -364,6 +363,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isJsonMap());		
 			
 				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -386,7 +386,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertFalse(objEntry.isParsed()); //Der Parse-Schritt wurde NICHT gemacht.
 				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
 				assertFalse(objEntry.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
@@ -396,8 +396,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isJsonArray());
 				assertFalse(objEntry.isJsonMap());						
 			
-				assertFalse(objEntry.isSolved());
-								
+				assertTrue(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());	
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -427,7 +428,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isJsonMap());	
 				
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());	
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -461,8 +463,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isJsonArray());
 				assertFalse(objEntryUsed.isJsonMap());
 				
-				assertFalse(objEntryUsed.isSolved());
-								
+				assertTrue(objEntryUsed.isSolved());
+				assertFalse(objEntryUsed.isSolvedChanged());	
+				
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -558,6 +561,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 													
 				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
 				assertTrue(objEntry.isJsonArray());
@@ -594,7 +598,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
 				assertTrue(objEntry.isJsonArray());
@@ -629,7 +634,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());														
 			
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -668,8 +674,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 	
-				assertFalse(objEntryUsed.isSolved());
-						
+				assertTrue(objEntryUsed.isSolved());
+				assertFalse(objEntryUsed.isSolvedChanged());		
+				
 				assertTrue(objEntryUsed.isJson());
 				assertTrue(objEntryUsed.isJsonArray());
 								
@@ -772,6 +779,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 				
 				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -804,7 +812,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -835,7 +844,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -870,7 +880,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 					
-				assertFalse(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolved());
+				assertFalse(objEntryUsed.isSolvedChanged());
 								
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -970,6 +981,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 			
 				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1004,7 +1016,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 										
 			
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1035,7 +1048,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -1071,8 +1085,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());
 
 					
-				assertFalse(objEntryUsed.isSolved());
-								
+				assertTrue(objEntryUsed.isSolved());
+				assertFalse(objEntryUsed.isSolvedChanged());		
+				
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -1170,6 +1185,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 				
 				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1193,19 +1209,20 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-				assertTrue(objEntry.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+//				assertTrue(objEntry.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
 				
 				
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
-								
+				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolvedChanged());
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
@@ -1235,7 +1252,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());													
 			
 				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
-								
+				assertFalse(objEntryUsed.isSolvedChanged());				
+				
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -1264,18 +1282,19 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				
 				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-				assertTrue(objEntryUsed.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+//				assertTrue(objEntryUsed.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
 				
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 					
-				assertFalse(objEntryUsed.isSolved());
-								
+				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolvedChanged());		
+				
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								

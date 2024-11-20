@@ -115,6 +115,30 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 		return objReturn;		
 	}
 	
+	public static boolean isJsonArray(String sJson) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			JsonElement objElement = JsonUtilZZZ.getJsonValidElement(sJson);
+			if(objElement==null) break main;
+			
+			try {
+				//Nein, es ist kein Primitive, das wuerde IllegalStateException werfen.
+				//JsonPrimitive primitive = objElement.getAsJsonPrimitive();
+				//if(primitive!=null) break main;
+				
+				//Dann kann es nur ein Einzelwert sein
+				if(objElement instanceof JsonArray) {
+					bReturn = true;
+					break main;
+				}
+			
+			}catch(IllegalStateException e) {
+				//NOT a JSON Primitive
+			}
+		}//end main:
+		return bReturn;
+	}
+	
 	
 	public static boolean isString(String sJson) throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -305,7 +329,7 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			if(!JsonUtilZZZ.isJsonPrimitive(sJson)) {
+			if(!JsonUtilZZZ.isJsonArray(sJson)) {
 				break main;
 			}
 			

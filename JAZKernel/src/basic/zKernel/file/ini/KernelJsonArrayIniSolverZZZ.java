@@ -166,7 +166,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			}
 			
 			//ANSCHLIESSEND die ArrayList erstellen
-			if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
+			//if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
 			
 			
 			//JsonArray ja = JsonEasyZZZ.toJsonArray(sReturn);
@@ -318,8 +318,9 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
-	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = sExpressionIn;
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		String sExpression = sExpressionIn;
+		String sReturn = sExpression;
 		ArrayList<String> alsReturn = null;
 		
 		boolean bUseExpression = false; 
@@ -351,16 +352,10 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
-			String sExpression = sExpressionIn;
-			String sExpressionUsed = sExpression;
-			
-
 			alsReturn = this.computeArrayList(sExpression);
 			if(alsReturn!=null) {
-				sReturn = ArrayListExtendedZZZ.computeDebugString(alsReturn);
-			}
-			
-			sReturn = sExpressionUsed;							
+				sReturn = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
+			}						
 		}//end main:	
 		
 		//Wird in solvePost() gemacht...

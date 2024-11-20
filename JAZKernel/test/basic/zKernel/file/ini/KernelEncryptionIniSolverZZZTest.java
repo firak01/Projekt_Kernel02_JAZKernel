@@ -111,23 +111,16 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			
-			
-			
 			//!!!!!!!!!!! BERECHTIGTES PROBLEM Z-Tag aussen sollte nicht mehr da sein...
 			
-			
 			//+++ Mit Encryption-Berechnung
-		
-			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+						
+			//c)
 			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-	
-				
-			
+			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
+			//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.   //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
+			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -254,7 +247,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpressionSource; 
+			String sExpression; 
 			String sExpressionSolved; String sValue; String sValueUsed;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
@@ -265,7 +258,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//####################################################################################
 			
 			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
 			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
@@ -285,23 +278,30 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				
+				sExpressionSolved = sExpressionSolvedIn;
+				if(sExpression.equals(sExpressionSolved)) {
+					assertFalse(objEntry.isParsedChanged());						
+				}else {
+					assertTrue(objEntry.isParsedChanged());
+				}
+			
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"						
+				assertFalse(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 			
-				assertFalse(objEntry.isSolved());
-				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
@@ -314,22 +314,23 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertFalse(objEntry.isParsed()); //Der Parse-Schritt wurde NICHT gemacht.
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"
+									
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
-				
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"						
-			
-				assertFalse(objEntry.isSolved());
+								
+				assertTrue(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -343,10 +344,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
 				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
@@ -355,8 +356,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
-										
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
@@ -373,23 +374,23 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntryUsed = objSectionEntryReference.get();
 				assertNotNull(objEntryUsed);
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isPathSubstituted());
+				assertFalse(objEntryUsed.isParsed()); //Der Parse-Schritt wurde NICHT gemacht.
 				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				
+				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 
-									
-					
-				assertFalse(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -415,7 +416,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpressionSource; 
+			String sExpression; 
 			String sExpressionSolved; String sValue; String sValueUsed;				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
@@ -446,10 +447,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 						
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
@@ -465,13 +466,15 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue(objEntry.isParsed());
 				
 				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
 				}
 				
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -485,10 +488,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -497,12 +500,14 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue(objEntry.isParsed());
 				
 				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
 				}
-				assertFalse(objEntry.isSolved());
+				assertTrue(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
+				
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -516,10 +521,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSurroundingSeparators);
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparators);
 				assertNotNull(objEntryUsed);
 				
 				sValue = objEntryUsed.getValue();
@@ -528,14 +533,15 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue(objEntryUsed.isParsed());
 				
 				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntryUsed.isParsedChanged());						
 				}else {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}
 				
-				assertFalse(objEntryUsed.isSolved());				
-												
+				assertFalse(objEntryUsed.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+																
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
@@ -547,10 +553,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objExpressionSolver.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparators);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
@@ -559,13 +565,15 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertTrue(objEntry.isParsed());
 				
 				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
 				}
-				assertFalse(objEntry.isSolved());
-				
+								
+				assertTrue(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
@@ -649,8 +657,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 					assertTrue(objEntry.isParsedChanged());
 				}
 				
+				assertFalse(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 				
-				assertFalse(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -682,7 +691,14 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				
 				assertTrue(objEntry.isParsed());
-				assertTrue(objEntry.isSolved());
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntry.isParsedChanged());
+				}else {
+					assertFalse(objEntry.isParsedChanged());						
+				}
+				
+				assertTrue(objEntry.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertTrue(objEntry.isSolvedChanged());  
 				
 				assertTrue(objEntry.isDecrypted());
 				assertNotNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
@@ -705,12 +721,15 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 
 				assertTrue(objEntryUsed.isParsed());
-				
-				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpression.equals(sExpressionSolved)) {
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntryUsed.isParsedChanged());
+				}else {
 					assertFalse(objEntryUsed.isParsedChanged());						
-				}							
-				assertFalse(objEntryUsed.isSolved()); //Ist kein solve-Schritt involviert.
+				}
+				
+				assertFalse(objEntryUsed.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+			
 			
 				assertFalse(objEntryUsed.isDecrypted()); //Ist kein solve-Schritt involviert.
 				assertNull(objEntryUsed.getValueDecrypted());  				
@@ -733,16 +752,16 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParsed());
-				
-				sExpressionSolved = sExpressionSolvedIn;
-				if(sExpression.equals(sExpressionSolved)) {
-					assertFalse(objEntryUsed.isParsedChanged());						
-				}else {
+				assertTrue(objEntryUsed.isParsed());				
+				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged());
+				}else {
+					assertFalse(objEntryUsed.isParsedChanged());						
 				}
 				
-				assertTrue(objEntryUsed.isSolved()); //Jetzt ist ja ein solve-Schritt involviert.
+				assertTrue(objEntryUsed.isSolved()); //Der Solve-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+			
 			
 				assertTrue(objEntryUsed.isDecrypted()); //Ist ja ein solve-Schritt involviert und es wurde aufgeloest.
 				assertNotNull(objEntryUsed.getValueDecrypted());  				
@@ -772,7 +791,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpressionSource; 
+			String sExpression; 
 			String sExpressionSolved; String sValue; String sValueUsed;			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;  
@@ -797,10 +816,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -821,7 +840,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 //					assertFalse(objEntry.isParsed());
 //				}
 				assertTrue(objEntry.isParsed());
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
@@ -841,38 +860,27 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				//spannend, nicht aufgeloest, aber geparsed!!!
-				//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-				//Das gilt hier: Da nix aufgeloest wird durch den solver.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntry.isParsed());  
-//				}else {
-//					assertFalse(objEntry.isParsed());
-//				}
-				
-				//Falls Pfade substituiert werden, gibt es ebenfalls einen Unterschied, der fuer isParsedChanged sorgt.
-//				if(bRemoveSurroundingSeparators | objEntry.isPathSubstituted()) {
-//					assertTrue(objEntry.isParsed());
-//				}else {
-//					assertFalse(objEntry.isParsed());
-//				}
-				assertTrue(objEntry.isParsed());
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				assertTrue(objEntry.isParsed()); //Der parse Schritt wird ausgefuehrt.				
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
 				}
 				
-				assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
+								
+				assertTrue(objEntry.isSolved()); //der solve Schritt wird ausgefuehrt
+				assertFalse(objEntry.isSolvedChanged()); //der Solver ist ja abgestellt
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -886,36 +894,23 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
+				sValueUsed = objEntryUsed.getValue();
+				assertEquals(sExpressionSolved, sValueUsed);
 				
-				
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntryUsed.isParsed());  
-//				}else {
-//					assertFalse(objEntryUsed.isParsed());
-//				}
-				//Falls Pfade substituiert werden, gibt es ebenfalls einen Unterschied, der fuer isParsedChanged sorgt.
-//				if(bRemoveSurroundingSeparators | objEntry.isPathSubstituted()) {
-//					assertTrue(objEntry.isParsed());
-//				}else {
-//					assertFalse(objEntry.isParsed());
-//				}
 				assertTrue(objEntryUsed.isParsed());
-				if(sExpressionSource.equals(sExpressionSolved)) {
+				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntryUsed.isParsedChanged());						
 				}else {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}
+				
 				assertFalse(objEntryUsed.isSolved());
-				
-				
-				sValueUsed = objEntryUsed.getValue();
-				assertEquals(sExpressionSolved, sValueUsed);
-				
+				assertFalse(objEntryUsed.isSolvedChanged());
 				
 				assertFalse(objEntryUsed.isDecrypted());
 				assertNull(objEntryUsed.getValueDecrypted()); 				

@@ -94,6 +94,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				objEntryTarget.isSolved(objEntrySource.isSolved());
 			}
 			
+			if(objEntrySource.isSolvedChanged()) {
+				objEntryTarget.isSolvedChanged(objEntrySource.isSolvedChanged());
+			}
+			
 			if(objEntrySource.isConversion()) {
 				objEntryTarget.isConversion(objEntrySource.isConversion());
 			}
