@@ -387,11 +387,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
-			objEntry.setValue(hmReturn);
-			
+		
 			if(hmReturn!=null) {
 				objEntry.isMapValue(true);
 				objEntry.isJsonMap(true);
+				objEntry.setValue(hmReturn);
 			}						
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);			

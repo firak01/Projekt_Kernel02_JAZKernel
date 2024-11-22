@@ -100,42 +100,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	 }//end function KernelJsonMapIniSolverNew_
 		
 	//###### Getter / Setter
-	
-	//### aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
-	}
-
-//	/**Eine ArrayList wird zum String umgewandelt. 
-//	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
-//	 * @param sLineWithExpression
-//	 * @return
-//	 * @throws ExceptionZZZ
-//	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
-//	 */
-//	@Override
-//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-//		return this.parse_(sLineWithExpression);
-//	}
-//	
-//	private String parse_(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{			
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//				
-//			sReturn = sLineWithExpression;
-//			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
-//			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
-//						
-//			ArrayList<String> alsReturn = this.computeArrayList(sLineWithExpression);
-//			if(alsReturn!=null) {
-//				sReturn = ArrayListExtendedZZZ.debugString(alsReturn);
-//			}
-//		}
-//		return sReturn;
-//	}
-	
+		
 	public ArrayList<String> computeArrayList(String sExpression) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		String sReturn = sExpression;
@@ -187,6 +152,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	
 	//######### Interfaces #######################################################
 	
+	//### aus ITagBasicZZZ
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
+	}
+
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
@@ -370,12 +341,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
-			objEntry.setValue(alsReturn);
+			objEntry.setValue(sReturn);			
 			
 			if(alsReturn!=null) {
 				objEntry.isArrayValue(true);
 				objEntry.isJsonArray(true);
+				objEntry.setValue(alsReturn);
 			}						
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);			

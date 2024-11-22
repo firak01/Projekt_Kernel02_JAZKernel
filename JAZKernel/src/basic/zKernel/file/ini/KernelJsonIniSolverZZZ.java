@@ -10,11 +10,14 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -29,104 +32,70 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public static String sTAG_NAME = "JSON";
 
 	public KernelJsonIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelJsonIniSolverNew_(null, saFlag);
+		super("init");
+		KernelJsonIniSolverNew_(null);
 	}
 	
-	public KernelJsonIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelJsonIniSolverNew_(objFileIni, null);
-	}
-	
-	public KernelJsonIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelJsonIniSolverNew_(objFileIni, saFlag);
-	}
-	
-	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		KernelJsonIniSolverNew_(objFileIni, saFlag);
+		KernelJsonIniSolverNew_(null);
+	}
+	
+	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
+		super(objFileIni);
+		KernelJsonIniSolverNew_(objFileIni);
+	}
+	
+	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag);
+		KernelJsonIniSolverNew_(objFileIni);
+	}
+	
+	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonIniSolverNew_(null);
+	}
+	
+	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonIniSolverNew_(objFileIni);
 	}
 			
-	private boolean KernelJsonIniSolverNew_(FileIniZZZ objFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelJsonIniSolverNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}
-			
-				if(objFileIn==null ){
+		 	if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+						
+		 	FileIniZZZ<T> objFile=null;
+			if(objFileIn==null ){
+				objFile = this.getKernelObject().getFileConfigKernelIni();
+				if(objFile==null) {
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
-				}else{
-					this.setFileConfigKernelIni(objFileIn);	
-					if(objFileIn.getHashMapVariable()!=null){
-						this.setHashMapVariable(objFileIn.getHashMapVariable());
-					}
 				}
-
+			}else {
+				objFile = objFileIn;
+			}
+			
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+			
+			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+			this.setFileConfigKernelIni(objFile);	
+			if(objFile.getHashMapVariable()!=null){
+				this.setHashMapVariable(objFile.getHashMapVariable());			
+			}
+			
+			bReturn = true;							
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonIniSolverNew_
 					
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault(){
-		return KernelJsonIniSolverZZZ.sTAG_NAME;
-	}
-	
-	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ {
-		return this.parse_(sLineWithExpression);
-	}
-	
-	private String parse_(String sLineWithExpression) throws ExceptionZZZ {
-		String sReturn = new String("");
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
-			if(!bUseExpression) break main;
-						
-			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
-			
-			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-			if(!bUseJson) break main;
-			
-			//1. Versuch als Array
-			ArrayList<String> als = this.computeArrayList(sLineWithExpression);
-			if(!als.isEmpty()) {
-				sReturn = ArrayListExtendedZZZ.computeDebugString(als);
-				break main;
-			}
-			
-			//2. Versuch als HashMap
-			HashMap<String,String>hm = this.computeHashMap(sLineWithExpression);
-			if(!hm.isEmpty()) {
-				sReturn = HashMapExtendedZZZ.computeDebugString(hm);
-				break main;
-			}
-										
-		}
-		this.setValue(sReturn);
-		return sReturn;
-	}
-				
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
@@ -167,8 +136,103 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return alsReturn;
 	}
 	
-	//### Interfaces
+
+	//######### Interfaces #######################################################
 	
+	//### aus ITagBasicZZZ
+	@Override
+	public String getNameDefault(){
+		return KernelJsonIniSolverZZZ.sTAG_NAME;
+	}
+	
+	//### aus IParseEnabled		
+	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...				
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, null, bRemoveSurroundingSeparators);
+	}
+		
+	//### Aus IKernelEntryExpressionUserZZZ	
+	@Override
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		String sReturn = sExpressionIn;
+		boolean bUseExpression=false;
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
+		if(objReturnReferenceIn==null) {
+			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                     //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);				
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		
+		if(objEntry==null) {
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			//Achtung: Das objReturn Objekt NICHT generell versuchen ueber .getEntry() und dann ggfs. .getEntryNew() zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturnReference.set(objEntry);
+		}	
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+	
+		main:{			
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
+			bUseExpression = this.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+						
+			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)){
+				objEntry.isJson(true);
+			}
+			
+			//wg. dieser boolean Zuweisung als eigene Methode, die dann nur die Elternmethode aufruft.
+			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false)){
+				objEntry.isJsonArray(true);
+			}
+			
+			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonMapIniSolverZZZ.sTAG_NAME, false)){
+				objEntry.isJsonMap(true);
+			}
+			
+			String sExpression = sExpressionIn;
+			
+			//Mehrere Z-Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceParse.set(objEntry);
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			objEntry = objReturnReferenceParse.get();
+			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
+		}//end main:
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		if(vecReturn!=null) vecReturn.replace(sReturn);
+		this.setValue(sReturn);	
+			
+		if(objEntry!=null) {						
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			objEntry.setValue(sReturn);
+						
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			this.adoptEntryValuesMissing(objEntry);
+		}				
+		return vecReturn;
+	}
+
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus ISolveEnabledZZZ
@@ -177,12 +241,135 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	//Merke: Folgende Methoden muessen im konkreten Solver implementiert werden, da der abstrakte Solver die konkreten Flags zur deaktivierung diese konkreten Solvers nicht kennt.
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+		boolean bReturn = false;
+		main:{
+		  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+		  if(!bReturn) break main;
+	  
+		}//end main:
+		return bReturn;
 	}
+	
+	
+	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
+	 * @param sLineWithExpression
+	 * @param objEntryReference
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+	 */	
+	@Override
+	public String solveParsed(String sExpression) throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveParsed_(sExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		String sExpression = sExpressionIn;
+		String sReturn = sExpression;
+		ArrayList<String> alsReturn = null;
+		HashMap<String,String> hmReturn = null;
+		
+		boolean bUseExpression = false; 
+		boolean bUseSolver = false;
+		boolean bUseJsonArray = false; boolean bUseJsonMap = false;
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+					
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			bUseExpression = this.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+						
+			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+						
+			bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+			if(bUseJsonArray) {
+			
+				alsReturn = this.computeArrayList(sExpression);
+				if(alsReturn!=null) {
+					sReturn = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
+				}	
+			}
+			
+			bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+			if(bUseJsonMap) {
+			
+				hmReturn = this.computeHashMap(sExpression);
+				if(!hmReturn.isEmpty()) {
+					sReturn = hmReturn.toString();
+				}	
+			}
+			
+		}//end main:	
+		
+		//Wird in solvePost() gemacht...
+		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
+//		if(bRemoveSurroundingSeparators & bUseExpression) {
+//			String sTagStart = "<Z>";
+//			String sTagEnd = "</Z>";
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
+//			sReturn = sValue;
+//		}
+		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturn);
+			if(alsReturn!=null) {
+				objEntry.isArrayValue(true);
+				objEntry.isJsonArray(true);
+				objEntry.setValue(alsReturn);
+			}
+			if(hmReturn!=null) {
+				objEntry.setValue(hmReturn);
+				objEntry.isJsonMap(true);
+				objEntry.setValue(hmReturn);
+			}
+							
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			this.adoptEntryValuesMissing(objEntry);			
+		}
+		return sReturn;				
+	}
+
+	
+
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
-	
+	//### aus IConvertableZZZ
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {			
 		return false;

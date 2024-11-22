@@ -21,6 +21,7 @@ import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -40,113 +41,43 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	
 
 	protected void setUp(){
-		try {			
-			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehngt.
-			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
-			String sFilePathTotal = null;		
-			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
-				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
-			}else{
-				//Eclipse Worspace
-				File f = new File("");
-			    String sPathEclipse = f.getAbsolutePath();
-			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
-				
-			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse, strFILE_NAME_DEFAULT );				
-			}
-			
-			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
-			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
-			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
-			objStreamFile.println("#This is another commentline");
-			objStreamFile.println("[Section A]");
-			objStreamFile.println("Testentry1=Testvalue1 to be found");			
-			objStreamFile.println("TestentryDymmy=nothing");
-						
-			objStreamFile.println("[Section B!01]");
-			objStreamFile.println("Testentry2=Testvalue local to be found");
-			
-			objStreamFile.println("[Section B]");
-			objStreamFile.println("Testentry2=Testvalue global. This should not be found");
-			
-			objStreamFile.println("[Section for testCompute]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
-			
-			objStreamFile.println("[Section for testComputeMathArguments]");
-			objStreamFile.println("WertA=4");
-			objStreamFile.println("WertB=5");
-			
-			objStreamFile.println("[Section for testComputeMathValue]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");		
-			
-			objStreamFile.println("[Section for testComputeMath]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
-			 
-			
-			objStreamFile.println("[Section for testComputePathWithMath]");
-			objStreamFile.println("Formula1=<Z>[Section for testComputeMath]Formula1</Z>");
-			objStreamFile.println("Formula2=<Z>[Section for testComputeMath]Formula2</Z>");
-			objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
-			
-			objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
-			 
-			
-			objStreamFile.println("[Section for testComputeMathArguments FLOAT]");
-			objStreamFile.println("WertA_float=4.0");
-			objStreamFile.println("WertB_float=5.0");
-			objStreamFile.println("[Section for testComputeMath FLOAT]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
-			
-			objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
-			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></z>");
-			
-			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
-			objStreamFile.println("[Section for testPassVariable]");
-			objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
-			objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
-			
-			
-			//20210707 Tests für die Arbeit mit JSON Strings
-			//Merke:			
-			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
-			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
-			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
-			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1="+ KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
-				
-			objStreamFile.println("[Section for testJsonArraylist]");
-			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
-			
-			objFile = new File(sFilePathTotal);		
-			
-			
+		try {				
+			//Mache die utility Klasse TestUtilZZZ.createKernelFileUsed()
+			//Diese sollten alle Tests verwenden und nicht mehr die im Projekt hinterlegte ini-Datei.
+			//Hintergrund: Es fehlen sonst ggfs. Einträge / Pfade, bzw. die sind nicht mehr aktuell!!!!
+												
 			//#################
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
 			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, objFileIniTest, saFlagInit);
+				
+			//#### Das konkrete TestObject				
+			objFile = TestUtilZZZ.createKernelFileUsed();
+
+
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
 			
-			String[] saFlag = {""};
+			String[] saFlag = {""}; //Die Flags werden in den konkreten Tests an-/ausgeschaltet.
 			objExpressionSolver = new KernelJsonIniSolverZZZ(objKernel, objFileIniTest, saFlag);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-		catch (FileNotFoundException e) {			
-			e.printStackTrace();
-		} catch (IOException e) {			
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		} 	
 	}//END setup
 	
 	public void testFlagHandling(){
@@ -187,32 +118,64 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	 */
 	public void testComputeHashMap(){
 		boolean btemp;
-		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+		String sValue;
+		String sExpression; String sExpressionSolved;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";	
+		
+		try {						
+			btemp = objExpressionSolver.setFlag("useexpression", true); //damit wird man das Z-Tag los. 
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
-			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
-			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
+			btemp = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
 			
-			//Berechne die erste Formel
-			objExpressionSolver.setFlag("usejson", true);
-			objExpressionSolver.setFlag("usejson_map", true);
-			String sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
+			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
-			assertFalse(sValue.equals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
+			assertEquals(sExpressionSolved, sValue);//unveraendert wg. useexpresseion = false,  usejson = false
 			
-			bFlagAvailable = objFileIniTest.setFlag("useexpression", true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+		
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Anwenden der ersten Formel, ohne JSON-Berechnung	
+			//Berechne nun aus einem ini-File heraus
+			btemp = objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
+			
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();			
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++					
+			//### Berechung der Formel			
+			objExpressionSolver.setFlag("usejson", true);
+			objExpressionSolver.setFlag("usejson_array", true);
+			
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++++
+			//Berechne nun aus einem ini-File heraus
+			btemp = objFileIniTest.setFlag("useexpression", true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
 			
-			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			btemp = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
+			btemp = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", btemp);
 			
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			assertNotNull(objEntry);
@@ -234,34 +197,64 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	 */
 	public void testComputeArrayList(){
 		boolean btemp;
-		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+		String sValue;
+		String sExpression; String sExpressionSolved;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
+		try {	
+			btemp = objExpressionSolver.setFlag("useexpression", true); //damit wird man das Z-Tag los. 
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
-			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1").getValue();
-			assertEquals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT,sExpression);
+			btemp = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
 			
-			//Berechne die erste Formel
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
+			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertEquals(sExpressionSolved, sValue);//unveraendert wg. useexpresseion = false,  usejson = false
+			
+		
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Anwenden der ersten Formel, ohne JSON-Berechnung		
+			btemp = objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
+			
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1").getValue();			
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//### Berechung der Formel			
 			objExpressionSolver.setFlag("usejson", true);
 			objExpressionSolver.setFlag("usejson_array", true);
-			String sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
-			assertNotNull(sValue);
-			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++++
 			//Berechne nun aus einem ini-File heraus
-			bFlagAvailable = objFileIniTest.setFlag("useexpression", true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			btemp = objFileIniTest.setFlag("useexpression", true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
 			
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 				
-			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
+			btemp = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
 			
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson_array", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
+			btemp = objFileIniTest.setFlag("usejson_array", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", btemp);
 							
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1");
 			assertNotNull(objEntry);
