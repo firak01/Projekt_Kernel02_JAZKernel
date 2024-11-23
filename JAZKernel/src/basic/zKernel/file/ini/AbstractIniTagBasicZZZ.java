@@ -234,7 +234,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			this.setValue(sReturn);
 			
 				
-			vecExpression = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
+			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
 			sReturn = (String) vecExpression.get(1);
 			this.setValue(sReturn);
 				

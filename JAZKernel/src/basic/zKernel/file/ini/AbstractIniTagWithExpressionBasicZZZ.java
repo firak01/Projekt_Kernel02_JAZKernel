@@ -121,20 +121,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return sReturn;
 	}
 	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, true);
-	}
-
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
-	}
-	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return vecExpression;
-	}
-	
+		
 	//++++++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++
 	//### aus IIniTagBasicZZZ  	

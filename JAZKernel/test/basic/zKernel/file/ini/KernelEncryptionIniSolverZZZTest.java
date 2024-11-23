@@ -1,5 +1,7 @@
 package basic.zKernel.file.ini;
 
+import java.io.File;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -7,6 +9,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelEncryptionIniSolverZZZTest extends TestCase {
@@ -15,7 +18,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	//TODOGOON20220929; //siehe auskommentierten testCompute04: Mache eine richtige Entschlüsselung mit AES UND Danach noch testCompute05 mit MD5
 	
+	private File objFile;
 	private IKernelZZZ objKernel;
+	private FileIniZZZ objFileIniTest=null;
 	
 	/// +++ Die eigentlichen Test-Objekte	
 	private KernelEncryptionIniSolverZZZ objExpressionSolver;
@@ -32,8 +37,27 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			String[] saFlagInit = {"init"};
 			objExpressionSolverInit = new KernelEncryptionIniSolverZZZ(objKernel, saFlagInit);
 			
-			String[] saFlag = {""};
-			objExpressionSolver = new KernelEncryptionIniSolverZZZ(objKernel, saFlag);
+			//#### Das konkrete TestObject				
+			objFile = TestUtilZZZ.createKernelFileUsed();
+
+
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
+			
+			String[] saFlag = {""}; //Die Flags werden in den konkreten Tests an-/ausgeschaltet.			
+			objExpressionSolver = new KernelEncryptionIniSolverZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 

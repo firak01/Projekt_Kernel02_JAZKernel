@@ -1,5 +1,6 @@
 package basic.zKernel.file.ini;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -15,12 +16,15 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
 	public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
 	
+	private File objFile;
 	private IKernelZZZ objKernel;
+	private FileIniZZZ objFileIniTest=null;
 	
 	/// +++ Die eigentlichen Test-Objekte	
 	private KernelJsonArrayIniSolverZZZ objExpressionSolver;
@@ -37,7 +41,26 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String[] saFlagInit = {"init"};
 			objExpressionSolverInit = new KernelJsonArrayIniSolverZZZ(objKernel, saFlagInit);
 			
-			String[] saFlag = {""};
+			//#### Das konkrete TestObject				
+			objFile = TestUtilZZZ.createKernelFileUsed();
+
+
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
+						
+			String[] saFlag = {""}; //Die Flags werden in den konkreten Tests an-/ausgeschaltet.
 			objExpressionSolver = new KernelJsonArrayIniSolverZZZ(objKernel, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

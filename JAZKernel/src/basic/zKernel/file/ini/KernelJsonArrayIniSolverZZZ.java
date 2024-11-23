@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
@@ -38,35 +39,55 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			
 	public KernelJsonArrayIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelJsonArrayIniSolverNew_(null);
+		KernelJsonArrayIniSolverNew_(null, null);
+	}
+	
+	public KernelJsonArrayIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelJsonArrayIniSolverNew_(null, null);
+	}
+	
+	public KernelJsonArrayIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+		KernelJsonArrayIniSolverNew_(null, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		KernelJsonArrayIniSolverNew_(null);
+		KernelJsonArrayIniSolverNew_(null, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
-		super(objFileIni);
-		KernelJsonArrayIniSolverNew_(objFileIni);
+		super(objFileIni);//als IKernelUserZZZ - Object
+		KernelJsonArrayIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni, saFlag);
-		KernelJsonArrayIniSolverNew_(objFileIni);
+		super(objFileIni, saFlag);//als IKernelUserZZZ - Object
+		KernelJsonArrayIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonArrayIniSolverNew_(null);
+		KernelJsonArrayIniSolverNew_(null, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonArrayIniSolverNew_(objFileIni);
+		KernelJsonArrayIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelJsonArrayIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelJsonArrayIniSolverNew_(objFileIni, hmVariable);
+	}
+	
+	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonArrayIniSolverNew_(objFileIni, hmVariable);
 	}
 		
-	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ<T> objFileIn) throws ExceptionZZZ {
+	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariableIn) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
 			if(this.getFlag("init")==true){
@@ -87,11 +108,16 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 
 			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
 			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
-			
-			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
-			this.setFileConfigKernelIni(objFile);	
-			if(objFile.getHashMapVariable()!=null){
-				this.setHashMapVariable(objFile.getHashMapVariable());			
+						
+			if(hmVariableIn!=null){				
+				this.setVariable(hmVariableIn);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				
+				//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+				this.setFileConfigKernelIni(objFile);	
+				if(objFile.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFile.getHashMapVariable());			
+				}
 			}
 			
 			bReturn = true;							

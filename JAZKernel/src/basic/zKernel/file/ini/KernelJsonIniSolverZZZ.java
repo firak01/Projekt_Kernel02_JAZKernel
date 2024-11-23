@@ -33,35 +33,55 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 
 	public KernelJsonIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelJsonIniSolverNew_(null);
+		KernelJsonIniSolverNew_(null, null);
+	}
+	
+	public KernelJsonIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelJsonIniSolverNew_(null, null);
+	}
+	
+	public KernelJsonIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+		KernelJsonIniSolverNew_(null, null);
 	}
 	
 	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		KernelJsonIniSolverNew_(null);
-	}
-	
-	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
-		super(objFileIni);
-		KernelJsonIniSolverNew_(objFileIni);
-	}
-	
-	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni, saFlag);
-		KernelJsonIniSolverNew_(objFileIni);
+		KernelJsonIniSolverNew_(null, null);
 	}
 	
 	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonIniSolverNew_(null);
+		KernelJsonIniSolverNew_(null, null);
 	}
 	
+	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
+		super(objFileIni);//als IKernelUserZZZ - Object
+		KernelJsonIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag);//als IKernelUserZZZ - Object
+		KernelJsonIniSolverNew_(objFileIni, null);
+	}
+		
 	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonIniSolverNew_(objFileIni);
+		KernelJsonIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelJsonIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelJsonIniSolverNew_(objFileIni, hmVariable);
+	}
+	
+	public KernelJsonIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonIniSolverNew_(objFileIni, hmVariable);
 	}
 			
-	private boolean KernelJsonIniSolverNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
+	private boolean KernelJsonIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariableIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -84,10 +104,18 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
 			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 			
-			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
-			this.setFileConfigKernelIni(objFile);	
-			if(objFile.getHashMapVariable()!=null){
-				this.setHashMapVariable(objFile.getHashMapVariable());			
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+						
+			if(hmVariableIn!=null){				
+				this.setVariable(hmVariableIn);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				
+				//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+				this.setFileConfigKernelIni(objFile);	
+				if(objFile.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFile.getHashMapVariable());			
+				}
 			}
 			
 			bReturn = true;							

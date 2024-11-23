@@ -1,7 +1,9 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -15,31 +17,47 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	public static String sTAG_NAME = "Z:math";
 	
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
+		KernelExpressionMathSolverNew_(null, null);
 	}
-		
+	
+	public KernelZFormulaMathSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelExpressionMathSolverNew_(null, null);
+	}
+
 	public KernelZFormulaMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathSolverNew_();
+		KernelExpressionMathSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionMathSolverNew_();
+		KernelExpressionMathSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionMathSolverNew_();
+		super(objKernel, saFlag);
+		KernelExpressionMathSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag)  throws ExceptionZZZ{
-		super(objKernel, objFileIni, saFlag);
-		KernelExpressionMathSolverNew_();
+		super(objKernel, saFlag);
+		KernelExpressionMathSolverNew_(objFileIni, null);
+	}
+	
+	public KernelZFormulaMathSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelExpressionMathSolverNew_(objFileIni, hmVariable);
+	}
+	
+	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelExpressionMathSolverNew_(objFileIni, hmVariable);
 	}
 	
 	
-	private boolean KernelExpressionMathSolverNew_() throws ExceptionZZZ {
+	private boolean KernelExpressionMathSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariableIn) throws ExceptionZZZ {
 		 boolean bReturn = false; 
 		 main:{			 																
 				if(this.getFlag("init")==true){
@@ -47,6 +65,31 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 					break main;
 				}										
 					
+				FileIniZZZ<T> objFile=null;
+				if(objFileIn==null ){
+					objFile = this.getKernelObject().getFileConfigKernelIni();
+					if(objFile==null) {
+						ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez; 
+					}
+				}else {
+					objFile = objFileIn;
+				}
+
+				//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+							
+				if(hmVariableIn!=null){				
+					this.setVariable(hmVariableIn);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+				}else {
+					
+					//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+					this.setFileConfigKernelIni(objFile);	
+					if(objFile.getHashMapVariable()!=null){
+						this.setHashMapVariable(objFile.getHashMapVariable());			
+					}
+				}
+
 				bReturn = true;
 		 	}//end main:
 			return bReturn;

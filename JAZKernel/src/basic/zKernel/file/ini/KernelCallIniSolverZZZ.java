@@ -27,30 +27,45 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	public KernelCallIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelCallIniSolverNew_(null);
+		KernelCallIniSolverNew_(null, null);
+	}
+	
+	public KernelCallIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelCallIniSolverNew_(null, null);
 	}
 	
 	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, String[]saFlag) throws ExceptionZZZ{		
 		super(objKernel,saFlag);
-		KernelCallIniSolverNew_(null);
+		KernelCallIniSolverNew_(null, null);
 	}
 	
 	public KernelCallIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelCallIniSolverNew_(objFileIni);
+		super(objFileIni);//als IKernelUserZZZ - Object
+		KernelCallIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelCallIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject(), saFlag);
-		KernelCallIniSolverNew_(objFileIni);
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelCallIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelCallIniSolverNew_(objFileIni);
+		KernelCallIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelCallIniSolverZZZ(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelCallIniSolverNew_(objFileIni, hmVariable);
+	}
+	
+	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelCallIniSolverNew_(objFileIni, hmVariable);
 	}
 			
-	private boolean KernelCallIniSolverNew_(FileIniZZZ<T> objFileIn) throws ExceptionZZZ {
+	private boolean KernelCallIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariableIn) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{ 		
 			if(this.getFlag("init")==true){
@@ -71,16 +86,22 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 
 			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
 			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
-			
-			//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
-			this.setFileConfigKernelIni(objFile);	
-			if(objFile.getHashMapVariable()!=null){
-				this.setHashMapVariable(objFile.getHashMapVariable());			
+						
+			if(hmVariableIn!=null){				
+				this.setVariable(hmVariableIn);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				
+				//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+				this.setFileConfigKernelIni(objFile);	
+				if(objFile.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFile.getHashMapVariable());			
+				}
 			}
-			
+						
 			bReturn = true;
 	 	}//end main:
 		return bReturn;
+
 	 }//end function KernelJsonIniSolverNew_
 					
 	//###### Getter / Setter

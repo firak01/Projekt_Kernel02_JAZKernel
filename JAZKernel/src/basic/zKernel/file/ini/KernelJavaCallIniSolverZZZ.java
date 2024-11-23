@@ -1,8 +1,10 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -13,37 +15,88 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = 6579389159644435205L;
 	public static String sTAG_NAME = "Z:Java";	
 	public KernelJavaCallIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelJavaCallIniSolverNew_();
+		KernelJavaCallIniSolverNew_(null, null);
 	}
-		
+	
+	public KernelJavaCallIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelJavaCallIniSolverNew_(null, null);
+	}
+	
 	public KernelJavaCallIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelJavaCallIniSolverNew_();
+		KernelJavaCallIniSolverNew_(null, null);
+	}
+	
+	public KernelJavaCallIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+		KernelJavaCallIniSolverNew_(null, null);
+	}
+	
+	public KernelJavaCallIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
+		super(objFileIni); //als IKernelUserZZZ - Object
+		KernelJavaCallIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelJavaCallIniSolverZZZ(FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni, saFlag); //als IKernelUserZZZ - Object
+		KernelJavaCallIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelJavaCallIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelJavaCallIniSolverNew_();
+		KernelJavaCallIniSolverNew_(null, null);
 	}
 	
+	public KernelJavaCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJavaCallIniSolverNew_(objFileIni, null);
+	}
 	
-	private boolean KernelJavaCallIniSolverNew_() throws ExceptionZZZ {
+	private boolean KernelJavaCallIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariableIn) throws ExceptionZZZ {
 		boolean bReturn = false; 
 		 main:{
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;
 			}
-										
-			bReturn = true;
+			
+			FileIniZZZ<T> objFile=null;
+			if(objFileIn==null ){
+				objFile = this.getKernelObject().getFileConfigKernelIni();
+				if(objFile==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez; 
+				}
+			}else {
+				objFile = objFileIn;
+			}
+
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+						
+			if(hmVariableIn!=null){				
+				this.setVariable(hmVariableIn);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}else {
+				
+				//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+				this.setFileConfigKernelIni(objFile);	
+				if(objFile.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFile.getHashMapVariable());			
+				}
+			}
+			
+			bReturn = true;							
 	 	}//end main:
 		return bReturn;
+
 	 }//end function KernelExpressionMathSolverNew_
 	
 	//### Aus ITagBasicZZZ	

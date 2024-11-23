@@ -72,109 +72,9 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());
 	}
 	
-//	@Override
-//	public String parseAsExpression() throws ExceptionZZZ {
-//		String sExpression = this.getValue();
-//		return this.parseAsExpression(sExpression);
-//	}	
-//
-//	@Override
-//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{
-//			if(!this.isParse(sLineWithExpression)) break main;
-//			
-//			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);
-//			
-//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-//			sReturn = VectorUtilZZZ.implode(vecAll);
-//			this.setValue(vecAll.get(1));
-//			
-//		}//end main:
-//		return sReturn;
-//	}	
-	
-//	/* (non-Javadoc)
-//	 * @see basic.zKernel.file.ini.AbstractIniTagBasicZZZ#isExpression(java.lang.String)
-//	 */
-//	@Override
-//	public boolean isExpression(String sLine) throws ExceptionZZZ{
-//		return KernelConfigSectionEntryUtilZZZ.isExpression(sLine, this.getName());
-//	}
 	
 	
-	//### aus IIniTagWithExpressionZZZ (siehe auch: IExpressionUserZZZ)
-//	@Override
-//	public Vector3ZZZ<String>parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//						
-//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-//			vecReturn = this.parseFirstVectorAsExpression(sLineWithExpression);			
-//			
-//		}
-//		return vecReturn;
-//	}
-	
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-//	@Override
-//	public Vector3ZZZ<String>parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
-//		main:{
-//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-//		}
-//		return vecReturn;
-//	}
-	
-	
-	
-	
-//	@Override
-//	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-//		String[] saReturn = null; //new String[];//sLineWithExpression;
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//			
-//			String sDelimiter;
-//			if(StringZZZ.isEmpty(sDelimiterIn)) {
-//				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
-//			}else {
-//				sDelimiter = sDelimiterIn;
-//			}
-//				   
-//			String sExpressionTotal = this.parse(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
-//			if(!StringZZZ.isEmpty(sExpressionTotal)) {
-//				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-//				
-//				String sValue = null;
-//				ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>();
-//				for(String sExpression : saExpression) {
-//					
-//					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
-//					if(this.isExpression(sExpression)){
-//						sValue = this.parse(sExpression);
-//					}else {
-//						sValue = sExpression;
-//					}
-//					listasValue.add(sValue);
-//				}
-//								
-//				saReturn = listasValue.toStringArray();				
-//			}
-//		}//end main:
-//		return saReturn;
-//	}
-	
+	//### aus IIniTagWithExpressionZZZ (siehe auch: IExpressionUserZZZ)	
 	
 	//### Aus IParseEnabledZZZ
 	@Override
@@ -197,5 +97,27 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return vecExpression;	
 	}
 
-	
+
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return vecExpression;
+	}
+
+
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return vecExpression;
+	}
+
+
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return vecExpression;
+	}
+
+
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return vecExpression;
+	}
 }//End class

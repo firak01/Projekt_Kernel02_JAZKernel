@@ -1,5 +1,6 @@
 package basic.zKernel.file.ini;
 
+import java.io.File;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
@@ -12,6 +13,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJavaCallIniSolverZZZTest  extends TestCase {
@@ -19,7 +21,9 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	//protected final static String sEXPRESSION_ENCRYPTION02_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	//protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	
+	private File objFile;
 	private IKernelZZZ objKernel;
+	private FileIniZZZ objFileIniTest=null;	
 	
 	/// +++ Die eigentlichen Test-Objekte	
 	private KernelJavaCallIniSolverZZZ objExpressionJavaCallSolver;
@@ -36,7 +40,26 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			String[] saFlagInit = {"init"};
 			objExpressionJavaCallSolverInit = new KernelJavaCallIniSolverZZZ(objKernel, saFlagInit);
 			
-			String[] saFlag = {""};
+			//#### Das konkrete TestObject				
+			objFile = TestUtilZZZ.createKernelFileUsed();
+
+
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
+			
+			String[] saFlag = {""}; //Die Flags werden in den konkreten Tests an-/ausgeschaltet.
 			objExpressionJavaCallSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

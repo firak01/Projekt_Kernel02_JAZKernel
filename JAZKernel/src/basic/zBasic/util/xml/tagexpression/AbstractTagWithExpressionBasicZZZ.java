@@ -176,17 +176,113 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
 			//this.setValue(sReturn);	
 				
-			vecExpression = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
-			sReturn = (String) vecExpression.get(1);
-			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
-			//this.setValue(sReturn);	
-				
+			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
+			
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
 			sReturn = VectorUtilZZZ.implode(vecExpression);									
 		}//end main:
 		return sReturn;
 	}	
 	
+//22222222222222222222222222222	
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sExpressionIn = null;		
+		boolean bUseExpression = false; boolean bUseParse = false;
+		
+							
+		main:{			
+			if(vecExpressionIn==null) break main;
+		
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			this.setRaw(sExpressionIn);
+						
+			sReturn = (String) vecExpressionIn.get(1);
+			this.setValue(sReturn);
+			
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;						
+							
+			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
+			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+			bUseParse = this.isParserEnabledThis();
+			if(bUseParse) {			
+				if(bRemoveSurroundingSeparators) {
+					String sTagStart = "<Z>"; //this.getTagStarting();
+					String sTagEnd = "</Z>";  //this.getTagClosing();
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
+//						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+	
+					sReturn = (String) vecReturn.get(1);
+					this.setValue(sReturn);
+				}	
+			}else {
+				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
+			}
+			
+			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
+			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
+			
+		}//end main:
+				
+		//#################################
+		return vecReturn;
+	}
+
+	
+	//+++++++++++++++++++++++++++++++++++++++
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parsePostCustom_(vecExpression, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parsePostCustom_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	//Methode mit Reference Objekt
+	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn; String sReturn;
+		String sExpressionIn = null;		
+		boolean bUseExpression = false;
+		
+		main:{			
+			if(vecExpressionIn==null) break main;
+			
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			this.setRaw(sExpressionIn);
+					
+			sReturn = (String) vecExpressionIn.get(1);
+					
+			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+				
+			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+			
+								
+		}//end main:
+				
+		//#################################
+		return vecReturn;
+	}
+
+	//222222222222222222222222222222222222
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
@@ -227,6 +323,10 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			if(vecReturn==null)break main;			
 			sReturn = (String) vecReturn.get(1);
 			this.setValue(sReturn);
+			
+			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1);			
+			this.setValue(sReturn);				
 		}
 		return vecReturn;
 	}
@@ -269,6 +369,27 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			//################################
 			return vecReturn;
 		}
+		
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+			return this.parseFirstVectorPost_(vecExpression, true);
+		}
+
+		@Override
+		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+			return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
+		}
+		
+		private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+			Vector3ZZZ<String> vecReturn = vecExpressionIn;
+			String sReturn = null;
+			main:{
+				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
+				sReturn = (String) vecReturn.get(1);
+			}//end main
+			return vecReturn;
+		}
+
 	
 	
 	//### aus IExpressionUserZZZ

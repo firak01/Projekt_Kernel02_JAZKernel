@@ -38,11 +38,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		super(sFlag);
 		KernelZFormulaIniSolverNew_(null, null);
 	}
-	
+		
 	public KernelZFormulaIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
 		KernelZFormulaIniSolverNew_(null, null);
 	}
+	
+	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+		KernelZFormulaIniSolverNew_(null, null);
+	}
+
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ<T> objFileIni) throws ExceptionZZZ{
 		super(objFileIni); //als IKernelUserZZZ - Object
@@ -75,7 +81,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 	
 	
-	private boolean KernelZFormulaIniSolverNew_(FileIniZZZ<T> objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
+	private boolean KernelZFormulaIniSolverNew_(FileIniZZZ<T> objFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 		 boolean bReturn = false;	
 		 main:{		
 			if(this.getFlag("init")==true){
@@ -83,18 +89,28 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				break main;
 			}
 		
-			if(objFileIni==null ){
-				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez; 
-			}else{
-				this.setFileConfigKernelIni(objFileIni);						
+			FileIniZZZ<T> objFile=null;
+			if(objFileIn==null ){
+				objFile = this.getKernelObject().getFileConfigKernelIni();
+				if(objFile==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez; 
+				}
+			}else {
+				objFile = objFileIn;
 			}
-			
+
+			//Ubernimm ggfs. das Kernel-Objekt aus dem FileIni-Objekt
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+						
 			if(hmVariable!=null){				
 				this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
 			}else {
-				if(objFileIni.getHashMapVariable()!=null){
-					this.setHashMapVariable(objFileIni.getHashMapVariable());
+				
+				//Uebernimm ggfs. die Variablen aus dem FileIni-Objekt
+				this.setFileConfigKernelIni(objFile);	
+				if(objFile.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFile.getHashMapVariable());			
 				}
 			}
 						
