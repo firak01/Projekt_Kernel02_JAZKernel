@@ -5,6 +5,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -360,7 +361,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;		
 						
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
@@ -561,10 +562,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn=vecExpressionIn;			
 			sReturn = sExpressionIn;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 						
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
 										
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
@@ -575,7 +576,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(bUseExpression & bUseSolver & bUseSolverThis){
 				String sTagStart = this.getTagStarting();
 				String sTagEnd = this.getTagClosing();
-				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);							
+				if(sTagStart.equalsIgnoreCase("<Z>")) {
+					//dann mache nix... der Tag wird spaeter behandelt...
+				}else {
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+				}
 			}	
 			
 			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht

@@ -1,6 +1,7 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -219,7 +220,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
 			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);

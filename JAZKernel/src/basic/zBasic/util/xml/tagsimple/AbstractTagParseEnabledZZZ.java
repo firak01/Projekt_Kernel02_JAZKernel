@@ -73,10 +73,16 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			Vector<String> vecParse = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+			Vector3ZZZ<String> vecParse = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecParse!=null) {
-				this.setValue(vecParse.get(1)); //uebernimm also das 1. Element			
+				this.setValue((String) vecParse.get(1)); //uebernimm also das 1. Element			
 				sReturn = VectorUtilZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
+			}
+			
+			Vector3ZZZ<String> vecParsePost = this.parsePost(vecParse, bRemoveSurroundingSeparators);
+			if(vecParsePost!=null) {
+				this.setValue((String) vecParsePost.get(1)); //uebernimm also das 1. Element			
+				sReturn = VectorUtilZZZ.implode(vecParsePost); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
 			}
 		}
 		return sReturn;

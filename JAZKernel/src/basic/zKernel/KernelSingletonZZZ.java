@@ -3,7 +3,10 @@ package basic.zKernel;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 	private static final long serialVersionUID = 1L;
@@ -130,5 +133,11 @@ public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelSingletonZZZ.class);
 			}
 			return bReturn;
+		}
+
+		//### Aus IObjectWithExpression
+		@Override
+		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
+			return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 		}
 }

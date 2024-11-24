@@ -11,6 +11,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
@@ -59,7 +60,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
 			String[] saFlagFileIni= {
-							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
 							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
 							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
 							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
@@ -87,8 +88,8 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
 			
 			
-			btemp = objExpressionSolver.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 			btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);

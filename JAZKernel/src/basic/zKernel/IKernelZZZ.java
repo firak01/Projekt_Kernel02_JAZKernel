@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.ini.IniFile;
@@ -22,7 +23,7 @@ import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IIniTagWithExpressionZZZ{
+public interface IKernelZZZ extends IObjectWithExpressionZZZ, IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		DUMMY; //die sollte in IFormula.... stehen USEFORMULA, USEFORMULA_MATH;

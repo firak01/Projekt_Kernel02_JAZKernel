@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -82,42 +83,20 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		//Merke: Mit Klassen auf dem Flag-Weg koennen hier das Flag abfragen.
 		return true;
 	}
-
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, true);
-	}
-
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
-	}
+		
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return vecExpression;	
-	}
+
+//	@Override
+//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+//		return vecExpression;
+//	}
+//
+//
+//	@Override
+//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+//		return vecExpression;
+//	}
 
 
-	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return vecExpression;
-	}
-
-
-	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-		return vecExpression;
-	}
-
-
-	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return vecExpression;
-	}
-
-
-	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return vecExpression;
-	}
+	
 }//End class

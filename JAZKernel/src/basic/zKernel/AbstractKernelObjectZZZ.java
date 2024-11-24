@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
@@ -50,7 +51,6 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -7823,23 +7823,23 @@ MeinTestParameter=blablaErgebnis
 			
 			//### aus IIniTagWithExpressionZZZ
 			@Override
-			public boolean getFlag(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ) {
+			public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ) {
 				return this.getFlag(objEnum_IIniTagWithExpressionZZZ.name());
 			}
 			
 			@Override
-			public boolean setFlag(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			public boolean setFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				return this.setFlag(objEnum_IIniTagWithExpressionZZZ.name(), bFlagValue);
 			}
 			
 			@Override
-			public boolean[] setFlag(IIniTagWithExpressionZZZ.FLAGZ[] objaEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			public boolean[] setFlag(IObjectWithExpressionZZZ.FLAGZ[] objaEnum_IIniTagWithExpressionZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
 					if(!ArrayUtilZZZ.isNull(objaEnum_IIniTagWithExpressionZZZ)) {
 						baReturn = new boolean[objaEnum_IIniTagWithExpressionZZZ.length];
 						int iCounter=-1;
-						for(IIniTagWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ:objaEnum_IIniTagWithExpressionZZZ) {
+						for(IObjectWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ:objaEnum_IIniTagWithExpressionZZZ) {
 							iCounter++;
 							boolean bReturn = this.setFlag(objEnum_IIniTagWithExpressionZZZ, bFlagValue);
 							baReturn[iCounter]=bReturn;
@@ -7850,12 +7850,12 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			@Override
-			public boolean proofFlagExists(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			public boolean proofFlagExists(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagExists(objEnumFlag.name());
 			}
 			
 			@Override
-			public boolean proofFlagSetBefore(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagSetBefore(objEnumFlag.name());
 			}
 }//end class

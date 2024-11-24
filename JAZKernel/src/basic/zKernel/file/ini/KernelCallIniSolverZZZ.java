@@ -1,6 +1,7 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -162,9 +163,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-						
+				
 			String sExpression = sExpressionIn;
 			
 			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
@@ -333,7 +334,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		main:{						
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 						
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);

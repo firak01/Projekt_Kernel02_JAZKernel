@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
@@ -444,7 +445,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		
+		boolean bUseExpression=false;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -465,7 +466,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
 			String sExpressionUsed = sExpressionIn;
@@ -558,7 +559,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 												
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+			if(!this.isSolverEnabledGeneral()) break main;			
 			if(!this.isSolverEnabledThis()) break main;
 			
 			String sExpression = sExpressionIn;

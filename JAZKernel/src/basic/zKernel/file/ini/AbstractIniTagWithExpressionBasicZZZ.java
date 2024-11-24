@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
@@ -114,7 +115,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sExpression;
 		main:{
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			if(! this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			
 			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
 		}//end main:
@@ -190,7 +191,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			objReturn.setRaw(sExpressionIn);
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -562,22 +563,22 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### aus IIniTagWithExpressionZZZ	
 	@Override
-	public boolean getFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IIniTagWithExpressionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IObjectWithExpressionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IObjectWithExpressionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -588,12 +589,12 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}
 	
 	@Override
-	public boolean proofFlagExists(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean proofFlagSetBefore(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }

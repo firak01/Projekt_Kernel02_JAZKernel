@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -449,7 +450,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -722,7 +723,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
+			if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;		
 									
 			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecReturn!=null) sReturn = (String)vecReturn.get(1);
@@ -887,7 +888,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			sReturn = (String) vecExpressionIn.get(1);
 					
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 				
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
@@ -1038,7 +1039,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			sReturn = (String) vecExpressionIn.get(1);
 					
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 				
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
@@ -1211,7 +1212,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 				
-				if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+				if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 							
 				//Rufe nun parse() auf...
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -1320,7 +1321,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
 									
-				if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
+				if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
 							
 				if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
 					

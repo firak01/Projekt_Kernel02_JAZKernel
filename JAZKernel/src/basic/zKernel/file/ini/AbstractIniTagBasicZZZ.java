@@ -244,6 +244,68 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return sReturn;
 	}	
 	
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sExpression = null;		
+		boolean bUseParse = false;
+		
+							
+		main:{			
+			if(vecExpressionIn==null) break main;
+						
+			sExpression = (String) vecExpressionIn.get(1);
+			this.setValue(sExpression);
+			
+						
+			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
+			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+			bUseParse = this.isParserEnabledThis();
+			if(bUseParse) {			
+				if(bRemoveSurroundingSeparators) {
+					String sTagStart = "<Z>"; //this.getTagStarting();
+					String sTagEnd = "</Z>";  //this.getTagClosing();
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
+	
+					sReturn = (String) vecReturn.get(1);
+					this.setValue(sReturn);
+				}	
+			}else {
+				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
+			}
+			
+			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
+			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
+			sReturn = (String) vecReturn.get(1);
+			this.setValue(sReturn);
+			
+		}//end main:
+				
+		//#################################
+		return vecReturn;
+	}
+
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return vecExpression;
+	}
+
+
+	@Override
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return vecExpression;
+	}
+	
 	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
@@ -280,7 +342,6 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
 			String sReturn = null;
 			String sExpressionIn = null;		
-			boolean bUseExpression = false; boolean bUseParse;
 			
 			main:{			
 				if(vecExpressionIn==null) break main;

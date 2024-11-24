@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -286,7 +287,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
 			
-			boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
 			
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
@@ -392,13 +393,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		
 		vecReturn.replace(sReturn);
 			
+//		Das geschieht in parsePost
 		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 		//...aber nur, wenn ein Pfad gefunden wurde.
-		if(bRemoveSurroundingSeparators) {// & bExpressionFound) {
-			String sTagStartZ="<Z>";
-			String sTagEndZ="</Z>";
-			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
-		}
+//		if(bRemoveSurroundingSeparators) {// & bExpressionFound) {
+//			String sTagStartZ="<Z>";
+//			String sTagEndZ="</Z>";
+//			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+//		}
 
 		this.setValue((String) vecReturn.get(1));
 		if(objEntry!=null) {

@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -21,7 +22,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -130,7 +130,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		String sReturn=null;
 		main:{		
 			
-		boolean bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+		boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 		boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.

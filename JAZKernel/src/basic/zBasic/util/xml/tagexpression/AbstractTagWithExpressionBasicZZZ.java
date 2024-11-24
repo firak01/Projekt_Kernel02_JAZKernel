@@ -4,8 +4,10 @@ import java.util.Vector;
 
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -16,7 +18,6 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.ExpressionIniUtilZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
-import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryption_CodeZZZ;
@@ -26,7 +27,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
-		
+	
+	//+++ fuer IValueBufferedUserZZZ
+	protected VectorDifferenceZZZ<String> vecValue = null;
+	protected boolean bAnyValueInObjectWithExpression = false;
+	protected boolean bNullValueInObjectWithExpression = false;
+
+	
 	public AbstractTagWithExpressionBasicZZZ() throws ExceptionZZZ {
 		super();
 	}  
@@ -118,14 +125,113 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	
+	
+		
+	//### Aus IValueBufferedUserZZZ
+	@Override 
+	public VectorDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
+		if(this.vecValue==null) {
+			this.vecValue = new VectorDifferenceZZZ<String>();
+		}
+		return this.vecValue;
+	}
+	
+	//Merke: Muss wg. dem Vector als Buffer ueberschrieben werden
+	@Override
+	public String getValue() throws ExceptionZZZ {
+		if(this.hasNullValue()){
+			return null;		
+		}else if (!this.hasAnyValue()){
+			return null; //wenn die Section nicht existiert, dann auch kein Wert.			
+		}else {
+			return this.getValueVector().getEntryHigh();
+		}
+	}
+
+	//Merke: Muss wg. dem Vector als Buffer ueberschrieben werden
+	@Override
+	public void setValue(String sValue) throws ExceptionZZZ {
+		
+		this.hasAnyValue(true);
+		this.getValueVector().add(sValue);	
+		if(sValue!=null){		
+			this.hasNullValue(false);
+		}else{
+			this.hasNullValue(true);
+		}		
+	}
+
+	@Override
+	public boolean hasAnyValue() throws ExceptionZZZ {
+		return this.bAnyValueInObjectWithExpression;
+	}	
+	
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar
+	//daher protected. Was nicht im Intface definierbar ist.
+	@Override
+	public void hasAnyValue(boolean bAnyValue) throws ExceptionZZZ {
+		this.bAnyValueInObjectWithExpression=bAnyValue;
+	}
+	
+	@Override
+	public boolean hasNullValue() throws ExceptionZZZ {
+		return this.bNullValueInObjectWithExpression;
+	}
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 
+	//daher protected. Was nicht im Interface definierbar ist.
+	@Override
+	public void hasNullValue(boolean bNullValue) {
+		this.bNullValueInObjectWithExpression=bNullValue;
+	}
+	
+	//####################################################
+	//### Aus IValueComputedBufferedUserZZZ
+	@Override 
+	public VectorDifferenceZZZ<String> getRawVector() throws ExceptionZZZ{
+		if(this.vecRaw==null) {
+			this.vecRaw = new VectorDifferenceZZZ<String>();
+		}
+		return this.vecRaw;
+	}
+	
+	@Override
+	public String getRaw() throws ExceptionZZZ {
+		return this.getRawVector().getEntryLow();//anders als bei den anderen Strings und Vectoren hier den .Lows() zurueckgeben
+	}
+
+	@Override
+	public void setRaw(String sRaw) throws ExceptionZZZ {
+		this.getRawVector().add(sRaw);
+	}
+
+	
 	//### Aus IObjectWithExpression
 	
-	
+			
 	
 	//### Aus IParseEnabledZZZ
 	
 	@Override
 	public abstract boolean isParserEnabledThis() throws ExceptionZZZ;
+	
+	@Override
+	public boolean isParseRelevant() {
+		//Kann ggfs. von einem konkreten Tag uberschrieben werden.
+		return true;
+	}
+			
+//			@Override
+//			public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ{
+//				boolean bReturn = false;
+//				main:{
+//					bReturn = this.isParseRelevant();
+//					if(!bReturn)break main;
+//					
+//					//auf dieser Ebene gibt es keine Tags
+//					//bReturn = XmlUtilZZZ.containsTag(sExpression, this.getTagName(());
+//				}//end main:
+//				return bReturn;
+//			}
 	
 	@Override
 	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
@@ -164,7 +270,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sExpressionIn;
 		main:{
-			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			//Bei einfachen Tags den Ersten Vektor holen
@@ -184,7 +290,6 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return sReturn;
 	}	
 	
-//22222222222222222222222222222	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
 		return this.parsePost_(vecExpression, true);
@@ -270,7 +375,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 					
 			sReturn = (String) vecExpressionIn.get(1);
 					
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 				
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
@@ -282,7 +387,6 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		return vecReturn;
 	}
 
-	//222222222222222222222222222222222222
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element

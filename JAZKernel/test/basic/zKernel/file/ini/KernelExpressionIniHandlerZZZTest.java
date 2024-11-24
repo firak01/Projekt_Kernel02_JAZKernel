@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.apache.xmlbeans.impl.store.Path;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
@@ -190,7 +191,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#### Das konkrete TestObject
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
 			String[] saFlagFileIni= {
-							IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
 							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
 							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
 							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
@@ -502,8 +503,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//#########################################################
 				//#### SECTION A ########################################## 
 				//+++ Anwenden der ersten Formel, ohne Berechnung
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 					
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  //sollte wg. useexpression egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -527,8 +528,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				
 				//+++ ... noch fehlt "useexpression_solver" als gesetztes Flag
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -553,8 +554,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -612,8 +613,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -661,8 +662,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//... ohne Berechnung (math)
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -728,8 +729,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//... mit Berechnung (math)
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //sollte wg. useexpression egal sein
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -788,8 +789,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -833,8 +834,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -879,8 +880,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -924,8 +925,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1077,8 +1078,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				String sExpressionSource; HashMap hmExpressionSolved; String sExpressionSolved; String sValue;				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1144,8 +1145,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				String sExpressionSource; HashMap hmExpressionSolved; String sExpressionSolved; String sValue;				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1212,8 +1213,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1294,10 +1295,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z>"+sHostName+"</Z>";			
-			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -1332,37 +1329,45 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
+			//a)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_CallJava_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_CallJava_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
+			//b)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = sExpressionSource;			
 			btemp = testCompute_CallJava_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
+			
+			//c)
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = sExpressionSource; 			
+			btemp = testCompute_CallJava_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				
+			//d)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = sExpressionSource;
 			btemp = testCompute_CallJava_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne Call-Berechung
+			//a)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>" + sClassName + "</Z></Z:Class><Z:Method><Z>" + sMethodName +"</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
 			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
+			//b)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt 			
-			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-					
+				
+			//c)
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>" + sClassName + "</Z></Z:Class><Z:Method><Z>" + sMethodName +"</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt 			
+			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				
+			//d)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
@@ -1372,19 +1377,23 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Mit CALL-Berechnung
+			//a)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";						
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>basic.zBasic.util.machine.EnvironmentZZZ</Z></Z:Class><Z:Method><Z>getHostName</Z></Z:Method></Z:Java></Z:Call></Z>";						
 			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z>" + sHostName + "</Z>";			
-			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
+				
+			//b)
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
+			
+			//c)
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z>" + sHostName + "</Z>";			
+			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			//d)		
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSolved = sHostName;
 			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
@@ -1439,8 +1448,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
 			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1520,8 +1529,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//####################################################################################
 						
 			//Anwenden des Ausdrucks ohne Solver - Aufruf
-			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1587,8 +1596,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSource = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
 			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1672,8 +1681,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSolvedIn;
 			
 			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 							
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
@@ -1733,8 +1742,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSolvedIn;
 			
 			//Anwenden der ersten Formel, Mit Berechnung oder Formelersetzung
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1796,8 +1805,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSolvedIn;
 			
 			//Anwenden der ersten Formel, Mit Berechnung oder Formelersetzung
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1888,8 +1897,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//###########################################################
 			//Anwenden der ersten Formel, ohne Berechnung
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -1952,8 +1961,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.		
-			btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2023,8 +2032,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//Berechne die erste Formel, DIRECT			
 			String sHostName = EnvironmentZZZ.getHostName();
 			
-			btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-			assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
 			btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2320,8 +2329,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2388,8 +2397,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				String sExpressionSource; ArrayList alExpressionSolved; String sExpressionSolved; String sValue;				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2455,8 +2464,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				String sExpressionSource; ArrayList alExpressionSolved; String sExpressionSolved; String sValue;				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
-				btemp = objExpressionHandler.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objExpressionHandler.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
 				btemp = objExpressionHandler.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2522,8 +2531,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
@@ -2576,8 +2585,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
-				btemp = objFileIniTest.setFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
-				assertTrue("Flag nicht vorhanden '" + IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);

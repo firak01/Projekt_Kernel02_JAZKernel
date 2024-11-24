@@ -6,18 +6,12 @@ import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
 //Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
 public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithExpressionZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 		
-	//+++ fuer IValueBufferedUserZZZ
-	protected VectorDifferenceZZZ<String> vecValue = null;
-	protected boolean bAnyValueInObjectWithExpression = false;
-	protected boolean bNullValueInObjectWithExpression = false;
-	
 	//IValueSolvedUserZZZ
 	protected VectorDifferenceZZZ<String> vecRaw = null;
 	
@@ -54,109 +48,6 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	//### Aus IObjectWithExpression
 	@Override
 	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
-		return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+		return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 	}
-		
-	//### Aus IParseEnabledZZZ
-	@Override
-	public boolean isParseRelevant() {
-		//Kann ggfs. von einem konkreten Tag uberschrieben werden.
-		return true;
-	}
-	
-	@Override
-	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			bReturn = this.isParseRelevant();
-			if(!bReturn)break main;
-			
-			//auf dieser Ebene gibt es keine Tags
-			//bReturn = XmlUtilZZZ.containsTag(sExpression, this.getTagName(());
-		}//end main:
-		return bReturn;
-	}
-	
-	//### Aus IValueBufferedUserZZZ
-	@Override 
-	public VectorDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
-		if(this.vecValue==null) {
-			this.vecValue = new VectorDifferenceZZZ<String>();
-		}
-		return this.vecValue;
-	}
-	
-	//Merke: Muss wg. dem Vector als Buffer ueberschrieben werden
-	@Override
-	public String getValue() throws ExceptionZZZ {
-		if(this.hasNullValue()){
-			return null;		
-		}else if (!this.hasAnyValue()){
-			return null; //wenn die Section nicht existiert, dann auch kein Wert.			
-		}else {
-			return this.getValueVector().getEntryHigh();
-		}
-	}
-
-	//Merke: Muss wg. dem Vector als Buffer ueberschrieben werden
-	@Override
-	public void setValue(String sValue) throws ExceptionZZZ {
-		
-		this.hasAnyValue(true);
-		this.getValueVector().add(sValue);	
-		if(sValue!=null){		
-			this.hasNullValue(false);
-		}else{
-			this.hasNullValue(true);
-		}		
-	}
-
-	@Override
-	public boolean hasAnyValue() throws ExceptionZZZ {
-		return this.bAnyValueInObjectWithExpression;
-	}	
-	
-	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar
-	//daher protected. Was nicht im Intface definierbar ist.
-	@Override
-	public void hasAnyValue(boolean bAnyValue) throws ExceptionZZZ {
-		this.bAnyValueInObjectWithExpression=bAnyValue;
-	}
-	
-	@Override
-	public boolean hasNullValue() throws ExceptionZZZ {
-		return this.bNullValueInObjectWithExpression;
-	}
-	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 
-	//daher protected. Was nicht im Interface definierbar ist.
-	@Override
-	public void hasNullValue(boolean bNullValue) {
-		this.bNullValueInObjectWithExpression=bNullValue;
-	}
-	
-	//####################################################
-	//### Aus IValueComputedBufferedUserZZZ
-	@Override 
-	public VectorDifferenceZZZ<String> getRawVector() throws ExceptionZZZ{
-		if(this.vecRaw==null) {
-			this.vecRaw = new VectorDifferenceZZZ<String>();
-		}
-		return this.vecRaw;
-	}
-	
-	@Override
-	public String getRaw() throws ExceptionZZZ {
-		return this.getRawVector().getEntryLow();//anders als bei den anderen Strings und Vectoren hier den .Lows() zurueckgeben
-	}
-
-	@Override
-	public void setRaw(String sRaw) throws ExceptionZZZ {
-		this.getRawVector().add(sRaw);
-	}
-	
-	
-	
-	
-	
-	
 }

@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
@@ -79,7 +80,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
 			
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE);

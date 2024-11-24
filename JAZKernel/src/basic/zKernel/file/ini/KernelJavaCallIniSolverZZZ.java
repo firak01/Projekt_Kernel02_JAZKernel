@@ -1,6 +1,7 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -159,7 +160,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;

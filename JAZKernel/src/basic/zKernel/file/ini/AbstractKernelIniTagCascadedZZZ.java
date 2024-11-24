@@ -149,7 +149,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			//Zentrale Stelle, um den String als Expression zu kennzeichnen.
+			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
 			if(XmlUtilZZZ.containsTag(sExpressionIn, "Z", false)){
 				objEntry.isExpression(true);
 			}	

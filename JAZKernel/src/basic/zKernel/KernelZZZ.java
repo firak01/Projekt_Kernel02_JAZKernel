@@ -8,6 +8,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import custom.zKernel.ConfigZZZ;
 
 
@@ -176,5 +177,11 @@ public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelZZZ.class);
 			}
 			return bReturn;
+		}
+
+		//### Aus IObjectWithExpression
+		@Override
+		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
+			return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 		}
 }//end class// end class

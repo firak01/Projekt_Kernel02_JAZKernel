@@ -16,11 +16,14 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -56,7 +59,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 31.08.2024, 08:07:50
  * 
  */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithConversionZZZ, IIniTagWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IValueVariableUserZZZ, IKernelZFormulaIni_VariableZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IValueVariableUserZZZ, IKernelZFormulaIni_VariableZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -438,6 +441,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		boolean bUseExpression=false;
 		if(objReturnReferenceIn==null) {	
 			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			//Aber hier keine Tag, sondern ein FileIni, darum geht nicht objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
@@ -516,7 +520,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			if(sReturnRaw==null) break main;
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können.
-			if(! this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+			bUseExpression = this.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
 			
 			//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
 			KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
@@ -1428,6 +1433,14 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 		
 
+	//### Aus IObjectWithExpression
+	@Override
+	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
+		return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+	}
+
+	
+	
 	//### aus IKernelConfigSectionEntryUserZZZ
 	@Override
 	public IKernelConfigSectionEntryZZZ getEntryNew() throws ExceptionZZZ {
@@ -1683,25 +1696,25 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 
 	
-	//### Aus Interface IIniTagWithExpressionZZZ
+	//### Aus Interface IObjectWithExpressionZZZ
 	@Override
-	public boolean getFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IIniTagWithExpressionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IObjectWithExpressionZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IObjectWithExpressionZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -1712,12 +1725,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	@Override
-	public boolean proofFlagExists(IIniTagWithExpressionZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IObjectWithExpressionZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
 	@Override
-	public boolean proofFlagSetBefore(IIniTagWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
