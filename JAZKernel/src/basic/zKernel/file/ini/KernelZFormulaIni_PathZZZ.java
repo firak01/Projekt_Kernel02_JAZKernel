@@ -408,7 +408,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);

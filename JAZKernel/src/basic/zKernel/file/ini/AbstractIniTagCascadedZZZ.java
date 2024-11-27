@@ -80,7 +80,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			// im Return Objekt
 			objReturn.setValue(sValue);
 			if(!sLineWithExpression.equals(sValue)) {
-				objReturn.isParsed(true);
+				objReturn.isParseCalled(true);
 			}
 			
 			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den

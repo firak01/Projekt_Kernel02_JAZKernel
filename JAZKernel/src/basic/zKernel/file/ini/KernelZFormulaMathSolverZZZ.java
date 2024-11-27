@@ -188,7 +188,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
@@ -275,7 +275,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}

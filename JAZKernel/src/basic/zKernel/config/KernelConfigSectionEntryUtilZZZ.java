@@ -70,16 +70,20 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//######################################
 			//Da die Werte immer nur von false nach true wechseln, also nur die übernehme, die im Target false sind.
 			//Einfach die Methoden in IKernelConfigSectionEntryZZZ durchgehen.
+			if(objEntrySource.isParseCalled()) {
+				objEntryTarget.isParseCalled(objEntrySource.isParseCalled());
+			}
+		
 			if(objEntrySource.isParsed()) {
 				objEntryTarget.isParsed(objEntrySource.isParsed());
 			}
-		
+			
 			if(objEntrySource.isParsedChanged()) {
 				objEntryTarget.isParsedChanged(objEntrySource.isParsedChanged());
 			}
 		
-			if(objEntrySource.isSolved()) {
-				objEntryTarget.isSolved(objEntrySource.isSolved());
+			if(objEntrySource.isSolveCalled()) {
+				objEntryTarget.isSolveCalled(objEntrySource.isSolveCalled());
 			}
 			
 			if(objEntrySource.isPathSubstituted()) {
@@ -88,6 +92,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			if(objEntrySource.isVariableSubstituted()) {
 				objEntryTarget.isVariableSubstituted(objEntrySource.isVariableSubstituted());
+			}
+			
+			if(objEntrySource.isSolveCalled()) {
+				objEntryTarget.isSolveCalled(objEntrySource.isSolveCalled());
 			}
 			
 			if(objEntrySource.isSolved()) {
@@ -437,7 +445,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}		
 			if(!sExpressionIn.equalsIgnoreCase(sExpression)) {
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Abschliessend) Value durch CallIniSolverZZZ verändert von '" + sExpressionIn + "' nach '" + sExpression +"'");
-				objEntry.isSolved(true);
+				objEntry.isSolveCalled(true);
 			}
 					
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);

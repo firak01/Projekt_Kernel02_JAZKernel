@@ -375,7 +375,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 
 				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
@@ -386,7 +386,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isJsonArray());
 				assertFalse(objEntry.isJsonMap());		
 			
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -410,7 +410,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertFalse(objEntry.isParsed()); //Der Parse-Schritt wurde NICHT gemacht.
+				assertFalse(objEntry.isParseCalled()); //Der Parse-Schritt wurde NICHT gemacht.
 				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
 				assertFalse(objEntry.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
@@ -420,7 +420,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isJsonArray());
 				assertFalse(objEntry.isJsonMap());						
 			
-				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());	
 				
 				assertFalse(objEntry.isDecrypted());
@@ -441,7 +441,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht
 				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
 				assertFalse(objEntryUsed.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
@@ -451,7 +451,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isJsonArray());
 				assertFalse(objEntryUsed.isJsonMap());	
 				
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 				assertFalse(objEntryUsed.isSolvedChanged());	
 				
 				sValueUsed = objEntryUsed.getValue();
@@ -477,7 +477,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht
 				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
 				assertFalse(objEntryUsed.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
@@ -487,7 +487,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isJsonArray());
 				assertFalse(objEntryUsed.isJsonMap());
 				
-				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolveCalled());
 				assertFalse(objEntryUsed.isSolvedChanged());	
 				
 				assertFalse(objEntryUsed.isDecrypted());
@@ -574,7 +574,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -584,7 +584,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 													
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
@@ -611,7 +611,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -622,7 +622,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
@@ -646,7 +646,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -657,7 +657,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());														
 			
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 				assertFalse(objEntryUsed.isSolvedChanged());
 				
 				sValueUsed = objEntryUsed.getValue();
@@ -687,7 +687,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -698,7 +698,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 	
-				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolveCalled());
 				assertFalse(objEntryUsed.isSolvedChanged());		
 				
 				assertTrue(objEntryUsed.isJson());
@@ -792,7 +792,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -802,7 +802,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -826,7 +826,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -836,7 +836,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 								
 				assertFalse(objEntry.isDecrypted());
@@ -857,7 +857,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -867,7 +867,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 				assertFalse(objEntryUsed.isSolvedChanged());
 				
 				sValueUsed = objEntryUsed.getValue();
@@ -894,7 +894,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -904,7 +904,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 					
-				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolveCalled());
 				assertFalse(objEntryUsed.isSolvedChanged());
 								
 				assertFalse(objEntryUsed.isDecrypted());
@@ -994,7 +994,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1004,7 +1004,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 			
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -1028,7 +1028,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1040,7 +1040,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 										
 			
-				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 								
 				assertFalse(objEntry.isDecrypted());
@@ -1061,7 +1061,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1071,7 +1071,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 				
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 				assertFalse(objEntryUsed.isSolvedChanged());
 				
 				sValueUsed = objEntryUsed.getValue();
@@ -1098,7 +1098,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objSectionEntryReference.get();
 				assertNotNull(objEntryUsed);
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1109,7 +1109,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isVariableSubstituted());
 
 					
-				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolveCalled());
 				assertFalse(objEntryUsed.isSolvedChanged());		
 				
 				assertFalse(objEntryUsed.isDecrypted());
@@ -1198,7 +1198,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1208,7 +1208,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolved());
+				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -1232,7 +1232,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1244,7 +1244,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isPathSubstituted());
 				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertTrue(objEntry.isSolved());
+				assertTrue(objEntry.isSolveCalled());
 				assertTrue(objEntry.isSolvedChanged());
 				
 				assertFalse(objEntry.isDecrypted());
@@ -1265,7 +1265,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
 				assertNotNull(objEntryUsed);
 							
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1275,7 +1275,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());													
 			
-				assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 				assertFalse(objEntryUsed.isSolvedChanged());				
 				
 				sValueUsed = objEntryUsed.getValue();
@@ -1305,7 +1305,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objEntryUsed = objSectionEntryReference.get();
 				
 				
-				assertTrue(objEntryUsed.isParsed()); //Der Parse-Schritt wurde gemacht.
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
 				if(bRemoveSuroundingSeparators) {
 					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
@@ -1316,7 +1316,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntryUsed.isPathSubstituted());
 				assertFalse(objEntryUsed.isVariableSubstituted());
 					
-				assertTrue(objEntryUsed.isSolved());
+				assertTrue(objEntryUsed.isSolveCalled());
 				assertTrue(objEntryUsed.isSolvedChanged());		
 				
 				assertFalse(objEntryUsed.isDecrypted());

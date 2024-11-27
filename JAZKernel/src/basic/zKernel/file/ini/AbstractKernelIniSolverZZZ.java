@@ -411,7 +411,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//objEntry.isParsed(true); 								
 			//if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
 			
-			objEntry.isSolved(true);		
+			objEntry.isSolveCalled(true);		
 			//if(!objEntry.getValue().equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
 			//if(!sExpressionParsed.equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
 			//if(!this.getValue().equals(sExpressionParsed)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
@@ -687,7 +687,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -773,7 +773,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(objReturn!=null) {
 			objReturn.setValue(sReturn);	
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
+				if(!sExpressionIn.equals(sReturn)) objReturn.isParseCalled(true);
 			}				
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
 		}					

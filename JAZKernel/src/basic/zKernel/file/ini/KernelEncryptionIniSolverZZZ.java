@@ -203,7 +203,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -213,7 +213,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
 				if(sExpressionIn!=null) {
 					objEntry.isExpression(true);
-					objEntry.isParsed(true); 								
+					objEntry.isParseCalled(true); 								
 					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}			
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -429,8 +429,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			}
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) {
-					this.getEntry().isSolved(true);
-					objEntry.isSolved(true);
+					this.getEntry().isSolveCalled(true);
+					objEntry.isSolveCalled(true);
 				}
 			}						
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.

@@ -154,7 +154,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		if(objReturn!=null) {
 			objReturn.setValue(sReturn);	
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objReturn.isParsed(true);
+				if(!sExpressionIn.equals(sReturn)) objReturn.isParseCalled(true);
 			}				
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
 		}					

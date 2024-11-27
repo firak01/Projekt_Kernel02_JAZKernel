@@ -364,9 +364,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntry.isParsed());
 //					}
 					
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
+					assertFalse(objEntry.isSolveCalled()); //Ist halt kein Solve-Schritt involviert.
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -390,9 +390,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());
-					assertTrue(objEntry.isSolved());
+					assertTrue(objEntry.isSolveCalled());
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
@@ -424,9 +424,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
 					
-					assertTrue(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParseCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved()); //Ist kein solve-Schritt involviert.				
+					assertFalse(objEntryUsed.isSolveCalled()); //Ist kein solve-Schritt involviert.				
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -459,9 +459,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParseCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertTrue(objEntryUsed.isSolved());				
+					assertTrue(objEntryUsed.isSolveCalled());				
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -540,10 +540,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());
 					
-					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -581,9 +581,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -614,9 +614,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());	
+					assertTrue(objEntryUsed.isParseCalled());	
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
@@ -691,9 +691,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isParseCalled()); 
 					assertTrue(objEntry.isExpression()); 
-					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -725,9 +725,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());					
-					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -752,9 +752,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParseCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
@@ -791,9 +791,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());  
+					assertTrue(objEntryUsed.isParseCalled());  
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntryUsed.isDecrypted());
 					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -869,9 +869,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed());
+					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolved());
+					assertFalse(objEntry.isSolveCalled());
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -903,9 +903,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isParseCalled()); 
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolved());
+					assertFalse(objEntry.isSolveCalled());
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -931,9 +931,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed()); 
+					assertTrue(objEntryUsed.isParseCalled()); 
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved());				
+					assertFalse(objEntryUsed.isSolveCalled());				
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 									
@@ -960,9 +960,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());
+					assertTrue(objEntryUsed.isParseCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolved());				
+					assertFalse(objEntryUsed.isSolveCalled());				
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 									
@@ -1036,9 +1036,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
-					assertFalse(objEntry.isSolved());
+					assertFalse(objEntry.isSolveCalled());
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1068,9 +1068,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParsed()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
-					assertFalse(objEntry.isSolved());
+					assertFalse(objEntry.isSolveCalled());
 									
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1097,9 +1097,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());//es wird keinerlei expression Berechnung gemacht
 //					}
-					assertTrue(objEntryUsed.isParsed());     //es wurde ja geparsed
+					assertTrue(objEntryUsed.isParseCalled());     //es wurde ja geparsed
 					assertFalse(objEntryUsed.isExpression()); //Expression ist generell ausgestellt
-					assertFalse(objEntryUsed.isSolved()); //es ist auch kein Solver involviert
+					assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
 									
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
@@ -1129,9 +1129,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParsed());     //es wurde ja geparsed
+					assertTrue(objEntryUsed.isParseCalled());     //es wurde ja geparsed
 					assertFalse(objEntryUsed.isExpression()); //Expression ist generell ausgestellt
-					assertFalse(objEntryUsed.isSolved());
+					assertFalse(objEntryUsed.isSolveCalled());
 									
 					assertFalse(objEntryUsed.isDecrypted());
 					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.

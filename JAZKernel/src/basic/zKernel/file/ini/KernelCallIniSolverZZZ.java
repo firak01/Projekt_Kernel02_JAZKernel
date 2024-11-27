@@ -238,7 +238,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//     nur .isJavaCall() wird vorher gesetzt.
 				if(!sExpressionIn.equals(sReturn)) {
 					objEntry.isExpression(true);
-					objEntry.isParsed(true);							
+					objEntry.isParseCalled(true);							
 				}
 			}			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -355,7 +355,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
@@ -416,7 +416,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}

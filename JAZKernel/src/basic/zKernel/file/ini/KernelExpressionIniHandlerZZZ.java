@@ -462,12 +462,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-					
-		main:{
+		objEntry.isParseCalled(true);
+		
+		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
-			if(!bUseExpression) break main;
+			if(!bUseExpression) break main;						
 			
 			String sExpressionUsed = sExpressionIn;
 			
@@ -503,8 +504,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isExpression(true);			 							
+				objEntry.isParsed(true);
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}		
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -699,7 +700,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);

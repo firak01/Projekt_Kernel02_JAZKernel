@@ -468,7 +468,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		if(objEntry!=null) {	
 			objEntry.setValue(sReturn);
-			objEntry.isParsed(true); 								
+			objEntry.isParseCalled(true); 								
 			if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 						
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -509,7 +509,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objReturnReference.set(objEntry);							
 		}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
+		objEntry.setRaw(sExpressionIn);
+		objEntry.isParseCalled(true);
 			
 		main:{		
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -837,7 +838,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -903,7 +904,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -988,7 +989,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -1054,7 +1055,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
-				objEntry.isParsed(true); 								
+				objEntry.isParseCalled(true); 								
 				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -1222,7 +1223,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 				String sExpressionParsed = (String) vecReturn.get(1);
 				if(!sExpressionIn.equals(sExpressionParsed)) {				
-					objEntry.isParsed(true);
+					objEntry.isParseCalled(true);
 				}
 				sReturn = sExpressionParsed; //Zwischenstand.			
 				
@@ -1238,7 +1239,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				objEntry = objReturnReferenceSolve.get();
 				
 				if(!sExpressionParsed.equals(sExpressionSolved)) {
-					objEntry.isSolved(true);
+					objEntry.isSolveCalled(true);
 				}			
 				sReturn = sExpressionSolved; //Zwischenstand.	
 																			
@@ -1357,7 +1358,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						this.setValue(sReturn);
 						objEntry.setValue(sReturn);
 						if(sReturn!=sExpressionOld) {
-							objEntry.isParsed(true);
+							objEntry.isParseCalled(true);
 							objEntry.isVariableSubstituted(true);
 						}
 						sExpression = sReturn; //fuer ggfs. notwendige Weiterverarbeitung
@@ -1400,7 +1401,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						this.setValue(sReturn);
 						objEntry.setValue(sReturn);
 						if(!sExpressionOld.equals(sReturn)) {
-							objEntry.isParsed(true);
+							objEntry.isParseCalled(true);
 							objEntry.isPathSubstituted(true);
 						}
 						sExpression = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
