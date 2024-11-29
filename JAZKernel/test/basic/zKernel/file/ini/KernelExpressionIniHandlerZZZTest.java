@@ -284,20 +284,21 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//################################################################################
-			//### Verwende den Expression-Sover ueber das FileIni-Objekt
-			//################################################################################
-			//		
-			//#########################################################
-			//#### SECTION A ##########################################
-			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			sSection = "Section for testCompute";
-			sProperty = "Formula1";
-			//sExpressionSolved = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-			sExpressionSolved = sExpressionSolvedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+	
 			
+			//#########################################################
+			//#### SECTION B ##########################################
+			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER. 
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist '<Z>TestValue2 local to be foound</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+					
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -393,21 +394,33 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#########################################################
 			//#### SECTION A ##########################################
 			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
+			//#### Hier das Substitute ausschalten
+			sSection = "Section for testCompute";
+			sProperty = "Formula1";						
+			sExpressionSolved = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//#### Hier das Solve ausschalten
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
 			sSection = "Section for testCompute";
 			sProperty = "Formula1";
-			//sExpressionSolved = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
 			sExpressionSolved = sExpressionSolvedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			sSection = "Section for testCompute";
 			sProperty = "Formula1";
-			//sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+			sExpressionSolved = sExpressionSolvedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -416,20 +429,31 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#########################################################
 			//#### SECTION B ##########################################
 			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER 
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
+			//#### Hier das Substitute ausschalten
 			sSection = "Section for testCompute";
 			sProperty = "Formula2";						
 			sExpressionSolved = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
 			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//#### Hier das Solve ausschalten
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
 			sSection = "Section for testCompute";
 			sProperty = "Formula2";						
 			sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -441,21 +465,28 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sProperty = "Formula3";	
 			sExpressionSolved = "Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			sSection = "Section for testCompute";
+			sProperty = "Formula3";	
+			sExpressionSolved = "Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
 			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sSection = "Section C";
 			sProperty = "Testentry3";						
 			sExpressionSolved = "Testvalue3 local to be found";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
 			
 			sSection = "Section for testCompute";
 			sProperty = "Formula3";	
 			sExpressionSolved = "Der dynamische Wert3 ist '<Z>Testvalue3 local to be found</Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1007,14 +1038,14 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sProperty = "Formula1";	
 			sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
 			
 			//b) ohne FORMULA Aufloesung
 			sSection = "Section for testComputeMathValue";
 			sProperty = "Formula1";							
 			sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_IniUsed_(sSection, sProperty, sExpressionSolved);
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);
 			
 			//c) ohne MATH Aufloesung
 			sSection = "Section for testComputeMathValue";
@@ -1169,7 +1200,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_IniUsed_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
+	private boolean testCompute_PATH_IniUsed_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
 		
 		main:{
@@ -1214,7 +1245,54 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 	
 	
-	private boolean testCompute_IniUsedUnsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
+	private boolean testCompute_PATH_IniUsedUnsubstituted_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
+		boolean bReturn = false;
+		
+		main:{
+			try {
+				String sSection; String sProperty; String sExpressionSolved; String sValue;
+				boolean btemp; String stemp;
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+				
+				//... mit Berechnung PATH
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,false);   //Ansonsten wird der Wert sofort ausgerechnet
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+								
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);  
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); //sollte egal sein
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				//... ohne solve-Flag ist die eine Berechnung egal
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);                     //sollte wg. USEEXPRESSION_SOLVER = false egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				//... ohne solve-Flag ist die Mathematische Berechnung egal
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+									
+				sSection = sSectionIn;
+				sProperty = sPropertyIn;
+				sExpressionSolved = sExpressionSolvedIn;						
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+				bReturn = true;
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	private boolean testCompute_PATH_IniUsedUnsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
 		
 		main:{
