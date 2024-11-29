@@ -1321,9 +1321,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
-									
-				if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-							
+
+				if(!this.isExpressionEnabledGeneral()) break main;					
+						
 				if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
 					
 					//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist

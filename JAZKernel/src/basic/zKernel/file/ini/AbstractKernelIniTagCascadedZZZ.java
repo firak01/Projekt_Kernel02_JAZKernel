@@ -161,8 +161,22 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParse = this.isParserEnabledThis();
 		
+			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
+			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
+			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
+			if (vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			
+			sExpression = sReturn;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSubstitute.set(objEntry);
+			sReturn = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
+			objEntry = objReturnReferenceSubstitute.get();			
+			vecReturn.replace(sReturn); //da noch weiter verarbeitet werden muss.
+			this.setValue(sReturn);
+			sExpression = VectorUtilZZZ.implode(vecReturn);
+			
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
-			if(bUseParse) {
+			if(bUseParse && bRemoveSurroundingSeparators) {
 				//Mit speziellenm Parser "enabled" wird der Tag ggfs. entfernt
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
 				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
@@ -172,14 +186,6 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
 			}
 		
-			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			sExpression = sReturn;
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSubstitute.set(objEntry);
-			sReturn = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
-			objEntry = objReturnReferenceSubstitute.get();			
-			vecReturn.replace(sReturn); //da noch weiter verarbeitet werden muss.
-			this.setValue(sReturn);
 			
 		
 			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht

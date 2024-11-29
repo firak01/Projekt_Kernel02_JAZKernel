@@ -26,6 +26,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		super(3);
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void replace(Object objValue) throws ExceptionZZZ {
 		main:{
@@ -57,7 +58,61 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		if(this.size()==2) this.add(2, this.getObjectDefaultNew());
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void replace(Object objValueLeft, Object objValueRight, boolean bReturnSeparators, String sSepMid ) throws ExceptionZZZ {
+		main:{
+			if(objValueLeft==null || objValueRight==null) break main;
+			
+			if(objValueLeft instanceof String) {
+				replace_((String) objValueLeft, (String) objValueRight, bReturnSeparators, sSepMid);
+			}
+		}//end main:
+	}
 	
+	private void replace_(String sLeft, String sRight, boolean bReturnSeparators, String sSepMid) throws ExceptionZZZ {
+		ObjectUtilZZZ.ensureTypeEquals(sLeft, sRight); //Merke: ensure... wirft eine Exception
+		
+		//Nun die Werte in den ErgebnisVector zusammenfassen
+		if(bReturnSeparators ==true){
+			if(this.size()>=1) this.removeElementAt(0);
+			if(!StringZZZ.isEmpty(sLeft)){
+				this.add(0, sLeft);
+			}else {
+				this.add(0, "");
+			}
+			
+			if(this.size()>=2) this.removeElementAt(1);
+			this.add(1, sSepMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+			
+			if(this.size()>=3) this.removeElementAt(2);						
+			if(!StringZZZ.isEmpty(sRight)){
+				this.add(2, sRight);
+			}else {
+				this.add(2, "");
+			}
+		
+		}else if(bReturnSeparators == false){
+			if(this.size()>=1) this.removeElementAt(0);										
+			if(!StringZZZ.isEmpty(sLeft)){
+				this.add(0, sLeft);
+			}else {
+				this.add(0, "");
+			}
+			
+			if(this.size()>=2) this.removeElementAt(1);						
+			this.add(1, "");  //Also ein Leerstring
+			
+			if(this.size()>=3) this.removeElementAt(2);										
+			if(!StringZZZ.isEmpty(sRight)){
+				this.add(2, sRight);
+			}else {
+				this.add(2, "");
+			}
+		}
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void replace(Object objValueLeft, Object objValueMid, Object objValueRight ) throws ExceptionZZZ {
 		main:{
@@ -166,42 +221,49 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		}
 	}
 	
-	//++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	@Override
-	public void replace(Object objValueLeft, Object objValueRight, boolean bReturnSeparators, String sSepMid ) throws ExceptionZZZ {
+	public void replaceKeepSeparatorCentral(Object objValueLeft, Object objValueMid, Object objValueRight, String sSepLeft, String sSepRight) throws ExceptionZZZ {
 		main:{
-			if(objValueLeft==null || objValueRight==null) break main;
+			if(objValueMid==null) break main;
+			if(objValueLeft==null & objValueRight==null) {
+				this.replace(objValueMid);
+				break main;
+			}
 			
-			if(objValueLeft instanceof String) {
-				replace_((String) objValueLeft, (String) objValueRight, bReturnSeparators, sSepMid);
+			if(objValueMid instanceof String) {
+				replaceKeepSeparatorCentral_((String) objValueLeft, (String) objValueMid, (String) objValueRight, sSepLeft, sSepRight);
 			}
 		}//end main:
 	}
 	
-	private void replace_(String sLeft, String sRight, boolean bReturnSeparators, String sSepMid) throws ExceptionZZZ {
-		ObjectUtilZZZ.ensureTypeEquals(sLeft, sRight); //Merke: ensure... wirft eine Exception
+	private void replaceKeepSeparatorCentral_(String sLeft, String sMid, String sRight, String sSepLeft, String sSepRight) throws ExceptionZZZ {
+		
+		ObjectUtilZZZ.ensureTypeEquals(sLeft, sMid); //Merke: ensure... wirft eine Exception
+		ObjectUtilZZZ.ensureTypeEquals(sRight, sMid);
 		
 		//Nun die Werte in den ErgebnisVector zusammenfassen
-		if(bReturnSeparators ==true){
+		if(!StringZZZ.isEmpty(sMid)){
 			if(this.size()>=1) this.removeElementAt(0);
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
 				this.add(0, "");
 			}
+								
+			if(this.size()>=2) this.removeElementAt(1);						
+			this.add(1, sSepLeft + sMid + sSepRight);//zentral wichtig: In der Mitte immer das "Extrakt".
 			
-			if(this.size()>=2) this.removeElementAt(1);
-			this.add(1, sSepMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
-			
-			if(this.size()>=3) this.removeElementAt(2);						
+			if(this.size()>=3) this.removeElementAt(2);											
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
 				this.add(2, "");
 			}
-		
-		}else if(bReturnSeparators == false){
-			if(this.size()>=1) this.removeElementAt(0);										
+		}else {
+			//sMid ist leer		
+			if(this.size()>=1) this.removeElementAt(0);						
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
@@ -209,14 +271,14 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
-			this.add(1, "");  //Also ein Leerstring
+			this.add(1, this.getObjectDefaultNew());
 			
-			if(this.size()>=3) this.removeElementAt(2);										
+			if(this.size()>=3) this.removeElementAt(2);						
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
 				this.add(2, "");
 			}
-		}
+		} 
 	}
 }
