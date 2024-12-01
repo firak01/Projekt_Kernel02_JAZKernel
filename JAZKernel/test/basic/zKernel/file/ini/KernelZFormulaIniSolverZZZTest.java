@@ -676,6 +676,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		//Merke: Beim Solven bleiben umgebende Z-Tags immer erhalten
 		//sExpression = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 		main:{
+			
+			TODOGOON20241201: Hier die Flag-Kombinationen in einen extra Methode packen
+			Z.B. testCompute_SolveWithFormulMath_Unsolved
+			     testCompute_SolveWithFormulMath_SolverUnsolved
+			     testCompute_SolveWithFormulMath_FormulaUnsolved
 			try {
 				//+++ Wert noch nicht ausrechnen: A			
 				btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 

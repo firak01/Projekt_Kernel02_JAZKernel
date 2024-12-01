@@ -65,7 +65,7 @@ public class TestUtilZZZ {
 				objStreamFile.println("Testentry3=Testvalue3 local to be found");
 							
 				objStreamFile.println("[Section for testCompute]");
-				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
+				objStreamFile.println("Formula1=Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
 				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
 				objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.");
 								

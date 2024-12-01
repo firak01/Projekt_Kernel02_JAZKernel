@@ -18,8 +18,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelExpressionIniHandlerZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 	
 		
 	private File objFile;
@@ -184,7 +184,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
 							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
 							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
-							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name(),
+							IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()
 							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
 			                   //       und nicht nur die Flags vom ExpressionIniHandler
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
@@ -275,34 +276,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	
 	private void testCompute_PATH_(String sExpressionIn, String sExpressionSolvedIn) {
 		try {		
-			boolean btemp;
-			String sSection; String sProperty;	
+			boolean btemp;	
 			String sExpression; String sExpressionSolved;
+			
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";					
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-			
-	
-			
-			//#########################################################
-			//#### SECTION B ##########################################
-			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER. 
-			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
-			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
-			sSection = "Section for testCompute";
-			sProperty = "Formula2";						
-			sExpressionSolved = "Der dynamische Wert2 ist '<Z>TestValue2 local to be foound</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-					
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-			
+		
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -385,109 +367,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 					
 			
-			//################################################################################
-			//### Verwende den Expression-Sover ueber das FileIni-Objekt
-			//################################################################################
-			//TODO diesen String testen:  String sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";		
-			
-			
-			//#########################################################
-			//#### SECTION A ##########################################
-			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
-			//#### Hier das Substitute ausschalten
-			sSection = "Section for testCompute";
-			sProperty = "Formula1";						
-			sExpressionSolved = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//#### Hier das Solve ausschalten
-			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
-			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
-			sSection = "Section for testCompute";
-			sProperty = "Formula1";
-			sExpressionSolved = sExpressionSolvedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			sSection = "Section for testCompute";
-			sProperty = "Formula1";
-			sExpressionSolved = sExpressionSolvedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			
-			
-			//#########################################################
-			//#### SECTION B ##########################################
-			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
-			//#### Hier das Substitute ausschalten
-			sSection = "Section for testCompute";
-			sProperty = "Formula2";						
-			sExpressionSolved = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//#### Hier das Solve ausschalten
-			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
-			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
-			sSection = "Section for testCompute";
-			sProperty = "Formula2";						
-			sExpressionSolved = "Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			sSection = "Section for testCompute";
-			sProperty = "Formula2";						
-			sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			//#########################################################
-			//#### SECTION C ##########################################
-			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
-			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER
-			sSection = "Section for testCompute";
-			sProperty = "Formula3";	
-			sExpressionSolved = "Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			sSection = "Section for testCompute";
-			sProperty = "Formula3";	
-			sExpressionSolved = "Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			sSection = "Section C";
-			sProperty = "Testentry3";						
-			sExpressionSolved = "Testvalue3 local to be found";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
-			
-			sSection = "Section for testCompute";
-			sProperty = "Formula3";	
-			sExpressionSolved = "Der dynamische Wert3 ist '<Z>Testvalue3 local to be found</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
-			
+				
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			
@@ -870,6 +750,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
+	
+	
 	//#########################################################
 	//### MATH
 	//#########################################################
@@ -890,8 +772,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	private void testCompute_MATH_(String sExpressionIn, String sExpressionSolvedIn) {
 		try {			
 			boolean btemp;
-			String sSection; String sProperty;
-			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";						
 			String sExpression; String sExpressionSolved;
@@ -1025,45 +905,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			
-			//################################################################################
-			//### Verwende den Expression-Sover ueber das FileIni-Objekt
-			//################################################################################
-			//TODO diesen String testen:  String sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";		
-				
-			//##############################################################
-			//#### SECTION 1 MATH ##########################################
-			//#### Einfache MATH Formel ohne Operator, ohne PATH, etc.
-			//a) ohne jedliche Aufloesung
-			sSection = "Section for testComputeMathValue";
-			sProperty = "Formula1";	
-			sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-			//b) ohne FORMULA Aufloesung
-			sSection = "Section for testComputeMathValue";
-			sProperty = "Formula1";							
-			sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);
-			
-			//c) ohne MATH Aufloesung
-			sSection = "Section for testComputeMathValue";
-			sProperty = "Formula1";	
-			sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_MATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//#### Einfache MATH Formel ohne Operator, ohne PATH, etc.
-			//d) Aufloesen
-			sSection = "Section for testComputeMathValue";
-			sProperty = "Formula1";							
-			sExpressionSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_MATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
-			
+						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -1173,21 +1015,21 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 												
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){
-				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
-				assertEquals(sExpressionSolved, sValue);
+					sExpressionSource = sExpressionSourceIn;
+					sExpressionSolved = sExpressionSolvedIn;		
+					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpressionSource = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
-				assertEquals(sExpressionSolved, sValue);
+					sExpressionSource = sExpressionSourceIn;
+					sExpressionSolved = sExpressionSolvedIn;
+					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1200,13 +1042,148 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
+	public void testCompute_PATH_IniUsed() {
+		boolean btemp;
+		String sSection; String sProperty;	
+		String sExpressionSolved;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";					
+		
+		try {			
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+			
+			//#########################################################
+			//#### SECTION B ##########################################
+			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER. 
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+		
+			
+			
+			//################################################################################
+			//### Verwende den Expression-Sover ueber das FileIni-Objekt
+			//################################################################################
+			//TODO diesen String testen:  String sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";		
+			
+			
+			//#########################################################
+			//#### SECTION A ##########################################
+			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
+			//#### Hier das Substitute ausschalten
+			sSection = "Section for testCompute";
+			sProperty = "Formula1";						
+			sExpressionSolved = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//#### Hier das Solve ausschalten
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
+			sSection = "Section for testCompute";
+			sProperty = "Formula1";
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			sSection = "Section for testCompute";
+			sProperty = "Formula1";
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			
+			
+			//#########################################################
+			//#### SECTION B ##########################################
+			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER.
+			//#### Hier das Substitute ausschalten
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//#### Hier das Solve ausschalten
+			//#### Merke: Dies ist kein "solve", sondern eine "substitute", darum ist fuer die reine Pfadersetzung das EXPRESSION_SOLVE Flag egal.
+			//####        UND beim Holen der ini-Property, werden eh immer die Z-Tags entfernt
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			sSection = "Section for testCompute";
+			sProperty = "Formula2";						
+			sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//#########################################################
+			//#### SECTION C ##########################################
+			//#### In der Section Property-Kombination liegt ein Pfad mit einem anderen Wert
+			//#### HIER LIEGT DER WERT IN EINER SECTION MIT EINER SYSTEMNUMBER
+			sSection = "Section for testCompute";
+			sProperty = "Formula3";	
+			sExpressionSolved = "Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsubstituted_(sSection, sProperty, sExpressionSolved);	
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			sSection = "Section for testCompute";
+			sProperty = "Formula3";	
+			sExpressionSolved = "Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			sSection = "Section C";
+			sProperty = "Testentry3";						
+			sExpressionSolved = "Testvalue3 local to be found";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
+			
+			sSection = "Section for testCompute";
+			sProperty = "Formula3";	
+			sExpressionSolved = "Der dynamische Wert3 ist '<Z>Testvalue3 local to be found</Z>'. FGL rulez.";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
+				
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	private boolean testCompute_PATH_IniUsed_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
-		
+		String sSection; String sProperty; String sExpressionSolved; String sValue;
+		boolean btemp; String stemp;
 		main:{
-			try {
-				String sSection; String sProperty; String sExpressionSolved; String sValue;
-				boolean btemp; String stemp;
+			try {				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				
 				//... mit Berechnung PATH
@@ -1336,6 +1313,61 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			}
 		}//end main:
 		return bReturn;
+	}
+	
+	public void testCompute_MATH_IniUsed() {
+		boolean btemp;
+		String sSection; String sProperty;
+		String sExpressionSolved;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";						
+	
+		main:{
+			try {
+				//################################################################################
+				//### Verwende den Expression-Sover ueber das FileIni-Objekt
+				//################################################################################
+				//TODO diesen String testen:  String sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";		
+					
+				//##############################################################
+				//#### SECTION 1 MATH ##########################################
+				//#### Einfache MATH Formel ohne Operator, ohne PATH, etc.
+				//a) ohne jedliche Aufloesung
+				sSection = "Section for testComputeMathValue";
+				sProperty = "Formula1";	
+				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_PATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+				
+				//b) ohne FORMULA Aufloesung
+				sSection = "Section for testComputeMathValue";
+				sProperty = "Formula1";							
+				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved);
+				
+				//c) ohne MATH Aufloesung
+				sSection = "Section for testComputeMathValue";
+				sProperty = "Formula1";	
+				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_MATH_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);	
+				
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//#### Einfache MATH Formel ohne Operator, ohne PATH, etc.
+				//d) Aufloesen
+				sSection = "Section for testComputeMathValue";
+				sProperty = "Formula1";							
+				sExpressionSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_MATH_IniUsed_(sSection, sProperty, sExpressionSolved);	
+
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:
 	}
 	
 	private boolean testCompute_MATH_IniUsed_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
@@ -2571,7 +2603,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";		
-		try {
+//		try {
 			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 			testCompute_Encrypted_(sExpressionSource);
 			
@@ -2582,28 +2614,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			testCompute_Encrypted_(sExpressionSource);
 			
 			
-			//++++++++++++++++++++++
-			//################################################################
-			//### Varianten JSON-ArrayList per Section/Property in Ini-File aufloesen
-			//#################################################################
-			
-			sSection = "Section for testEncrypted";
-			sProperty = "WertAforDecrypt";			
-			sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_Encrypted_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);
-			
-			sSection = "Section for testEncrypted";
-			sProperty = "WertAforDecrypt";
-			sExpressionSolved = "abcde";		
-			btemp = testCompute_Encrypted_IniUsed_Detail_(sSection, sProperty, sExpressionSolved);
-									
-			
-
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+//		
 		
+//	todogoon20241201 sicherstellen, das die flags vorhanden sind	
+// 			
 //		try {					
 //			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 //			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION +"' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -2739,47 +2756,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 		
-		//TODOGOON20241014;//mache Methode wie testCompute_IniUsed_   bzw. testCompute_IniUsedUnsolved_
 		
-		/*
-		try {	
-					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			
-			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1").getValue();
-			assertEquals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT,sExpression);
-			
-			//Berechne die erste Formel
-			objExpressionSolver.setFlag("usejson", true);
-			objExpressionSolver.setFlag("usejson_array", true);
-			String sValue = objExpressionSolver.compute(sExpression);//compute gibt nur einen DebugString zurück
-			assertNotNull(sValue);
-			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
-			
-			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson_array", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
-			
-			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1");
-			assertNotNull(objEntry);
-			assertTrue(objEntry.isJson());
-			assertTrue(objEntry.isJsonArray());
-			
-			ArrayList<String> als = objEntry.getValueArrayList();
-			assertNotNull(als);
-			String sValue01 = als.get(0);
-			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));
-			
-			
-			
-			
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
-		*/
 	}
 	
 	private boolean testCompute_Encrypted_(String sExpressionSourceIn, String sExpressionSolvedIn, ArrayList alExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
@@ -2973,8 +2950,43 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
+
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute_Encrypted_IniUsed(){	
+		String sExpressionSource=null;
+		String sSection; String sProperty; String sExpressionSolved;
+		boolean btemp;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";		
+		main:{
+		try {
+				//++++++++++++++++++++++
+				//################################################################
+				//### Varianten ENCRRYPTION per Section/Property in Ini-File aufloesen
+				//#################################################################
+				
+				sSection = "Section for testEncrypted";
+				sProperty = "WertAforDecrypt";			
+				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_Encrypted_IniUsed_Unsolved_(sSection, sProperty, sExpressionSolved);
+				
+				sSection = "Section for testEncrypted";
+				sProperty = "WertAforDecrypt";
+				sExpressionSolved = "abcde";		
+				btemp = testCompute_Encrypted_IniUsed_Detail_(sSection, sProperty, sExpressionSolved);
+					
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:
+	}
+
 	
-	private boolean testCompute_Encrypted_IniUsedUnsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
+	private boolean testCompute_Encrypted_IniUsed_Unsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3064,8 +3076,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				sValue = objEntry.getValue();				
 				assertEquals(sExpressionSolved, sValue);
-				assertTrue(objEntry.isJson());
-				assertTrue(objEntry.isJsonArray());
+				assertFalse(objEntry.isJson());
+				assertFalse(objEntry.isJsonArray());
 				
 				ArrayList<String> als = objEntry.getValueArrayList();
 				assertNull(als);
@@ -3087,15 +3099,40 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testCompute_JsonArray(){
+	public void testCompute_JsonArray(){	
+		boolean btemp;
+		String sExpression=null; String sExpressionSolved; ArrayList alExpressionSolved;
+		String sSection; String sProperty; 
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";		
+//		try {
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			testCompute_JsonArray_(sExpression);
+			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+//			testCompute_Encrypted_(sExpressionSource);
+//			
+//			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
+//			testCompute_Encrypted_(sExpressionSource);
+			
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+	}
+		
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	private void testCompute_JsonArray_(String sExpressionIn){
 
 		try {	
 			boolean btemp; String stemp;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";						
-			String sExpressionSource; String sExpressionSolved; ArrayList alExpressionSolved;
-			String sSection; String sProperty;	
+			String sExpression; String sExpressionSolved; ArrayList alExpressionSolved;
+			//String sSection; String sProperty;	
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 								
@@ -3104,10 +3141,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#################################################################
 			
 			//a)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpression = sExpressionIn;
 			alExpressionSolved = new ArrayList();
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_JsonArray_(sExpression, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -3116,110 +3153,94 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//### Varianten JSON nicht aufzuloesen
 			//#################################################################
 			//a)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			
 			//c)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//d)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//################################################################
 			//### Varianten JSON-ArrayList nicht aufzuloesen
 			//#################################################################
 			//a)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//d)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpressionSource;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//################################################################
 			//### Varianten JSON-ArrayList aufzuloesen
 			//#################################################################
 			
 			//a)			
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			alExpressionSolved = new ArrayList();
-			sExpressionSolved = sExpressionSource;		
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpressionSolved = sExpression;		
+			btemp = testCompute_JsonArray_(sExpression, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;	
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;	
 			alExpressionSolved = new ArrayList();
-			sExpressionSolved = sExpressionSource;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, alExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_(sExpression, sExpressionSolved, alExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			
 			//c)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			alExpressionSolved = new ArrayList();
 			alExpressionSolved.add("TESTWERT2DO2JSON01");
 			alExpressionSolved.add("TESTWERT2DO2JSON02");			
 			sExpressionSolved = "<Z>" + alExpressionSolved.toString() + "</Z>";			
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_(sExpression, sExpressionSolved, alExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 						
 			
 			//d)
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			alExpressionSolved = new ArrayList();
 			alExpressionSolved.add("TESTWERT2DO2JSON01");
 			alExpressionSolved.add("TESTWERT2DO2JSON02");
 			sExpressionSolved = alExpressionSolved.toString();
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, alExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_(sExpression, sExpressionSolved, alExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
-			//################################################################
-			//### Varianten JSON-ArrayList per Section/Property in Ini-File aufloesen
-			//#################################################################
-			
-			sSection = "Section for testJsonArraylist";
-			sProperty = "Array1";			
-			sExpressionSolved = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonArray_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);
-			
-			sSection = "Section for testJsonArraylist";
-			sProperty = "Array1";
-			alExpressionSolved = new ArrayList();
-			alExpressionSolved.add("TESTWERT2DO2JSON01");
-			alExpressionSolved.add("TESTWERT2DO2JSON02");			
-			btemp = testCompute_JsonArray_IniUsed_Detail_(sSection, sProperty, alExpressionSolved);
 									
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -3469,7 +3490,44 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}//end main:
 		return bReturn;
 	}
+
 	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute_JsonArray_IniUsed(){	
+		boolean btemp;
+		String sExpression=null; String sExpressionSolved; ArrayList alExpressionSolved;
+		String sSection; String sProperty; 
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";		
+		try {
+				
+			//################################################################
+			//### Varianten JSON-ArrayList per Section/Property in Ini-File aufloesen
+			//#################################################################
+			
+			sSection = "Section for testJsonArraylist";
+			sProperty = "Array1";			
+			sExpressionSolved = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_JsonArray_IniUsedUnsolved_(sSection, sProperty, sExpressionSolved);
+			
+			sSection = "Section for testJsonArraylist";
+			sProperty = "Array1";
+			alExpressionSolved = new ArrayList();
+			alExpressionSolved.add("TESTWERT2DO2JSON01");
+			alExpressionSolved.add("TESTWERT2DO2JSON02");			
+			btemp = testCompute_JsonArray_IniUsed_Detail_(sSection, sProperty, alExpressionSolved);
+
+			
+
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+
 	
 	private boolean testCompute_JsonArray_IniUsedUnsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
