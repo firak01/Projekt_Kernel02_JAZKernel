@@ -2617,51 +2617,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
-//		
-		
-//	todogoon20241201 sicherstellen, das die flags vorhanden sind	
-// 			
-//		try {					
-//			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
-//			assertTrue("Das Flag '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION +"' sollte zur Verfügung stehen.", bFlagAvailable);
 //			
-//			//Anwenden der ersten Formel, ohne Berechnung			
-//			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAforDecrypt").getValue();
-//			assertEquals(KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT,sExpression);
-//			
-//			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
-//			assertNotNull(objSectionEntry);
-//			assertFalse(objSectionEntry.isDecrypted());
-//			assertFalse(objSectionEntry.isRawEncrypted());
-//			
-//			//###################################################
-//			//Berechne die erste Formel, DIRECT			
-//			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-//			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-//			bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
-//			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-//			
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			String sReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
-//			//assertEquals(10,iReturn); //+10 für die Encryption
-//			
-//			objSectionEntry = objSectionEntryReference.get();
-//			assertNotNull(objSectionEntry);
-//			assertTrue(objSectionEntry.isDecrypted());
-//			assertTrue(objSectionEntry.isRawEncrypted());
-//			
-//			
-//			//#####################################################
-//			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-//			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
-//			sReturn = objExpressionHandler.solve(sExpression, objSectionEntryReference);
-//			//assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
-//			assertNotNull(objSectionEntry);
-//			assertTrue(objSectionEntry.isDecrypted());
-//			assertTrue(objSectionEntry.isRawEncrypted());
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}		
 	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file
@@ -2801,6 +2757,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertFalse(objEntry.isDecrypted()); //Nach dem Parsen ist das nicht entschluesselt
+					assertFalse(objEntry.isRawEncrypted()); //Erst im Expression-Solver wird der konkrete Solver aufgerufen (Hier Encryption). Nur der konkrete Solver kennt dann solche speziellen Flags, die nur fuer ihn da sind. 
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2812,6 +2779,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertTrue(objEntry.isDecrypted());  //Nach dem Solven ist das entschluesselt
+					assertTrue(objEntry.isRawEncrypted()); //Im Expression-Solver wird der konkrete Solver aufgerufen (Hier Encryption). Nur der konkrete Solver kennt dann solche speziellen Flags, die nur fuer ihn da sind.
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2865,6 +2843,18 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertFalse(objEntry.isDecrypted());
+					assertFalse(objEntry.isRawEncrypted());
+					
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2875,6 +2865,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertFalse(objEntry.isDecrypted());
+					assertFalse(objEntry.isRawEncrypted());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2928,6 +2929,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertFalse(objEntry.isDecrypted());
+					assertFalse(objEntry.isRawEncrypted());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2938,6 +2950,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
+					
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					assertNotNull(objEntry);
+					sValue = objEntry.getValue();	
+					
+					assertEquals(sExpressionSolved, sValue);
+					assertFalse(objEntry.isJson());
+					assertFalse(objEntry.isJsonArray());
+					
+					assertFalse(objEntry.isDecrypted());
+					assertFalse(objEntry.isRawEncrypted());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2962,18 +2985,40 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";		
 		main:{
-		try {
-				//++++++++++++++++++++++
+			try {
+					
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+					
+				//b)
+				sSection = "Section for testEncrypted";
+				sProperty = "WertAforDecrypt";			
+				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_Encrypted_IniUsed_EncryptionUnsolved_(sSection, sProperty, sExpressionSolved);
+				
+				
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+			
+			
 				//################################################################
 				//### Varianten ENCRRYPTION per Section/Property in Ini-File aufloesen
 				//#################################################################
 				
+				//a)
 				sSection = "Section for testEncrypted";
 				sProperty = "WertAforDecrypt";			
 				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				btemp = testCompute_Encrypted_IniUsed_Unsolved_(sSection, sProperty, sExpressionSolved);
 				
+				//b)
+				sSection = "Section for testEncrypted";
+				sProperty = "WertAforDecrypt";			
+				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				btemp = testCompute_Encrypted_IniUsed_EncryptionUnsolved_(sSection, sProperty, sExpressionSolved);
+					
+				//c)
 				sSection = "Section for testEncrypted";
 				sProperty = "WertAforDecrypt";
 				sExpressionSolved = "abcde";		
@@ -3017,15 +3062,84 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 							
 				//... ohne solve-Flag ist die Encryption Berechnung egal
-				btemp = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //soll dann egal sein
+				btemp = objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //soll dann egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "'", btemp);	
 											
 				sSection = sSectionIn;
 				sProperty = sPropertyIn;
 				sExpressionSolved = sExpressionSolvedIn;						
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
+				
+				IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
+				assertNotNull(objEntry);
+				sValue = objEntry.getValue();	
+				
 				assertEquals(sExpressionSolved, sValue);
+				assertFalse(objEntry.isJson());
+				assertFalse(objEntry.isJsonArray());
+				
+				assertFalse(objEntry.isDecrypted());
+				assertFalse(objEntry.isRawEncrypted());
+				
+				bReturn = true;
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	private boolean testCompute_Encrypted_IniUsed_EncryptionUnsolved_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
+		boolean bReturn = false;
+		
+		main:{
+			try {
+				String sSection; String sProperty; String sExpressionSolved; String sValue;
+				boolean btemp; String stemp;
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+				
+				//... mit Berechnung PATH
+				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+								
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);  
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+				
+				//... OHNE solve-Flag ist die eine Berechnung egal
+				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);                     //sollte wg. USEEXPRESSION_SOLVER = false egal sein.
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+				
+				//... ohne solve-Flag ist die Mathematische Berechnung egal
+				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+							
+				//... ohne solve-Flag ist die Encryption Berechnung egal
+				btemp = objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false); //Ansonsten wird der Wert sofort ausgerechnet
+				assertTrue("Flag nicht vorhanden '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "'", btemp);	
+											
+				sSection = sSectionIn;
+				sProperty = sPropertyIn;
+				sExpressionSolved = sExpressionSolvedIn;						
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				
+				IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
+				assertNotNull(objEntry);
+				sValue = objEntry.getValue();	
+				
+				assertEquals(sExpressionSolved, sValue);
+				assertFalse(objEntry.isJson());
+				assertFalse(objEntry.isJsonArray());
+				
+				assertFalse(objEntry.isDecrypted());
+				assertFalse(objEntry.isRawEncrypted());
+				
 				
 				
 				bReturn = true;
@@ -3035,6 +3149,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}//end main:
 		return bReturn;
 	}
+	
+	
 	
 	private boolean testCompute_Encrypted_IniUsed_Detail_(String sSectionIn, String sPropertyIn, String sExpressionSolvedIn) {
 		boolean bReturn = false;
@@ -3065,7 +3181,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 							
 				//... mit Berechnung Encryption
-				btemp = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //soll dann egal sein
+				btemp = objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //soll dann egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "'", btemp);	
 											
 				sSection = sSectionIn;
@@ -3078,6 +3194,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 				assertFalse(objEntry.isJson());
 				assertFalse(objEntry.isJsonArray());
+				
+				assertTrue(objEntry.isDecrypted());
+				assertTrue(objEntry.isRawEncrypted());
 				
 				ArrayList<String> als = objEntry.getValueArrayList();
 				assertNull(als);

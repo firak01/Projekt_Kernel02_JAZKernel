@@ -687,20 +687,20 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			sReturn = sExpressionUsed;							
 		}//end main:
 		
-		//Als echten Ergebniswert aber die <Z>-Tags rausrechnen
-		if(bRemoveSurroundingSeparators) {
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
-			sReturn = sValue;
-		}	
+		//Als echten Ergebniswert aber die <Z>-Tags rausrechnen //TODOGOON20241203: Sollte das nicht ueber ein postParse.. geloest werden...
+//		if(bRemoveSurroundingSeparators) {
+//			String sTagStart = this.getTagStarting();
+//			String sTagEnd = this.getTagClosing();
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
+//			sReturn = sValue;
+//		}	
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
+				if(!sExpressionIn.equals(sReturn)) objEntry.isSolvedChanged(true);
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);

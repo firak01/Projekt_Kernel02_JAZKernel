@@ -419,7 +419,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseAsEntry(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+		return this.parseAsEntry_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
 	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
