@@ -90,6 +90,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		KernelFileIniNew_(null, null, null, null, null);
 	}
 	
+	public KernelFileIniZZZ(String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl);
+		KernelFileIniNew_(null, null, null, null, null);
+	}
+	
 	public KernelFileIniZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		

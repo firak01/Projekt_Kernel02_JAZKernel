@@ -7,12 +7,16 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -25,9 +29,11 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelZFormulaIniSolverZZZTest extends TestCase {
-	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelZFormulaIniSolverZZZTest.ini");
+	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT = "<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>";
+	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01 = "Der dynamische Wert ist '"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT +"'. FGL rulez.";
 	
+	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT = "6";
+	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01 = "Der dynamische Wert ist '"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT +"'. FGL rulez.";	
 	
 	private File objFile;
 	private FileIniZZZ objFileIniInit;
@@ -39,142 +45,154 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private KernelZFormulaIniSolverZZZ objFormulaSolverInit;
 	
 	
-
 	protected void setUp(){
 		try {			
 			
-			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehngt.
-			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
-			String sFilePathTotal = null;		
-			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
-				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
-			}else{
-				//Eclipse Worspace
-				File f = new File("");
-			    String sPathEclipse = f.getAbsolutePath();
-			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
-				
-			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse, strFILE_NAME_DEFAULT );				
-			}
-			
-			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
-			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
-			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
-			objStreamFile.println("#This is another commentline");
-			objStreamFile.println("[Section A]");
-			objStreamFile.println("Testentry1=Testvalue1 to be found");			
-			objStreamFile.println("TestentryDymmy=nothing");
-						
-			objStreamFile.println("[Section B!01]");
-			objStreamFile.println("Testentry2=Testvalue2 local to be found");
-			
-			objStreamFile.println("[Section B]");
-			objStreamFile.println("Testentry2=Testvalue2 global. This should not be found");
-			
-			objStreamFile.println("[Section for testCompute]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
-			
-			objStreamFile.println("[Section for testComputeMathArguments]");
-			objStreamFile.println("WertA=4");
-			objStreamFile.println("WertB=5");
-			
-			objStreamFile.println("[Section for testComputeMathValue]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");		
-			
-			objStreamFile.println("[Section for testComputeMath]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
-			 
-			
-			objStreamFile.println("[Section for testComputePathWithMath]");
-			objStreamFile.println("Formula1=<Z>[Section for testComputeMath]Formula1</Z>");
-			objStreamFile.println("Formula2=<Z>[Section for testComputeMath]Formula2</Z>");
-			objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
-			
-			objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
-			 
-			
-			objStreamFile.println("[Section for testComputeMathArguments FLOAT]");
-			objStreamFile.println("WertA_float=4.0");
-			objStreamFile.println("WertB_float=5.0");
-			objStreamFile.println("[Section for testComputeMath FLOAT]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
-			
-			objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
-			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></Z>");
-			
-			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
-			objStreamFile.println("[Section for testPassVariable]");
-			objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
-			objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
-			
-			
-			//20210707 Tests für die Arbeit mit JSON Strings
-			//Merke:			
-			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
-			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
-			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
-			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1="+KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
-									
-			
-			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
-			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
-			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
-			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
-			String sFlagBlank = IROTUserZZZ.FLAGZ.USEBLANK.name();
-			String sEncrypted = ROT13ZZZ.encryptIt(sValue); //"nopqr";
-			objStreamFile.println("[Section for testEncrypted]");
-			objStreamFile.println("WertA="+sValue);
-			objStreamFile.println("WertAencrypted="+sEncrypted);
-			objStreamFile.println("WertAforDecrypt="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT);
-			
-			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true, false);
-			objStreamFile.println("WertB="+sValue);
-			objStreamFile.println("WertBencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
-			
-			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
-			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true, false, false,false);
-			objStreamFile.println("WertC="+sValue);
-			objStreamFile.println("WertCencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
 			
 			
 			
-			
-			objFile = new File(sFilePathTotal);
+//			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehngt.
+//			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
+//			String sFilePathTotal = null;		
+//			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+//				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+//			}else{
+//				//Eclipse Worspace
+//				File f = new File("");
+//			    String sPathEclipse = f.getAbsolutePath();
+//			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+//				
+//			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse, strFILE_NAME_DEFAULT );				
+//			}
+//			
+//			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+//			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
+//			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
+//			objStreamFile.println("#This is another commentline");
+//			objStreamFile.println("[Section A]");
+//			objStreamFile.println("Testentry1=Testvalue1 to be found");			
+//			objStreamFile.println("TestentryDymmy=nothing");
+//						
+//			objStreamFile.println("[Section B!01]");
+//			objStreamFile.println("Testentry2=Testvalue2 local to be found");
+//			
+//			objStreamFile.println("[Section B]");
+//			objStreamFile.println("Testentry2=Testvalue2 global. This should not be found");
+//			
+//			objStreamFile.println("[Section for testCompute]");
+//			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
+//			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
+//			
+//			objStreamFile.println("[Section for testComputeMathArguments]");
+//			objStreamFile.println("WertA=4");
+//			objStreamFile.println("WertB=5");
+//			
+//			objStreamFile.println("[Section for testComputeMathValue]");
+//			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
+//			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");		
+//			
+//			objStreamFile.println("[Section for testComputeMath]");
+//			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
+//			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
+//			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
+//			 
+//			
+//			objStreamFile.println("[Section for testComputePathWithMath]");
+//			objStreamFile.println("Formula1=<Z>[Section for testComputeMath]Formula1</Z>");
+//			objStreamFile.println("Formula2=<Z>[Section for testComputeMath]Formula2</Z>");
+//			objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
+//			
+//			objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
+//			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
+//			 
+//			
+//			objStreamFile.println("[Section for testComputeMathArguments FLOAT]");
+//			objStreamFile.println("WertA_float=4.0");
+//			objStreamFile.println("WertB_float=5.0");
+//			objStreamFile.println("[Section for testComputeMath FLOAT]");
+//			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+//			
+//			objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
+//			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></Z>");
+//			
+//			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
+//			objStreamFile.println("[Section for testPassVariable]");
+//			objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
+//			objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
+//			objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+//			
+//			
+//			//20210707 Tests für die Arbeit mit JSON Strings
+//			//Merke:			
+//			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
+//			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
+//			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
+//			objStreamFile.println("[Section for testJsonHashmap]");
+//			objStreamFile.println("Map1="+KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
+//									
+//			
+//			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
+//			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
+//			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
+//			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
+//			String sFlagBlank = IROTUserZZZ.FLAGZ.USEBLANK.name();
+//			String sEncrypted = ROT13ZZZ.encryptIt(sValue); //"nopqr";
+//			objStreamFile.println("[Section for testEncrypted]");
+//			objStreamFile.println("WertA="+sValue);
+//			objStreamFile.println("WertAencrypted="+sEncrypted);
+//			objStreamFile.println("WertAforDecrypt="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT);
+//			
+//			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true, false);
+//			objStreamFile.println("WertB="+sValue);
+//			objStreamFile.println("WertBencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
+//			
+//			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+//			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true, false, false,false);
+//			objStreamFile.println("WertC="+sValue);
+//			objStreamFile.println("WertCencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
+//			
+//			
+//			
+//			
+//			objFile = new File(sFilePathTotal);
 							
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 			
+			
+			//#### Ein init TestObjekt
+			String[] saFlagInit = {"init"};		
+			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ<Object>(saFlagInit);
+						
+			objFileIniInit = new FileIniZZZ(saFlagInit);
+			
+			//#### Das konkrete TestObject				
+			objFile = TestUtilZZZ.createKernelFileUsed();
+
+			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			String[] saFlagFileIni= {
+							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
+							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
+							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name(),
+							IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH.name(),
+							IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(),
+							IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(),
+							IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()
+							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
+			                   //       und nicht nur die Flags vom ExpressionIniHandler			
+			
 			//Für die Variablenersetzung wichtig: Eine HashMap mit den Variablen in der Ini-Datei.
 			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
 			hmVariable.put("myTestVariableString", "mySolvedTestVariableString");
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable, (String[]) null);
-			 			
-			//### Die TestObjecte
-			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ<Object>();
-			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
-			
-			//TestKonfiguration prüfen
-//			assertTrue(objExpressionSolverInit.getFlag("init")==true);
-//			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
-			
-			//#### Ein init TestObjekt
-			String[] saFlag = {"init"};
-			objFileIniInit = new FileIniZZZ(objKernel,  objFile, saFlag);
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable,  saFlagFileIni);
+			 					
+			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);			
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		} catch (FileNotFoundException e) {			
-			e.printStackTrace();
-		} catch (IOException e) {			
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}//END setup
@@ -200,14 +218,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
 			boolean btemp;
 			sExpressionSource = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-			sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
-			sExpessionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+			sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";	
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);		
-			
-			
+		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//################################################
@@ -280,9 +295,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 						
 			//########################################################################################
 			//### Ausrechnen Mathematischer Formeln ##################################################
-			//########################################################################################
-			btemp = testCompute_SolveWithFormulaMath_(sExpessionSourceFormulaMath);
-			
+			//########################################################################################			
 			btemp = testCompute_GetPropertyWithFormulaMath_();
 			
 			btemp = testCompute_GetPropertyWithFormulaMathByPath_();
@@ -669,18 +682,200 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		return true;
 	}
 	
-	private boolean testCompute_SolveWithFormulaMath_(String sExpressionSourceFormulaMath) {
+	
+	//###########################################################################
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute_FORMULA_MATH(){
+		String sExpression; String sExpressionSolved;;
+//		try {			
+			sExpression = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01;
+			sExpressionSolved = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01;
+			testCompute_FORMULA_MATH_(sExpression, sExpressionSolved);
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+	
+	}
+	
+	private boolean testCompute_FORMULA_MATH_(String sExpressionIn, String sExpressionSolvedIn) {
 		boolean btemp; String sValue;
-		String sExpression = sExpressionSourceFormulaMath;	
-		
-		//Merke: Beim Solven bleiben umgebende Z-Tags immer erhalten
-		//sExpression = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+		String sExpression; String sExpressionSolved;
+		sExpression = sExpressionIn;	
+		sExpressionSolved = sExpressionSolvedIn;
+				
 		main:{
+			try {
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+				
 			
-			TODOGOON20241201: Hier die Flag-Kombinationen in einen extra Methode packen
-			Z.B. testCompute_SolveWithFormulMath_Unsolved
-			     testCompute_SolveWithFormulMath_SolverUnsolved
-			     testCompute_SolveWithFormulMath_FormulaUnsolved
+				
+				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+				
+				//###########################
+			    //### objExpression
+				//#########################
+		
+		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		//+++ Ohne jegliche Expression-Berechnung
+//		//a)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//b)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;			
+//		btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//c)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource; 			
+//		btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//			
+//		//d)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//		
+//		
+//		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		//+++ Ohne jegliche Solver-Berechnung
+//		//a)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//b)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//c)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource; 			
+//		btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//			
+//		//d)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//		
+//		
+//		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		//+++ Ohne Json-Solver-Berechung
+//		//a)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//b)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
+//		btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//
+//		//c)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		//Beim Solven ohne Solver, bleibt alles wie est ist.
+//		btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//		
+//		//d)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
+//		btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//		
+//		//+++ Ohne JsonMapSolver-Berechung
+//		//a)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//b)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource; 
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
+//		btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+//		
+//		//c)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;
+//		//Beim Solven ohne encryption, bleibt alles an Tags drin.
+//		btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//	
+//		//d)
+//		sExpressionSource = sExpressionSourceIn;
+//		sExpressionSolved = sExpressionSource;	
+//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//		//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
+//		btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+//		
+		
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Mit FORMULA MATH-Berechnung
+				//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				sExpressionSolved = objFormulaSolver.makeAsExpression(sExpressionSolved);
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
+				
+				//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				btemp = testCompute_FORMULA_MATH_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+		
+				//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+				sExpression = sExpressionIn;			
+				sExpressionSolved = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}"; 
+				//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+				//der umgebende Z-Tag soll weg sein...  sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
+				
+				//Variante, wenn man Tags Wegnehmen wuerde
+		//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+		//		sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
+							
+				btemp = testCompute_FORMULA_MATH_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
+				//c)
+				sExpression = sExpressionIn;
+				sExpressionSolved = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}"; //Das ist der Wert von HashMap.toString/(; //sExpressionSourceIn;			
+				//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved); //Z-Tags bleiben drin
+							
+				//Wichtig: JSON:MAP soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.  
+				btemp = testCompute_FORMULA_MATH_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				
+				//d)
+				sExpression = sExpressionIn;
+				sExpressionSolved = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}"; //Das ist der Wert von HashMap.toString/(; //sExpressionSourceIn;
+				//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
+				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+				//Z-Tags sind raus sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
+				
+				//Wichtig: Bis auf den umgebendn JSON-Tag (der Solver wird hier nicht verwendet) sind alle Tags raus.
+				btemp = testCompute_FORMULA_MATH_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+								
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}		
+	
+	//##################################
+		
+
+			
+		TODOGOON20241201: Hier die Flag-Kombinationen in einen extra Methode packen
+//			Z.B. testCompute_SolveWithFormulMath_Unsolved
+//			     testCompute_SolveWithFormulMath_SolverUnsolved
+//			     testCompute_SolveWithFormulMath_FormulaUnsolved
 			try {
 				//+++ Wert noch nicht ausrechnen: A			
 				btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
@@ -696,29 +891,29 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, false); //Damit der Wert NICHT sofort ausgerechnet wird
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 															
-				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
-				assertEquals(sExpressionSourceFormulaMath, sValue);
+				sValue = objFormulaSolver.solve(sExpressionIn);
+				assertEquals(sExpressionIn, sValue);
 				
 				//+++ Wert noch nicht ausrechnen: B, wieder eine FlagEbene aktivieren
 				btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
-				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
-				assertEquals(sExpressionSourceFormulaMath, sValue);
+				sValue = objFormulaSolver.solve(sExpressionIn);
+				assertEquals(sExpressionIn, sValue);
 				
 				//+++ Wert noch nicht ausrechnen: C, wieder eine FlagEbene aktivieren
 				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 				
-				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
-				assertEquals(sExpressionSourceFormulaMath, sValue);
+				sValue = objFormulaSolver.solve(sExpressionIn);
+				assertEquals(sExpressionIn, sValue);
 				
 				//+++ Wert noch nicht ausrechnen: D, wieder eine FlagEbene aktivieren
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
 				
-				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);
-				assertEquals(sExpressionSourceFormulaMath, sValue);
+				sValue = objFormulaSolver.solve(sExpressionIn);
+				assertEquals(sExpressionIn, sValue);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Wert ausrechnen
@@ -726,7 +921,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 				
 				sExpression = "Der dynamische Wert ist '6'. FGL rulez.";
-				sValue = objFormulaSolver.solve(sExpressionSourceFormulaMath);				
+				sValue = objFormulaSolver.solve(sExpressionIn);				
 				assertEquals(sExpression, sValue);
 										
 			} catch (ExceptionZZZ ez) {
@@ -735,6 +930,207 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		}//end main:			
 		return true;
 	}
+	
+	//########################################################################
+
+	private boolean testCompute_FORMULA_MATH_(String sExpressionIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+		boolean bReturn = false;
+		try {
+			boolean btemp; 
+			
+			String sExpression; String sExpressionSolved;  
+			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
+			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			
+			
+			//##########################################
+			//### Expression solved Fall
+			//+++ Wert noch nicht ausrechnen: A			
+			btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+			
+			
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true); //Damit der Wert NICHT sofort ausgerechnet wird
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+														
+			sValue = objFormulaSolver.solve(sExpressionIn);
+			assertEquals(sExpressionIn, sValue);
+			
+			
+			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;		
+				
+				//+++ Teilberechnungen durchführen.
+				//    Es werden wg false die Tags nicht entfernt
+				vecValue = objFormulaSolver.parseFirstVector(sExpression, false);					
+				sValue = VectorUtilZZZ.implode(vecValue);
+				assertEquals(sExpression, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+				
+				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+			
+				//+++ Teilberechnungen durchführen
+				//    Es werden nomalerweise die Tags entfernt, bei einem angestellten Solver werden sie beim parsen ignoriert 
+				vecValue = objFormulaSolver.parseFirstVector(sExpression, bRemoveSuroundingSeparators);					
+				sValue = VectorUtilZZZ.implode(vecValue);
+
+				String sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				//sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");
+				//sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);
+				assertEquals(sExpressionSolvedTemp, sValue); 
+				
+				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+				
+				//+++ Nun die Gesamtberechnung durchführen
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+							
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+			
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
+				
+				assertFalse(objEntry.isSolveCalled());
+				
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				assertEquals(sExpressionSolved, sValue);
+				
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+				
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
+				
+				assertTrue(objEntry.isSolveCalled());
+				//assertTrue(objEntry.isSolvedChanged());
+								
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+								
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//+++ Variante fuer den AsEntry-Test
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objEntryUsed = objFormulaSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				assertNotNull(objEntryUsed);
+				
+				sValue = objEntryUsed.getValue();
+				assertEquals(sExpressionSolved, sValue);
+							
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+				
+				assertFalse(objEntryUsed.isPathSubstituted());
+				assertFalse(objEntryUsed.isVariableSubstituted());													
+			
+				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
+								
+				sValueUsed = objEntryUsed.getValue();
+				assertEquals(sExpressionSolved, sValueUsed);
+				
+				assertFalse(objEntryUsed.isDecrypted());
+				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+									
+				assertFalse(objEntryUsed.isCall());
+				assertFalse(objEntryUsed.isJavaCall());
+				assertNull(objEntryUsed.getCallingClassname());
+				assertNull(objEntryUsed.getCallingMethodname());
+			}
+			
+			
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;				
+				objEntryUsed = objFormulaSolver.solveAsEntry(sExpression, bRemoveSuroundingSeparators);
+				assertNotNull(objEntryUsed);
+				
+				sValue = objEntryUsed.getValue();
+				assertEquals(sExpressionSolved, sValue);
+				
+				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(bRemoveSuroundingSeparators) {
+					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+				//assertTrue(objEntryUsed.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
+				
+				assertFalse(objEntryUsed.isPathSubstituted());
+				assertFalse(objEntryUsed.isVariableSubstituted());
+					
+				assertFalse(objEntryUsed.isSolveCalled());
+								
+				assertFalse(objEntryUsed.isDecrypted());
+				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+								
+				assertFalse(objEntryUsed.isCall());
+				assertFalse(objEntryUsed.isJavaCall());
+				assertNull(objEntryUsed.getCallingClassname());
+				assertNull(objEntryUsed.getCallingMethodname());
+			}
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+			
+			bReturn = true;
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		return bReturn;
+	}
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	private boolean testCompute_GetPropertyWithExpression_() {
 		boolean btemp; String sValue; String sSection; String sProperty;

@@ -37,6 +37,10 @@ public abstract class AbstractKernelUseObjectZZZ<T> extends AbstractObjectWithFl
 		super(sFlag);
 	}
 	
+	public AbstractKernelUseObjectZZZ(String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
+	}
+
 	/** This constructor declares the used Log-Object as the Kernel-LogObject.
 	* Lindhauer; 10.05.2006 06:06:00
 	 * @param objKernel

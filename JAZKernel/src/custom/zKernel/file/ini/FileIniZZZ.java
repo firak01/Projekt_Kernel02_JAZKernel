@@ -25,6 +25,10 @@ public class FileIniZZZ<T> extends KernelFileIniZZZ<T>{
 		super();
 	}
 	
+	public FileIniZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+	}
+	
 	public FileIniZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
 		super(objKernel);
 	}

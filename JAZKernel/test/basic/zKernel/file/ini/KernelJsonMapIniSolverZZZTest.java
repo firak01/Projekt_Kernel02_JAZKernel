@@ -322,13 +322,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_JsonMap_(String sExpressionSourceIn){
+	private void testCompute_JsonMap_(String sExpressionIn){
 		
 		boolean btemp; int itemp;
 		
 		String sSection; String sProperty;
-		String sExpressionSource; 
-		String sExpressionSolved; String sExpressionSolvedTagless;
+		String sExpression; String sExpressionSolved;
 		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
 	
 		String sValue;
@@ -342,7 +341,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//+++ Mit JsonMap-Berechnung
 			
 			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Tag des Solvers entfernt. Das wird naemlich auch durch Parsen "aufgeloest". 
-			sExpressionSource = sExpressionSourceIn;			
+			sExpression = sExpressionIn;			
 			sExpressionSolved = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}"; //Das ist der Wert von HashMap.toString/(; 
 			//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");//Da der JSON-Solver nicht hier getestet wird, bleibt dieser Tag drin.
@@ -352,7 +351,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 //			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 //			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 						
-			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -364,119 +363,119 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonMap_Unexpressed_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_JsonMap_Unexpressed_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 			
+			btemp = testCompute_JsonMap_Unexpressed_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonMap_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonMap_Unexpressed_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Solver-Berechnung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonMap_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 			
+			btemp = testCompute_JsonMap_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonMap_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne Json-Solver-Berechung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-			btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne Solver, bleibt alles wie est ist.
-			btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			btemp = testCompute_JsonMap_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//+++ Ohne JsonMapSolver-Berechung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne encryption, bleibt alles an Tags drin.
-			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
-			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Mit JsonMap-Berechnung
 			//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}";
 			sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
 			
 			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-			sExpressionSource = sExpressionSourceIn;			
+			sExpression = sExpressionIn;			
 			sExpressionSolved = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}"; 
 			//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
@@ -486,27 +485,27 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 //			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 //			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 						
-			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonMap_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}"; //Das ist der Wert von HashMap.toString/(; //sExpressionSourceIn;			
 			//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved); //Z-Tags bleiben drin
 						
 			//Wichtig: JSON:MAP soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.  
-			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//d)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}"; //Das ist der Wert von HashMap.toString/(; //sExpressionSourceIn;
 			//der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen... sExpressionSolved = objExpressionSolver.makeAsExpression(sExpressionSolved);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
 			//Z-Tags sind raus sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
 			
 			//Wichtig: Bis auf den umgebendn JSON-Tag (der Solver wird hier nicht verwendet) sind alle Tags raus.
-			btemp = testCompute_JsonMap_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonMap_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
