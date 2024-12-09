@@ -151,6 +151,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = null;		
 		String sReturn = null;
+		String sReturnTag = null;
 		String sExpressionIn=null; String sExpression;	
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -169,14 +170,15 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		
+		objEntry.isParseCalled(true);
 	
 		main:{	
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
 						
 			sExpression = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
-			sReturn = sExpression;
+			sReturnTag = sExpression;
+			sReturn = sReturnTag;
 													
 			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
 			if(StringZZZ.isEmpty(sExpression)){
@@ -186,7 +188,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
 				if(objValue.isExpression(sExpression)){						
 					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
-					sReturn = objValue.parse(sExpression);					
+					sReturnTag = objValue.parse(sExpression);
+					sReturn = sReturnTag;
 				}						
 				this.getEntry().setValueDecrypted(sReturn);//Zwischenstand festhalten													
 			}							
@@ -195,16 +198,17 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		this.setValue(sReturn);
+		this.setValue(sReturnTag);
 		if(vecReturn!=null) vecReturn.replace(sReturn);
 						
 		if(objEntry!=null) {
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
-			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParseCalled(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			if(sExpressionIn!=null) {				 							
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isExpression(true);
+					objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			if(objEntry!=null) {						
@@ -254,6 +258,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		boolean bUseExpression = false; 
 		boolean bUseSolver = false;
 		
@@ -273,7 +278,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-					
+		objEntry.isSolveCalled(true);
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
@@ -407,22 +413,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				 }											
 			}
 			
-			sReturn = sExpressionUsed;							
+			sReturnTag = sExpressionUsed;
+			sReturn = sReturnTag;
 		}//end main:	
-		
-		//Das wird in parsePost gemacht
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
-//		if(bRemoveSurroundingSeparators & bUseExpression) {
-//			String sTagStart = "<Z>";
-//			String sTagEnd = "</Z>";
-//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
-//			sReturn = sValue;
-//		}
-		
+				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
+			objEntry.setValue(sReturn); //Der Handler bekommt die ganze Zeile als Wert
 			if(objEntry.isEncrypted()) {
 				this.getEntry().setValueDecrypted(sReturn);
 				objEntry.setValueDecrypted(sReturn);
@@ -430,7 +428,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) {
 					this.getEntry().isSolveCalled(true);
-					objEntry.isSolveCalled(true);
+					
 				}
 			}						
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.

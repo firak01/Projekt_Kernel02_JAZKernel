@@ -61,7 +61,7 @@ public class KernelJavaCall_ClassZZZ<T> extends AbstractIniTagSimpleZZZ<T>{//Abs
 	
 	//Methode mit Reference Objekt
 	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = vecExpressionIn; String sReturn;
+		Vector3ZZZ<String> vecReturn = vecExpressionIn; String sReturn; String sReturnTag = null;
 		String sExpression = null;		
 		boolean bUseParse = false;
 		
@@ -80,8 +80,9 @@ public class KernelJavaCall_ClassZZZ<T> extends AbstractIniTagSimpleZZZ<T>{//Abs
 				if(bRemoveSurroundingSeparators) {
 					String sTagStart = "<Z>"; //this.getTagStarting();
 					String sTagEnd = "</Z>";  //this.getTagClosing();
-					sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
-					this.setValue(sReturn);
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
+					sReturn = sReturnTag;
+					this.setValue(sReturnTag);
 					
 					vecExpressionIn.replace(sReturn);
 				}	

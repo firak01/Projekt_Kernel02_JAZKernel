@@ -224,19 +224,22 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	private String parse_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
+		String sReturnTag = null;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
 			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
 			if(vecExpression==null) break main;
 
-			sReturn = (String) vecExpression.get(1);
-			this.setValue(sReturn);
+			sReturnTag = (String) vecExpression.get(1);
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);
 			
 				
 			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
-			sReturn = (String) vecExpression.get(1);
-			this.setValue(sReturn);
+			sReturnTag = (String) vecExpression.get(1);
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);
 				
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
 			sReturn = VectorUtilZZZ.implode(vecExpression);									
@@ -257,17 +260,17 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
-		String sExpression = null;		
+		String sReturnTag = null;		
 		boolean bUseParse = false;
 		
 							
 		main:{			
 			if(vecExpressionIn==null) break main;
 						
-			sExpression = (String) vecExpressionIn.get(1);
-			this.setValue(sExpression);
-			
-						
+			sReturnTag = (String) vecExpressionIn.get(1);
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);
+									
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 			bUseParse = this.isParserEnabledThis();
@@ -277,8 +280,9 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
 	
-					sReturn = (String) vecReturn.get(1);
-					this.setValue(sReturn);
+					sReturnTag = (String) vecReturn.get(1);
+					sReturn = sReturnTag;
+					this.setValue(sReturnTag);
 				}	
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
@@ -286,8 +290,9 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
-			sReturn = (String) vecReturn.get(1);
-			this.setValue(sReturn);
+			sReturnTag = (String) vecReturn.get(1);
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);
 			
 		}//end main:
 				
@@ -341,22 +346,24 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
 			String sReturn = null;
-			String sExpressionIn = null;		
-			
+			String sReturnTag = null;
+					
 			main:{			
 				if(vecExpressionIn==null) break main;
 				
-				sExpressionIn = (String) vecExpressionIn.get(1);
-				sReturn = sExpressionIn;
-				if(StringZZZ.isEmpty(sExpressionIn)) break main;			
-					
 				//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
 				//bUseExpression = this.isExpressionEnabledAny(); 
 				//if(!bUseExpression) break main;
+								
+				sReturnTag = (String) vecExpressionIn.get(1);
+				sReturn = sReturnTag;
+				if(StringZZZ.isEmpty(sReturnTag)) break main;			
+					
 				
 				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
 				
-				this.setValue(sReturn);											
+				sReturn = sReturnTag;
+				this.setValue(sReturnTag);											
 			}//end main:
 					
 			//################################

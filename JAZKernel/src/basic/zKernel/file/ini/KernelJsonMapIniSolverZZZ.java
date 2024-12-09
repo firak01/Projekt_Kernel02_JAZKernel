@@ -170,20 +170,18 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	@SuppressWarnings("unchecked")
 	public HashMap<String,String> computeLinkedHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		LinkedHashMap<String,String> hmReturn = new LinkedHashMap<String,String>();
+		String sReturn = sLineWithExpression;  //Hole den Wert innerhalb von JSON:MAP. Merke: Ausgangswert ist normalerweise schon ein nach Z-Tag geparster Wert.
+		String sReturnTag = null;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
-			String sReturn = "";  //Hole den Wert innerhalb von JSON:MAP. Merke: Ausgangswert ist normalerweise schon ein nach Z-Tag geparster Wert.
 			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			
-			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
-			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
-			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			
+						
 			//Beschränke das Ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturn = vecAll.get(1);
+			sReturnTag = vecAll.get(1);
+			sReturn = sReturnTag;
 			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 				KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
@@ -205,7 +203,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 					objEntryInner.isFormulaMathSolved(true);
 					objEntryInner.setValueFormulaSolvedAndConverted(sExpression);
 				}
-				sReturn=sExpression;				
+				sReturnTag=sExpression;
+				sReturn = sReturnTag;
 				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
@@ -215,7 +214,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			//Ziel: Die Reihenfolge berücksichtige		
 			hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturn);
 			this.setValue(hmReturn);
-			this.setValue(sReturn);
+			this.setValue(sReturnTag);
 			//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;
 			//this.setValue(hmReturn.toString());
 			//this.setValueJson(sReturn);
@@ -252,6 +251,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
+		
 		boolean bUseExpression=false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -274,7 +275,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		}	
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-	
+		objEntry.isParseCalled(true);
+		
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -298,13 +300,16 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null) {
+				sReturnTag = (String) vecReturn.get(1);
+				sReturn = sReturnTag;
+			}
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturnTag);
 		if(vecReturn!=null) vecReturn.replace(sReturn);
-		this.setValue(sReturn);	
-			
+				
 		if(objEntry!=null) {						
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
@@ -364,6 +369,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		HashMap<String,String> hmReturn = null;
 		
 		boolean bUseExpression = false; 
@@ -385,7 +391,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-					
+		objEntry.isSolveCalled(true);
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
@@ -405,20 +412,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				sExpressionUsed = hmReturn.toString();
 			}
 			
-			sReturn = sExpressionUsed;							
+			sReturnTag = sExpressionUsed;
+			sReturn = sReturnTag;
 		}//end main:	
 	
-		//Wird in solvePost() gemacht...
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
-//		if(bRemoveSurroundingSeparators & bUseExpression) {
-//			String sTagStart = "<Z>";
-//			String sTagEnd = "</Z>";
-//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
-//			sReturn = sValue;
-//		}
-//		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 		

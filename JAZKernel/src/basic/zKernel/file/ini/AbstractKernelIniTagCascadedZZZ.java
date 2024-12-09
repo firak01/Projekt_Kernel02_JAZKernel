@@ -123,6 +123,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -169,30 +170,37 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			sExpression = sReturn;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturn = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
+			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);
+			sReturn = sReturnTag;
 			objEntry = objReturnReferenceSubstitute.get();			
-			vecReturn.replace(sReturn); //da noch weiter verarbeitet werden muss.
-			this.setValue(sReturn);
+			
+			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
+			this.setValue(sReturnTag);
 			sExpression = VectorUtilZZZ.implode(vecReturn);
 			
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
 			if(bUseParse && bRemoveSurroundingSeparators) {
 				//Mit speziellenm Parser "enabled" wird der Tag ggfs. entfernt
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
-				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
+				if (vecReturn!=null) {
+					sReturnTag = (String) vecReturn.get(1);
+					sReturn = sReturnTag;
+				}
 			}else {
 				//Ohne speziellen Parser "enabled" bleibt der Tag auf jeden Fall drin
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, !bIgnoreCase);
-				if (vecReturn!=null) sReturn = (String) vecReturn.get(1);				
+				if (vecReturn!=null) {
+					sReturnTag = (String) vecReturn.get(1);
+					sReturn = sReturnTag;
+				}
 			}
-		
-			
 		
 			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			sReturn = (String) vecReturn.get(1);		
+			sReturnTag = (String) vecReturn.get(1);
+			sReturn = sReturnTag;
 		}//end main:			
-		this.setValue(sReturn);
+		this.setValue(sReturnTag);
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		vecReturn.replace(sReturn);		

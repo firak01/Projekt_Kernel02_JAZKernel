@@ -136,6 +136,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		boolean bUseExpression = false; 
 		boolean bUseSolver = false;
 		boolean bUseSolverThis = false;
@@ -156,6 +157,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
+		objEntry.isSolveCalled(true);
 					
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -222,40 +224,21 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
 			if(objReturn==null)break main;						
 			sValue = objReturn.toString();
-			sReturn = sValue;									
+			sReturnTag = sValue;
+			sReturn = sReturnTag;
 		}//end main:	
-				
-		//#################################		
-		//if(vecReturn!=null) vecReturn.replace(sReturn);
-				
-		// Z-Tags entfernen.
-//		if(bRemoveSurroundingSeparators) {
-//			//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
-//			//     Das Entfernen der umgebenden Tags geht standardmaessig von innen nach aussen.
-//			if(bUseExpression) {
-////				if(bUseSolver) {
-////					if(bUseSolverThis) {
-////						String sTagStartZCall = "<Z:Call>";
-////						String sTagEndZCall = "</Z:Call>";
-////						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZCall, sTagEndZCall);
-////					}
-////				}
-//								
-//				String sTagStartZ = "<Z>";
-//				String sTagEndZ = "</Z>";
-//				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStartZ, sTagEndZ);
-//			}
-//		}	
-		
+						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);
+		this.setValue(sReturnTag);
 		if(objEntry!=null) {
 			//objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
 			objEntry.setValueCallSolved(sReturn);
+			objEntry.isSolved(true);
+			objEntry.isCallSolved(true);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isSolveCalled(true);					
-					objEntry.isCallSolved(true);
+					objEntry.isExpression(true);
+					objEntry.isSolvedChanged(true);
 				}
 			}					
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -289,6 +272,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -311,7 +295,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}	
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-	
+		objEntry.isParseCalled(true); 	
+		
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -331,33 +316,26 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
-			
-			//Fuer das Parsen sind die Solver Einstellungen egal
-//			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-//			if(!bUseSolver) break main;
-//						
-////			bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-////			if(!bUseCall) break main;
-//			
-//			bUseSolverThis = this.isSolverEnabledThis();		
-//			if(!bUseSolverThis) break main;
-					
-		
+			if(vecReturn!=null) {				
+				sReturnTag = (String) vecReturn.get(1);
+				sReturn = sReturnTag;
+			}		
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null) vecReturn.replace(sReturn);
-		this.setValue(sReturn);	
-			
+		this.setValue(sReturnTag);	
+		if(vecReturn!=null) vecReturn.replace(sReturn);	
+		
 		if(objEntry!=null) {						
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
 			if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
 			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParseCalled(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				objEntry.isParsed(true);											
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isExpression(true);
+					objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				}
 			}			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);
@@ -378,20 +356,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//end main
 		return saReturn;
 	}
-	
-//	@Override
-//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{			
-//			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-//			if(bUse) {
-//				sReturn = super.parseAsExpression(sLineWithExpression);
-//			}else {
-//				sReturn = sLineWithExpression;
-//			}									
-//		}//end main:
-//		return sReturn;
-//	}
 
 	@Override
 	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		

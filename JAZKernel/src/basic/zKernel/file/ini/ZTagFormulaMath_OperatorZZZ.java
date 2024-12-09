@@ -113,12 +113,15 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	public Vector3ZZZ<String> computeFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sLineWithExpression;
+		String sReturnTag = null;
 		boolean bIsError = false;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			vecReturn = this.parseFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);		
+			sReturnTag = sExpression;
+			
 			
 			if(!StringZZZ.isEmpty(sExpression)){															
 				this.setOperator(sExpression);
@@ -126,7 +129,8 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				String sValue02 = (String)vecReturn.get(2);
 				
 				try{
-					sReturn = this.compute(sValue01, sValue02);
+					sReturnTag = this.compute(sValue01, sValue02);
+					sReturn = sReturnTag;
 				}catch(ExceptionZZZ ez){
 					bIsError=true;
 				}					
@@ -144,7 +148,8 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
 		public String parse(String sLineWithExpression) throws ExceptionZZZ{
-			String sReturn = null;
+			String sReturn = sLineWithExpression;
+			String sReturnTag = null;
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 				
@@ -162,11 +167,12 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				}	
 				
 				Vector3ZZZ<String> vecAll = this.computeFirstVector(sLineWithExpression);
-										
+				sReturnTag = (String) vecAll.get(1);
+				
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturn = VectorUtilZZZ.implode(vecAll);
 				
-				this.setValue(sReturn);
+				this.setValue(sReturnTag);
 			}//end main:
 			return sReturn;
 		}

@@ -166,6 +166,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 									
@@ -191,7 +192,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			objReturn.setRaw(sExpressionIn);
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			boolean bUseExpression = this.isExpressionEnabledGeneral();  
 			if(!bUseExpression) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -206,9 +207,9 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			//objReturn = objReturnReferenceParse.get();			
 			
 			String sExpression = sExpressionIn;
-			sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);
-			
-			this.setValue(sReturn);				
+			sReturnTag = this.parse(sExpression, bRemoveSurroundingSeparators);
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);				
 		}//end main:
 		
 		if(objReturn!=null) {

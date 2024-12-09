@@ -329,6 +329,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit MATH-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
 		private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 			String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
+			String sReturnTag = null;
 			String sExpressionUsed = sExpressionIn;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -347,30 +348,34 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);	
-				
+			objEntry.isSolveCalled(true);
+			
 			main:{	
 				//Aufloesen von Pfaden und ini-Variablen
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSolverSuper.set(objEntry);
-				sReturn = super.solveParsed(sExpressionUsed, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+				sReturnTag = super.solveParsed(sExpressionUsed, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+				sReturn = sReturnTag;
 				objEntry = objReturnReferenceSolverSuper.get();
 				
+				objEntry.isSolved(true);
 				if(!sExpressionUsed.equals(sReturn)) {
-					objEntry.isSolveCalled(true);
+					objEntry.isSolvedChanged(true);
 					objEntry.setValueFormulaSolvedAndConverted(sReturn);
 					objEntry.setValue(sReturn);
 					objEntry.setValueAsExpression(sReturn);
-					this.setValue(sReturn);				
+					this.setValue(sReturnTag);				
 				}	
 				
 				
 				//Aufloesen des Math-Tags
-				sReturn = this.solveParsed_Expression_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);			
+				sReturnTag = this.solveParsed_Expression_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
+				sReturn = sReturnTag;
 				objEntry = objReturnReference.get();								
 			}//end main
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-			this.setValue(sReturn);		
+			this.setValue(sReturnTag);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {
@@ -385,6 +390,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//############################################
 	private String solveParsed_Expression_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {				
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		String sExpressionUsed = sExpressionIn;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -403,7 +409,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);			
-			
+		objEntry.isSolveCalled(true);
+		
 		main:{			
 			//!!! Pfade und Variablen ersetzen, wurde schon vorher gemacht !!!
 			
@@ -435,13 +442,14 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 						sExpressionWithTags=sExpressionMathParsedAndSolved;															
 					}
 					
-					sReturn = sExpressionWithTags;
-					if(!sExpressionWithTagsOld.equals(sExpressionWithTags)) {
-						objEntry.isSolveCalled(true);
+					sReturnTag = sExpressionWithTags;
+					sReturn = sReturnTag;
+					objEntry.isSolved(true);
+					if(!sExpressionWithTagsOld.equals(sExpressionWithTags)) {						
 						objEntry.isFormulaMathSolved(true);
 						objEntry.setValueFormulaSolvedAndConverted(sReturn);
 						objEntry.setValue(sReturn);
-						this.setValue(sReturn);
+						this.setValue(sReturnTag);
 					}
 					
 				}	
@@ -449,11 +457,14 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);		
+		this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isExpression(true);
+					objEntry.isSolvedChanged(true);
+				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}

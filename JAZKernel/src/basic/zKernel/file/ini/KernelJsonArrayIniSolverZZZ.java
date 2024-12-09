@@ -205,6 +205,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
+		String sReturnTag = null;
 		boolean bUseExpression=false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -227,7 +228,8 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		}	
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-	
+		objEntry.isParseCalled(true);
+		
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -251,13 +253,16 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			if(vecReturn!=null) {
+				sReturnTag = (String) vecReturn.get(1);
+				sReturn = sReturnTag;
+			}
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		this.setValue(sReturnTag);
 		if(vecReturn!=null) vecReturn.replace(sReturn);
-		this.setValue(sReturn);	
-			
+				
 		if(objEntry!=null) {						
 			sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);
@@ -318,6 +323,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sExpression = sExpressionIn;
 		String sReturn = sExpression;
+		String sReturnTag = null;
 		ArrayList<String> alsReturn = null;
 		
 		boolean bUseExpression = false; 
@@ -339,7 +345,8 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-					
+		objEntry.isSolveCalled(true);			
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
@@ -351,21 +358,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 						
 			alsReturn = this.computeArrayList(sExpression);
 			if(alsReturn!=null) {
-				sReturn = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
+				sReturnTag = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
+				sReturn = sReturnTag;
 			}						
 		}//end main:	
 		
-		//Wird in solvePost() gemacht...
-		//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen (von innen nach aussen)
-//		if(bRemoveSurroundingSeparators & bUseExpression) {
-//			String sTagStart = "<Z>";
-//			String sTagEnd = "</Z>";
-//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true); //also von innen nach aussen!!!												
-//			sReturn = sValue;
-//		}
-		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);			
 			

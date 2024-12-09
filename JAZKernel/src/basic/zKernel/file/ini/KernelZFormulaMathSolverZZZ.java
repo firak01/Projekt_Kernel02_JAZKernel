@@ -153,6 +153,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit MATH-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
+		String sReturnTag = null;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -170,25 +171,31 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);			
-			
+		objEntry.isSolveCalled(true);
+		
 		main:{			
 			//Aufloesen von Pfaden und ini-Variablen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolverSuper.set(objEntry);
-			sReturn = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+			sReturnTag = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+			sReturn = sReturnTag;
 			objEntry = objReturnReferenceSolverSuper.get();
 			
 			//Aufloesen des Math-Tags
-			sReturn = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);			
+			sReturnTag = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
+			sReturn = sReturnTag;
 			objEntry = objReturnReference.get();								
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);		
+		this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
+				objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isSolvedChanged(true);
+				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
@@ -198,6 +205,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	
 	private String solveParsed_Math_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{				
 		String sReturn = sExpressionIn;	
+		String sReturnTag = null;
 		boolean bUseExpression=false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -216,7 +224,8 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-				
+		objEntry.isSolveCalled(true);
+		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -240,7 +249,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
 			if(objOperator.isExpression(sFormulaExpression)){
 				 sExpression = objOperator.parse(sFormulaExpression);
-				 sReturn = sExpression;
+				 sReturnTag = sExpression;
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
@@ -256,26 +265,32 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
 					sExpressionOld = sExpression;
 				}													
-				 sReturn = sExpression;
+				 sReturnTag = sExpression;
+				 sReturn = sReturnTag;
 			}//end if operator.isExpression(...)
 			
 			
 		}//end main:
 
+		//Das sollte in solve passieren...
 		//Als echten Ergebniswert aber die <Z:math>-Tags rausrechnen
-		if(bRemoveSurroundingSeparators) {
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
-			sReturn = sValue;
-		}			
+//		if(bRemoveSurroundingSeparators) {
+//			String sTagStart = this.getTagStarting();
+//			String sTagEnd = this.getTagClosing();
+//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
+//			sReturnTag = sValue;
+//			sReturn = sReturnTag;
+//		}			
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturn);		
+		this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
+				objEntry.isSolved(true);
+				if(!sExpressionIn.equals(sReturn)) {
+					objEntry.isSolvedChanged(true);
+				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}
