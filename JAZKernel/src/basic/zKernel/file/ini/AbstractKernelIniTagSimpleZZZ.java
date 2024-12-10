@@ -491,7 +491,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = sExpressionIn;
-		String sReturnTag = "";
+		String sReturnTag = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
