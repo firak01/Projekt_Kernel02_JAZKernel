@@ -161,36 +161,38 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;						
-			
-			String sExpressionUsed = sExpressionIn;
-			
+						
 			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParserSuper.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpressionUsed, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
+			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParserSuper.get();
 			if(vecReturn!=null) {				
 				sReturnTag = (String) vecReturn.get(1);
-				sReturn = sReturnTag;
 			}
 			//sExpressionUsed = sReturn; //falls noch weiterverarbeitet werden muesste
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);	
-		if(vecReturn!=null) vecReturn.replace(sReturn);		
-		if(objEntry!=null) {		
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);
-			if(sExpressionIn!=null) {			 							
-				objEntry.isParsed(true);
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
-					objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-				}
-			}		
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);
+				
+		if(objEntry!=null) {
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);
+				if(sExpressionIn!=null) {			 							
+					objEntry.isParsed(true);
+					if(!sExpressionIn.equals(sReturn)) {
+						objEntry.isExpression(true);
+						objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+					}
+				}		
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
+			}
 		}
 		return vecReturn;
 	}

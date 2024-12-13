@@ -203,16 +203,20 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		this.setValue(sReturnTag);
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		vecReturn.replace(sReturn);		
-		if(objEntry!=null) {		
-			sReturn  = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);
-			objEntry.isParsed(true);
-			if(sExpressionIn!=null) {							
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-			}		
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);		
+		if(objEntry!=null) {
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn  = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);
+				objEntry.isParsed(true);
+				if(sExpressionIn!=null) {							
+					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				}		
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
+			}
 		}
 		return vecReturn;
 	}

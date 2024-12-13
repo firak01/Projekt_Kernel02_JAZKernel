@@ -328,7 +328,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
-		String sReturnTag = "";
+		String sReturnTag = null;
 		String sExpressionParsed = sReturn;
 		String sTagParsed = "";
 		String sExpressionSolved = sExpressionParsed;
@@ -358,6 +358,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
+		objEntry.isSolveCalled(true);
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -374,14 +375,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
 			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			sExpressionParsed = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
-			sReturn = sExpressionParsed;
-		
 			sTagParsed = (String) vecReturn.get(1);
 			sReturnTag = sTagParsed;
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag); //Zwischenstand TAG
-					
+			
+			this.setValue(sReturnTag); //Zwischenstand TAG			
+			sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
+						
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
@@ -391,40 +390,45 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
-			sExpressionSolved = this.solveParsed(sTagParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			sReturnTag = this.solveParsed(sTagParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceSolve.get();		
-			sReturn = sExpressionSolved; //Zwischenstand.	
-			
-			if(vecReturn!=null) vecReturn.replace(sReturn);
+				
+			if(vecReturn!=null) vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null) vecReturn.replace(sReturn);
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);
 				
-		if(objEntry!=null) {						
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			
-			//objEntry.isExpression(true);
-			//objEntry.isParsed(true); 								
-			//if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-			
-			objEntry.isSolveCalled(true);		
-			//if(!objEntry.getValue().equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-			//if(!sExpressionParsed.equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-			//if(!this.getValue().equals(sExpressionParsed)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-			if(!sReturn.equals(sExpressionParsed)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-			objEntry.setValue(sReturn);
-			if(sExpressionIn!=null) {
-				if(bUseExpression)objEntry.isExpression(true);																								
+		if(objEntry!=null) {
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				
+				//objEntry.isExpression(true);
+				//objEntry.isParsed(true); 								
+				//if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+									
+				//if(!objEntry.getValue().equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				//if(!sExpressionParsed.equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				//if(!this.getValue().equals(sExpressionParsed)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				
+				if(sTagParsed!=null) {
+					if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+				}
+				
+				objEntry.setValue(sReturn);
+				if(sExpressionIn!=null) {
+					if(bUseExpression)objEntry.isExpression(true);																								
+				}
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
 			}
-			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
-			
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);
 		}
 		return sReturn;	
 	}
@@ -582,19 +586,22 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
 			objEntry = objReturnReference.get();			
 			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
 		}//end main:
 	
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
-		if(vecReturn!=null) vecReturn.replace(sReturn);						
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);						
 		this.setValue(sReturnTag);
 				
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);		
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);		
+				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			}
 		}
 		return vecReturn;
 	}
@@ -627,6 +634,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		String sReturn = null;
 		String sReturnTag = null;
 		String sExpressionIn=null;
+		boolean bUseExpression = false;
 			
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -649,26 +657,35 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
 			
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;
+			
+			
 			//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
 			//!!! hier wuerde dann etwas konkretes stehen.
 						
 			sReturnTag = (String) vecReturn.get(1);;
-			sReturn = sReturnTag;
 		}//end main:
 	
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);
-		if(vecReturn!=null) vecReturn.replace(sReturn);
+		
 						
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);	
-			if(sExpressionIn!=null) {
-				objEntry.isExpression(true);
-				objEntry.isParseCalled(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-			}			
+			
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);	
+				if(sExpressionIn!=null) {
+					objEntry.isExpression(true);
+					objEntry.isParseCalled(true); 								
+					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				}			
+			}
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;

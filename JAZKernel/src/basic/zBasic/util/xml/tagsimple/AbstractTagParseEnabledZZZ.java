@@ -112,21 +112,19 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String>parseFirstVector(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpression;
+
 		String sReturnTag = null;
-		main:{
+		main:{			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = XmlUtilZZZ.parseFirstVector(sExpression, this.getTagStarting(), this.getTagClosing(), bRemoveSurroundingSeparators);
+			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagStarting(), this.getTagClosing(), bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
-			sReturn  = sReturnTag;
 			this.setValue(sReturnTag);
 			
 			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);						
+			this.setValue(sReturnTag);								
 		}
 		return vecReturn;
 	}

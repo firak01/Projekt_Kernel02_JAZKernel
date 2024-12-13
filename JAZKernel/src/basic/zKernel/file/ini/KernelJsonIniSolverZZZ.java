@@ -237,31 +237,32 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonMapIniSolverZZZ.sTAG_NAME, false)){
 				objEntry.isJsonMap(true);
 			}
-			
-			String sExpression = sExpressionIn;
-			
+						
 			//Mehrere Z-Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn!=null) {
 				sReturnTag = (String) vecReturn.get(1);
-				sReturn = sReturnTag;
 			}
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);
-		if(vecReturn!=null) vecReturn.replace(sReturn);
-						
-		if(objEntry!=null) {						
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);
-						
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);
+								
+		if(objEntry!=null) {
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				sReturn = VectorUtilZZZ.implode(vecReturn);
+				objEntry.setValue(sReturn);
+							
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				this.adoptEntryValuesMissing(objEntry);
+			}
 		}				
 		return vecReturn;
 	}

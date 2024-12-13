@@ -174,12 +174,12 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		objEntry.isSolveCalled(true);
 		
 		main:{			
-			//Aufloesen von Pfaden und ini-Variablen
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSolverSuper.set(objEntry);
-			sReturnTag = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-			sReturn = sReturnTag;
-			objEntry = objReturnReferenceSolverSuper.get();
+//			//Aufloesen von Pfaden und ini-Variablen
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//			objReturnReferenceSolverSuper.set(objEntry);
+//			sReturnTag = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+//			sReturn = sReturnTag;
+//			objEntry = objReturnReferenceSolverSuper.get();
 			
 			//Aufloesen des Math-Tags
 			sReturnTag = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
@@ -250,6 +250,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			if(objOperator.isExpression(sFormulaExpression)){
 				 sExpression = objOperator.parse(sFormulaExpression);
 				 sReturnTag = sExpression;
+				 sReturn = sReturnTag;
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
@@ -257,7 +258,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 				
 				String sExpressionOld = sFormulaExpression; 
 				while(objValue.isExpression(sExpressionOld)){
-					sExpression = objValue.parse(sExpressionOld);
+					sExpression = objValue.parse(sExpressionOld);  //TODOGOON: 20241212: Das muesste ja eigentlich .solve sein...
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);

@@ -153,6 +153,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		String sReturn = null;
 		String sReturnTag = null;
 		String sExpressionIn=null; String sExpression;	
+		boolean bUseExpression  = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -173,48 +174,46 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		objEntry.isParseCalled(true);
 	
 		main:{	
+			bUseExpression = this.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+					
 			if(vecExpressionIn==null) break main;
-			vecReturn=vecExpressionIn;			
+			vecReturn=vecExpressionIn;	
+			
+			
 						
-			sExpression = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
-			sReturnTag = sExpression;
-			sReturn = sReturnTag;
+			sReturnTag = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
 													
 			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
-			if(StringZZZ.isEmpty(sExpression)){
+			if(StringZZZ.isEmpty(sReturnTag)){
 				
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
-				if(objValue.isExpression(sExpression)){						
-					this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
-					sReturnTag = objValue.parse(sExpression);
-					sReturn = sReturnTag;
-				}						
-				this.getEntry().setValueDecrypted(sReturn);//Zwischenstand festhalten													
+				if(objValue.isExpression(sReturnTag)){	
+					objEntry.isEncrypted(true);
+					
+					sReturn = VectorUtilZZZ.implode(vecReturn);
+					objEntry.setValueEncrypted(sReturn);//Zwischenstand festhalten
+					
+					sReturnTag = objValue.parse(sReturnTag);
+				}																							
 			}							
 		}//end main:
 	
 			
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);
-		if(vecReturn!=null) vecReturn.replace(sReturn);
-						
+								
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);	
-			if(sExpressionIn!=null) {				 							
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
-					objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-				}
-			}			
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-			if(objEntry!=null) {						
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {									
 				sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
-				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {
 					objEntry.isExpression(true);
 					objEntry.isParseCalled(true); 								

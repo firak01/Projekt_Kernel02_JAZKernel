@@ -232,13 +232,10 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			if(vecExpression==null) break main;
 
 			sReturnTag = (String) vecExpression.get(1);
-			sReturn = sReturnTag;
 			this.setValue(sReturnTag);
-			
-				
+							
 			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecExpression.get(1);
-			sReturn = sReturnTag;
 			this.setValue(sReturnTag);
 				
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.

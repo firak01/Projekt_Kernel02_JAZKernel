@@ -119,18 +119,15 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			vecReturn = this.parseFirstVector(sLineWithExpression);			
-			String sExpression = (String) vecReturn.get(1);		
-			sReturnTag = sExpression;
-			
-			
-			if(!StringZZZ.isEmpty(sExpression)){															
-				this.setOperator(sExpression);
+			sReturnTag = (String) vecReturn.get(1);		
+									
+			if(!StringZZZ.isEmpty(sReturnTag)){															
+				this.setOperator(sReturnTag);
 				String sValue01 = (String)vecReturn.get(0);
 				String sValue02 = (String)vecReturn.get(2);
 				
 				try{
-					sReturnTag = this.compute(sValue01, sValue02);
-					sReturn = sReturnTag;
+					sReturn = this.compute(sValue01, sValue02);
 				}catch(ExceptionZZZ ez){
 					bIsError=true;
 				}					
@@ -167,12 +164,11 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				}	
 				
 				Vector3ZZZ<String> vecAll = this.computeFirstVector(sLineWithExpression);
-				sReturnTag = (String) vecAll.get(1);
+				//Nein, der Operator selbst ist ja ein z.B. "+",    sReturnTag = (String) vecAll.get(1);
+				//this.setValue(sReturnTag);
 				
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturn = VectorUtilZZZ.implode(vecAll);
-				
-				this.setValue(sReturnTag);
 			}//end main:
 			return sReturn;
 		}

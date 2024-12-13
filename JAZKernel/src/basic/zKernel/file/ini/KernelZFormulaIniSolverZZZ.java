@@ -357,21 +357,18 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				sReturnTag = super.solveParsed(sExpressionUsed, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
 				sReturn = sReturnTag;
 				objEntry = objReturnReferenceSolverSuper.get();
+
+				//Aufloesen des Math-Tags
+				sReturnTag = this.solveParsed_Expression_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
+				sReturn = sReturnTag;
+				objEntry = objReturnReference.get();	
 				
 				objEntry.isSolved(true);
 				if(!sExpressionUsed.equals(sReturn)) {
 					objEntry.isSolvedChanged(true);
-					objEntry.setValueFormulaSolvedAndConverted(sReturn);
-					objEntry.setValue(sReturn);
+					objEntry.setValueFormulaSolvedAndConverted(sReturn);					
 					objEntry.setValueAsExpression(sReturn);
-					this.setValue(sReturnTag);				
-				}	
-				
-				
-				//Aufloesen des Math-Tags
-				sReturnTag = this.solveParsed_Expression_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
-				sReturn = sReturnTag;
-				objEntry = objReturnReference.get();								
+				}																
 			}//end main
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -443,20 +440,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					}
 					
 					sReturnTag = sExpressionWithTags;
-					sReturn = sReturnTag;
 					objEntry.isSolved(true);
 					if(!sExpressionWithTagsOld.equals(sExpressionWithTags)) {						
 						objEntry.isFormulaMathSolved(true);
-						objEntry.setValueFormulaSolvedAndConverted(sReturn);
-						objEntry.setValue(sReturn);
-						this.setValue(sReturnTag);
-					}
-					
+						objEntry.setValueFormulaSolvedAndConverted(sReturnTag);
+					}					
 				}	
 			}			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		if(sReturnTag!=null) sReturn = sReturnTag;
 		this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
