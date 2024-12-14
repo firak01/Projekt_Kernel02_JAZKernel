@@ -104,8 +104,15 @@ public class TestUtilZZZ {
 				//Beachte Variablen können wie INI-Path auch ausserhalb einer MATH - Anweisung gelten.
 				objStreamFile.println("[Section for testPassVariable]");
 				objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
+				
+				//Erst Pfad, dann Variable
 				objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
+				
+				//zwei Pfade
 				objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+				
+				//Erst Variable, dann Pfad
+				objStreamFile.println("Formula4=Der dynamische Wert ist '<Z><z:Math><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val><Z:oP>*</Z:op><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val></Z:math></Z>'. FGL rulez.");
 				
 				
 				//20210707 Tests für die Arbeit mit JSON Strings

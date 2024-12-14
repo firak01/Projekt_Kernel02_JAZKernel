@@ -165,20 +165,21 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
-			if (vecReturn!=null) sReturn = (String) vecReturn.get(1);
+			if (vecReturn!=null) sReturnTag = (String) vecReturn.get(1);
 			
-			sExpression = sReturn;
+			sExpression = sReturnTag;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);
-			sReturn = sReturnTag;
+			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSubstitute.get();			
 			
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			this.setValue(sReturnTag);
-			sExpression = VectorUtilZZZ.implode(vecReturn);
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			
 			
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
+			sExpression = sReturn;
 			if(bUseParse && bRemoveSurroundingSeparators) {
 				//Mit speziellenm Parser "enabled" wird der Tag ggfs. entfernt
 				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
