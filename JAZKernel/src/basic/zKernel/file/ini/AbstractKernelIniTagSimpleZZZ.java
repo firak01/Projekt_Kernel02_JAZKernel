@@ -1258,7 +1258,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							
 						ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
 						while(objVariable.isExpression(sExpression)){
-							Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+							//Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+							
+							//Auf gar keinen Fall den Z-Tag entfernen, sonst können nachfolgende PATH - Anweisungen nicht mehr gefunden werden.
+							Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false); //auf jeden Fall um Variablen herum den Z-Tag entfernen
 							if(vecExpressionTemp==null) break;
 							
 							sExpressionTemp = (String) vecExpressionTemp.get(1);

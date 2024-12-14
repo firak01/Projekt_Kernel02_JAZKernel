@@ -1069,8 +1069,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntry.isParsed());
 //					}
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+					assertTrue(objEntry.isSolveCalled()); //dito mit solve()
 					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
-					assertFalse(objEntry.isSolveCalled());
+
 									
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
