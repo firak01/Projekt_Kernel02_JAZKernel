@@ -143,11 +143,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//+++ Ohne jegliche Expression-Berechnung
 			
-				//c)
+				//a)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost; 			
-				btemp = testCompute_Call_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-							
+				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
+				btemp = testCompute_Call_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				
@@ -1037,8 +1037,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntry.isParsed());
 //					}
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
 					assertFalse(objEntry.isSolveCalled());
+					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
+					
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.

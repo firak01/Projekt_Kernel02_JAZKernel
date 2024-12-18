@@ -362,16 +362,18 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			
-			bUseExpression = this.isExpressionEnabledGeneral(); 
-			if(!bUseExpression) break main;		
-						
+								
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);//!!! false... Die Z-Tags drin lassen, ggfs. benoetigt fuer weitere Berechnungen.
 			objEntry = objReturnReferenceParse.get();
 			
+			//solve ruft immer parse() auf, wenn die generelle Auswertung der Expression abgeschaltet ist,
+			//so wird .isParseCalled() dort trotzdem gesetzt sein.
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;		
+						
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
 			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);
