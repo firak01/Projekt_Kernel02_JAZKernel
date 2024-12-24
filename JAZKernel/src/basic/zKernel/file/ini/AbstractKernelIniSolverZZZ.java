@@ -184,10 +184,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	//### Aus IParseEnabled
-	@Override
-	public boolean isParserEnabledThis() throws ExceptionZZZ{
-		return this.isSolverEnabledEveryRelevant();
-	}
+//	@Override
+//	public boolean isParserEnabledThis() throws ExceptionZZZ{
+//		return this.isSolverEnabledEveryRelevant();		
+//	}
 	
 	//### Aus ISolveEnabled
 	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
@@ -213,7 +213,21 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		return bReturn;
 	}
-		
+	
+	@Override 
+	public boolean isSolverEnabledAnyRelevant() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			boolean bReturn1 = this.isSolverEnabledThis();						
+			boolean bReturn2 = this.isSolverEnabledGeneral();
+			
+			bReturn = bReturn1 | bReturn2;
+		}//end main:
+		return bReturn;
+	}
+	
 	@Override
 	public boolean isSolveRelevant(String sExpression) throws ExceptionZZZ {
 		return this.isSolve(sExpression);
@@ -377,11 +391,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
 			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			sTagParsed = (String) vecReturn.get(1);
-			sReturnTag = sTagParsed;
-			
-			this.setValue(sReturnTag); //Zwischenstand TAG			
-			sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
+			sTagParsed = (String) vecReturn.get(1);	
+			sReturnTag = this.getValue();
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
 						
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
@@ -401,14 +413,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);
-				
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
+		this.setValue(sReturnTag);				
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				
 				//objEntry.isExpression(true);
 				//objEntry.isParsed(true); 								
@@ -600,7 +611,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);		
 				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			}
@@ -680,7 +691,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);	
 				if(sExpressionIn!=null) {
 					objEntry.isExpression(true);

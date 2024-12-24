@@ -9,6 +9,7 @@ public interface ISolveEnabledZZZ{
 	boolean isSolverEnabledGeneral() throws ExceptionZZZ;////prueft intern ab, ob das Flag Solver zu nutzen gesetzt ist.
 	boolean isSolverEnabledThis() throws ExceptionZZZ; //prueft intern ab, ob das Flag fuer den konkreten Solver gesetzt ist.
 	boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ; //prueft intern ab ab solverEnabledGeneral und solverEnabledThis auf true sind.
+	boolean isSolverEnabledAnyRelevant() throws ExceptionZZZ; //prueft intern ab ab solverEnabledGeneral oder solverEnabledThis auf true sind.
 	boolean isSolveRelevant(String sExpression) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
 	//geht erst ab Java 1.8 oder so... static boolean isParseStatic(String sExpressionToProof) throws ExceptionZZZ;
 	

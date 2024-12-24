@@ -6,7 +6,8 @@ import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagBasicZZZ;
 import basic.zKernel.file.ini.IExpressionUserZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniParserZZZ;
 
-public interface ITagWithExpressionZZZ extends IObjectWithExpressionZZZ, ITagBasicZZZ, IConvertEnabledZZZ, IExpressionUserZZZ, IValueComputedBufferedUserZZZ, IParseEnabledZZZ{
+public interface ITagWithExpressionZZZ extends IObjectWithExpressionZZZ, ITagBasicZZZ, IConvertEnabledZZZ, IExpressionUserZZZ, IValueComputedBufferedUserZZZ, IParseEnabledZZZ, IKernelExpressionIniParserZZZ{
 
 }

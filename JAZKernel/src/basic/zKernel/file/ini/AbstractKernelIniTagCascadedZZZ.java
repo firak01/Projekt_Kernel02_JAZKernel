@@ -121,9 +121,8 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	
 	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn;
-		String sReturnTag = null;
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>(); Vector3ZZZ<String>vecReturnTag = new Vector3ZZZ<String>();
+		String sReturn = sExpressionIn; String sReturnTag = null;
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -143,73 +142,61 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}	
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
-		objEntry.isParseCalled(true);
+		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
 		
 		main:{
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
 			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			if(XmlUtilZZZ.containsTag(sExpressionIn, "Z", false)){
+			if(XmlUtilZZZ.containsTag(sExpression, "Z", false)){
 				objEntry.isExpression(true);
 			}	
-			objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
-			
-			String sExpression = sExpressionIn;
-			
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParse = this.isParserEnabledThis();
-		
+			 
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
+		    //Ausserdem wird so vecReturn "initialisiert"
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
-			if (vecReturn!=null) sReturnTag = (String) vecReturn.get(1);
-			
+			if (vecReturn!=null) sReturnTag = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
+						
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			//Merke: Darum vorher vecReturn schon initialisieren.
+			bUseParse = this.isParserEnabledThis();
+		    if(!bUseParse) break main;
+		    			
 			sExpression = sReturnTag;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
 			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSubstitute.get();			
 			
-			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
-			this.setValue(sReturnTag);
-			sReturn = VectorUtilZZZ.implode(vecReturn);
-			
-			
+			if (vecReturn!=null) vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
+			this.setValue(sReturnTag);//Hier ist erst einmal das Setzend des Werts der Substitution erlaubt.
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+		
+			//+++ Der Wert des Tags
 			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
 			sExpression = sReturn;
-			if(bUseParse && bRemoveSurroundingSeparators) {
-				//Mit speziellenm Parser "enabled" wird der Tag ggfs. entfernt
-				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
-				if (vecReturn!=null) {
-					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-				}
-			}else {
-				//Ohne speziellen Parser "enabled" bleibt der Tag auf jeden Fall drin
-				vecReturn = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), true, !bIgnoreCase);
-				if (vecReturn!=null) {
-					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-				}
-			}
-		
-			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+			vecReturnTag = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
+			if (vecReturnTag!=null) sReturnTag = (String) vecReturnTag.get(1);
+			
+			//+++ Der endgueltige Wert der Zeile 
+			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
+			
 		}//end main:			
 		this.setValue(sReturnTag);
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);		
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).		
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn  = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn  = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 				objEntry.isParsed(true);
 				if(sExpressionIn!=null) {							

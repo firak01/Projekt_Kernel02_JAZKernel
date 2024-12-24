@@ -19,6 +19,7 @@ import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zBasic.util.file.ini.IniStructurePositionZZZ;
 import basic.zBasic.util.xml.tagexpression.AbstractTagWithExpressionBasicZZZ;
+import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
@@ -99,7 +100,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//### Aus IParseEnabledZZZ	
 	@Override
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //kann von anderen Klassen ueberschreiben werden.
+		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER);
 	}
 
 	@Override
@@ -596,6 +597,44 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	@Override
 	public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	
+	//### Aus IKernelExpressionIniParserZZZ
+	@Override
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelExpressionIniParserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }

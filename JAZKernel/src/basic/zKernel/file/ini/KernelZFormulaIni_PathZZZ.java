@@ -307,6 +307,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
 			vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
+			
+			TODOGOON20241224; 
+			//Problem: Der einem INI-Path Ausdruck umgebende Z-Tag muss eintfernt werden.
+			//         1. Schritt: Packe ihn mit min Vec(1).
+			//vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression + sSepRight, sSepLeft, sSepRight, false);
+			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
+			
 			String sLeft = (String) vecReturn.get(0);
 			
 			String sMid = (String) vecReturn.get(1);
@@ -404,7 +411,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 
 		this.setValue((String) vecReturn.get(1));
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);

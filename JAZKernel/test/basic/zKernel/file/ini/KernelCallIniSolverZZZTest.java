@@ -99,15 +99,16 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		public void testCompute_Call() {
 			String sExpressionSource=null;
 //			try {
-				//Test ohne notwendige Pfadersetzung
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-				testCompute_Call_(sExpressionSource,"","");
 				
 				//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
 				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
 				testCompute_Call_(sExpressionSource,"","");
 				
+				//Test ohne notwendige Pfadersetzung
+				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+				testCompute_Call_(sExpressionSource,"","");
 
+				
 //			} catch (ExceptionZZZ ez) {
 //				fail("Method throws an exception." + ez.getMessageLast());
 //			}
@@ -125,7 +126,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 			String sSection; String sProperty;
 			String sExpressionSource; 
-			String sExpressionSolved; String sExpressionSolvedTagless;
+			String sExpressionSolved;
 			IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
 		
 			String sValue;
@@ -141,13 +142,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Ohne jegliche Expression-Berechnung
-			
+				//+++ Ohne Solver-Berechung	(Ergebnisse muessen so sein wie bei Parse)
 				//a)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
-				btemp = testCompute_Call_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
+				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+							
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				
@@ -180,7 +180,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Solver-Berechung		
+				//+++ Ohne Solver-Berechung	(Ergebnisse muessen so sein wie bei Parse)
 				//a)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
@@ -189,9 +189,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//b)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 				//c)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
@@ -202,9 +202,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//d)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne Call-Berechung
@@ -215,11 +215,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//b)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Halt kein Call - Tag mehr im Ergebnis Erwartet....   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);				
+				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Parsen ohne call, muss doch dieser call - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-				btemp = testCompute_Call_CallUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				//ALSO NICHT: Halt kein Call - Tag mehr im Ergebnis Erwartet....   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
+				btemp = testCompute_Call_CallUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
@@ -230,8 +230,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//d)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				btemp = testCompute_Call_CallUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				btemp = testCompute_Call_CallUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
@@ -242,11 +242,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//b)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);				
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!							
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
 				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				btemp = testCompute_Call_JavaCallUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
@@ -258,17 +258,16 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
 				btemp = testCompute_Call_JavaCallUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				//d)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);		
+				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
 				btemp = testCompute_Call_JavaCallUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-		
-				
+
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Mit Call-Berechnung UND JavaCall-Berechnung
 				//a)
@@ -279,11 +278,14 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//b)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				//Merke: Beim reinen Parsen wird ggfs. nur das Z-Tag entfernt. Die Tags darin nicht. Grund: Nach dem Parsen soll ggfs. mit solve weitergearbeitet werden.
+				//       Im Tag selbst ist allerdings der Wert ohne die umgebenden Tags ( .getValue)
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				btemp = testCompute_Call_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				btemp = testCompute_Call_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
@@ -325,6 +327,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+								
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -368,6 +373,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isExpression());
 					assertFalse(objEntry.isSolveCalled()); //Ist halt kein Solve-Schritt involviert.
 					
+					assertFalse(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
+					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
@@ -394,6 +401,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isExpression());
 					assertTrue(objEntry.isSolveCalled());
 					
+					assertTrue(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
+										
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
 									
@@ -425,8 +434,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}
 					
 					assertTrue(objEntryUsed.isParseCalled());
+					assertFalse(objEntryUsed.isSolveCalled()); //Ist kein solve-Schritt involviert.
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolveCalled()); //Ist kein solve-Schritt involviert.				
+											
+					assertFalse(objEntryUsed.isSolved()); //Ist halt kein Solve-Schritt involviert.
+					
+					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -460,8 +473,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
 					assertTrue(objEntryUsed.isParseCalled());
+					assertTrue(objEntryUsed.isSolveCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertTrue(objEntryUsed.isSolveCalled());				
+							
+					assertTrue(objEntryUsed.isSolveCalled()); //Ist kein solve-Schritt involviert.
+					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 				
@@ -498,6 +514,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+				
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -525,25 +544,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
-					
-					//spannend, nicht aufgeloest, aber geparsed!!!
-					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-					//if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted() ) {
-					//	assertTrue(objEntry.isParsed());  
-					//}else {
-					//	assertFalse(objEntry.isParsed());
-					//}
-					
-//					if(!sExpressionSource.equals(sExpressionSolved)) {
-//						assertTrue(objEntry.isParsed());						
-//					}else {
-//						assertFalse(objEntry.isParsed());
-//					}
+				
 					assertTrue(objEntry.isParseCalled());
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					assertTrue(objEntry.isExpression());
 					
-					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -566,24 +572,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
-					//spannend, nicht aufgeloest, aber geparsed!!!
-					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-					//Das gilt hier: Da nix aufgeloest wird durch den solver.
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-					//if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted()) {
-					//	assertTrue(objEntry.isParsed());  
-					//}else {
-					//	assertFalse(objEntry.isParsed());
-					//}
-					
-//					if(!sExpressionSource.equals(sExpressionSolved)) {
-//						assertTrue(objEntry.isParsed());						
-//					}else {
-//						assertFalse(objEntry.isParsed());
-//					}
 					assertTrue(objEntry.isParseCalled());
+					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+										
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -603,20 +596,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
 					assertNotNull(objEntryUsed);
 					
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-					//if(bRemoveSuroundingSeparators | objEntryUsed.isPathSubstituted()) {
-					//	assertTrue(objEntryUsed.isParsed());  
-					//}else {
-					//	assertFalse(objEntryUsed.isParsed());
-					//}
-//					if(!sExpressionSource.equals(sExpressionSolved)) {
-//						assertTrue(objEntryUsed.isParsed());						
-//					}else {
-//						assertFalse(objEntryUsed.isParsed());
-//					}
-					assertTrue(objEntryUsed.isParseCalled());	
-					assertTrue(objEntryUsed.isExpression());
+					assertTrue(objEntryUsed.isParseCalled());
 					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertTrue(objEntryUsed.isExpression());
+					
+					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
@@ -655,6 +639,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+								
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -695,6 +682,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isExpression()); 
 					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
@@ -726,8 +715,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntry.isParsed());
 //					}
 					assertTrue(objEntry.isParseCalled());
+					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					assertTrue(objEntry.isExpression());					
-					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -753,8 +744,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
 					assertTrue(objEntryUsed.isParseCalled());
+					assertFalse(objEntryUsed.isSolveCalled()); 
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					
+					
+					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					
 					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
@@ -791,9 +786,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
-					assertTrue(objEntryUsed.isParseCalled());  
+					assertTrue(objEntryUsed.isParseCalled());
+					assertTrue(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+				
+					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntryUsed.isDecrypted());
 					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -834,6 +831,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 				
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+								
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -870,8 +870,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntry.isParsed());
 //					}
 					assertTrue(objEntry.isParseCalled());
-					assertTrue(objEntry.isExpression());
 					assertFalse(objEntry.isSolveCalled());
+					assertTrue(objEntry.isExpression());
+					
+					
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -903,9 +906,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					}else {
 //						assertFalse(objEntry.isParsed());
 //					}
-					assertTrue(objEntry.isParseCalled()); 
+					assertTrue(objEntry.isParseCalled());
+					assertTrue(objEntry.isSolveCalled());
 					assertTrue(objEntry.isExpression());
-					assertFalse(objEntry.isSolveCalled());
+					
+					assertFalse(objEntry.isSolved());
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -932,8 +937,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
 					assertTrue(objEntryUsed.isParseCalled()); 
+					assertTrue(objEntryUsed.isSolveCalled());	
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolveCalled());				
+					
+					assertFalse(objEntryUsed.isSolved());
+					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 									
@@ -961,8 +969,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //						assertFalse(objEntryUsed.isParsed());
 //					}
 					assertTrue(objEntryUsed.isParseCalled());
+					assertTrue(objEntryUsed.isSolveCalled());
 					assertTrue(objEntryUsed.isExpression());
-					assertFalse(objEntryUsed.isSolveCalled());				
+												
+					assertTrue(objEntryUsed.isSolved());
+					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 									
@@ -1004,6 +1015,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Gar kein solver aktiviert
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+								
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -1034,12 +1048,14 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 //					if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted()) {
 //						assertTrue(objEntry.isParsed());
 //					}else {
-//						assertFalse(objEntry.isParsed());
+//						
 //					}
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					assertFalse(objEntry.isSolveCalled());
 					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
 					
+					assertFalse(objEntry.isParsed());
+					assertFalse(objEntry.isSolved()); 
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1073,6 +1089,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isSolveCalled()); //dito mit solve()
 					assertFalse(objEntry.isExpression()); //Expression ist generell ausgestellt
 
+					assertFalse(objEntry.isParsed());
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 									
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1102,7 +1120,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntryUsed.isParseCalled());     //es wurde ja geparsed
 					assertFalse(objEntryUsed.isExpression()); //Expression ist generell ausgestellt
 					assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-									
+					
+					assertFalse(objEntryUsed.isParsed());
+					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					
 					sValueUsed = objEntryUsed.getValue();
 					assertEquals(sExpressionSolved, sValueUsed);
 					
@@ -1134,7 +1155,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntryUsed.isParseCalled());     //es wurde ja geparsed
 					assertFalse(objEntryUsed.isExpression()); //Expression ist generell ausgestellt
 					assertFalse(objEntryUsed.isSolveCalled());
-									
+								
+					assertFalse(objEntryUsed.isParsed());
+					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
+					
 					assertFalse(objEntryUsed.isDecrypted());
 					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 									
@@ -1388,6 +1412,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+								
 				btemp = objExpressionSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -1510,6 +1537,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//###########################################################
 				//Anwenden der ersten Formel	
 				objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+				objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);											
 				objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 				objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird				
 				objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						

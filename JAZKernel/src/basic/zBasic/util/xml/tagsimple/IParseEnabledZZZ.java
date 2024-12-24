@@ -3,12 +3,14 @@ package basic.zBasic.util.xml.tagsimple;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface IParseEnabledZZZ {
 	boolean isParserEnabledThis() throws ExceptionZZZ;
+
 	boolean isParseRelevant() throws ExceptionZZZ;//ob ein Tag ueberhaupt fuer das parsen relevant ist
 	boolean isParseRelevant(String sExpression) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
 	//geht erst ab Java 1.8 oder so... static boolean isParseStatic(String sExpressionToProof) throws ExceptionZZZ;

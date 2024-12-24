@@ -513,23 +513,21 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true);
 			
-		main:{		
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+		main:{
+			String sExpression = sExpressionIn;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			String sExpression = sExpressionIn;
-			
-			
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParse = this.isParserEnabledThis();
 			
 			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
 			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			bUseParse = this.isParserEnabledThis();
 			if(bUseParse) {
 				vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);						
 				objEntry = objReturnReferenceParse.get();			
@@ -539,21 +537,21 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				objEntry = objReturnReferenceParse.get();			
 				if(vecReturn==null) break main;
 			}
-				
+		
+			vecReturn = this.parsePost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
+			
 			sReturnTag = (String) vecReturn.get(1); //Der eigene Wert, ohne drumherum	
 		}//end main:
 	
 		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
 		this.setValue(sReturnTag);
-		
-		vecReturn = this.parsePost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			   
+							   
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);	
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);	
 				
 				objEntry.isParsed(true);
 				if(sExpressionIn!=null) {				 								
@@ -655,7 +653,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			}
@@ -705,42 +703,35 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);
-			
-			sReturnTag = (String) vecExpressionIn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
-			
 							
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 			bUseParse = this.isParserEnabledThis();
 			if(bUseParse) {			
 				if(bRemoveSurroundingSeparators) {
-					String sTagStart = this.getTagStarting();
-					String sTagEnd = this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
-//					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-	
-					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-					this.setValue(sReturnTag);
+					//Wichtig: Wirf erst die Z-Tags raus, damit auch die nachfolgenen Tags entfernt werden können, sonst wirg ggs. angenommen sie seien Teil einer Berchnung und bleiben drin.
+					String sTagStartZ = "<Z>";
+					String sTagEndZ = "</Z>";
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
+					
+//Nein: Beim Parsen bleibt der Tag-Wert in der Zeile erhalten. Der Wert in dem Tag ist mit .getValue() abrufbar.
+//      Damit kann nach dem Parsen weitergearbeitet werde, z.B. mit einem Solver.				
+//					String sTagStart = this.getTagStarting();
+//					String sTagEnd = this.getTagClosing();
+//					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen										
 				}	
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
 			}
 			
-			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
 		}//end main:
 				
 		//#################################
 	
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
@@ -806,7 +797,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		//#################################
 		
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
@@ -861,9 +852,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 						
-			sReturnTag = (String) vecExpressionIn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
+//			sReturnTag = (String) vecExpressionIn.get(1);
+//			sReturn = sReturnTag;
+//			this.setValue(sReturnTag);
 									
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
@@ -876,9 +867,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
 					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 	
-					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-					this.setValue(sReturnTag);
+//					sReturnTag = (String) vecReturn.get(1);
+//					sReturn = sReturnTag;
+//					this.setValue(sReturnTag);
 				}	
 //			}else {
 //				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
@@ -887,15 +878,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
+//			sReturnTag = (String) vecReturn.get(1);
+//			sReturn = sReturnTag;
+//			this.setValue(sReturnTag);
 		}//end main:
 				
 		//#################################
 	
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
@@ -961,7 +952,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		//#################################
 		
 		if(objEntry!=null) {
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {
 				objEntry.isExpression(true);
@@ -1158,7 +1149,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				if(!bUseExpression) {
 					objEntry.setValue(sReturn);
 				}else {
-					sReturn = VectorUtilZZZ.implode(vecReturn);
+					if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 					objEntry.setValue(sReturn);
 					if(sExpressionIn!=null) {
 						if(!sExpressionIn.equals(sReturn)) {
@@ -1216,7 +1207,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		private String substituteParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 			String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
 			String sReturnTag = null;
-			String sExpression = sExpressionIn;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 			IKernelConfigSectionEntryZZZ objEntry = null;
@@ -1236,7 +1226,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);	
 							
 			main:{
-				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
+				String sExpression = sExpressionIn;				
+				if(StringZZZ.isEmptyTrimmed(sExpression)) break main;			
 
 				if(!this.isExpressionEnabledGeneral()) break main;					
 						
@@ -1327,6 +1318,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							objEntry.isPathSubstituted(true);
 						}
 						sExpression = sReturn;  //fuer ggfs. notwendige Weiterverarbeitung
+						
+						
+						
 					}//end if .isParseRegEx();
 				}//end if .getFlag(..USE_...Path...)
 				

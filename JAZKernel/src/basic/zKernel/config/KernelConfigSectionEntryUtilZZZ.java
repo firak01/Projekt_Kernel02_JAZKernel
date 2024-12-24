@@ -915,7 +915,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, true);
 
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
 			
 		}//end main:
@@ -944,7 +944,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, bAnyPosition, true);
 
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
 			
 		}//end main:
@@ -972,7 +972,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd);
 
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
 			
 		}//end main:
@@ -1017,7 +1017,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 			}
 			
-			sReturn = VectorUtilZZZ.implode(vecReturn);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
 			
 		}//end main:

@@ -311,7 +311,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 							
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.

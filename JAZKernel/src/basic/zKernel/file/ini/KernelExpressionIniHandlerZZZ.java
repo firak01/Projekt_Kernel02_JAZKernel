@@ -181,7 +181,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {			 							
 					objEntry.isParsed(true);

@@ -469,11 +469,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				
 				bUseExpression = this.isExpressionEnabledGeneral(); 
 				if(!bUseExpression) break main;
-								
-				sReturnTag = (String) vecExpressionIn.get(1);
-				sReturn = sReturnTag;
-				this.setValue(sReturnTag);
-				
+												
 				if(StringZZZ.isEmpty(sReturn)) break main;			
 										
 				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.

@@ -484,4 +484,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
 		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
+	
+	
+	
 }

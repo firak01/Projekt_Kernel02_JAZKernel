@@ -1032,6 +1032,110 @@ public void testVecMidFirst(){
 	}
 }
 
+
+	public void testVecMidKeepSeparatorCentral(){
+		try{
+			String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
+			
+			//#####################################################################
+			//Test wenn die Tags nicht enthalten sind
+			Vector<String> vec = StringZZZ.vecMidFirst(sTest, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			String sFormula0 = (String) vec.get(0);
+			assertEquals("", sFormula0);
+			
+			String sFormula1 = (String) vec.get(1);
+			assertEquals(sTest, sFormula1);
+			
+			String sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+	
+	
+			
+			
+			//##############################
+			vec = StringZZZ.vecMidKeepSeparatorCentral(sTest, "<Z:Java>", "</Z:Java>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
+			String sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+	
+			sFormula0 = (String) vec.get(0);
+			assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals("ArgumentSection for testCallComputed", sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
+	
+			//###############################
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testVecMidFirstKeepSeparatorCentral(){
+		try{
+			String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
+			
+			//#####################################################################
+			//Test wenn die Tags nicht enthalten sind
+			Vector<String> vec = StringZZZ.vecMidFirst(sTest, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			String sFormula0 = (String) vec.get(0);
+			assertEquals("", sFormula0);
+			
+			String sFormula1 = (String) vec.get(1);
+			assertEquals(sTest, sFormula1);
+			
+			String sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+	
+	
+			
+			
+			//##############################
+			//Erst einmal einen inneren Ausdruck holen, damit nur noch die beiden Z-Ausdrücke aufeinander folgen...
+			vec = StringZZZ.vecMidFirst(sTest, "<Z:Java>", "</Z:Java>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			vec = StringZZZ.vecMidFirstKeepSeparatorCentral(sTest, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			
+			//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
+			String sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+	
+			sFormula0 = (String) vec.get(0);
+			assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals("ArgumentSection for testCallComputed", sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
+	
+			//###############################
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+
+
+
 	public void testCapitalize(){
 			String sTest = "das ist der Test";
 			String stemp = StringZZZ.capitalize(sTest);

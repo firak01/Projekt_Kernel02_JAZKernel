@@ -193,7 +193,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				if(objValue.isExpression(sReturnTag)){	
 					objEntry.isEncrypted(true);
 					
-					sReturn = VectorUtilZZZ.implode(vecReturn);
+					if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 					objEntry.setValueEncrypted(sReturn);//Zwischenstand festhalten
 					
 					sReturnTag = objValue.parse(sReturnTag);
@@ -211,7 +211,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
 			}else {									
-				sReturn = VectorUtilZZZ.implode(vecReturn);
+				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {
