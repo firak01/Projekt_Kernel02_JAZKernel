@@ -1058,20 +1058,20 @@ public void testVecMidFirst(){
 			vec = StringZZZ.vecMidKeepSeparatorCentral(sTest, "<Z:Java>", "</Z:Java>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
-			//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
+			//Es soll noch 2x diese speziellen inhaltlichen Tags vorhanden sein, weil in diesem "Cascaded" Tag halt 2 dieser Tags liegen.
 			String sProof = VectorUtilZZZ.implode(vec);
-			assertEquals(StringZZZ.count(sProof, "["),1);
-			assertEquals(StringZZZ.count(sProof, "]"),1);
+			assertEquals(StringZZZ.count(sProof, "["),2);
+			assertEquals(StringZZZ.count(sProof, "]"),2);
 			
 	
 			sFormula0 = (String) vec.get(0);
-			assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
+			assertEquals("<Z><Z:Call>", sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals("ArgumentSection for testCallComputed", sFormula1);
+			assertEquals("<Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java>", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
-			assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
+			assertEquals("</Z:Call></Z>", sFormula2);
 	
 			//###############################
 			
@@ -1107,24 +1107,26 @@ public void testVecMidFirst(){
 			vec = StringZZZ.vecMidFirst(sTest, "<Z:Java>", "</Z:Java>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
+			sTest = vec.get(1);
+			
 			vec = StringZZZ.vecMidFirstKeepSeparatorCentral(sTest, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
 			
 			//Es soll noch 1x der umgebenden Tags mehr vorhanden sein, weil die Separatoren-Tags nicht zuruekgekommen sein sollen.
-			String sProof = VectorUtilZZZ.implode(vec);
-			assertEquals(StringZZZ.count(sProof, "["),1);
-			assertEquals(StringZZZ.count(sProof, "]"),1);
+			String sProof = vec.get(1);
+			assertEquals(StringZZZ.count(sProof, "<Z>"),1);
+			assertEquals(StringZZZ.count(sProof, "</Z>"),1);
 			
 	
 			sFormula0 = (String) vec.get(0);
-			assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
+			assertEquals("<Z:Class>", sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals("ArgumentSection for testCallComputed", sFormula1);
+			assertEquals("<Z>[ArgumentSection for testCallComputed]JavaClass</Z>", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
-			assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
+			assertEquals("</Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method>", sFormula2);
 	
 			//###############################
 			

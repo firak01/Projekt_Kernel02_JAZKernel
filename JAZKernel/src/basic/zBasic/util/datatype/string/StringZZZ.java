@@ -1645,7 +1645,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
-			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.replace(sStringToParse);
 				break main;
@@ -1653,7 +1653,7 @@ public class StringZZZ implements IConstantZZZ{
 			
 			
 			//nun gibt es einen Ausdruck			
-			String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.   //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";

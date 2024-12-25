@@ -306,31 +306,34 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
 			//Also, z.B.: [Section A]Testentry1
 			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
-			vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
+			//Bei Pfaden ein Problem, da sie immer mit einem Z-Tag direkt umgeben sein muessen.
+			//Damit diese Z-Tags wegkommen, also nicht:
+			//vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
 			
-			TODOGOON20241224; 
 			//Problem: Der einem INI-Path Ausdruck umgebende Z-Tag muss eintfernt werden.
-			//         1. Schritt: Packe ihn mit min Vec(1).
+			//         1. Schritt: Packe ihn in Vec(1).
+			//Da mehrere Z-Tags hintereinander stehen können, richt auch folgendes nicht, sondern es muss der ERSTE geholt werden.
 			//vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression + sSepRight, sSepLeft, sSepRight, false);
 			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
 			
 			String sLeft = (String) vecReturn.get(0);
 			
 			String sMid = (String) vecReturn.get(1);
-			if(!StringZZZ.isEmpty(sMid)) {
-				sMid = this.getTagStarting()+ sMid; //Besonderheit. Wg. Weiterverarbeitung (Section holen) muss hier das Starttäg drinbleiben.
-			}
+//!!!Wenn man vecMidFirstKeepSeparatorCentral verwendet, muessen alle diese speziellen Stringergaenzungen nicht mehr gemacht werden.
+//			if(!StringZZZ.isEmpty(sMid)) {
+//				sMid = this.getTagStarting()+ sMid; //Besonderheit. Wg. Weiterverarbeitung (Section holen) muss hier das Starttäg drinbleiben.
+//			}
 			
 			//Erforderliche Nacharbeiten, weil es halt besondere Tags sind:
 			//1. den oben geklauten Anfangstag - des nachfolgenden Ausdrucks - wieder hinzufuegen
 			//   und den zuviel gesetzten < wegnehmen am Ende.
 			String sRight = (String) vecReturn.get(2);			
-			if(!StringZZZ.isEmpty(sRight)) {
-				sRight = StringZZZ.replaceRight(sRight, sSepRight, ""); 
-				
-				//UND wg. dem "<" fehlt am Anfang eben diese Zeichen. Intern wird naemlich auf Laenge gegangen.
-				sRight = sSepRight + sRight;
-			}
+//			if(!StringZZZ.isEmpty(sRight)) {
+//				sRight = StringZZZ.replaceRight(sRight, sSepRight, ""); 
+//				
+//				//UND wg. dem "<" fehlt am Anfang eben diese Zeichen. Intern wird naemlich auf Laenge gegangen.
+//				sRight = sSepRight + sRight;
+//			}
 			
 			
 			//#########################
@@ -395,10 +398,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			sReturn =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			
-			
+			//Wichtige Nacharbeiten am Schluss:
+			//Das oben hinzugefuegte </Z> Tag muss wieder entfernt werden
+			sRight = (String) vecReturn.get(2);
+			sRight = StringZZZ.stripRight(sRight, "</Z>");
+			vecReturn.replace(2, sRight);
 		}//end main:
 		
-		vecReturn.replace(sReturn);
+		vecReturn.replace(sReturn); //Damit wird dann auch sofort das den Path umschliessende Z-Tag entfernt.
 			
 //		Das geschieht in parsePost
 		//Z-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
