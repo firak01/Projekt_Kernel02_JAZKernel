@@ -424,23 +424,20 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn;
-		String sReturnTag = null;
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+		String sExpression = null;
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 		
-			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpressionIn, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
-			if(vecReturn==null)break main;			
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
+			sExpression = sExpressionIn;
 			
-			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);				
+			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			if(vecReturn==null)break main;			
+						
+			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
+			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);		
 		}
 		return vecReturn;
 	}
@@ -493,10 +490,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		
 		private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
-			String sReturn = null;
+			String sReturn = null; String sReturnTag = null;
 			main:{
+				
+				sReturnTag = (String) vecReturn.get(1);		
+				this.setValue(sReturnTag);	
+				
 				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
-				sReturn = (String) vecReturn.get(1);
+				sReturnTag = (String) vecReturn.get(1);
+				this.setValue(sReturnTag);
 			}//end main
 			return vecReturn;
 		}

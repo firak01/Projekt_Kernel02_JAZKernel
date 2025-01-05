@@ -134,8 +134,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+		String sReturnTag=null;
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		String sReturnTag = null;
 		
 		boolean bUseExpression=false;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -167,14 +167,15 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturnReferenceParserSuper.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParserSuper.get();
-			if(vecReturn!=null) {				
-				sReturnTag = (String) vecReturn.get(1);
-			}
-			//sExpressionUsed = sReturn; //falls noch weiterverarbeitet werden muesste
+			
+			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
+			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
+			sReturnTag = this.getValue();			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
+		//Nein, nichts ersetzten, die ganze Zeile behaelt beim Parsen auch die Tags. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		this.setValue(sReturnTag);	
 				
 		if(objEntry!=null) {

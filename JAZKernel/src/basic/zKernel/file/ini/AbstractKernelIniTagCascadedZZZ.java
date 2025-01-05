@@ -170,28 +170,22 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			sExpression = sReturnTag;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
+			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);
+			this.setValue(sReturnTag);//Hier ist erst einmal das Setzend des Werts der Substitution erlaubt.
 			objEntry = objReturnReferenceSubstitute.get();			
 			
-			if (vecReturn!=null) vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
-			this.setValue(sReturnTag);//Hier ist erst einmal das Setzend des Werts der Substitution erlaubt.
-			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-		
-			//+++ Der Wert des Tags
-			//Bei dem cascaded Tag wird das schliessende Tag vom Ende gesucht...
-			sExpression = sReturn;
-			vecReturnTag = StringZZZ.vecMid(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, !bIgnoreCase);
-			if (vecReturnTag!=null) sReturnTag = (String) vecReturnTag.get(1);
+			if (vecReturn!=null) vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.			
 			
-			//+++ Der endgueltige Wert der Zeile 
+				
+			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			
+			sReturnTag = this.getValue();
 		}//end main:			
-		this.setValue(sReturnTag);
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).		
+		//Nicht ersetzen. Beim Parsen bleibt der Zeilenwert nahezu unveraendert. Der Wert des Tags wurde schon gespeichert. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).
+		this.setValue(sReturnTag);
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);

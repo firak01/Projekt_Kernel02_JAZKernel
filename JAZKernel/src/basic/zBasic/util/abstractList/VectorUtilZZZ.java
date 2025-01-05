@@ -8,6 +8,7 @@ import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class VectorUtilZZZ extends AbstractObjectZZZ {
@@ -164,5 +165,41 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 			}			
 		}//end  main:
 		return sReturn;			
+	}
+	
+	public static <T> boolean isEmpty(Vector vecIn) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(vecIn == null) break main;
+			if(vecIn.isEmpty()){
+				bReturn = true;
+				break main;
+			}
+			
+			boolean btemp;
+			for(int icount = vecIn.size()-1; icount >= 0; icount--){
+				Object obj =(Object)vecIn.elementAt(icount);
+				
+				//FGL 20241227 -Das muss noch getestet werden
+				if(obj.getClass().isArray()) {
+					btemp = ArrayUtilZZZ.isNullOrEmpty((T[]) obj);
+					if(!btemp) break main;
+					
+					btemp = ArrayUtilZZZ.isEmpty((T[]) obj);
+					if(!btemp) break main;
+				}else {
+					//FGL 20241227 -Das muss ggfs. fuer andere Typen mit ...else if ...erweitert werden
+					if(obj instanceof String) {
+						btemp = StringZZZ.isEmpty(obj.toString());
+					    if(!btemp) break main;
+					} else {
+						
+					}
+				}
+			}//end for
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;		
 	}
 }//end class

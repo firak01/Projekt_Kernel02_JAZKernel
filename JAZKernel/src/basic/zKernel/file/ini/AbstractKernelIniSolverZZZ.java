@@ -380,7 +380,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
-			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);//!!! false... Die Z-Tags drin lassen, ggfs. benoetigt fuer weitere Berechnungen.
+			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			
 			//solve ruft immer parse() auf, wenn die generelle Auswertung der Expression abgeschaltet ist,
@@ -390,9 +390,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
-			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			sTagParsed = (String) vecReturn.get(1);	
+			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);	
 			sReturnTag = this.getValue();
+			
+			sTagParsed = (String) vecReturn.get(1); //Absicht, da sind dann für das solven ggfs. noch wichtige Tags drin. 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
 						
 			//Rufe nun solveParsed() auf...

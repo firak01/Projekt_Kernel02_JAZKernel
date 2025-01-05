@@ -29,6 +29,8 @@ public class ArrayUtilZZZ<T>{
 				if(objArray[i]!=null) {
 					break main;					
 				}
+				
+				//FGL: 20241227 - Das muss noch mit ... instanceof ... Fallunterscheidung erweitert werden
 			}
 			bReturn = true;
 		}//end main:
@@ -142,6 +144,10 @@ public class ArrayUtilZZZ<T>{
 			}
 		}
 		return bReturn;
+	}
+	
+	public static <T> boolean isNullOrEmpty(T[] theArray) {
+	    return theArray == null || theArray.length == 0;
 	}
 	
 	public static <T> T[] join(T[] objArray1,T[] objArray2) {

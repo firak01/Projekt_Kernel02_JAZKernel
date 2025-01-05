@@ -221,10 +221,15 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);//NUR BEIM SOLVEN DEN WERT IN VEC(1) UEBERNEHMEN
 				this.setValue(sReturnTag);
 			}else {
+				//Der JAVA-CALL Tag wird nicht verwendet. Aber der CALL-TAG schon.
+				//Aber die umgebenden Tags sollen drinbleiben, darum hier nicht nacharbeiten.
+				
+				//Der Reine CALL-Tag Wert
 				sReturnTag = this.getValue();
 			}
 		}//end main:
-			
+		
+		this.setValue(sReturnTag);
 		if(objEntry!=null) {		
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
@@ -404,7 +409,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				this.setValue(sReturnTag);		
 				sReturn = sReturnTag;
 			}else {
-				
+				//Also: CALL-Tag soll aufgeloest werden, JAVA-CALL aber nicht. 
+				//Dann muss/darf nur der CALL-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
+				sExpression = sReturn;				
+				sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, KernelCallIniSolverZZZ.sTAG_NAME);							
 			}//end if bAnyJavaCall
 		}//end main:
 				
