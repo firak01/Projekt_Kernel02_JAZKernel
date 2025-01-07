@@ -1892,19 +1892,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
-					assertFalse(objEntry.isParseCalled()); //Wenn der Solver nicht ausgeführt wird, wird auch kein parser gestartet
-					assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"
-					
-					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-				
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					//TODOGOON20250107;
+					//Mache eine Sammlung von Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEntry, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					assertTrue(btemp);					
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
