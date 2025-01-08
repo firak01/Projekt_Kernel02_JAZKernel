@@ -56,6 +56,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertFalse(objEntry.isJavaCall());
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
+				break;
 			default:
 				fail("Test Flagset '" + sFlagset + "' ist nicht definiert");
 			}
