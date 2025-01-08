@@ -9,6 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -160,7 +161,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
 		    //Ausserdem wird so vecReturn "initialisiert"
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
-			if (vecReturn!=null) sReturnTag = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
+			if (vecReturn==null)break main;
+			
+			sReturnTag = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
 						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			//Merke: Darum vorher vecReturn schon initialisieren.
@@ -174,8 +177,18 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			this.setValue(sReturnTag);//Hier ist erst einmal das Setzend des Werts der Substitution erlaubt.
 			objEntry = objReturnReferenceSubstitute.get();			
 			
-			if (vecReturn!=null) vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.			
-			
+			//Merke: Der Substituierte Wert hat keine surrounding-Z-Tags.
+			//Falls die eh nicht gewünscht waren. ok. Ansonsten noch einmal ueberarbeiten
+			if(bRemoveSurroundingSeparators) {
+				vecReturn.replace(1,sReturnTag); 
+			}else {
+				String stemp = (String) vecReturn.get(1);
+				Vector3ZZZ<String> vectemp = StringZZZ.vecMid(stemp, "<Z>", "</Z>");
+				vectemp.replace(1, sReturnTag);
+				stemp = VectorUtilZZZ.implode(vectemp);
+				
+				vecReturn.replace(stemp);
+			}
 				
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht

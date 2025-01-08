@@ -1329,7 +1329,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							//Der INI-Pfad wird per RegEx-Ausdruck definiert.
 							//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
 					   
-							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+							//Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
+							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 							if(vecExpressionTemp==null) break;
 								
 							sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	

@@ -422,16 +422,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			}else {
 				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				
-				//objEntry.isExpression(true);
-				//objEntry.isParsed(true); 								
-				//if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-									
-				//if(!objEntry.getValue().equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-				//if(!sExpressionParsed.equals(sReturn)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-				//if(!this.getValue().equals(sExpressionParsed)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-				
-				if(sTagParsed!=null) {
-					if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+				if(bUseSolver && bUseSolverThis) {
+					if(sTagParsed!=null) {
+						if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+					}
 				}
 				
 				objEntry.setValue(sReturn);

@@ -1685,6 +1685,13 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				try {
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 					
+					//+++ Ohne Path-Substitution
+					//a)
+					sExpression = sExpressionIn;
+					sExpressionSolved = sExpression;	
+					sTag = sTagIn;
+					sTagSolved = sTag;
+					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 					
 					
 					
