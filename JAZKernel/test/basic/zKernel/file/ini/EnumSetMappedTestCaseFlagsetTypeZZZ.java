@@ -11,7 +11,7 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	//Ansatz: Weise den Flag-Kombinationsmöglichkeiten, der Testfaelle einen Typ zu.
 	//        Dann kann man alle asserts in den Tests in einer assert-Methode buendeln und in meheren Tests nutzen.
 	//        
-	TODOGOON20240106: Nicht nur beim assert nutzen, sondern auch beim Aufbau der Flag Werte.
+	//TODOGOON20240106: Nicht nur beim assert nutzen, sondern auch beim Aufbau der Flag Werte.
 	
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),

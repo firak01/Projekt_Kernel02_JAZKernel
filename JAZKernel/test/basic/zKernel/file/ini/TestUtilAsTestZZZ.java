@@ -43,12 +43,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 			case sUNEXPRESSED:
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-				assertTrue(objEntry.isSolveCalled()); //dito mit solve()
-				assertTrue(objEntry.isExpression());
+				assertTrue(objEntry.isSolveCalled()); //dito mit solve(). Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"
-				
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"				
 				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
 			
 				assertFalse(objEntry.isDecrypted());
