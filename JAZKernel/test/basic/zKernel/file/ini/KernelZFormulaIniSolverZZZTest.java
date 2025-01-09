@@ -1630,12 +1630,15 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		public void testCompute_FORMULA_PATH(){
 			String sExpression; String sExpressionSolved; String sTag; String sTagSolved;
 //			try {	
-				sExpression = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-				sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
-				
-				sTag = "[Section A]Testentry1";								
-				sTagSolved = "Testvalue1 to be found";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+			
+			//Merke: 2 Tests hintereinander. Das gibt einen Fehler. 
+			
+//				sExpression = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+//				sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+//				
+//				sTag = "[Section A]Testentry1";								
+//				sTagSolved = "Testvalue1 to be found";
+//				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Fuer [Section B] gibt es in der Testdatei einen "globalen" Eintrag, der nicht gefunden werden soll
@@ -1660,6 +1663,14 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				sTag = "[Section B]Testentry2";								
 				sTagSolved = "Testvalue2 local to be found";
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				
+				//Reihenfolgetest... nun muss der erste Test auch wieder funktionieren
+				sExpression = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+				
+				sTag = "[Section A]Testentry1";								
+				sTagSolved = "Testvalue1 to be found";
 				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
 				
 				
