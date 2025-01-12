@@ -68,7 +68,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isParseCalled();
-	abstract void isParseCalled(boolean bIsParsed);
+	abstract void isParseCalled(boolean bIsParseCalled);
 	
 	public boolean isParsed();
 	abstract void isParsed(boolean bIsParsed);
@@ -77,12 +77,25 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isParsedChanged(boolean bIsParsedChanged);
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public boolean isSubstituteCalled();
+	abstract void isSubstituteCalled(boolean bIsSubstitutedChanged);
+	
+	public boolean isSubstitutedChanged();
+	abstract void isSubstitutedChanged(boolean bIsSubstitutedChanged);
+	
 	
 	public boolean isPathSubstituted();
 	abstract void isPathSubstituted(boolean bIsPathSolved);
 	
+	public boolean isPathSubstitutedChanged();
+	abstract void isPathSubstitutedChanged(boolean bIsPathSubstitutedChanged);
+	
+	
 	public boolean isVariableSubstituted();
-	abstract void isVariableSubstituted(boolean bIsVariableSolved);
+	abstract void isVariableSubstituted(boolean bIsVariableSubstituted);
+	
+	public boolean isVariableSubstitutedChanged();
+	abstract void isVariableSubstitutedChanged(boolean bIsVariableSubstitutedChanged);
 	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

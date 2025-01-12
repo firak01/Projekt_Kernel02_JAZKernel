@@ -82,18 +82,34 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				objEntryTarget.isParsedChanged(objEntrySource.isParsedChanged());
 			}
 		
-			if(objEntrySource.isSolveCalled()) {
-				objEntryTarget.isSolveCalled(objEntrySource.isSolveCalled());
+			
+			if(objEntrySource.isSubstituteCalled()) {
+				objEntryTarget.isSubstituteCalled(objEntrySource.isSubstituteCalled());
 			}
+			
+			if(objEntrySource.isSubstitutedChanged()) {
+				objEntryTarget.isSubstitutedChanged(objEntrySource.isSubstitutedChanged());
+			}
+			
 			
 			if(objEntrySource.isPathSubstituted()) {
 				objEntryTarget.isPathSubstituted(objEntrySource.isPathSubstituted());
+			}
+			
+			if(objEntrySource.isPathSubstitutedChanged()) {
+				objEntryTarget.isPathSubstitutedChanged(objEntrySource.isPathSubstitutedChanged());
 			}
 			
 			if(objEntrySource.isVariableSubstituted()) {
 				objEntryTarget.isVariableSubstituted(objEntrySource.isVariableSubstituted());
 			}
 			
+			if(objEntrySource.isVariableSubstitutedChanged()) {
+				objEntryTarget.isVariableSubstituted(objEntrySource.isVariableSubstituted());
+			}
+			
+			
+						
 			if(objEntrySource.isSolveCalled()) {
 				objEntryTarget.isSolveCalled(objEntrySource.isSolveCalled());
 			}

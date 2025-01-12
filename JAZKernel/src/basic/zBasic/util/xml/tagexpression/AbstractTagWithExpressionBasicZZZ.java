@@ -330,14 +330,16 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			bUseParse = this.isParserEnabledThis();
 			if(bUseParse) {			
 				if(bRemoveSurroundingSeparators) {
-					String sTagStart = "<Z>"; //this.getTagStarting();
-					String sTagEnd = "</Z>";  //this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
-//						KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-	
+					String sTagStartZ = "<Z>"; //this.getTagStarting();
+					String sTagEndZ = "</Z>";  //this.getTagClosing();
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
 					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-					this.setValue(sReturnTag);
+										
+					//Aber: den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt. 				
+					String sTagStart = this.getTagStarting();
+					String sTagEnd = this.getTagClosing();
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+					this.setValue(sReturnTag);	
 				}	
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.

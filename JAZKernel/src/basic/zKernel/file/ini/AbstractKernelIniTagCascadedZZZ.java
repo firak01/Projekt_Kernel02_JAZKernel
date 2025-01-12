@@ -123,7 +123,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>(); Vector3ZZZ<String>vecReturnTag = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn; String sReturnTag = null;
+		String sReturn = sExpressionIn; String sReturnSubstituted = null; String sReturnTagSubstituted = null;
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -163,42 +163,30 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
 			if (vecReturn==null)break main;
 			
-			sReturnTag = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
-						
+			sExpression = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
+			sReturnTagSubstituted = sExpression;
+			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			//Merke: Darum vorher vecReturn schon initialisieren.
 			bUseParse = this.isParserEnabledThis();
 		    if(!bUseParse) break main;
-		    			
-			sExpression = sReturnTag;
+		    						
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnTag = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);
-			this.setValue(sReturnTag);//Hier ist erst einmal das Setzend des Werts der Substitution erlaubt.
+			sReturnSubstituted = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSubstitute.get();			
 			
-			//Merke: Der Substituierte Wert hat keine surrounding-Z-Tags.
-			//Falls die eh nicht gewünscht waren. ok. Ansonsten noch einmal ueberarbeiten
-			if(bRemoveSurroundingSeparators) {
-				vecReturn.replace(1,sReturnTag); 
-			}else {
-				String stemp = (String) vecReturn.get(1);
-				Vector3ZZZ<String> vectemp = StringZZZ.vecMid(stemp, "<Z>", "</Z>");
-				vectemp.replace(1, sReturnTag);
-				stemp = VectorUtilZZZ.implode(vectemp);
-				
-				vecReturn.replace(stemp);
-			}
-				
+			vecReturn.replace(1,sReturnSubstituted);			
+								
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			sReturnTag = this.getValue();
+			sReturnTagSubstituted = this.getValue();
 		}//end main:			
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nicht ersetzen. Beim Parsen bleibt der Zeilenwert nahezu unveraendert. Der Wert des Tags wurde schon gespeichert. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).
-		this.setValue(sReturnTag);
+		this.setValue(sReturnTagSubstituted);
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);

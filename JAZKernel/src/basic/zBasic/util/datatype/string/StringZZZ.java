@@ -3675,24 +3675,55 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
-	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 * @param sString
 	 * @param sStringToBeStripped
 	 * @return
 	 */
 	public static String stripRight(String sString, String sStringToBeStripped){
+		return StringZZZ.stripRight(sString, sStringToBeStripped, -1);
+	}
+	
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 *   
+	 *  Beachte hier dien Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
+	 *   
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(StringZZZ.isEmpty(sStringToBeStripped)) break main;
+			if(iNumberOfStripsIn==0) break main;
 			
-			boolean bGoon = false;
-			while(!bGoon){
-				if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
-					sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
-				}else{
-					bGoon = true;
-				}
+			int iNumberOfStrips = iNumberOfStripsIn;
+			if(iNumberOfStrips<=-1) {
+				//nimm alle
+				boolean bGoon = false;
+				while(!bGoon){
+					if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+						sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
+					}else{
+						bGoon = true;
+					}
+				}			
+			}else {
+				//nimm die Anzahl
+				int iCount=0;
+				boolean bGoon = false;
+				while(!bGoon){
+					iCount++;
+					if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+						sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
+					}else{
+						bGoon = true;
+					}
+					if(iCount>=iNumberOfStrips) bGoon = true;
+				}				
 			}
 		}//end main:
 		return sReturn;

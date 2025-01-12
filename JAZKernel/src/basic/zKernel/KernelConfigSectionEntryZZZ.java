@@ -53,8 +53,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bParsed = false;
 	protected boolean bParsedChanged = false;
 	
+	protected boolean bSubstituteCalled = false;
+	protected boolean bSubstitutedChanged = false;
 	protected boolean bPathSubstituted = false;
+	protected boolean bPathSubstitutedChanged = false;
 	protected boolean bVariableSubstituted = false;
+	protected boolean bVariableSubstitutedChanged = false;
+	
 	
 	protected boolean bSolveCalled = false;
 	protected boolean bSolved = false;
@@ -753,6 +758,25 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	//################################
+	@Override 
+	public boolean isSubstituteCalled() {
+		return this.bSubstituteCalled;
+	}
+	
+	@Override
+	public void isSubstituteCalled(boolean bSubstituteCalled) {
+		this.bSubstituteCalled = bSubstituteCalled;
+	}
+	
+	@Override 
+	public boolean isSubstitutedChanged() {
+		return this.bSubstitutedChanged;
+	}
+	
+	@Override
+	public void isSubstitutedChanged(boolean bSubstitutedChanged) {
+		this.bSubstitutedChanged = bSubstitutedChanged;
+	}
 	
 	@Override 
 	public boolean isPathSubstituted() {
@@ -765,6 +789,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public boolean isPathSubstitutedChanged() {
+		return this.bPathSubstitutedChanged;
+	}
+	
+	@Override
+	public void isPathSubstitutedChanged(boolean bPathSubstitutedChanged) {
+		this.bPathSubstitutedChanged = bPathSubstitutedChanged;
+	}
+	
+	@Override
 	public boolean isVariableSubstituted() {
 		return this.bVariableSubstituted;
 	}
@@ -772,6 +806,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isVariableSubstituted(boolean bVariableSubstituted) {
 		this.bVariableSubstituted = bVariableSubstituted;
+	}
+	
+	@Override
+	public boolean isVariableSubstitutedChanged() {
+		return this.bVariableSubstitutedChanged;
+	}
+	
+	@Override
+	public void isVariableSubstitutedChanged(boolean bVariableSubstitutedChanged) {
+		this.bVariableSubstitutedChanged = bVariableSubstitutedChanged;
 	}
 	
 	//########################################
