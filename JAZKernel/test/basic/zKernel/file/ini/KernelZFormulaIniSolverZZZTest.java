@@ -474,7 +474,22 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			try {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
+				//+++ Mit FORMULA MATH-Berechnung
+						
+				//c) Aufloesen, aber den Z-Tag drinbehalten.
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSolvedIn;	
+				sTag = sTagIn;
+				sTagSolved = sTagSolvedIn;
 				
+				stemp = sTagSolvedIn;
+				//sTemp = ExpressionIniUtilZZZ.makeAsExpression(sTemp, KernelZFormulaMathSolverZZZ.sTAG_NAME); //der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen
+				stemp = objFormulaSolver.makeAsExpression(stemp); //Z-Tags bleiben drin
+				stemp = ExpressionIniUtilZZZ.makeAsExpression(stemp); //Z-Tags bleiben drin
+				sExpressionSolved = StringZZZ.replace(sExpressionSolved, sTagSolved, stemp);
+				
+				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+	
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -694,13 +709,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
+			btemp = objFormulaSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+							
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+					
 			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //sollte egal sein 
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
 			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //sollte egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-			
-			
+						
 			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); //sollte egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 														
@@ -766,19 +789,24 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertFalse(objEntry.isParseCalled()); //Wenn der Solver nicht ausgeführt wird, wird auch kein parser gestartet
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"
+				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEntry, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				assertTrue(btemp);
 				
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-			
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+//				assertFalse(objEntry.isParseCalled()); //Wenn der Solver nicht ausgeführt wird, wird auch kein parser gestartet
+//				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also "unveraendert"
+//				
+//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
+//			
+//				assertFalse(objEntry.isDecrypted());
+//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+//				
+//				assertFalse(objEntry.isCall());
+//				assertFalse(objEntry.isJavaCall());
+//				assertNull(objEntry.getCallingClassname());
+//				assertNull(objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1416,13 +1444,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
+			btemp = objFormulaSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+							
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+		
+			btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+					
 			btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); 
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
 			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //Damit der Wert sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-			
-			
+						
 			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH,true); //Damit der Wert NICHT sofort ausgerechnet wird
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 														
@@ -1468,25 +1504,33 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSuroundingSeparators) {
-					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-				}else {
-					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-				}
+				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEntry, EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				assertTrue(btemp);
 			
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntry.isSolveCalled());
 				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+//				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+//				if(bRemoveSuroundingSeparators) {
+//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+//				}else {
+//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+//				}
+//			
+//				assertFalse(objEntry.isPathSubstituted());
+//				assertFalse(objEntry.isVariableSubstituted());
+//				
+//				assertFalse(objEntry.isSolveCalled());
+//				
+//				assertFalse(objEntry.isDecrypted());
+//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+//				
+//				assertFalse(objEntry.isCall());
+//				assertFalse(objEntry.isJavaCall());
+//				assertNull(objEntry.getCallingClassname());
+//				assertNull(objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1882,27 +1926,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
-
-					assertTrue(objEntry.isParseCalled());
 					
-					sExpressionSolved = sExpressionSolvedIn;
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isParsedChanged());						
-					}else {
-						assertTrue(objEntry.isParsedChanged());
-					}
-					
-					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-					
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEntry, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					assertTrue(btemp);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -1920,8 +1948,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
-					//TODOGOON20250107;
-					//Mache eine Sammlung von Methoden, die ein objEntry als input hat.
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEntry, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					assertTrue(btemp);					

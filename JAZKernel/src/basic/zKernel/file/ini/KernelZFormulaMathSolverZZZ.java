@@ -174,13 +174,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		objEntry.isSolveCalled(true);
 		
 		main:{			
-//			//Aufloesen von Pfaden und ini-Variablen
-//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//			objReturnReferenceSolverSuper.set(objEntry);
-//			sReturnTag = super.solveParsed(sExpressionIn, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-//			sReturn = sReturnTag;
-//			objEntry = objReturnReferenceSolverSuper.get();
-			
+			//Aufloesen von Pfaden und ini-Variablen passierte schon beim Parsen.
 			//Aufloesen des Math-Tags
 			sReturnTag = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
 			sReturn = sReturnTag;
@@ -249,8 +243,8 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
 			if(objOperator.isExpression(sFormulaExpression)){
 				 sExpression = objOperator.parse(sFormulaExpression);
-				 sReturnTag = sExpression;
-				 sReturn = sReturnTag;
+				 sReturnTag = objOperator.getValue();
+				 sReturn = sExpression;
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.

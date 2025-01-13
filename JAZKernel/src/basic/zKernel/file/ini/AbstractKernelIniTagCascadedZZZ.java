@@ -123,7 +123,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	/**Methode wird z.B. vom AbstractKernelIniSolver ueberschrieben **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>(); Vector3ZZZ<String>vecReturnTag = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn; String sReturnSubstituted = null; String sReturnTagSubstituted = null;
+		String sReturn = sExpressionIn; String sReturnSubstituted = null; String sReturnTag = null;
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -164,7 +164,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			if (vecReturn==null)break main;
 			
 			sExpression = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
-			sReturnTagSubstituted = sExpression;
+			sReturnTag = sExpression;
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			//Merke: Darum vorher vecReturn schon initialisieren.
@@ -181,12 +181,12 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			sReturnTagSubstituted = this.getValue();
+			sReturnTag = this.getValue();
 		}//end main:			
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nicht ersetzen. Beim Parsen bleibt der Zeilenwert nahezu unveraendert. Der Wert des Tags wurde schon gespeichert. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).
-		this.setValue(sReturnTagSubstituted);
+		this.setValue(sReturnTag);
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);

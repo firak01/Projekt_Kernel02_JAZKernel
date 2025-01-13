@@ -8,10 +8,10 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 public enum EnumSetMappedTestCaseSolverTypeZZZ implements IEnumSetMappedTestCaseZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
-	PARSE("parse","p","Variante: 'Parse'"),
-	SOLVE("solve","s","Variante: 'Solve'"),
-	PARSE_AS_ENTRY("parse_as_entry","pae","Variante: 'Parse as entry'"),
-	SOLVE_AS_ENTRY("solve_as_entry","sae","Variante: 'Solve as entry'");
+	PARSE("parse",TestUtilAsTestZZZ.sCASE_PARSE,"Variante: 'Parse'"),
+	SOLVE("solve",TestUtilAsTestZZZ.sCASE_SOLVE,"Variante: 'Solve'"),
+	PARSE_AS_ENTRY("parse_as_entry",TestUtilAsTestZZZ.sCASE_PARSE_AS_ENTRY,"Variante: 'Parse as entry'"),
+	SOLVE_AS_ENTRY("solve_as_entry",TestUtilAsTestZZZ.sCASE_SOLVE_AS_ENTRY,"Variante: 'Solve as entry'");
 	
 
 private String name, abbr;
