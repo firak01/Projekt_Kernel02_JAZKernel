@@ -29,11 +29,11 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelZFormulaIniSolverZZZTest extends TestCase {
-	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT = "<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>";
+	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT = "<Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula>";
 	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01 = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT +"</Z>'. FGL rulez.";
 	
 	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT = "6";
-	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01 = "Der dynamische Wert ist '"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT +"'. FGL rulez.";	
+	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01 = "Der dynamische Wert ist '<Z><Z:formula>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT +"</Z:formula></Z>'. FGL rulez.";	
 	
 	private File objFile;
 	private FileIniZZZ objFileIniInit;
@@ -476,7 +476,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ Mit FORMULA MATH-Berechnung
 						
-				//c) Aufloesen, aber den Z-Tag drinbehalten.
+				//c) Aufloesen, aber die Z-Tags drinbehalten.
 				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;	
 				sTag = sTagIn;
@@ -484,10 +484,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				stemp = sTagSolvedIn;
 				//sTemp = ExpressionIniUtilZZZ.makeAsExpression(sTemp, KernelZFormulaMathSolverZZZ.sTAG_NAME); //der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen
-				stemp = objFormulaSolver.makeAsExpression(stemp); //Z-Tags bleiben drin
-				stemp = ExpressionIniUtilZZZ.makeAsExpression(stemp); //Z-Tags bleiben drin
-				sExpressionSolved = StringZZZ.replace(sExpressionSolved, sTagSolved, stemp);
-				
+				//stemp = objFormulaSolver.makeAsExpression(stemp); //Z:Formula-Tags bleiben nicht drin
+				//stemp = ExpressionIniUtilZZZ.makeAsExpression(stemp); //Z-Tags bleiben drin
+				//sExpressionSolved = StringZZZ.replace(sExpressionSolved, sTagSolved, stemp);				
 				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 	
 						
@@ -1541,12 +1540,15 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
+				
+				//TODOGOON20240114;//Beim solven muss der Wert ohne umgebenden z:formula-Tag zugewiesen werden.
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objFormulaSolver.getValue(); //Der geparste Wert des Tags selbst enthaelt keine umgebenden Tags. Also wieder den Tag rausrechnen.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);				
 				assertEquals(sTagSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();

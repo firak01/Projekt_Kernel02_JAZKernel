@@ -77,13 +77,13 @@ public class TestUtilZZZ {
 				objStreamFile.println("WertB=5");
 				
 				objStreamFile.println("[Section for testComputeMathValue]");
-				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");		
+				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
+				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");		
 				
 				objStreamFile.println("[Section for testComputeMath]");
-				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
-				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
-				objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
+				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
+				objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:formula><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				 
 				
 				objStreamFile.println("[Section for testComputePathWithMath]");
@@ -92,14 +92,14 @@ public class TestUtilZZZ {
 				objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
 				
 				objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
-				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:formula><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				 
 				
 				objStreamFile.println("[Section for testComputeMathArguments FLOAT]");
 				objStreamFile.println("WertA_float=4.0");
 				objStreamFile.println("WertB_float=5.0");
 				objStreamFile.println("[Section for testComputeMath FLOAT]");
-				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:formula><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				
 				objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
 				objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></z>");
@@ -109,13 +109,13 @@ public class TestUtilZZZ {
 				objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
 				
 				//Erst Pfad, dann Variable
-				objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><Z:formula><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				
 				//zwei Pfade
-				objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><Z:formula><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				
 				//Erst Variable, dann Pfad
-				objStreamFile.println("Formula4=Der dynamische Wert ist '<Z><z:Math><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val><Z:oP>*</Z:op><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val></Z:math></Z>'. FGL rulez.");
+				objStreamFile.println("Formula4=Der dynamische Wert ist '<Z><Z:formula><z:Math><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val><Z:oP>*</Z:op><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val></Z:math></Z:formula></Z>'. FGL rulez.");
 				
 				
 				//20210707 Tests für die Arbeit mit JSON Strings

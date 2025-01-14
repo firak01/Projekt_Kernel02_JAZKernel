@@ -27,7 +27,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = 7989209806367224848L;
-	public static String sTAG_NAME = "Z";
+	public static String sTAG_NAME = "Z:formula";
 	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
