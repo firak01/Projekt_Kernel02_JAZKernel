@@ -160,7 +160,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
 		    //Ausserdem wird so vecReturn "initialisiert"
-			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, this.getTagStarting(), this.getTagClosing(), !bIgnoreCase);
+			String sTagStarting = this.getTagStarting();
+			String sTagClosing = this.getTagClosing();
+			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagStarting, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;
 			
 			sExpression = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.

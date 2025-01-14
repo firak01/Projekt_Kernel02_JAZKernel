@@ -253,12 +253,15 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		    //Das Ziel ist, das der Operator nur mit der reinen Formel arbeitet. Da er umgebenden Text nicht herausfiltern kann.
 			//Nun den z:operator Tag suchen
 			String sExpression = sExpressionIn;
+			
+			
+			
 			String sFormulaExpression = sExpression;
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
 			if(objOperator.isExpression(sFormulaExpression)){
-				 sExpression = objOperator.parse(sFormulaExpression);
-				 sReturnTag = objOperator.getValue();
+				 sExpression = objOperator.solve(sFormulaExpression); //Merke: Das ist ein dummy - Solve, das nicht aus einem Interface stammt.
 				 sReturn = sExpression;
+				 sReturnTag = sExpression;			 
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
 				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
