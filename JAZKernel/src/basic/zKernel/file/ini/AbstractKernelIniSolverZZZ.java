@@ -194,6 +194,22 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
 	
+	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
+	@Override 
+	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isSolverEnabledEveryRelevant() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			//Hier kaeme dann das ueberschiebene rein, z.B. "Elternsolver"
+							
+		}//end main:
+		return bReturn;
+	}
+	
 	@Override
 	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
@@ -205,7 +221,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
-			bReturn = this.isSolverEnabledThis();
+			bReturn = this.isSolverEnabledEveryRelevantThis();
 			if(!bReturn) break main;
 			
 			bReturn = this.isSolverEnabledGeneral();

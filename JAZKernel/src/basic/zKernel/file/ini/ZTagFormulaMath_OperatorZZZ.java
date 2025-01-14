@@ -6,10 +6,20 @@ import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
+/**Das ist eine Vereinfachung.
+ * Beim Parsen wird hier nicht nur der Operator Wert geholt, 
+ * sondern auch das Ausrechnen gemacht.
+ * 
+ * @author fl86kyvo
+ *
+ * @param <T>
+ */
 public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 3096748072633354679L;
 	public static String sTAG_NAME = "Z:op";
 	private String sOperator = null;
+	private String sOperand01 = null;
+	private String sOperand02 = null;
 		
 	public ZTagFormulaMath_OperatorZZZ() throws ExceptionZZZ{
 		super();
@@ -36,19 +46,64 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		this.sOperator=sOperator;
 	}
 	
+	public String getOperand01(){
+		return this.sOperand01;
+	}
+	public void setOperand01(String sOperand){
+		this.sOperand01=sOperand;
+	}
+	
+	public String getOperand02(){
+		return this.sOperand02;
+	}
+	public void setOperand02(String sOperand){
+		this.sOperand02=sOperand;
+	}
+	
+	
 	//### Aus ITagBasicZZZ
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
 	}
-
-	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
+	
+	public String computeParsed() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			if(StringZZZ.isEmpty(sValue01)) break main;
-			if(StringZZZ.isEmpty(sValue02)) break main;
+			String sOperator = this.getOperator();
+			String sOperand01=this.getOperand01();
+			String sOperand02=this.getOperand02();
+			
+			sReturn = this.compute(sOperand01, sOperator, sOperand02);
+		}//end main:
+		return sReturn;
+	}
+	
+	public String computeParsed(String sValue01, String sValue02) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{			
+			String sOperator = this.getOperator();			
+			sReturn = this.compute(sValue01, sOperator ,sValue02);
+		}//end main:
+		return sReturn;
+	}
+
+	public String compute(String sValue01, String sOperator, String sValue02) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sValue01) && StringZZZ.isEmptyTrimmed(sValue02)) break main;
+			
+			if(StringZZZ.isEmptyTrimmed(sOperator)) {
+				//Dann einfach hintereinandersetzen
+				sReturn = sValue01 + sValue02;
+				break main;
+			}
+			
+			if(StringZZZ.isEmptyTrimmed(sValue01)) break main;
+			if(StringZZZ.isEmptyTrimmed(sValue02)) break main;								
+									
 			try{
-				String sOperator = this.getOperator();
+				String sOp = sOperator;
 				
 			//erst ab Java 1.7 kann auf Strings in einenr Switch - Anweisung gepürft werden.
 //			switch(sOperator){
@@ -63,10 +118,10 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 //				
 //			}
 			
-			String sOp = "+"; //+ als Default
-			if(!StringZZZ.isEmpty(sOperator)){
-				sOp = sOperator.trim();				
-			}
+//			String sOp = "+"; //+ als Default
+//			if(!StringZZZ.isEmpty(sOperator)){
+//				sOp = sOperator.trim();				
+//			}
 			
 			if(StringZZZ.isFloatExplizit(sValue01) || StringZZZ.isFloatExplizit(sValue02)){ //Explizit: Damit nicht Integer Werte (die auch gültig als Float umgerechnet werden könnten, hier nicht umgeändert werden)
 				Float fltA = new Float(sValue01);
@@ -123,11 +178,25 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 									
 			if(!StringZZZ.isEmpty(sReturnTag)){															
 				this.setOperator(sReturnTag);
-				String sValue01 = (String)vecReturn.get(0);
-				String sValue02 = (String)vecReturn.get(2);
+				//Nein, das ist nicht korrekt  String sValue01 = (String)vecReturn.get(0);
+				//Nein, das ist nicht korrekt  String sValue02 = (String)vecReturn.get(2);
+				
+				//links vom Operator
+				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
+				if(objValue01.isExpression(sLineWithExpression)){
+					sLineWithExpression = objValue01.parse(sLineWithExpression);						
+				}
+				//String sValue01 = objValue01.getValue();
+				
+				//rechts vom Operator
+				ZTagFormulaMath_ValueZZZ objValue02 = new ZTagFormulaMath_ValueZZZ();
+				if(objValue02.isExpression(sLineWithExpression)){
+					sLineWithExpression = objValue02.parse(sLineWithExpression);						
+				}	
+				//String sValue02 = objValue02.getValue();
 				
 				try{
-					sReturn = this.compute(sValue01, sValue02);
+					sReturn = this.computeParsed();
 				}catch(ExceptionZZZ ez){
 					bIsError=true;
 				}					
@@ -144,25 +213,39 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 
 	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
-		public String parse(String sLineWithExpression) throws ExceptionZZZ{
-			String sReturn = sLineWithExpression;
+		public String parse(String sLineWithExpressionIn) throws ExceptionZZZ{
+			String sReturn = sLineWithExpressionIn;
 			String sReturnTag = null;
 			main:{
-				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+				if(StringZZZ.isEmptyTrimmed(sLineWithExpressionIn)) break main;
 				
+				String sLineWithExpression = sLineWithExpressionIn;
+				
+				//Der Operator selbst.
+				Vector3ZZZ<String> vecReturn = this.parseFirstVector(sLineWithExpression);			
+				sReturnTag = (String) vecReturn.get(1);	
+				this.setValue(sReturnTag);
+				this.setOperator(sReturnTag);				
+				sLineWithExpression = VectorUtilZZZ.implode(vecReturn);
 				
 				//links vom Operator
 				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue01.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue01.parse(sLineWithExpression);						
-				}	
+				}
+				this.setOperand01(objValue01.getValue());
+				
+				
 				
 				//rechts vom Operator
 				ZTagFormulaMath_ValueZZZ objValue02 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue02.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue02.parse(sLineWithExpression);						
 				}	
+				this.setOperand02(objValue01.getValue());
 				
+				
+				//TODOGOON20240114;//Das Ausrechnen in eine solve...() Methode packen, die aber wohl nicht aus einem Interface kommt
 				Vector3ZZZ<String> vecAll = this.computeFirstVector(sLineWithExpression);
 				//Nein, der Operator selbst ist ja ein z.B. "+",    sReturnTag = (String) vecAll.get(1);
 				//this.setValue(sReturnTag);

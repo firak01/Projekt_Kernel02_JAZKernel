@@ -115,6 +115,23 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);
 	}
 	
+	@Override 
+	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isSolverEnabledEveryRelevant() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			//Hier der "Elternsolver"
+			bReturn = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			if(!bReturn) break main;
+							
+		}//end main:
+		return bReturn;
+	}
+	
 	
 	//### aus IConvertableZZZ
 	@Override
@@ -223,16 +240,13 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
-						
-			boolean bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+					
+			boolean bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
-			
-			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);		
-			if(!bUseFormula) break main;
-			
-			boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);		
+					
+			boolean bUseFormulaMath = this.isSolverEnabledEveryRelevantThis();		
 			if(!bUseFormulaMath) break main;
 						
 			//++++++++++++++++++++++++++++++
