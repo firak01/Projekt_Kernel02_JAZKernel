@@ -476,11 +476,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 
-	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sExpression = sExpressionIn;
-		String sReturn = sExpression;
-		String sReturnTag = "";
-		//ArrayList<String> alsReturn = null;
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		String sReturn = sExpressionIn;
+		String sReturnTag = sExpressionIn;
 		
 		boolean bUseExpression = false; 
 		boolean bUseSolver = false;
@@ -510,6 +508,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
+			
+			String sExpression = sExpressionIn;
 				
 			//!!! METHODE IST EINE BLAUPAUSE, die vom konkreten Solver ueberschrieben werden muss.
 			//!!! HIer steht dann die konkrete Aufloesung. 

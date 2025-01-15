@@ -132,205 +132,36 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 	}
 	
-	
-	//### aus IConvertableZZZ
+	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
+	 * @param sLineWithExpression
+	 * @param objEntryReference
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+	 */	
 	@Override
-	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
-		return false;
+	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveParsed_(sExpression, objReturnReference, true);
 	}
-
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
-	}
-	
-//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-//	* @param sLineWithExpression
-//	* @return
-//	* 
-//	* lindhaueradmin; 06.03.2007 11:20:34
-//	 * @throws ExceptionZZZ 
-//	 */
-//	@Override
-//	public Vector<String>parseExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String>vecReturn = new Vector<String>();		
-//		main:{		
-//			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
-//			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
-//			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-//		}
-//		return vecReturn;
-//	}
-	
-//	@Override
-//	public Vector<String> parseAllVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
-//			vecReturn = this.parseFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
-//			String sExpression = (String) vecReturn.get(1);									
-//			if(!StringZZZ.isEmpty(sExpression)){
-//				
-//				//ZUERST: Löse ggfs. übergebene Variablen auf.
-//				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-//				while(objVariable.isExpression(sExpression)){
-//					sExpression = objVariable.parse(sExpression);			
-//				} //end while
-//					
-//								
-//				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-//				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-//				String sExpressionOld = sExpression;
-//				while(objIniPath.isExpression(sExpression)){
-//						sExpression = objIniPath.parse(sExpression);//in computeAsExpression wäre Z-Tags
-//						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
-//						sExpressionOld = sExpression;
-//				} //end while
-//				
-//				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
-//				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-//				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
-//				if(sExpression!=null){
-//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-//					vecReturn.add(1, sExpression);
-//				}
-//				
-//
-//			} //end if sExpression = ""					
-//		}//end main:
-//		return vecReturn;
-//	}
-	
-	
-//	public Vector<String> solveAllVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
-//						
-//			boolean bHasVariableProcessed=false; boolean bHasPathProcessed=false;
-//			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
-//			String sExpression = (String) vecReturn.get(1);									
-//			if(!StringZZZ.isEmpty(sExpression)){
-//				
-//				//ZUERST: Löse ggfs. übergebene Variablen auf.
-//				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-//				String sExpressionOld = sExpression;
-//				while(objVariable.isExpression(sExpressionOld)){
-//					//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen
-//					//objVariable.compute(sExpressionOld);
-//					//Also: Einen Vektor holen....
-//					Vector<String> vecExpression = objVariable.parseFirstVector(sExpressionOld);
-//					
-//					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
-//					if(!StringZZZ.equals(sExpression,sExpressionOld)){
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-VARIABLE verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
-//					}else {
-//						break;
-//					}					
-//
-//					//Die umgebenden Werte sichern
-//					String s0=vecReturn.get(0);
-//					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//					vecReturn.add(0, s0 + vecExpression.get(0));
-//					
-//					String s1 = sExpression;
-//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//					vecReturn.add(1, s1);
-//										
-//					String s2=vecReturn.get(2);
-//					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//					vecReturn.add(2, vecExpression.get(2) + s2);
-//					
-//					sExpression = VectorZZZ.implode(vecReturn);
-//					sExpressionOld=sExpression;//Sonst Endlosschleife.
-//					bHasVariableProcessed = true;
-//				} //end while
-//					
-//								
-//				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-//				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-//				sExpressionOld = sExpression;
-//				while(objIniPath.isExpression(sExpressionOld)){
-//											
-//					//Verwende wie oben computeExpressionFirstVector(sExpressionOld);
-//					Vector<String> vecExpression = objIniPath.parseFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
-//					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
-//					if(!sExpressionOld.equals(sExpression)) {
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
-//					}else {
-//						break;//Sonst Endlosschleife
-//					}
-//					
-//					//Die umgebenden Werte sichern
-//					if(bHasVariableProcessed || bHasPathProcessed) {
-//						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln	
-//						String s0 = vecExpression.get(0);
-//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//						vecReturn.add(0, s0);
-//						
-//						String s1 = vecExpression.get(1);
-//						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//						vecReturn.add(1, s1);	
-//						
-//						String s2 = vecExpression.get(2);
-//						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//						vecReturn.add(2, s2);
-//						
-//						sExpression = VectorZZZ.implode(vecReturn);
-//						sExpressionOld=sExpression;//Sonst Endlosschleife.
-//					}else {
-//						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln
-//						String s0 = vecReturn.get(0);
-//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//						vecReturn.add(0, s0 + vecExpression.get(0));
-//						
-//						String s1 = sExpression;
-//						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//						vecReturn.add(1, s1);
-//						
-//						String s2 = vecReturn.get(2);
-//						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//						vecReturn.add(2, vecExpression.get(2) + s2);
-//						
-//						sExpression = VectorZZZ.implode(vecReturn);
-//						sExpressionOld=sExpression;//Sonst Endlosschleife.
-//					}
-//						
-//					bHasPathProcessed = true;
-//				} //end while
-//			} //end if sExpression = ""					
-//		}//end main:
-//		return vecReturn;
-//	}
-	
-
-
-	//###### Getter / Setter
-	
-	//############################################
-	//### Aus ISolveEnabled		
-		/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
-		 * @param sLineWithExpression
-		 * @param objEntryReference
-		 * @return
-		 * @throws ExceptionZZZ
-		 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
-		 */	
-		@Override
-		public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
-			return this.solveParsed_(sExpression, objReturnReference, true);
-		}
 		
 		@Override
 		public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 			return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 		}
 		
-		//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit MATH-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
+		//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit MATH-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)		
+		/**Methode ersetzt in der Zeile alle CALL Werte.
+		 * Methode überschreibt den abstrakten "solver", weil erst einmal Pfade oder Variablen ersetzt werden sollen.
+		 * @param sLineWithExpression
+		 * @param objEntryReference
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+		 */
 		private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 			String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
 			String sReturnTag = null;
-			String sExpressionUsed = sExpressionIn;
+			boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 			IKernelConfigSectionEntryZZZ objEntry = null;
@@ -350,45 +181,63 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSolveCalled(true);
 			
-			main:{	
-				//Aufloesen von Pfaden und ini-Variablen
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objReturnReferenceSolverSuper.set(objEntry);
-				sReturnTag = super.solveParsed(sExpressionUsed, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-				sReturn = sReturnTag;
-				objEntry = objReturnReferenceSolverSuper.get();
+			main:{
+				if(StringZZZ.isEmpty(sExpressionIn)) break main;
+				
+				bUseExpression = this.isExpressionEnabledGeneral(); 
+				if(!bUseExpression) break main;
+							
+				bUseSolver = this.isSolverEnabledGeneral();
+				if(!bUseSolver) break main;
+				
+				bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+				if(!bUseSolverThis) break main;
+				
+				String sExpression = sExpressionIn;
+						
+//				//Aufloesen von Pfaden und ini-Variablen
+//				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//				objReturnReferenceSolverSuper.set(objEntry);
+//				sReturn = super.solveParsed(sExpression, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
+//				sReturnTag=this.getValue();
+//				objEntry = objReturnReferenceSolverSuper.get();
 
 				//Aufloesen des Math-Tags
-				sReturnTag = this.solveParsed_Expression_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
-				sReturn = sReturnTag;
+				sExpression = sReturn;
+				sReturn = this.solveParsed_Formula_(sExpression, objReturnReference, bRemoveSurroundingSeparators);
+				sReturnTag = this.getValue();
 				objEntry = objReturnReference.get();	
 				
 				objEntry.isSolved(true);
-				if(!sExpressionUsed.equals(sReturn)) {
-					objEntry.isSolvedChanged(true);
-					objEntry.setValueFormulaSolvedAndConverted(sReturn);					
+				
+				//BESONDERHEIT				
+				if(!sExpression.equals(sReturn)) {
+					objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
 					objEntry.setValueAsExpression(sReturn);
 				}																
 			}//end main
-			
+		
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 			this.setValue(sReturnTag);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
-				if(sExpressionIn!=null) {
-					if(!sExpressionIn.equals(sReturn)) objEntry.isSolveCalled(true);
+				if(sExpressionIn!=null) {				
+					if(!sExpressionIn.equals(sReturn)) {
+						objEntry.isExpression(true);
+						objEntry.isSolvedChanged(true);
+					}
 				}
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			}
-			return sReturn;	
+			return sReturn;
 		}
 	
 	
 	//############################################
-	private String solveParsed_Expression_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {				
+	private String solveParsed_Formula_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {				
 		String sReturn = sExpressionIn;
 		String sReturnTag = null;
-		String sExpressionUsed = sExpressionIn;
+		boolean bUseFormula = false; boolean bUseFormulaMath = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -411,42 +260,57 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		main:{			
 			//!!! Pfade und Variablen ersetzen, wurde schon vorher gemacht !!!
 			
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+			
 			//### Nun erst der MATH Teil, ggfs. mit ersetzten Variablen
-			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA)) {
-				String sExpressionWithTags = sExpressionUsed;
+			bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			if(bUseFormula) {
+				String sExpressionWithTags = sExpression;
 						
 				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)) {				
-												
+				bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH); 
+				if(bUseFormulaMath) {				
+					//Analog zum vorgehen in parseFirstVector(...), nur hier wird vom JavaCallIniSolver.solveParsed() aufgerufen.
+					sExpression = sReturn;
+					
 					//Hier KernelZFormulaMathSolverZZZ verwenden
-					//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
-					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
-					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
+					//WICHTIG: DIE FLAGS VERERBEN !!!
 					KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
 					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objMathSolverDummy, true);
 					
-					//Variablen sind vorher schon aufgeloest, wir brauchen also keine HashMap mit den Variablen:	HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();					
-					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+					//Variablen sind vorher schon aufgeloest, wir brauchen also keine HashMap mit den Variablen:	HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+					IKernelZZZ objKernel = this.getKernelObject();
+					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(objKernel, this.getFileConfigKernelIni(), saFlagZpassed);
 																									
 					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 					String sExpressionWithTagsOld = sExpressionWithTags;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
 												
-						String sExpressionMathParsedAndSolved = objMathSolver.solve(sExpressionWithTags);
+						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
 						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTags=sExpressionMathParsedAndSolved;															
 					}
 					
-					sReturnTag = sExpressionWithTags;
-					objEntry.isSolved(true);
+					sReturnTag = sExpressionWithTags;					
 					if(!sExpressionWithTagsOld.equals(sExpressionWithTags)) {						
 						objEntry.isFormulaMathSolved(true);
-						objEntry.setValueFormulaSolvedAndConverted(sReturnTag);
-					}					
-				}	
-			}			
+						objEntry.setValueFormulaSolvedAndConverted(sReturnTag);	
+					}
+					
+					//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
+					objEntry.isSolved(true);
+					this.setValue(sReturnTag);		
+					sReturn = sReturnTag;
+				}else {
+					//Also: FORMULA-Tag soll aufgeloest werden, FORMULA-MATH aber nicht. 
+					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
+					sExpression = sReturn;				
+					sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);																		
+				}//end if bUseFormulaMath					
+			}//end if bUseFormula			
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -466,6 +330,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 	
 	//### Aus IParseEnabledZZZ	
+	
+	//### aus IConvertableZZZ
+		@Override
+		public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
+			return false;
+		}
+
+		@Override
+		public String getNameDefault() throws ExceptionZZZ {
+		 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
+		}
 	
 	//### aus IKernelEntryExpressionUserZZZ
 	
