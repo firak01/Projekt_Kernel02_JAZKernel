@@ -234,10 +234,15 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	
 	//############################################
-	private String solveParsed_Formula_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {				
+	private String solveParsed_Formula_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		//Merke: Vesuche das gleich zu halten mit AbstractKernelIniSolver.solve_()
 		String sReturn = sExpressionIn;
-		String sReturnTag = null;
-		boolean bUseFormula = false; boolean bUseFormulaMath = false;
+		String sReturnTag = null;		
+		String sTagParsed = "";
+		//Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
+		boolean bUseFormulaMath = false; //Abweichung zu AbstractKernelInisolver.solve_()
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -258,14 +263,21 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		objEntry.isSolveCalled(true);
 		
 		main:{			
-			//!!! Pfade und Variablen ersetzen, wurde schon vorher gemacht !!!
-			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
+		
+			//!!! Pfade und Variablen ersetzen, wurde schon vorher gemacht !!!
+									
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;	
+			
+			sReturnTag = this.getValue();
+			sTagParsed = sExpressionIn; //das soll ja der geparste Werte sein, s. Methodenname. 
+			sReturn = sExpressionIn;
 			
 			//### Nun erst der MATH Teil, ggfs. mit ersetzten Variablen
-			bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
-			if(bUseFormula) {
+			bUseSolver = this.isSolverEnabledThis();
+			if(bUseSolver) {
 				String sExpressionWithTags = sExpression;
 						
 				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
@@ -274,7 +286,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH); 
 				if(bUseFormulaMath) {				
 					//Analog zum vorgehen in parseFirstVector(...), nur hier wird vom JavaCallIniSolver.solveParsed() aufgerufen.
-					sExpression = sReturn;
+					sExpression = sExpressionWithTags;
 					
 					//Hier KernelZFormulaMathSolverZZZ verwenden
 					//WICHTIG: DIE FLAGS VERERBEN !!!
@@ -286,7 +298,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					KernelZFormulaMathSolverZZZ<T> objMathSolver = new KernelZFormulaMathSolverZZZ<T>(objKernel, this.getFileConfigKernelIni(), saFlagZpassed);
 																									
 					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-					String sExpressionWithTagsOld = sExpressionWithTags;
+					String sExpressionWithTagsOld = sExpression;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
 												
 						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
@@ -302,8 +314,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					
 					//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 					objEntry.isSolved(true);
-					this.setValue(sReturnTag);		
-					sReturn = sReturnTag;
+					if(sReturnTag!=null) sReturn = sReturnTag;
 				}else {
 					//Also: FORMULA-Tag soll aufgeloest werden, FORMULA-MATH aber nicht. 
 					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
@@ -313,19 +324,30 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			}//end if bUseFormula			
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) sReturn = sReturnTag;
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
 		this.setValue(sReturnTag);		
-		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
-			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
-					objEntry.isSolvedChanged(true);
+		if(objEntry!=null) {
+			if(!bUseExpression) {
+				objEntry.setValue(sReturn);
+			}else {
+				if(bUseSolver && bUseSolverThis) {
+					if(sTagParsed!=null) {
+						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+						if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+					}
 				}
+				
+				objEntry.setValue(sReturn);
+				if(sExpressionIn!=null) {
+					if(bUseExpression)objEntry.isExpression(true);																								
+				}
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				
+				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+				this.adoptEntryValuesMissing(objEntry);
 			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
-		}
+		}	
 		return sReturn;	
 	}
 	

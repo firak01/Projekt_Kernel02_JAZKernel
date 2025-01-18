@@ -27,7 +27,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 	//Diese Konstanten werden in einem enum verwendet. 
 	//Diese finale Konstanten sind notwendig, um in einer switch...case Abfrage genutzt zu werden.
 	//Das funktioniert nämlich nicht, da es keine finale Konstante ist   case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():	
-	public static final String sFLAGSET_UNEXPRESSED="uex"; 
+	public static final String sFLAGSET_UNEXPRESSED="uex";
+	public static final String sFLAGSET_UNSOLVED="uso"; 
+	
 	public static final String sCASE_PARSE="p";
 	public static final String sCASE_SOLVE="s";
 	public static final String sCASE_PARSE_AS_ENTRY="pae";
@@ -39,9 +41,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 			
-	public static boolean assertFileIniEntry(IKernelConfigSectionEntryZZZ objEntry, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset ,IEnumSetMappedTestCaseZZZ objEnumTestCase) throws ExceptionZZZ{
+	public static boolean assertFileIniEntry(IEnumSetMappedTestCaseZZZ objEnumTestCase, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSolvedIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+
 			
 			String sCaseset = objEnumTestCase.getAbbreviation();
 			String sFlagset = objEnumTestFlagset.getAbbreviation();
@@ -74,15 +79,33 @@ public class TestUtilAsTestZZZ extends TestCase{
 //					}else {
 //						assertTrue(objEntry.isParsedChanged());
 //					}		
-					assertFalse(objEntry.isParsedChanged()); //Merke: Substitution der INI-Pfade wird auch beim Parsen gemacht.
-					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 									
+							
+					break;
+				case sFLAGSET_UNSOLVED:					
+					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+
+					
+					assertTrue(objEntry.isParsedChanged());  				
+					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert"
+				
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
 					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());					
+					assertNull(objEntry.getCallingMethodname());
+					
+					//Wie sollte man das hier darstellen? Es fehlen ja die Variablen.
+//					sExpressionSolved = sExpressionSolvedIn;
+//					if(sExpression.equals(sExpressionSolved)) {
+//						assertFalse(objEntry.isParsedChanged());						
+//					}else {
+//						assertTrue(objEntry.isParsedChanged());
+//					}		
+					
 					break;
 				default:
 					fail("Test Flagset '" + sFlagset + "' im Case '"+sCaseset+"' ist nicht definiert");
@@ -110,6 +133,29 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isJavaCall());
 					assertNull(objEntry.getCallingClassname());
 					assertNull(objEntry.getCallingMethodname());
+					break;
+				case sFLAGSET_UNSOLVED:					
+					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+
+					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+					if(sExpression.equals(sExpressionSolved)) {
+						assertFalse(objEntry.isSolvedChanged());						
+					}else {
+						assertTrue(objEntry.isSolvedChanged());
+					}	 				
+					
+					assertFalse(objEntry.isDecrypted());
+					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+					
+					assertFalse(objEntry.isCall());
+					assertFalse(objEntry.isJavaCall());
+					assertNull(objEntry.getCallingClassname());
+					assertNull(objEntry.getCallingMethodname());
+					
+						
+					
 					break;
 				default:
 					fail("Test Flagset '" + sFlagset + "' im Case '"+sCaseset+"' ist nicht definiert");

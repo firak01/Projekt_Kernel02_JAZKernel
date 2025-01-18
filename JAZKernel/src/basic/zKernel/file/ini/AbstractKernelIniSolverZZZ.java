@@ -359,11 +359,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
 		String sReturnTag = null;
-		String sExpressionParsed = sReturn;
-		String sTagParsed = "";
-		String sExpressionSolved = sExpressionParsed;
-		
+		String sTagParsed = "";			
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
@@ -391,12 +389,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		objEntry.isSolveCalled(true);
 		
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-								
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+			
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
-			vecReturn = this.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			
 			//solve ruft immer parse() auf, wenn die generelle Auswertung der Expression abgeschaltet ist,
@@ -409,7 +408,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);	
 			sReturnTag = this.getValue();
 			
-			sTagParsed = (String) vecReturn.get(1); //Absicht, da sind dann für das solven ggfs. noch wichtige Tags drin. 
+			sTagParsed = (String) vecReturn.get(1); //Nicht sRetuntTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
 						
 			//Rufe nun solveParsed() auf...
@@ -426,7 +425,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				
 			if(vecReturn!=null) vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = (String) vecReturn.get(1); //Nun als Tag Value die Solve Loesung einsetzen
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -440,6 +439,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				
 				if(bUseSolver && bUseSolverThis) {
 					if(sTagParsed!=null) {
+						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
 						if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
 					}
 				}
