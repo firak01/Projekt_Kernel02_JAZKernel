@@ -19,9 +19,9 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	//Das funktioniert nämlich nicht, da es keine finale Konstante ist   case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 		
 	UNEXPRESSED("unexpressed",TestUtilAsTestZZZ.sFLAGSET_UNEXPRESSED,"Flagset Variante: 'Unexpressed'"),
-	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),
+	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),	
+	SOLVED("solved",TestUtilAsTestZZZ.sFLAGSET_SOLVED,"Flagset Variante: 'Solved'"),
 	
-	SOLVED("solved","s","Flagset Variante: 'Solved'"),
 	CALL_UNEXPRESSED("call_unexpressed","cuex","Flagset Variante: 'Call unexpressed'"),
 	CALL_UNSOLVED("call_unsolved","cus","Flagset Variante: 'Call unsolved'"),
 	FORMULA_MATH_UNSOLVED("formula_math_unsolved","fmus","Flagset Variante: 'Formula Math unsolved'");
