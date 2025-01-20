@@ -907,10 +907,10 @@ public void testVecMid(){
 		assertEquals(vec.size(), 3);
 		
 		String sFormula0 = (String) vec.get(0);
-		assertEquals("", sFormula0);
+		assertEquals(sTest, sFormula0);
 		
 		String sFormula1 = (String) vec.get(1);
-		assertEquals(sTest, sFormula1);
+		assertEquals("", sFormula1);
 		
 		String sFormula2 = (String) vec.get(2);
 		assertEquals("", sFormula2);
@@ -923,10 +923,10 @@ public void testVecMid(){
 		
 		sFormula0 = (String) vec.get(0);
 		assertEquals("", sFormula0);
-		
+				
 		sFormula1 = (String) vec.get(1);
 		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula1);
-		
+				
 		sFormula2 = (String) vec.get(2);
 		assertEquals("", sFormula2);
 		
@@ -994,10 +994,10 @@ public void testVecMidFirst(){
 		assertEquals(vec.size(), 3);
 		
 		String sFormula0 = (String) vec.get(0);
-		assertEquals("", sFormula0);
+		assertEquals(sTest, sFormula0);
 		
 		String sFormula1 = (String) vec.get(1);
-		assertEquals(sTest, sFormula1);
+		assertEquals("", sFormula1);
 		
 		String sFormula2 = (String) vec.get(2);
 		assertEquals("", sFormula2);
@@ -1049,10 +1049,10 @@ public void testVecMidFirst(){
 			assertEquals(vec.size(), 3);
 			
 			sFormula0 = (String) vec.get(0);
-			assertEquals("", sFormula0);
+			assertEquals(sTest, sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals(sTest, sFormula1);
+			assertEquals("", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);
@@ -1084,10 +1084,10 @@ public void testVecMidFirst(){
 			assertEquals(vec.size(), 3);
 			
 			sFormula0 = (String) vec.get(0);
-			assertEquals("", sFormula0);
+			assertEquals(sTest, sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals(sTest, sFormula1);
+			assertEquals("", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);
@@ -1136,10 +1136,10 @@ public void testVecMidFirst(){
 			assertEquals(vec.size(), 3);
 			
 			sFormula0 = (String) vec.get(0);
-			assertEquals("", sFormula0);
+			assertEquals(sTest, sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals(sTest, sFormula1);
+			assertEquals("", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);
@@ -1171,10 +1171,10 @@ public void testVecMidFirst(){
 			assertEquals(vec.size(), 3);
 			
 			sFormula0 = (String) vec.get(0);
-			assertEquals("", sFormula0);
+			assertEquals(sTest, sFormula0);
 			
 			sFormula1 = (String) vec.get(1);
-			assertEquals(sTest, sFormula1);
+			assertEquals("", sFormula1);
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);

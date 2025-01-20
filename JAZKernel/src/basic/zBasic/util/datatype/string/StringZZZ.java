@@ -1412,7 +1412,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.replace(sStringToParse);
+				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
 			
@@ -1473,7 +1473,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.replace(sStringToParse);
+				vecReturn.replace(0,sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
 			
@@ -1591,7 +1591,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch);//!!!nur left, wg. "First", anders als sonst leftback!!!
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.replace(sStringToParse);
+				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
 			
