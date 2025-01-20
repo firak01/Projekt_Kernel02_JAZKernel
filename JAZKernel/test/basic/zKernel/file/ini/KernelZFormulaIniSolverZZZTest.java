@@ -719,7 +719,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 						
 			//####################################################################################
 			//### EXPRESSION nicht verarbeiten - FORMULA_MATH 
@@ -768,6 +768,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
+				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSolved);
+				assertTrue(btemp);
+				
+				
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue); //ohne jede Expressionbehandlung ist der Wert der Zeile unveraendert.
 				
@@ -810,7 +816,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, objEntry, sExpression, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSolved);
 				assertTrue(btemp);
 				
 //				assertFalse(objEntry.isParseCalled()); //Wenn der Solver nicht ausgeführt wird, wird auch kein parser gestartet
@@ -834,25 +840,31 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objFormulaSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparators);
-				assertNotNull(objEntryUsed);
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparators);
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
-				assertEquals(sExpressionSolved, sValue);
+				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSolved);
+				assertTrue(btemp);
 				
-				assertFalse(objEntryUsed.isParseCalled()); 
-				assertFalse(objEntryUsed.isParsedChanged());
 				
-				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-																
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+//				sValue = objEntryUsed.getValue();
+//				assertEquals(sExpressionSolved, sValue);
+//				
+//				assertFalse(objEntryUsed.isParseCalled()); 
+//				assertFalse(objEntryUsed.isParsedChanged());
+//				
+//				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+//																
+//				assertFalse(objEntryUsed.isDecrypted());
+//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+//				
+//				assertFalse(objEntryUsed.isCall());
+//				assertFalse(objEntryUsed.isJavaCall());
+//				assertNull(objEntryUsed.getCallingClassname());
+//				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -863,22 +875,27 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 				assertNotNull(objEntry);
 				
-				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);
+				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSolved);
+				assertTrue(btemp);
 				
-				assertFalse(objEntry.isParseCalled());
-				assertFalse(objEntry.isParsedChanged());
-								
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-								
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+//				sValue = objEntry.getValue();
+//				assertEquals(sExpressionSolved, sValue);
+//				
+//				assertFalse(objEntry.isParseCalled());
+//				assertFalse(objEntry.isParsedChanged());
+//								
+//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+//								
+//				assertFalse(objEntry.isDecrypted());
+//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+//				
+//				assertFalse(objEntry.isCall());
+//				assertFalse(objEntry.isJavaCall());
+//				assertNull(objEntry.getCallingClassname());
+//				assertNull(objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
