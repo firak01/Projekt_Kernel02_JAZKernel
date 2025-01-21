@@ -72,7 +72,7 @@ public class ExpressionIniUtilZZZ {
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 		
-			bReturn = XmlUtilZZZ.containsTag(sExpression, sTagName, bExactMatch); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTagName(sExpression, sTagName, bExactMatch); //also, kein exact match
 			if(bReturn) break main;
 						
 		}//end main

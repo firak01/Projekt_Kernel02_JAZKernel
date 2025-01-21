@@ -784,7 +784,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//Merke: z:null und z:empty sind nicht Tagspezifische Ausdrücke, gelten als Conversion
 			
 			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.
-			boolean bAsTagFound = XmlUtilZZZ.containsTag(sLine, sExpressionTagName, false);
+			boolean bAsTagFound = XmlUtilZZZ.containsTagName(sLine, sExpressionTagName, false);
 			if(!bAsTagFound) break main;
 
 			bReturn = true;

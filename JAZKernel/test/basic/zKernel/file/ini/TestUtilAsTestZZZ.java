@@ -162,8 +162,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 						assertTrue(objEntry.isParsedChanged());
 					}					
 					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-																		
-					assertTrue(objEntry.isPathSubstituted());
+																
+					if(sExpression.equals(sExpressionSolved)) {
+						assertFalse(objEntry.isPathSubstituted());
+					}else {
+						assertTrue(objEntry.isPathSubstituted());	
+					}										
 					assertFalse(objEntry.isVariableSubstituted()); //dieses ggfs. als extra Test machen.
 				
 					assertFalse(objEntry.isDecrypted());
@@ -289,8 +293,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 					}
 																		
-					assertTrue(objEntry.isPathSubstituted());
+					if(sExpression.equals(sExpressionSolved)) {
+						assertFalse(objEntry.isPathSubstituted());
+					}else {
+						assertTrue(objEntry.isPathSubstituted());	
+					}										
 					assertFalse(objEntry.isVariableSubstituted()); //dieses ggfs. als extra Test machen.
+				
 				
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.

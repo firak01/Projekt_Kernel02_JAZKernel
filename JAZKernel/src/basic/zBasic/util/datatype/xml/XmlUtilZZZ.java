@@ -139,12 +139,12 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//################################
-	public static boolean containsTag(String sExpression, String sTagName) throws ExceptionZZZ {
-		return XmlUtilZZZ.containsTag(sExpression, sTagName, true);
+	public static boolean containsTagName(String sExpression, String sTagName) throws ExceptionZZZ {
+		return XmlUtilZZZ.containsTagName(sExpression, sTagName, true);
 	}
 
 		
-	public static boolean containsTag(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
+	public static boolean containsTagName(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String sMatchTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
@@ -292,7 +292,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static boolean isExpression4TagXml(String sExpression, String sTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
-			bReturn = XmlUtilZZZ.containsTag(sExpression, sTagName, false);
+			bReturn = XmlUtilZZZ.containsTagName(sExpression, sTagName, false);
 			if(bReturn) break main;
 			
 		}//end main

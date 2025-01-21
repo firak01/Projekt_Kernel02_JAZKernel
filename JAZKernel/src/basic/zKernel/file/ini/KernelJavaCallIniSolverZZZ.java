@@ -167,7 +167,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			String sExpression = sExpressionIn;
 			
-			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
+			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
 				objEntry.isJavaCall(true);
 			}
 			
@@ -303,7 +303,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			if(XmlUtilZZZ.containsTag(sExpressionIn, this.getName(), false)){
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isJavaCall(true);
 			}
 							

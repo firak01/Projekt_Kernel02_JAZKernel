@@ -465,7 +465,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
 	public static boolean containsAsTagXml(String sString, String sMatchTagName, boolean bExactMatch)throws ExceptionZZZ{
-		return XmlUtilZZZ.containsTag(sString, sMatchTagName, bExactMatch);
+		return XmlUtilZZZ.containsTagName(sString, sMatchTagName, bExactMatch);
 	}
 	
 	/** 

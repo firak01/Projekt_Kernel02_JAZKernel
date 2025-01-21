@@ -249,7 +249,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			bReturn = ExpressionIniUtilZZZ.isParse(sExpression, sExpression, false);
 			
 			//Auf dieser Ebene gibt es dann erstmals Tags
-			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTagName(sExpression, this.getName(), false); //also, kein exact match
 			if(!bReturn) break main;
 			
 		}//end main

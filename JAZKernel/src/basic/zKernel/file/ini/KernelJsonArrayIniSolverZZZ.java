@@ -236,12 +236,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 						
-			if(XmlUtilZZZ.containsTag(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)){
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)){
 				objEntry.isJson(true);
 			}
 			
 			//wg. dieser boolean Zuweisung als eigene Methode, die dann nur die Elternmethode aufruft.
-			if(XmlUtilZZZ.containsTag(sExpressionIn, this.getName(), false)){
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isJsonArray(true);
 			}
 						

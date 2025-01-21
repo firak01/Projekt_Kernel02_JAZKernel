@@ -58,7 +58,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			bReturn = this.isParseRelevant();
 			if(!bReturn) break main;
 			
-			bReturn = XmlUtilZZZ.containsTag(sExpression, this.getName(), false); //also, kein exact match
+			bReturn = XmlUtilZZZ.containsTagName(sExpression, this.getName(), false); //also, kein exact match
 			if(!bReturn) break main;
 			
 			

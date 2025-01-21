@@ -169,7 +169,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 										
-			if(XmlUtilZZZ.containsTag(sExpression, this.getName(), false)){
+			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
 				objEntry.isCall(true);
 			}
 			
