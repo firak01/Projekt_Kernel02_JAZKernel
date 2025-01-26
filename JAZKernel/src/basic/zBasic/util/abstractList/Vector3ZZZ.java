@@ -26,6 +26,10 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		super(3);
 	}
 	
+	public Vector3ZZZ(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		super(3, vecExpression);
+	}
+
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void replace(Object objValue) throws ExceptionZZZ {

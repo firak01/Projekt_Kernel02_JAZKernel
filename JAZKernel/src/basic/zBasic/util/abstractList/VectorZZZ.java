@@ -55,12 +55,18 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	
 	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	
+	public VectorZZZ() {
+		super();
+	}
+
 	public VectorZZZ(Vector initVector) {
 		for (int i=0; i<initVector.size(); i++)
 			this.addElement(initVector.elementAt(i));
 	}
-
-	public VectorZZZ() {
+	
+	public VectorZZZ(VectorZZZ<T> initVector) {
+		for (int i=0; i<initVector.size(); i++)
+			this.addElement(initVector.elementAt(i));
 	}
 
 	//### Ueberschriebene Originalmethoden, um noch weitere Funktionen zu bieten

@@ -1393,6 +1393,52 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
 	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		return StringZZZ.vecMidCascaded(sStringToParse, sSepLeft, sSepRight, bReturnSeparators, bExactMatch);		
+	}
+	
+	//####################################################################################
+	
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+		return StringZZZ.vecMidCascaded(sStringToParse, sLeftSep, sRightSep, true);
+	}
+	
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+		return StringZZZ.vecMidCascaded(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sSepLeft
+	* @param sSepRight
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
@@ -1411,28 +1457,26 @@ public class StringZZZ implements IConstantZZZ{
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
-			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+			if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
+				vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
 			
+			if(bReturnSeparators) {
+				if(StringZZZ.isEmpty(sExpressionTagged) && !StringZZZ.isEmpty(sRemainingTagged)) {
+					sRemainingTagged = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() -sSepRight.length());
+					vecReturn.replace(sLeft, "", sRemainingTagged, bReturnSeparators, sSepLeft, sSepRight);
+					break main;
+				}
+			}
 			
-			//nun gibt es einen Ausdruck			
-//			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());//Das wuerde bei verschachtelten XML Strings funktionieren.			
-//			//String sRight = StringZZZ.leftback(sRemainingTagged, sRightSep); //Das wirkt aber nicht bei verschachtelten XML Strings...
-//			if(sRight==null) sRight = "";
-			
-			//nun gibt es einen Ausdruck			
-			//String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length()); //Das wuerde bei verschachtelten XML Strings funktionieren
-			//String sMid = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";
 				sRight = sRemainingTagged;
 			}else {
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
-				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sRightSep.length());
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.			
 				if(sRight==null) sRight = "";
 			}
 						
@@ -1441,6 +1485,7 @@ public class StringZZZ implements IConstantZZZ{
 		}//end main:
 		return vecReturn;		
 	}
+	
 	
 	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
@@ -1557,6 +1602,20 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
+	public static Vector3ZZZ<String> vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+		return StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, true, true);
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
 	public static Vector3ZZZ<String> vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		return StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
@@ -1590,14 +1649,19 @@ public class StringZZZ implements IConstantZZZ{
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch);//!!!nur left, wg. "First", anders als sonst leftback!!!
-			if(StringZZZ.isEmpty(sExpressionTagged)){
+			if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
 				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
 			
-			
-			//nun gibt es einen Ausdruck			
-			//String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length()); //Das wuerde bei verschachtelten XML Strings funktionieren
+			if(bReturnSeparators) {
+				if(StringZZZ.isEmpty(sExpressionTagged) && !StringZZZ.isEmpty(sRemainingTagged)) {
+					sRemainingTagged = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() -sSepRight.length());
+					vecReturn.replace(sLeft, "", sRemainingTagged, bReturnSeparators, sSepLeft, sSepRight);
+					break main;
+				}
+			}
+									
 			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = "";
 			if(sMid==null) {
@@ -1650,9 +1714,7 @@ public class StringZZZ implements IConstantZZZ{
 				vecReturn.replace(sStringToParse);
 				break main;
 			}
-			
-			
-			//nun gibt es einen Ausdruck			
+								
 			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.   //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
 			if(sMid==null) {

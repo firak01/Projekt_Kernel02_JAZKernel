@@ -65,13 +65,13 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			String sTagStart = this.getTagStarting();
 			String sTagEnd = this.getTagClosing();
-			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			String sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
 			
 			// Z-Tags entfernen ... wichtig.
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			String sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
 						
 			// Den gerade errechneten Wert setzen
 			// im gleichen Objekt

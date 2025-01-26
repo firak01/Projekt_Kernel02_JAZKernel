@@ -275,7 +275,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				if(bRemoveSurroundingSeparators) {
 					String sTagStart = "<Z>"; //this.getTagStarting();
 					String sTagEnd = "</Z>";  //this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
 	
 					sReturnTag = (String) vecReturn.get(1);
 					sReturn = sReturnTag;

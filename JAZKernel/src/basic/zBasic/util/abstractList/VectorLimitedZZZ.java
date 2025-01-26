@@ -33,6 +33,15 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 		this.reset(); //setze defaultobject... 		
 	}
 	
+	public VectorLimitedZZZ(int iSizeMax, Vector3ZZZ<String> vecInitial) throws ExceptionZZZ{
+		super();
+		this.setSizeMax(iSizeMax);
+		this.reset(new String(""));
+		
+		for (int i=0; i<this.getSizeMax(); i++)
+			this.replace(i, vecInitial.elementAt(i));
+	}
+
 	//## aus IVectorLimitedZZZ
 	@Override 
 	public Object getObjectDefaultNew() throws ExceptionZZZ {

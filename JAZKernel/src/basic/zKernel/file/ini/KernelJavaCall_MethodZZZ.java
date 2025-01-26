@@ -73,7 +73,7 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//A
 					if(bRemoveSurroundingSeparators) {
 						String sTagStart = "<Z>"; //this.getTagStarting();
 						String sTagEnd = "</Z>";  //this.getTagClosing();
-						sReturnTag = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
+						sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
 						sReturn = sReturnTag;
 						this.setValue(sReturnTag);
 						

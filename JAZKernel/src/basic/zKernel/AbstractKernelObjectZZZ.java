@@ -5302,7 +5302,7 @@ MeinTestParameter=blablaErgebnis
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceJsonMap = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
 			objReturnReference.set(objReturn);						
 			ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();			                                                  			                                                				                                                  
-			boolean bSuccess = KernelConfigSectionEntryUtilZZZ.getValueJsonMapSolved(objFileIniConfig, sRaw, true, null, objReturnReferenceJsonMap, objhmReturnValueJsonSolved);
+			boolean bSuccess = KernelConfigSectionEntryUtilZZZ.getJsonMapSolved(objFileIniConfig, sRaw, true, null, objReturnReferenceJsonMap, objhmReturnValueJsonSolved);
 			objReturn = objReturnReferenceJsonMap.get();
 			if(!bSuccess) {
 				hmDebug.put("No hashmap value found in '" + sRaw + "' for property", sProperty);

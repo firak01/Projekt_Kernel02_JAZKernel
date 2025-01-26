@@ -134,7 +134,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);//unveraendert wg. useexpresseion = false,  usejson = false
@@ -148,7 +148,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sValue = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();			
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -159,7 +159,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);
@@ -213,7 +213,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);//unveraendert wg. useexpresseion = false,  usejson = false
@@ -226,7 +226,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sValue = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1").getValue();			
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -237,7 +237,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);

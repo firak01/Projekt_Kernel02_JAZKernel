@@ -423,7 +423,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					//Also: CALL-Tag soll aufgeloest werden, JAVA-CALL aber nicht. 
 					//Dann muss/darf nur der CALL-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
 					sExpression = sReturn;				
-					sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, KernelCallIniSolverZZZ.sTAG_NAME);							
+					sReturn = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelCallIniSolverZZZ.sTAG_NAME);							
 				
 				}//end if bAnyJavaCall			
 			}//end if bUseCall

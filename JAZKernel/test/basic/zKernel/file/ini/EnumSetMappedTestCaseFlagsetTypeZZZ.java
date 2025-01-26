@@ -10,13 +10,13 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFlagsetZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Ansatz: Weise den Flag-Kombinationsmöglichkeiten, der Testfaelle einen Typ zu.
 	//        Dann kann man alle asserts in den Tests in einer assert-Methode buendeln und in meheren Tests nutzen.
-	//        
+	//        	//Das funktioniert nämlich nicht, da es keine finale Konstante ist   case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
+
 	//TODOGOON20240106: Nicht nur beim assert nutzen, sondern auch beim Aufbau der Flag Werte.
 	
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
 	//Die finale Konstanten (z.B. TestUtilAsTestZZZ.sUNEXPRESSED) sind notwendig, um in einer switch...case Abfrage genutzt zu werden.
-	//Das funktioniert nämlich nicht, da es keine finale Konstante ist   case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 		
 	UNEXPRESSED("unexpressed",TestUtilAsTestZZZ.sFLAGSET_UNEXPRESSED,"Flagset Variante: 'Unexpressed'"),
 	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),	

@@ -352,7 +352,7 @@ public class XmlTagMatcherZZZ {
 		return parseElementsAsMap_(hmReturnIn, sXml, bWithText);
 	}
 	
-	/**Merke: Analog zu parseElemntsAsVector_(...)
+	/**Merke: Analog zu parseElementsAsVector_(...)
 	 * @param hmReturnIn
 	 * @param sXml
 	 * @param bWithAnyValue

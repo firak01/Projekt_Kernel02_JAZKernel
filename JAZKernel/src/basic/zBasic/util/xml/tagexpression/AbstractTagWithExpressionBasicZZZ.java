@@ -332,13 +332,13 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				if(bRemoveSurroundingSeparators) {
 					String sTagStartZ = "<Z>"; //this.getTagStarting();
 					String sTagEndZ = "</Z>";  //this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
 					sReturnTag = (String) vecReturn.get(1);
 										
 					//Aber: den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt. 				
 					String sTagStart = this.getTagStarting();
 					String sTagEnd = this.getTagClosing();
-					sReturnTag = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 					this.setValue(sReturnTag);	
 				}	
 			}else {

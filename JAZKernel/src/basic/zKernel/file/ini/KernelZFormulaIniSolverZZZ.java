@@ -319,7 +319,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					//Also: FORMULA-Tag soll aufgeloest werden, FORMULA-MATH aber nicht. 
 					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
 					sExpression = sReturn;				
-					sReturn = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);																		
+					sReturn = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);																		
 				}//end if bUseFormulaMath					
 			}//end if bUseFormula			
 		}//end main:
