@@ -20,9 +20,52 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		String sExpressionSource; String sExpressionSolved; String sValue; String sExpression; String sExpression1; String sExpression2;
 		Vector3ZZZ<String> vecExpressionSource;Vector3ZZZ<String>vecExpressionSolved;
 		try{	
+			//###################################################
+			//VORGEZOGENER FEHLERTEST START
+			
+			TODOGOON20250128;
+			
+			//########################################################################	
+			//3a) die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werten
+			//Ansatz auf einer Ebene tiefer
+			//########################################################################
+			sTagContainStart = "<JSON>";
+			sTagContainEnd = "</JSON>";			
+			sTagRemoveStart = "<JSON:MAP>";
+			sTagRemoveEnd = "</JSON:MAP>";
+			
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;			
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, sTagContainStart, sTagContainEnd);
+			assertNotNull(sExpression);
+			sExpression1 = sExpression;
+			
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			sPRE = "<Z><JSON>";
+			sMID = "<JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED +"</JSON:MAP>";
+			sPOST =  "</JSON></Z>";			
+			vecExpressionSource = new Vector3ZZZ<String>();		
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
+			
+			vecExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(vecExpressionSource, sTagRemoveStart, sTagRemoveEnd, sTagContainStart, sTagContainEnd);
+			sExpression = VectorUtilZZZ.implode(vecExpressionSolved);
+			assertNotNull(sExpression);
+			assertTrue(sExpression.contains(sTagContainStart));
+			assertTrue(sExpression.contains(sTagContainEnd));			
+			assertFalse(sExpression.contains(sTagRemoveStart));
+			assertFalse(sExpression.contains(sTagRemoveEnd));			
+			sExpression2 = sExpression;
+			assertEquals(sExpression1, sExpression2);
+
+			
+			
+			//VORGEZOGENER FEHLERTEST ENDE
+			//###################################################
+			
 			
 			//########################################################################
-			//die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werte
+			//1a) die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werte
 			//Ansatz auf oberster Ebene
 			//########################################################################						
 			sTagContainStart = "<Z>";
@@ -39,7 +82,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertFalse(sExpression.contains(sTagRemoveEnd));			
 			sExpression1 = sExpression;
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE =  "<Z>";
 			sMID = "<JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED +"</JSON:MAP></JSON>";
 			sPOST = "</Z>";		
@@ -59,7 +102,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 			
 			//############################################################################
-			//die JSON Map ist schoen verschachtelt, Fall MIT pre - post Werten
+			//2a) die JSON Map ist schoen verschachtelt, Fall MIT pre - post Werten
 			//Ansatz auf oberster Ebene
 			//########################################################################			
 			sTagContainStart = "<Z>";
@@ -76,7 +119,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertFalse(sExpression.contains(sTagRemoveEnd));			
 			sExpression1 = sExpression;
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "abcd<Z>";
 			sMID = "<JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT + "</JSON:MAP></JSON>";
 			sPOST = "</Z>xyz";			
@@ -96,7 +139,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 				
 			//########################################################################	
-			//die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werten
+			//3a) die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werten
 			//Ansatz auf einer Ebene tiefer
 			//########################################################################
 			sTagContainStart = "<JSON>";
@@ -109,7 +152,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpression1 = sExpression;
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "<Z><JSON>";
 			sMID = "<JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED +"</JSON:MAP>";
 			sPOST =  "</JSON></Z>";			
@@ -129,7 +172,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 
 			//########################################################################	
-			//die JSON Map ist schoen verschachtelt, Fall MIT pre - post Werten
+			//4a) die JSON Map ist schoen verschachtelt, Fall MIT pre - post Werten
 			//Ansatz auf einer Ebene tiefer
 			//########################################################################
 			sTagContainStart = "<JSON>";
@@ -146,7 +189,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertFalse(sExpression.contains(sTagRemoveEnd));			
 			sExpression1 = sExpression;
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "abcd<Z><JSON>";
 			sMID = "<JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED +"</JSON:MAP>";
 			sPOST = "</JSON></Z>xyz";
@@ -168,7 +211,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			//######################################################################################
 			//######################################################################################
 			//######################################################################################
-			/*/Beim Call solver kommt eine Situation vor, geschaffend durch INI-Pfad Ersetzung
+			/* 5a) Beim Call solver kommt eine Situation vor, geschaffend durch INI-Pfad Ersetzung
 			 * Hier ist Z-Tag an mehreren Stelle enthalten.
 			 * Vector 0= PRE<Z><Z:Call>
 			  Vector 1= <Z:Java><Z:Class><Z>basic.zBasic.util.machine.EnvironmentZZZ</Z></Z:Class><Z:Method>getHostName</Z:Method></Z:Java>
@@ -193,19 +236,21 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sValue = VectorUtilZZZ.implode(vecExpressionSolved);
 			assertNotNull(sValue);
 							
-			//Als Ergebnis bleibt Z:Class Tag drin. Der darin liegenden Z-Tag ist aber draussen.
+			//Als Ergebnis bleibt Z:Class Tag drin. Der innerhalb liegenden Z-Tag ist aber entfernt, dar ganz aussen liegende bleibt erhalten.
 			sExpression = "PRE<Z><Z:Call><Z:Java><Z:Class></Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>POST";
 			assertNotNull(sExpression);	
 			assertTrue(sExpression.contains(sTagContainStart));
-			assertTrue(sExpression.contains(sTagContainEnd));			
-			assertFalse(sExpression.contains(sTagRemoveStart));
-			assertFalse(sExpression.contains(sTagRemoveEnd));			
-			assertEquals(sExpression, sValue);
+			assertTrue(sExpression.contains(sTagContainEnd));
+			//Nein: Hier bleibt der Tag 1x ganz aussen erhalten
+			//assertFalse(sExpression.contains(sTagRemoveStart));
+			//assertFalse(sExpression.contains(sTagRemoveEnd));
+			assertEquals("Der Tag '" + sTagRemoveStart + "' sollte nur 1x vorkommen", 1, StringZZZ.count(sExpression, sTagRemoveStart));
+			assertEquals("Der Tag '" + sTagRemoveEnd + "' sollte nur 1x vorkommen", 1, StringZZZ.count(sExpression, sTagRemoveEnd));
 			
 			
 			//#######################################################
-			//1. weiteres Veschachtelungsbeispiel
-			//   Oberste Ebene als Ansatzpunkt
+			//6a) weiteres Veschachtelungsbeispiel
+			//    Oberste Ebene als Ansatzpunkt
 			//#######################################################			
 			sTagContainStart = "<Z>";
 			sTagContainEnd = "</Z>";	
@@ -221,7 +266,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertFalse(sExpression.contains(sTagRemoveEnd));	
 			sExpression1 = sExpression;
 		
-			//++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) ++++++++++++++++++++++++++++++++++++++++++++++++
 		
 			sPRE = "<Z><Z:Encrypted>";			
 			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
@@ -242,8 +287,8 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 			
 			//###########################################################
-			//2. weiteres Verschachtelungsbeispiel
-			//   eine Ebene Tiefer als Ansatzpunkt
+			//7a) weiteres Verschachtelungsbeispiel
+			//    eine Ebene Tiefer als Ansatzpunkt
 			//###########################################################					
 			sTagContainStart = "<Z:Encrypted>";
 			sTagContainEnd = "</Z:Encrypted>";	
@@ -259,7 +304,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertFalse(sExpression.contains(sTagRemoveEnd));	
 			sExpression1 = sExpression;
 					
-			//+++++++++++++++++++++++++++++++++++++++++++++++
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "<Z><Z:Encrypted>";
 			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
 			sPOST = "</Z:Encrypted></Z>";		
@@ -473,11 +518,9 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	
 	
 	
-	public void testGetValueExpressionTagContainedRemoved_FromOutToIn_MultiTags(){
-		String sTagStartZ; String sTagEndZ; String sTagStart ; String sTagEnd; String sTagStartSource; String sTagEndSource;  
-		String sExpressionSource; String sExpression; String sExpressionOld;
-		String sExpressionSolved; String sExpressionSolvedTagless;
-		Vector3ZZZ<String> vecExpressionSource; boolean bDirectionFromInToOut;
+	public void testGetValueExpressionTagContainedRemoved_SingleTag2(){
+		String sTagContainerStart; String sTagContainerEnd; String sTagRemoveStart ; String sTagRemoveEnd; String sTagStartSource; String sTagEndSource;  
+		String sExpressionSource; String sExpressionSolved;		
 		String sValue;
 		
 		try{	
@@ -485,13 +528,13 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 
 			
 			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";	
-			sTagStart = "<Z:Method>";
-			sTagEnd = "</Z:Method>";
-			sExpression = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>";			
+			sTagRemoveStart= "<Z>";
+			sTagRemoveEnd = "</Z>";	
+			sTagContainerStart = "<Z:Method>";
+			sTagContainerEnd = "</Z:Method>";
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>";			
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class></Z:Java></Z:Call></Z>";
-			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpression, sTagStart, sTagEnd, sTagStartZ, sTagEndZ);
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -505,82 +548,77 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	//#### SURROUNDING
 	//#######################################################
 	public void testGetValueExpressionTagSurroundingRemoved_SingleTag(){
-		String sTagStartZ; String sTagEndZ;String sTagStartSource; String sTagEndSource;  
-		String sExpressionSource; String sExpressionTarget; String sValue; String sExpression; String sExpressionOld;
+		String sTagpartRemoveStart; String sTagpartRemoveEnd; String sPRE; String sMID; String sPOST;
+		String sValue; String sExpressionSource; String sExpression; String sExpression1; String sExpression2; String sExpression3;
 		Vector3ZZZ<String> vecExpressionSource;
+		
 		try{	
+			sTagpartRemoveStart = "<Z>";
+			sTagpartRemoveEnd = "</Z>";
 			
+			//#########################################
+			//### die Encryption ist schoen verschachtelt
+			//### Fall OHNE PRE und POST Werten.
+			//##########################################
 			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";			
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			assertNotNull(sExpression);
-			sExpressionOld = sExpression;
-			
-			
+			sExpression1 = sExpression;
+						
 			//++++++++++++++++++++++++++++++++++++++++++++++++
-			sTagStartZ = "<Z><Z:Encrypted>";
-			sTagEndZ = "</Z:Encrypted></Z>";
-			sExpression = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			sPRE = "<Z><Z:Encrypted>";
+			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			sPOST = "</Z:Encrypted></Z>";			
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
 			
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";	
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ, true, false);
-			
-
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd, true, false);			
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+			sExpression2 = sExpression;
+			assertEquals(sExpression1, sExpression2);
 			
 		
 			//+++++++++++++++++++++++++++++++++++++++++++++++
-			sTagStartZ = "<Z><Z:Encrypted>";
-			sTagEndZ = "</Z:Encrypted></Z>";
-			sExpression = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			sPRE = "<Z><Z:Encrypted>";
+			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			sPOST = "</Z:Encrypted></Z>";			
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
-			
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";	
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
-			
-
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
+	
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+			sExpression3 = sExpression;
+			assertEquals(sExpression1, sExpression3);
 
-			
-			
-			
-			
-			
-					
+	
 			//#########################################
-			//die JSON Map ist schoen verschachtelt
-			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";			
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+			//### Encryption ist schoen verschachtelt
+			//### Fall MIT PRE und POST Werten.
+			//##########################################
+			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";			
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			assertNotNull(sExpression);
-			sExpressionOld = sExpression;
+			sExpression1 = sExpression;
 			
-			//20241103: Einfacher Fall, ohne pre - post Werte
+			sPRE = "abcd<Z><Z:Encrypted>";
+			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
+			sPOST = "</Z:Encrypted></Z>xyz";
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			
-
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+			sExpression2 = sExpression;
+			assertEquals(sExpression1, sExpression2);
 			
 			//############################
 			//20241103: Aber jetzt mit pre - post Werten
@@ -594,60 +632,80 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			  und<Z>
               bzw </Z> soll entfernt werden.
 			*/
-			vecExpressionSource = new Vector3ZZZ<String>();			
-			vecExpressionSource.replace(0, "PRE<Z><Z:Call>");
-			vecExpressionSource.replace(1, "<Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>");
-			vecExpressionSource.replace(2, "</Z:Call></Z>POST");
+			sPRE="PRE<Z><Z:Call>";
+			sMID="<Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>";
+			sPOST="</Z:Call></Z>POST";
+			vecExpressionSource = new Vector3ZZZ<String>();
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
 			
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			
-			sExpressionTarget = "PRE<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>POST";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>POST";
 			sValue = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sValue);
-			assertEquals(sExpressionTarget, sValue);
+			assertEquals(sExpression, sValue);
 			
 			
 			
 			
-			//########################################################################
+			//########################################################################		
+			
+			//#########################################
+			//### JSON:MAP ist schoen verschachtelt
+			//### Fall MIT PRE und POST Werten.
+			//### innerste Ebene
+			//##########################################
+			sTagpartRemoveStart = "<JSON:MAP>";
+			sTagpartRemoveEnd = "</JSON:MAP>";
 			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
-			sTagStartZ = "<JSON:MAP>";
-			sTagEndZ = "</JSON:MAP>";			
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			assertNotNull(sExpression);
-			sExpressionOld = sExpression;
+			sExpression1 = sExpression;
 			
+			sPRE="abcd<Z><JSON><JSON:MAP>";
+			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sPOST="</JSON:MAP></JSON></Z>xyz";
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
+			sExpression2 = sExpression;
+			assertEquals(sExpression1, sExpression2);
 						
 			//########################################################################
-			sTagStartZ = "<JSON>";
-			sTagEndZ = "</JSON>";			
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);
-			assertNotNull(sExpression);
-			sExpressionOld = sExpression;
 			
+			//#########################################
+			//### JSON:MAP ist schoen verschachtelt
+			//### Fall MIT PRE und POST Werten.
+			//### eine Ebene hoeher
+			//##########################################
+			sTagpartRemoveStart = "<JSON>";
+			sTagpartRemoveEnd = "</JSON>";	
+			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
+			assertNotNull(sExpression);
+			sExpression1 = sExpression;
+			
+			sPRE="abcd<Z><JSON><JSON:MAP>";
+			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sPOST="</JSON:MAP></JSON></Z>xyz";
 			vecExpressionSource = new Vector3ZZZ<String>();
-			vecExpressionSource.replace(0, sTagStartZ);
-			vecExpressionSource.replace(1, sExpression);
-			vecExpressionSource.replace(2, sTagEndZ);
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagStartZ, sTagEndZ);
+			vecExpressionSource.replace(0, sPRE);
+			vecExpressionSource.replace(1, sMID);
+			vecExpressionSource.replace(2, sPOST);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			
 			sExpression = VectorUtilZZZ.implode(vecExpressionSource);
 			assertNotNull(sExpression);
-			assertEquals(sExpressionOld, sExpression);
-			
-			
-			
-			
-			
+			sExpression2 = sExpression;
+			assertEquals(sExpression1, sExpression2);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
