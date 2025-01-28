@@ -1855,7 +1855,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 					
 					//TODOGOON20250123;//Mache eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
-					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);   
+					//ABER: SOLL HIER DER INHALT ENTFERNT WERDEN????
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);   
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 					sTag = sTagIn;
 					sTagSolved = sTag;				
