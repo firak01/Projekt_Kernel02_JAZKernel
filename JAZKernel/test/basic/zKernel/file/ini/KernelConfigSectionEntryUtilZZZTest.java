@@ -23,7 +23,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			//###################################################
 			//VORGEZOGENER FEHLERTEST START
 			
-			TODOGOON20250128;
+			//TODOGOON20250129;
 			
 			//########################################################################	
 			//3a) die JSON Map ist schoen verschachtelt, Fall OHNE pre - post Werten
@@ -524,17 +524,25 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		String sValue;
 		
 		try{	
-			//Hier der Test für "mehrere Tags auf anderen Positionen des Vectors - von Aussen nach Innen entfernt".
-
-			
-			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
+			//Hier der Tag fuer mehre Tags auf verschiedenen Postitionen des Vektors
 			sTagRemoveStart= "<Z>";
 			sTagRemoveEnd = "</Z>";	
 			sTagContainerStart = "<Z:Method>";
 			sTagContainerEnd = "</Z:Method>";
 			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>";			
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class></Z:Java></Z:Call></Z>";
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method></Z:Method></Z:Java></Z:Call></Z>";
 			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, sTagContainerStart, sTagContainerEnd);
+			assertEquals(sExpressionSolved, sValue);
+						
+			//#######################
+			//TEST: Tag Inhalt behalten UND "Zwischen" den Tags vorhandenen Inhalt behalten.
+			sTagRemoveStart= "<Z>";
+			sTagRemoveEnd = "</Z>";	
+			sTagContainerStart = "<Z:Method>";
+			sTagContainerEnd = "</Z:Method>";
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123abcde45</Z:Method></Z:Java></Z:Call></Z>";
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, false, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
 			
 			

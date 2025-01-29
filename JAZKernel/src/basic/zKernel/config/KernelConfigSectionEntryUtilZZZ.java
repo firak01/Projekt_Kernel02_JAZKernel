@@ -860,6 +860,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 
+	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, sTagContainerStart, sTagContainerEnd);
+	}
 	
 	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
 		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
@@ -900,31 +903,47 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}			
 
 			//Den Container Tag parsen aus dem String
-			//Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sValueExpression, sTagContainerStart, sTagContainerEnd);//Also MIT CONTAINER Tags holen, ohne Exactmatch
-			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidFirstKeepSeparatorCentral(sValueExpression, sTagContainerStart, sTagContainerEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
+			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sValueExpression, sTagContainerStart, sTagContainerEnd);//Also MIT CONTAINER Tags holen, ohne Exactmatch
+			//Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidFirstKeepSeparatorCentral(sValueExpression, sTagContainerStart, sTagContainerEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
 			if(vecExpression==null) break main;
 
 			//### Den zu entfernenden Tag ermitteln
 			String sExpressionInner = (String) vecExpression.get(1);
 			if(StringZZZ.isEmpty(sExpressionInner)) break main;
-						
-			//### Den Tag aus der Mitte entfernen	
-			Vector3ZZZ<String> vecExpressionInner = null;			
-			if(bRemoveTagContent) {
-				vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				if(vecExpressionInner!=null) {
-					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagContainerStart)); //Den Container Tag entfernen
-					vecExpressionInner.replace(1,""); //ggfs. Content entfernen
-					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagContainerEnd)); //Den Container Tag entfernen
+									
+			Vector3ZZZ<String> vecExpressionInner = vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
+			if(vecExpressionInner!=null) {
+				vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+				if(bRemoveTagContent) {
+					vecExpressionInner.replace(1,""); //allen Content innerhalb des Tags entfernen
 				}
-			}else {
-				vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				if(vecExpressionInner!=null) {
-					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagContainerStart)); //Den Container Tag entfernen
-					//... der Inhalt bleibt aber erhalten. vecExpressionInner.replace(1,""); //ggfs. Content entfernen
-					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagContainerEnd)); //Den Container Tag entfernen
-				}				
+				vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
 			}
+
+			TODOGOON20250129:
+			//Idee: bRemoveTagInterContent... also auch den Content Zwischen den Tags (d.h. vor dem zu entfernenden Tag loeschen
+			//                                Das müsste dann allerdings in einer großen Abfrage drumherum gemacht werden.
+			
+			//Hier der code oben, vor der Verschlankung
+//			if(bRemoveTagContent) {
+//				//### Den Tag aus der Mitte entfernen und den Content
+//				//vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, false);//Also ohne Tags holen
+//				vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
+//				if(vecExpressionInner!=null) {
+//					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+//					vecExpressionInner.replace(1,""); //allen Content innerhalb des Tags entfernen
+//					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
+//				}
+//			}else {
+//				//### Den Tag aus der Mitte entfernen, aber den Content behalten!!!
+//				vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
+//				//vecExpressionInner = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpressionInner, sTagStart, sTagEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
+//				if(vecExpressionInner!=null) {
+//					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+//					//... der Inhalt bleibt aber erhalten. vecExpressionInner.replace(1,""); //allen Content innerhalb des Tags entfernen
+//					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
+//				}				
+//			}
 						
 			//### Die bereinigte Mitte wieder in das Gesamttag uebernehmen.
 			String sReturnInner="";
