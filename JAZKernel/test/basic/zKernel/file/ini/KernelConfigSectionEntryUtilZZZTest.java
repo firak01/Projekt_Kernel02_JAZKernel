@@ -15,7 +15,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	//#######################################################
 	//#### CONTAINED
 	//#######################################################
-	public void testGetValueExpressionTagContainedRemoved_SingleTag(){
+	public void testGetValueExpressionTagContainedRemoved_SingleTag1(){
 		String sTagContainStart; String sTagContainEnd; String sTagRemoveStart; String sTagRemoveEnd; String sPRE; String sMID; String sPOST;
 		String sExpressionSource; String sExpressionSolved; String sValue; String sExpression; String sExpression1; String sExpression2;
 		Vector3ZZZ<String> vecExpressionSource;Vector3ZZZ<String>vecExpressionSolved;
@@ -518,12 +518,13 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 	
 	
 	
-	public void testGetValueExpressionTagContainedRemoved_SingleTag2(){
+	public void testGetValueExpressionTagContainedRemoved_SingleTag2_WithInterTagContent(){
 		String sTagContainerStart; String sTagContainerEnd; String sTagRemoveStart ; String sTagRemoveEnd; String sTagStartSource; String sTagEndSource;  
 		String sExpressionSource; String sExpressionSolved;		
 		String sValue;
 		
 		try{	
+			//#######################
 			//Hier der Tag fuer mehre Tags auf verschiedenen Postitionen des Vektors
 			sTagRemoveStart= "<Z>";
 			sTagRemoveEnd = "</Z>";	
@@ -533,9 +534,32 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method></Z:Method></Z:Java></Z:Call></Z>";
 			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
-						
+			
 			//#######################
-			//TEST: Tag Inhalt behalten UND "Zwischen" den Tags vorhandenen Inhalt behalten.
+			//Tag Inhalt loeschen UND "Zwischen" den Tags vorhandenen Inhalt loeschen.
+			sTagRemoveStart= "<Z>";
+			sTagRemoveEnd = "</Z>";	
+			sTagContainerStart = "<Z:Method>";
+			sTagContainerEnd = "</Z:Method>";
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method></Z:Method></Z:Java></Z:Call></Z>";
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, true, true, sTagContainerStart, sTagContainerEnd);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//#######################
+			//Tag Inhalt loeschen NUR "Zwischen" den Tags vorhandenen Inhalt behalten.
+			sTagRemoveStart= "<Z>";
+			sTagRemoveEnd = "</Z>";	
+			sTagContainerStart = "<Z:Method>";
+			sTagContainerEnd = "</Z:Method>";
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>12345</Z:Method></Z:Java></Z:Call></Z>";
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, true, false, sTagContainerStart, sTagContainerEnd);
+			assertEquals(sExpressionSolved, sValue);
+									
+			//#######################
+			//Tag Inhalt behalten UND "Zwischen" den Tags vorhandenen Inhalt behalten.
 			sTagRemoveStart= "<Z>";
 			sTagRemoveEnd = "</Z>";	
 			sTagContainerStart = "<Z:Method>";
@@ -564,8 +588,17 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagpartRemoveStart = "<Z>";
 			sTagpartRemoveEnd = "</Z>";
 			
+			//##########################
+			//### Vorgezogenern Fehlertest: Start
+			
+						
+			//### Vorgezogener Fehlertest: Ende
+			//###########################
+			
+			
+			
 			//#########################################
-			//### die Encryption ist schoen verschachtelt
+			//### 1a) die Encryption ist schoen verschachtelt
 			//### Fall OHNE PRE und POST Werten.
 			//##########################################
 			sExpressionSource = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
@@ -573,7 +606,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpression1 = sExpression;
 						
-			//++++++++++++++++++++++++++++++++++++++++++++++++
+			//b) ++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "<Z><Z:Encrypted>";
 			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
 			sPOST = "</Z:Encrypted></Z>";			
@@ -589,7 +622,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 			
 		
-			//+++++++++++++++++++++++++++++++++++++++++++++++
+			//c) +++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "<Z><Z:Encrypted>";
 			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
 			sPOST = "</Z:Encrypted></Z>";			
@@ -606,14 +639,15 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 
 	
 			//#########################################
-			//### Encryption ist schoen verschachtelt
+			//### 2a) Encryption ist schoen verschachtelt
 			//### Fall MIT PRE und POST Werten.
 			//##########################################
-			sExpressionSource = "abcd" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT + "xyz";			
+			sExpressionSource = "abcd" + KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT + "xyz";			
 			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagpartRemoveStart, sTagpartRemoveEnd);
 			assertNotNull(sExpression);
 			sExpression1 = sExpression;
 			
+			//b) +++++++++++++++++++++++++++++++++++++++++++
 			sPRE = "abcd<Z><Z:Encrypted>";
 			sMID = "<Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code>";
 			sPOST = "</Z:Encrypted></Z>xyz";
@@ -629,6 +663,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertEquals(sExpression1, sExpression2);
 			
 			//############################
+			//### 3a)
 			//20241103: Aber jetzt mit pre - post Werten
 		
 			//TODOGOON20241103;
@@ -640,6 +675,8 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			  und<Z>
               bzw </Z> soll entfernt werden.
 			*/
+			
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE="PRE<Z><Z:Call>";
 			sMID="<Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java>";
 			sPOST="</Z:Call></Z>POST";
@@ -661,7 +698,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			//########################################################################		
 			
 			//#########################################
-			//### JSON:MAP ist schoen verschachtelt
+			//### 4a) JSON:MAP ist schoen verschachtelt
 			//### Fall MIT PRE und POST Werten.
 			//### innerste Ebene
 			//##########################################
@@ -672,6 +709,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpression1 = sExpression;
 			
+			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE="abcd<Z><JSON><JSON:MAP>";
 			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
 			sPOST="</JSON:MAP></JSON></Z>xyz";
@@ -689,7 +727,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			//########################################################################
 			
 			//#########################################
-			//### JSON:MAP ist schoen verschachtelt
+			//### 5a) JSON:MAP ist schoen verschachtelt
 			//### Fall MIT PRE und POST Werten.
 			//### eine Ebene hoeher
 			//##########################################
@@ -700,6 +738,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			assertNotNull(sExpression);
 			sExpression1 = sExpression;
 			
+			//b) ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE="abcd<Z><JSON><JSON:MAP>";
 			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
 			sPOST="</JSON:MAP></JSON></Z>xyz";

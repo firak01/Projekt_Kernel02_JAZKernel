@@ -1740,44 +1740,74 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					boolean btemp; 
 					
 					String sValue; String sSection; String sProperty;
-					String sExpression; String sExpressionSolved; String sTag; String sTagSolved;			
+					String sExpression; String sExpressionSolved; String sExpressionSubstituted; String sTag; String sTagSolved;			
 					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 					IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
 					
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";	
 					IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
-					
-			    //### TEST OHNE TAG UM DIE SUBSTITUTION		
+
+					//temporär raus 20250129
+			    //### 1) TEST OHNE FORMULA TAG UM DIE SUBSTITUTION		
 				//!!! Weil der Tag Z-Formula nicht in dem String enthalten ist, wird hier auch nichts ersetzt.
 				sExpression = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-				sExpressionSolved = sExpression;
+				//sExpressionSubstituted = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpressionSolved = sExpressionSubstituted;
 				
 				sTag = "";								
 				sTagSolved = "";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 
-				//### TEST MIT TAG UM DIE SUBSTITUTION
+				//### 2) TEST MIT FORMULA TAG UM DIE SUBSTITUTION
 				//!!! Hier ist der Tag Z-Formula um den String mit der Ersetzung enthalten, wird hier auch nichts ersetzt.				
 				sExpression = "Der dynamische Wert1 ist <Z:formula>'<Z>[Section A]Testentry1</Z>'</Z:formula>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'<Z>Testvalue1 to be found</Z>'</Z:formula>. FGL rulez.";
 				sExpressionSolved = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+				
+				//TODOGOON20250129;//Interessantes Problem. Path soll nicht aufgeloest werden. 
+				                 //Momentan wird als TAG zurueckgegeben: [Section A]Testentry1
+				                 //Der Z-Tag ist also entfernt (wie es normalerweise sein sollte!!!)
+				                 //
+				                 //unstrittig ist, das Z:Formula der Tag selbst ist. Also nicht hier enthalten.
+				                 //beim Aufloesen von Formeln kommt der Z - TAG raus.
+				                 //Also müssten dies passieren.
+								 //
+								 //ABER: Beim Parsen is der Tag wirklich alles, was in z:formula drin ist.
+				                 //Also bleibt beim Parsen der Z-TAG drin.
 				
 				sTag = "'<Z>[Section A]Testentry1</Z>'";								
-				sTagSolved = "'Testvalue1 to be found'";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				sTagSolved = "'<Z>Testvalue1 to be found</Z>'";
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 
-				
-				
-				//Wiederholungstest... der gleiche Test muss auch wieder funktionieren
+				//###############################
+				//Wiederholungstest von 2)... der gleiche Test muss auch wieder funktionieren
 				//20250111: Zwei Tests hintereinander. Das gibt einen Fehler.
 				//Der dynamische Wert1 ist '<Z><Z>[Section A]Testentry1</Z></Z>'. FGL rulez.
-				sExpression = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert1 ist <Z:formula>'<Z>[Section A]Testentry1</Z>'</Z:formula>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'<Z>Testvalue1 to be found</Z>'</Z:formula>. FGL rulez.";
 				sExpressionSolved = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 				
-				sTag = "[Section A]Testentry1";								
-				sTagSolved = "Testvalue1 to be found";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+
+				sTag = "'<Z>[Section A]Testentry1</Z>'";						
+				sTagSolved = "'<Z>Testvalue1 to be found</Z>'";
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
+				//################################
+				//Wiederholungstest von 1)... der gleiche Test muss auch wieder funktionieren
+				//20250111: Zwei Tests hintereinander. Das gibt einen Fehler.
+				//!!! Weil der Tag Z-Formula nicht in dem String enthalten ist, wird hier auch nichts ersetzt.
+				sExpression = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";				
+				sExpressionSubstituted = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpressionSolved = sExpressionSubstituted;
+				
+				sTag = "";
+				sTagSolved = "";
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			
+				
+				
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Fuer [Section B] gibt es in der Testdatei einen "globalen" Eintrag, der nicht gefunden werden soll
@@ -1798,25 +1828,27 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				*/								
 				sExpression = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez."; 
 				sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
 				
 				sTag = "[Section B]Testentry2";								
 				sTagSolved = "Testvalue2 local to be found";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				
 				//Wiederholungstest... der gleiche Test muss auch wieder funktionieren
 				sTag = "[Section B]Testentry2";								
 				sTagSolved = "Testvalue2 local to be found";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				
 				
 				//Reihenfolgetest... nun muss der erste Test auch wieder funktionieren
 				sExpression = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
 				sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 				
 				sTag = "[Section A]Testentry1";								
 				sTagSolved = "Testvalue1 to be found";
-				testCompute_FORMULA_PATH_(sExpression, sExpressionSolved, sTag, sTagSolved);
+				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				
 				
 				bReturn = true;
@@ -1827,7 +1859,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				return bReturn;
 		}
 		
-		private boolean testCompute_FORMULA_PATH_(String sExpressionIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn) {
+		private boolean testCompute_FORMULA_PATH_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn) {
 			boolean bReturn = false;
 			//String sExpressionIn; String sExpressionSolvedIn;
 			main:{
@@ -1835,7 +1867,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					boolean btemp; 
 					
 					String sValue; String sSection; String sProperty;
-					String sExpression; String sExpressionSolved; String sTag; String sTagSolved;			
+					String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;			
 					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 					IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
 					
@@ -1843,24 +1875,31 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					String sTagEndZ = "</Z>";	
 					IEnumSetMappedTestFlagsetZZZ objEnumFunction = null; //Z.B.: EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 
+					//Merke: Z:Formula ist als Tag fuer die Pfadsubstitution notwendig.
 					String sTagParentStart = XmlUtilZZZ.computeTagPartStarting(KernelZFormulaIniSolverZZZ.sTAG_NAME);
 					String sTagParentEnd =  XmlUtilZZZ.computeTagPartClosing(KernelZFormulaIniSolverZZZ.sTAG_NAME); 
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-					
+				
 					//+++ Ohne Path-Substitution
-					
-					//b)
+					//d)
 					sExpression = sExpressionIn;
+					sExpressionSubstituted = sExpressionSubstitutedIn;
 					sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-					
-					//TODOGOON20250123;//Mache eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
-					//ABER: SOLL HIER DER INHALT ENTFERNT WERDEN????
-					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);   
-					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 					sTag = sTagIn;
-					sTagSolved = sTag;				
-					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					sTagSolved = sTag;
+					
+					//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
+					
+					//Der Formula - Tag wird beim Parsen aber entfernt, falls vorhanden
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+								
+					//Beim Solven wird auch ein Z-Tag entfernt als TAG-Value
+					sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false);					
+					sTagSolved = sTag;	
+					
+					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 					
 				
@@ -1874,28 +1913,32 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ Ohne jegliche Expression-Berechnung
 				//a) Ausdruck unbearbeitet und der TagWert selbst auch nicht aufgeloest!!"
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Keine Expressionverarbeitung
 				sTag = sTagIn;
 				sTagSolved = sTag;	
 				btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Keine Expressionverarbeitung
 				sTag = sTagIn;
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression; 
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Keine Expressionverarbeitung 
 				sTag = sTagIn;
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 				//d)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Keine Expressionverarbeitung
 				sTag = sTagIn;
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -1905,66 +1948,147 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ Ohne Path-Substitution
 				//a)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression;	
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Ohne Substitutionsbehandlung
 				sTag = sTagIn;
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
+//				sExpression = sExpressionIn;
+//				sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//				sTag = sTagIn;
+//				sTagSolved = sTag;				
+//				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
+				
+				//b)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Ohne Substitutionsbehandlung
 				sTag = sTagIn;
-				sTagSolved = sTag;				
+				sTagSolved = sTag;
+				
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
+															
+				//Beim Parsen wird auch ein Z-Tag entfernt als TAG-Value, wenn gewuenscht.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false);					
+				sTagSolved = sTag;	
+						
 				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
 				
 				//c)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpression; 
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpression; //Ohne Substitutionsbehandlung 
 				sTag = sTagIn;
 				sTagSolved = sTag;
+				
+				//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+				
 				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 				//d)
+//				sExpression = sExpressionIn;
+//				sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//				sTag = sTagIn;
+//				sTagSolved = sTag;
+//				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+				//d)
 				sExpression = sExpressionIn;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				sTag = sTagIn;
 				sTagSolved = sTag;
+				
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
+				
+				//Der Formula - Tag wird beim Parsen aber entfernt, falls vorhanden
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+							
+				//Beim Solven wird auch ein Z-Tag entfernt als TAG-Value, wenn gewuenscht.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false);					
+				sTagSolved = sTag;	
+				
 				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
+				
 				
 				//+++ Mit Path-Substitution
 				//a)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;	
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpressionSubstituted;//Beim Parsen bleibt der Z-Formula Tag drin	
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
+//				//b)
+//				sExpression = sExpressionIn;
+//				sExpressionSolved = sExpressionSolvedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//				sTag = sTagIn;
+//				sTagSolved = sTagSolvedIn;					
+//				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
 				//b)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpressionSubstituted;//Beim Parsen bleibt der Z-Formula Tag drin	
 				sTag = sTagIn;
-				sTagSolved = sTagSolvedIn;					
+				sTagSolved = sTagSolvedIn;
+				
+				//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt, aber nur wenn ueberhaupt ein Formula-Tag drumherum liegt.
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);   
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);				
 				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+				
 				
 				//c)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn; 
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpressionSubstituted; 
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
+				
+				//Beim Solve werden immer der Z-Tag entfernt, aber nur wenn ueberhaupt ein Formula-Tag drumherum liegt.
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sTagSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
 				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
+//				//d)
+//				sExpression = sExpressionIn;
+//				sExpressionSolved = sExpressionSolvedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+//				sTag = sTagIn;
+//				sTagSolved = sTagSolvedIn;
+//				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
 				//d)
 				sExpression = sExpressionIn;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
+												
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
+				
+				//Beim Solve werden immer der Z-Tag entfernt, aber nur wenn ueberhaupt ein Formula-Tag drumherum liegt.
+				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+				//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sTagSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);				
 				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
+							
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());

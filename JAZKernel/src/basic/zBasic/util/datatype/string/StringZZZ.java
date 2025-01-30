@@ -1454,13 +1454,20 @@ public class StringZZZ implements IConstantZZZ{
 			String sLeft = StringZZZ.left(sStringToParse, sSepLeft, bExactMatch);
 			if(sLeft==null) sLeft="";
 						
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
-						
-			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
-			if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
+			String sRemainingTagged; 
+			if(sLeft.equals("")){
+				sRemainingTagged = StringZZZ.stripLeft(sStringToParse, sSepLeft);
+			}else {
+				sRemainingTagged = StringZZZ.right(sSepLeft + sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
+			}
+									
+			//if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
+			if(sStringToParse.equalsIgnoreCase(sRemainingTagged)) {
 				vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 				break main;
 			}
+			
+			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
 			
 			if(bReturnSeparators) {
 				if(StringZZZ.isEmpty(sExpressionTagged) && !StringZZZ.isEmpty(sRemainingTagged)) {
@@ -1470,13 +1477,15 @@ public class StringZZZ implements IConstantZZZ{
 				}
 			}
 			
-			String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			//String sMid = StringZZZ.leftback(sRemainingTagged + sSepRight, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sMid = StringZZZ.leftback(sExpressionTagged + sSepRight, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
-			if(sMid==null) {
+			if(StringZZZ.isEmpty(sMid)) {
 				sMid = "";
 				sRight = sRemainingTagged;
 			}else {
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.			
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.			
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() - sMid.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
 				if(sRight==null) sRight = "";
 			}
 						

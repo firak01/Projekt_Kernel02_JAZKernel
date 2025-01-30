@@ -830,7 +830,40 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainedRemoved_(sValueExpression, sTagName, false, sTagNameContainer);
 	}
 	
-	private static String getExpressionTagpartsContainedRemoved_(String sValueExpression, String sTagName, boolean bRemoveTagContent, String sTagNameContainer) throws ExceptionZZZ {
+	private static String getExpressionTagpartsContainedRemoved_(String sValueExpression, String sTagName, boolean bRemoveTagAnyContent, String sTagNameContainer) throws ExceptionZZZ {
+		String sReturn = sValueExpression;
+		main:{
+			if(StringZZZ.isEmpty(sValueExpression)) break main;
+			if(StringZZZ.isEmpty(sTagName)) break main;
+			if(StringZZZ.isEmpty(sTagNameContainer)) break main;
+						
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(XmlUtilZZZ.isTag(sTagNameContainer)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the parent tag itself '" + sTagNameContainer +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sTagStart; String sTagEnd;
+			sTagStart = XmlUtilZZZ.computeTagPartStarting(sTagName);
+			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			String sTagParentStart; String sTagParentEnd;
+			sTagParentStart = XmlUtilZZZ.computeTagPartStarting(sTagNameContainer);
+			sTagParentEnd = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
+			
+			boolean bRemoveTagContent = bRemoveTagAnyContent;
+			boolean bRemoveTagInterContent = bRemoveTagAnyContent;
+			sReturn = getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagParentStart, sTagParentEnd);
+		}//end main;
+		return sReturn;
+	}
+	
+	
+	private static String getExpressionTagpartsContainedRemoved_(String sValueExpression, String sTagName, boolean bRemoveTagContent, boolean bRemoveTagInterContent, String sTagNameContainer) throws ExceptionZZZ {
 		String sReturn = sValueExpression;		
 		main:{
 			if(StringZZZ.isEmpty(sValueExpression)) break main;
@@ -855,24 +888,33 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			sTagParentStart = XmlUtilZZZ.computeTagPartStarting(sTagNameContainer);
 			sTagParentEnd = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
 			
-			sReturn = getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, sTagParentStart, sTagParentEnd);
+			sReturn = getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagParentStart, sTagParentEnd);
 		}//end main;
 		return sReturn;
 	}
+	
+	
+	
 
-	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, sTagContainerStart, sTagContainerEnd);
+	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagAnyContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+		boolean bRemoveTagContent = bRemoveTagAnyContent;
+		boolean bRemoveTagInterContent = bRemoveTagAnyContent;
+		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagContainerStart, sTagContainerEnd);
+	}
+	
+	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagContent, boolean bRemoveTagInterContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagContainerStart, sTagContainerEnd);
 	}
 	
 	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
+		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, true, true, sTagContainerStart, sTagContainerEnd);
 	}
 	
 	public static String getExpressionTagpartsContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {	
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, false, sTagContainerStart, sTagContainerEnd);
+		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, false, false, sTagContainerStart, sTagContainerEnd);
 	}
 	
-	private static String getExpressionTagContainedRemoved_(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagContent,  String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+	private static String getExpressionTagContainedRemoved_(String sValueExpression, String sTagStart, String sTagEnd, boolean bRemoveTagContent,  boolean bRemoveTagInterContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
 		String sReturn = sValueExpression;
 		main:{
 			if(StringZZZ.isEmpty(sValueExpression)) break main;
@@ -913,14 +955,21 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 									
 			Vector3ZZZ<String> vecExpressionInner = vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
 			if(vecExpressionInner!=null) {
-				vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+				if(bRemoveTagInterContent) {
+					vecExpressionInner.replace(0,""); //allen Content vor dem Tag entfernen
+				}else {
+					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+				}
 				if(bRemoveTagContent) {
 					vecExpressionInner.replace(1,""); //allen Content innerhalb des Tags entfernen
 				}
-				vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
+				if(bRemoveTagInterContent) {
+					vecExpressionInner.replace(2,""); //allen Content hinter dem Tag entfernen
+				}else {
+					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
+				}
 			}
-
-			TODOGOON20250129:
+			
 			//Idee: bRemoveTagInterContent... also auch den Content Zwischen den Tags (d.h. vor dem zu entfernenden Tag loeschen
 			//                                Das müsste dann allerdings in einer großen Abfrage drumherum gemacht werden.
 			
@@ -975,7 +1024,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved_(vecExpression, sTagStart, sTagEnd, true,  sTagParentStart, sTagParentEnd, bOnAnyPosition);
 	}
 	
-	public static  Vector3ZZZ<String> getExpressionTagContainedRemoved_(Vector3ZZZ<String>vecExpressionIn, String sTagStart, String sTagEnd, boolean bRemoveTagContent,  String sTagParentStart, String sTagParentEnd, boolean bOnAnyPosition) throws ExceptionZZZ {
+	public static  Vector3ZZZ<String> getExpressionTagContainedRemoved_(Vector3ZZZ<String>vecExpressionIn, String sTagStart, String sTagEnd, boolean bRemoveTagAnyContent,  String sTagParentStart, String sTagParentEnd, boolean bOnAnyPosition) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = null;
 		main:{		
 			if(vecExpressionIn==null)break main;
@@ -983,7 +1032,54 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//+++ Den Parent Tag holen aus dem zusammengefassten Vector.
 			String sExpression = VectorUtilZZZ.implode(vecExpressionIn);
-			String sReturnRemoved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved_(sExpression, sTagStart, sTagEnd, bRemoveTagContent, sTagParentStart, sTagParentEnd);
+			boolean bRemoveTagContent = bRemoveTagAnyContent;
+			boolean bRemoveTagInterContent = bRemoveTagAnyContent;
+			String sReturnRemoved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved_(sExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagParentStart, sTagParentEnd);
+			
+			
+			//+++ Den Ausgangsvector wieder herstellen.
+			String  sPRE = (String) vecExpressionIn.get(0);						
+			String sPOST = (String) vecExpressionIn.get(2);
+			if(bOnAnyPosition) {								
+				//Das funktioniert, wenn der zu entfernende Tag nicht im PRE / POST selbst ist.												
+				if(!StringZZZ.contains(sPRE, sTagStart) && !StringZZZ.contains(sPOST, sTagEnd)) {
+					vecReturn = StringZZZ.vecMidCascaded(sReturnRemoved, sPRE, sPOST, true);//Also mit Tags holen	
+				}else {
+					//Wenn der zu entfernende Tag im PRE / POST selbst ist, diesen daraus loeschen 
+					//und dann den Vector neu aufbauen.
+					String sPreCleaned = StringZZZ.replace(sPRE, sTagStart, "");
+					String sPostCleaned = StringZZZ.replace(sPOST,  sTagEnd, "");
+					vecReturn = StringZZZ.vecMidCascaded(sReturnRemoved, sPreCleaned, sPostCleaned, true);//Also mit Tags holen
+				}								
+				break main;				
+			}else {
+				//Nur die Mitte betrachten.
+				vecReturn = StringZZZ.vecMidCascaded(sReturnRemoved, sPRE, sPOST, true);//Also mit Tags holen								
+			}
+									
+//			//Wenn der zu entfernende Tag im PRE / POST selbst ist, diesen daraus loeschen 
+//			//und dann den Vector neu aufbauen.
+//			if(StringZZZ.contains(sPRE, sTagStart) && StringZZZ.contains(sPOST, sTagEnd)) {
+//				String sPreCleaned = StringZZZ.replace(sPRE, sTagStart, "");
+//				String sPostCleaned = StringZZZ.replace(sPOST,  sTagEnd, "");				
+//				vecReturn = StringZZZ.vecMidFirst(sReturnRemoved, sPreCleaned, sPostCleaned);
+//			}else {
+//				vecReturn = StringZZZ.vecMidFirst(sReturnRemoved, sPRE, sPOST);
+//			}
+			
+		}//end main:
+		return vecReturn;
+	}	
+	
+	public static  Vector3ZZZ<String> getExpressionTagContainedRemoved_(Vector3ZZZ<String>vecExpressionIn, String sTagStart, String sTagEnd, boolean bRemoveTagContent, boolean bRemoveTagInterContent, String sTagParentStart, String sTagParentEnd, boolean bOnAnyPosition) throws ExceptionZZZ {
+		Vector3ZZZ<String> vecReturn = null;
+		main:{		
+			if(vecExpressionIn==null)break main;
+			vecReturn = new Vector3ZZZ<String>(vecExpressionIn);//Mache eine deep copy von Vector3ZZZ objekt.
+			
+			//+++ Den Parent Tag holen aus dem zusammengefassten Vector.
+			String sExpression = VectorUtilZZZ.implode(vecExpressionIn);
+			String sReturnRemoved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved_(sExpression, sTagStart, sTagEnd, bRemoveTagContent, bRemoveTagInterContent, sTagParentStart, sTagParentEnd);
 			
 			
 			//+++ Den Ausgangsvector wieder herstellen.
