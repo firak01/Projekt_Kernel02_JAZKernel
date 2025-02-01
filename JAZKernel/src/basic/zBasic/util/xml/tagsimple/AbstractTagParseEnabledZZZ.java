@@ -53,7 +53,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 		
 			bReturn = this.isParseRelevant();
 			if(!bReturn) break main;

@@ -113,10 +113,19 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return this.parse_(sExpression, bRemoveSurroundingSeparators);
 	}
 	
-	private String parse_(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sExpression;
-		main:{
-			if(! this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturn = sExpressionIn;
+		main:{			
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+							
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			boolean bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
+						
+			String sExpression = sExpressionIn;
 			
 			sReturn = super.parse(sExpression, bRemoveSurroundingSeparators);
 		}//end main:
@@ -191,10 +200,15 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				objReturnReference.set(objReturn);
 			}
 			objReturn.setRaw(sExpressionIn);
+			objReturn.isParseCalled(true);
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
 			boolean bUseExpression = this.isExpressionEnabledGeneral();  
 			if(!bUseExpression) break main;
+			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			boolean bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 			//Merke: in Elternklassen gibt es diese Methode nur ohne Reference, da ohne KernelEbene das Objekt nicht vorhanden ist.
@@ -208,16 +222,10 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			//objReturn = objReturnReferenceParse.get();			
 			
 			String sExpression = sExpressionIn;
-			sReturnTag = this.parse(sExpression, bRemoveSurroundingSeparators);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);				
+			sReturn = this.parse(sExpression, bRemoveSurroundingSeparators);						
 		}//end main:
 		
-		if(objReturn!=null) {
-			objReturn.setValue(sReturn);	
-			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) objReturn.isParseCalled(true);
-			}				
+		if(objReturn!=null) {											
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objReturn);
 		}					
 		return objReturn;

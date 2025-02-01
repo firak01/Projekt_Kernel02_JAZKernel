@@ -237,7 +237,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public boolean isParseRelevant(String sExpression) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			bReturn = this.isParseRelevant();
 			if(!bReturn) break main;
@@ -270,17 +270,23 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		String sReturn = sExpressionIn;
 		String sReturnTag = "";
-		main:{
-			if(!this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
+		main:{			
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+							
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			boolean bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
 			
 			//Bei einfachen Tags den Ersten Vektor holen
 			String sExpression = sExpressionIn;
 			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
 			if(vecExpression==null) break main;
 			
-			sReturnTag = (String) vecExpression.get(1);
-			sReturn = sReturnTag;
+//			sReturnTag = (String) vecExpression.get(1);
+//			sReturn = sReturnTag;
 			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
 			//this.setValue(sReturnTag);	
 				
@@ -312,23 +318,26 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 							
 		main:{			
 			if(vecExpressionIn==null) break main;
-		
-			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-			this.setRaw(sExpressionIn);
-		
-			bUseExpression = this.isExpressionEnabledGeneral(); 
-			if(!bUseExpression) break main;						
 					
-			sReturnTag = (String) vecExpressionIn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+			this.setRaw(sExpressionIn);
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;	
+			
+			bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
+			
+//			sReturnTag = (String) vecExpressionIn.get(1);
+//			sReturn = sReturnTag;
+//			this.setValue(sReturnTag);
 			
 							
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			bUseParse = this.isParserEnabledThis();
-			if(bUseParse) {			
+			//bUseParse = this.isParserEnabledThis();
+			//if(bUseParse) {			
 				if(bRemoveSurroundingSeparators) {
 					String sTagStartZ = "<Z>"; //this.getTagStarting();
 					String sTagEndZ = "</Z>";  //this.getTagClosing();
@@ -341,9 +350,9 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 					this.setValue(sReturnTag);	
 				}	
-			}else {
-				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
-			}
+//			}else {
+//				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
+//			}
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
@@ -429,8 +438,16 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		String sExpression = null;
 		main:{
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-		
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			vecReturn.replace(0, sExpressionIn);
+						
+			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			if(!bUseExpression) break main;
+									
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			boolean bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
+			
 			sExpression = sExpressionIn;
 			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...

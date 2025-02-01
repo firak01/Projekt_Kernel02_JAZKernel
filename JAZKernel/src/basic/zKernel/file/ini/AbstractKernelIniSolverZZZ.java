@@ -385,6 +385,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
+		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
 		
@@ -547,7 +548,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	private Vector3ZZZ<String> solvePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = null;		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
 		String sReturnTag = null;
 		String sExpressionIn=null;

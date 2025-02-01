@@ -140,10 +140,12 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
-		}	
-		this.setRaw(sExpressionIn);
+		}
+		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
+		 
 		
 		main:{
 			String sExpression = sExpressionIn;
@@ -151,6 +153,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
+			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			//Merke: Darum vorher vecReturn schon initialisieren.
+			bUseParse = this.isParserEnabledThis();
+		    if(!bUseParse) break main;
 			
 			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
 			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
@@ -167,12 +174,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			
 			sExpression = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
 			sReturnTag = sExpression;
-			
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			//Merke: Darum vorher vecReturn schon initialisieren.
-			bUseParse = this.isParserEnabledThis();
-		    if(!bUseParse) break main;
-		    						
+								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
 			sReturnSubstituted = this.substituteParsed(sExpression, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			

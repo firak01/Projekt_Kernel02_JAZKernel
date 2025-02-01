@@ -149,7 +149,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 	
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = null;		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
 		String sReturnTag = null;
 		String sExpressionIn=null; String sExpression;	
