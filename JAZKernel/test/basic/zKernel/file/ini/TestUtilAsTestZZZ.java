@@ -45,12 +45,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 			
-	public static boolean assertFileIniEntry(IEnumSetMappedTestCaseZZZ objEnumTestCase, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSolvedIn) throws ExceptionZZZ{
+	public static boolean assertFileIniEntry(IEnumSetMappedTestCaseZZZ objEnumTestCase, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
 			String sExpressionSolved = sExpressionSolvedIn;
-
+			
 			
 			String sCaseset = objEnumTestCase.getAbbreviation();
 			String sFlagset = objEnumTestFlagset.getAbbreviation();
@@ -65,12 +66,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde ja NICHT gemacht.
 					
-					
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isParsedChanged());						
-					}else {
-						assertTrue(objEntry.isParsedChanged());
-					}															
+				
+					assertFalse(objEntry.isParsedChanged());						
+					assertFalse(objEntry.isSubstitutedChanged());
 					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
 				
 					assertFalse(objEntry.isDecrypted());
@@ -90,9 +88,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
 						assertTrue(objEntry.isParsedChanged());
-					}															
+					}	
+					if(sExpression.equals(sExpressionSubstituted)) {						
+						assertFalse(objEntry.isPathSubstituted());
+					}else {
+						assertFalse(objEntry.isPathSubstituted());
+					}
 					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
 				
+					//+++ kann man hier doch auch eigentlich nicht so abfragen					
+					assertFalse(objEntry.isVariableSubstituted());
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+								
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
@@ -112,11 +119,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 					}else {
 						assertTrue(objEntry.isParsedChanged()); 
 					}
-					assertFalse(objEntry.isSolvedChanged());
-				
-					assertFalse(objEntry.isPathSubstituted());
+					if(sExpression.equals(sExpressionSubstituted)) {						
+						assertFalse(objEntry.isPathSubstituted());
+					}else {
+						assertFalse(objEntry.isPathSubstituted());
+					}					
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+									
+					//+++ kann man hier doch auch eigentlich nicht so abfragen					
 					assertFalse(objEntry.isVariableSubstituted());
-					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+								
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
@@ -160,15 +173,22 @@ public class TestUtilAsTestZZZ extends TestCase{
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
 						assertTrue(objEntry.isParsedChanged());
+					}						
+					if(sExpression.equals(sExpressionSubstituted)) {						
+						assertFalse(objEntry.isPathSubstituted());
+					}else {
+						assertFalse(objEntry.isPathSubstituted());
+					}					
+					if(sExpressionSolved.equals(sExpressionSubstituted)) {
+						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					}else {
+						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
 					}					
 					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 																
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isPathSubstituted());
-					}else {
-						assertTrue(objEntry.isPathSubstituted());	
-					}										
-					assertFalse(objEntry.isVariableSubstituted()); //dieses ggfs. als extra Test machen.
+					//+++ kann man hier doch auch eigentlich nicht so abfragen					
+					assertFalse(objEntry.isVariableSubstituted());
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -194,13 +214,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					assertTrue(objEntry.isSolveCalled()); //dito mit solve(). Der Solve-Schritt wurde gemacht.
 					assertFalse(objEntry.isExpression());
+											
+					assertFalse(objEntry.isParsedChanged());
+					assertFalse(objEntry.isPathSubstituted());
+					assertFalse(objEntry.isSolvedChanged());						
 					
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isSolvedChanged());						
-					}else {
-						assertTrue(objEntry.isSolvedChanged());
-					}		
+					//+++ kann man hier doch auch eigentlich nicht so abfragen					
+					assertFalse(objEntry.isVariableSubstituted());
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -216,12 +237,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isSolveCalled());
 
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isSolvedChanged());						
+					if(sExpression.equals(sExpressionSubstituted)) {						
+						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertTrue(objEntry.isSolvedChanged());
-					}	 				
-					
+						assertFalse(objEntry.isPathSubstituted());
+					}					
+					if(sExpressionSolved.equals(sExpressionSubstituted)) {
+						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					}else {
+						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+					}
+															
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
@@ -236,15 +262,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.					
+					if(sExpression.equals(sExpressionSubstituted)) {						
+						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+						assertFalse(objEntry.isPathSubstituted());
+					}					
+					if(sExpressionSolved.equals(sExpressionSubstituted)) {
+						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					}else {
+						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
 					}
 				
-					//+++ kann man hier doch auch eigentlich nicht so abfragen
-					assertFalse(objEntry.isPathSubstituted());
+					//+++ kann man hier doch auch eigentlich nicht so abfragen					
 					assertFalse(objEntry.isVariableSubstituted());
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -263,13 +293,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSolved)) {
+					assertFalse(objEntry.isPathSubstituted());
+					if(sExpressionSubstituted.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 					}else {
 						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}
-																		
-					assertFalse(objEntry.isPathSubstituted());
+					}																							
 					assertFalse(objEntry.isVariableSubstituted());
 				
 					assertFalse(objEntry.isDecrypted());
@@ -287,17 +316,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSolved)) {
-						assertFalse(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}
-																		
-					if(sExpression.equals(sExpressionSolved)) {
+					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertTrue(objEntry.isPathSubstituted());	
-					}										
+						assertFalse(objEntry.isPathSubstituted());
+					}					
+					if(sExpressionSolved.equals(sExpressionSubstituted)) {
+						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					}else {
+						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+					}																								
 					assertFalse(objEntry.isVariableSubstituted()); //dieses ggfs. als extra Test machen.
 				
 				
