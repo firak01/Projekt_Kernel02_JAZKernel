@@ -77,11 +77,11 @@ public void testFieldSetGet(){
 		//Datumswerte testen
 		//1. Leerstring auslesen
 		stemp = objStoreTest.getValueString("Alias3", 0);
-		assertNull(stemp);
+		assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 		
 		objStoreTest.appendValue("Alias3", "");
 		stemp = objStoreTest.getValueString("Alias3", 0);
-		assertEquals("", stemp);
+		assertNull("LEERSTRING erwartet. Wert ist aber '" + stemp + "'", stemp);
 		
 		//2. Datumswert setzen
 		String sDateIn = "10.5.2006";
@@ -132,7 +132,7 @@ public void testFieldSetGet(){
 			assertEquals("Das ist neu", stemp);
 		
 			stemp = objStoreTest.getValueString("Alias1", 1);
-			assertNull(stemp);
+			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 			
 			//Die alten Werte des anderen Alias d�rfen nicht ver�ndert sein
 			stemp = objStoreTest.getValueString("Alias2", 0);

@@ -309,7 +309,7 @@ public class GetOptZZZTest extends TestCase{
 			assertTrue(stemp2.equalsIgnoreCase("b") | stemp2.equalsIgnoreCase("c"));
 			
 			String stemp3 = objOptTest.readOptionNext();
-			assertNull(stemp3);  //Das w�re das 3. auslesen, bei nur 2 Parametern
+			assertNull("NULL erwartet. Wert ist aber '" + stemp3 + "'", stemp3);  //Das waere das 3. auslesen, bei nur 2 Parametern
 			
 			stemp3 = objOptTest.readOptionFirst(); //Wieder von vorne anfangen !!!
 			assertNotNull(stemp3);
@@ -317,10 +317,10 @@ public class GetOptZZZTest extends TestCase{
 			
 			
 			stemp = objOptTest.readValue("a");  //+++ Werte auslesen
-			assertNull(stemp); //Key nicht vorhanden
+			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
 			
 			stemp = objOptTest.readValue("b");
-			assertNull(stemp); //Kein Wert f�r diesen Key gepflegt.
+			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);//Kein Wert fuer diesen Key gepflegt.
 			
 			//+++++++++++++++++ Pattern mit Keys, die Argumente beinhalten
 			objOptTest.setPattern("wx:y:z");
@@ -329,9 +329,9 @@ public class GetOptZZZTest extends TestCase{
 			assertTrue(btemp);
 			
 			stemp = objOptTest.readValue("w");  //+++ Werte auslesen
-			assertNull(stemp); //Key nicht vorhanden
+			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
 			stemp = objOptTest.readValue("z");  //+++ Werte auslesen
-			assertNull(stemp); //Key nicht vorhanden
+			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
 			
 			stemp = objOptTest.readValue("x");
 			assertNotNull(stemp); 

@@ -362,7 +362,7 @@ public class FileIniZZZTest extends TestCase {
 			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurueckgeliefert werden.", objEntry);
 			assertFalse("Die Section sollte als nicht existent geflagt sein.",objEntry.sectionExists());
 			assertFalse("Keine Section sollte existent geflagt sein.",objEntry.hasAnySectionExists());			
-			assertNull("Wenn es alles nicht gibt, dann soll der Rueckgabewert aber NULL sein", objEntry.getValue());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getValue() + "' Wenn es alles nicht gibt, dann soll der Rueckgabewert aber NULL sein", objEntry.getValue());
 			
 			
 			

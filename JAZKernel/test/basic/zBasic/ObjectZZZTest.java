@@ -117,7 +117,7 @@ public class ObjectZZZTest extends TestCase{
 			objObjectInitListening.registerForFlagEvent(objObjectTestListening);
 
 			String sValue02 = objObjectInitListening.getValueDummyByFlagEvent();
-			assertNull("Noch sollte kein Wert in dem flagChanged() Event gesetzt worden sein", sValue02);
+			assertNull("NULL erwartet. Wert ist aber '" + sValue02 + "'. Noch sollte kein Wert in dem flagChanged() Event gesetzt worden sein", sValue02);
 			
 			
 			objObjectInitListening.setFlag(IDummyTestObjectWithFlagZZZ.FLAGZ.FOR_TEST, true);

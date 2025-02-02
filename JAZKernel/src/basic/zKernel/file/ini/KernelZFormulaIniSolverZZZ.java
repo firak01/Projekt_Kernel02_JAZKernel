@@ -218,7 +218,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			}//end main
 		
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-			this.setValue(sReturnTag);		
+			if(sReturnTag!=null) this.setValue(sReturnTag);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {				
@@ -325,7 +325,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
-		this.setValue(sReturnTag);		
+		if(sReturnTag!=null) this.setValue(sReturnTag);		
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);

@@ -259,7 +259,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 						
 		if(objEntry!=null) {
 			if(!bUseExpression) {
@@ -366,7 +366,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		}//end main:	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);			
 			

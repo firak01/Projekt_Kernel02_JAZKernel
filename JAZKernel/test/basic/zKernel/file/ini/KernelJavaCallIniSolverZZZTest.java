@@ -473,11 +473,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//ohne solve wird das bisher nicht gemacht
 			sClassname = objEntry.getCallingClassname();
-			assertNull(sClassname);			
+			assertNull("NULL erwartet. Wert ist aber '" + sClassname + "'", sClassname);			
 			
 			//ohne solve wird das bisher nicht gemacht
 			sMethodname = objEntry.getCallingMethodname();
-			assertNull(sMethodname);
+			assertNull("NULL erwartet. Wert ist aber '" + sMethodname + "'", sMethodname);
 
 			
 

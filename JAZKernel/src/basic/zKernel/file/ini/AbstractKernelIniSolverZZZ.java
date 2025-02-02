@@ -431,7 +431,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);				
+		if(sReturnTag!=null) this.setValue(sReturnTag);				
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
@@ -519,7 +519,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:	
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 						
@@ -618,7 +618,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);						
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 				
 		if(objEntry!=null) {
 			if(!bUseExpression) {
@@ -656,7 +656,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = null;		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
 		String sReturnTag = null;
 		String sExpressionIn=null;
@@ -681,8 +681,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 		main:{	
 			if(vecExpressionIn==null) break main;
-			vecReturn=vecExpressionIn;			
-			
+				
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
@@ -696,7 +695,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 		
 						
 		if(objEntry!=null) {

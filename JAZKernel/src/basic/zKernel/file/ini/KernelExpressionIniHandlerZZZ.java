@@ -177,7 +177,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nein, nichts ersetzten, die ganze Zeile behaelt beim Parsen auch die Tags. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);	
+		if(sReturnTag!=null) this.setValue(sReturnTag);	
 				
 		if(objEntry!=null) {
 			if(!bUseExpression) {
@@ -375,7 +375,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//end main:
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
-		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {

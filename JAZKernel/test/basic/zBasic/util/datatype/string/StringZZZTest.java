@@ -789,7 +789,7 @@ public void testStrWord(){
 	assertEquals("", stemp);
 	
 	stemp = StringZZZ.word(sTest, " ", 0);
-	assertNull(stemp);
+	assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 }
 
 public void testContains(){

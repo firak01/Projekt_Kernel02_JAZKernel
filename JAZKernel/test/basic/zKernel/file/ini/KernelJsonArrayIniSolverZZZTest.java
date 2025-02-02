@@ -397,8 +397,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -431,8 +431,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -601,8 +601,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -639,8 +639,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -819,8 +819,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -853,8 +853,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1024,8 +1024,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1060,8 +1060,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1231,8 +1231,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1267,8 +1267,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			

@@ -76,8 +76,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());							
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());							
 					break;
 				case sFLAGSET_UNSOLVED:					
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
@@ -105,8 +105,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 					
 				case sFLAGSET_SOLVED:
@@ -135,8 +135,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 				case sFLAGSET_UNSUBSTITUTED:
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
@@ -159,8 +159,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					
 					break;
 				case sFLAGSET_SUBSTITUTED:				
@@ -195,8 +195,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 				
 				default:
@@ -228,8 +228,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 				case sFLAGSET_UNSOLVED:					
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
@@ -253,8 +253,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());	
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());	
 					break;
 					
 				case sFLAGSET_SOLVED:
@@ -283,8 +283,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 				
 				case sFLAGSET_UNSUBSTITUTED:
@@ -306,8 +306,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 					
 				case sFLAGSET_SUBSTITUTED:
@@ -334,8 +334,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 					
 				default:

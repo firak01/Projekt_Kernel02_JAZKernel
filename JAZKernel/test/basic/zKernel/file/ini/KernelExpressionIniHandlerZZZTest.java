@@ -2031,8 +2031,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2048,8 +2048,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -2185,8 +2185,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2497,12 +2497,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			assertFalse(objEntry.isCall());
 			assertFalse(objEntry.isJavaCall());
-			assertNull(objEntry.getCallingClassname());
-			assertNull(objEntry.getCallingMethodname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			
 			//Wert mit speziellen Entry-Formelwert vergleichen
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull(sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
 						
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
@@ -2569,12 +2569,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			assertFalse(objEntry.isCall());
 			assertFalse(objEntry.isJavaCall());
-			assertNull(objEntry.getCallingClassname());
-			assertNull(objEntry.getCallingMethodname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 						
 			//Wert mit speziellen Entry-Formelwert vergleichen
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull(sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
 						
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
@@ -2650,7 +2650,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//Wert mit speziellen Entry-Formelwert vergleichen
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull(sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
 						
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.

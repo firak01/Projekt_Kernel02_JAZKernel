@@ -453,13 +453,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertFalse(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
 					
 					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getValueDecrypted() + "'", objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
 					assertTrue(objEntry.isCall());			//Beim Parsen wird das festgestellt
 					assertTrue(objEntry.isJavaCall());		//Beim Parsen wird das festgestellt
 										
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -485,7 +485,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertTrue(objEntry.isSolved()); //Ist halt kein Solve-Schritt involviert.
 										
 					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getValueDecrypted() + "'", objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
 									
 					assertTrue(objEntry.isCall());			//Beim Parsen wird das festgestellt
 					assertTrue(objEntry.isJavaCall());		//Beim Parsen wird das festgestellt
@@ -643,8 +643,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -674,8 +674,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -809,8 +809,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -845,8 +845,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix rausJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1001,8 +1001,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -1038,8 +1038,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1185,8 +1185,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -1220,8 +1220,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 									
 					assertFalse(objEntry.isCall());
 					assertFalse(objEntry.isJavaCall());
-					assertNull(objEntry.getCallingClassname());
-					assertNull(objEntry.getCallingMethodname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1725,10 +1725,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//ohne solve ist das alles NULL	
 				sClassname = objEntry2.getCallingClassname();
-				assertNull(sClassname);
+				assertNull("NULL erwartet. Wert ist aber '" + sClassname + "'", sClassname);
 				
 				sMethodname = objEntry2.getCallingMethodname();
-				assertNull(sMethodname);
+				assertNull("NULL erwartet. Wert ist aber '" + sMethodname + "'", sMethodname);
 				
 				//TESTE DEN WERT:
 				sValue = objEntry2.getValue();

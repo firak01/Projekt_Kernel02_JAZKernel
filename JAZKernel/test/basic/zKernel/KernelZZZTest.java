@@ -639,7 +639,7 @@ public void testGetParameterByProgramAlias_ExternesModul() {
 		//Merke: Wird das Modul als Alias definiert, muss irgenwo auch der Modulkonfigurationsstring stehen: KernelConfigFileTestModuleAliasExtern, und wenn es eben in einer Section mit dem Modulalias selbst ist
 		try{		
 			String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleAliasExtern", "testProgramName", "testProgramProperty5").getValue();
-			assertNull(stemp2);//es heiss testProgramNameExtern. Mit dem anderen Programnamen soll nichts gefunden werden.
+			assertNull("NULL erwartet. Wert ist aber '" + stemp2 + "'", stemp2); //es heiss testProgramNameExtern. Mit dem anderen Programnamen soll nichts gefunden werden.
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}	
@@ -661,7 +661,7 @@ public void testSearchAliasForProgram() {
 		assertEquals("TestProg", sProgramAlias);
 			
 		String sProgramAliasUnavailable = objKernelFGL.searchAliasForProgram("TestProgramNameUNAVAILABLE");
-		assertNull(sProgramAliasUnavailable);
+		assertNull("NULL erwartet. Wert ist aber '" + sProgramAliasUnavailable + "'", sProgramAliasUnavailable); 
 		
 		//Test mit Modul in externer Datei
 		String sProgramAliasExtern = objKernelFGL.searchAliasForProgram("TestModuleExtern", "TestProgramName");
@@ -943,7 +943,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		assertEquals("Zu verschluesselnder Wert",sOriginal);
 				
 		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
-		assertNull(sEmpty);		
+		assertNull("NULL erwartet. Wert ist aber '" + sEmpty + "'", sEmpty);		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
@@ -1000,7 +1000,7 @@ public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
 		assertEquals("Zu verschluesselnder Wert",sOriginal);
 				
 		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
-		assertNull(sEmpty);
+		assertNull("NULL erwartet. Wert ist aber '" + sEmpty + "'", sEmpty);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
@@ -1174,7 +1174,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		assertEquals("Zu verschluesselnder Wert",sErg);
 		
 		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
-		assertNull(sEmpty);
+		assertNull("NULL erwartet. Wert ist aber '" + sEmpty + "'", sEmpty);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}

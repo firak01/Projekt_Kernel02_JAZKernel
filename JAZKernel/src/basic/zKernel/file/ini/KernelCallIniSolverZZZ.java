@@ -230,7 +230,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}
 		}//end main:
 		
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 		if(objEntry!=null) {		
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);
@@ -354,7 +354,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		this.setValue(sReturnTag);		
+		if(sReturnTag!=null) this.setValue(sReturnTag);		
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {				
@@ -429,7 +429,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				}//end if bAnyJavaCall			
 			}//end if bUseCall
 		}//end main:
-				
+			
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {

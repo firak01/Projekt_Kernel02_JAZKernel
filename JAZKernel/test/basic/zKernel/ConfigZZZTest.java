@@ -62,7 +62,7 @@ public class ConfigZZZTest  extends TestCase{
 		    assertNotNull(objConfigInit);
 		    
 		    String stemp = objConfigInit.readApplicationKey();
-		    assertNull(stemp);
+		    assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 		    
 		    String stemp2proof = objConfigInit.getApplicationKeyDefault();
 		    assertFalse(stemp2proof.equals(stemp));

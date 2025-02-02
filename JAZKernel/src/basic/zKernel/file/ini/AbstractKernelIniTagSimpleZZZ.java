@@ -558,7 +558,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 							   
 		if(objEntry!=null) {
 			if(!bUseExpression  || !bUseParse) {
@@ -770,7 +770,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//end main:
 				
 		//#################################
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 		if(objEntry!=null) {
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
@@ -939,7 +939,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//end main:
 				
 		//#################################
-		this.setValue(sReturnTag);		
+		if(sReturnTag!=null) this.setValue(sReturnTag);		
 		if(objEntry!=null) {
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
@@ -1498,6 +1498,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 				
 			}//end main:
+			if(sReturnTag!=null) this.setValue(sReturnTag);
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 			//Der Wert ist nur der TagInhalt this.setValue(sReturn);		

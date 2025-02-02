@@ -229,7 +229,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			
 			/* da die Indexposition in der HashMap nicht feststeht, kann man nicht so einfach vorgehen
 			String sValuePost = (String) hmTest.get("Alias1b");  //Merke: Man kann nicht nach der oben angegebenen Reihenfolge vorgehen, da die Indexposition beleibig ist.
-			assertNull("Nach dem Entfernen sollte f�r diesen Key kein Wert mehr vorhanden sein", sValuePost);*/
+			assertNull("Nach dem Entfernen sollte fuer diesen Key kein Wert mehr vorhanden sein", sValuePost);*/
 			String sKeyPost = (String) hmTest.getKeyByIndex(1);
 			String sValuePost = (String) hmTest.getValueByIndex(1);
 			assertNotSame("Nach dem Entfernen sollte f�r diesen Key an der Position ein anderer Wert sein", sValuePre, sValuePost);

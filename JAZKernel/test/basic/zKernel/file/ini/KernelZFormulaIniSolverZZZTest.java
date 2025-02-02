@@ -781,8 +781,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -811,8 +811,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -871,8 +871,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -963,8 +963,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1000,8 +1000,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1078,8 +1078,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1166,8 +1166,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isCall());
 				assertFalse(objEntry.isJavaCall());
-				assertNull(objEntry.getCallingClassname());
-				assertNull(objEntry.getCallingMethodname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1203,8 +1203,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1277,8 +1277,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1366,8 +1366,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1400,8 +1400,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1470,8 +1470,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1593,8 +1593,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1637,8 +1637,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //								
 //				assertFalse(objEntry.isCall());
 //				assertFalse(objEntry.isJavaCall());
-//				assertNull(objEntry.getCallingClassname());
-//				assertNull(objEntry.getCallingMethodname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1890,11 +1890,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-					//+++ Ohne Path-Substitution
-					//a)
-					sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung
+					//Ohne path substitution
+					//c)
+					sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung 
 					sTagSolved = sTagIn;
-					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					
+					//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+					
+					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 					
@@ -1957,7 +1962,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//c)
 				sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung 
-				sTagSolved = sTag;
+				sTagSolved = sTagIn;
 				
 				//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
@@ -2112,7 +2117,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);								
 					sValue = objFormulaSolver.getValue();
-					assertNull(objFormulaSolver.getValue());
+					
+					TODOGOON20250205;//Aber hier erwarte ich doch eigentlich auch eine Wert, wie beim Parsen!!!
+					assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -2194,8 +2201,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
@@ -2301,8 +2308,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2342,8 +2349,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2417,8 +2424,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2527,8 +2534,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2568,8 +2575,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2641,8 +2648,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //					
 //					assertFalse(objEntry.isCall());
 //					assertFalse(objEntry.isJavaCall());
-//					assertNull(objEntry.getCallingClassname());
-//					assertNull(objEntry.getCallingMethodname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

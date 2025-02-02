@@ -165,10 +165,10 @@ public void testGetOuterKeySet(){
 
 			
 			String s = (String) hmTest.getEntryHigh("nicht da");
-			assertNull(s);
+			assertNull("NULL erwartet. Wert ist aber '" + s + "'", s);
 			
 			String s2 = (String) hmTest.getEntry("nicht da");
-			assertNull(s2);
+			assertNull("NULL erwartet. Wert ist aber '" + s2 + "'", s2);
 			
 			//#######################
 			String sHigh = (String) hmTest.getEntryHigh("Alias2c");
@@ -223,7 +223,7 @@ public void testGetOuterKeySet(){
 			assertTrue(iHigh+2==iHighNew);
 			
 			String sValue = (String) hmTest.getEntryByAlias("NeuerAlias1a");
-			assertNull(sValue); //WEIL kein Index fuer die aeussere Schleife angegeben wurde UND dann im Letzten Eintrag geguckt wird. Da ist der Schlüsselwert halt nicht.
+			assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue); //WEIL kein Index fuer die aeussere Schleife angegeben wurde UND dann im Letzten Eintrag geguckt wird. Da ist der Schlüsselwert halt nicht.
 			
 			Integer intIndex = new Integer(iHigh+1);
 			sValue = (String) hmTest.getEntryByAlias(intIndex, "NeuerAlias1a");

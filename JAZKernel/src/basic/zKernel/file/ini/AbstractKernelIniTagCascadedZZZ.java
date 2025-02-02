@@ -190,7 +190,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nicht ersetzen. Beim Parsen bleibt der Zeilenwert nahezu unveraendert. Der Wert des Tags wurde schon gespeichert. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).
-		this.setValue(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
 		if(objEntry!=null) {
 			if(!bUseExpression) {
 				objEntry.setValue(sReturn);

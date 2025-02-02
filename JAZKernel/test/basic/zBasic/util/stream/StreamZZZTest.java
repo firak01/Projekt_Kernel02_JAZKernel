@@ -96,7 +96,7 @@ public class StreamZZZTest extends TestCase{
 	public void testInit() {
 		
 		String stemp = objStreamInit.getCharsetName();
-		assertNull(stemp);
+		assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 		
 	}
 	public void testWriteReadDEFAULT() {

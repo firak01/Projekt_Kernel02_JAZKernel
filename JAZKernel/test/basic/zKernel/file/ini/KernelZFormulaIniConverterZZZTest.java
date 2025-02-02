@@ -223,7 +223,7 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 			sConversionSource = "<z:Null/>";
 			sConversion = null;
 			sValue = KernelZFormulaIniConverterZZZ.getAsStringStatic(sConversionSource);
-			assertNull(sValue);
+			assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
 
 			
 			sConversionSource = "BLABLA";
@@ -267,7 +267,7 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 			sConversionSource = "<z:Null/>";
 			sConversion = null;
 			sValue = objExpressionConverter.getAsString(sConversionSource);
-			assertNull(sValue);
+			assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
 			
 			
 		} catch (ExceptionZZZ ez) {
