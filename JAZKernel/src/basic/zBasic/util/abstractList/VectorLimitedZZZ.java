@@ -36,12 +36,52 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	public VectorLimitedZZZ(int iSizeMax, Vector3ZZZ<String> vecInitial) throws ExceptionZZZ{
 		super();
 		this.setSizeMax(iSizeMax);
-		this.reset(new String(""));
+		this.resetValues(new String(""));
 		
 		for (int i=0; i<this.getSizeMax(); i++)
 			this.replace(i, vecInitial.elementAt(i));
 	}
 
+	//### Aus IResettableValuesWithDefault
+		@Override
+		public boolean reset() throws ExceptionZZZ{
+			//super.reset();//gibt es nicht, da oberste Ebene.
+			this.resetValues();
+			return true;
+		}
+		
+		@Override
+		public boolean resetValues() throws ExceptionZZZ{
+			for(int i=0; i<=this.getSizeMax()-1;i++) {
+				Object objDefault = this.getObjectDefaultNew();
+				if(this.getEntry(i)!=null) {				
+					this.replace(i, objDefault);
+				}else {
+					this.add(i, objDefault);
+				}
+			}	
+			return true;
+		}
+		
+		@Override
+		public boolean reset(Object objDefault) throws ExceptionZZZ{
+			//super.reset(objDefault);//gibt es nicht, da oberste Ebene
+			this.resetValues(objDefault);
+			return true;
+		}
+		
+		@Override
+		public boolean resetValues(Object objDefault) throws ExceptionZZZ{
+			for(int i=0; i<=this.getSizeMax()-1;i++) {
+				if(this.getEntry(i)!=null) {
+					this.replace(i, objDefault);
+				}else {
+					this.add(i, objDefault);
+				}
+			}	
+			return true;
+		}
+	
 	//## aus IVectorLimitedZZZ
 	@Override 
 	public Object getObjectDefaultNew() throws ExceptionZZZ {
@@ -87,30 +127,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 		throw ez;
 	}
 	
-	@Override
-	public boolean reset() throws ExceptionZZZ{
-		for(int i=0; i<=this.getSizeMax()-1;i++) {
-			Object objDefault = this.getObjectDefaultNew();
-			if(this.getEntry(i)!=null) {				
-				this.replace(i, objDefault);
-			}else {
-				this.add(i, objDefault);
-			}
-		}	
-		return true;
-	}
 	
-	@Override
-	public boolean reset(Object objDefault) throws ExceptionZZZ{
-		for(int i=0; i<=this.getSizeMax()-1;i++) {
-			if(this.getEntry(i)!=null) {
-				this.replace(i, objDefault);
-			}else {
-				this.add(i, objDefault);
-			}
-		}	
-		return true;
-	}
 	
 	
 		

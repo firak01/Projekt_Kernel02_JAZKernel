@@ -14,6 +14,20 @@ public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelPro
 		super(objKernel);
 	}
 
+	//### Aus IResettableValues
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		return super.reset();
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.component.AbstractKernelProgramZZZ#getModuleName()
+	 */
 	@Override
 	public String getModuleName() throws ExceptionZZZ {
 		// TODO Auto-generated method stub
@@ -25,11 +39,4 @@ public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelPro
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

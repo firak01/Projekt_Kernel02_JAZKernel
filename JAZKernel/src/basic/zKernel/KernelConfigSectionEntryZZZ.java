@@ -157,6 +157,75 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return bReturn;
 	}
 	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ {
+		return super.reset();						
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ {
+		//Setze Werte zurück...
+		super.resetValues();
+		this.bAnyPropertyExists=false;
+		this.bAnySectionExists=false;
+		this.bArrayValue=false;
+		this.bCall=false;
+		this.bCallSolved=false;
+		this.bConversion=false;
+		this.bConverted=false;
+		this.bCrypt=false;
+		this.bDecrypted=false;
+		this.bEncrypted=false;
+		this.bExploded=false;
+		this.bExpression=false;
+		this.bFormula=false;
+		this.bFormulaMathSolved=false;
+		this.bFormulaSolved=false;
+		this.bJavaCall=false;
+		this.bJson=false;
+		this.bJsonArray=false;
+		this.bJsonArray=false;
+		this.bJsonMap=false;
+		this.bMapValue=false;
+		this.bParseCalled=false;
+		this.bPathSubstituted=false;
+		this.bPropertyExists=false;
+		this.bRawDecrypted=false;
+		this.bRawEncrypted=false;
+		this.bSectionExists=false;
+		this.bSkipCache=false;
+		this.bSolveCalled=false;
+		this.bSolved=false;
+		this.bSolvedChanged=false;
+		this.bSubstituteCalled=false;
+		this.bSubstitutedChanged=false;
+		this.bVariableSubstituted=false;
+		this.bVariableSubstitutedChanged=false;
+		
+		this.hmPropertiesSearched=null;
+		this.hmPropertiesSection=null;
+		this.hmSectionsSearched=null;
+		this.objIniPosition=null;
+		this.iIndex=0;
+		this.sSystemNumber=null;
+		
+		this.vecRaw.clear();
+		this.vecValueAsExpression.clear();
+		this.vechmValue.clear();
+		this.vecalValue.clear();
+		this.vecValueFormulaSolvedAndConverted.clear();
+		this.vecValueAsConversion.clear();
+		this.vecRawEncrypted.clear();
+		this.vecValueEncrypted.clear();
+		this.vecValueEncryptedPart.clear();
+		this.vecValueDecrypted.clear();
+		this.vecValueDecryptedPart.clear();
+		this.vecRawDecrypted.clear();
+		
+		return true;
+	}
+	
 	//############################
 	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException, ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
@@ -1254,8 +1323,5 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}
 		}
 
-		@Override
-		public void reset() throws ExceptionZZZ {
-			TODOGOON20250203;//Setze Werte zurück...
-		}
+
 }

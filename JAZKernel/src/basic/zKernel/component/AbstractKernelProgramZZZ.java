@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IResettableValuesZZZ;
+import basic.zBasic.IResettableZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -12,7 +14,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
+public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZZZ implements IResettableValuesZZZ, IKernelProgramZZZ, IKernelModuleUserZZZ {
 	protected IKernelModuleZZZ objModule=null; //Das Modul, in der UI Variante z.B. die Dialogbox, in der das Program gestartet wird.
 	protected String sModuleName=null;	
 	protected String sProgramName=null;
@@ -48,6 +50,20 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 				
 		return true;
 	}
+	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ {
+		//super.reset();//gibt es nicht, da oberste Ebene
+		this.objModule=null;
+		this.sModuleName=null;
+		this.sProgramName=null;
+		this.resetValues();
+		return true;
+	}
+	
+	@Override
+	public abstract boolean resetValues() throws ExceptionZZZ;
 	
 	
 	//### Aus IKernelProgramZZZ
@@ -194,5 +210,5 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	}
 			
 	//### Methoden
-	public abstract void reset();
+	
 }

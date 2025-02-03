@@ -29,6 +29,22 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 		}//End main
 	}
 	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		//super.reset();//gibt es nicht, da oberste Ebene 
+		this.resetValues();
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		//super.resetValues();//gibt es nicht, da oberste Ebene
+		this.bAnyValue=false;
+		this.bNullValue=false;
+		this.sValue=null;
+		return true;
+	}
 	
 	//### Aus IValueUserZZZ
 	@Override
@@ -74,6 +90,8 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	public void hasNullValue(boolean bNullValue) {
 		this.bNullValue=bNullValue;
 	}
+	
+	
 	//####################################################
 	
 }

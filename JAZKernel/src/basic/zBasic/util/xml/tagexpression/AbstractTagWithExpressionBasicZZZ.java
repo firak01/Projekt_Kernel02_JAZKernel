@@ -45,6 +45,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public AbstractTagWithExpressionBasicZZZ(String[] saFlagControl) throws ExceptionZZZ {
 		super(saFlagControl);
 	} 
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		this.bAnyValueInObjectWithExpression=false;
+		this.bNullValueInObjectWithExpression=false;
+		this.vecValue.clear();
+		return true;
+	}
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Details aus ITagBasicsZZZ +++++++++++++++++++++++++++++++++++++++++

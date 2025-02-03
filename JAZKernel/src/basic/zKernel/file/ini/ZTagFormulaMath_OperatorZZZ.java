@@ -38,6 +38,23 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return true;
 	 }//end function ZTagFormulaMath_OperatorNew_
 	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		super.reset();		
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		this.sOperator=null;
+		this.sOperand01=null;
+		this.sOperand02=null;
+		return true;
+	}
+	
+	
 	//###### Getter / Setter
 	public String getOperator(){
 		return this.sOperator;

@@ -40,6 +40,21 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		}//End main
 	}
 	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		super.reset();
+		this.sTagName=null;
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		//Merke sFlagName ist so gesehen kein Value und wird nicht zurueckgesetzt.
+		return true;
+	}
+	
 		
 	//######## Getter / Setter ##################
 	

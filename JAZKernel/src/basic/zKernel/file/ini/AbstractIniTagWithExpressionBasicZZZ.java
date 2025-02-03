@@ -69,6 +69,21 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			return bReturn;
 		 }//end function AbstractObjectWithFormulaNew_
 
+	//### aus IResettableValues
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		
+		//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String vewendet werden.
+		//aus IValueArrayUserZZZ
+		vecalValue.clear();
+		this.bArrayValue = false; 
+			
+		vechmValue.clear();
+		this.bMapValue = false;
+		
+		return true;
+	}
 	
 	//######## Getter / Setter #################
 	

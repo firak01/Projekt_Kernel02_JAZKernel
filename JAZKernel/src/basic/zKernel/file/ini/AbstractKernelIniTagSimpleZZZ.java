@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
@@ -18,7 +17,6 @@ import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.IKernelEntryReferenceExpressionUserZZZ;
@@ -169,6 +167,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return bReturn;
 	}
 
+	//### aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		return super.reset();
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		this.resetEntry();
+		return true;
+	}
+	
 	
 	//### aus IKernelUserZZZ
 	@Override
@@ -235,7 +246,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override 
-	public void adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+	public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		objReturnReferenceTarget.set(this.getEntry());
@@ -246,6 +257,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
 		this.setEntry(objEntryTarget);
+		
+		return true; //nur weil ja was gemacht wurde.
+	}
+	
+
+	@Override
+	public boolean resetEntry() throws ExceptionZZZ{
+		return this.getEntry().reset();
 	}
 		
 	// Die Methoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.
@@ -512,18 +531,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);							
-		}//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		}else{
+			//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew89 uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			
+			//############
+			//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+			this.resetValues();			
+			//#######
+		}
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true);
 			
 		main:{
-			//############
-			//Wichtig: Bei jedem neuen Parsen die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
-			this.resetEntryValues();
 			
-			//#######
+			
 			String sExpression = sExpressionIn;
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			

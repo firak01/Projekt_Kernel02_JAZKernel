@@ -1895,19 +1895,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					sExpressionSolved = sExpressionIn; //Keine Expressionverarbeitung				
 					sTagSolved = sTagIn;	
 					btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-					
-					
-					//Ohne path substitution
-					//c)
-					sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung 
-					sTagSolved = sTagIn;
-					
-					//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
-					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
-					
-					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 					

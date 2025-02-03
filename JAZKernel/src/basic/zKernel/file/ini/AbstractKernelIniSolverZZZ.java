@@ -168,6 +168,22 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}//AbstractKernelIniSolverNew2_
 	
+	
+	//### Aus Interface IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		super.reset();
+		this.objCrypt=null;
+		return true;
+	}
+	
+	@Override 
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();		
+		this.resetEntry();
+		return true;
+	}
+	
 	//### Aus Interface ICryptUserZZZ
 	@Override
 	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
@@ -383,6 +399,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
 			objReturnReference.set(objEntry);
+		}else {
+			//############
+			//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+			this.resetValues();			
+			//#######
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.

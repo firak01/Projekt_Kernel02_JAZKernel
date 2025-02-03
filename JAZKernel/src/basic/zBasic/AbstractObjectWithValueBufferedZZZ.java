@@ -15,6 +15,14 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 		super(sValue);
 	}
 	
+	//### aus IResettableValuesZZZ
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		this.vecValue=null;
+		return true;
+	}
+	
 	//### Aus IValueBufferedUserZZZ
 	@Override 
 	public VectorDifferenceZZZ<String> getValueVector(){

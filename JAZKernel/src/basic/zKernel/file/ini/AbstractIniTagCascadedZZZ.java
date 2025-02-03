@@ -24,6 +24,18 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 		return true;
 	}// end function AbstractKernelIniTagNew_
 
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		super.reset();	
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		return true;
+	}
 		
 	//### Aus Interface IKernelExpressionIniZZZ		
 	@Override

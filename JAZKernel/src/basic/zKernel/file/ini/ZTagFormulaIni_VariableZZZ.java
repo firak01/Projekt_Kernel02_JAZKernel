@@ -53,6 +53,19 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	 }//end function KernelExpressionIniVariableNew_
 	
 	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		return super.reset();
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		this.hmVariable=null;
+		return true;
+	}
+	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element

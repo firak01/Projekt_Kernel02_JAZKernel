@@ -63,6 +63,28 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return true;
 	}
 	
+	
+	//### Aus IResettableValuesZZZ
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		super.reset();
+		this.objIniPosition=null; //so gesehen kein Value
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		super.resetValues();
+		//Merke objIniPosition ist so gesehen kein Value und wird nicht zurueckgesetzt.
+		this.vecalValue.clear();
+		this.bArrayValue=false;
+		
+		this.vechmValue.clear();
+		this.bMapValue=false;
+		return true;
+	}
+	
+	
 	//### aus IIniTagBasicZZZ  	
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{

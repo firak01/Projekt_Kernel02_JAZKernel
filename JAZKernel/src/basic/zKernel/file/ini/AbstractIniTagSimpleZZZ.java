@@ -36,6 +36,19 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
+	//### Aus IResettableValuesZZZ
+		@Override
+		public boolean reset() throws ExceptionZZZ{
+			super.reset();			
+			return true;
+		}
+		
+		@Override
+		public boolean resetValues() throws ExceptionZZZ{
+			super.resetValues();			
+			return true;
+		}
+	
 	//### aus IConvertableZZZ
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {

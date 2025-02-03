@@ -2172,7 +2172,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 
 	@Override
-	public void adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+	public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		objReturnReferenceTarget.set(this.getEntry());
 		
@@ -2182,5 +2182,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		
 		IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
 		this.setEntry(objEntryTarget);
+		
+		return true;
+	}
+
+	@Override
+	public boolean resetEntry() throws ExceptionZZZ {
+		return this.getEntry().reset();
 	}
 }
