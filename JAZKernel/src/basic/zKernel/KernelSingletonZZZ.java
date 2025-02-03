@@ -3,6 +3,7 @@ package basic.zKernel;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -138,6 +139,6 @@ public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 		//### Aus IObjectWithExpression
 		@Override
 		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
-			return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+			return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 		}
 }
