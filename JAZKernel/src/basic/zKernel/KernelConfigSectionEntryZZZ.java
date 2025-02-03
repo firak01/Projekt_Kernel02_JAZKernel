@@ -1254,5 +1254,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}
 		}
 
-		
+		@Override
+		public void reset() throws ExceptionZZZ {
+			TODOGOON20250203;//Setze Werte zurück...
+		}
 }

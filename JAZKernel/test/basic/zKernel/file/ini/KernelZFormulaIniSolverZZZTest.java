@@ -43,8 +43,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private KernelZZZ objKernel;
 	
 	/// +++ Die eigentlichen Test-Objekte	
-	private KernelZFormulaIniSolverZZZ objFormulaSolver;
-	private KernelZFormulaIniSolverZZZ objFormulaSolverInit;
+	private KernelZFormulaIniSolverZZZ objFormulaSolver=null;
+	private KernelZFormulaIniSolverZZZ objFormulaSolverInit=null;
 	
 	
 	protected void setUp(){
@@ -79,10 +79,10 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//Für die Variablenersetzung wichtig: Eine HashMap mit den Variablen in der Ini-Datei.
 			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
 			hmVariable.put("myTestVariableString", "mySolvedTestVariableString");
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable,  saFlagFileIni);
-			 					
-			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);			
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable,  saFlagFileIni);			 											
 
+			//Wichtig: Wenn hier der Solver definiert ist, muessen bei jedem Parsen/Solven die Internen Werte neu gesetzt werden. Sonst wird ein zweiter Aufruf verfälscht.
+			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (Exception e) {
@@ -1890,6 +1890,14 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
+					//+++ Ohne jegliche Expression-Berechnung
+					//a) Ausdruck unbearbeitet und der TagWert selbst auch nicht aufgeloest!!"				
+					sExpressionSolved = sExpressionIn; //Keine Expressionverarbeitung				
+					sTagSolved = sTagIn;	
+					btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
+					
+					
 					//Ohne path substitution
 					//c)
 					sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung 
@@ -2063,7 +2071,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			boolean bReturn = false;
 			//String sExpressionIn; String sExpressionSolvedIn;
 			main:{
-				try {
+				try {										
 					boolean btemp; 
 					
 					String sValue; String sSection; String sProperty;
@@ -2118,7 +2126,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);								
 					sValue = objFormulaSolver.getValue();
 					
-					TODOGOON20250205;//Aber hier erwarte ich doch eigentlich auch eine Wert, wie beim Parsen!!!
+					//TODOGOON20250205;//Aber hier erwarte ich doch eigentlich auch eine, Wert, wie beim Parsen!!!
 					assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
 					
 					objEntry = objSectionEntryReference.get();

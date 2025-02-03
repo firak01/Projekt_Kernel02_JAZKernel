@@ -519,6 +519,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.isParseCalled(true);
 			
 		main:{
+			//############
+			//Wichtig: Bei jedem neuen Parsen die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+			this.resetEntryValues();
+			
+			//#######
 			String sExpression = sExpressionIn;
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
@@ -673,6 +678,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+				this.adoptEntryValuesMissing(objEntry);
 			}
 		}		
 		return vecReturn;

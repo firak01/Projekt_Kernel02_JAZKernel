@@ -13,4 +13,6 @@ public interface IValueUserZZZ{
 	//protected void hasNullValue(boolean bHasNullValue);
 	public void hasAnyValue(boolean bHasAnyValue) throws ExceptionZZZ;
 	public void hasNullValue(boolean bHasNullValue) throws ExceptionZZZ;
+	
+	public void reset() throws ExceptionZZZ;
 }
