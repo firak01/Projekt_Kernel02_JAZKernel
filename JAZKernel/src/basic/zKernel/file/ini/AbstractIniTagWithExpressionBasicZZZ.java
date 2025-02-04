@@ -76,10 +76,10 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		
 		//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String vewendet werden.
 		//aus IValueArrayUserZZZ
-		vecalValue.clear();
+		if(this.vecalValue!=null) vecalValue.clear();
 		this.bArrayValue = false; 
 			
-		vechmValue.clear();
+		if(this.vechmValue!=null) vechmValue.clear();
 		this.bMapValue = false;
 		
 		return true;

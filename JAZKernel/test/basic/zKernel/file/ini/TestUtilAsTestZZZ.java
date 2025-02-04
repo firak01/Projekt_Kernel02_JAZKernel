@@ -177,14 +177,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertFalse(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstituted());
 					}					
-					if(sExpressionSolved.equals(sExpressionSubstituted)) {
+					if(sExpressionSubstituted.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 					}else {
 						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}					
-					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+					}										 
 																
 					//+++ kann man hier doch auch eigentlich nicht so abfragen					
 					assertFalse(objEntry.isVariableSubstituted());
@@ -240,7 +239,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertFalse(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstituted());
 					}					
 					if(sExpressionSolved.equals(sExpressionSubstituted)) {
 						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -266,7 +265,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertFalse(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstituted());
 					}					
 					if(sExpressionSolved.equals(sExpressionSubstituted)) {
 						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -319,7 +318,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
 					}else {
-						assertFalse(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstituted());
 					}					
 					if(sExpressionSolved.equals(sExpressionSubstituted)) {
 						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"

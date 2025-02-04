@@ -545,16 +545,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.isParseCalled(true);
 			
 		main:{
-			
-			
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
-			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-			
-			
+						
 			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
@@ -761,6 +758,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					String sTagEndZ = "</Z>";
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 					
+					String sTagContainerStart = this.getTagStarting();
+					String sTagContainerEnd = this.getTagClosing();					
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(vecReturn, sTagStartZ, sTagEndZ, sTagContainerStart, sTagContainerEnd);
 					
 //Nein: Beim Parsen bleibt der Tag-Wert in der Zeile erhalten. Der Wert in dem Tag ist mit .getValue() abrufbar.
 //      Damit kann nach dem Parsen weitergearbeitet werde, z.B. mit einem Solver.									
@@ -1412,10 +1412,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSubstituteCalled(true);
 			
-			main:{
-				String sExpression = sExpressionIn;				
-				if(StringZZZ.isEmptyTrimmed(sExpression)) break main;			
-
+			main:{						
+				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
+				String sExpression = sExpressionIn;
+				
 				boolean bUseExpression = this.isExpressionEnabledGeneral(); 
 				if(!bUseExpression) break main;					
 							

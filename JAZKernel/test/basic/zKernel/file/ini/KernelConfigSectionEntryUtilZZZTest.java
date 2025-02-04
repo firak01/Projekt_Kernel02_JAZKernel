@@ -543,7 +543,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagContainerEnd = "</Z:Method>";
 			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method></Z:Method></Z:Java></Z:Call></Z>";
-			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, true, true, sTagContainerStart, sTagContainerEnd);
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, false, false, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -555,7 +555,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagContainerEnd = "</Z:Method>";
 			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>12345</Z:Method></Z:Java></Z:Call></Z>";
-			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, true, false, sTagContainerStart, sTagContainerEnd);
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, false, true, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
 									
 			//#######################
@@ -566,7 +566,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			sTagContainerEnd = "</Z:Method>";
 			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123<Z>abcde</Z>45</Z:Method></Z:Java></Z:Call></Z>";			
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method>123abcde45</Z:Method></Z:Java></Z:Call></Z>";
-			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, false, sTagContainerStart, sTagContainerEnd);
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSource, sTagRemoveStart, sTagRemoveEnd, true, sTagContainerStart, sTagContainerEnd);
 			assertEquals(sExpressionSolved, sValue);
 			
 			

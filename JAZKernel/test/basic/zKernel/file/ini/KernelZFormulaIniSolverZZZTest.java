@@ -1890,11 +1890,23 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-					//+++ Ohne jegliche Expression-Berechnung
-					//a) Ausdruck unbearbeitet und der TagWert selbst auch nicht aufgeloest!!"				
-					sExpressionSolved = sExpressionIn; //Keine Expressionverarbeitung				
-					sTagSolved = sTagIn;	
-					btemp = testCompute_FORMULA_PATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					//+++ Ohne Path Substitution
+					//d)					
+					sExpressionSolved = sExpressionIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.					
+					sTagSolved = sTagIn;
+					
+					//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, true, sTagParentStart, sTagParentEnd);
+					
+					//Der Formula - Tag wird beim Parsen aber entfernt, falls vorhanden
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+								
+					//Beim Solven wird auch ein Z-Tag entfernt als TAG-Value
+					sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false);					
+					sTagSolved = sTag;	
+					
+					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 					
@@ -1946,7 +1958,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sTagSolved = sTagIn;
 				
 				//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, true, sTagParentStart, sTagParentEnd);
 															
 				//Beim Parsen wird auch ein Z-Tag entfernt als TAG-Value, wenn gewuenscht.
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false);					
@@ -1962,6 +1974,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
 				
+				//Das gilt aber nicht beim Tag - Wert, wenn kein Pfad substituiert wird, d.h. er wird ja nicht erkannt. Dann ist das interne Z-Tag ein normaler Text.
+				//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
+								
 				btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 				//d)
@@ -2088,34 +2103,27 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 								
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //sollte egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-		
-				
+						
 				btemp = objFormulaSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //sollte egal sein 
 				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 				
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true); //sollte egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-				
-				
+								
 				btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); //sollte egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
 															
 				
-							
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
-															
-					//Ausser wenn die Expression gar nicht behandelt wird. Dann ist das die ganze Zeile
-					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);								
-					sValue = objFormulaSolver.getValue();
-					
-					//TODOGOON20250205;//Aber hier erwarte ich doch eigentlich auch eine, Wert, wie beim Parsen!!!
+																				
+					//Hier erwarte ich einen NULL Wert, da ohne Expressionbehandlung auch nicht geparsed wird.
+					sValue = objFormulaSolver.getValue();					
 					assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
-					
+										
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
@@ -2132,9 +2140,13 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
 
+					//Hier erwarte ich einen NULL Wert, das ohne Expression auch nicht geparsed wird.
+					sValue = objFormulaSolver.getValue();					
+					assertNull("NULL erwartet. Wert ist aber '" + sValue + "'", sValue);
+			
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
-					
+										
 					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
@@ -2319,7 +2331,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);								
 					sValue = objFormulaSolver.getValue();
 					assertNotNull(objFormulaSolver.getValue());
-					assertEquals(sTag, sValue);
+					assertEquals(sTagSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -2400,7 +2412,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);								
 					sValue = objFormulaSolver.getValue();
 					assertNotNull(objFormulaSolver.getValue());
-					assertEquals(sTag, sValue);
+					assertEquals(sTagSolved, sValue);
 				
 					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.

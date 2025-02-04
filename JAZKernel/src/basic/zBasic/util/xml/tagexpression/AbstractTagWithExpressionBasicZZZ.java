@@ -51,7 +51,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		super.resetValues();
 		this.bAnyValueInObjectWithExpression=false;
 		this.bNullValueInObjectWithExpression=false;
-		this.vecValue.clear();
+		if(this.vecValue!=null) this.vecValue.clear();
 		return true;
 	}
 

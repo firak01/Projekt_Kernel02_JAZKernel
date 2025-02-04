@@ -56,7 +56,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	@Override
 	public boolean resetValues() throws ExceptionZZZ{
 		//super.resetValues(); //Ist oberste Ebene, gibt es hier nicht.
-		this.vecRaw.clear();
+		if(this.vecRaw!=null) this.vecRaw.clear();
 		return true;
 	}
 	

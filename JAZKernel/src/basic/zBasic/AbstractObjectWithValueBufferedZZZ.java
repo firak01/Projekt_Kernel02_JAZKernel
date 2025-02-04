@@ -19,7 +19,7 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 	@Override
 	public boolean resetValues() throws ExceptionZZZ{
 		super.resetValues();
-		this.vecValue=null;
+		if(this.vecValue!=null)this.vecValue.clear();
 		return true;
 	}
 	

@@ -62,7 +62,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	@Override
 	public boolean resetValues() throws ExceptionZZZ{
 		super.resetValues();
-		this.hmVariable=null;
+		if(this.hmVariable!=null) this.hmVariable.clear();
 		return true;
 	}
 	

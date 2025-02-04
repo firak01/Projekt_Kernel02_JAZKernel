@@ -76,10 +76,10 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	public boolean resetValues() throws ExceptionZZZ{
 		super.resetValues();
 		//Merke objIniPosition ist so gesehen kein Value und wird nicht zurueckgesetzt.
-		this.vecalValue.clear();
+		if(this.vecalValue!=null) this.vecalValue.clear();
 		this.bArrayValue=false;
 		
-		this.vechmValue.clear();
+		if(this.vechmValue!=null) this.vechmValue.clear();
 		this.bMapValue=false;
 		return true;
 	}
