@@ -8,10 +8,12 @@ import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.math.MathZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
@@ -30,6 +32,21 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
  *
  */
 public class XmlUtilZZZ implements IConstantZZZ{
+	public static String sERROR_TAGPARTS_UNEQUAL_TOTAL = "unequal total number of surrounding opening/closing tags";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING = "missing the opening tag in PRE";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING = "missing the closing tag in POST";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL = "not enough surrounding opening/closing tags in PRE compared with POST";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING = "not enough free removable opening tags in PRE available";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING = "not enough free removable closing tags in POST available";
+	
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY = "too many opening tags in PRE";
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY = "too many closing tags in POST";
+	
+	//TODOGOON 20250210; Symmetrie der xml-Strings muss noch defniert werden
+	public static String sERROR_TAGPARTS_SURROUNDING_CONTAINER_ASYMETRIC = "asymetric allocation of surrounding opening/closing tags in PRE compared with POST. This tree nodes are asymetric.";
+
+	
+	
 	public static boolean containsRegEx(String sExpression, String sRegEx) throws ExceptionZZZ{
 		return StringZZZ.matchesPattern(sExpression, sRegEx, true);
 	}
@@ -56,9 +73,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 				break main;
 			}
 			
-			String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName); 
+			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
 			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
-			sReturn = sTagStarting + sTagValue + sTagClosing;
+			sReturn = sTagOpening + sTagValue + sTagClosing;
 		}
 		return sReturn;
 	}
@@ -102,7 +119,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//++++++++++++++++++++++
-	public static String computeTagPartStarting(String sTagName) throws ExceptionZZZ {
+	public static String computeTagPartOpening(String sTagName) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";
 		}else {
@@ -147,7 +164,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static boolean containsTagName(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			String sMatchTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
+			String sMatchTagStarting = XmlUtilZZZ.computeTagPartOpening(sTagName);
 			String sMatchTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName); 
 			bReturn=StringZZZ.containsAsTag(sExpression, sMatchTagStarting, sMatchTagClosing, bExactMatch);
 			if(bReturn) break main;
@@ -158,6 +175,46 @@ public class XmlUtilZZZ implements IConstantZZZ{
 								
 		}//end main
 		return bReturn;
+	}
+	
+	//################################
+	public static int countTagName(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
+		int iReturn = -1;
+		main:{
+			String sMatchTagStarting = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			String sMatchTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName); 
+			int iStarting = StringZZZ.count(sExpression, sMatchTagStarting, bExactMatch);
+			int iClosing = StringZZZ.count(sExpression, sMatchTagClosing, bExactMatch);
+			
+			int iValued = MathZZZ.min(iStarting, iClosing);
+			
+			String sMatchTagEmpty = XmlUtilZZZ.computeTagEmpty(sTagName);
+			int iEmpty=StringZZZ.count(sExpression, sMatchTagEmpty, bExactMatch);
+			
+			iReturn = iValued + iEmpty;
+								
+		}//end main
+		return iReturn;
+	}
+	
+	public static int countTagPart(String sExpression, String sTagPart, boolean bExactMatch) throws ExceptionZZZ {
+		int iReturn = -1;
+		main:{
+			boolean bTag = XmlUtilZZZ.isTag(sTagPart);
+			if(bTag) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagpartname as parameter not tag itself '" + sTagPart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			boolean bTagPart = XmlUtilZZZ.isTagPart(sTagPart);
+			if(!bTagPart) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpartname as parameter '" + sTagPart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			iReturn = StringZZZ.count(sExpression, sTagPart, bExactMatch);							
+		}//end main
+		return iReturn;
 	}
 	
 	
@@ -173,34 +230,144 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isTagClosing(String sTag) {
+	public static boolean isTagPartOpening(String sTagPartOpening) {
 		boolean bReturn = false;
 		main:{			
-			if(!StringZZZ.startsWith(sTag, "</")) break main;
-			if(!StringZZZ.endsWith(sTag, ">")) break main;
+			if(!StringZZZ.startsWith(sTagPartOpening, "<")) break main;
+			if(!StringZZZ.endsWith(sTagPartOpening, ">")) break main;
+			
+			if(XmlUtilZZZ.isTagPartClosing(sTagPartOpening)) break main;
+			if(XmlUtilZZZ.isTagEmpty(sTagPartOpening)) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+		
+	public static boolean isTagPartClosing(String sTagPart) {
+		boolean bReturn = false;
+		main:{			
+			if(!StringZZZ.startsWith(sTagPart, "</")) break main;
+			if(!StringZZZ.endsWith(sTagPart, ">")) break main;
 			
 			bReturn = true;
 		}//end main:
 		return bReturn;
 	}
 	
-	public static boolean isTag(String sTag) {
+	public static boolean isTag(String sTagName) {
 		boolean bReturn = false;
-		main:{			
-			if(!StringZZZ.startsWith(sTag, "<")) break main;
-			if(!StringZZZ.endsWith(sTag, ">")) break main;
+		main:{						
+			if(!StringZZZ.startsWith(sTagName, "<")) break main;
+			if(!StringZZZ.endsWith(sTagName, ">")) break main;
+			
+			//Aber das reicht noch nicht. Ein Tag hat einen Opening-Part und einen Closing-Part
+			//oder ist ein Leertag
+			boolean bTagEmpty = XmlUtilZZZ.isTagEmpty(sTagName);
+			if(bTagEmpty) break main;
+			
+			//reine Closing oder Opening Tagparts ausschliessen
+			boolean bTagOpening = XmlUtilZZZ.isTagPartOpening(sTagName);
+			if(bTagOpening) break main;
+			
+			boolean bTagClosing = XmlUtilZZZ.isTagPartClosing(sTagName);
+			if(bTagClosing) break main;
+			
+			//Ansonsten wird es schwierig, wir müssen den Tagnamen holen
+			//Danach kann man pruefen, ob wirklich ein opening Tag am Anfang steht und ein closing Tag am Ende
+			//TODOGOON20250209;
 			
 			bReturn = true;
 		}//end main:
 		return bReturn;
 	}
 	
-	public static boolean isTagStarting(String sTag) {
+	public static boolean isTagPart(String sTagPart) {
 		boolean bReturn = false;
 		main:{			
-			if(!XmlUtilZZZ.isTag(sTag)) break main;			
-			if(!XmlUtilZZZ.isTagClosing(sTag)) break main;
-			if(!XmlUtilZZZ.isTagEmpty(sTag)) break main;
+			boolean bTagPartStarting = XmlUtilZZZ.isTagPartOpening(sTagPart);
+			boolean bTagPartClosing = XmlUtilZZZ.isTagPartClosing(sTagPart);
+			if(!bTagPartStarting & !bTagPartClosing) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	/*
+	 Ensure wirft immer eine Exception, wenn was nicht klappt
+	 */
+	public static boolean ensureTagPart(String sTagPart) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			boolean bTag = XmlUtilZZZ.isTag(sTagPart);
+			if(bTag) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagpartname as parameter not tag itself '" + sTagPart +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			boolean bTagPart = XmlUtilZZZ.isTagPart(sTagPart);
+			if(!bTagPart) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpartname as parameter '" + sTagPart +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	/*
+	 Ensure wirft immer eine Exception, wenn was nicht klappt
+	 */
+	public static boolean ensureTagPartOpening(String sTagPartOpening) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sTagPartOpening)) {
+				ExceptionZZZ ez = new ExceptionZZZ("A tagpartname as parameter expected. Is '" + sTagPartOpening +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			
+			boolean bTag = XmlUtilZZZ.isTag(sTagPartOpening);
+			if(bTag) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagpartname as parameter not tag itself '" + sTagPartOpening +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			boolean bTagPart = XmlUtilZZZ.isTagPartOpening(sTagPartOpening);
+			if(!bTagPart) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpartname type opening as parameter '" + sTagPartOpening +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	/*
+	 Ensure wirft immer eine Exception, wenn was nicht klappt
+	 */
+	public static boolean ensureTagPartClosing(String sTagPartClosing) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			if(StringZZZ.isEmpty(sTagPartClosing)) {
+				ExceptionZZZ ez = new ExceptionZZZ("A tagpartname as parameter expected. Is '" + sTagPartClosing +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			boolean bTag = XmlUtilZZZ.isTag(sTagPartClosing);
+			if(bTag) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagpartname as parameter not tag itself '" + sTagPartClosing +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			
+			boolean bTagPart = XmlUtilZZZ.isTagPartClosing(sTagPartClosing);
+			if(!bTagPart) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpartname type closing as parameter '" + sTagPartClosing +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
 			
 			bReturn = true;
 		}//end main:
@@ -223,10 +390,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			
 			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )		
 			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
-			String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName); 
+			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
 			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
 						
-			Pattern regex = Pattern.compile(sTagStarting + "(.*?)" + sTagClosing, Pattern.DOTALL);
+			Pattern regex = Pattern.compile(sTagOpening + "(.*?)" + sTagClosing, Pattern.DOTALL);
 			Matcher matcher = regex.matcher(sXml);
 			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
 			if (matcher.find()) {
@@ -305,10 +472,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 20.07.2024, 07:48:25
 	 */
-	public static boolean isExpression4Tag(String sExpression, String sTagStarting, String sTagClosing){
+	public static boolean isExpression4Tag(String sExpression, String sTagOpening, String sTagClosing){
 		boolean bReturn = false;
 		main:{			
-			bReturn=StringZZZ.containsAsTag(sExpression, sTagStarting, sTagClosing, false);
+			bReturn=StringZZZ.containsAsTag(sExpression, sTagOpening, sTagClosing, false);
 			if(bReturn) break main;
 			
 		}//end main
@@ -318,18 +485,18 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	/** Also der String beginnt mit dem Starting Tag und endet mit dem Closing Tag
 	 * @param sLineWithExpression
-	 * @param sTagStarting
+	 * @param sTagOpening
 	 * @param sTagClosing
 	 * @return
 	 * @author Fritz Lindhauer, 05.09.2024, 18:30:57
 	 */
-	public static boolean isSurroundedByTag(String sExpression, String sTagStarting, String sTagClosing){
+	public static boolean isSurroundedByTag(String sExpression, String sTagOpening, String sTagClosing){
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 		
-			boolean bSurroundedLeft = StringZZZ.startsWithIgnoreCase(sExpression, sTagStarting);
+			boolean bSurroundedLeft = StringZZZ.startsWithIgnoreCase(sExpression, sTagOpening);
 			boolean bSurroundedRight = StringZZZ.endsWithIgnoreCase(sExpression, sTagClosing);
 			
 			if(bSurroundedLeft && bSurroundedRight) bReturn = true;
@@ -337,11 +504,11 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagStarting, String sTagClosing, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagOpening, String sTagClosing, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagStarting, sTagClosing, !bRemoveSurroundingSeparators, false);			
+			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagOpening, sTagClosing, !bRemoveSurroundingSeparators, false);			
 		}
 		return vecReturn;
 	}

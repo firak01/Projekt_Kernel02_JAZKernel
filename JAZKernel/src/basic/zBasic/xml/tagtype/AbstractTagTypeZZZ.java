@@ -39,7 +39,7 @@ public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements IT
 	@Override
 	public String getTagPartStarting() throws ExceptionZZZ{
 		String sTagName = this.getTagName();
-		return XmlUtilZZZ.computeTagPartStarting(sTagName);
+		return XmlUtilZZZ.computeTagPartOpening(sTagName);
 	}
 	
 	@Override

@@ -16,4 +16,6 @@ public interface IObjectZZZ extends IConstantZZZ, Serializable, Cloneable {  //W
  	public abstract void setExceptionObject(ExceptionZZZ objException);
  	
  	public abstract Object clonez() throws ExceptionZZZ;
+ 	
+	public abstract String toString(); //Nutzt intern eine Jakarta-Commons Klasse, wenn nicht anders als in AbstractObjectZZZ ueberschrieben.
 }

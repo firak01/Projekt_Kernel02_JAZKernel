@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -182,6 +183,6 @@ public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
 		//### Aus IObjectWithExpression
 		@Override
 		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
-			return this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+			return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 		}
 }//end class// end class

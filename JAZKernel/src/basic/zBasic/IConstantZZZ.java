@@ -1,5 +1,10 @@
 package basic.zBasic;
 
+/*Merke: 20250208
+ * Normalerweise wird diese Klasse als Interface implementiert.
+ * Aber z.B. in den JUnit - Tests kann man auf folgendes nutzen, um z.B. eigene ExceptionZZZ Objekte zu werfen:
+ * import static basic.zBasic.IConstantZZZ.*;
+ */
 public interface IConstantZZZ {
 	//the constants are the same as in lotusScript - Libary ZZZBasicKernelAssetHandler	
 	public static final String sERROR_PARAMETER_MISSING = "Missing parameter: ";
@@ -44,8 +49,4 @@ public interface IConstantZZZ {
 	
 	public static  final String sERROR_NO="No Error";
 	public static  final int iERROR_NO=0;
-	
-	
-	
-	public String toString(); //Nutzt intern eine Jakarta-Commons Klasse
 }

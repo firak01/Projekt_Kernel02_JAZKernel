@@ -18,6 +18,8 @@ public class ObjectUtilZZZ implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("Objects are from different type: '" + obj1.getClass().getName() +"', '" + obj2.getClass().getName() + "'", iERROR_PARAMETER_VALUE, ObjectUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			
+			bReturn = true;
 		}//end main:
 		return bReturn;
 	}

@@ -263,6 +263,58 @@ public class StringZZZ implements IConstantZZZ{
 			return sReturn;
 	  }
 	  
+	  /**Diese Methode ersetzt am Anfang eines Strings den gesuchten String 1x durch einen neuen Teilstring.
+	   */
+	  public static String replaceFromLeft1(String sString, String sOld, String sNew) {
+		  String sReturn = sString;
+			main:{
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sOld)) break main;
+				
+				String sLeft; String sRight; 
+				if(StringZZZ.startsWith(sString, sOld)) {
+					sRight = sString.substring(sOld.length());										
+					sReturn = sNew + sRight;
+					break main;
+				}else {
+					sLeft = StringUtils.substringBefore(sString, sOld);
+					if(sString.equals(sLeft)) break main; //dann gibt es den String ueberhaupt nicht, weil er ja schon am Anfang nicht da ist.
+					
+					sRight = sString.substring(sLeft.length()+sOld.length());
+					
+					sReturn = sLeft + sNew + sRight;
+					break main;
+				}
+			}//end main:
+			return sReturn;
+	  }
+	  
+	  /**Diese Methode ersetzt am Ende eines Strings den gesuchten String 1x durch einen neuen Teilstring.
+	   */
+	  public static String replaceFromRight1(String sString, String sOld, String sNew) {
+		  String sReturn = sString;
+			main:{
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sOld)) break main;
+				
+				String sLeft; String sRight;
+				if(StringZZZ.endsWith(sString, sOld)) {
+					sLeft = StringUtils.substringBeforeLast(sString, sOld);
+					
+					sReturn = sLeft + sNew;
+					break main;
+				}else {
+					sRight = StringUtils.substringAfterLast(sString, sOld);
+					if(StringZZZ.isEmpty(sRight)) break main; //dann gibt es den String ueberhaupt nicht, weil er ja schon am Ende nicht da ist.
+					
+					sLeft = StringUtils.substringBeforeLast(sString, sOld);
+					
+					sReturn = sLeft + sNew + sRight;
+					break main;
+				}
+			}//end main:
+			return sReturn;
+	  }
 	  
 	  
 	  /** Ersetze in einem String alle Teilstrings durch den neuen Teilstring. ABER: Keine Ersetzung, wenn das Ziel schon in dem Teilstring vorkommt.
@@ -1653,7 +1705,10 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			String sLeft = StringZZZ.left(sStringToParse, sSepLeft,bExactMatch);
-			if(sLeft==null) sLeft="";
+			if(StringZZZ.isEmpty(sLeft)){
+				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+				break main;
+			}
 						
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
@@ -2425,7 +2480,19 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* Fritz Lindhauer; 06.10.2015 07:56:01
 	 */
 	public static int count(String sString, String sToFind){
-		return StringUtils.countMatches(sString, sToFind);
+		return StringZZZ.countMatches(sString, sToFind);
+	}
+	
+	/** Counts the occurance of the second String in the first one.
+	 *    Like countMatches()
+	* @param sString
+	* @param sToFind
+	* @return
+	* 
+	* Fritz Lindhauer; 06.10.2015 07:56:01
+	 */
+	public static int count(String sString, String sToFind, boolean bExactMatch){
+		return StringZZZ.countMatches(sString, sToFind, bExactMatch);
 	}
 	
 	/** Counts the occurance of the second String in the first one.
@@ -2437,7 +2504,27 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* Fritz Lindhauer; 06.10.2015 07:59:27
 	 */
 	public static int countMatches(String sString, String sToFind){
-		return StringUtils.countMatches(sString, sToFind);
+		return StringZZZ.countMatches(sString, sToFind, true);
+	}
+	
+	/** Counts the occurance of the second String in the first one.
+	 *    Like count()
+	* @param sString
+	* @param sToFind
+	* @return
+	* 
+	* Fritz Lindhauer; 06.10.2015 07:59:27
+	 */
+	public static int countMatches(String sString, String sToFind, boolean bExactMatch){
+		if(bExactMatch) {
+			return StringUtils.countMatches(sString, sToFind);
+		}else {
+			if(sString!=null) {
+				return StringUtils.countMatches(sString.toLowerCase(), sToFind.toLowerCase());
+			}else {
+				return 0;
+			}
+		}
 	}
 	
 	public static int countSubstring(String sString, String sToFind){

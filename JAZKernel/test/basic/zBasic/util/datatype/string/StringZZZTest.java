@@ -1927,6 +1927,113 @@ public void testVecMidFirst(){
 		//}
 	}
 	
+	
+	public void testReplaceFromLeft1() {
+		String sValue = null;
+		//try{			
+			String sOrg="aaabcbaaa";
+						
+			String sOld = "aa";
+			String sNew = "x";
+			String sErg = "xabcbaaa";			
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "a";
+			sNew = "x";
+			sErg = "xaabcbaaa";
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "x";
+			sNew = "yy";
+			sErg = sOrg;
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			//+++++++++++++++++++++++++++++++++
+			sOrg = "xaaabcbaaa";
+			
+			sOld = "aa";
+			sNew = "x";
+			sErg = "xxabcbaaa";
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "a";
+			sNew = "x";
+			sErg = "xxaabcbaaa";
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+		
+			sOld = "z";
+			sNew = "yy";
+			sErg = "xaaabcbaaa";
+			sValue = StringZZZ.replaceFromLeft1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			
+		//}catch(ExceptionZZZ ez){
+		//	fail("Method throws an exception." + ez.getMessageLast());
+		//}
+		
+		
+	}
+	
+	
+	public void testReplaceFromRight1() {
+		String sValue = null;
+		//try{			
+			String sOrg="aaabcbaaa";
+						
+			String sOld = "aa";
+			String sNew = "x";
+			String sErg = "aaabcbax";			
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "a";
+			sNew = "x";
+			sErg = "aaabcbaax";
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "x";
+			sNew = "yy";
+			sErg = sOrg;
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			//+++++++++++++++++++++++++++++++++
+			sOrg = "aaabcbaaax";
+			
+			sOld = "aa";
+			sNew = "x";
+			sErg = "aaabcbaxx";
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+			sOld = "a";
+			sNew = "x";
+			sErg = "aaabcbaaxx";
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+			
+		
+			sOld = "z";
+			sNew = "yy";
+			sErg = "aaabcbaaax";
+			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
+			assertEquals(sErg, sValue);
+		
+		//}catch(ExceptionZZZ ez){
+		//	fail("Method throws an exception." + ez.getMessageLast());
+		//}
+		
+		
+	}
+	
 	public void testReplaceFarFrom(){
 		//try{
 			String sErg = "";

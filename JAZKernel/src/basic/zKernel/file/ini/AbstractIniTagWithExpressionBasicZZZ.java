@@ -64,6 +64,11 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 					break main;
 				}
 				
+				//Den Tag-Namen setzen. Dann kann der Wert auch immer im Debugger gesehen werden.
+				if(StringZZZ.isEmpty(this.sTagName)) {
+					this.sTagName = this.getNameDefault();
+				}
+								
 				bReturn = true;
 		 	}//end main:
 			return bReturn;

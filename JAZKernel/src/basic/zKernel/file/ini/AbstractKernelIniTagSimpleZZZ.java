@@ -753,14 +753,24 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParse = this.isParserEnabledThis();
 			if(bUseParse) {				
 				if(bRemoveSurroundingSeparators) {
-					//Wichtig: Wirf erst die Z-Tags raus, damit auch die nachfolgenen Tags entfernt werden können, sonst wirg ggs. angenommen sie seien Teil einer Berchnung und bleiben drin.
+					//Wirf die Surrounding Z-Tags raus (falls vorhanden).
+					//TODOGOON20250207;//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
 					
 					String sTagContainerStart = this.getTagStarting();
 					String sTagContainerEnd = this.getTagClosing();					
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(vecReturn, sTagStartZ, sTagEndZ, sTagContainerStart, sTagContainerEnd);
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd); //also von aussen nach innen!!!
+					
+					
+					//Wichtig: Wirf erst die Z-Tags raus, damit auch die nachfolgenen Tags entfernt werden können, sonst wirg ggs. angenommen sie seien Teil einer Berchnung und bleiben drin.
+//					String sTagStartZ = "<Z>";
+//					String sTagEndZ = "</Z>";
+//					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
+//					
+//					String sTagContainerStart = this.getTagStarting();
+//					String sTagContainerEnd = this.getTagClosing();					
+//					KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(vecReturn, sTagStartZ, sTagEndZ, sTagContainerStart, sTagContainerEnd);
 					
 //Nein: Beim Parsen bleibt der Tag-Wert in der Zeile erhalten. Der Wert in dem Tag ist mit .getValue() abrufbar.
 //      Damit kann nach dem Parsen weitergearbeitet werde, z.B. mit einem Solver.									
@@ -1492,7 +1502,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
 					   
 							//Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+							//Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 							if(vecExpressionTemp==null) break;
 								
 							sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
@@ -1504,7 +1515,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 								sExpression = sExpressionTemp;						
 							}											
 						} //end while						
-						sReturnTag = sExpression;
+						sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
 						this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
 						sReturn = sReturnTag;						
 						objEntry.setValue(sReturn);

@@ -1,11 +1,12 @@
 package basic.zKernel.file.ini;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
+import static basic.zBasic.IConstantZZZ.*;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import junit.framework.TestCase;
 
@@ -575,6 +576,204 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 		}
 	}
 
+	
+	//#######################################################
+	//### SURROUNDING CONTAINER
+	//#######################################################
+	
+	public void testGetValueExpressionTagContainerSurroundingRemoved_FromOutToIn_MultiTags(){
+		String sTagStartZ; String sTagEndZ; String sTagContainerStart; String sTagContainerEnd;  
+		String sExpression; String sExpressionSolved; 
+		String sValue="";
+
+		try{	
+			//Hier der Test für "mehrere Tags auf anderen Positionen des Vectors - von Aussen nach Innen entfernt".
+
+			
+			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";
+			sTagContainerStart="<Z:Method>";
+			sTagContainerEnd="</Z:Method>";
+			
+			sExpression = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+
+	public void testGetValueExpressionTagContainerSurroundingRemoved_FromInToOut_MultiTags(){
+		String sTagStartZ; String sTagEndZ; String sTagContainerStart; String sTagContainerEnd;  
+		String sExpression; String sExpressionSolved; 
+		String sValue="";
+		
+		try{	
+			//Hier der Test für "mehrere Tags auf anderen Positionen des Vectors - von Aussen nach Innen entfernt".
+			
+			//+ Wichtige Hilfsmethode pruefen, wichtig ist der erste bool Parameter, damit wird von aussen nach innen das Tag entfernt.
+			sTagStartZ = "<Z>";
+			sTagEndZ = "</Z>";
+			sTagContainerStart="<Z:Method>";
+			sTagContainerEnd="</Z:Method>";
+			
+			sExpression = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt
+			try {
+				sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, true, false, sTagContainerStart, sTagContainerEnd);
+				fail("Method should have throw an exception, created by a watchdog... 'toomany number of surrounding opening/closing tags'");
+			}catch(ExceptionZZZ ez) {
+				String sCause = ez.getMessageLast();
+				if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)
+					|sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY)
+					) {
+					//alles o.k., erwarteter Fehler!
+				}else {
+					if(sCause.contains("container tag at mid-position of the vector3")) {					
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed 'container tag at mid-position of the vector3':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;					
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else {
+						ExceptionZZZ ez2 = new ExceptionZZZ("Unexpected exception", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName(),ez);
+						throw ez2;						
+					}
+				}
+			}
+			
+			//###############  
+			// Fuer den Test Z:class-Tag nach hinten. 
+			//      und  ein Z:Dummy eingefuegt. Damit gleiche Anzahl Tags vor wie hinter dem Container erzwungen. Also eine Art Symmetrie erzeugt.
+			//ABER: Das reicht noch nicht, da von Innen nach aussen nun die Tagparts kurz danach geschlossener, einfacher Tags entfernt wuerden.
+			sExpression = "<Z><Z:Call><Z:Java><Z:Dummy><Z>bla</Z></Z:Dummy><Z:Method><Z>abcde</Z></Z:Method><Z:Class><Z>xyz</Z></Z:Class></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Dummy><Z>bla</Z></Z:Dummy><Z:Method><Z>abcde</Z></Z:Method><Z:Class><Z>xyz</Z></Z:Class></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt
+			try {
+				sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, true, false, sTagContainerStart, sTagContainerEnd);
+				fail("Method should have throw an exception, created by a watchdog... 'toomany number of surrounding opening/closing tags'");
+			}catch(ExceptionZZZ ez) {
+				String sCause = ez.getMessageLast();
+				if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)
+					|sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY)
+					) {
+					//alles o.k., erwarteter Fehler!
+				}else {
+					if(sCause.contains("container tag at mid-position of the vector3")) {					
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed 'container tag at mid-position of the vector3': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;					
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else {
+						ExceptionZZZ ez2 = new ExceptionZZZ("Unexpected exception", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName(),ez);
+						throw ez2;						
+					}
+				}
+			}
+			
+		
+
+			//Eine funktionierende Variante			
+			//Fuer den Test ein Z:Class rausgenommen, so dass keine weiteren Z-Tags vorhanden sind.
+			//Teste dazu noch vor und hinter dem Tag Text.
+			sExpression = "vor<Z>abcd<Z:Call><Z:Java><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>xyz</Z>hinter"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "vorabcd<Z:Call><Z:Java><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>xyzhinter"; //INI-Pfade werden trotzdem ersetzt
+			try {
+				sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, true, false, sTagContainerStart, sTagContainerEnd);
+//				fail("Method should have throw an exception, created by a watchdog... 'toomany number of surrounding opening/closing tags'");
+			}catch(ExceptionZZZ ez) {
+				String sCause = ez.getMessageLast();
+//				if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)
+//					|sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY)
+//					) {
+//					//alles o.k., erwarteter Fehler!
+//				}else {
+					if(sCause.contains("container tag at mid-position of the vector3")) {					
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed 'container tag at mid-position of the vector3':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;					
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + "':" + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else if(sCause.contains(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL)) {						
+						ExceptionZZZ ez2 = new ExceptionZZZ("Watchdog failed '" + XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + "': " + ez.getMessageLast(), iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez2;
+					}else {
+						ExceptionZZZ ez2 = new ExceptionZZZ("Unexpected exception", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName(),ez);
+						throw ez2;						
+					}
+//				}
+			}
+			assertEquals(sExpressionSolved, sValue);
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception. '" + ez.getMessageLast() + "' at '" + ez.getFunctionLast() + "'");			
+		}
+	}
+	
 	
 	//#######################################################
 	//#### SURROUNDING

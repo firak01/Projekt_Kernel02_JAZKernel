@@ -19,35 +19,35 @@ public class ExpressionIniUtilZZZ {
 	/* Setze den angegebenen Tag um den Ausdruck rum, falls noch nicht vorhanden. 
 	 */
 	public static String makeAsExpression(String sString, String sTagName) throws ExceptionZZZ {
-		String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
+		String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
 		String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
-		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagStarting, sTagClosing);
+		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagOpening, sTagClosing);
 	}
 	
 	/* Setze den angegebenen Tag um den Ausdruck rum, falls noch nicht vorhanden. 
 	 */
-	public static String makeAsExpression(String sString, String  sTagStarting, String sTagClosing) throws ExceptionZZZ {
-		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagStarting, sTagClosing);
+	public static String makeAsExpression(String sString, String  sTagOpening, String sTagClosing) throws ExceptionZZZ {
+		return 	ExpressionIniUtilZZZ.makeAsExpression_(sString, sTagOpening, sTagClosing);
 	}
 	
-	private static String makeAsExpression_(String sString, String sTagStarting, String sTagClosing) throws ExceptionZZZ {
+	private static String makeAsExpression_(String sString, String sTagOpening, String sTagClosing) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
-			if(XmlUtilZZZ.isSurroundedByTag(sString, sTagStarting, sTagClosing)) {
+			if(XmlUtilZZZ.isSurroundedByTag(sString, sTagOpening, sTagClosing)) {
 				//mache nix
 			}else {
 				//umgib den String mit den gewuenschten Tags
-				sReturn = sTagStarting + sString + sTagClosing;
+				sReturn = sTagOpening + sString + sTagClosing;
 			}
 			
 			/*
 			//TODOGOON20241116;
 			//Finde den ersten Tag... Ist das der angegebene...von vorne, dito von hinten.
 			//was liefert das zurueck?
-			sReturn = XmlUtilZZZ.getTagNext(sTagStarting, sString);
+			sReturn = XmlUtilZZZ.getTagNext(sTagOpening, sString);
 			
 			//neue methoden
-			XmlUtilZZZ.getTagNextStarting(sTagStarting, sString);
+			XmlUtilZZZ.getTagNextStarting(sTagOpening, sString);
 			XmlUtilZZZ.getTagNextClosing(sTagClosing, sString);
 			
 			

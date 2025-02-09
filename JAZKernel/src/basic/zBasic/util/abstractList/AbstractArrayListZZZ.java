@@ -42,8 +42,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		super();
 	}
 	public AbstractArrayListZZZ(T[]obja) {	
-		ArrayListExtendedNew_(obja);
-	
+		ArrayListExtendedNew_(obja);	
 	}
 	
 	private boolean ArrayListExtendedNew_(T[] obja){		

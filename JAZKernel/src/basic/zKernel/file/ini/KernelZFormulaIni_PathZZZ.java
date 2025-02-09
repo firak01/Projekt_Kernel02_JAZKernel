@@ -316,7 +316,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//Problem: Der einem INI-Path Ausdruck umgebende Z-Tag muss eintfernt werden.
 			//         1. Schritt: Packe ihn in Vec(1).
-			//Da mehrere Z-Tags hintereinander stehen können, richt auch folgendes nicht, sondern es muss der ERSTE geholt werden.
+			//Da mehrere Z-Tags hintereinander stehen können, reicht auch folgendes nicht, sondern es muss der ERSTE geholt werden.
 			//vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression + sSepRight, sSepLeft, sSepRight, false);
 			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
 			
@@ -402,8 +402,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			sRight = StringZZZ.stripRight(sRight, "</Z>", 1);//nur 1x Strip
 			vecReturn.replace(2, sRight);			
 		}//end main:		
-		vecReturn.replace(sReturn); //Damit wird dann auch sofort das den Path umschliessende Z-Tag entfernt.
-		this.setValue((String) vecReturn.get(1));
+		vecReturn.replace(sReturn); 
+		this.setValue((String) vecReturn.get(1)); //Setze den Wert des INI-PATH-Tags.
 		if(objEntry!=null) {
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	

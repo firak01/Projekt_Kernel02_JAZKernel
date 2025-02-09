@@ -71,7 +71,7 @@ public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
-		return XmlUtilZZZ.computeTagPartStarting(sTagName);
+		return XmlUtilZZZ.computeTagPartOpening(sTagName);
 	}
 	
 	@Override
