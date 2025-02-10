@@ -1353,6 +1353,14 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
+
+				//Zaehle die Tags fuer weitere Watchdog clauseln
+				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
+				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
+				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+
+				
 				
 				//C) Watchdog clausel fuer Beschraenkung der Anzahl auf maximal 1 umgebungstag.
 				//   !!! Dies ist nur problematisch fuer das Entfernen der Tags von innen nach aussen.
@@ -1361,43 +1369,44 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				//				  gibt es ein passendes schliessendes Tag.
 				//                Dann ignoriere den TagPart fuer die Loeschung.
 				//             2) Es gibt keine weiteren Tags hinter dem offnenden Tag (siehe 1) und dem passenden schliessenden Tag. 
-				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+
+				
 				if(iCountOPENING_PRE >= 2) {
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
-				}
-				
-				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
+				}						
 				if(iCountCLOSING_POST >= 2) {
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
 				}
 				
+
+				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
+				//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
+				if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
+
+												
+				//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
+				if(iCountOPENING_PRE > iCountCLOSING_POST) {
+					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	
+				}
 				
 				
-				
-				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf mindestens 1 Umgebungstag. D.h. das Tag muss da sein.
-				//int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+				//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
 				if(iCountOPENING_PRE <= 0) {
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
 				}
 				
-				//int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
-				if(iCountCLOSING_POST <= 0) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}
 				
-				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
-				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-				
-				//E) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
+				//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
 				//   Etwas genauer als das einfache zaehlen der Gesamttags.			
 				if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
+
 				
 				//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
 				if(iCountOPENING_PRE<(iCountCLOSING_PRE+1)) {					
@@ -1487,28 +1496,38 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					throw ez;
 				}
 				
+				//Zähle die Tags fuer die Watchdog clauseln
+				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
+				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
+				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+
+				
 				//C) Watchdoc clausel fuer Beschraenkung der Anzahl auf max 1 Umgebungstag
 				//   Diese ist fuer AUSSEN nach INNEN nicht so problematisch																
 				//........
 				
 				
-				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag
-				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
+				//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
+				if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
+
+												
+				//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
+				if(iCountOPENING_PRE > iCountCLOSING_POST) {
+					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	
+				}
+				
+				
+				//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
 				if(iCountOPENING_PRE <= 0) {
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
 				}
 				
-				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
-				if(iCountCLOSING_POST <= 0) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}
-								
-				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
-				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
 				
-				//E) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
+				//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
 				//   Etwas genauer als das einfache zaehlen der Gesamttags.			
 				if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());

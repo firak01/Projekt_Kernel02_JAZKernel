@@ -326,7 +326,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			
 			//#########################
-			vecReturn.replace(sLeft, sMid, sRight);
+			//vecReturn.replace(sLeft, sMid, sRight);
 
 			//##########################
 	

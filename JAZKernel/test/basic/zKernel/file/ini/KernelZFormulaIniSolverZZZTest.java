@@ -2468,7 +2468,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 																
 					
 							
-				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
+				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade! D.h. auch der z:Formula Tag bleibt drin!!!
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);

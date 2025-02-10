@@ -790,9 +790,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 				sReturnTag = (String) vecReturn.get(1); 
 				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				vecReturn.replace(1, sReturnTag);
 				
 				//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
+				sReturnTag = (String) vecReturn.get(1);
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
 				
@@ -942,7 +944,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//if(bUseParse) {	
 						
 			if(bRemoveSurroundingSeparators) {
-				//Wichtig: Wirf erst die Z-Tags raus, damit auch die nachfolgenen Tags entfernt werden können, sonst wirg ggs. angenommen sie seien Teil einer Berchnung und bleiben drin.
+				//Wichtig: Wirf erst die Z-Tags raus, damit auch die nachfolgenen Tags entfernt werden können, sonst wird ggfs. angenommen sie seien Teil einer Berechnung und bleiben drin.
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!
