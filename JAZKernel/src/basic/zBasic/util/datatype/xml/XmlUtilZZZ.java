@@ -120,39 +120,18 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//++++++++++++++++++++++
 	public static String computeTagPartOpening(String sTagName) throws ExceptionZZZ {
-		if(StringZZZ.isEmpty(sTagName)) {
-			return "";
-		}else {
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			return "<" + sTagName + ">";
-		}
+		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+		return "<" + sTagName + ">";		
 	}
 	
 	public static String computeTagPartEmpty(String sTagName) throws ExceptionZZZ {
-		if(StringZZZ.isEmpty(sTagName)) {
-			return "";		
-		}else {
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}						
-			return "<" + sTagName + "/>"; 
-		}
+		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);				
+		return "<" + sTagName + "/>"; 		
 	}
 	
-	public static String computeTagPartClosing(String sTagName) throws ExceptionZZZ {
-		if(StringZZZ.isEmpty(sTagName)) {
-			return "";		
-		}else {
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			return "</" + sTagName + ">"; 
-		}
+	public static String computeTagPartClosing(String sTagName) throws ExceptionZZZ {	
+		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+		return "</" + sTagName + ">"; 		
 	}
 	
 	//################################
@@ -200,18 +179,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static int countTagPart(String sExpression, String sTagPart, boolean bExactMatch) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
-			boolean bTag = XmlUtilZZZ.isTag(sTagPart);
-			if(bTag) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagpartname as parameter not tag itself '" + sTagPart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			boolean bTagPart = XmlUtilZZZ.isTagPart(sTagPart);
-			if(!bTagPart) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpartname as parameter '" + sTagPart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
+			ensureTagPart(sTagPart);			
 			iReturn = StringZZZ.count(sExpression, sTagPart, bExactMatch);							
 		}//end main
 		return iReturn;
@@ -289,6 +257,33 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			boolean bTagPartClosing = XmlUtilZZZ.isTagPartClosing(sTagPart);
 			if(!bTagPartStarting & !bTagPartClosing) break main;
 			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	//######################################
+	//### Ensure wirft immer eine Exception, wenn was nicht klappt
+	//######################################
+	public static boolean ensureExpressionTagNameValid(String sTagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			
+			if(StringZZZ.isEmpty(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a filled String as TagName '" + sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;				
+			}
+			
+			if(isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(isTagPart(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not a tagpart itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
 			bReturn = true;
 		}//end main:
 		return bReturn;
@@ -529,5 +524,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		}
 		return vecReturn;
 	}
+
+	
 	
 }

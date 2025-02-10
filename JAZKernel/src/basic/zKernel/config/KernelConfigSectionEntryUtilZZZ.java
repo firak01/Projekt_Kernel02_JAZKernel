@@ -844,8 +844,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		String sReturn = sExpression;
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			ensureExpressionTagNameValid(sTagName);
-			ensureExpressionTagNameValid(sTagNameContainer);
+			XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+			XmlUtilZZZ.ensureExpressionTagNameValid(sTagNameContainer);
 			
 			String sTagPartOpening; String sTagPartClosing;
 			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
@@ -867,8 +867,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		String sReturn = sExpression;		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			ensureExpressionTagNameValid(sTagName);
-			ensureExpressionTagNameValid(sTagNameContainer);									
+			XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+			XmlUtilZZZ.ensureExpressionTagNameValid(sTagNameContainer);									
 			
 			String sTagPartOpening; String sTagPartClosing;
 			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
@@ -1104,8 +1104,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sReturn = sExpression;		
 			main:{
 				if(StringZZZ.isEmpty(sExpression)) break main;
-				if(ensureExpressionTagNameValid(sTagName));
-				if(ensureExpressionTagNameValid(sTagContainerName));
+				if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagName));
+				if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagContainerName));
 									
 				String sTagStart; String sTagEnd;
 				sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
@@ -1618,7 +1618,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
-			ensureExpressionTagNameValid(sTagName);
+			XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
 									
 			String sTagPartOpening; String sTagPartClosing;
 			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
@@ -2117,31 +2117,6 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}			
 		}//end main:
 		return sReturn;
-	}
-	
-	//######################################
-	public static boolean ensureExpressionTagNameValid(String sTagName) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			
-			if(StringZZZ.isEmpty(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a filled String as TagName '" + sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
-				throw ez;				
-			}
-			
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			if(XmlUtilZZZ.isTagPart(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not a tagpart itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-						
-			bReturn = true;
-		}//end main:
-		return bReturn;
 	}
 			
 }
