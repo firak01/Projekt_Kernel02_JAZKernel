@@ -792,6 +792,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	public static boolean isExpressionTagNameValid(String sExpressionTagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 	public static boolean isConvertable(String sLine) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -822,73 +832,53 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	//###########################################
 	//### CONTAINED
 	//###########################################
-	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagName, String sTagNameContainer) throws ExceptionZZZ {
-		return KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainedRemoved_(sValueExpression, sTagName, false, sTagNameContainer);	
+	public static String getExpressionTagContainedRemoved(String sExpression, String sTagName, String sTagNameContainer) throws ExceptionZZZ {
+		return KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainedRemoved_(sExpression, sTagName, false, sTagNameContainer);	
 	}
 	
-	public static String getExpressionTagpartsContainedRemoved(String sValueExpression, String sTagName, String sTagNameContainer) throws ExceptionZZZ {
-		return KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainedRemoved_(sValueExpression, sTagName, true, sTagNameContainer);
+	public static String getExpressionTagpartsContainedRemoved(String sExpression, String sTagName, String sTagNameContainer) throws ExceptionZZZ {
+		return KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainedRemoved_(sExpression, sTagName, true, sTagNameContainer);
 	}
 	
-	private static String getExpressionTagpartsContainedRemoved_(String sValueExpression, String sTagName, boolean bLeaveTagAnyContent, String sTagNameContainer) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	private static String getExpressionTagpartsContainedRemoved_(String sExpression, String sTagName, boolean bLeaveTagAnyContent, String sTagNameContainer) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagName)) break main;
-			if(StringZZZ.isEmpty(sTagNameContainer)) break main;
-						
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			ensureExpressionTagNameValid(sTagName);
+			ensureExpressionTagNameValid(sTagNameContainer);
 			
-			if(XmlUtilZZZ.isTag(sTagNameContainer)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the parent tag itself '" + sTagNameContainer +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+			String sTagPartOpening; String sTagPartClosing;
+			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
 			
-			String sTagStart; String sTagEnd;
-			sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
-			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
-			
-			String sTagParentStart; String sTagParentEnd;
-			sTagParentStart = XmlUtilZZZ.computeTagPartOpening(sTagNameContainer);
-			sTagParentEnd = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
+			String sTagPartContainerOpening; String sTagContainerClosing;
+			sTagPartContainerOpening = XmlUtilZZZ.computeTagPartOpening(sTagNameContainer);
+			sTagContainerClosing = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
 			
 			boolean bLeaveTagContent = bLeaveTagAnyContent;
 			boolean bLeaveTagInterContent = bLeaveTagAnyContent;
-			sReturn = getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bLeaveTagContent, bLeaveTagInterContent, sTagParentStart, sTagParentEnd);
+			sReturn = getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing, bLeaveTagContent, bLeaveTagInterContent, sTagPartContainerOpening, sTagContainerClosing);
 		}//end main;
 		return sReturn;
 	}
 	
 	
-	private static String getExpressionTagpartsContainedRemoved_(String sValueExpression, String sTagName, boolean bLeaveTagContent, boolean bLeaveTagInterContent, String sTagNameContainer) throws ExceptionZZZ {
-		String sReturn = sValueExpression;		
+	private static String getExpressionTagpartsContainedRemoved_(String sExpression, String sTagName, boolean bLeaveTagContent, boolean bLeaveTagInterContent, String sTagNameContainer) throws ExceptionZZZ {
+		String sReturn = sExpression;		
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagName)) break main;
-			if(StringZZZ.isEmpty(sTagNameContainer)) break main;
-						
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			ensureExpressionTagNameValid(sTagName);
+			ensureExpressionTagNameValid(sTagNameContainer);									
 			
-			if(XmlUtilZZZ.isTag(sTagNameContainer)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the parent tag itself '" + sTagNameContainer +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+			String sTagPartOpening; String sTagPartClosing;
+			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
 			
-			String sTagStart; String sTagEnd;
-			sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
-			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			String sTagPartContainerOpening; String sTagPartContainerClosing;
+			sTagPartContainerOpening = XmlUtilZZZ.computeTagPartOpening(sTagNameContainer);
+			sTagPartContainerClosing = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
 			
-			String sTagParentStart; String sTagParentEnd;
-			sTagParentStart = XmlUtilZZZ.computeTagPartOpening(sTagNameContainer);
-			sTagParentEnd = XmlUtilZZZ.computeTagPartClosing(sTagNameContainer);
-			
-			sReturn = getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bLeaveTagContent, bLeaveTagInterContent, sTagParentStart, sTagParentEnd);
+			sReturn = getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing, bLeaveTagContent, bLeaveTagInterContent, sTagPartContainerOpening, sTagPartContainerClosing);
 		}//end main;
 		return sReturn;
 	}
@@ -896,56 +886,35 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	
 	
 
-	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bLeaveTagAnyContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+	public static String getExpressionTagContainedRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bLeaveTagAnyContent, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
 		boolean bLeaveTagContent = bLeaveTagAnyContent;
 		boolean bLeaveTagInterContent = bLeaveTagAnyContent;
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bLeaveTagContent, bLeaveTagInterContent, sTagContainerStart, sTagContainerEnd);
+		return getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing, bLeaveTagContent, bLeaveTagInterContent, sTagPartContainerOpening, sTagPartContainerClosing);
 	}
 	
-	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bLeaveTagContent, boolean bLeaveTagInterContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, bLeaveTagContent, bLeaveTagInterContent, sTagContainerStart, sTagContainerEnd);
+	public static String getExpressionTagContainedRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bLeaveTagContent, boolean bLeaveTagInterContent, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		return getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing, bLeaveTagContent, bLeaveTagInterContent, sTagPartContainerOpening, sTagPartContainerClosing);
 	}
 	
-	public static String getExpressionTagContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd, false, false, sTagContainerStart, sTagContainerEnd);
+	public static String getExpressionTagContainedRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		return getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing, false, false, sTagPartContainerOpening, sTagPartContainerClosing);
 	}
 	
-	public static String getExpressionTagpartsContainedRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {	
-		return getExpressionTagContainedRemoved_(sValueExpression, sTagStart, sTagEnd,true, true, sTagContainerStart, sTagContainerEnd);
+	public static String getExpressionTagpartsContainedRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {	
+		return getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing,true, true, sTagPartContainerOpening, sTagPartContainerClosing);
 	}
 	
-	private static String getExpressionTagContainedRemoved_(String sValueExpression, String sTagStart, String sTagEnd, boolean bLeaveTagContent,  boolean bLeaveTagInterContent, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	private static String getExpressionTagContainedRemoved_(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bLeaveTagContent,  boolean bLeaveTagInterContent, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagStart)) break main;
-			if(StringZZZ.isEmpty(sTagEnd)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));	
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
 			
-			if(StringZZZ.isEmpty(sTagContainerStart)) break main;
-			if(StringZZZ.isEmpty(sTagContainerEnd)) break main;
-			
-			if(!XmlUtilZZZ.isTag(sTagStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}		
-			
-			if(!XmlUtilZZZ.isTag(sTagContainerStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting parenttag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagContainerEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing parenttag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
-
 			//Den Container Tag parsen aus dem String
-			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sValueExpression, sTagContainerStart, sTagContainerEnd);//Also MIT CONTAINER Tags holen, ohne Exactmatch
+			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sExpression, sTagPartContainerOpening, sTagPartContainerClosing);//Also MIT CONTAINER Tags holen, ohne Exactmatch
 			//Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidFirstKeepSeparatorCentral(sValueExpression, sTagContainerStart, sTagContainerEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
 			if(vecExpression==null) break main;
 
@@ -953,12 +922,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sExpressionInner = (String) vecExpression.get(1);
 			if(StringZZZ.isEmpty(sExpressionInner)) break main;
 									
-			Vector3ZZZ<String> vecExpressionInner = vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagStart, sTagEnd, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
+			Vector3ZZZ<String> vecExpressionInner = vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagPartOpening, sTagPartClosing, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
 			if(vecExpressionInner!=null) {
 				if(!bLeaveTagInterContent) {
 					vecExpressionInner.replace(0,""); //allen Content vor dem Tag entfernen
 				}else {
-					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagStart)); //Den Container Tag entfernen
+					vecExpressionInner.replace(0,StringZZZ.stripRight((String) vecExpressionInner.get(0), sTagPartOpening)); //Den Container Tag entfernen
 				}
 				if(!bLeaveTagContent) {
 					vecExpressionInner.replace(1,""); //allen Content innerhalb des Tags entfernen
@@ -966,7 +935,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				if(!bLeaveTagInterContent) {
 					vecExpressionInner.replace(2,""); //allen Content hinter dem Tag entfernen
 				}else {
-					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagEnd)); //Den Container Tag entfernen
+					vecExpressionInner.replace(2,StringZZZ.stripLeft((String) vecExpressionInner.get(2), sTagPartClosing)); //Den Container Tag entfernen
 				}
 			}
 			
@@ -1131,23 +1100,13 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		}
 		
 		//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerName) throws ExceptionZZZ {
-			String sReturn = sValueExpression;		
+		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerName) throws ExceptionZZZ {
+			String sReturn = sExpression;		
 			main:{
-				if(StringZZZ.isEmpty(sValueExpression)) break main;
-				if(StringZZZ.isEmpty(sTagName)) break main;
-				if(StringZZZ.isEmpty(sTagContainerName)) break main;
-							
-				if(XmlUtilZZZ.isTag(sTagName)) {
-					ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(XmlUtilZZZ.isTag(sTagContainerName)) {
-					ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagContainerName as parameter not the tag itself '" + sTagContainerName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
+				if(StringZZZ.isEmpty(sExpression)) break main;
+				if(ensureExpressionTagNameValid(sTagName));
+				if(ensureExpressionTagNameValid(sTagContainerName));
+									
 				String sTagStart; String sTagEnd;
 				sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
 				sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
@@ -1155,29 +1114,29 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sTagContainerStart = XmlUtilZZZ.computeTagPartOpening(sTagContainerName);
 				String sTagContainerEnd = XmlUtilZZZ.computeTagPartClosing(sTagContainerName);
 						
-				sReturn = getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, bDirectionFromInToOut, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+				sReturn = getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStart, sTagEnd, bDirectionFromInToOut, bAnyPosition, sTagContainerStart, sTagContainerEnd);
 			}//end main;
 			return sReturn;
 		}
 		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd ) throws ExceptionZZZ {
-			return getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, true, true, sTagContainerStart, sTagContainerEnd);
+		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing ) throws ExceptionZZZ {
+			return getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, true, sTagPartContainerOpening, sTagPartContainerClosing);
 		}
 		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
 			if(bDirectionFromInToOut) {
-				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sValueExpression, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 			}else {
-				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sValueExpression, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 			}
 			
 		}
 		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {
+		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
 			if(bDirectionFromInToOut) {
-				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sValueExpression, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
+				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
 			}else {
-				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sValueExpression, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
+				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
 			}
 			
 		}
@@ -1604,38 +1563,38 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		
 		//################
 		//Merke: Default ist ...FromInToOut... , ... bAnyPosition ...
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {		
+		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
 			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
 			}//end main
 		}
 		
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bAnyPosition, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {		
+		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
 			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 			}//end main
 		}
 		
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {		
+		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
 			main:{
 				if(bDirectionFromInToOut) {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 				}else {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 				}
 			}//end main
 		}	
 		
 		
-		public static void getExpressionTagpartsContainerSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {		
+		public static void getExpressionTagpartsContainerSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
 			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, true, sTagContainerStart, sTagContainerEnd);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
 			}//end main
 		}
 		
-		public static void getExpressionTagpartsSurroundingContainerRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bAnyPosition, String sTagContainerStart, String sTagContainerEnd) throws ExceptionZZZ {		
+		public static void getExpressionTagpartsSurroundingContainerRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
 			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 			}//end main
 		}
 
@@ -1644,80 +1603,65 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	//### SURROUNDING
 	//######################################################
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagName) throws ExceptionZZZ {
-		return getExpressionTagpartsSurroundingRemoved(sValueExpression, sTagName, true, true);
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, true);
 	}
 	
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut) throws ExceptionZZZ {
-		return getExpressionTagpartsSurroundingRemoved(sValueExpression, sTagName, true, bDirectionFromInToOut);
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, bDirectionFromInToOut);
 	}
 	
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagName, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
-		String sReturn = sValueExpression;		
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		String sReturn = sExpression;		
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagName)) break main;
-						
-			if(XmlUtilZZZ.isTag(sTagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
-			String sTagStart; String sTagEnd;
-			sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
-			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			ensureExpressionTagNameValid(sTagName);
+									
+			String sTagPartOpening; String sTagPartClosing;
+			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
 					
-			sReturn = getExpressionTagpartsSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, bAnyPosition, bDirectionFromInToOut);
+			sReturn = getExpressionTagpartsSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, bDirectionFromInToOut);
 		}//end main;
 		return sReturn;
 	}
 	
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd) throws ExceptionZZZ {
-		return getExpressionTagpartsSurroundingRemoved(sValueExpression, sTagStart, sTagEnd, true, true);
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, true);
 	}
 	
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
 		if(bDirectionFromInToOut) {
-			return getExpressionTagpartsSurroundingRemovedFromInToOut(sValueExpression, sTagStart, sTagEnd, bAnyPosition);
+			return getExpressionTagpartsSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition);
 		}else {
-			return getExpressionTagpartsSurroundingRemovedFromOutToIn(sValueExpression, sTagStart, sTagEnd, bAnyPosition);
+			return getExpressionTagpartsSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition);
 		}
 		
 	}
 	
-	public static String getExpressionTagpartsSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut) throws ExceptionZZZ {
 		if(bDirectionFromInToOut) {
-			return getExpressionTagpartsSurroundingRemovedFromInToOut(sValueExpression, sTagStart, sTagEnd, true);
+			return getExpressionTagpartsSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, true);
 		}else {
-			return getExpressionTagpartsSurroundingRemovedFromOutToIn(sValueExpression, sTagStart, sTagEnd, true);
+			return getExpressionTagpartsSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, true);
 		}
 		
 	}
 	
 	
-	public static String getExpressionTagpartsSurroundingRemovedFromInToOut(String sValueExpression, String sTagStart, String sTagEnd) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	public static String getExpressionTagpartsSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagStart)) break main;
-			if(StringZZZ.isEmpty(sTagEnd)) break main;
-			
-			if(!XmlUtilZZZ.isTag(sTagStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));	
+					
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd, true, true);
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true);
 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
@@ -1726,27 +1670,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String getExpressionTagpartsSurroundingRemovedFromInToOut(String sValueExpression, String sTagStart, String sTagEnd, boolean bAnyPosition) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	public static String getExpressionTagpartsSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagStart)) break main;
-			if(StringZZZ.isEmpty(sTagEnd)) break main;
-			
-			if(!XmlUtilZZZ.isTag(sTagStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd, bAnyPosition, true);
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, true);
 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
@@ -1756,25 +1689,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	}
 	
 	//####################################
-	public static String getExpressionTagpartsSurroundingRemovedFromOutToIn(String sValueExpression, String sTagStart, String sTagEnd) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	public static String getExpressionTagpartsSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagStart)) break main;
-			if(StringZZZ.isEmpty(sTagEnd)) break main;
-			
-			if(!XmlUtilZZZ.isTag(sTagStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
+			if(StringZZZ.isEmpty(sExpression)) break main;			
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
+					
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 			//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd);
 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -1784,28 +1708,18 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String getExpressionTagpartsSurroundingRemovedFromOutToIn(String sValueExpression, String sTagStart, String sTagEnd, boolean bAnyPosition) throws ExceptionZZZ {
-		String sReturn = sValueExpression;
+	public static String getExpressionTagpartsSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition) throws ExceptionZZZ {
+		String sReturn = sExpression;
 		Vector3ZZZ<String>vecReturn=null;
 		main:{
-			if(StringZZZ.isEmpty(sValueExpression)) break main;
-			if(StringZZZ.isEmpty(sTagStart)) break main;
-			if(StringZZZ.isEmpty(sTagEnd)) break main;
-			
-			if(!XmlUtilZZZ.isTag(sTagStart)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the starting tag '" + sTagStart +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-
-			if(!XmlUtilZZZ.isTag(sTagEnd)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Expected a tagpart as parameter for the closing tag '" + sTagEnd +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
 			
 			//TODOGOON: Iregendwie fehlt hier noch die Schärfe, wo der Unterschied ist!!!!
 			if(!bAnyPosition) {
 				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 				
 				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
 				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
@@ -1813,13 +1727,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			}else {
 				
 				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				vecReturn = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 				
 				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
-				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
-
-				
-				
+				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);								
 			}
 			
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
@@ -1832,11 +1743,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		
 	
 	
-	public static void getExpressionTagpartsSurroundingRemovedFromInToOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bRemoveAnyPosition) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemovedFromInToOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition) throws ExceptionZZZ {		
 		main:{
-			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty(sTagEnd) && StringZZZ.isEmpty(sTagStart))break main;
-			
+			if(vecReturn==null)break main;			
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
+
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sBefore = (String) vecReturn.get(0);
@@ -1850,6 +1762,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//         Dann loesche sie nicht raus, auch nicht im Ergebnisstring.
 			//         Will man sie loswerden, dann muessen halt die inneren Z: - Tags aufgeloest werden.
 			//MERKE:   Dazu muessen ja dann auch die passenden Flags gesetzt sein. Das Setzen eines Flags ist ja vielleicht in dem Einzelfall nicht gewuenscht.
+			
 			boolean bSkip = false;
 			if(StringZZZ.contains(sValue, "<Z:")) {
 			if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
@@ -1870,11 +1783,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sRestOld = sRest;
 			
 			if(bRemoveAnyPosition) {
-		while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
+		while(StringZZZ.contains(sBefore, sTagPartOpening, false) & StringZZZ.contains(sRest, sTagPartClosing, false)) {
 					
 					if(!StringZZZ.isEmpty(sBefore)){							
-						if(StringZZZ.contains(sBefore, sTagStart, false)) {
-							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+						if(StringZZZ.contains(sBefore, sTagPartOpening, false)) {
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagPartOpening, true);
 							vecTemp.replace(1,"");
 							sBefore = VectorUtilZZZ.implode(vecTemp);
 						}
@@ -1885,8 +1798,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					
 					if(!StringZZZ.isEmpty(sRest)){	
 					
-						if(StringZZZ.contains(sRest, sTagEnd, false)) {
-							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+						if(StringZZZ.contains(sRest, sTagPartClosing, false)) {
+							Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagPartClosing, true);
 							vecTemp.replace(1,"");
 							sRest = VectorUtilZZZ.implode(vecTemp);
 						}
@@ -1901,15 +1814,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}//end while
 			
 				//ggfs. aus dem Mittleren Teil auch entfernen
-				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+				while(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening) & StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
 		
-						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-							sBefore = StringZZZ.right(sValue, sTagStart);
+						if(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening)) {
+							sBefore = StringZZZ.right(sValue, sTagPartOpening);
 							sValue = sBefore;
 						}
 						
-						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-							sRest = StringZZZ.left(sValue, sTagEnd);
+						if(StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
+							sRest = StringZZZ.left(sValue, sTagPartClosing);
 							sValue = sRest;
 						}	
 						
@@ -1918,11 +1831,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}//end while
 
 			}else {
-				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
+				while(StringZZZ.endsWithIgnoreCase(sBefore, sTagPartOpening) & StringZZZ.startsWithIgnoreCase(sRest, sTagPartClosing)) {
 					
 					if(!StringZZZ.isEmpty(sBefore)){									
-						if(StringZZZ.endsWithIgnoreCase(sBefore, sTagStart)) {
-							sBefore = StringZZZ.leftback(sBefore, sTagStart);
+						if(StringZZZ.endsWithIgnoreCase(sBefore, sTagPartOpening)) {
+							sBefore = StringZZZ.leftback(sBefore, sTagPartOpening);
 						}
 						vecReturn.replace(0, sBefore);
 					}else{
@@ -1930,8 +1843,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					}
 					
 					if(!StringZZZ.isEmpty(sRest)){						
-						if(StringZZZ.startsWithIgnoreCase(sRest, sTagEnd)) {
-							sRest = StringZZZ.rightback(sRest, sTagEnd);
+						if(StringZZZ.startsWithIgnoreCase(sRest, sTagPartClosing)) {
+							sRest = StringZZZ.rightback(sRest, sTagPartClosing);
 						}
 						vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
 					}else{
@@ -1944,15 +1857,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}//end while
 				
 				//ggfs. aus dem Mittleren Teil auch entfernen
-				while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+				while(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening) & StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
 		
-						if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-							sBefore = StringZZZ.right(sValue, sTagStart);
+						if(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening)) {
+							sBefore = StringZZZ.right(sValue, sTagPartOpening);
 							sValue = sBefore;
 						}
 						
-						if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-							sRest = StringZZZ.left(sValue, sTagEnd);
+						if(StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
+							sRest = StringZZZ.left(sValue, sTagPartClosing);
 							sValue = sRest;
 						}	
 						
@@ -1964,7 +1877,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//ggfs. aus dem Mittleren Teil auch entfernen
 			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
-			Vector3ZZZ<String> vecMid = StringZZZ.vecMid(sValue, sTagStart, sTagEnd, false);
+			Vector3ZZZ<String> vecMid = StringZZZ.vecMid(sValue, sTagPartOpening, sTagPartClosing, false);
 			sBefore=(String) vecMid.get(0);
 			sValue = (String) vecMid.get(1);
 			sRest = (String) vecMid.get(2);
@@ -1979,15 +1892,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	
 	
 		
-	public static void getExpressionTagpartsSurroundingRemovedFromOutToIn(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bRemoveAnyPosition) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemovedFromOutToIn(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition) throws ExceptionZZZ {		
 		main:{
 		    //Verglichen mit ...FromIntoOut gilt also:
 			//Alle endsWith werden zu startWith und alle startWith werden zu endsWith.
 		    //und leftbacks werden zu right und alle rightbacks zu left.
 		
 			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty(sTagEnd) && StringZZZ.isEmpty(sTagStart))break main;
-						
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
+			
+				
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sBefore = (String) vecReturn.get(0);
 			String sValue = (String) vecReturn.get(1);
@@ -2020,10 +1935,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			if(bRemoveAnyPosition) {
 				
-				while(StringZZZ.contains(sBefore, sTagStart, false) & StringZZZ.contains(sRest, sTagEnd, false)) {
+				while(StringZZZ.contains(sBefore, sTagPartOpening, false) & StringZZZ.contains(sRest, sTagPartClosing, false)) {
 					
 					if(!StringZZZ.isEmpty(sBefore)){										
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagStart, true);
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagPartOpening, true);
 						vecTemp.replace(1,"");
 						sBefore = VectorUtilZZZ.implode(vecTemp);
 						
@@ -2033,7 +1948,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					}
 						
 					if(!StringZZZ.isEmpty(sRest)){																		
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagEnd, true);
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sRest, sTagPartClosing, true);
 						vecTemp.replace(1,"");
 						sRest = VectorUtilZZZ.implode(vecTemp);
 						
@@ -2048,17 +1963,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}//end while
 					
 				//ggfs. aus dem Mittleren Teil auch entfernen
-				while(StringZZZ.contains(sValue, sTagStart, false) & StringZZZ.contains(sValue, sTagEnd, false)) {
+				while(StringZZZ.contains(sValue, sTagPartOpening, false) & StringZZZ.contains(sValue, sTagPartClosing, false)) {
 
-					if(StringZZZ.contains(sValue, sTagStart, false)) {
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagStart, true);
+					if(StringZZZ.contains(sValue, sTagPartOpening, false)) {
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagPartOpening, true);
 						vecTemp.replace(1,"");
 						sBefore = VectorUtilZZZ.implode(vecTemp);
 						sValue = sBefore;
 					}
 						
-					if(StringZZZ.contains(sValue, sTagEnd, false)) {						
-						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagEnd, true);
+					if(StringZZZ.contains(sValue, sTagPartClosing, false)) {						
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sValue, sTagPartClosing, true);
 						vecTemp.replace(1,"");
 						sRest = VectorUtilZZZ.implode(vecTemp);
 						sValue = sRest;
@@ -2070,12 +1985,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					
 		}else{
 
-			while(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart) & StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
+			while(StringZZZ.startsWithIgnoreCase(sBefore, sTagPartOpening) & StringZZZ.endsWithIgnoreCase(sRest, sTagPartClosing)) {
 			
 			if(!StringZZZ.isEmpty(sBefore)){
 												
-				if(StringZZZ.startsWithIgnoreCase(sBefore, sTagStart)) {
-					sBefore = StringZZZ.right(sBefore, sTagStart);
+				if(StringZZZ.startsWithIgnoreCase(sBefore, sTagPartOpening)) {
+					sBefore = StringZZZ.right(sBefore, sTagPartOpening);
 				}
 				vecReturn.replace(0, sBefore);
 			}else{
@@ -2084,8 +1999,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				 
 			if(!StringZZZ.isEmpty(sRest)){	
 				
-				if(StringZZZ.endsWithIgnoreCase(sRest, sTagEnd)) {
-					sRest = StringZZZ.left(sRest, sTagEnd);
+				if(StringZZZ.endsWithIgnoreCase(sRest, sTagPartClosing)) {
+					sRest = StringZZZ.left(sRest, sTagPartClosing);
 				}
 				vecReturn.replace(2, sRest); //Falls vorhanden einen Restwert eintragen.
 			}else{
@@ -2098,15 +2013,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		}//end while
 		
 		//ggfs. aus dem Mittleren Teil auch entfernen
-		while(StringZZZ.startsWithIgnoreCase(sValue, sTagStart) & StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
+		while(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening) & StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
 
-				if(StringZZZ.startsWithIgnoreCase(sValue, sTagStart)) {
-					sBefore = StringZZZ.right(sValue, sTagStart);
+				if(StringZZZ.startsWithIgnoreCase(sValue, sTagPartOpening)) {
+					sBefore = StringZZZ.right(sValue, sTagPartOpening);
 					sValue = sBefore;
 				}
 				
-				if(StringZZZ.endsWithIgnoreCase(sValue, sTagEnd)) {
-					sRest = StringZZZ.left(sValue, sTagEnd);
+				if(StringZZZ.endsWithIgnoreCase(sValue, sTagPartClosing)) {
+					sRest = StringZZZ.left(sValue, sTagPartClosing);
 					sValue = sRest;
 				}	
 				
@@ -2124,38 +2039,38 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	
 	//################
 	//Merke: Default ist ...FromInToOut... , ... bAnyPosition ...
-	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {		
 		main:{
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, true);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true);
 		}//end main
 	}
 	
-	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bAnyPosition) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition) throws ExceptionZZZ {		
 		main:{
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromIntoOut(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromIntoOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition);
 		}//end main
 	}
 	
-	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {		
 		main:{
 			if(bDirectionFromInToOut) {
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition);
 			}else {
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromOutToIn(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition);
 			}
 		}//end main
 	}	
 	
 	
-	public static void getExpressionTagpartsSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {		
 		main:{
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, true);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true);
 		}//end main
 	}
 	
-	public static void getExpressionTagpartsSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagStart, String sTagEnd, boolean bAnyPosition) throws ExceptionZZZ {		
+	public static void getExpressionTagpartsSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition) throws ExceptionZZZ {		
 		main:{
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition);
 		}//end main
 	}
 	
@@ -2203,4 +2118,30 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		}//end main:
 		return sReturn;
 	}
+	
+	//######################################
+	public static boolean ensureExpressionTagNameValid(String sTagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			
+			if(StringZZZ.isEmpty(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a filled String as TagName '" + sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;				
+			}
+			
+			if(XmlUtilZZZ.isTag(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not the tag itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(XmlUtilZZZ.isTagPart(sTagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected only the tagname as parameter not a tagpart itself '" + sTagName +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+			
 }

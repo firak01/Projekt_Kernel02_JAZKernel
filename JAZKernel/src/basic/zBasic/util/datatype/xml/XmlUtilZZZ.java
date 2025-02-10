@@ -297,6 +297,23 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	/*
 	 Ensure wirft immer eine Exception, wenn was nicht klappt
 	 */
+	public static boolean ensureNotTagPart(String sString) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{					
+			boolean bTagPart = XmlUtilZZZ.isTagPart(sString);
+			if(!bTagPart) {
+				ExceptionZZZ ez = new ExceptionZZZ("Expected not a tagpart as parameter '" + sString +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				throw ez;
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	/*
+	 Ensure wirft immer eine Exception, wenn was nicht klappt
+	 */
 	public static boolean ensureTagPart(String sTagPart) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
