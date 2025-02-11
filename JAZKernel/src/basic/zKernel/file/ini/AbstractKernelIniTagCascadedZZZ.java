@@ -145,8 +145,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
-		 
-		
+		 		
 		main:{
 			String sExpression = sExpressionIn;
 			if(StringZZZ.isEmpty(sExpression)) break main;
@@ -197,8 +196,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				objEntry.setValue(sReturn);
 			}else {
 				if(vecReturn!=null) sReturn  = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);
-				objEntry.isParsed(true);
+				objEntry.setValue(sReturn);				
 				if(sExpressionIn!=null) {							
 					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}		
