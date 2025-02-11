@@ -1484,7 +1484,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				iCountOPENING_TOTAL = iCountOPENING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
 				
 				int iCountCLOSING_TOTAL = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+				iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
 				
 				if(iCountOPENING_TOTAL != iCountCLOSING_TOTAL){
 					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -1529,16 +1529,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					throw ez;
 				}
 				
+				//Warum kam diese Clausel eigentlich rein??? Vielleicht Entfernen von Innen nach Aussen?
 				//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
-				if(iCountOPENING_PRE<=iCountCLOSING_PRE+1) {					
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(iCountCLOSING_POST<=iCountOPENING_POST+1) {					
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
+//				if(iCountOPENING_PRE<=iCountCLOSING_PRE+1) {					
+//					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+//				
+//				if(iCountCLOSING_POST<=iCountOPENING_POST+1) {					
+//					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
 			
 				
 				
@@ -1548,8 +1549,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 				if(bRemoveAnyPosition) {
 					while(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {						
-						sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");						
-						sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
+						sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");						
+						sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
 												
 						if(sPREold.equals(sPRE) | sPOSTold.equals(sPOST)) break; //sonst ggfs. Endlosschleifengefahr.
 						sPREold=sPRE;
@@ -1561,8 +1562,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}else {
 					//Nur 1x entfernen
 					if(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {
-						sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");
-						sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
+						sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");
+						sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
 					}	
 					
 					//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.

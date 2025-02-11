@@ -494,7 +494,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
 				
-				TODOGOON20250211;
+				//TODOGOON20250211;
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				//+++ Ohne jegliche FORMULA_MATH Solver-Berechnung, 							
 				//b)
