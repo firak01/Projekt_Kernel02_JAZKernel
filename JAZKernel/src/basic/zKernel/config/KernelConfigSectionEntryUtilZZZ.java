@@ -307,8 +307,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sRawExpressionSolved = null;
 			ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>("");			
 			boolean bExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
-			if(bExpressionSolved) {
-				objEntry.isExpression(true);
+			if(bExpressionSolved) {			
 				if(bUseFormula) objEntry.isFormula(true);
 				String sValueSolved = objsReturnValueExpressionSolved.get();					
 				objEntry.setValueAsExpression(sValueSolved);				
@@ -608,8 +607,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 											
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
 						boolean bAnyJsonArray = KernelConfigSectionEntryUtilZZZ.getJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objalsReturnValueJsonSolved);			
-						if(bAnyJsonArray) {
-							objEntry.isExpression(true);
+						if(bAnyJsonArray) {				
 							objEntry.isJson(true);
 							objEntry.isJsonArray(true);
 							ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
@@ -625,8 +623,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
 						boolean bAnyJsonMap = KernelConfigSectionEntryUtilZZZ.getJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objhmReturnValueJsonSolved);			
-						if(bAnyJsonMap) {
-							objEntry.isExpression(true);
+						if(bAnyJsonMap) {						
 							objEntry.isJson(true);
 							objEntry.isJsonMap(true);
 							HashMap<String,String> hm = objhmReturnValueJsonSolved.get();
@@ -697,8 +694,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					}
 				}
 
-				if(bAnyJson){
-					objEntry.isExpression(true);
+				if(bAnyJson){					
 					objEntry.isJson(true);
 					objEntry.isJsonArray(true);
 					//ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
@@ -763,8 +759,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}
 			}
 
-			if(bAnyJson){
-				objEntry.isExpression(true);
+			if(bAnyJson){			
 				objEntry.isJson(true);
 				objEntry.isJsonMap(true);
 				//HashMap<String,String> hm = objhmReturnValueJsonSolved.get();

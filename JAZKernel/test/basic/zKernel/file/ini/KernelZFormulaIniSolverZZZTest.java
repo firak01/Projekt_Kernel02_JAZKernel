@@ -493,7 +493,15 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			try {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Mit FORMULA_MATH-Berechung
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				TODOGOON20250211;//Z:Formula Tag muss drin bleiben, im Gesamtstring!!!
+				//+++ Ohne jegliche FORMULA_MATH Solver-Berechnung
+				//a)
+				sExpressionSolved = sExpressionIn;	
+				sTag = sTagIn;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
+				sTagSolved = sTag;
+				btemp = testCompute_FORMULA_MATH_2SolverUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 											
 						
@@ -507,23 +515,27 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ Ohne jegliche Expression-Berechnung
 				//a)	
 				sExpressionSolved = sExpressionIn;
-				sTagSolved = sTagIn;
+				sTag=null;//es findet kein Parsen statt
+				sTagSolved = null; //es findet kein Parsen statt
 				
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
 				sExpressionSolved = sExpressionIn;
-				sTagSolved = sTagIn;
+				sTag=null;//es findet kein Parsen statt
+				sTagSolved = null; //es findet kein Parsen statt
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)			
 				sExpressionSolved = sExpressionIn; 
-				sTagSolved = sTagIn;
+				sTag=null;//es findet kein Parsen statt
+				sTagSolved = null; //es findet kein Parsen statt
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 				//d)
 				sExpressionSolved = sExpressionIn;
-				sTagSolved = sTagIn;
+				sTag=null;//es findet kein Parsen statt
+				sTagSolved = null; //es findet kein Parsen statt
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				
@@ -944,7 +956,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
 				

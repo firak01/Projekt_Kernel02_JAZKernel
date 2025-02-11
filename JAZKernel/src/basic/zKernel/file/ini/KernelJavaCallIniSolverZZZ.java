@@ -236,8 +236,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objEntry.isSolved(true);
 			objEntry.isCallSolved(true);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
+				if(!sExpressionIn.equals(sReturn)) {				
 					objEntry.isSolvedChanged(true);
 				}
 			}					
@@ -333,8 +332,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
 				if(sExpressionIn!=null) {
 					objEntry.isParsed(true);											
-					if(!sExpressionIn.equals(sReturn)) {
-						objEntry.isExpression(true);
+					if(!sExpressionIn.equals(sReturn)) {					
 						objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 					}
 				}			

@@ -187,8 +187,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {			 							
 					objEntry.isParsed(true);
-					if(!sExpressionIn.equals(sReturn)) {
-						objEntry.isExpression(true);
+					if(!sExpressionIn.equals(sReturn)) {			
 						objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 					}
 				}		
@@ -296,8 +295,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();
-				if(bAnyCall) {
-					this.getEntry().isExpression(true);
+				if(bAnyCall) {				
 					this.getEntry().isCallSolved(true);
 					this.getEntry().setValueCallSolved(objEntry.getValue());
 					
@@ -380,8 +378,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
+				if(!sExpressionIn.equals(sReturn)) {					
 					objEntry.isSolvedChanged(true);
 				}
 			}

@@ -467,10 +467,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					}
 				}
 				
-				objEntry.setValue(sReturn);
-				if(sExpressionIn!=null) {
-					if(bUseExpression)objEntry.isExpression(true);																								
-				}
+				objEntry.setValue(sReturn);			
+				
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
 				
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -726,8 +724,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			}else {
 				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 				objEntry.setValue(sReturn);	
-				if(sExpressionIn!=null) {
-					objEntry.isExpression(true);
+				if(sExpressionIn!=null) {				
 					objEntry.isParseCalled(true); 								
 					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}			

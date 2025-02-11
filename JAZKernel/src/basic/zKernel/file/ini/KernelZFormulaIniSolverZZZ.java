@@ -222,8 +222,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {				
-					if(!sExpressionIn.equals(sReturn)) {
-						objEntry.isExpression(true);
+					if(!sExpressionIn.equals(sReturn)) {						
 						objEntry.isSolvedChanged(true);
 					}
 				}
@@ -339,9 +338,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				}
 				
 				objEntry.setValue(sReturn);
-				if(sExpressionIn!=null) {
-					if(bUseExpression)objEntry.isExpression(true);																								
-				}
+				
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
 				
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);

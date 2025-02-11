@@ -154,19 +154,20 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
+			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.			
+			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
+				objEntry.isExpression(true);
+			}	
+														
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			//Merke: Darum vorher vecReturn schon initialisieren.
 			bUseParse = this.isParserEnabledThis();
 		    if(!bUseParse) break main;
 			
-			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
-				objEntry.isExpression(true);
-			}	
-			 
+						 
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
-		    //Ausserdem wird so vecReturn "initialisiert"
+			//Wichtig hier die Z-Tags drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.		   
 			String sTagOpening = this.getTagStarting();
 			String sTagClosing = this.getTagClosing();
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);

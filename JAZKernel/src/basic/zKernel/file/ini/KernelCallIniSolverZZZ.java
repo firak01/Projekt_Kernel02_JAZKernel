@@ -241,8 +241,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					
 					//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
 					//     nur .isJavaCall() wird vorher gesetzt.
-					if(!sExpressionIn.equals(sReturn)) {
-						objEntry.isExpression(true);
+					if(!sExpressionIn.equals(sReturn)) {					
 						objEntry.isParsedChanged(true);							
 					}
 				}			
@@ -358,8 +357,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {				
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
+				if(!sExpressionIn.equals(sReturn)) {				
 					objEntry.isSolvedChanged(true);
 				}
 			}
@@ -434,8 +432,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) {
-					objEntry.isExpression(true);
+				if(!sExpressionIn.equals(sReturn)) {			
 					objEntry.isSolvedChanged(true);
 				}
 			}
