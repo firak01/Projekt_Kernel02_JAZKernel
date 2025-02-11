@@ -504,7 +504,17 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTag;				
 				btemp = testCompute_FORMULA_MATH_2SolverUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-												
+										
+				//fehlt hier ein reset???
+				//+++ Ohne jegliche Expression-Berechnung
+				//a)	
+				sExpressionSolved = sExpressionIn;
+				sTag=null;//es findet kein Parsen statt
+				sTagSolved = null; //es findet kein Parsen statt
+				
+				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
+				
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
