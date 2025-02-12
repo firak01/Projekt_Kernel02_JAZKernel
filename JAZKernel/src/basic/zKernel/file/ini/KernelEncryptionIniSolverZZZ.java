@@ -151,7 +151,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
-		String sReturnTag = null;
+		String sReturnTag = null; String sReturnLine;
 		String sExpressionIn=null; String sExpression;	
 		boolean bUseExpression  = false;
 		
@@ -172,18 +172,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isParseCalled(true);
-	
+		sReturnLine = sExpressionIn;
+		
 		main:{	
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 					
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;	
-			
-			
-						
+							
 			sReturnTag = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
-													
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
 			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
 			if(StringZZZ.isEmpty(sReturnTag)){
 				
@@ -192,13 +192,10 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
 				if(objValue.isExpression(sReturnTag)){	
 					objEntry.isEncrypted(true);
-					
-					if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-					objEntry.setValueEncrypted(sReturn);//Zwischenstand festhalten
-					
-					sReturnTag = objValue.parse(sReturnTag);
+					objEntry.setValueEncrypted(sReturnLine);//Zwischenstand festhalten
+					sReturnTag = objValue.parse(sReturnTag);															
 				}																							
-			}							
+			}					
 		}//end main:
 	
 			
@@ -206,19 +203,18 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		if(sReturnTag!=null) this.setValue(sReturnTag);
-								
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {									
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);
+			objEntry.setValue(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(bUseExpression) {
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {			
 					objEntry.isParseCalled(true); 								
 					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}			
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}

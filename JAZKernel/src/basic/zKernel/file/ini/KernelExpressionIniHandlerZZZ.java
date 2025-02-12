@@ -134,7 +134,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturnTag=null;
+		String sReturnTag=null; String sReturnLine=null;
 		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
 		
 		boolean bUseExpression=false;
@@ -152,10 +152,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isParseCalled(true);
+		sReturnLine=sExpressionIn;
+		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -172,7 +174,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
-			sReturnTag = this.getValue();			
+			sReturnTag = this.getValue();
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -180,18 +183,15 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		if(sReturnTag!=null) this.setValue(sReturnTag);	
 				
 		if(objEntry!=null) {
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);
+			objEntry.setValue(sReturnLine);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(bUseExpression) {				
 				if(sExpressionIn!=null) {			 							
 					objEntry.isParsed(true);
 					if(!sExpressionIn.equals(sReturn)) {			
 						objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
 					}
-				}		
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				}						
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}

@@ -19,14 +19,17 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	//Die finale Konstanten (z.B. TestUtilAsTestZZZ.sUNEXPRESSED) sind notwendig, um in einer switch...case Abfrage genutzt zu werden.
 		
 	UNEXPRESSED("unexpressed",TestUtilAsTestZZZ.sFLAGSET_UNEXPRESSED,"Flagset Variante: 'Unexpressed'"),
-	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),	
+	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),
+	FORMULA_MATH_UNSOLVED("formula_math_unsolved",TestUtilAsTestZZZ.sFLAGSET_MATH_UNSOLVED,"Flagset Variante: 'Formula Math unsolved'"),
 	SOLVED("solved",TestUtilAsTestZZZ.sFLAGSET_SOLVED,"Flagset Variante: 'Solved'"),
+	
 	UNSUBSTITUTED("unsubstituted",TestUtilAsTestZZZ.sFLAGSET_UNSUBSTITUTED,"Flagset Variante: 'Unsubstituted'"),
 	SUBSTITUTED("substituted",TestUtilAsTestZZZ.sFLAGSET_SUBSTITUTED,"Flagset Variante: 'Substituted'"),
 	
 	CALL_UNEXPRESSED("call_unexpressed","cuex","Flagset Variante: 'Call unexpressed'"),
-	CALL_UNSOLVED("call_unsolved","cus","Flagset Variante: 'Call unsolved'"),
-	FORMULA_MATH_UNSOLVED("formula_math_unsolved","fmus","Flagset Variante: 'Formula Math unsolved'");
+	CALL_UNSOLVED("call_unsolved","cus","Flagset Variante: 'Call unsolved'")
+	;
+	
 	
 
 private String name, abbr;

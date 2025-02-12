@@ -494,27 +494,19 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
 				
-				//TODOGOON20250211;
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
-				//+++ Ohne jegliche FORMULA_MATH Solver-Berechnung, 							
+				//TODOGOON20250212;
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Ohne FORMULA_MATH-Berechung
+				
 				//b)
-				sExpressionSolved = sExpressionIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+				sExpressionSolved = sExpressionIn; 
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				//Beim Solven ohne den passenden Unter-Solver, bleibt nur der Tag diese Solvers drin.
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
-				sTagSolved = sTag;				
-				btemp = testCompute_FORMULA_MATH_2SolverUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-										
-				//fehlt hier ein reset???
-				//+++ Ohne jegliche Expression-Berechnung
-				//a)	
-				sExpressionSolved = sExpressionIn;
-				sTag=null;//es findet kein Parsen statt
-				sTagSolved = null; //es findet kein Parsen statt
-				
-				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				
+				sTagSolved = sTag;
+				btemp = testCompute_FORMULA_MATH_4FormulaMathUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -979,24 +971,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
-				
-//				assertTrue(objEntry.isParseCalled());
-//				if(bRemoveSurroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged());//Beim Parsen werden dann immer der Z-Tag entfernt, also das Ergebnis aendert sich.						
-//				}else {
-//					assertFalse(objEntry.isParsedChanged());
-//				}
-//				
-//				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1017,23 +991,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
-//				assertTrue(objEntry.isParseCalled());
-//				if(bRemoveSurroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged());//Beim Parsen werden dann immer der Z-Tag entfernt, also das Ergebnis aendert sich.						
-//				}else {
-//					assertFalse(objEntry.isParsedChanged());
-//				}						
-//				
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1054,24 +1011,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
-				
-//				assertTrue(objEntryUsed.isParseCalled());
-//				if(bRemoveSurroundingSeparators) {
-//					assertTrue(objEntryUsed.isParsedChanged());//Beim Parsen werden dann immer der Z-Tag entfernt, also das Ergebnis aendert sich.						
-//				}else {
-//					assertFalse(objEntryUsed.isParsedChanged());
-//				}						
-//				
-//				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																
-//				assertFalse(objEntryUsed.isDecrypted());
-//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntryUsed.isCall());
-//				assertFalse(objEntryUsed.isJavaCall());
-//				assertNull(objEntryUsed.getCallingClassname());
-//				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -1091,27 +1030,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
-				
-				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(bRemoveSurroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged());//Beim Parsen werden dann immer der Z-Tag entfernt, also das Ergebnis aendert sich.						
-//				}else {
-//					assertFalse(objEntry.isParsedChanged());
-//				}
-//								
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1225,26 +1143,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
 				
-				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntry.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntry.isParsedChanged());
-//				}
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-//				
-//				
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1262,27 +1160,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
-				
-				
-//				assertTrue(objEntryUsed.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntryUsed.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntryUsed.isParsedChanged());
-//				}
-//				
-//				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																
-//				assertFalse(objEntryUsed.isDecrypted());
-//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntryUsed.isCall());
-//				assertFalse(objEntryUsed.isJavaCall());
-//				assertNull(objEntryUsed.getCallingClassname());
-//				assertNull(objEntryUsed.getCallingMethodname());
+	
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -1298,27 +1176,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
 				assertTrue(btemp);
-				
-				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntry.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntry.isParsedChanged());
-//				}
-//								
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1345,7 +1203,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.FORMULA_MATH_UNSOLVED;
 			
 			sExpression = sExpressionSourceIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -1395,26 +1253,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntry.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntry.isParsedChanged());
-//				}
-//				
-//				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//				
-//				
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1430,25 +1268,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertTrue(objEntry.isParsedChanged());						
-//				}else {
-//					assertFalse(objEntry.isParsedChanged());
-//				}
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-//				
-//				
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1464,26 +1283,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);				
 				assertTrue(btemp);
 
-//				
-//				assertTrue(objEntryUsed.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntryUsed.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntryUsed.isParsedChanged());
-//				}
-//				
-//				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																
-//				assertFalse(objEntryUsed.isDecrypted());
-//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntryUsed.isCall());
-//				assertFalse(objEntryUsed.isJavaCall());
-//				assertNull(objEntryUsed.getCallingClassname());
-//				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -1498,27 +1297,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
-
-//				
-//				assertTrue(objEntry.isParseCalled());
-//				
-//				sExpressionSolved = sExpressionSolvedIn;
-//				if(sExpression.equals(sExpressionSolved)) {
-//					assertFalse(objEntry.isParsedChanged());						
-//				}else {
-//					assertTrue(objEntry.isParsedChanged());
-//				}
-//								
-//				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1620,28 +1398,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 			
-				
-				
-				
-//				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-//			
-//				assertFalse(objEntry.isPathSubstituted());
-//				assertFalse(objEntry.isVariableSubstituted());
-//				
-//				assertFalse(objEntry.isSolveCalled());
-//				
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//				
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1664,28 +1420,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
-				
-				
-//				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-//				
-//				assertFalse(objEntry.isPathSubstituted());
-//				assertFalse(objEntry.isVariableSubstituted());
-//				
-//				assertTrue(objEntry.isSolveCalled());
-//				//assertTrue(objEntry.isSolvedChanged());
-//								
-//				assertFalse(objEntry.isDecrypted());
-//				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//								
-//				assertFalse(objEntry.isCall());
-//				assertFalse(objEntry.isJavaCall());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1700,35 +1434,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
-				
-//				sValue = objEntryUsed.getValue();
-//				assertEquals(sExpressionSolved, sValue);
-//							
-//				sValue = objFormulaSolver.getValue();
-//				assertEquals(sTagSolved, sValue);
-//								
-//				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-//				
-//				assertFalse(objEntryUsed.isPathSubstituted());
-//				assertFalse(objEntryUsed.isVariableSubstituted());													
-//			
-//				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-//								
-//				sValueUsed = objEntryUsed.getValue();
-//				assertEquals(sExpressionSolved, sValueUsed);
-//				
-//				assertFalse(objEntryUsed.isDecrypted());
-//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//									
-//				assertFalse(objEntryUsed.isCall());
-//				assertFalse(objEntryUsed.isJavaCall());
-//				assertNull(objEntryUsed.getCallingClassname());
-//				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			
 			
@@ -1742,32 +1447,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
-//				sValue = objEntryUsed.getValue();
-//				assertEquals(sExpressionSolved, sValue);
-//				
-//				sValue = objFormulaSolver.getValue();
-//				assertEquals(sTagSolved, sValue);
-//								
-//				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-//				if(bRemoveSuroundingSeparators) {
-//					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-//				//assertTrue(objEntryUsed.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
-//				
-//				assertFalse(objEntryUsed.isPathSubstituted());
-//				assertFalse(objEntryUsed.isVariableSubstituted());
-//					
-//				assertFalse(objEntryUsed.isSolveCalled());
-//								
-//				assertFalse(objEntryUsed.isDecrypted());
-//				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//								
-//				assertFalse(objEntryUsed.isCall());
-//				assertFalse(objEntryUsed.isJavaCall());
-//				assertNull(objEntryUsed.getCallingClassname());
-//				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 			
@@ -2184,22 +1863,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					sValue = objEntryUsed.getValue();
-//					assertEquals(sExpressionSolved, sValue);
-//					
-//					assertFalse(objEntryUsed.isParseCalled()); 
-//					assertFalse(objEntryUsed.isParsedChanged());
-//					
-//					assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																	
-//					assertFalse(objEntryUsed.isDecrypted());
-//					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntryUsed.isCall());
-//					assertFalse(objEntryUsed.isJavaCall());
-//					assertNull(objEntryUsed.getCallingClassname());
-//					assertNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -2213,22 +1876,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					sValue = objEntry.getValue();
-//					assertEquals(sExpressionSolved, sValue);
-//					
-//					assertFalse(objEntry.isParseCalled());
-//					assertFalse(objEntry.isParsedChanged());
-//									
-//					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//									
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 
@@ -2316,26 +1963,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					assertTrue(objEntry.isParseCalled());
-//					
-//					sExpressionSolved = sExpressionSolvedIn;
-//					if(sExpression.equals(sExpressionSolved)) {
-//						assertFalse(objEntry.isParsedChanged());						
-//					}else {
-//						assertTrue(objEntry.isParsedChanged());
-//					}
-//					
-//					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//					
-//					
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2360,23 +1987,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 
-//					assertTrue(objEntry.isParseCalled()); 
-//					if(sExpression.equals(sExpressionSolved)) {
-//						assertFalse(objEntry.isParsedChanged());						
-//					}else {
-//						assertTrue(objEntry.isParsedChanged());
-//					}
-//					
-//					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //Da in dem Pfad nix aufzuloesen ist, wird auch nichts geaendert.
-//				
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2402,19 +2012,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					assertFalse(objEntryUsed.isParseCalled()); 
-//					assertFalse(objEntryUsed.isParsedChanged());
-//					
-//					assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																	
-//					assertFalse(objEntryUsed.isDecrypted());
-//					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntryUsed.isCall());
-//					assertFalse(objEntryUsed.isJavaCall());
-//					assertNull(objEntryUsed.getCallingClassname());
-//					assertNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -2438,20 +2035,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 			
-					
-//					assertFalse(objEntry.isParseCalled());
-//					assertFalse(objEntry.isParsedChanged());
-//									
-//					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//									
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2535,33 +2118,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
-					
-					
-					
-					
-//					objEntry = objSectionEntryReference.get();
-//					assertNotNull(objEntry);
-//
-//					assertTrue(objEntry.isParseCalled());
-//					
-//					sExpressionSolved = sExpressionSolvedIn;
-//					if(sExpression.equals(sExpressionSolved)) {
-//						assertFalse(objEntry.isParsedChanged());						
-//					}else {
-//						assertTrue(objEntry.isParsedChanged());
-//					}
-//					
-//					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//					
-//					
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2586,23 +2142,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					assertTrue(objEntry.isParseCalled()); 
-//					if(sExpression.equals(sExpressionSolved)) {
-//						assertFalse(objEntry.isParsedChanged());						
-//					}else {
-//						assertTrue(objEntry.isParsedChanged());
-//					}
-//					
-//					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //Da in dem Pfad nix aufzuloesen ist, wird auch nichts geaendert.
-//				
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -2627,19 +2166,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					assertFalse(objEntryUsed.isParseCalled()); 
-//					assertFalse(objEntryUsed.isParsedChanged());
-//					
-//					assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//																	
-//					assertFalse(objEntryUsed.isDecrypted());
-//					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntryUsed.isCall());
-//					assertFalse(objEntryUsed.isJavaCall());
-//					assertNull(objEntryUsed.getCallingClassname());
-//					assertNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
@@ -2663,19 +2189,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 					
-//					assertFalse(objEntry.isParseCalled());
-//					assertFalse(objEntry.isParsedChanged());
-//									
-//					assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-//									
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

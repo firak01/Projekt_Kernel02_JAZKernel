@@ -251,7 +251,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
-		String sReturnTag = null;
+		String sReturnTag = null; String sReturnLine;
 		
 		boolean bUseExpression=false;
 		
@@ -273,10 +273,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
 		}
-		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isParseCalled(true);
+		sReturnLine = sExpressionIn;
+		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -302,20 +303,18 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			if(vecReturn!=null) {
 				sReturnTag = (String) vecReturn.get(1);
 			}
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		if(sReturnTag!=null) this.setValue(sReturnTag);
-					
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);
-							
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			objEntry.setValue(sReturnLine);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(bUseExpression) {
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}				

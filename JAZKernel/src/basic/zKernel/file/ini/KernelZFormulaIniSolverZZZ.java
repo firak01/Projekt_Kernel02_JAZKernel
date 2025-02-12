@@ -159,9 +159,9 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 		 */
 		private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-			String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-			String sReturnTag = null;
+			String sReturn = null; String sReturnLine = null; String sReturnTag = null;
 			boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
+			
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 			IKernelConfigSectionEntryZZZ objEntry = null;
@@ -180,9 +180,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSolveCalled(true);
+			sReturnLine = sExpressionIn;
+			sReturnTag = sReturnLine;
+			sReturn = sReturnLine;
 			
 			main:{
 				if(StringZZZ.isEmpty(sExpressionIn)) break main;
+				String sExpression = sExpressionIn;
 				
 				bUseExpression = this.isExpressionEnabledGeneral(); 
 				if(!bUseExpression) break main;
@@ -192,18 +196,11 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				
 				bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 				if(!bUseSolverThis) break main;
-				
-				String sExpression = sExpressionIn;
 						
-//				//Aufloesen von Pfaden und ini-Variablen
-//				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-//				objReturnReferenceSolverSuper.set(objEntry);
-//				sReturn = super.solveParsed(sExpression, objReturnReferenceSolverSuper, bRemoveSurroundingSeparators);
-//				sReturnTag=this.getValue();
-//				objEntry = objReturnReferenceSolverSuper.get();
+				//Merke: Aufloesen von Pfaden und ini-Variablen passiert beim Parsen 
 
 				//Aufloesen des Math-Tags
-				sExpression = sReturn;
+				sExpression = sReturnLine;
 				sReturn = this.solveParsed_Formula_(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 				sReturnTag = this.getValue();
 				objEntry = objReturnReference.get();	

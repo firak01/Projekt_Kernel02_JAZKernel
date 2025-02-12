@@ -373,12 +373,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sReturn=sExpressionIn;
-		String sReturnTag = null;
-		String sTagParsed = "";			
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	String sReturnTagParsed = null;		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
+		
+		
+		//############
+		//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+		//         Ziel ist, das nach einem erfolgreichen Parsen/Solven das Flag deaktiviert werden kann UND danach bei einem neuen Parsen/Solven die Werte null sind.
+		this.resetValues();			
+		//#######
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -400,15 +405,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this);  
 			objReturnReference.set(objEntry);
 		}else {
-			//############
-			//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
-			this.resetValues();			
-			//#######
+			
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
+		sReturnLine=sExpressionIn;
+		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+		sReturn = sReturnLine;
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -418,6 +422,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			if(vecReturn==null)break main;
 			objEntry = objReturnReferenceParse.get();
 			
 			//solve ruft immer parse() auf, wenn die generelle Auswertung der Expression abgeschaltet ist,
@@ -427,11 +432,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
-			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);	
+			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);			
 			sReturnTag = this.getValue();
+			if(vecReturn==null) break main;
 			
-			sTagParsed = (String) vecReturn.get(1); //Nicht sRetuntTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
-			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
+			sReturnTagParsed = (String) vecReturn.get(1); //Nicht sReturnTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
+			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
 						
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
@@ -442,33 +448,35 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
-			sReturnTag = this.solveParsed(sTagParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			sReturnLine = this.solveParsed(sReturnTagParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceSolve.get();		
-				
-			if(vecReturn!=null) vecReturn.replace(sReturnTag);
+			
+			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post
+			sReturnTag = this.getValue(); 
+			vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecReturn.get(1); //Nun als Tag Value die Solve Loesung einsetzen
+			
+			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
+			sReturnTag = this.getValue();
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);				
+		if(sReturnTag!=null) this.setValue(sReturnTag);	
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				
+			objEntry.setValue(sReturnLine);
+			if(bUseExpression) {			
 				if(bUseSolver && bUseSolverThis) {
-					if(sTagParsed!=null) {
+					if(sReturnTagParsed!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						if(!sReturnTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
 					}
 				}
 				
-				objEntry.setValue(sReturn);			
-				
+				objEntry.setValue(sReturnLine);							
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
 				
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -569,7 +577,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private Vector3ZZZ<String> solvePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
-		String sReturnTag = null;
+		String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn=null;
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
@@ -592,12 +600,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
+		sReturnLine = sExpressionIn;
 	
 		main:{	
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
-			sReturn = sExpressionIn;
-			
+						
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 						
@@ -629,8 +637,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
 			vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			objEntry = objReturnReference.get();			
+			objEntry = objReturnReference.get();
+			
+			
 			sReturnTag = (String) vecReturn.get(1);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 	
 			
@@ -638,15 +649,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);						
 		if(sReturnTag!=null) this.setValue(sReturnTag);
-				
-		if(objEntry!=null) {
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);		
-				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-			}
+		sReturn = sReturnLine;
+		
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturn);		
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;
 	}
@@ -677,7 +684,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
 		String sReturn = null;
-		String sReturnTag = null;
+		String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn=null;
 		boolean bUseExpression = false;
 			
@@ -697,7 +704,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
-	
+		sReturnLine = sExpressionIn;
+		
 		main:{	
 			if(vecExpressionIn==null) break main;
 				
@@ -708,27 +716,22 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
 			//!!! hier wuerde dann etwas konkretes stehen.
 						
-			sReturnTag = (String) vecReturn.get(1);;
+			sReturnTag = (String) vecReturn.get(1);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 	
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
 		if(sReturnTag!=null) this.setValue(sReturnTag);
-		
+		sReturn = sReturnLine;
 						
 		if(objEntry!=null) {
-			
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);	
-				if(sExpressionIn!=null) {				
-					objEntry.isParseCalled(true); 								
-					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-				}			
-			}
+			objEntry.setValue(sReturnLine);	
+			if(sExpressionIn!=null) {				
+				objEntry.isParseCalled(true); 								
+				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;
