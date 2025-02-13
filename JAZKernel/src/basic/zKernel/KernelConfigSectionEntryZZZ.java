@@ -54,9 +54,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bParsedChanged = false;
 	
 	protected boolean bSubstituteCalled = false;
+	protected boolean bSubstituted = false;
 	protected boolean bSubstitutedChanged = false;
+	
+	protected boolean bPathSubstituteCalled = false;
 	protected boolean bPathSubstituted = false;
 	protected boolean bPathSubstitutedChanged = false;
+	protected boolean bVariableSubstituteCalled = false;
 	protected boolean bVariableSubstituted = false;
 	protected boolean bVariableSubstitutedChanged = false;
 	
@@ -837,6 +841,15 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bSubstituteCalled = bSubstituteCalled;
 	}
 	
+	public boolean isSubstituted() {
+		return this.bSubstituted;
+	}
+
+	@Override
+	public void isSubstituted(boolean bSubstituted) {
+		this.bSubstituted = bSubstituted;
+	}
+	
 	@Override 
 	public boolean isSubstitutedChanged() {
 		return this.bSubstitutedChanged;
@@ -845,6 +858,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isSubstitutedChanged(boolean bSubstitutedChanged) {
 		this.bSubstitutedChanged = bSubstitutedChanged;
+	}
+	
+	//+++++++++++++++++++++++
+	
+	@Override
+	public boolean isPathSubstituteCalled() {
+		return this.bPathSubstituteCalled;
+	}
+
+	@Override
+	public void isPathSubstituteCalled(boolean bSubstitutePathCalled) {
+		this.bPathSubstituteCalled = bSubstitutePathCalled;
 	}
 	
 	@Override 
@@ -867,6 +892,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bPathSubstitutedChanged = bPathSubstitutedChanged;
 	}
 	
+	//+++++++++++++++++++++
+	@Override
+	public boolean isVariableSubstituteCalled() {
+		return this.bVariableSubstituteCalled;
+	}
+
+	@Override
+	public void isVariableSubstituteCalled(boolean bSubstituteVariableCalled) {
+		this.bVariableSubstituteCalled = bSubstituteVariableCalled;
+	}
+	
 	@Override
 	public boolean isVariableSubstituted() {
 		return this.bVariableSubstituted;
@@ -886,6 +922,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void isVariableSubstitutedChanged(boolean bVariableSubstitutedChanged) {
 		this.bVariableSubstitutedChanged = bVariableSubstitutedChanged;
 	}
+	
 	
 	//########################################
 	
@@ -1323,5 +1360,6 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}
 		}
 
+		
 
 }

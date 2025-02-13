@@ -78,18 +78,25 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isSubstituteCalled();
-	abstract void isSubstituteCalled(boolean bIsSubstitutedChanged);
+	abstract void isSubstituteCalled(boolean bIsSubstitutedCalled);
 	
+	public boolean isSubstituted();
+	abstract void isSubstituted(boolean bIsSubstituted);
+		
 	public boolean isSubstitutedChanged();
 	abstract void isSubstitutedChanged(boolean bIsSubstitutedChanged);
 	
-	
+	public boolean isPathSubstituteCalled();
+	abstract void isPathSubstituteCalled(boolean bIsSubstitutedCalled);
+		
 	public boolean isPathSubstituted();
 	abstract void isPathSubstituted(boolean bIsPathSolved);
 	
 	public boolean isPathSubstitutedChanged();
 	abstract void isPathSubstitutedChanged(boolean bIsPathSubstitutedChanged);
-	
+		
+	public boolean isVariableSubstituteCalled();
+	abstract void isVariableSubstituteCalled(boolean bIsSubstitutedCalled);
 	
 	public boolean isVariableSubstituted();
 	abstract void isVariableSubstituted(boolean bIsVariableSubstituted);

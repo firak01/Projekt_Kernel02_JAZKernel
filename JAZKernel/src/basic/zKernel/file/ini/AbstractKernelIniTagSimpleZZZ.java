@@ -1204,7 +1204,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);
-			objEntry.isParseCalled(true);
+			objEntry.isSubstituteCalled(true);
 			
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -1245,6 +1245,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					objEntry.setValue(sReturn);
 				}else {
 					if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+					objEntry.isSubstituted(true);
 					objEntry.setValue(sReturn);
 					if(sExpressionIn!=null) {
 						if(!sExpressionIn.equals(sReturn)) {					
@@ -1451,7 +1452,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					
 					//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 					if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
-						objEntry.isVariableSubstituted(true);
+						objEntry.isVariableSubstituteCalled(true);
 						
 						//ZUERST: Löse ggfs. übergebene Variablen auf.
 						//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
@@ -1483,6 +1484,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						} //end while
 						
 						sReturnTag = sExpression;
+						objEntry.isVariableSubstituted(true);
 						this.setValue(sReturnTag);						
 						objEntry.setValue(sReturnTag);						
 						if(sReturnTag!=sExpressionOld) {													
@@ -1496,7 +1498,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					
 					//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 					if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
-						objEntry.isPathSubstituted(true);
+						objEntry.isPathSubstituteCalled(true);
 						
 						//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 						//Problem hier: [ ] ist auch der JSON Array-Ausdruck
@@ -1528,6 +1530,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							}											
 						} //end while						
 						sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
+						objEntry.isPathSubstituted(true);
 						this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.				
 						objEntry.setValue(sReturnTag);
 						if(!sExpressionOld.equals(sReturnTag)) {							
@@ -1552,6 +1555,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 			//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
 			if(objEntry!=null) {		
+				objEntry.isSubstituted(true);
 				objEntry.setValue(sReturnLine);	
 				if(bUseExpression | bUseParse) {
 					if(sExpressionIn!=null) {
