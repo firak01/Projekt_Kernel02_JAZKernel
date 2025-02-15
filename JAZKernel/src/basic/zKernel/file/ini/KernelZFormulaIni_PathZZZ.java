@@ -32,7 +32,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//Hier kein Tag-Name sondern eine RegEx. Der Tag ist definiert als [section]property
 	//Merke: In RegEx Ausdruechen muessen eckige Klammern mit Backslash escaped werden. 
 	//public static String sTAG_NAME = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text
-	public static String sTAG_NAME = ".*<Z>.*\\[[^\"].*[^\"]\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
+	//public static String sTAG_NAME = ".*<Z>.*\\[[^\"].*[^\"]\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
+	public static String sTAG_NAME = ".*<[^/].*>.*\\[[^\"].*[^\"]\\].*<[/].*>.*"; //finde einen Ausdruck in eckigen Klammern mit Tags (erstes Tag ohne Slash) drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
 	
 		
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
@@ -261,7 +262,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null; 
 		boolean bExpressionFound = false;
 		
 		//20240919: Dummy debug mit diesen statischen Werten
@@ -280,11 +281,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
-		}	
-		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+		}			
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isParseCalled(true);
+		objEntry.isParseCalled(true);		
+		sReturnLine = sExpressionIn;	
+		sReturn = sReturnLine;
+		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
@@ -295,10 +298,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
 			if(!bUseExpressionPath) break main;
 
-			String sExpression = sExpressionIn;
-			
-			bExpressionFound = this.isExpression(sExpression); 
+			bExpressionFound = this.isExpression(sExpressionIn); 
 			if(!bExpressionFound)break main;
+			String sExpression = sExpressionIn;
 			
 			//++++++++++++++++++++++++++++++++++++++
 			boolean bReturnSeparators = !bRemoveSurroundingSeparators;
@@ -318,7 +320,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//         1. Schritt: Packe ihn in Vec(1).
 			//Da mehrere Z-Tags hintereinander stehen können, reicht auch folgendes nicht, sondern es muss der ERSTE geholt werden.
 			//vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression + sSepRight, sSepLeft, sSepRight, false);
-			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
+			
+			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
+			
+			//20250215
+			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen, darum mal ein </Z> anhaengen
+			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", sSepLeft, sSepRight, false);
+			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.
+			vecReturn = StringZZZ.vecMidFirstKeep(sExpression + "</Z>", sSepLeft, sSepRight, false);
 			
 			String sLeft = (String) vecReturn.get(0);			
 			String sMid = (String) vecReturn.get(1);
@@ -375,43 +384,58 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
 			
-			//Erste Annahme: Path Ausdruck hat noch die Z-Tags drumherum, also "<"
-			String sProperty = StringZZZ.midLeftRightback(sSectionTotal +this.getTagClosing(), sSection + this.getTagClosing(), sSepRight);
-			if(StringZZZ.isEmpty(sProperty)) { //dann ggfs. nur diesen Path Ausdruck uebergeben ohne etwas am Ende
-				sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
-			}
-						
-			sReturn =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
+//			//Erste Annahme: Path Ausdruck hat noch die Z-Tags drumherum, also "<"
+//			String sProperty = StringZZZ.midLeftRightback(sSectionTotal +this.getTagClosing(), sSection + this.getTagClosing(), sSepRight);
+//			if(StringZZZ.isEmpty(sProperty)) { //dann ggfs. nur diesen Path Ausdruck uebergeben ohne etwas am Ende
+//				sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
+//			}
 			
+			//20250215
+			String sProperty = StringZZZ.right(sSectionTotal, this.getTagStarting() + sSection + this.getTagClosing());
+									
+			sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
+			vecReturn.replace(sReturnTag);
 			
-			if(bReturnSeparators) {
-				//ABER: Wenn die Umgebenden Z-Tags drin bleiben sollen, dann muss der Returnvektor anders aussehen.
-				//      Dort müssen naemlich die Z-Tags in den Positionen 0 bzw. 2 sein.
-				//      Dann kann man Positon 1 mit sReturn ersetzen
-				vecReturn = StringZZZ.vecMidFirst(sExpression + "</Z>", sSepLeft, sSepRight, false,false);
-
-				//Wichtige, besondere Nacharbeiten am Schluss: Der entfernte < muss wieder hinzugefuegt werden.
-				sRight = (String) vecReturn.get(2);
-				sRight = sSepRight + sRight;
-				vecReturn.replace(2, sRight);
-			}
-						
 			//Wichtige Nacharbeiten am Schluss:
 			//Das oben hinzugefuegte </Z> Tag muss wieder entfernt werden
 			sRight = (String) vecReturn.get(2);
 			sRight = StringZZZ.stripRight(sRight, "</Z>", 1);//nur 1x Strip
-			vecReturn.replace(2, sRight);			
+			vecReturn.replace(2, sRight);	
+			
+			
+			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+			//Als echten Ergebniswert aber die <Z>-Tags rausrechnen, falls gewuenscht. BESONDERHEIT: Hier nicht versuchen den einenen Path-Tag rauszurechnen [...]
+			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators, false);
+			sReturnTag = this.getValue();
+			
+//			if(bReturnSeparators) {
+//				//ABER: Wenn die Umgebenden Z-Tags drin bleiben sollen, dann muss der Returnvektor anders aussehen.
+//				//      Dort müssen naemlich die Z-Tags in den Positionen 0 bzw. 2 sein.
+//				//      Dann kann man Positon 1 mit sReturn ersetzen
+//				vecReturn = StringZZZ.vecMidFirst(sExpression + "</Z>", sSepLeft, sSepRight, false,false);
+//
+//				//Wichtige, besondere Nacharbeiten am Schluss: Der entfernte < muss wieder hinzugefuegt werden.
+//				sRight = (String) vecReturn.get(2);
+//				sRight = sSepRight + sRight;
+//				vecReturn.replace(2, sRight);
+//			}
+						
+			
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:		
-		vecReturn.replace(sReturn); 
-		this.setValue((String) vecReturn.get(1)); //Setze den Wert des INI-PATH-Tags.
+		 
+		//Aus AbstractKernelIniTagSimpleZZZ
+		if(sReturnTag!=null) this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {
-			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);	
+			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {								 						
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-			}			
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-		}			
+				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			this.adoptEntryValuesMissing(objEntry);
+		}		
 		return vecReturn;
 	}
 	

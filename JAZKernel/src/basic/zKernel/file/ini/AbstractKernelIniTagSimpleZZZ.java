@@ -622,6 +622,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.parseFirstVectorPost(vecExpression, null, bRemoveSurroundingSeparators);
 	}
 	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	}
+	
 	//### Aus IKernelEntryReferenceExpressionUserZZZ	
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
@@ -698,6 +703,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			if(sExpressionIn!=null) {								 						
+				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);
 		}		
@@ -707,15 +715,20 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
 	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, objReturnReference, true);
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, true, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, true);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		
@@ -771,19 +784,24 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen				
 				}
 								
-				//+++ Der Wert des Tags ++++++++++++++++++++++++++++++++++++
-				//    Merke: Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
-				//    Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
-				sReturnTag = (String) vecReturn.get(1); 
+				//+++ Der Wert des Tags selbst (nicht der Zeile(!)) ++++++++++++++++++++++++++++++++++++
+				//Merke: Bei einem INI-Path wird der so komplett aufgeloest, das er eh nicht mehr drin ist.
+				//       Dann wuerde ein Aufloesen sogar einen Fehler bedeuten.
+				if(bRemoveOwnTagParts) {
+					//Bei anderen Tags gilt:
+					//Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
+					//Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
+					sReturnTag = (String) vecReturn.get(1); 
 				
-				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();								
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-				
+					String sTagStart = this.getTagStarting();
+					String sTagEnd = this.getTagClosing();								
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				}
 				
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
 				
+				sReturnTag = (String) vecReturn.get(1);
 				objEntry.isParsed(true);
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
@@ -886,15 +904,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, objReturnReference, true);
+		return this.parsePost_(vecExpression, objReturnReference, true, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+		return this.parsePost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, true);
 	}
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bRemoveSurroundingSeparators,
+			boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	}
+	
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null; String sReturnTag = null; String sReturnLine;
 		String sExpressionIn = null;		
@@ -955,14 +980,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				}
 								
 				//+++ Der Wert des Tags
+				
 				//    Merke: Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
 				//    Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
-				sExpression = (String) vecReturn.get(1); 
+				sReturnTag = (String) vecReturn.get(1); 
 				
-				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();								
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-								
+				if(bRemoveOwnTagParts) {
+					String sTagStart = this.getTagStarting();
+					String sTagEnd = this.getTagClosing();								
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				}
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 				vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
 			}else {

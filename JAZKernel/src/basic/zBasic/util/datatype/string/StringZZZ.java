@@ -1269,7 +1269,91 @@ public class StringZZZ implements IConstantZZZ{
 		}
 		return sReturn;
 	}
+	//############################################
 	
+	public static String leftKeep(String sString, String sToFind){
+		return StringZZZ.leftKeep(sString, sToFind, true);
+	}
+	
+	public static String leftKeep(String sString, String sToFind, boolean bExactMatch){
+		String sReturn=sString;
+		main:{
+			if (StringZZZ.isEmpty(sString)) break main;
+			sReturn = "";
+			
+			int iIndex;
+			if(bExactMatch){
+				iIndex = sString.indexOf(sToFind);				
+			}else {
+				iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.							
+			}
+			
+			if(iIndex<= -1) break main;
+			if(iIndex-1<= -1) break main;
+			
+			iIndex += sToFind.length();			
+			sReturn = sString.substring(0, iIndex);
+			
+		}//END main:
+		return sReturn;
+	}
+	
+	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
+	 * Returns the empty String if sToFind is empty
+	 * 
+	 * Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von rechts nach dem Suchstring gesucht.
+	* Lindhauer; 16.05.2006 08:11:18
+	 * @param sString
+	 * @param sToFind
+	 * @return String
+	 */
+	public static String rightKeep(String sString, String sToFind){
+		return StringZZZ.rightKeep(sString, sToFind, true);
+	}
+	
+	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
+	 * Returns the empty String if sToFind is empty
+	 * bExactMatch=false => es wird von beiden Strings lowercase gebildet.
+	* Lindhauer; 16.05.2006 08:11:18
+	 * @param sString
+	 * @param sToFind
+	 * @param bExactMatch
+	 * @return String
+	 */
+	public static String rightKeep(String sString, String sToFind, boolean bExactMatch){
+		String sReturn=sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+				
+			sReturn = "";
+			if(StringZZZ.isEmpty(sToFind)) break main;	
+			
+		
+			int iIndex;
+			if(bExactMatch){
+				
+				iIndex = sString.lastIndexOf(sToFind);				
+			}else {
+
+				String sStringLCase = sString.toLowerCase();
+				String sToFindLCase = sToFind.toLowerCase();
+				
+				iIndex = sStringLCase.lastIndexOf(sToFindLCase);
+			}
+			if(iIndex<= -1) break main;
+			
+			//die Länge des Strings NICHT(!) aufaddieren, wie es ohne KEEP waere
+			//iIndex = iIndex + sToFind.length();
+				
+			sReturn = sString.substring(iIndex);						
+		}//END main:
+		return sReturn;
+	}
+
+
+	
+	//############################################
 	public static String letterAtPosition(String sString, int iIndex){
 		String sReturn = sString;
 		main:{
@@ -1600,7 +1684,7 @@ public class StringZZZ implements IConstantZZZ{
 		}//end main:
 		return vecReturn;		
 	}
-	
+
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls der Trenner selbst zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Diese Methode dient z.B. dazu einen leeren Tag zu bearbeiten.
 	 *        Ansonsten sind 2 Trenner notwendig.
@@ -1772,7 +1856,9 @@ public class StringZZZ implements IConstantZZZ{
 			if(sLeft==null) sLeft="";
 						
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
-						
+			//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.replace(sStringToParse);
@@ -1786,11 +1872,68 @@ public class StringZZZ implements IConstantZZZ{
 				sRight = sRemainingTagged;
 			}else {
 				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
 				if(sRight==null) sRight = "";
 			}
 						
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			vecReturn.replaceKeepSeparatorCentral(sLeft, sMid, sRight, sSepLeft, sSepRight);			
+		}//end main:
+		return vecReturn;		
+	}
+	
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sSepLeft
+	* @param sSepRight
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidFirstKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+		main:{											
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sSepLeft)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sSepRight)){
+				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch);
+			if(sLeft==null) sLeft="";
+						
+			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
+			//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				vecReturn.replace(sStringToParse);
+				break main;
+			}
+								
+			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.   //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sRight = new String("");
+			if(sMid==null) {
+				sMid = "";
+				sRight = sRemainingTagged;
+			}else {
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				if(sRight==null) sRight = "";
+			}
+						
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			vecReturn.replace(sLeft, sMid, sRight);			
 		}//end main:
 		return vecReturn;		
 	}

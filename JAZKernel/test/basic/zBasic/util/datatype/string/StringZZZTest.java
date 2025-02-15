@@ -103,7 +103,36 @@ public class StringZZZTest extends TestCase{
 		 				 
 		 //System.out.println(stemp);
 	 }
+	//#############################################################
 	
+	public void testLeftKeep() {
+		String stemp;
+		
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.leftKeep("das ist ein Test", " ");
+		 assertEquals("das ", stemp);
+		 
+		 
+		 //System.out.println(stemp);
+	}
+	
+	public void testRightKeep(){
+		String stemp;
+		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.rightKeep("das ist ein Test", " ");
+		 assertEquals(" Test", stemp);
+		 
+		 //System.out.println(stemp);
+	}
+	
+	
+	
+	//#############################################################
 	public void testRight(){
 		String stemp;
 		 
@@ -1039,25 +1068,11 @@ public void testVecMidFirst(){
 			String sFormula0; String sFormula1; String sFormula2;
 			String sProof; Vector<String> vec;
 			//##################################################
+			//### Letzter fehlgeschlagener Test START
 			
-			//############################################################
+			//2. ++++++++++++++++++++++++++++++++++++++++++++++++
 			sTest = "<Z>[Section A]Testentry1</Z>";
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++
-			//Test wenn die Tags nicht enthalten sind
-			vec = StringZZZ.vecMidFirst(sTest, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
-			assertEquals(vec.size(), 3);
-			
-			sFormula0 = (String) vec.get(0);
-			assertEquals(sTest, sFormula0);
-			
-			sFormula1 = (String) vec.get(1);
-			assertEquals("", sFormula1);
-			
-			sFormula2 = (String) vec.get(2);
-			assertEquals("", sFormula2);
-	
-			//++++++++++++++++++++++++++++++++++++++++++++++++
+						
 			vec = StringZZZ.vecMidKeepSeparatorCentral(sTest, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
@@ -1074,6 +1089,70 @@ public void testVecMidFirst(){
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);
+			
+			
+			//### Letzter fehlgeschlagener Test ENDE
+			//##################################################
+			
+			
+			//############################################################
+			sTest = "<Z>[Section A]Testentry1</Z>";
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++
+			//1. Test wenn die Tags nicht enthalten sind
+			vec = StringZZZ.vecMidFirst(sTest, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals(sTest, sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals("", sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+	
+			//2. ++++++++++++++++++++++++++++++++++++++++++++++++
+			sTest = "<Z>[Section A]Testentry1</Z>";
+						
+			vec = StringZZZ.vecMidKeepSeparatorCentral(sTest, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			//Es soll noch 2x diese speziellen inhaltlichen Tags vorhanden sein, weil in diesem "Cascaded" Tag halt 2 dieser Tags liegen.
+			sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals("", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals(sTest, sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+			
+			//3. ++++++++++++++++++++++++++++++++++++++++++++++++
+			sTest = "<Z>[Section A]Testentry1</Z>";
+			
+			vec = StringZZZ.vecMidKeepSeparatorCentral(sTest, ">", "</>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			//Es soll noch 2x diese speziellen inhaltlichen Tags vorhanden sein, weil in diesem "Cascaded" Tag halt 2 dieser Tags liegen.
+			sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals("", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals(sTest, sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+			
+			
 			//#################################################
 			//#################################################
 			sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
@@ -1211,9 +1290,109 @@ public void testVecMidFirst(){
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
+	
+	
+	
+	public void testVecMidFirstKeep(){
+		try{
+			String sExpression; String sExpressionSolved;
+			String sFormula0; String sFormula1; String sFormula2;
+			String sProof; Vector<String> vec;
+			//##################################################
+			//### Letzter fehlgeschlagener Test START
+			
+				
+			//### Letzter fehlgeschlagener Test ENDE
+			//##################################################
+	
+			//Teststring Siehe INI_PATH...
+			sExpression = "<Z>[Section A]Testentry1</Z>";
+			sExpressionSolved = "[Section A]Testentry1";
 
+			//###############################################################
+			//1. Zum Verdeutlichen des Unterschieds 
+			vec = StringZZZ.vecMidFirst(sExpression, ">", "<", false);
+			
+			sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals("<Z", sFormula0); //!!!
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals(sExpressionSolved, sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("/Z>", sFormula2); //!!!
+			
+			//####################################################
+			//2. Zum Verdeutlichen des Unterschieds
+			vec = StringZZZ.vecMidKeepSeparatorCentral(sExpression, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			//Es soll noch 2x diese speziellen inhaltlichen Tags vorhanden sein, weil in diesem "Cascaded" Tag halt 2 dieser Tags liegen.
+			sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals("", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals(sExpression, sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+			
+			
+			//#########################################################
+			//3. Der eigentliche Test DIESER Funktion +++++++++++++++++++++
+			vec = StringZZZ.vecMidFirstKeep(sExpression, ">", "<", false); 
+			assertEquals(vec.size(), 3);
+					
+			//Es soll noch 2x diese speziellen inhaltlichen Tags vorhanden sein, weil in diesem "Cascaded" Tag halt 2 dieser Tags liegen.
+			sProof = VectorUtilZZZ.implode(vec);
+			assertEquals(StringZZZ.count(sProof, "["),1);
+			assertEquals(StringZZZ.count(sProof, "]"),1);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals("<Z>", sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals(sExpressionSolved, sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("</Z>", sFormula2);
+			
+			
+			sExpression = "<Z>[Section A]Testentry1</Z>";
+			
+								
+			//############################################################
+			//### Besonderheiten testen.
+			//############################################################			
+			//++++++++++++++++++++++++++++++++++++++++++++++++
+			//1. Test wenn die Tags nicht enthalten sind
+			vec = StringZZZ.vecMidFirst(sExpression, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
+			assertEquals(vec.size(), 3);
+			
+			sFormula0 = (String) vec.get(0);
+			assertEquals(sExpression, sFormula0);
+			
+			sFormula1 = (String) vec.get(1);
+			assertEquals("", sFormula1);
+			
+			sFormula2 = (String) vec.get(2);
+			assertEquals("", sFormula2);
+								
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 
-
+	//###############################################################
 	public void testCapitalize(){
 			String sTest = "das ist der Test";
 			String stemp = StringZZZ.capitalize(sTest);

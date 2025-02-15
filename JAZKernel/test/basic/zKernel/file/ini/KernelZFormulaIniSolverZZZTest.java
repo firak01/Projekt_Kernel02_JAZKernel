@@ -495,19 +495,18 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				
 				//TODOGOON20250212;
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne FORMULA_MATH-Berechung
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Mit FORMULA MATH-Berechnung
 				
-				//b)
-				sExpressionSolved = sExpressionIn; 
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Solven ohne den passenden Unter-Solver, bleibt nur der Tag diese Solvers drin.
-				sTag = sTagIn;
-				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
-				sTagSolved = sTag;
-				btemp = testCompute_FORMULA_MATH_4FormulaMathUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
+				//d)
+				sExpressionSolved = sExpressionSolvedIn;
+				sTagSolved = sTagSolvedIn;
+
+				//Ersetze in dem Ausdruck eine Z-Tag mit der reinen Aufloesung
+				stemp = ExpressionIniUtilZZZ.makeAsExpression(sTagSolved, sTagStartZ, sTagEndZ); //Z-Tags bleiben drin
+				sExpressionSolved = StringZZZ.replace(sExpressionSolved, stemp, sTagSolved); 
+				
+				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				//###########################
@@ -675,6 +674,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 				
 				//c) Aufloesen, aber den Z-Tag drinbehalten.
+				sExpressionSolved = sExpressionSolvedIn;
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTagSolvedIn;
@@ -685,12 +685,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//d)
 				sExpressionSolved = sExpressionSolvedIn;
 				sTagSolved = sTagSolvedIn;
-
-
-				//sExpressionSolved = StringZZZ.replace(sExpressionSolved, sTagSolved, sTagSolvedIn);				
-				//sTagSolved = objFormulaSolver.makeAsExpression(sTagSolved); //Den eigenen Tag drumherumsetzten
-				//sTemp = ExpressionIniUtilZZZ.makeAsExpression(sTemp, KernelZFormulaMathSolverZZZ.sTAG_NAME); //der eigene Tag wird ja auch beim Parsen entfernt. Also hier nicht als erwarteteten Wert aufnehmen
-				//sTag = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 
 				stemp = ExpressionIniUtilZZZ.makeAsExpression(sTagSolved, sTagStartZ, sTagEndZ); //Z-Tags bleiben drin
 				sExpressionSolved = StringZZZ.replace(sExpressionSolved, stemp, sTagSolved); //Ersetze in dem Ausdruck eine Z-Tag mit der reinen Aufloesung

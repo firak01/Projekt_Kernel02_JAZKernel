@@ -309,15 +309,21 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, true);
+		return this.parsePost_(vecExpression, true, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators);
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, true);
 	}
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators,
+			boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	}
+	
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sReturnTag = null;
@@ -344,24 +350,24 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 							
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
-			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			//bUseParse = this.isParserEnabledThis();
-			//if(bUseParse) {			
-				if(bRemoveSurroundingSeparators) {
-					String sTagStartZ = "<Z>"; //this.getTagStarting();
-					String sTagEndZ = "</Z>";  //this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
-					sReturnTag = (String) vecReturn.get(1);
-										
-					//Aber: den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt. 				
-					String sTagStart = this.getTagStarting();
-					String sTagEnd = this.getTagClosing();
-					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-					this.setValue(sReturnTag);	
-				}	
-//			}else {
-//				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
-//			}
+			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens					
+			if(bRemoveSurroundingSeparators) {
+				String sTagStartZ = "<Z>"; //this.getTagStarting();
+				String sTagEndZ = "</Z>";  //this.getTagClosing();
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
+				sReturnTag = (String) vecReturn.get(1);
+
+			}	
+			
+			
+			if(bRemoveOwnTagParts) {				
+				//Aber: den Wert des eigenen Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt. 				
+				String sTagStart = this.getTagStarting();
+				String sTagEnd = this.getTagClosing();
+				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				this.setValue(sReturnTag);	
+			}
+		
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
