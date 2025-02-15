@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_COLOR_BURNPeer;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -1289,8 +1290,7 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			if(iIndex<= -1) break main;
-			if(iIndex-1<= -1) break main;
-			
+						
 			iIndex += sToFind.length();			
 			sReturn = sString.substring(0, iIndex);
 			
@@ -1587,50 +1587,46 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.left(sStringToParse, sSepLeft, bExactMatch);
-			if(sLeft==null) sLeft="";
+			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft,bExactMatch);
+			if(StringZZZ.isEmpty(sLeft)){
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
 						
-			String sRemainingTagged; 
-			if(sLeft.equals("")){
-				sRemainingTagged = StringZZZ.stripLeft(sStringToParse, sSepLeft);
-			}else {
-				sRemainingTagged = StringZZZ.right(sSepLeft + sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
-			}
-									
-			//if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
-			if(sStringToParse.equalsIgnoreCase(sRemainingTagged)) {
-				vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
-				break main;
-			}
+			String sRemainingTagged= StringZZZ.right(sStringToParse, sStringToParse.length()- MathZZZ.max(sLeft.length(),sSepLeft.length()));
 			
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
-			
-			if(bReturnSeparators) {
-				if(StringZZZ.isEmpty(sExpressionTagged) && !StringZZZ.isEmpty(sRemainingTagged)) {
-					sRemainingTagged = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() -sSepRight.length());
-					vecReturn.replace(sLeft, "", sRemainingTagged, bReturnSeparators, sSepLeft, sSepRight);
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				if(!StringZZZ.endsWith(sStringToParse, sSepRight)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 					break main;
 				}
 			}
 			
-			//String sMid = StringZZZ.leftback(sRemainingTagged + sSepRight, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
-			String sMid = StringZZZ.leftback(sExpressionTagged + sSepRight, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
-			String sRight = new String("");
-			if(StringZZZ.isEmpty(sMid)) {
-				sMid = "";
-				sRight = sRemainingTagged;
-			}else {
-				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.			
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() - sMid.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
-				if(sRight==null) sRight = "";
+			String sMid = sExpressionTagged; 
+			
+			String sRight = StringZZZ.rightback(sRemainingTagged, sMid.length());
+			
+			if(!bReturnSeparators) {
+				sLeft = StringZZZ.stripRight(sLeft,  sSepLeft);
+				sRight = StringZZZ.stripLeft(sRight, sSepRight);							
 			}
 						
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);			
+			vecReturn.replace(sLeft, sMid, sRight);			
 		}//end main:
 		return vecReturn;		
 	}
 	
+	public static Vector3ZZZ<String>vecMidKeepSeparatorCentral(String sStringToParse, String sSepLeft, String sSepRight) throws ExceptionZZZ{
+		return vecMidKeepSeparatorCentral(sStringToParse, sSepLeft, sSepRight, true);
+	}
+	
+	public static Vector3ZZZ<String>vecMidKeepSeparatorCentral(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+		return vecMidCascadedKeepSeparatorCentral(sStringToParse, sSepLeft, sSepRight, bExactMatch);
+	}
 	
 	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
@@ -1643,7 +1639,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMidKeepSeparatorCentral(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMidCascadedKeepSeparatorCentral(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
@@ -1655,27 +1651,35 @@ public class StringZZZ implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
-			String sLeft = StringZZZ.left(sStringToParse, sSepLeft, bExactMatch);
-			if(sLeft==null) sLeft="";
+						
+			String sLeft = StringZZZ.left(sStringToParse, sSepLeft,bExactMatch);
+			if(StringZZZ.isEmpty(sLeft)){
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
 						
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 						
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.replace(0,sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
-				break main;
+				if(!StringZZZ.endsWith(sStringToParse, sSepRight)) {
+					vecReturn.replace(0,sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
 			}
 			
 			
 			//nun gibt es einen Ausdruck			
-			String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sMid = sExpressionTagged;
+			
 			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";
 				sRight = sRemainingTagged;
 			}else {
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
 				if(sRight==null) sRight = "";
 			}
 						
@@ -1788,43 +1792,34 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.left(sStringToParse, sSepLeft,bExactMatch);
+			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft,bExactMatch);
 			if(StringZZZ.isEmpty(sLeft)){
-				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
-				break main;
-			}
-						
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
-						
-			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch);//!!!nur left, wg. "First", anders als sonst leftback!!!
-			if(StringZZZ.isEmpty(sExpressionTagged) && StringZZZ.isEmpty(sRemainingTagged)){
-				vecReturn.replace(0, sStringToParse);//Wenn der Tag sebst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
-				break main;
-			}
-			
-			if(bReturnSeparators) {
-				if(StringZZZ.isEmpty(sExpressionTagged) && !StringZZZ.isEmpty(sRemainingTagged)) {
-					sRemainingTagged = StringZZZ.right(sRemainingTagged, sRemainingTagged.length() -sSepRight.length());
-					vecReturn.replace(sLeft, "", sRemainingTagged, bReturnSeparators, sSepLeft, sSepRight);
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
 					break main;
 				}
 			}
-									
-			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
-			String sRight = "";
-			if(sMid==null) {
-				sMid = "";
-				sRight = sRemainingTagged;
-			}else {
-				//hmm...bei path ist das falsch, da man ein Zeichen hinzumogelt, korrektur auch woanders gut?
-				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length()-sSepRight.length());
-				
-				//das ist allgemein ein Fehler, funktioniert nur explizit beim IniPathSolver!!!
-				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length());
+						
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length() - MathZZZ.max(sLeft.length(), sSepLeft.length()));									
+			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch);//!!!nur left, wg. "First", anders als sonst leftback!!!
+			if(StringZZZ.isEmpty(sMid)){
+				if(!StringZZZ.endsWith(sRemainingTagged, sSepRight)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
+			
+			sRemainingTagged = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sMid.length());
+			
+			String sRight = sRemainingTagged;
+			
+			if(!bReturnSeparators) {
+				sLeft = StringZZZ.stripRight(sLeft,  sSepLeft);
+				sRight = StringZZZ.stripLeft(sRight, sSepRight);							
 			}
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			vecReturn.replace(sLeft, sMid, sRight, bReturnSeparators, sSepLeft, sSepRight);
+			vecReturn.replace(sLeft, sMid, sRight);
 		}//end main:
 		return vecReturn;
 	}
@@ -1853,19 +1848,31 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			String sLeft = StringZZZ.left(sStringToParse, sSepLeft, bExactMatch);
-			if(sLeft==null) sLeft="";
+			if(StringZZZ.isEmpty(sLeft)){
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
 						
 			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 			//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
 			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
 			
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.
-			if(StringZZZ.isEmpty(sExpressionTagged)){
+			if(StringZZZ.isEmpty(sExpressionTagged)){				
 				vecReturn.replace(sStringToParse);
 				break main;
 			}
 								
 			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.   //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			if(StringZZZ.isEmpty(sMid)){
+				if(!StringZZZ.endsWith(sRemainingTagged, sSepRight)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
+			
 			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";
@@ -1908,7 +1915,12 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch);
-			if(sLeft==null) sLeft="";
+			if(StringZZZ.isEmpty(sLeft)){
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
 						
 			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
 			//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
@@ -1919,6 +1931,7 @@ public class StringZZZ implements IConstantZZZ{
 				vecReturn.replace(sStringToParse);
 				break main;
 			}
+		
 								
 			String sMid = StringZZZ.left(sRemainingTagged, sSepRight, bExactMatch); //nicht leftback wie bei einem cascaded-Tag benoetigt wuerde.   //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
 			String sRight = new String("");
