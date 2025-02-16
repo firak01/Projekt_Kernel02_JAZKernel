@@ -16,16 +16,48 @@ public class XmlUtilZZZTest extends TestCase{
 		    			
 	}//END setup
 	 
-	 public void testComputeTagNameFromTagPart() {
+	 public void testFindFirstTagNamePrevious() {
 		 try {
-			 ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
-				
-				String sTest = "Das ist ein Wert";
-				
-				//+++++ Negativtest
-				boolean bErg = XmlUtilZZZ.isExpression(sTest, objTagType);		    
-				assertFalse(bErg); 
-			 
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			String sXml="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			
+			
+			//+++++ Negativtest
+			String sTest = "Das ist ein Wert";
+			boolean bErg = XmlUtilZZZ.isExpression(sTest, objTagType);		    
+			assertFalse(bErg); 
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 public void testComputeTagNameFromTagPart() {
+		 String sExpression; String sExpressionSolved; 
+		 String sValue;
+		 try {
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression=objTagType.getTagPartStarting();
+			sExpressionSolved = objTagType.getTagName();
+			sValue = XmlUtilZZZ.computeTagNameFromTagPart(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			sExpression=objTagType.getTagPartClosing();
+			sExpressionSolved = objTagType.getTagName();
+			sValue = XmlUtilZZZ.computeTagNameFromTagPart(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//#### Negativtest
+			sExpression = "Blabla";
+			sExpressionSolved = null;
+			try {
+				sValue = XmlUtilZZZ.computeTagNameFromTagPart(sExpression);							
+				fail("Method should have thrown an exception.");
+			}catch(ExceptionZZZ ez){				
+			}
 		 }catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
 		}

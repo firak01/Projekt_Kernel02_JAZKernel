@@ -125,7 +125,14 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		main:{
 			ensureTagPart(sTagPart);
 			
-			
+			if(XmlUtilZZZ.isTagPartOpening(sTagPart)) {
+				sReturn = StringZZZ.midLeftRight(sTagPart, "<" ,">");
+			}else if(XmlUtilZZZ.isTagPartClosing(sTagPart)) {
+				sReturn = StringZZZ.midLeftRight(sTagPart, "</" ,">");
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Unexpected parameter sTagPart='" + sTagPart +"'", iERROR_PARAMETER_VALUE, XmlUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
 		}//end main:
 		return sReturn;
 	}
@@ -462,14 +469,19 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static String findFirstTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{
-		
-		
+		String sReturn = null;
+		main:{
+			
+		}//end main:
+		return sReturn;		
 	}
 
 	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
-		
-		
-		
+		String sReturn = null;
+		main:{
+			
+		}//end main:
+		return sReturn;					
 	}
 	
 	
