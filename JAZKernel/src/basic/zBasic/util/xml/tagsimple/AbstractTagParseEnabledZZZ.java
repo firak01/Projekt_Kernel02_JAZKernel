@@ -145,15 +145,21 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 	@Override
 	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, true);
+		return this.parseFirstVectorPost_(vecExpression, true, true);
 	}
 
 	@Override
 	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators);
+		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators, true);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+		return this.parseFirstVectorPost_(vecExpression, bRemoveSurroundingSeparators, bRemoveOwnTagParts);		
+	}
+	
+	
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturnTag=null;
 		main:{

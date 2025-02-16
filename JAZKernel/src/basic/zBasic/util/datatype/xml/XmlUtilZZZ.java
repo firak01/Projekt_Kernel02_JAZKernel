@@ -17,6 +17,7 @@ import basic.zBasic.util.math.MathZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -117,6 +118,18 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static String computeTagEmpty(String sTagName) throws ExceptionZZZ {
 		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
 	}
+	
+	//+++++++++++++++++++++
+	public static String computeTagNameFromTagPart(String sTagPart) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			ensureTagPart(sTagPart);
+			
+			
+		}//end main:
+		return sReturn;
+	}
+	
 	
 	//++++++++++++++++++++++
 	public static String computeTagPartOpening(String sTagName) throws ExceptionZZZ {
@@ -394,7 +407,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.06.2024, 11:17:35
 	 */
-	public static ITagByTypeZZZ getTagNext(String sTagName, String sXml) throws ExceptionZZZ {
+	public static ITagByTypeZZZ getTagNextByName(String sTagName, String sXml) throws ExceptionZZZ {
 		ITagByTypeZZZ objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sTagName)) break main;
@@ -404,7 +417,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
 			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
 			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
-						
+					
+			objReturn = TagByTypeFactoryZZZ.createTagByName(sTagName);
+			
 			Pattern regex = Pattern.compile(sTagOpening + "(.*?)" + sTagClosing, Pattern.DOTALL);
 			Matcher matcher = regex.matcher(sXml);
 			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
@@ -424,7 +439,39 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public static String findFirstTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstTagPartPrevious(sXml, sSep);
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;
+	}
 
+	public static String findFirstTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstTagPartNext(sXml, sSep);
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static String findFirstTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{
+		
+		
+	}
+
+	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+		
+		
+		
+	}
+	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++

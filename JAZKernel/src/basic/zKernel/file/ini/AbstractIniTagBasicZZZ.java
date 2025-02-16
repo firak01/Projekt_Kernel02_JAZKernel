@@ -268,15 +268,21 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, true);
+		return this.parsePost_(vecExpression, true, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators);
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, true);
 	}
+
+	@Override
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	}
+
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sReturnTag = null;		
@@ -345,50 +351,60 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), false, false);
-			this.setValue((String) vecReturn.get(1));
+			vecReturn = this.parseFirstVectorPost(vecReturn, false, false);
 		}
 		return vecReturn;
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		@Override
-		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-			return this.parseFirstVectorPostCustom_(vecExpression, true);
-		}
-		
-		@Override
-		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-			return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
-		}
-		
-		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-			Vector3ZZZ<String> vecReturn = vecExpressionIn;
-			String sReturn = null;
-			String sReturnTag = null;
-					
-			main:{			
-				if(vecExpressionIn==null) break main;
-				
-				//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
-				//bUseExpression = this.isExpressionEnabledAny(); 
-				//if(!bUseExpression) break main;
-								
-				sReturnTag = (String) vecExpressionIn.get(1);
-				sReturn = sReturnTag;
-				if(StringZZZ.isEmpty(sReturnTag)) break main;			
-					
-				
-				//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
-				
-				sReturn = sReturnTag;
-				this.setValue(sReturnTag);											
-			}//end main:
-					
-			//################################
-			return vecReturn;
-		}
 	
+	
+
+	
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorPostCustom_(vecExpression, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
+
+	}
+	
+	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sReturn = null;
+		String sReturnTag = null;
+				
+		main:{			
+			if(vecExpressionIn==null) break main;
+			
+			//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
+			//bUseExpression = this.isExpressionEnabledAny(); 
+			//if(!bUseExpression) break main;
+							
+			sReturnTag = (String) vecExpressionIn.get(1);
+			sReturn = sReturnTag;
+			if(StringZZZ.isEmpty(sReturnTag)) break main;			
+				
+			
+			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+			
+			sReturn = sReturnTag;
+			this.setValue(sReturnTag);											
+		}//end main:
+				
+		//################################
+		return vecReturn;
+	}
+
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus IIniStructurePositionUserZZZ
 	@Override

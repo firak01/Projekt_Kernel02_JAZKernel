@@ -937,7 +937,7 @@ public void testVecMidCascaded(){
 		//### Vorgezogener letzer Fehlertest: START
 		
 		//2.
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);
@@ -956,7 +956,7 @@ public void testVecMidCascaded(){
 		
 		//##################################################
 		//1. Test wenn die Tags nicht enthalten sind
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<nixda>", "</nixda>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<nixda>", "</nixda>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);
@@ -970,7 +970,7 @@ public void testVecMidCascaded(){
 		
 		//##################################################
 		//2.
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);
@@ -985,7 +985,7 @@ public void testVecMidCascaded(){
 		//######################################
 		//3.
 		sTest = "Anfang<Z>das ist der <Z>[Section a]Number</Z> Test</Z>Ende";						
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);
@@ -1001,7 +1001,7 @@ public void testVecMidCascaded(){
 		//4. Nun Randwerte Testen: links 
 		sTest = "<Z>[Section a]Number</Z> Test";
 		
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);
@@ -1017,7 +1017,7 @@ public void testVecMidCascaded(){
 		//5. Nun Randwerte Testen: rechts		
 		sTest = "<Z>[Section a]Number</Z>";
 		
-		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false);
+		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
 		sFormula = (String) vecSolved.get(0);

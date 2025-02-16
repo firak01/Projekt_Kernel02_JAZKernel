@@ -1891,6 +1891,41 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
+	//++++++++++++++++++++++++
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sSepLeft
+	* @param sSepRight
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidFirstKeepSeparatorCentralTagged(String sStringToParse, String sStringToFind, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+		main:{											
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sStringToFind)){
+				ExceptionZZZ ez = new ExceptionZZZ("The sStringToFind string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sSepLeft = XmlUtilZZZ.findFirstTagNamePrevious(sStringToParse, sStringToFind);
+			
+			
+			String sSepRight = XmlUtilZZZ.findFirstTagNamePrevious(sStringToParse, sStringToFind);
+			
+			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sStringToParse, sSepLeft, sSepRight, bExactMatch);
+		}//end main:
+		return vecReturn;		
+	}
+	
+	
+	//############################################################################
+	
+	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
 	* @param sStringToParse

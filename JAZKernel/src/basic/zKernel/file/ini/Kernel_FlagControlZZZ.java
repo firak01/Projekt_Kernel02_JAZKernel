@@ -43,4 +43,6 @@ public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return false;
 	}
 
+
+	
 }//End class

@@ -14,7 +14,22 @@ public class XmlUtilZZZTest extends TestCase{
 	
 	 protected void setUp(){
 		    			
-		}//END setup
+	}//END setup
+	 
+	 public void testComputeTagNameFromTagPart() {
+		 try {
+			 ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+				
+				String sTest = "Das ist ein Wert";
+				
+				//+++++ Negativtest
+				boolean bErg = XmlUtilZZZ.isExpression(sTest, objTagType);		    
+				assertFalse(bErg); 
+			 
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
 	 
 	 public void testComputeExpressionFirstVector(){
 		 try{
