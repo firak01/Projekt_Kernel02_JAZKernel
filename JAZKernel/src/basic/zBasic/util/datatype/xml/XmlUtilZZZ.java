@@ -282,6 +282,14 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	//+++++
+	/*
+	 * https://stackoverflow.com/questions/5396164/java-how-to-check-if-string-is-a-valid-xml-element-name
+	 */
+	public static boolean isTagNameValid(String sTagName) throws ExceptionZZZ{
+		return org.apache.xerces.util.XMLChar.isValidName(sTagName);
+	}
+	
 	//######################################
 	//### Ensure wirft immer eine Exception, wenn was nicht klappt
 	//######################################
@@ -446,37 +454,256 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++ Find PREVIOUS
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	public static String findFirstTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			String sTagPart = XmlUtilZZZ.findFirstTagPartPrevious(sXml, sSep);
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public static String findFirstOpeningTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartPrevious(sXml, sSep);
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public static String findFirstClosingTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartPrevious(sXml, sSep);
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;		
+	}
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static String findFirstTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+		String sReturn = null;
+		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
+			
+			String sLEFT = StringZZZ.left(sXml, sSep);
+			if(StringZZZ.isEmpty(sLEFT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; String sTagPartNameProof = null;
+			do {
+ 				
+				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+				iIndexOPENING = iIndexCLOSING;
+				while(iIndexOPENING>=iIndexCLOSING){			
+					iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+					if(iIndexOPENING <= -1) break main;
+				}
+				
+				
+				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				
+				//Ein gueltiges Tag gefunden? //Leere Tags werden nicht beruecksichtigt				
+				sTagPartNameProof = StringZZZ.stripLeft(sTagPartName, "/"); //Egal ob Oeffnendes oder Schliessendes Tag
+				bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartNameProof);
+				if(!bValidTagName) {
+					sTagPartName=null;
+					sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING);
+				}else{
+					bGoon=true;
+				}
+				
+			} while(bGoon==false);
+			
+			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
+		}//end main:
+		return sReturn;
+	}
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public static String findFirstOpeningTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+		String sReturn = null;
+		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
+			
+			String sLEFT = StringZZZ.left(sXml, sSep);
+			if(StringZZZ.isEmpty(sLEFT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; 
+			do {
+ 				
+				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+				iIndexOPENING = iIndexCLOSING;
+				while(iIndexOPENING>=iIndexCLOSING){			
+					iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+					if(iIndexOPENING <= -1) break main;
+				}
+				
+				
+				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				
+				//Ein gueltiges OEFFNENDES Tag gefunden? 
+				if(StringZZZ.startsWith(sTagPartName, "/")) {
+					//Kein oeffnendes Tag gefunden
+				}else {
+					if(StringZZZ.endsWith(sTagPartName, "/")) {
+						//Leere Tags werden nicht beruecksichtigt
+					}else {						
+						bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
+						if(!bValidTagName) {
+							sTagPartName=null;
+							sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
+						}else{
+							bGoon=true;
+						}
+					}
+				}
+				
+				
+				
+			} while(bGoon==false);
+			
+			sReturn = "<" + sTagPartName + ">";
+		}//end main:
+		return sReturn;
+	}
+
+	public static String findFirstClosingTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+		String sReturn = null;
+		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
+			
+			String sLEFT = StringZZZ.left(sXml, sSep);
+			if(StringZZZ.isEmpty(sLEFT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; 
+			do {
+ 				
+				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+				iIndexOPENING = iIndexCLOSING;
+				while(iIndexOPENING>=iIndexCLOSING){			
+					iIndexOPENING = sLEFT.lastIndexOf("</"); //Dann gibt es kein (weiteres) oeffendes Tagzeichen, des Schliessenden TagParts
+					if(iIndexOPENING <= -1) break main;
+				}
+				
+				
+				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				
+				//Kein schliesendes Tag gefunden
+				if(StringZZZ.endsWith(sTagPartName, "/")) {
+					//Leere Tags werden nicht beruecksichtigt
+				}else {						
+					bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
+					if(!bValidTagName) {
+						sTagPartName=null;
+						sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
+					}else{
+						bGoon=true;
+					}
+				}
+				
+			} while(bGoon==false);
+			
+			sReturn = "</" + sTagPartName + ">"; 
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++ NEXT
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public static String findFirstTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstTagPartNext(sXml, sSep);
+			if(sTagPart==null) break main;
+			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
 		}//end main:
 		return sReturn;
 	}
 
-	public static String findFirstTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+	//++++++++++++++++++++++
+	public static String findFirstOpeningTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstTagPartNext(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartNext(sXml, sSep);
+			if(sTagPart==null) break main;
+			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
 		}//end main:
 		return sReturn;
 	}
 	
+	//+++++++++++++++++++++++
+	public static String findFirstClosingTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartNext(sXml, sSep);
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;
+	}
+	
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String findFirstTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			
 		}//end main:
-		return sReturn;		
+		return sReturn;					
 	}
-
-	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static String findFirstOpeningTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			
+		}//end main:
+		return sReturn;					
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static String findFirstClosingTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			

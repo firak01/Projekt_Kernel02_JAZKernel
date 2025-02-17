@@ -2862,14 +2862,42 @@ null will return false. An empty CharSequence (length()=0) will return false.
 			if(StringZZZ.isEmpty(sString))break main;
 			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
 						
-			sReturn = StringZZZ.rightback(sString, iLeftPosition);
+			sReturn = StringZZZ.rightback(sString, iLeftPosition+1);//+1, um es echt auszuschneiden.
 			if(StringZZZ.isEmpty(sReturn)) break main;
 			if(iRightPosition-iLeftPosition >= sReturn.length()){
 				sReturn = "";
 				break main;
 			}
 			
-			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition));
+			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition -1 ));//-1, um es echt auszuschneiden.
+			if(StringZZZ.isEmpty(sReturn)) break main;			
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right, including the edge positions
+	* @param sString
+	* @param iLeftPosition
+	* @param iRightPosition
+	* @return
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition){
+		String sReturn = "";
+		main:{
+			
+			if(StringZZZ.isEmpty(sString))break main;
+			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
+						
+			sReturn = StringZZZ.rightback(sString, iLeftPosition); //das beinhaltet das Zeichen
+			if(StringZZZ.isEmpty(sReturn)) break main;
+			if(iRightPosition-iLeftPosition >= sReturn.length()){
+				sReturn = "";
+				break main;
+			}
+			
+			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition +1));
 			if(StringZZZ.isEmpty(sReturn)) break main;			
 		}
 		return sReturn;

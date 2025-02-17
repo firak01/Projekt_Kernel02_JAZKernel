@@ -16,23 +16,230 @@ public class XmlUtilZZZTest extends TestCase{
 		    			
 	}//END setup
 	 
+	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 //+++ PREVIOUS
+	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 public void testFindFirstTagNamePrevious() {
 		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			String sXml="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
 			
-			//+++++ Negativtest
-			String sTest = "Das ist ein Wert";
-			boolean bErg = XmlUtilZZZ.isExpression(sTest, objTagType);		    
-			assertFalse(bErg); 
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
 	 
+	 
+	 
+	 public void testFindFirstOpeningTagNamePrevious() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 public void testFindFirstClosingTagNamePrevious() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	
+	 
+	 
+	 
+	 
+	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 //+++ NEXT
+	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 public void testFindFirstTagNameNext() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 
+	 
+	 public void testFindFirstOpeningTagNameNext() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 public void testFindFirstClosingTagNameNext() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sStringToSearch;
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			
+			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagType.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest ohne Suchwert im String
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			//+++++ Negativtest mit Suchwert im String
+			sExpression = "Das [ist] ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	
+	 
+
+	 
+	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 public void testComputeTagNameFromTagPart() {
 		 String sExpression; String sExpressionSolved; 
 		 String sValue;
