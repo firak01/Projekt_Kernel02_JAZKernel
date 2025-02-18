@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
+import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
@@ -25,7 +26,7 @@ public class XmlUtilZZZTest extends TestCase{
 			String sValue; String sStringToSearch;
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
@@ -61,7 +62,7 @@ public class XmlUtilZZZTest extends TestCase{
 			String sValue; String sStringToSearch;
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
@@ -93,10 +94,19 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
-			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+            ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
-			sExpressionSolved = objTagType.getTagName();
+			sExpression="PRE"+ objTagTypeMethod.getTagPartOpening() + "eine Methode" +objTagTypeMethod.getTagPartClosing() +  "a"+ objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POS";
+			sExpressionSolved = objTagTypeMethod.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++ Negativtest ohne einen CLOSING Tag vorher
+			sExpression="PRE" + objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POS";
+			sExpressionSolved = null;
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
@@ -136,7 +146,7 @@ public class XmlUtilZZZTest extends TestCase{
 			String sValue; String sStringToSearch;
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
@@ -170,10 +180,19 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
-			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+				
+			sExpression="PRE"+ objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "a" + objTagTypeMethod.getTagPartOpening() + "eine Methode" + objTagTypeMethod.getTagPartClosing() + "POST";								
+			sExpressionSolved = objTagTypeMethod.getTagName();
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
-			sExpressionSolved = objTagType.getTagName();
+						
+			//++++ NEgativtest, es gibt keinen folgenden, offenen TagPArt
+			sExpression="PRE" + objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POST";
+			sExpressionSolved = null;
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
@@ -206,7 +225,7 @@ public class XmlUtilZZZTest extends TestCase{
 			String sValue; String sStringToSearch;
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			sExpression="PRE" + objTagType.getTagPartStarting() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
+			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
 			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
@@ -246,7 +265,7 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
-			sExpression=objTagType.getTagPartStarting();
+			sExpression=objTagType.getTagPartOpening();
 			sExpressionSolved = objTagType.getTagName();
 			sValue = XmlUtilZZZ.computeTagNameFromTagPart(sExpression);
 			assertEquals(sExpressionSolved, sValue);
@@ -275,7 +294,7 @@ public class XmlUtilZZZTest extends TestCase{
 			 ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			 
 			String sTest = "Das ist ein Wert";
-		    String sTestXml = "aBc" + objTagType.getTagPartStarting() + sTest + objTagType.getTagPartClosing()+"xYz";
+		    String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
 		    System.out.println("Zeile1: " + sTestXml);
 		    
 		    Vector<String> vec01 = XmlUtilZZZ.computeExpressionFirstVector(sTestXml, objTagType);		    
@@ -313,7 +332,7 @@ public class XmlUtilZZZTest extends TestCase{
 			
 			//+++++ Positivtest
 			//A) Ganzer Tag
-			String sTestXml = "aBc" + objTagType.getTagPartStarting() + sTest + objTagType.getTagPartClosing()+"xYz";
+			String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
 			System.out.println("Zeile1: " + sTestXml);
 		    
 			bErg = XmlUtilZZZ.isExpression(sTestXml, objTagType);		    

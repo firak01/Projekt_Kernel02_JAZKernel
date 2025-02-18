@@ -2860,16 +2860,17 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		main:{
 			
 			if(StringZZZ.isEmpty(sString))break main;
-			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
+			if (iLeftPosition <= -1) break main;
+			if (iRightPosition >= sString.length()+1) break main;
 						
-			sReturn = StringZZZ.rightback(sString, iLeftPosition+1);//+1, um es echt auszuschneiden.
+			sReturn = StringZZZ.rightback(sString, iLeftPosition);
 			if(StringZZZ.isEmpty(sReturn)) break main;
 			if(iRightPosition-iLeftPosition >= sReturn.length()){
 				sReturn = "";
 				break main;
 			}
 			
-			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition -1 ));//-1, um es echt auszuschneiden.
+			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition));
 			if(StringZZZ.isEmpty(sReturn)) break main;			
 		}
 		return sReturn;
@@ -3440,6 +3441,35 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @return
 	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
 	 */
+	public static int indexOfFirstBefore(String sSource, String sString2Find) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.indexOf(sString2Find);
+			if(itemp==-1)break main;
+			
+			iReturn = itemp;
+		}//end main:
+		return iReturn;
+	}
+	
+	
+	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.indexOf(sString2Find, iIndexStarting);
+			if(itemp==-1)break main;
+			
+			iReturn = itemp;
+		}//end main:
+		return iReturn;
+	}
+	
 	public static int indexOfFirstBehind(String sSource, String sString2Find) {
 		int iReturn = -1;
 		main:{
@@ -3455,17 +3485,31 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	
-	public static int indexOfFirst(String sSource, String sString2Find) {
+	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			iReturn = sSource.indexOf(sString2Find);
-
+			int itemp = sSource.indexOf(sString2Find, iIndexStarting);
+			if(itemp==-1)break main;
+			
+			iReturn = itemp + sString2Find.length();
 		}//end main:
 		return iReturn;
 	}
+	
+	
+	public static int indexOfFirst(String sSource, String sString2Find) {
+		return StringZZZ.indexOfFirstBefore(sSource, sString2Find);
+	}
+	
+	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting) {
+		return  StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting);
+	}
+	
+	
+	
 
 
 	/** int, Gibt den ersten index wert zurueck, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zur�ckgegeben.
@@ -3502,10 +3546,84 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		}//END main:
 		return iReturn;
 	}
+	
+	
 
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	/** wie indexOf, allerdings wird die Laenge des Strings daraufgerechnet.
+	 *  Der index ist also der Anfang des dahinterliegenden Teils
+	 *  
+	 * @param sSource
+	 * @param sString2Find
+	 * @return
+	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
+	 */
+	public static int indexOfLastBefore(String sSource, String sString2Find) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.lastIndexOf(sString2Find);
+			if(itemp==-1)break main;
+						
+			iReturn = itemp;
+		}//end main:
+		return iReturn;
+	}
+	
+		
+	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			if(itemp==-1)break main;
+						
+			iReturn = itemp;
+		}//end main:
+		return iReturn;
+	}
 
+	
+	public static int indexOfLastBehind(String sSource, String sString2Find) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.lastIndexOf(sString2Find);
+			if(itemp==-1)break main;
+						
+			iReturn = itemp + sString2Find.length();
+		}//end main:
+		return iReturn;
+	}
+	
+		
+	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			if(itemp==-1)break main;
+						
+			iReturn = itemp + sString2Find.length();
+		}//end main:
+		return iReturn;
+	}
+	
+	
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	/** Erzeugt eine ArrayList, welche die Strings, die in saPattern enthalten sind in der korrekten Reihenfolge und Anzahl wiedergibt.
 	 * 
 	 * sString = "eins  zwei  drei  eins  zwei  vier  acht sechzehn"

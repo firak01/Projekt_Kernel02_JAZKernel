@@ -37,7 +37,7 @@ public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements IT
 	//s. Analog zu z.B. KernelZFormulaIni_NullZZZ, dort aber als Static Methoden.
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface		
 	@Override
-	public String getTagPartStarting() throws ExceptionZZZ{
+	public String getTagPartOpening() throws ExceptionZZZ{
 		String sTagName = this.getTagName();
 		return XmlUtilZZZ.computeTagPartOpening(sTagName);
 	}

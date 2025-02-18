@@ -9,7 +9,7 @@ public interface ITagTypeZZZ{
 	//Kein Setter, da über Konstante in der TagType-Klasse definiert
 	public String getTagName() throws ExceptionZZZ;
 	
-	String getTagPartStarting() throws ExceptionZZZ;
+	String getTagPartOpening() throws ExceptionZZZ;
 	String getTagPartClosing() throws ExceptionZZZ;
 	String getTagPartEmpty() throws ExceptionZZZ;	
 }

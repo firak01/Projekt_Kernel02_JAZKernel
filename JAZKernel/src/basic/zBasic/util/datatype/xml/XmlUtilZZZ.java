@@ -512,25 +512,25 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			String sTagPartName = null; String sTagPartNameProof = null;
 			do {
  				
-				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				iIndexCLOSING = StringZZZ.indexOfLastBefore(sLEFT, ">");
 				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-				iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				iIndexOPENING = StringZZZ.indexOfLastBehind(sLEFT, "<", iIndexCLOSING); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
 				if(iIndexOPENING <= -1) break main;
 				
 				
 				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
 				
-				//Ein gueltiges Tag gefunden? //Leere Tags werden nicht beruecksichtigt				
-				sTagPartNameProof = StringZZZ.stripLeft(sTagPartName, "/"); //Egal ob Oeffnendes oder Schliessendes Tag
+				//Ein gueltiges Tag gefunden? //Leere Tags werden nicht beruecksichtigt	
+				sTagPartNameProof = StringZZZ.stripLeft(sTagPartName, "/"); //Egal ob Oeffnendes oder Schliessendes Tag					
 				bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartNameProof);
-				if(!bValidTagName) {
-					sTagPartName=null;
-					sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING);
-				}else{
+				if(bValidTagName) {
 					bGoon=true;
+					break;
 				}
 				
+				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING-1);//Verbereiten fuer Weitersuchen
 			} while(bGoon==false);
 			
 			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
@@ -555,17 +555,17 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			String sTagPartName = null; 
 			do {
  				
-				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				iIndexCLOSING = StringZZZ.indexOfLastBefore(sLEFT,  ">");
 				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-				iIndexOPENING = iIndexCLOSING;
-				while(iIndexOPENING>=iIndexCLOSING){			
-					iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
-					if(iIndexOPENING <= -1) break main;
-				}
+		
+				iIndexOPENING = StringZZZ.indexOfLastBehind(sLEFT, "<", iIndexCLOSING); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexOPENING <= -1) break main;
+
 				
 				
 				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
 				
 				//Ein gueltiges OEFFNENDES Tag gefunden? 
 				if(StringZZZ.startsWith(sTagPartName, "/")) {
@@ -575,16 +575,14 @@ public class XmlUtilZZZ implements IConstantZZZ{
 						//Leere Tags werden nicht beruecksichtigt
 					}else {						
 						bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
-						if(!bValidTagName) {
-							sTagPartName=null;
-							sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
-						}else{
+						if(bValidTagName) {
 							bGoon=true;
+							break;
 						}
 					}
 				}
 				
-				
+				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
 				
 			} while(bGoon==false);
 			
@@ -608,31 +606,29 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			String sTagPartName = null; 
 			do {
  				
-				iIndexCLOSING = sLEFT.lastIndexOf(">");
+				iIndexCLOSING = StringZZZ.indexOfLastBefore(sLEFT, ">");
 				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-				iIndexOPENING = iIndexCLOSING;
-				while(iIndexOPENING>=iIndexCLOSING){			
-					iIndexOPENING = sLEFT.lastIndexOf("</"); //Dann gibt es kein (weiteres) oeffendes Tagzeichen, des Schliessenden TagParts
-					if(iIndexOPENING <= -1) break main;
-				}
+	
+				iIndexOPENING = StringZZZ.indexOfLastBehind(sLEFT, "</", iIndexCLOSING); //Dann gibt es kein (weiteres) oeffendes Tagzeichen, des Schliessenden TagParts
+				if(iIndexOPENING <= -1) break main;			
 				
 				
 				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
 				
 				//Kein schliesendes Tag gefunden
 				if(StringZZZ.endsWith(sTagPartName, "/")) {
 					//Leere Tags werden nicht beruecksichtigt
 				}else {						
 					bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
-					if(!bValidTagName) {
-						sTagPartName=null;
-						sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
-					}else{
+					if(bValidTagName) {
 						bGoon=true;
+						break;
 					}
 				}
 				
+				sLEFT = StringZZZ.left(sLEFT, (iIndexCLOSING)); //Vorbereitung zum Weitersuchen.
 			} while(bGoon==false);
 			
 			sReturn = "</" + sTagPartName + ">"; 
@@ -697,26 +693,26 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			String sTagPartName = null; String sTagPartNameProof = null;
 			do {
  				
-				iIndexOPENING = sRIGHT.indexOf("<");
+				iIndexOPENING = StringZZZ.indexOfFirstBehind(sRIGHT , "<");
 				if(iIndexOPENING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-				TODOGOON20250218;
-				iIndexCLOSING = sRIGHT.indexOf(">"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				
+				iIndexCLOSING = StringZZZ.indexOfFirstBefore(sRIGHT , ">", iIndexOPENING); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
 				if(iIndexCLOSING <= -1) break main;
 			
 				
 				sTagPartName = StringZZZ.midLeftRight(sRIGHT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
 				
 				//Ein gueltiges Tag gefunden? //Leere Tags werden nicht beruecksichtigt				
 				sTagPartNameProof = StringZZZ.stripLeft(sTagPartName, "/"); //Egal ob Oeffnendes oder Schliessendes Tag
 				bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartNameProof);
-				if(!bValidTagName) {
-					sTagPartName=null;
-					sRIGHT = StringZZZ.left(sRIGHT, iIndexCLOSING);
-				}else{
+				if(bValidTagName) {					
 					bGoon=true;
+					break;
 				}
 				
+				sRIGHT = StringZZZ.left(sRIGHT, iIndexCLOSING);
 			} while(bGoon==false);
 			
 			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
@@ -728,18 +724,100 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static String findFirstOpeningTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
+			String sRIGHT = StringZZZ.right(sXml, sSep);
+			if(StringZZZ.isEmpty(sRIGHT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; 
+			do {
+ 				
+				iIndexOPENING = StringZZZ.indexOfFirstBehind(sRIGHT, "<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexOPENING <= -1) break main;
+
+				iIndexCLOSING = StringZZZ.indexOfFirstBefore(sRIGHT,  ">", iIndexOPENING);
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+	
+				sTagPartName = StringZZZ.midLeftRight(sRIGHT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
+				
+				//Ein gueltiges OEFFNENDES Tag gefunden? 
+				if(StringZZZ.startsWith(sTagPartName, "/")) {
+					//Kein oeffnendes Tag gefunden
+				}else {
+					if(StringZZZ.endsWith(sTagPartName, "/")) {
+						//Leere Tags werden nicht beruecksichtigt
+					}else {						
+						bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
+						if(bValidTagName) {
+							bGoon=true;
+							break;
+						}
+					}
+				}
+				
+				sTagPartName=null;
+				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1); //Vorbereitung zum Weitersuchen.
+			} while(bGoon==false);
+			
+			sReturn = "<" + sTagPartName + ">";
 		}//end main:
-		return sReturn;					
+		return sReturn;			
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static String findFirstClosingTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
+			String sRIGHT = StringZZZ.right(sXml, sSep);
+			if(StringZZZ.isEmpty(sRIGHT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; 
+			do {
+ 				
+				iIndexOPENING = StringZZZ.indexOfFirstBehind(sRIGHT, "</"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexOPENING <= -1) break main;
+
+				iIndexCLOSING = StringZZZ.indexOfFirstBefore(sRIGHT,  ">", iIndexOPENING);
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+	
+				sTagPartName = StringZZZ.midLeftRight(sRIGHT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
+				
+				//Kein schliesendes Tag gefunden
+				if(StringZZZ.endsWith(sTagPartName, "/")) {
+					//Leere Tags werden nicht beruecksichtigt
+				}else {						
+					bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
+					if(bValidTagName) {
+						bGoon=true;
+						break;
+					}
+				}
+				
+				
+				sTagPartName=null;
+				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1); //Vorbereitung zum Weitersuchen.
+				
+				
+			
+			} while(bGoon==false);
+			
+			sReturn = "</" + sTagPartName + ">";
 		}//end main:
-		return sReturn;					
+		return sReturn;						
 	}
 	
 	
@@ -761,7 +839,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 				vecReturn = StringZZZ.vecSplitFirst(sExpression, objTagType.getTagPartEmpty(), false,true);				
 				
 			}else {
-				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartStarting(), objTagType.getTagPartClosing(), false,true);
+				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartOpening(), objTagType.getTagPartClosing(), false,true);
 				
 			}
 		}
@@ -771,7 +849,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static boolean isExpression(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sExpression, objTagType.getTagPartStarting(), false);
+			boolean btemp = StringZZZ.contains(sExpression, objTagType.getTagPartOpening(), false);
 			if(btemp) {
 				btemp = StringZZZ.contains(sExpression, objTagType.getTagPartClosing(), false);
 				if(btemp==false) break main;

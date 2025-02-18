@@ -88,7 +88,7 @@ public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicZZZ implement
 	public String getTagStarting() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
-			return objType.getTagPartStarting();
+			return objType.getTagPartOpening();
 		}else {
 			return "";
 		}

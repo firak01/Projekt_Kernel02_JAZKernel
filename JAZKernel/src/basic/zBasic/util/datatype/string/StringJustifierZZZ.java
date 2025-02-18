@@ -172,7 +172,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 	}
 	
 	public static int indexOfInfoPartBoundLeftBehindStatic(String sLog, String sPositionSeparator) {
-		return StringZZZ.indexOfFirstBehind(sLog, sPositionSeparator);				
+		return StringZZZ.indexOfFirstBefore(sLog, sPositionSeparator);				
 	}
 
 	
