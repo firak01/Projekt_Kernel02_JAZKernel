@@ -290,6 +290,45 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return org.apache.xerces.util.XMLChar.isValidName(sTagName);
 	}
 	
+	//+++++++++++++++++++++++++++++
+	/**FGL: Der intern verwendete RegEx funktioniert nur, wenn man den ersten Tag kennt, beim Namen
+	 * @param sXml
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 09.06.2024, 11:17:35
+	 */
+	public static ITagByTypeZZZ getTagNextByName(String sTagName, String sXml) throws ExceptionZZZ {
+		ITagByTypeZZZ objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sTagName)) break main;
+			if(StringZZZ.isEmpty(sXml)) break main;
+			
+			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )		
+			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
+			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
+			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+					
+			objReturn = TagByTypeFactoryZZZ.createTagByName(sTagName);
+			
+			Pattern regex = Pattern.compile(sTagOpening + "(.*?)" + sTagClosing, Pattern.DOTALL);
+			Matcher matcher = regex.matcher(sXml);
+			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
+			if (matcher.find()) {
+			    String DataElements = matcher.group(1);
+		    	System.out.println(DataElements);
+			    Matcher matcher2 = regex2.matcher(DataElements);
+			    while (matcher2.find()) {
+			        //list.add(new DataElement(matcher2.group(1), matcher2.group(2)));
+			    	String stemp = matcher2.group(2);
+			    	System.out.println(stemp);
+			    	
+			    } 
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
 	//######################################
 	//### Ensure wirft immer eine Exception, wenn was nicht klappt
 	//######################################
@@ -415,49 +454,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	//+++++++++++++++++++++++++++++
-	/**FGL: Der intern verwendete RegEx funktioniert nur, wenn man den ersten Tag kennt, beim Namen
-	 * @param sXml
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 09.06.2024, 11:17:35
-	 */
-	public static ITagByTypeZZZ getTagNextByName(String sTagName, String sXml) throws ExceptionZZZ {
-		ITagByTypeZZZ objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sTagName)) break main;
-			if(StringZZZ.isEmpty(sXml)) break main;
-			
-			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )		
-			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
-			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
-			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
-					
-			objReturn = TagByTypeFactoryZZZ.createTagByName(sTagName);
-			
-			Pattern regex = Pattern.compile(sTagOpening + "(.*?)" + sTagClosing, Pattern.DOTALL);
-			Matcher matcher = regex.matcher(sXml);
-			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
-			if (matcher.find()) {
-			    String DataElements = matcher.group(1);
-		    	System.out.println(DataElements);
-			    Matcher matcher2 = regex2.matcher(DataElements);
-			    while (matcher2.find()) {
-			        //list.add(new DataElement(matcher2.group(1), matcher2.group(2)));
-			    	String stemp = matcher2.group(2);
-			    	System.out.println(stemp);
-			    	
-			    } 
-			}
-			
-		}//end main:
-		return objReturn;
-	}
-	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//+++ Find PREVIOUS
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
+	//########################################
+	//### PREVIOUS
+	//########################################
+				
 	public static String findFirstTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -515,11 +515,8 @@ public class XmlUtilZZZ implements IConstantZZZ{
 				iIndexCLOSING = sLEFT.lastIndexOf(">");
 				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-				iIndexOPENING = iIndexCLOSING;
-				while(iIndexOPENING>=iIndexCLOSING){			
-					iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
-					if(iIndexOPENING <= -1) break main;
-				}
+				iIndexOPENING = sLEFT.lastIndexOf("<"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexOPENING <= -1) break main;
 				
 				
 				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
@@ -644,10 +641,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//+++ NEXT
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
+	//########################################
+	//### NEXT
+	//########################################
+
 	public static String findFirstTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -688,9 +685,43 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
+			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
+			String sRIGHT = StringZZZ.right(sXml, sSep);
+			if(StringZZZ.isEmpty(sRIGHT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; String sTagPartNameProof = null;
+			do {
+ 				
+				iIndexOPENING = sRIGHT.indexOf("<");
+				if(iIndexOPENING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+				TODOGOON20250218;
+				iIndexCLOSING = sRIGHT.indexOf(">"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexCLOSING <= -1) break main;
+			
+				
+				sTagPartName = StringZZZ.midLeftRight(sRIGHT, iIndexOPENING, iIndexCLOSING);
+				
+				//Ein gueltiges Tag gefunden? //Leere Tags werden nicht beruecksichtigt				
+				sTagPartNameProof = StringZZZ.stripLeft(sTagPartName, "/"); //Egal ob Oeffnendes oder Schliessendes Tag
+				bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartNameProof);
+				if(!bValidTagName) {
+					sTagPartName=null;
+					sRIGHT = StringZZZ.left(sRIGHT, iIndexCLOSING);
+				}else{
+					bGoon=true;
+				}
+				
+			} while(bGoon==false);
+			
+			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
 		}//end main:
-		return sReturn;					
+		return sReturn;			
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
