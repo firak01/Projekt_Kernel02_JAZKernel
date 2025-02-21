@@ -1485,9 +1485,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 				//### 2) TEST MIT FORMULA TAG UM DIE SUBSTITUTION
 				//!!! Hier ist der Tag Z-Formula um den String mit der Ersetzung enthalten, wird hier auch nichts ersetzt.				
-				sExpression = "Der dynamische Wert1 ist <Z:formula>'<Z>[Section A]Testentry1</Z>'</Z:formula>. FGL rulez.";
-				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'<Z>Testvalue1 to be found</Z>'</Z:formula>. FGL rulez.";
-				sExpressionSolved = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert1 ist <Z:formula>'{[Section A]Testentry1}'</Z:formula>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'Testvalue1 to be found'</Z:formula>. FGL rulez.";
+				sExpressionSolved = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
 				
 				//TODOGOON20250129;//Interessantes Problem. Path soll nicht aufgeloest werden. 
 				                 //Momentan wird als TAG zurueckgegeben: [Section A]Testentry1
@@ -1500,28 +1500,28 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 								 //ABER: Beim Parsen is der Tag wirklich alles, was in z:formula drin ist.
 				                 //Also bleibt beim Parsen der Z-TAG drin.
 				
-				sTag = "'<Z>[Section A]Testentry1</Z>'";								
-				sTagSolved = "'<Z>Testvalue1 to be found</Z>'";
+				sTag = "'{[Section A]Testentry1}'";								
+				sTagSolved = "'Testvalue1 to be found'";
 				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 
 				//###############################
 				//Wiederholungstest von 2)... der gleiche Test muss auch wieder funktionieren
 				//20250111: Zwei Tests hintereinander. Das gibt einen Fehler.
 				//Der dynamische Wert1 ist '<Z><Z>[Section A]Testentry1</Z></Z>'. FGL rulez.
-				sExpression = "Der dynamische Wert1 ist <Z:formula>'<Z>[Section A]Testentry1</Z>'</Z:formula>. FGL rulez.";
-				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'<Z>Testvalue1 to be found</Z>'</Z:formula>. FGL rulez.";
-				sExpressionSolved = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert1 ist <Z:formula>'{[Section A]Testentry1}'</Z:formula>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert1 ist <Z:formula>'Testvalue1 to be found'</Z:formula>. FGL rulez.";
+				sExpressionSolved = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
 				
-				sTag = "'<Z>[Section A]Testentry1</Z>'";						
-				sTagSolved = "'<Z>Testvalue1 to be found</Z>'";
+				sTag = "'{[Section A]Testentry1}'";						
+				sTagSolved = "'Testvalue1 to be found'";
 				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 				//################################
 				//Wiederholungstest von 1)... der gleiche Test muss auch wieder funktionieren
 				//20250111: Zwei Tests hintereinander. Das gibt einen Fehler.
 				//!!! Weil der Tag Z-Formula nicht in dem String enthalten ist, wird hier auch nichts ersetzt.
-				sExpression = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";				
-				sExpressionSubstituted = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert1 ist <Z>'{[Section A]Testentry1}'</Z>. FGL rulez.";				
+				sExpressionSubstituted = "Der dynamische Wert1 ist <Z>'{[Section A]Testentry1}'</Z>. FGL rulez.";
 				sExpressionSolved = sExpressionSubstituted;
 				
 				sTag = "";
@@ -1549,23 +1549,23 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				objStreamFile.println("Testentry2=Testvalue2 global. This should not be found");
 				
 				*/								
-				sExpression = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";
-				sExpressionSubstituted = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez."; 
-				sExpressionSolved = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert2 ist <Z>'{[Section B]Testentry2}'</Z>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert2 ist <Z>'Testvalue2 local to be found'</Z>. FGL rulez."; 
+				sExpressionSolved = "Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.";
 				
-				sTag = "[Section B]Testentry2";								
-				sTagSolved = "Testvalue2 local to be found";
+				sTag = "'{[Section B]Testentry2}'";								
+				sTagSolved = "'Testvalue2 local to be found'";
 				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				
 				//Wiederholungstest... der gleiche Test muss auch wieder funktionieren
-				sTag = "[Section B]Testentry2";								
-				sTagSolved = "Testvalue2 local to be found";
+				sTag = "'{[Section B]Testentry2}'";								
+				sTagSolved = "'Testvalue2 local to be found'";
 				testCompute_FORMULA_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				
 				
 				//Reihenfolgetest... nun muss der erste Test auch wieder funktionieren
-				sExpression = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-				sExpressionSubstituted = "Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
+				sExpression = "Der dynamische Wert ist <Z>'{[Section A]Testentry1}}'</Z>. FGL rulez.";
+				sExpressionSubstituted = "Der dynamische Wert ist <Z>'{[Section A]Testentry1}'</Z>. FGL rulez.";
 				sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 				
 				sTag = "[Section A]Testentry1";								

@@ -33,7 +33,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//Merke: In RegEx Ausdruechen muessen eckige Klammern mit Backslash escaped werden. 
 	//public static String sTAG_NAME = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text
 	//public static String sTAG_NAME = ".*<Z>.*\\[[^\"].*[^\"]\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
-	public static String sTAG_NAME = ".*<[^/].*>.*\\[[^\"].*[^\"]\\].*<[/].*>.*"; //finde einen Ausdruck in eckigen Klammern mit Tags (erstes Tag ohne Slash) drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
+	//public static String sTAG_NAME = ".*<[^/].*>.*\\[[^\"].*[^\"]\\].*<[/].*>.*"; //finde einen Ausdruck in eckigen Klammern mit Tags (erstes Tag ohne Slash) drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
+	public static String sTAG_NAME = ".*\\{\\[.*[^\"']\\].*\\}.*"; //finde einen Ausdruck in geschweiften Klammern drumherum PLUS finde einen Ausdruck in eckigen Klammern und ggfs. Text, aber OHNE Hochkommata (was hier im Ausdruck fuer Java escaped ist), einfaches Hochkommata etc.
 	
 		
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
@@ -304,8 +305,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//++++++++++++++++++++++++++++++++++++++
 			boolean bReturnSeparators = !bRemoveSurroundingSeparators;
-			String sSepLeft = this.getTagStarting();
-			String sSepRight = "<";
+			//String sSepLeft = this.getTagStarting();
+			//String sSepRight = "<";
 			
 			//A) Damit der Pfad korrekt ermittelt werden kann muss das Z-Tag drumherum bleiben
 			
@@ -326,8 +327,18 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//20250215
 			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen, darum mal ein </Z> anhaengen
 			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", sSepLeft, sSepRight, false);
-			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.
+			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.									
+			
+			//TODOGOON20250221; //Ermittle als Trenner das Tag Links, rechts von dem XPath-Tags.
+			String sTagXPathStarting = this.getTagStarting();
+			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
+			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
+			
 			vecReturn = StringZZZ.vecMidFirstKeep(sExpression + "</Z>", sSepLeft, sSepRight, false);
+			
+			//TODOGOON20250221;//Definiere einen XPath als Ausdruck, der in geschweiften Klammern zu sein hat!!! Also {[Section]Property}
+			                   //Damit kann dann davor/dahinter beliebiger Text folgen
+			
 			
 			String sLeft = (String) vecReturn.get(0);			
 			String sMid = (String) vecReturn.get(1);
