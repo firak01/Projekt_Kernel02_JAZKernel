@@ -850,13 +850,15 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			bReturn = XmlUtilZZZ.containsTagName(sExpression, "Z", false);
 			if(bReturn) break main;
 			
+			TODOGOON20250221;//alle MEtoden mit einem boolean bCaseSensitve versehen!!!
+			
 			//Ein Z-Tag ist nicht zwingend notwendig
 			//Weil nur der Start-Tag nicht reicht, auch den Ende Tag mitnehmen.
-			int iIndex = StringZZZ.indexOfFirst(sExpression, "<Z:");
+			int iIndex = StringZZZ.indexOfFirst(sExpression, "<Z:", false);
 			if (iIndex<=-1)break main;
 			
 			//Das Ende Tag sollte auch hinter dem Starttag liegen
-			iIndex = StringZZZ.indexOfFirst(sExpression, "</Z:", iIndex);
+			iIndex = StringZZZ.indexOfFirst(sExpression, "</Z:", iIndex, false);
 			if (iIndex<=-1)break main;
 						
 		}//end main:
