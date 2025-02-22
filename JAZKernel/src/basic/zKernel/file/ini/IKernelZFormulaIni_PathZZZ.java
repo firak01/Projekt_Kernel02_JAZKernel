@@ -6,11 +6,6 @@ import basic.zBasic.component.IModuleZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 
 public interface IKernelZFormulaIni_PathZZZ {
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
-	//getExpressionTagName()
-	//getExpressionTagStarting()
-	//getExpressionTagClosing()
-	//getExpressionTagEmpty()
  
 	public enum FLAGZ{
 		USEEXPRESSION_PATH

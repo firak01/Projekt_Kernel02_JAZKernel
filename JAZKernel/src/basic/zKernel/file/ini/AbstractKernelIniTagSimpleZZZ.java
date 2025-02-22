@@ -556,7 +556,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(!bUseExpression) break main;
 			
 			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
+			if(XmlUtilZZZ.isExpression(sExpression)) {
 				objEntry.isExpression(true);				
 			}
 						
@@ -664,6 +664,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}	
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
+		sReturnTag = sReturnLine;
 		objEntry.isParseCalled(true);
 				
 		main:{
@@ -675,7 +676,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
 			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.			
-			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
+			if(XmlUtilZZZ.isExpression(sExpression)){
 				objEntry.isExpression(true);
 			}	
 						
@@ -774,8 +775,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";
 					
-					String sTagContainerStart = this.getTagStarting();
-					String sTagContainerEnd = this.getTagClosing();					
+					String sTagContainerStart = this.getTagPartOpening();
+					String sTagContainerEnd = this.getTagPartClosing();					
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd); //also von aussen nach innen!!!
 					
 										
@@ -793,8 +794,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
 					sReturnTag = (String) vecReturn.get(1); 
 				
-					String sTagStart = this.getTagStarting();
-					String sTagEnd = this.getTagClosing();								
+					String sTagStart = this.getTagPartOpening();
+					String sTagEnd = this.getTagPartClosing();								
 					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 				}
 				
@@ -809,7 +810,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//Und ihm auch keinene Extra Wert zuweisen.
 				
 				//sondern nur den aus vecReturn
-				sReturnTag = (String) vecReturn.get(1);
+				//sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = VectorUtilZZZ.implode(vecReturn);
 			}
 			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
@@ -818,7 +820,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);						
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 				
 		if(objEntry!=null) {			
@@ -955,7 +957,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpression);
 			objEntry.isParseCalled(true);	
 			sReturnLine = sExpression;
-			
+			sReturnTag = sReturnLine;
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 						
@@ -969,8 +971,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";
 					
-					String sTagContainerStart = this.getTagStarting();
-					String sTagContainerEnd = this.getTagClosing();					
+					String sTagContainerStart = this.getTagPartOpening();
+					String sTagContainerEnd = this.getTagPartClosing();					
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd); //also von aussen nach innen!!!
 					
 										
@@ -986,8 +988,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				sReturnTag = (String) vecReturn.get(1); 
 				
 				if(bRemoveOwnTagParts) {
-					String sTagStart = this.getTagStarting();
-					String sTagEnd = this.getTagClosing();								
+					String sTagStart = this.getTagPartOpening();
+					String sTagEnd = this.getTagPartClosing();								
 					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 				}
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
@@ -998,12 +1000,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//Und ihm auch keinene Extra Wert zuweisen.
 				
 				//sondern nur den aus vecReturn
-				sReturnTag = (String) vecReturn.get(1);
+				//sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = VectorUtilZZZ.implode(vecReturn);
 			}
 		}//end main:
 				
 		//#################################
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		sReturn = sReturnLine;
 		
@@ -1153,7 +1156,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		bReturn = this.getEmpty().equalsIgnoreCase(sExpression);
 		if(bReturn) break main;
 	
-		bReturn = XmlUtilZZZ.isSurroundedByTag(sExpression, this.getTagStarting(), this.getTagClosing());		
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sExpression, this.getTagPartOpening(), this.getTagPartClosing());		
 	}//end main
 	return bReturn;
 	}
@@ -1575,7 +1578,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 				
 			}//end main:
-			if(sReturnTag!=null) this.setValue(sReturnTag);
+			this.setValue(sReturnTag);
 			sReturnLine = sReturnTag;
 			sReturn = sReturnLine;
 						

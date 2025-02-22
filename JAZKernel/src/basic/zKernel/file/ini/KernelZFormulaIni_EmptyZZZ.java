@@ -56,7 +56,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
 			
 			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
 			vecReturn.replace("");

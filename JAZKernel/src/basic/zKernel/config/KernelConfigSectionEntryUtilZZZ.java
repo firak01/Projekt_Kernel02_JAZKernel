@@ -439,7 +439,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
 				ex.setEntry(objEntry);
 												
-				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagStarting(), ex.getTagClosing(), !bForFurtherProcessing);
+				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
 				String sValue = vecValue.get(1);
 								
 				if(!StringZZZ.equals(sValue,sExpression)){

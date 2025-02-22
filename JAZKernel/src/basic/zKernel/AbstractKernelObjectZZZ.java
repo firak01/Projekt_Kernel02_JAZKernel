@@ -450,7 +450,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			IKernelConfigZZZ objConfig = this.getConfigObject();
 			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();			
 			//if(sDirectoryConfig.equals("")||KernelZFormulaIni_EmptyZZZ.getTagEmpty().equals(sDirectoryConfig)){
-			if(sDirectoryConfig.equals("")||XmlUtilZZZ.computeTagPartEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME).equals(sDirectoryConfig)){
+			if(sDirectoryConfig.equals("")||XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME).equals(sDirectoryConfig)){
 				String sDirConfigTemp = AbstractKernelObjectZZZ.sDIRECTORY_CONFIG_DEFAULT; 
 				objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
@@ -481,7 +481,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;
 					}			
 				}									
-		}else if(sDirectoryConfig==null || XmlUtilZZZ.computeTagPartEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME).equals(sDirectoryConfig)){
+		}else if(sDirectoryConfig==null || XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME).equals(sDirectoryConfig)){
 			
 			//Pfad relativ zum Eclipse Workspace
 			URL workspaceURL=null;;

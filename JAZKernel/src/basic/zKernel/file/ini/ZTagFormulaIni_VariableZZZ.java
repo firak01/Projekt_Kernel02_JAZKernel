@@ -100,7 +100,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			if(!bUseExpressionPath) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
 			
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;

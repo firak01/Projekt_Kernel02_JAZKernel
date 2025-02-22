@@ -84,7 +84,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 			
 	@Override
-	public String getTagStarting() throws ExceptionZZZ{
+	public String getTagPartOpening() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -94,7 +94,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	@Override
-	public String getTagClosing() throws ExceptionZZZ{
+	public String getTagPartClosing() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -110,7 +110,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
+		return XmlUtilZZZ.computeTagEmpty(sTagName);
 	}	
 	
 	@Override
@@ -128,7 +128,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				break main;
 			}
 			
-			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
+			sReturn = this.getTagPartOpening() + sValue + this.getTagPartClosing();
 		}
 		return sReturn;
 	}
@@ -362,8 +362,8 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			if(bRemoveOwnTagParts) {				
 				//Aber: den Wert des eigenen Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt. 				
-				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();
+				String sTagStart = this.getTagPartOpening();
+				String sTagEnd = this.getTagPartClosing();
 				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturn, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 				this.setValue(sReturnTag);	
 			}
@@ -470,7 +470,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sExpression = sExpressionIn;
 			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), !bRemoveSurroundingSeparators, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), !bRemoveSurroundingSeparators, false);
 			if(vecReturn==null)break main;			
 						
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 

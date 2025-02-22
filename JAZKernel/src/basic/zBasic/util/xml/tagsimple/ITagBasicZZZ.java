@@ -9,10 +9,10 @@ public interface ITagBasicZZZ extends IValueUserZZZ {
 	public abstract void setName(String sTagName) throws ExceptionZZZ;
 	
 	//Berechne wie ein einfaches Tag (also ohne Attribute) aussieht, fuer diesen Namen
-	String getTagStarting() throws ExceptionZZZ;
-	String getTagClosing() throws ExceptionZZZ;
+	String getTagPartOpening() throws ExceptionZZZ;
+	String getTagPartClosing() throws ExceptionZZZ;
 	String getTagEmpty() throws ExceptionZZZ;
-	String getEmpty() throws ExceptionZZZ;
+	String getEmpty() throws ExceptionZZZ;//wie getTagEmpty
 
 	//Berechne den Tag mit den enthaltenden Wert
 	//20240520: Im Hinterkopf behalten, dass es ja org.w3c.dom.Element gibt. 

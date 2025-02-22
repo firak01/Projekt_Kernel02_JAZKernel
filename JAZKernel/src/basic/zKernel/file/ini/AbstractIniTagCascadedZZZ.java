@@ -75,8 +75,8 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			String sExpressionWithTags = VectorUtilZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
 			
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
-			String sTagStart = this.getTagStarting();
-			String sTagEnd = this.getTagClosing();
+			String sTagStart = this.getTagPartOpening();
+			String sTagEnd = this.getTagPartClosing();
 			String sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
 			

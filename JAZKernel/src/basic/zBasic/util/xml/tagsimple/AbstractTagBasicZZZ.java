@@ -65,7 +65,7 @@ public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<
 	}
 			
 	@Override
-	public String getTagStarting() throws ExceptionZZZ{
+	public String getTagPartOpening() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -75,7 +75,7 @@ public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<
 	}
 	
 	@Override
-	public String getTagClosing() throws ExceptionZZZ{
+	public String getTagPartClosing() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -91,7 +91,7 @@ public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
+		return XmlUtilZZZ.computeTagEmpty(sTagName);
 	}	
 	
 	@Override
@@ -109,7 +109,7 @@ public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<
 				break main;
 			}
 			
-			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
+			sReturn = this.getTagPartOpening() + sValue + this.getTagPartClosing();
 		}
 		return sReturn;
 	}

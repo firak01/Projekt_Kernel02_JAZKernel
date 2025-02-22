@@ -85,7 +85,7 @@ public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicZZZ implement
 
 	//+++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String getTagStarting() throws ExceptionZZZ{
+	public String getTagPartOpening() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartOpening();
@@ -95,7 +95,7 @@ public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicZZZ implement
 	}
 	
 	@Override
-	public String getTagClosing() throws ExceptionZZZ{				
+	public String getTagPartClosing() throws ExceptionZZZ{				
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartClosing();

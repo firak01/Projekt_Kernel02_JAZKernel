@@ -180,7 +180,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nein, nichts ersetzten, die ganze Zeile behaelt beim Parsen auch die Tags. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);	
+		this.setValue(sReturnTag);	
 				
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);

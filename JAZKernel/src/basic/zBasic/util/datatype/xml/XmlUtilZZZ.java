@@ -108,17 +108,13 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//++++++++++++++++++++++
 	public static String computeTagNull() throws ExceptionZZZ {
-		return XmlUtilZZZ.computeTagPartEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME);
+		return XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME);
 	}	
 	
 	public static String computeTagEmpty() throws ExceptionZZZ {
-		return XmlUtilZZZ.computeTagPartEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);
+		return XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);
 	}
-	
-	public static String computeTagEmpty(String sTagName) throws ExceptionZZZ {
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
-	}
-	
+		
 	//+++++++++++++++++++++
 	public static String computeTagNameFromTagPart(String sTagPart) throws ExceptionZZZ{
 		String sReturn = null;
@@ -144,14 +140,14 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return "<" + sTagName + ">";		
 	}
 	
-	public static String computeTagPartEmpty(String sTagName) throws ExceptionZZZ {
-		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);				
-		return "<" + sTagName + "/>"; 		
-	}
-	
 	public static String computeTagPartClosing(String sTagName) throws ExceptionZZZ {	
 		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
 		return "</" + sTagName + ">"; 		
+	}
+	
+	public static String computeTagEmpty(String sTagName) throws ExceptionZZZ {
+		XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);				
+		return "<" + sTagName + "/>"; 		
 	}
 	
 	//################################
@@ -844,6 +840,27 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			}
 		}
 		return vecReturn;
+	}
+	
+	public static boolean isExpression(String sExpression) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			bReturn = XmlUtilZZZ.containsTagName(sExpression, "Z", false);
+			if(bReturn) break main;
+			
+			//Ein Z-Tag ist nicht zwingend notwendig
+			//Weil nur der Start-Tag nicht reicht, auch den Ende Tag mitnehmen.
+			int iIndex = StringZZZ.indexOfFirst(sExpression, "<Z:");
+			if (iIndex<=-1)break main;
+			
+			//Das Ende Tag sollte auch hinter dem Starttag liegen
+			iIndex = StringZZZ.indexOfFirst(sExpression, "</Z:", iIndex);
+			if (iIndex<=-1)break main;
+						
+		}//end main:
+		return bReturn;
 	}
 	
 	public static boolean isExpression(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{

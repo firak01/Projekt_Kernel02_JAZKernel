@@ -411,6 +411,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
 		sReturnLine=sExpressionIn;
+		sReturnTag=sReturnLine;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		sReturn = sReturnLine;
 		
@@ -436,7 +437,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnTag = this.getValue();
 			if(vecReturn==null) break main;
 			
-			sReturnTagParsed = (String) vecReturn.get(1); //Nicht sReturnTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
+			sReturnTagParsed = sReturnTag; //(String) vecReturn.get(1); //Nicht sReturnTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
 						
 			//Rufe nun solveParsed() auf...
@@ -462,7 +463,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);	
+		this.setValue(sReturnTag);	
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
@@ -618,8 +619,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
 			if(bUseExpression & bUseSolver & bUseSolverThis){
-				String sTagStart = this.getTagStarting();
-				String sTagEnd = this.getTagClosing();
+				String sTagStart = this.getTagPartOpening();
+				String sTagEnd = this.getTagPartClosing();
 				if(sTagStart.equalsIgnoreCase("<Z>")) {
 					//dann mache nix... der Tag wird spaeter behandelt...
 				}else {

@@ -134,7 +134,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 
 		main:{			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagStarting(), this.getTagClosing(), bRemoveSurroundingSeparators);
+			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), bRemoveSurroundingSeparators);
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
@@ -239,7 +239,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 			
 	@Override
-	public String getTagStarting() throws ExceptionZZZ{
+	public String getTagPartOpening() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -249,7 +249,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 	
 	@Override
-	public String getTagClosing() throws ExceptionZZZ{
+	public String getTagPartClosing() throws ExceptionZZZ{
 		String sTagName = this.getName();
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -265,7 +265,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
+		return XmlUtilZZZ.computeTagEmpty(sTagName);
 	}	
 	
 	@Override
@@ -283,7 +283,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 				break main;
 			}
 			
-			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
+			sReturn = this.getTagPartOpening() + sValue + this.getTagPartClosing();
 		}
 		return sReturn;
 	}

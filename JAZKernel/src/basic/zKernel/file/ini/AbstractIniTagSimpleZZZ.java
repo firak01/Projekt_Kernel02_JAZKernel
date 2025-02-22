@@ -74,7 +74,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		if(bReturn) break main;
 	
 		
-		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagStarting(), this.getTagClosing());		
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing());		
 	}//end main
 	return bReturn;
 	}

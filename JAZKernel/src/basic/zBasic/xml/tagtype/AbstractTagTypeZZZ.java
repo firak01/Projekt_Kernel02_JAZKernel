@@ -51,6 +51,6 @@ public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements IT
 	@Override
 	public String getTagPartEmpty() throws ExceptionZZZ{
 		String sTagName = this.getTagName();
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
+		return XmlUtilZZZ.computeTagEmpty(sTagName);
 	}
 }

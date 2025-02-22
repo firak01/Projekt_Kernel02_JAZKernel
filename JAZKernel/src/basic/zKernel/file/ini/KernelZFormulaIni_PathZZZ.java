@@ -26,7 +26,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * 
  * @author Fritz Lindhauer, 12.07.2024, 09:26:56 
  */
-public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelFileIniUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIni_PathZZZ{
+public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelFileIniUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIni_PathTagZZZ{
 	private static final long serialVersionUID = -6403139308573148654L;
 	
 	//Hier kein Tag-Name sondern eine RegEx. Der Tag ist definiert als [section]property
@@ -212,11 +212,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
 			//Also: 
 			//boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagStarting(), this.getTagClosing(), false);
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			if(!bAsTagFound) break main;
 			
-			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagClosing().toLowerCase());
-			iIndexClosing=iIndexClosing+this.getTagClosing().length();
+			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagPartClosing().toLowerCase());
+			iIndexClosing=iIndexClosing+this.getTagPartClosing().length();
 			String sRest = sLine.substring(iIndexClosing);
 			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
 			
@@ -330,11 +330,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.									
 			
 			//TODOGOON20250221; //Ermittle als Trenner das Tag Links, rechts von dem XPath-Tags.
-			String sTagXPathStarting = this.getTagStarting();
+			String sTagXPathStarting = this.getTagPartOpening();
 			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
 			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
 			
-			vecReturn = StringZZZ.vecMidFirstKeep(sExpression + "</Z>", sSepLeft, sSepRight, false);
+			//vecReturn = StringZZZ.vecMidFirstKeep(sExpression + "</Z>", sSepLeft, sSepRight, false);
+			vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
 			
 			//TODOGOON20250221;//Definiere einen XPath als Ausdruck, der in geschweiften Klammern zu sein hat!!! Also {[Section]Property}
 			                   //Damit kann dann davor/dahinter beliebiger Text folgen
@@ -391,9 +392,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//Merke: Es gibt: KernelZZZ.computeSectionFromSystemSection(sSystemSection)
 			//                Damit wird eine Section aus abcsection!01 geholt. 
 						
-			String sSectionTotal = (String) vecReturn.get(1);
+			String sTagValueTotal = (String) vecReturn.get(1);
+			Vector3ZZZ<String> vecTagValueTotal = StringZZZ.vecMidFirstKeepSeparatorCentral(sTagValueTotal, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			
-			String sSection = StringZZZ.midLeftRightback(this.getTagStarting() + sSectionTotal + this.getTagClosing(), this.getTagStarting(), this.getTagClosing());
+			String sTagValue = (String) vecTagValueTotal.get(1);
+			
+			//String sSection = StringZZZ.midLeftRightback(this.getTagPartOpening() + sTagValueTotal + this.getTagPartClosing(), this.getTagPartOpening(), this.getTagPartClosing());
 			
 //			//Erste Annahme: Path Ausdruck hat noch die Z-Tags drumherum, also "<"
 //			String sProperty = StringZZZ.midLeftRightback(sSectionTotal +this.getTagClosing(), sSection + this.getTagClosing(), sSepRight);
@@ -402,16 +406,19 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 //			}
 			
 			//20250215
-			String sProperty = StringZZZ.right(sSectionTotal, this.getTagStarting() + sSection + this.getTagClosing());
+			String sSection = StringZZZ.midLeftRightback(sTagValue, this.getTagPartOpening(), this.getSectionClosing());
+			String sProperty = StringZZZ.midLeftRightback(sTagValue, this.getSectionClosing(), this.getTagPartClosing());
 									
 			sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
-			vecReturn.replace(sReturnTag);
+			vecTagValueTotal.replace(sReturnTag);						
+			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
+			vecReturn.replace(sReturnTag); //Übernimm den ersetzten Wert mit ggfs. vorhandenen Zeichen drumherum in die Rückgabe
 			
 			//Wichtige Nacharbeiten am Schluss:
 			//Das oben hinzugefuegte </Z> Tag muss wieder entfernt werden
-			sRight = (String) vecReturn.get(2);
-			sRight = StringZZZ.stripRight(sRight, "</Z>", 1);//nur 1x Strip
-			vecReturn.replace(2, sRight);	
+//			sRight = (String) vecReturn.get(2);
+//			sRight = StringZZZ.stripRight(sRight, "</Z>", 1);//nur 1x Strip
+//			vecReturn.replace(2, sRight);	
 			
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
@@ -452,24 +459,37 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	
 	//###### Getter / Setter
+	
+	//### aus IKernelZFormulaIni_PathTagZZZ
 	//Merke: Static Ausdruecke koennen erst ab Java 8 in ein Interface
-
 	@Override
-	public String getTagStarting() throws ExceptionZZZ{
-		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
+	public String getSectionOpening() {
 		return "[";
 	}
 	
 	@Override
-	public String getTagClosing() throws ExceptionZZZ{
+	public String getSectionClosing() {
+		return "]";
+	}
+	
+	//#### aus IBasicTagSimpleZZZ
+	//Merke: Static Ausdruecke koennen erst ab Java 8 in ein Interface		
+	@Override
+	public String getTagPartOpening() throws ExceptionZZZ{
 		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
-		return "]"; 
+		return "{" + this.getSectionOpening();
+	}
+	
+	@Override
+	public String getTagPartClosing() throws ExceptionZZZ{
+		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
+		return "}"; 
 	}
 	
 	@Override
 	public String getTagEmpty()throws ExceptionZZZ{
 		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
-		return "[/]";
+		return "{" + this.getSectionOpening() +"/" +this.getSectionClosing() + "}";
 	}
 		
 

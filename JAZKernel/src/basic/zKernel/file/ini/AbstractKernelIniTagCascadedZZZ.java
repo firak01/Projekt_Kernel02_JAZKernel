@@ -145,6 +145,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
 		sReturnLine = sExpressionIn;
+		sReturnTag = sReturnLine;
 		sReturn = sReturnLine;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
@@ -157,7 +158,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			
 			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
 			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.			
-			if(XmlUtilZZZ.containsTagName(sExpression, "Z", false)){
+			if(XmlUtilZZZ.isExpression(sExpression)){
 				objEntry.isExpression(true);
 			}	
 														
@@ -169,15 +170,15 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 						 
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			//Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.		   
-			String sTagOpening = this.getTagStarting();
-			String sTagClosing = this.getTagClosing();
+			String sTagOpening = this.getTagPartOpening();
+			String sTagClosing = this.getTagPartClosing();
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;			
-			sReturnTag = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
+			String sReturnToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
 								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnSubstituted = this.substituteParsed(sReturnTag, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
+			sReturnSubstituted = this.substituteParsed(sReturnToSubstitute, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSubstitute.get();						
 			vecReturn.replace(1,sReturnSubstituted);			
 								
@@ -190,7 +191,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		//Nicht ersetzen. Beim Parsen bleibt der Zeilenwert nahezu unveraendert. Der Wert des Tags wurde schon gespeichert. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN NICHT UEBERNEHMEN IN VEC(1).
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
