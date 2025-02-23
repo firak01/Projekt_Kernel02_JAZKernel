@@ -410,8 +410,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
-		sReturnLine=sExpressionIn;
-		sReturnTag=sReturnLine;
+		sReturnLine=sExpressionIn;		
+		sReturnTag = null;//falls Expression oder Parser deaktiviert ist.
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		sReturn = sReturnLine;
 		

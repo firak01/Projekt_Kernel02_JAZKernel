@@ -181,7 +181,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSolveCalled(true);
 			sReturnLine = sExpressionIn;
-			sReturnTag = sReturnLine;
+			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 			sReturn = sReturnLine;
 			
 			main:{
@@ -215,7 +215,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			}//end main
 		
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-			if(sReturnTag!=null) this.setValue(sReturnTag);		
+			this.setValue(sReturnTag);		
 			if(objEntry!=null) {		
 				objEntry.setValue(sReturn);
 				if(sExpressionIn!=null) {				

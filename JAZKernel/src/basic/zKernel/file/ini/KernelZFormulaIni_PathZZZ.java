@@ -36,7 +36,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//public static String sTAG_NAME = ".*<[^/].*>.*\\[[^\"].*[^\"]\\].*<[/].*>.*"; //finde einen Ausdruck in eckigen Klammern mit Tags (erstes Tag ohne Slash) drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
 	public static String sTAG_NAME = ".*\\{\\[.*[^\"']\\].*\\}.*"; //finde einen Ausdruck in geschweiften Klammern drumherum PLUS finde einen Ausdruck in eckigen Klammern und ggfs. Text, aber OHNE Hochkommata (was hier im Ausdruck fuer Java escaped ist), einfaches Hochkommata etc.
 	
-		
+	public static String sSECTION_OPENING = "[";
+	public static String sSECTION_CLOSING = "]";
+	public static String sTAGPART_OPENING = "{" + sSECTION_OPENING;	
+	public static String sTAGPART_CLOSING = "}";//Merke: Hinter der Section kommt noch der Property-Text, der hat keine Trenner.
+	
+	
 	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelExpressionIniPathNew_(null);
@@ -476,20 +481,18 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//Merke: Static Ausdruecke koennen erst ab Java 8 in ein Interface		
 	@Override
 	public String getTagPartOpening() throws ExceptionZZZ{
-		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
-		return "{" + this.getSectionOpening();
+		return KernelZFormulaIni_PathZZZ.sTAGPART_OPENING;
 	}
 	
 	@Override
 	public String getTagPartClosing() throws ExceptionZZZ{
-		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
-		return "}"; 
+		return KernelZFormulaIni_PathZZZ.sTAGPART_CLOSING; 
 	}
 	
 	@Override
 	public String getTagEmpty()throws ExceptionZZZ{
 		//Merke: Das ist nicht nur ein Zeichen, sondern gilt wirklich als ganzes Tag
-		return "{" + this.getSectionOpening() +"/" +this.getSectionClosing() + "}";
+		return KernelZFormulaIni_PathZZZ.sTAGPART_OPENING + KernelZFormulaIni_PathZZZ.sSECTION_CLOSING + "/" + KernelZFormulaIni_PathZZZ.sTAGPART_CLOSING;
 	}
 		
 

@@ -580,7 +580,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 				
 		if(objEntry!=null) {
@@ -664,7 +664,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}	
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
-		sReturnTag = sReturnLine;
+		sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 		objEntry.isParseCalled(true);
 				
 		main:{
@@ -762,7 +762,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);
 			objEntry.isParseCalled(true); 
 			sReturnLine = sExpressionIn;
-			sReturnTag = sReturnLine;
+			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 			sReturn = sReturnLine;
 			
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
@@ -797,12 +797,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					String sTagStart = this.getTagPartOpening();
 					String sTagEnd = this.getTagPartClosing();								
 					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+					this.setValue(sReturnTag);
 				}
 				
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
-				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);
-				
-				sReturnTag = (String) vecReturn.get(1);
+				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);				
+				sReturnTag = this.getValue();
 				objEntry.isParsed(true);
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
@@ -957,7 +957,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpression);
 			objEntry.isParseCalled(true);	
 			sReturnLine = sExpression;
-			sReturnTag = sReturnLine;
+			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 						
@@ -1325,7 +1325,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				this.setRaw(sExpressionIn);
 				objEntry.setRaw(sExpressionIn);
 				sReturnLine = sExpressionIn;
-				sReturnTag = sReturnLine;
+				sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 				sReturn = sReturnLine;
 								
 				bUseExpression = this.isExpressionEnabledGeneral(); 
@@ -1381,7 +1381,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				this.setRaw(sExpressionIn);
 				objEntry.setRaw(sExpressionIn);
 				sReturnLine = sExpressionIn;
-				sReturnTag = sReturnLine;
+				sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 				sReturn = sReturnLine;
 								
 				bUseExpression = this.isExpressionEnabledGeneral(); 
@@ -1464,7 +1464,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSubstituteCalled(true);
 			sReturnLine = sExpressionIn;
-			sReturnTag = sReturnLine;
+			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 			sReturn = sReturnLine;
 			
 			main:{						
@@ -1570,16 +1570,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					}//end if .isParseRegEx();
 				}//end if .getFlag(..USE_...Path...)
 								
-				sExpression = sReturnTag;
-				sReturnTag = this.substituteParsedPost(sExpression, objReturnReference, bRemoveSurroundingSeparators);			
+				sExpression = sReturnLine;
+				sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bRemoveSurroundingSeparators);
+				sReturnTag = this.getValue();
 				objEntry = objReturnReference.get();			
 																
 				//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
 				//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 				
 			}//end main:
-			this.setValue(sReturnTag);
-			sReturnLine = sReturnTag;
+			this.setValue(sReturnTag);			
 			sReturn = sReturnLine;
 						
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen

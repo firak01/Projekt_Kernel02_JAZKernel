@@ -145,7 +145,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
 		sReturnLine = sExpressionIn;
-		sReturnTag = sReturnLine;
+		sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
 		sReturn = sReturnLine;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		

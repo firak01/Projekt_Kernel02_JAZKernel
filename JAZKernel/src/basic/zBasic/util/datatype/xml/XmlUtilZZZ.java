@@ -21,6 +21,7 @@ import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_PathZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 /**Einfache Klasse, in der ohne ein XML-Dokument zu haben
@@ -843,24 +844,37 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	public static boolean isExpression(String sExpression) throws ExceptionZZZ{
-		boolean bReturn = false;
+		boolean bReturn = true;
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
-			bReturn = XmlUtilZZZ.containsTagName(sExpression, "Z", false);
-			if(bReturn) break main;
-			
-			TODOGOON20250221;//alle MEtoden mit einem boolean bCaseSensitve versehen!!!
-			
+			boolean bCheck = false;
+			bCheck = XmlUtilZZZ.containsTagName(sExpression, "Z", false);
+			if(bCheck) break main;
+					
 			//Ein Z-Tag ist nicht zwingend notwendig
 			//Weil nur der Start-Tag nicht reicht, auch den Ende Tag mitnehmen.
 			int iIndex = StringZZZ.indexOfFirst(sExpression, "<Z:", false);
-			if (iIndex<=-1)break main;
+			if (iIndex>=0) {
 			
-			//Das Ende Tag sollte auch hinter dem Starttag liegen
-			iIndex = StringZZZ.indexOfFirst(sExpression, "</Z:", iIndex, false);
-			if (iIndex<=-1)break main;
-						
+				//Das Ende Tag sollte auch hinter dem Starttag liegen
+				iIndex = StringZZZ.indexOfFirst(sExpression, "</Z:", iIndex, false);
+				if (iIndex>=0)break main;
+			}
+			
+			//Path Anweisungen koennen auch ohne Z-Tags hier stehen
+			iIndex = StringZZZ.indexOfFirst(sExpression, KernelZFormulaIni_PathZZZ.sTAGPART_OPENING, false);
+			if (iIndex>=0) {
+				
+				//Das Ende Tag sollte auch hinter dem Starttag liegen
+				iIndex = StringZZZ.indexOfFirst(sExpression, KernelZFormulaIni_PathZZZ.sTAGPART_CLOSING, iIndex, false);
+				if (iIndex>=0)break main;				
+			}
+			
+			//TODOGOON20250222: Evt. Noch Empty-Tag und Null-Tag hier hierein
+			
+			
+			bReturn = false;
 		}//end main:
 		return bReturn;
 	}

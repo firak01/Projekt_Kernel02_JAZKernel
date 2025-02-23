@@ -3222,6 +3222,21 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 
+	/* Merke, aus der Doku.
+If str is less than maxWidth characters long, return it.
+Else abbreviate it to (substring(str, 0, max-3) + "...").
+If maxWidth is less than 4, throw an IllegalArgumentException.
+In no case will it return a String of length greater than maxWidth.
+
+StringUtils.abbreviate(null, *)      = null
+StringUtils.abbreviate("", 4)        = ""
+StringUtils.abbreviate("abcdefg", 6) = "abc..."
+StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 4) = "a..."
+StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
+
+	 */
 	public static String abbreviateDynamic(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
 		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, true);
 	}
@@ -3271,30 +3286,26 @@ null will return false. An empty CharSequence (length()=0) will return false.
 				
 				sReturn = StringZZZ.right(sSource, iMaxCharactersAllowed-3);
 				sReturn = "..." + sReturn;
-			}
-		
-		
-		/* Merke, aus der Doku.
-If str is less than maxWidth characters long, return it.
-Else abbreviate it to (substring(str, 0, max-3) + "...").
-If maxWidth is less than 4, throw an IllegalArgumentException.
-In no case will it return a String of length greater than maxWidth.
-
-StringUtils.abbreviate(null, *)      = null
-StringUtils.abbreviate("", 4)        = ""
-StringUtils.abbreviate("abcdefg", 6) = "abc..."
-StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
-StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
-StringUtils.abbreviate("abcdefg", 4) = "a..."
-StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
-
-		 */
-		
-		
+			}		
 	}//end main:
 	return sReturn;
 	}
 	
+	/* Merke, aus der Doku.
+	If str is less than maxWidth characters long, return it.
+	Else abbreviate it to (substring(str, 0, max-3) + "...").
+	If maxWidth is less than 4, throw an IllegalArgumentException.
+	In no case will it return a String of length greater than maxWidth.
+
+	StringUtils.abbreviate(null, *)      = null
+	StringUtils.abbreviate("", 4)        = ""
+	StringUtils.abbreviate("abcdefg", 6) = "abc..."
+	StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
+	StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
+	StringUtils.abbreviate("abcdefg", 4) = "a..."
+	StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
+
+			 */
 	public static String abbreviateStrict(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
 		return abbreviateStrict_(sSource, iMaxCharactersAllowed,true);
 	}
@@ -3341,68 +3352,14 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 			}
 		
 		
-		/* Merke, aus der Doku.
-If str is less than maxWidth characters long, return it.
-Else abbreviate it to (substring(str, 0, max-3) + "...").
-If maxWidth is less than 4, throw an IllegalArgumentException.
-In no case will it return a String of length greater than maxWidth.
-
-StringUtils.abbreviate(null, *)      = null
-StringUtils.abbreviate("", 4)        = ""
-StringUtils.abbreviate("abcdefg", 6) = "abc..."
-StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
-StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
-StringUtils.abbreviate("abcdefg", 4) = "a..."
-StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
-
-		 */
+		
 		
 		
 	}//end main:
 	return sReturn;
 	}
 
-	/** Gibt ein Array aller Index-Startpostionen zurück. Das Array ist NICHT sortiert !!!
-	* @param sSource, der durchsuchte String.
-	* @param saString2Find, die Strings, die gesucht werden. D.h. es können mehrere sein.
-	* @return
-	* 
-	* lindhauer; 30.06.2007 11:43:38
-	 */
-	public static Integer[] indexOfAll(String sSource, String[] saString2Find ){
-		Integer[] intaReturn=null;
-		main:{
-			if(isEmpty(sSource)) break main;
-			if(ArrayUtilZZZ.isNull(saString2Find)) break main;
-			
-			ArrayList<Integer> listaReturn = new ArrayList<Integer>();
-			for(int icount=0; icount < saString2Find.length; icount ++){
-				String sCurrent = sSource;
-				int iIndex=-1;
-				int iIndexAdded = 0;
-				int iLengthOld = 0;
-				do{
-					iIndex = sCurrent.indexOf(saString2Find[icount]);
-					if(iIndex >= 0){
-						iIndexAdded += iIndex+iLengthOld;
-						Integer intIndexAdded = new Integer(iIndexAdded);
-						listaReturn.add(intIndexAdded);
-						
-						//Nun den String vorne abschneiden !!!
-						iLengthOld = saString2Find[icount].length();
-						sCurrent = rightback(sCurrent, iIndex+ iLengthOld);//den Index um die L�nge des zu suchenden String serweitern !!!
-					}
-				}while(iIndex >= 0 & isEmpty(sCurrent)==false);
-			}//END for
-			
-			if(listaReturn.size()>=1){
-				intaReturn = new Integer[listaReturn.size()];
-				intaReturn = listaReturn.toArray(intaReturn);
-			}
-		}//END main:
-		
-		return intaReturn;
-	}
+	//##########################################
 	
 	/** Haenge an den String den anderen String an, aber nur die Zeichen, die in dem vorherigen String noch fehlen!
 	 * 
@@ -3432,6 +3389,54 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		}//end main:
 		return sReturn;
 	}
+	
+	
+	//#############################################################
+	/** Gibt ein Array aller Index-Startpostionen zurück. Das Array ist NICHT sortiert !!!
+	* @param sSource, der durchsuchte String.
+	* @param saString2Find, die Strings, die gesucht werden. D.h. es können mehrere sein.
+	* @return
+	* 
+	* lindhauer; 30.06.2007 11:43:38
+	 */
+	public static Integer[] indexOfAll(String sSource, String[] saString2Find){
+		return StringZZZ.indexOfAll(sSource, saString2Find, true);		
+	}
+	
+	public static Integer[] indexOfAll(String sSource, String[] saString2Find, boolean bCaseSensitive ){
+		Integer[] intaReturn=null;
+		main:{
+			if(isEmpty(sSource)) break main;
+			if(ArrayUtilZZZ.isNull(saString2Find)) break main;
+			
+			ArrayList<Integer> listaReturn = new ArrayList<Integer>();
+			for(int icount=0; icount < saString2Find.length; icount ++){
+				String sCurrent = sSource;
+				int iIndex=-1;
+				int iIndexAdded = 0;
+				int iLengthOld = 0;
+				do{
+					iIndex = StringZZZ.indexOfFirst(sCurrent, saString2Find[icount], bCaseSensitive);
+					if(iIndex >= 0){
+						iIndexAdded += iIndex+iLengthOld;
+						Integer intIndexAdded = new Integer(iIndexAdded);
+						listaReturn.add(intIndexAdded);
+						
+						//Nun den String vorne abschneiden !!!
+						iLengthOld = saString2Find[icount].length();
+						sCurrent = rightback(sCurrent, iIndex+ iLengthOld);//den Index um die L�nge des zu suchenden String serweitern !!!
+					}
+				}while(iIndex >= 0 & isEmpty(sCurrent)==false);
+			}//END for
+			
+			if(listaReturn.size()>=1){
+				intaReturn = new Integer[listaReturn.size()];
+				intaReturn = listaReturn.toArray(intaReturn);
+			}
+		}//END main:
+		
+		return intaReturn;
+	}
 
 	/** wie indexOf, allerdings wird die Laenge des Strings daraufgerechnet.
 	 *  Der index ist also der Anfang des dahinterliegenden Teils
@@ -3442,13 +3447,22 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
 	 */
 	public static int indexOfFirstBefore(String sSource, String sString2Find) {
+		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, true);
+	}
+	
+	public static int indexOfFirstBefore(String sSource, String sString2Find, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.indexOf(sString2Find);
-			if(itemp==-1)break main;
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.indexOf(sString2Find);			
+			}else {
+				itemp = sSource.toLowerCase().indexOf(sString2Find.toLowerCase());
+			}
+			if(itemp<=-1)break main;
 			
 			iReturn = itemp;
 		}//end main:
@@ -3457,13 +3471,22 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	
 	
 	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting) {
+		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting, true);
+	}
+	
+	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.indexOf(sString2Find, iIndexStarting);
-			if(itemp==-1)break main;
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.indexOf(sString2Find, iIndexStarting);			
+			}else {
+				itemp = sSource.toLowerCase().indexOf(sString2Find.toLowerCase(), iIndexStarting);
+			}
+			if(itemp<=-1)break main;
 			
 			iReturn = itemp;
 		}//end main:
@@ -3471,46 +3494,65 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	public static int indexOfFirstBehind(String sSource, String sString2Find) {
+		return StringZZZ.indexOfFirstBehind(sSource, sString2Find, true);
+	}
+	
+	public static int indexOfFirstBehind(String sSource, String sString2Find, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.indexOf(sString2Find);
-			if(itemp==-1)break main;
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.indexOf(sString2Find);			
+			}else {
+				itemp = sSource.toLowerCase().indexOf(sString2Find.toLowerCase());
+			}
+			if(itemp<=-1)break main;
 			
 			iReturn = itemp + sString2Find.length();
 		}//end main:
 		return iReturn;
 	}
-	
 	
 	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting) {
+		return StringZZZ.indexOfFirstBehind(sSource, sString2Find, iIndexStarting, true);
+	}
+	
+	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.indexOf(sString2Find, iIndexStarting);
-			if(itemp==-1)break main;
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.indexOf(sString2Find, iIndexStarting);			
+			}else {
+				itemp = sSource.toLowerCase().indexOf(sString2Find.toLowerCase(), iIndexStarting);
+			}
+			if(itemp<=-1)break main;
 			
 			iReturn = itemp + sString2Find.length();
 		}//end main:
 		return iReturn;
 	}
 	
-	
 	public static int indexOfFirst(String sSource, String sString2Find) {
-		return StringZZZ.indexOfFirstBefore(sSource, sString2Find);
+		return StringZZZ.indexOfFirst(sSource, sString2Find, true);
+	}
+	public static int indexOfFirst(String sSource, String sString2Find, boolean bCaseSensitive) {
+		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, bCaseSensitive);
 	}
 	
 	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting) {
-		return  StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting);
+		return StringZZZ.indexOfFirst(sSource, sString2Find, iIndexStarting, true);
+	}
+	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+		return  StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting, bCaseSensitive);
 	}
 	
-	
-	
-
 
 	/** int, Gibt den ersten index wert zurueck, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zur�ckgegeben.
 	* Lindhauer; 13.05.2006 09:22:14
@@ -3519,14 +3561,17 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @return
 	 */
 	public static int indexOfFirst(String sSource, String[] saString2Find){
-		int iReturn=-1; //Merke: -1 wird auch zur�ckgegeben, falls der Teilstring nicht im String enthalten ist.
+		return StringZZZ.indexOfFirst(sSource, saString2Find, true);
+	}
+	public static int indexOfFirst(String sSource, String[] saString2Find, boolean bCaseSensitive){
+		int iReturn=-1; //Merke: -1 wird auch zurueckgegeben, falls keiner der Teilstring nicht im String enthalten ist.
 		main:{
-				if(isEmpty(sSource))break main;
-				if(ArrayUtilZZZ.isNull(saString2Find)) break main;
+			if(isEmpty(sSource))break main;
+			if(ArrayUtilZZZ.isNull(saString2Find)) break main;
 			
-			int iEndCur=sSource.length() + 1;
+			int iEndCur=sSource.length() + 1;			
 			for(int icount=0; icount < saString2Find.length; icount ++){
-				int iEnd = sSource.indexOf(saString2Find[icount]);
+				int iEnd = StringZZZ.indexOfFirst(sSource,saString2Find[icount], bCaseSensitive);
 				if (iEnd >= 0){
 					//Nur Strings, die auch vorkommen, "spielen mit"
 					if(iEnd==0){
@@ -3538,7 +3583,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 					}						
 				}
 			}//END for
-			
+						
 			//Falls die Laenge von iEndCur unveraendert geblieben ist, dann wurde nix gefunden. Es wird -1 zurueckgegeben
 			if(iEndCur==sSource.length()+1) break main;
 			iReturn = iEndCur;
@@ -3561,12 +3606,21 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
 	 */
 	public static int indexOfLastBefore(String sSource, String sString2Find) {
+		return StringZZZ.indexOfLastBefore(sSource, sString2Find, true);
+	}
+	
+	public static int indexOfLastBefore(String sSource, String sString2Find, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.lastIndexOf(sString2Find);
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.lastIndexOf(sString2Find);
+			}else {
+				itemp= sSource.toLowerCase().lastIndexOf(sString2Find.toLowerCase());
+			}
 			if(itemp==-1)break main;
 						
 			iReturn = itemp;
@@ -3576,12 +3630,21 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	
 		
 	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting) {
+		return StringZZZ.indexOfLastBefore(sSource, sString2Find, iIndexStarting, true);
+	}
+	
+	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			}else {
+				itemp= sSource.toLowerCase().lastIndexOf(sString2Find.toLowerCase(), iIndexStarting);
+			}
 			if(itemp==-1)break main;
 						
 			iReturn = itemp;
@@ -3589,14 +3652,22 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return iReturn;
 	}
 
-	
 	public static int indexOfLastBehind(String sSource, String sString2Find) {
+		return StringZZZ.indexOfLastBehind(sSource, sString2Find, true);
+	}
+	
+	public static int indexOfLastBehind(String sSource, String sString2Find, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.lastIndexOf(sString2Find);
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.lastIndexOf(sString2Find);
+			}else {
+				itemp = sSource.toLowerCase().lastIndexOf(sString2Find.toLowerCase());
+			}
 			if(itemp==-1)break main;
 						
 			iReturn = itemp + sString2Find.length();
@@ -3606,12 +3677,20 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	
 		
 	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting) {
+		return StringZZZ.indexOfLastBehind(sSource, sString2Find, iIndexStarting, true);
+	}
+	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
 			if(StringZZZ.isEmpty(sString2Find)) break main;
 			
-			int itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			int itemp;
+			if(bCaseSensitive) {
+				itemp = sSource.lastIndexOf(sString2Find, iIndexStarting);
+			}else {
+				itemp = sSource.toLowerCase().lastIndexOf(sString2Find.toLowerCase(), iIndexStarting);
+			}
 			if(itemp==-1)break main;
 						
 			iReturn = itemp + sString2Find.length();
