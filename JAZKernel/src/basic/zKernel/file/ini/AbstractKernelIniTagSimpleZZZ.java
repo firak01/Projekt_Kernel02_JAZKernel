@@ -1587,10 +1587,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(objEntry!=null) {		
 				objEntry.isSubstituted(true);
 				objEntry.setValue(sReturnLine);	
-				if(bUseExpression | bUseParse) {
-					if(sExpressionIn!=null) {
-						if(!sExpressionIn.equals(sReturnLine)) objEntry.isSubstitutedChanged(true);
-					}
+				if(objEntry.isPathSubstitutedChanged() | objEntry.isVariableSubstitutedChanged()) {
+					objEntry.isSubstitutedChanged(true);				
 				}
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			}
