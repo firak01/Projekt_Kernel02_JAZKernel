@@ -373,7 +373,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	String sReturnTagParsed = null;		
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	String sReturnTagParsed = null;	String sReturnLineParsed = null;	
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
@@ -439,7 +439,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			sReturnTagParsed = sReturnTag; //(String) vecReturn.get(1); //Nicht sReturnTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin. 
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
-						
+			sReturnLineParsed = sReturnLine;
+			
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
@@ -470,10 +471,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry.setValue(sReturnLine);
 			if(bUseExpression) {			
 				if(bUseSolver && bUseSolverThis) {
-					if(sReturnTagParsed!=null) {
+					if(sReturnLineParsed!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sReturnTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						if(!sReturnLineParsed.equals(sReturnLine)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
 					}
 				}
 				

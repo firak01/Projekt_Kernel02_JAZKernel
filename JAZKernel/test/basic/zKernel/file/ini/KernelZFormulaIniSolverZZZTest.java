@@ -1610,20 +1610,20 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-					//+++ Ohne Path-Substitution					
+					//+++ Mit Path-Substitution					
 					
-					//c)
-					sExpressionSolved = sExpressionIn; //Ohne Substitutionsbehandlung 
-					sTagSolved = sTagIn;
+					//d)
+					sExpressionSolved = sExpressionSolvedIn;						
 					
-					//Der Formula - Tag wird beim Solven aber entfernt, falls vorhanden
-					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagParentStart, sTagParentEnd, false);
+					//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
+					sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
 					
-					//Das gilt aber nicht beim Tag - Wert, wenn kein Pfad substituiert wird, d.h. er wird ja nicht erkannt. Dann ist das interne Z-Tag ein normaler Text.
+					//Beim Solve werden immer der Z-Tag entfernt, aber nur wenn ueberhaupt ein Formula-Tag drumherum liegt.
+					//Nutze eine Methode mit "Wenn der Tag innerhalb eines anderen Tags (name) liegt".
 					//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
-									
-					btemp = testCompute_FORMULA_PATH_2Unsubstituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
+					sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sTagSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);				
+					btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					
 					
 					//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 					
@@ -1728,15 +1728,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false);
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagContainedRemoved(sTagSolved, sTagStartZ, sTagEndZ, false, sTagParentStart, sTagParentEnd);
 				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-					
-//				//d)
-//				sExpression = sExpressionIn;
-//				sExpressionSolved = sExpressionSolvedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-//				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-//				sTag = sTagIn;
-//				sTagSolved = sTagSolvedIn;
-//				btemp = testCompute_FORMULA_PATH_3Substituted_(sExpression, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
+				
 				//d)
 				sExpressionSolved = sExpressionSolvedIn;						
 				
