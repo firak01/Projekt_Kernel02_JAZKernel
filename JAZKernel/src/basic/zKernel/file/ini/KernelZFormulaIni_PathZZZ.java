@@ -291,7 +291,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isParseCalled(true);		
-		sReturnLine = sExpressionIn;	
+		sReturnLine = sExpressionIn;
+		sReturnTag = this.getValue();
 		sReturn = sReturnLine;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
@@ -448,16 +449,16 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		}//end main:		
 		 
 		//Aus AbstractKernelIniTagSimpleZZZ
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {								 						
 				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			}			
 			this.adoptEntryValuesMissing(objEntry);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		}		
 		return vecReturn;
 	}

@@ -169,8 +169,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	
 	//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit MATH-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
-		String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -189,22 +188,26 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);			
 		objEntry.isSolveCalled(true);
+		sReturnTag = this.getValue();
+		sReturnLine = sExpressionIn;
 		
 		main:{			
 			//Aufloesen von Pfaden und ini-Variablen passierte schon beim Parsen.
 			//Aufloesen des Math-Tags
-			sReturnTag = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
-			sReturn = sReturnTag;
+			sReturnLine = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
+			sReturnTag = this.getValue();
 			objEntry = objReturnReference.get();								
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);		
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
+			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
-				if(!sExpressionIn.equals(sReturn)) {
+				if(!sExpressionIn.equals(sReturnLine)) {
 					objEntry.isSolvedChanged(true);
 				}
 			}
@@ -215,8 +218,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	
 	
 	private String solveParsed_Math_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{				
-		String sReturn = sExpressionIn;	
-		String sReturnTag = null;
+		String sReturn = null;	String sReturnTag = null; String sReturnLine = null;
 		boolean bUseExpression=false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -236,9 +238,12 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isSolveCalled(true);
+		sReturnTag = this.getValue();
+		sReturnLine = sExpressionIn;
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
 			
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
@@ -252,15 +257,11 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			//++++++++++++++++++++++++++++++
 		    //Das Ziel ist, das der Operator nur mit der reinen Formel arbeitet. Da er umgebenden Text nicht herausfiltern kann.
 			//Nun den z:operator Tag suchen
-			String sExpression = sExpressionIn;
-			
-			
-			
+						
 			String sFormulaExpression = sExpression;
 			ZTagFormulaMath_OperatorZZZ<T> objOperator = new ZTagFormulaMath_OperatorZZZ<T>();
 			if(objOperator.isExpression(sFormulaExpression)){
-				 sExpression = objOperator.solve(sFormulaExpression); //Merke: Das ist ein dummy - Solve, das nicht aus einem Interface stammt.
-				 sReturn = sExpression;
+				 sExpression = objOperator.solve(sFormulaExpression); //Merke: Das ist ein dummy - Solve, das nicht aus einem Interface stammt.				
 				 sReturnTag = sExpression;			 
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
@@ -277,11 +278,8 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
 					sExpressionOld = sExpression;
 				}													
-				 sReturnTag = sExpression;
-				 sReturn = sReturnTag;
-			}//end if operator.isExpression(...)
-			
-			
+				 sReturnTag = sExpression;				 
+			}//end if operator.isExpression(...)						
 		}//end main:
 
 		//Das sollte in solve passieren...
@@ -295,12 +293,14 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 //		}			
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);		
+		this.setValue(sReturnTag);	
+		sReturnLine = sReturnTag;
+		sReturn = sReturnLine;
 		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
+			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
-				if(!sExpressionIn.equals(sReturn)) {
+				if(!sExpressionIn.equals(sReturnLine)) {
 					objEntry.isSolvedChanged(true);
 				}
 			}

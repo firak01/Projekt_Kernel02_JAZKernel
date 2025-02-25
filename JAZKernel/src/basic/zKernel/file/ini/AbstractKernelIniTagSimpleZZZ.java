@@ -664,7 +664,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}	
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
-		sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+		sReturnTag = this.getValue();
 		objEntry.isParseCalled(true);
 				
 		main:{
@@ -698,8 +698,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:				
-		
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
@@ -762,7 +761,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);
 			objEntry.isParseCalled(true); 
 			sReturnLine = sExpressionIn;
-			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+			sReturnTag = this.getValue();
 			sReturn = sReturnLine;
 			
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
@@ -957,7 +956,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpression);
 			objEntry.isParseCalled(true);	
 			sReturnLine = sExpression;
-			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+			sReturnTag = this.getValue();
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 						
@@ -1325,7 +1324,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				this.setRaw(sExpressionIn);
 				objEntry.setRaw(sExpressionIn);
 				sReturnLine = sExpressionIn;
-				sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+				sReturnTag = this.getValue();
 				sReturn = sReturnLine;
 								
 				bUseExpression = this.isExpressionEnabledGeneral(); 
@@ -1381,7 +1380,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				this.setRaw(sExpressionIn);
 				objEntry.setRaw(sExpressionIn);
 				sReturnLine = sExpressionIn;
-				sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+				sReturnTag = this.getValue();
 				sReturn = sReturnLine;
 								
 				bUseExpression = this.isExpressionEnabledGeneral(); 
@@ -1464,7 +1463,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);	
 			objEntry.isSubstituteCalled(true);
 			sReturnLine = sExpressionIn;
-			sReturnTag = null; //falls Expression oder Parsen deaktiv ist;
+			sReturnTag = this.getValue();
 			sReturn = sReturnLine;
 			
 			main:{						
@@ -1584,12 +1583,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 			//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
-			if(objEntry!=null) {		
-				objEntry.isSubstituted(true);
-				objEntry.setValue(sReturnLine);	
+			if(objEntry!=null) {
+				objEntry.setValue(sReturnLine);
+				if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
+					objEntry.isSubstituted(true);
+				}
 				if(objEntry.isPathSubstitutedChanged() | objEntry.isVariableSubstitutedChanged()) {
 					objEntry.isSubstitutedChanged(true);				
-				}
+				}				
+				this.adoptEntryValuesMissing(objEntry);
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			}
 			return sReturn;	
