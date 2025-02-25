@@ -22,6 +22,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 /** Merke: Der Path-Tag besteht aus [ oder ] ist damit kein normaler Tag 
  *         und kann also nicht aus AbstractIniTagSimple oder AbstractIniCascadedZZZ erben.
+ *         
+ *  Merke2: Stand jetzt 20250225 braucht man aber irgendeinen umgebenden Tag, der beim Parsen einen Wert bekommt. 
+ *          Dieser Wert ist dann die Grundlage für das Auflösen des Pfads.
+ *          
  * @param <T> 
  * 
  * @author Fritz Lindhauer, 12.07.2024, 09:26:56 

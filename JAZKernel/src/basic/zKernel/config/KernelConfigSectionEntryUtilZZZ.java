@@ -1465,11 +1465,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				//Dogwatch-Klauseln
 			    //A) Der Container Tag muss in der Mitte stehen
 				String sCONTAINER = (String) vecReturn.get(1);
+				
+				//Hier keinen Fehler werfen, da ggfs. auch Strings ohne Tag drum verarbeitet werden.
 				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+//					ExceptionZZZ ez = new ExceptionZZZ("Expected an opening container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+					break main;
 				}
 				
+				//Wenn ein oeffnendes Tag da war aber dann doch den Fehler werfen wenn der schliessende Tag nicht da ist.
 				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
 					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;

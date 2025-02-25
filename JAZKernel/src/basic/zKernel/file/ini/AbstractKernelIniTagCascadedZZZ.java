@@ -174,7 +174,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			String sTagClosing = this.getTagPartClosing();
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;			
-			String sReturnToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist.
+			String sReturnToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
