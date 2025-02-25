@@ -1986,6 +1986,70 @@ public class StringZZZ implements IConstantZZZ{
 		return vecReturn;		
 	}
 	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sSepLeft
+	* @param sSepRight
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidCascadedKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+		main:{											
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sSepLeft)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sSepRight)){
+				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch);
+			if(StringZZZ.isEmpty(sLeft)){
+				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
+					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.
+					break main;
+				}
+			}
+						
+			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sSepLeft.length());
+			//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			
+			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch);
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				vecReturn.replace(sStringToParse);
+				break main;
+			}
+		
+			String sMid = sExpressionTagged; 
+			
+			String sRight = StringZZZ.rightback(sRemainingTagged, sMid.length());
+			
+			//String sMid = StringZZZ.leftback(sRemainingTagged, sSepRight, bExactMatch); 
+			//String sRight = new String("");
+			if(sMid==null) {
+				sMid = "";
+				sRight = sRemainingTagged;
+			}else {
+				//sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sSepRight.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				//Gewuenscht ist, das der Seperator drin bleibt, also quasi ein StringZZZ.rightKeep(...), aber mit Indexwerten
+				sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());//Das wuerde bei verschachtelten XML Strings funktionieren.
+				if(sRight==null) sRight = "";
+			}
+						
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			vecReturn.replace(sLeft, sMid, sRight);			
+		}//end main:
+		return vecReturn;		
+	}
+	//######################################################################
+	
 	public static Vector3ZZZ<String>vecSplitFirst(String sStringToParse, String sSeparator, boolean bReturnSeparators) throws ExceptionZZZ {		
 		return StringZZZ.vecSplitFirst(sStringToParse, sSeparator, bReturnSeparators, true);
 	}

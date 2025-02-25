@@ -302,6 +302,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+			String sExpression = sExpressionIn;
 			
 			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
@@ -311,7 +312,6 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 
 			bExpressionFound = this.isExpression(sExpressionIn); 
 			if(!bExpressionFound)break main;
-			String sExpression = sExpressionIn;
 			
 			//++++++++++++++++++++++++++++++++++++++
 			boolean bReturnSeparators = !bRemoveSurroundingSeparators;
@@ -339,7 +339,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", sSepLeft, sSepRight, false);
 			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.									
 			
-			//TODOGOON20250221; //Ermittle als Trenner das Tag Links, rechts von dem XPath-Tags.
+			TODOGOON20250225; //Ermittle als Trenner das Tag Links, rechts von dem XPath-Tags. Das muss auch mit CASCADED Ausdruecken funktionieren
+			
 			String sTagXPathStarting = this.getTagPartOpening();
 			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
 			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);

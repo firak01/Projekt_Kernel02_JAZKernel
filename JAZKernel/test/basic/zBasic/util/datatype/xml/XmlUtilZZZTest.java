@@ -24,6 +24,20 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
@@ -60,6 +74,22 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
@@ -94,6 +124,23 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
             ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 			
@@ -144,6 +191,22 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";
@@ -180,6 +243,23 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
 			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 				
@@ -223,6 +303,22 @@ public class XmlUtilZZZTest extends TestCase{
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved = "Z:Class";
+			sStringToSearch= "[";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			//#################################################################
+			//### Einfache Verschachtelung
+			//#################################################################
 			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";

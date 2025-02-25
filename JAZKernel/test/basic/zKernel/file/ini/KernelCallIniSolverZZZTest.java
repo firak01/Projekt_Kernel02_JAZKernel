@@ -24,7 +24,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelCallIniSolverZZZTest  extends TestCase {
-		public final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
+		public final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
 		public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
 					
 		
@@ -146,12 +146,31 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Ohne Solver-Berechung	(Ergebnisse muessen so sein wie bei Parse)
-				//a)
+				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
+				
+			
+				//c)
 				sExpressionSource = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				btemp = testCompute_Call_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-							
+				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
+
+				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				sTagSolved = sExpressionSolved;
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
+                								
+				//Konflikt: 
+				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
+				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
+				
+				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
+				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
+				
+				//Rechne PRE / POST in das erwatete Ergebnis ein
+				sExpressionSolved = sPre + sExpressionSolved + sPost;
+				btemp = testCompute_Call_JavaCallUnsolved_(sExpressionSource, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
+				
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				
