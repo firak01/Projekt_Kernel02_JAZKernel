@@ -79,11 +79,25 @@ public class XmlUtilZZZTest extends TestCase{
 			//### Cascaded Verschachtelung
 			//################################################################
 			
+			
+			//++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved = "Z:Class";
-			sStringToSearch= "[";
+			sStringToSearch= "Z:Method";
+			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
 			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "[";
+			sExpressionSolved = "Z:Class";
+			
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+		
+			
+			
 			
 			
 			
@@ -129,13 +143,21 @@ public class XmlUtilZZZTest extends TestCase{
 			//### Cascaded Verschachtelung
 			//################################################################
 			
+			//++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved = "Z:Class";
-			sStringToSearch= "[";
+			sStringToSearch= "Z:Method";
+			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
 			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
+			//+++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "[";
+			sExpressionSolved = null;//es gibt kein schliessendes Tag vorher			
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
+		
 			
 			
 			//#################################################################
@@ -196,9 +218,27 @@ public class XmlUtilZZZTest extends TestCase{
 			//### Cascaded Verschachtelung
 			//################################################################
 			
+			//++++++++++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "Z:Class";
 			sExpressionSolved = "Z:Class";
+			
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//++++++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "/Z:Class";
+			sExpressionSolved = "Z:Method";
+			
+			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "[";
+			sExpressionSolved = "Z:Class";
 			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -248,11 +288,30 @@ public class XmlUtilZZZTest extends TestCase{
 			//### Cascaded Verschachtelung
 			//################################################################
 			
+			//+++++++++++++++++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved = "Z:Class";
 			sStringToSearch= "[";
+			sExpressionSolved = "Z:Method";			
 			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
+			
+			
+			
+			//++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "/Z:Java";
+			sExpressionSolved = "Z:Method";//es gibt kein schliessendes Tag vorher			
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "Z:Method";
+			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			
 			
@@ -308,6 +367,15 @@ public class XmlUtilZZZTest extends TestCase{
 			//### Cascaded Verschachtelung
 			//################################################################
 			
+			//++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sStringToSearch= "Z:Java";
+			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//+++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolved = "Z:Class";
 			sStringToSearch= "[";

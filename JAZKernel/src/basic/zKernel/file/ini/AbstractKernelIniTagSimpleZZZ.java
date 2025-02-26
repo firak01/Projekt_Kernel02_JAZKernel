@@ -1002,6 +1002,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//sReturnTag = (String) vecReturn.get(1);
 				sReturnTag = VectorUtilZZZ.implode(vecReturn);
 			}
+			objEntry.isParsed(true);
 		}//end main:
 				
 		//#################################
@@ -1009,8 +1010,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		sReturn = sReturnLine;
 		
-		if(objEntry!=null) {
-			objEntry.isParsed(true);
+		if(objEntry!=null) {			
 			objEntry.setValue(sReturnLine);	
 			if(sExpressionIn!=null) {								
 				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									

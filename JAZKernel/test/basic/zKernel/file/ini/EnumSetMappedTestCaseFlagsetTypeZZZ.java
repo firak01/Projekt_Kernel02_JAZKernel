@@ -27,7 +27,8 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	SUBSTITUTED("substituted",TestUtilAsTestZZZ.sFLAGSET_SUBSTITUTED,"Flagset Variante: 'Substituted'"),
 	
 	CALL_UNEXPRESSED("call_unexpressed","cuex","Flagset Variante: 'Call unexpressed'"),
-	CALL_UNSOLVED("call_unsolved","cus","Flagset Variante: 'Call unsolved'")
+	CALL_UNSOLVED("call_unsolved","cus","Flagset Variante: 'Call unsolved'"),
+	JAVACALL_UNSOLVED("javacall_unsolved","jcus","Flagset Variante: 'JavaCall unsolved'"),
 	;
 	
 	

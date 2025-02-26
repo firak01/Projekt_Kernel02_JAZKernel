@@ -527,7 +527,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 					break;
 				}
 				
-				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING-1);//Verbereiten fuer Weitersuchen
+				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING-1);//Verbereiten fuer Weitersuchen //falls ein > zwischen opening und closing lag, also nun closing verringern
 			} while(bGoon==false);
 			
 			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
@@ -578,8 +578,8 @@ public class XmlUtilZZZ implements IConstantZZZ{
 						}
 					}
 				}
-				
-				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING); //Vorbereitung zum Weitersuchen.
+								
+				sLEFT = StringZZZ.left(sLEFT, iIndexCLOSING-1); //Vorbereitung zum Weitersuchen. //falls ein > zwischen opening und closing lag, also nun closing verringern
 				
 			} while(bGoon==false);
 			
@@ -603,14 +603,13 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			String sTagPartName = null; 
 			do {
  				
-				iIndexCLOSING = StringZZZ.indexOfLastBefore(sLEFT, ">");
+				iIndexOPENING = StringZZZ.indexOfLastBehind(sLEFT, "</"); //Dann gibt es kein (weiteres) oeffendes Tagzeichen, des Schliessenden TagParts
+				if(iIndexOPENING <= -1) break main;		
+				
+				iIndexCLOSING = StringZZZ.indexOfFirstBefore(sLEFT, ">", iIndexOPENING);
 				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
 								
-	
-				iIndexOPENING = StringZZZ.indexOfLastBehind(sLEFT, "</", iIndexCLOSING); //Dann gibt es kein (weiteres) oeffendes Tagzeichen, des Schliessenden TagParts
-				if(iIndexOPENING <= -1) break main;			
-				
-				
+														
 				sTagPartName = StringZZZ.midLeftRight(sLEFT, iIndexOPENING, iIndexCLOSING);
 				if(sTagPartName==null)break main;
 				
@@ -680,7 +679,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
-			String sRIGHT = StringZZZ.right(sXml, sSep);
+			String sRIGHT = StringZZZ.rightback(sXml, sSep);
 			if(StringZZZ.isEmpty(sRIGHT)) break main;
 			
 			int iIndexCLOSING=-1; int iIndexOPENING = -1;
@@ -709,7 +708,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 					break;
 				}
 				
-				sRIGHT = StringZZZ.left(sRIGHT, iIndexCLOSING);
+				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1);//falls ein < zwischen opening und closing lag, also nur opening erhöhen und nicht von closing ausgehen.
 			} while(bGoon==false);
 			
 			sReturn = "<" + sTagPartName + ">"; // bei einem abschliesenden Tag ist der SLASH voran im Namen mit dabei.
@@ -723,7 +722,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
-			String sRIGHT = StringZZZ.right(sXml, sSep);
+			String sRIGHT = StringZZZ.rightback(sXml, sSep);
 			if(StringZZZ.isEmpty(sRIGHT)) break main;
 			
 			int iIndexCLOSING=-1; int iIndexOPENING = -1;
@@ -759,7 +758,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 				}
 				
 				sTagPartName=null;
-				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1); //Vorbereitung zum Weitersuchen.
+				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1); //Vorbereitung zum Weitersuchen. //falls ein < zwischen opening und closing lag, also nur opening erhöhen
 			} while(bGoon==false);
 			
 			sReturn = "<" + sTagPartName + ">";
@@ -773,7 +772,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
 			
-			String sRIGHT = StringZZZ.right(sXml, sSep);
+			String sRIGHT = StringZZZ.rightback(sXml, sSep);
 			if(StringZZZ.isEmpty(sRIGHT)) break main;
 			
 			int iIndexCLOSING=-1; int iIndexOPENING = -1;

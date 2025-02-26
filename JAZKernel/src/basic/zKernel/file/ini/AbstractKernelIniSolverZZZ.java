@@ -644,6 +644,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			objEntry.isSolved(true);
 		}//end main:
 	
 			
@@ -653,7 +655,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 		
-		if(objEntry!=null) {		
+		if(objEntry!=null) {				
 			objEntry.setValue(sReturnLine);		
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
