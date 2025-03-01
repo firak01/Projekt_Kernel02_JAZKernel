@@ -150,7 +150,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(objEntrySource.isFormulaMathSolved()) {
 				objEntryTarget.isFormulaMathSolved(objEntrySource.isFormulaMathSolved());
 			}
-			
+						
 			if(objEntrySource.isJson()) {
 				objEntryTarget.isJson(objEntrySource.isJson());
 			}
@@ -219,10 +219,27 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				objEntryTarget.isCallSolved(objEntrySource.isCallSolved());
 			}
 
+			if(objEntrySource.isCallSolvedChanged()) {
+				objEntryTarget.isCallSolvedChanged(objEntrySource.isCallSolvedChanged());
+			}
+			
 			if(objEntrySource.isJavaCall()) {
 				objEntryTarget.isJavaCall(objEntrySource.isJavaCall());
 			}
+			
+			if(objEntrySource.isJavaCallSolveCalled()) {
+				objEntryTarget.isJavaCallSolveCalled(objEntrySource.isJavaCallSolveCalled());
+			}
 
+			if(objEntrySource.isJavaCallSolved()) {
+				objEntryTarget.isJavaCallSolved(objEntrySource.isJavaCallSolved());
+			}
+			
+			if(objEntrySource.isJavaCallSolvedChanged()) {
+				objEntryTarget.isJavaCallSolvedChanged(objEntrySource.isJavaCallSolvedChanged());
+			}
+			
+			
 			if(objEntrySource.getCallingClassname()!=null) {
 				objEntryTarget.setCallingClassname(objEntrySource.getCallingClassname());
 			}

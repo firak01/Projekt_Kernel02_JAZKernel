@@ -34,6 +34,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static final String sFLAGSET_UNSUBSTITUTED="usu";
 	public static final String sFLAGSET_SUBSTITUTED="su";
 	
+	public static final String sFLAGSET_CALL_UNEXPRESSED="cuex";
+	public static final String sFLAGSET_CALL_UNSOLVED="cus";
+	public static final String sFLAGSET_JAVACALL_UNSOLVED="jcus";
+	
+	
 	
 	public static final String sCASE_PARSE="p";
 	public static final String sCASE_SOLVE="s";
@@ -86,10 +91,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 				switch(sFlagSet) {
 				//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 				case sFLAGSET_UNEXPRESSED:
-					assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+					assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!					
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde ja NICHT gemacht.
 					
+					assertFalse(objEntry.isParsed()); //sollte ohne Expression abgebrochen worden sein
+					assertFalse(objEntry.isSolved()); //sollte ohne Expression abgebrochen worden sein
 				
 					assertFalse(objEntry.isParsedChanged());
 					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
@@ -111,6 +118,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					assertFalse(objEntry.isPathSubstituted());
+					
+					assertTrue(objEntry.isParsed()); 
+					assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
+				
 					
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
@@ -143,6 +154,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved()); //auch ohne Math wird SOLVE ja gemacht
+
+					
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
@@ -176,6 +191,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled());
 				
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved());
+					
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged()); 
 					}else {
@@ -207,6 +225,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.
 								
+					assertTrue(objEntry.isParsed()); 
+					assertFalse(objEntry.isSolved());
+
+					
 					sExpressionSolved = sExpressionSolvedIn;
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
@@ -258,6 +280,23 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
 				
+				case sFLAGSET_JAVACALL_UNSOLVED:
+					
+					assertTrue(objEntry.isParseCalled());
+					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertTrue(objEntry.isExpression());
+					
+					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+					
+					assertFalse(objEntry.isDecrypted());
+					assertNull(objEntry.getValueDecrypted()); 				
+					
+					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
+					assertNull(objEntry.getCallingClassname());
+					assertNull(objEntry.getCallingMethodname());
+					break;
+					
 				default:
 					fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
 					break;
@@ -286,7 +325,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					assertTrue(objEntry.isSolveCalled()); //dito mit solve(). Der Solve-Schritt wurde gemacht.
 					assertFalse(objEntry.isExpression());
-											
+						
+					assertFalse(objEntry.isParsed()); //sollte ohne EXPRESSION abgebrochen worden sein
+					assertFalse(objEntry.isSolved()); //sollte ohne EXPRESSION abgebrochen worden sein
+
+					
 					assertFalse(objEntry.isParsedChanged());
 					assertFalse(objEntry.isPathSubstituted());
 					assertFalse(objEntry.isSolvedChanged());						
@@ -308,6 +351,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled());
 
+					assertTrue(objEntry.isParsed()); 
+					assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
+					
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
@@ -330,6 +376,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled());
 
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
+										
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
@@ -355,6 +404,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+					
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved()); 
+					
 					
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.					
 					if(sExpression.equals(sExpressionSubstituted)) {						
@@ -386,6 +439,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved());
+										
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 					assertFalse(objEntry.isPathSubstituted());
 					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
@@ -412,6 +468,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 					
+					assertTrue(objEntry.isParsed()); 
+					assertTrue(objEntry.isSolved());
+					
+					
 					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 					if(sExpression.equals(sExpressionSubstituted)) {						
 						assertFalse(objEntry.isPathSubstituted());
@@ -436,7 +496,26 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
+				case sFLAGSET_JAVACALL_UNSOLVED:
 					
+					assertTrue(objEntry.isParseCalled());
+					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertTrue(objEntry.isExpression());
+										
+					assertTrue(objEntry.isParsed()); 							
+					assertTrue(objEntry.isSolved()); //Generell wurde ein Solver ausgefuehrt
+					
+					assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+					
+					assertFalse(objEntry.isDecrypted());
+					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+					
+					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+					break;
+				
 				default:
 					fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
 					break;

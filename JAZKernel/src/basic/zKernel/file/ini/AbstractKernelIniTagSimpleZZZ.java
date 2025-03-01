@@ -545,6 +545,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isParseCalled(true);
 		sReturnLine = sExpressionIn;
+		sReturnTag = this.getValue();
 		sReturn = sReturnLine;
 		
 		main:{

@@ -115,6 +115,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isSolvedChanged();
 	abstract void isSolvedChanged(boolean bIsSolvedChanged);
 	
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isConversion();
 	abstract void isConversion(boolean bIsConversion);
@@ -221,8 +222,22 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isCallSolved();
 	abstract void isCallSolved(boolean bIsCallSolved);
 	
+	public boolean isCallSolvedChanged();
+	abstract void isCallSolvedChanged(boolean bIsCallSolvedChanged);
+
 	public boolean isJavaCall();
 	abstract void isJavaCall(boolean bIsJavaCall);
+	
+	public boolean isJavaCallSolveCalled();
+	abstract void isJavaCallSolveCalled(boolean bIsJavaCallSolveCalled);
+	
+	public boolean isJavaCallSolved();
+	abstract void isJavaCallSolved(boolean bIsJavaCallSolved);
+		
+	public boolean isJavaCallSolvedChanged();
+	abstract void isJavaCallSolvedChanged(boolean bIsJavaCallSolvedChanged);
+	
+	
 	
 	//Falls ein Wert einen Aufruf enthält hier die Details ablegen
 	public String getCallingClassname();

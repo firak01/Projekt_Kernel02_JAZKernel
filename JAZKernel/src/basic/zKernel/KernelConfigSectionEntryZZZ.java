@@ -83,7 +83,12 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected boolean bCall = false;
 	protected boolean bCallSolved = false;
+	protected boolean bCallSolvedChanged = false;
+	
 	protected boolean bJavaCall = false;
+	protected boolean bIsJavaCallSolveCalled = false;
+	protected boolean bIsJavaCallSolved = false;
+	protected boolean bIsJavaCallSolvedChanged = false;
 	
 	
 	protected String sCallingClassname = null;
@@ -1009,6 +1014,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public boolean isCallSolvedChanged() {
+		return this.bCallSolvedChanged;
+	}
+
+	@Override
+	public void isCallSolvedChanged(boolean bIsCallSolvedChanged) {
+		this.bCallSolvedChanged = bIsCallSolvedChanged;
+	}
+
+
+	
+	@Override
 	public boolean isJavaCall() {
 		return this.bJavaCall;
 	}
@@ -1018,7 +1035,36 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.bJavaCall = bJavaCall;
 	}
 	
+	@Override
+	public boolean isJavaCallSolveCalled() {
+		return this.bIsJavaCallSolveCalled;
+	}
+
+	@Override
+	public void isJavaCallSolveCalled(boolean bIsJavaCallSolveCalled) {
+		this.bIsJavaCallSolveCalled = bIsJavaCallSolveCalled;
+	}
+
 	
+	@Override
+	public boolean isJavaCallSolved() {
+		return this.bIsJavaCallSolved;
+	}
+
+	@Override
+	public void isJavaCallSolved(boolean bIsJavaCallSolved) {
+		this.bIsJavaCallSolved = bIsJavaCallSolved;
+	}
+	
+	@Override
+	public boolean isJavaCallSolvedChanged() {
+		return this.bIsJavaCallSolvedChanged;
+	}
+
+	@Override
+	public void isJavaCallSolvedChanged(boolean bIsJavaCallSolvedChanged) {
+		this.bIsJavaCallSolvedChanged = bIsJavaCallSolvedChanged;
+	}
 	
 	
 	
@@ -1360,6 +1406,6 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}
 		}
 
+				
 		
-
 }

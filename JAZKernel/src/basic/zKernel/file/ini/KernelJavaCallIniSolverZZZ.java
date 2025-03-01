@@ -157,7 +157,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
+		//objEntry.isSolveCalled(true);
+		objEntry.isJavaCallSolveCalled(true);
 					
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -222,10 +223,15 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 							
 			//Nun die Methode aufrufen.
 			Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
-			if(objReturn==null)break main;						
+			if(objReturn==null)break main;		
+			
+			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
+			objEntry.isJavaCallSolved(true);
 			sValue = objReturn.toString();
 			sReturnTag = sValue;
 			sReturn = sReturnTag;
+			
+			
 		}//end main:	
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -233,11 +239,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		if(objEntry!=null) {
 			//objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
 			objEntry.setValueCallSolved(sReturn);
-			objEntry.isSolved(true);
-			objEntry.isCallSolved(true);
+			//objEntry.isSolved(true);
+			//objEntry.isCallSolved(true);
+			
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturn)) {				
-					objEntry.isSolvedChanged(true);
+					//objEntry.isSolvedChanged(true);
+					objEntry.isJavaCallSolvedChanged(true);
 				}
 			}					
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
