@@ -27,7 +27,11 @@ import junit.framework.TestCase;
 public class KernelCallIniSolverZZZTest  extends TestCase {
 		public final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
 		public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
-					
+		
+		public enum TestSubtype{
+				DEFAULT,
+				AS_ENTRY
+		}
 		
 		private File objFile;
 		private IKernelZZZ objKernel;
@@ -104,35 +108,38 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		public void testCompute_Call() {
 			String sExpressionSource=null;
 //			try {
-				
-				//##################################
-				//### Vorgezogener letzter Fehlertest: START
+			
+			//##################################
+			//### Vorgezogener letzter Fehlertest: START
 
 			//++++++++++ PRE / POST
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			testCompute_Call_(sExpressionSource, "PRE", "POST");
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
 			
-			
-				//### Vorgezogener letzter Fehlertest: ENDE
-				//##################################
-			
-			
-				//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-				testCompute_Call_(sExpressionSource,"","");
-				
-				//Test ohne notwendige Pfadersetzung
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-				testCompute_Call_(sExpressionSource,"","");
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
 
-				//++++++++++ PRE / POST
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-				testCompute_Call_(sExpressionSource, "PRE", "POST");
-				
+		
+			//### Vorgezogener letzter Fehlertest: ENDE
+			//##################################
+		
+		
+			//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
+			
+			//Test ohne notwendige Pfadersetzung
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
+
+			//++++++++++ PRE / POST
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+			
 //			} catch (ExceptionZZZ ez) {
 //				fail("Method throws an exception." + ez.getMessageLast());
 //			}
-		}
+	}
 		
 		
 		
@@ -140,7 +147,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 * 
 		 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 		 */
-		private void testCompute_Call_(String sExpressionIn, String sPreIn, String sPostIn){
+		private void testCompute_Call_(String sExpressionIn, String sPreIn, String sPostIn, TestSubtype enumTestSubtype){
 			//SIEHE AUCH testCompute_CallWithPrePost
 			boolean btemp; int itemp;
 			
@@ -179,8 +186,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sExpressionSolved;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-
+				
+				if(enumTestSubtype==null || enumTestSubtype==TestSubtype.DEFAULT) {
 				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				
 
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -203,7 +212,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY)
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//b)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -215,8 +228,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = null;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unexpressed_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unexpressed_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_Unexpressed_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -229,7 +246,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
+				
 					
 				//d)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -242,8 +264,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
@@ -258,7 +283,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//b)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -273,7 +302,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -287,7 +320,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 				
 				//d)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -302,7 +339,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne Call-Berechung
@@ -317,7 +358,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//b)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -333,7 +378,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -347,7 +396,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 			
 				//d)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -361,7 +414,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
@@ -381,7 +438,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
 
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 							
 				//b)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -399,7 +460,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Das eigentliche Aufloesen findet aber nicht statt.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
 
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 			
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -421,7 +486,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
 
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 	
 				//d)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -441,7 +510,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				sTagSolved = sExpressionSolved;
 
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 
 				
 				
@@ -463,8 +536,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
-																			
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				}
 				
 				//b) Umgebender Z-Tag wird entfernt
 				sExpression = sPre + sExpressionIn + sPost;
@@ -481,7 +558,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);				
 				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);					
+				}
 				
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -492,8 +573,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				sTag = sExpressionSolved;
 				
-				sTagSolved = sHostName;				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				sTagSolved = sHostName;	
+				
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				}else {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 				
 				//d)
 				sExpression = sPre + sExpressionIn + sPost;
@@ -503,7 +589,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTag = sExpressionSolved;
 				sTagSolved = sHostName;
 				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+				} else {
+					btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				}
 								
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
@@ -1452,406 +1542,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		}
 		
 		
-		//##########################################################
-		//##########################################################
-		
-		/** void, Test: Reading an entry in a section of the ini-file
-		* Lindhauer; 22.04.2006 12:54:32
-		 */
-		public void testCompute_CallAsEntry(){
-			String sExpressionSource=null;
-//			try {
-			
-				//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-				testCompute_CallAsEntry_(sExpressionSource,"","");
-				
-				//Test ohne notwendige Pfadersetzung
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-				testCompute_CallAsEntry_(sExpressionSource,"","");
-
-				//++++++++++ PRE / POST
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-				testCompute_CallAsEntry_(sExpressionSource, "PRE", "POST");
-				
-//			} catch (ExceptionZZZ ez) {
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			}
-		}
-		
-		/**void, Test: Reading an entry in a section of the ini-file
-		 * 
-		 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
-		 */
-		private void testCompute_CallAsEntry_(String sExpressionIn, String sPreIn, String sPostIn){
-			//SIEHE AUCH testCompute_CallWithPrePost, bzw. testCompute_Call, nur hier mit der enum . ... _AS_ENTRY
-			boolean btemp; int itemp;
-			
-			String sSection; String sProperty;
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
-			IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-		
-			String sValue;
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-				
-			String sPre = sPreIn;
-			String sPost = sPostIn;
-			
-			try {		
-				String sHostName = EnvironmentZZZ.getHostName();
-				assertNotNull(sHostName);
-						
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-				
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-							
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                								
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				
-				//Rechne PRE / POST in das erwatete Ergebnis ein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-
-				
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
-				
-				
-				
-				//###########################
-			    //### objExpression
-				//#########################
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne jegliche Expression-Berechnung
-				//a)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sExpression;
-				sExpressionSolved = sPre + sExpressionIn + sPost;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = null; //ohne Expression-Auswertung
-				sTagSolved = null;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sExpression;
-				sExpressionSolved = sPre + sExpressionIn + sPost;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = null;//ohne Expression-Auswertung
-				sTagSolved = null;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unexpressed_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sExpression;
-				sExpressionSolved = sPre + sExpressionIn + sPost; 	
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = null;//ohne Expression-Auswertung
-				sTagSolved = null;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-					
-				//d)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sExpression;
-				sExpressionSolved = sPre + sExpressionIn + sPost;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = null;//ohne Expression-Auswertung
-				sTagSolved = null;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
-				//a)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne Solver, bleibt alles wie est ist.
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//d)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Call-Berechung
-				//a)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Parsen ohne call, muss doch dieser call - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-				//ALSO NICHT: Halt kein Call - Tag mehr im Ergebnis Erwartet....   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne call, bleibt alles an Tags drin.
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-			
-				//d)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sExpressionSolved;
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-				
-				//a) Der umgebene Z-Tag soll drin bleiben
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Werdem beim reinen Parsen die umgebenden Tags nicht entfernt, dann bleibt das call-Tag drin. Das wird naemlich auch durch Parsen NICHT "aufgeloest".
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-							
-				//b)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch der CALL-TAG entfernt.
-				//Das eigentliche Aufloesen findet aber nicht statt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-			
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                								
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-	
-				//d)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Und die umgebenden Z-Tags sollen weg.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);		
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				sTagSolved = sExpressionSolved;
-
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-
-				
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung UND JavaCall-Berechnung
-				//a) Der umgebene Z-Tag soll drin bleiben
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Entferne die Z-Tags von der Zeile, was aber nicht gewünscht ist.  Zudem: Hier wird nur geparsed, also bleiben die anderen Tags auch drin
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
-																			
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b) Umgebender Z-Tag wird entfernt
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Entferne den Z-Tag von der Zeile, aber weil nur geparsed wird, bleiben der CALL-Tag und der JAVA-CALL Tag drin
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);				
-				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sTagStartZ + sHostName + sTagEndZ + sPost; 
-				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
-				
-				sTagSolved = sHostName;				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//d)
-				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sHostName + sPost;		
-				
-				sTagSolved = sHostName;
-				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-								
-			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
-			}				
-		}
-		
-		
-		
-
-		
-		
-		
-		
 		/** void, Test: Reading an entry in a section of the ini-file
 		* Lindhauer; 22.04.2006 12:54:32
 		 */
@@ -2102,579 +1792,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
-		}		
-		
-		/** void, Test: Reading an entry in a section of the ini-file
-		* Lindhauer; 22.04.2006 12:54:32
-		 */
-		public void testCompute_CallWithPrePost_TODO_LOESCHEN(){
-			String sExpressionSource=null;
-//			try {
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-				testCompute_CallWithPrePost_TODO_LOESCHEN_(sExpressionSource, "PRE", "POST");
-
-//			} catch (ExceptionZZZ ez) {
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			}
-
-		}	
-		
-		/**void, Test: Reading an entry in a section of the ini-file
-		 * 
-		 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
-		 */
-		private void testCompute_CallWithPrePost_TODO_LOESCHEN_(String sExpressionSourceIn, String sPreIn, String sPostIn){
-
-			boolean btemp; int itemp;
-			
-			String sSection; String sProperty;
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
-			IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-		
-			String sValue;
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
-			String sPre = sPreIn;
-			String sPost = sPostIn;
-			
-			try {		
-				String sHostName = EnvironmentZZZ.getHostName();
-				assertNotNull(sHostName);
-						
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-				
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                								
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				
-				//Rechne PRE / POST in das erwatete Ergebnis ein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
-				
-				
-				
-				//###########################
-			    //### objExpression
-				//#########################
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne jegliche Expression-Berechnung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;			
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost; 			
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-					
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Solver-Berechung		
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne Solver, bleibt alles wie est ist.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Call-Berechung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Halt kein Call - Tag mehr im Ergebnis Erwartet....   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);				
-				//Beim Parsen ohne call, muss doch dieser call - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne call, bleibt alles an Tags drin.
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-				//a) Der umgebene Z-Tag soll drin bleiben
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				//Werdem beim reinen Parsen die umgebenden Tags nicht entfernt, dann bleibt das call-Tag drin. Das wird naemlich auch durch Parsen NICHT "aufgeloest".
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
-				
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch der CALL-TAG entfernt.
-				//Das eigentliche Aufloesen findet aber nicht statt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                								
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				
-				//Rechne PRE / POST in das erwartete Ergebnis ein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-	
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Und die umgebenden Z-Tags sollen weg.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);		
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				sTagSolved = sExpressionSolved;
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-		
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung UND JavaCall-Berechnung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-
-				sTag = sExpressionSourceIn;
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-								
-				//Rechne PRE / POST in das erwartete Ergebnis ein		
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				//btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch der CALL-TAG entfernt.
-				//Das eigentliche Aufloesen findet aber nicht statt.				
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
-				
-				//Rechne PRE / POST in das erwartete Ergebnis ein		
-				sExpressionSolved = sPre + sExpressionSolved + sPost;				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sTagStartZ + sHostName + sTagEndZ; //auch ohne Solver werden die Pfade substituiert!!!
-
-				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
-				sTagSolved = sHostName;
-				
-				//Rechne PRE / POST in das erwartete Ergebnis ein		
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sHostName;
-				
-				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
-				sTagSolved = sHostName;
-								
-				//Rechne PRE / POST in das erwartete Ergebnis ein		
-				sExpressionSolved = sPre + sExpressionSolved + sPost;			
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-								
-			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
-			}		
-		}
-		
-		
-		/** void, Test: Reading an entry in a section of the ini-file
-		* Lindhauer; 22.04.2006 12:54:32
-		 */
-		public void testCompute_CallWithPrePostAsEntry_TODO_LOESCHEN(){
-			String sExpressionSource=null;
-//			try {
-				sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-				testCompute_CallWithPrePost_TODO_LOESCHEN_(sExpressionSource, "PRE", "POST");
-
-//			} catch (ExceptionZZZ ez) {
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			}
-
-		}	
-		
-		/**void, Test: Reading an entry in a section of the ini-file
-		 * 
-		 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
-		 */
-		private void testCompute_CallWithPrePostAsEntry_TODO_LOESCHEN_(String sExpressionSourceIn, String sPreIn, String sPostIn){
-
-			boolean btemp; int itemp;
-			
-			String sSection; String sProperty;
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
-			IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-		
-			String sValue;
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
-			String sPre = sPreIn;
-			String sPost = sPostIn;
-			
-			try {		
-				String sHostName = EnvironmentZZZ.getHostName();
-				assertNotNull(sHostName);
-						
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-				
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!								
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);				
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				
-				sTag = sExpressionSourceIn;
-				
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-			
-			
-				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
-				
-				
-				
-				//###########################
-			    //### objExpression
-				//#########################
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne jegliche Expression-Berechnung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;			
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost; 			
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-					
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sExpressionSourceIn + sPost;
-				btemp = testCompute_Call_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Solver-Berechung		
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne Solver, bleibt alles wie est ist.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-				btemp = testCompute_Call_Unsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Call-Berechung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Halt kein Call - Tag mehr im Ergebnis Erwartet....   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);				
-				//Beim Parsen ohne call, muss doch dieser call - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne call, bleibt alles an Tags drin.
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-			
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-				//a)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				sTag = sExpressionSourceIn;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);				
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				
-				sTag = sExpressionSourceIn;
-				
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sTag = sExpressionSourceIn;
-				sTagSolved = sExpressionSolved;
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSubstituted = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);		
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				sTag = sExpressionSourceIn;
-				sTagSolved = sExpressionSolved;
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_JavaCallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-		
-				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit Call-Berechnung UND JavaCall-Berechnung
-				//a) Z-Tag soll erhalten bleiben
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				//Entferne nun die umgebenden Z-Tags
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//b)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//auch ohne Solver werden die Pfade substituiert!!!
-				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTagSolved = sExpressionSolved;
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                						
-						
-				//Entferne nun die umgebenden Z-Tags
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				//Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das call-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-				
-				//c)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sTagStartZ + sHostName + sTagEndZ; 
-				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
-				
-				sTagSolved = sHostName;
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-				
-				//d)
-				sExpression = sPre + sExpressionSourceIn + sPost;
-				sExpressionSolved = sHostName;		
-				
-				sTagSolved = sHostName;
-				
-				//Rechne PRE / POST in das erwartetet Ergebnis rein
-				sExpressionSolved = sPre + sExpressionSolved + sPost;				
-				btemp = testCompute_Call_(sExpression, sExpressionSolved, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
-								
-			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
-			}		
 		}
 
 		
