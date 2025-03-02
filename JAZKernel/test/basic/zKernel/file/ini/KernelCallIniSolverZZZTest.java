@@ -168,9 +168,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
-							
-//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
+				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung			
 				
 				//a) Der umgebene Z-Tag soll drin bleiben
 				sExpression = sPre + sExpressionIn + sPost;
