@@ -128,13 +128,24 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
 			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
 			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+			
+			
 			//Test ohne notwendige Pfadersetzung
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
 			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
 
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+
+			
 			//++++++++++ PRE / POST
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+			
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
 			
 //			} catch (ExceptionZZZ ez) {
 //				fail("Method throws an exception." + ez.getMessageLast());
