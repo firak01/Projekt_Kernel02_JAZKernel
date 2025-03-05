@@ -157,7 +157,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		//objEntry.isSolveCalled(true);
 		objEntry.isJavaCallSolveCalled(true);
 					
 		main:{
@@ -305,6 +304,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		objEntry.setRaw(sExpressionIn);	
 		objEntry.isParseCalled(true); 	
 		sReturnLine=sExpressionIn;
+		sReturnTag = this.getValue();
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
 		main:{			
@@ -331,8 +331,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);	
+		vecReturn.replace(sReturnTag);
+		this.setValue(sReturnTag);	
 		sReturn = sReturnLine;			
 		
 		if(objEntry!=null) {

@@ -82,6 +82,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bJsonMap = false;
 	
 	protected boolean bCall = false;
+	protected boolean bCallParsed = false;
+	protected boolean bCallParsedChanged = false;
 	protected boolean bCallSolved = false;
 	protected boolean bCallSolvedChanged = false;
 	
@@ -1004,6 +1006,26 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public boolean isCallParsed() {
+		return this.bCallParsed;
+	}
+
+	@Override
+	public void isCallParsed(boolean bIsCallParsed) {
+		this.bCallParsed = bIsCallParsed;
+	}
+
+	@Override
+	public boolean isCallParsedChanged() {
+		return this.bCallParsedChanged;
+	}
+
+	@Override
+	public void isCallParsedChanged(boolean bIsCallParsedChanged) {
+		this.bCallParsedChanged = bIsCallParsedChanged;
+	}
+	
+	@Override
 	public boolean isCallSolved() {
 		return this.bCallSolved;
 	}
@@ -1405,6 +1427,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 				this.getPropertiesSearchedHashMap().putAsLast(sProperty, bExists);
 			}
 		}
+
+
 
 				
 		

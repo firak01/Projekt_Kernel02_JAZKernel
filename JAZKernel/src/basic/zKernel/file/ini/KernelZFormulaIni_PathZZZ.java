@@ -315,65 +315,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//++++++++++++++++++++++++++++++++++++++
 			boolean bReturnSeparators = !bRemoveSurroundingSeparators;
-			//String sSepLeft = this.getTagStarting();
-			//String sSepRight = "<";
 			
-			//A) Damit der Pfad korrekt ermittelt werden kann muss das Z-Tag drumherum bleiben
-			
-			//Folgender Ausdruck findet auch etwas, wenn nur der Path ohne Einbettung in Tags vorhanden ist.
-			//Also, z.B.: [Section A]Testentry1
-			//also bis zum nächsten Tag, darum "<", falls kein naechster Tag vorhanden ist. 						
-			//Bei Pfaden ein Problem, da sie immer mit einem Z-Tag direkt umgeben sein muessen.
-			//Damit diese Z-Tags wegkommen, JETZT also nicht:
-			//vecReturn = StringZZZ.vecMidFirst(sExpression + sSepRight, sSepLeft, sSepRight, false,false);
-			
-			//Problem: Der einem INI-Path Ausdruck umgebende Z-Tag muss eintfernt werden.
-			//         1. Schritt: Packe ihn in Vec(1).
-			//Da mehrere Z-Tags hintereinander stehen können, reicht auch folgendes nicht, sondern es muss der ERSTE geholt werden.
-			//vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression + sSepRight, sSepLeft, sSepRight, false);
-			
-			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", "<Z>", "</Z>", false);
-			
-			//20250215
-			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen, darum mal ein </Z> anhaengen
-			//vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sExpression + "</Z>", sSepLeft, sSepRight, false);
-			//Anders als bei normalen Tag-Separatoren, hier die Tags nicht in der Mitte wieder aufaddiert werden, sondern wir behalten sie einfach.									
-			
-			//TODOGOON20250225; //Ermittle als Trenner das Tag Links, rechts von dem XPath-Tags. Das muss auch mit CASCADED Ausdruecken funktionieren
-			
+			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen
 			String sTagXPathStarting = this.getTagPartOpening();
 			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
 			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
-			
-			//vecReturn = StringZZZ.vecMidFirstKeep(sExpression + "</Z>", sSepLeft, sSepRight, false);
+		
 			vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
-			
-			//TODOGOON20250221;//Definiere einen XPath als Ausdruck, der in geschweiften Klammern zu sein hat!!! Also {[Section]Property}
-			                   //Damit kann dann davor/dahinter beliebiger Text folgen
-			
-			
-			String sLeft = (String) vecReturn.get(0);			
-			String sMid = (String) vecReturn.get(1);
-			String sRight = (String) vecReturn.get(2);			
-			
-			
-			//#########################
-			//vecReturn.replace(sLeft, sMid, sRight);
-
-			//##########################
 	
-			//Problem: Parsen und solven sind hier zusammen...
-			//         Es wird also beim Nachsehen in der INI - Datei ein weiterer Solver gestartet.
-			//         Der schreibt dann den gefundenen Wert als "Gesamtwert" in den Entry... 
-			//         DAS IST FALSCH.
-			//GRUND DAFUER IST, DAS FUER
-			//getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-			//ZWAR EIN NEUES ENTRY-OBJEKT VERWENDET WIRD
-			//ABER MIT .setEntry(..) Das Objekt uebernommen wird.
-			//DARUM NIEMALS das Entry Objekt einfach so uebernehmen. Also Kommentar:
-			//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-			
-			//Das reicht aber nicht....
 			//Loesungsansatz: Arbeite mit einer nicht weiter verwendeten Kopie des Ini-Objekts		
 			FileIniZZZ<T> objFileIni = this.getFileConfigKernelIni();
 			if(objFileIni==null){
@@ -407,49 +356,21 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			Vector3ZZZ<String> vecTagValueTotal = StringZZZ.vecMidFirstKeepSeparatorCentral(sTagValueTotal, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			
 			String sTagValue = (String) vecTagValueTotal.get(1);
-			
-			//String sSection = StringZZZ.midLeftRightback(this.getTagPartOpening() + sTagValueTotal + this.getTagPartClosing(), this.getTagPartOpening(), this.getTagPartClosing());
-			
-//			//Erste Annahme: Path Ausdruck hat noch die Z-Tags drumherum, also "<"
-//			String sProperty = StringZZZ.midLeftRightback(sSectionTotal +this.getTagClosing(), sSection + this.getTagClosing(), sSepRight);
-//			if(StringZZZ.isEmpty(sProperty)) { //dann ggfs. nur diesen Path Ausdruck uebergeben ohne etwas am Ende
-//				sProperty = StringZZZ.right(sSectionTotal, sSection+this.getTagClosing());
-//			}
-			
-			//20250215
 			String sSection = StringZZZ.midLeftRightback(sTagValue, this.getTagPartOpening(), this.getSectionClosing());
 			String sProperty = StringZZZ.midLeftRightback(sTagValue, this.getSectionClosing(), this.getTagPartClosing());
 									
 			sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			vecTagValueTotal.replace(sReturnTag);						
 			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
+			this.setValue(sReturnTag);
+			
+			
 			vecReturn.replace(sReturnTag); //Übernimm den ersetzten Wert mit ggfs. vorhandenen Zeichen drumherum in die Rückgabe
-			
-			//Wichtige Nacharbeiten am Schluss:
-			//Das oben hinzugefuegte </Z> Tag muss wieder entfernt werden
-//			sRight = (String) vecReturn.get(2);
-//			sRight = StringZZZ.stripRight(sRight, "</Z>", 1);//nur 1x Strip
-//			vecReturn.replace(2, sRight);	
-			
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags rausrechnen, falls gewuenscht. BESONDERHEIT: Hier nicht versuchen den einenen Path-Tag rauszurechnen [...]
 			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators, false);
-			sReturnTag = this.getValue();
-			
-//			if(bReturnSeparators) {
-//				//ABER: Wenn die Umgebenden Z-Tags drin bleiben sollen, dann muss der Returnvektor anders aussehen.
-//				//      Dort müssen naemlich die Z-Tags in den Positionen 0 bzw. 2 sein.
-//				//      Dann kann man Positon 1 mit sReturn ersetzen
-//				vecReturn = StringZZZ.vecMidFirst(sExpression + "</Z>", sSepLeft, sSepRight, false,false);
-//
-//				//Wichtige, besondere Nacharbeiten am Schluss: Der entfernte < muss wieder hinzugefuegt werden.
-//				sRight = (String) vecReturn.get(2);
-//				sRight = sSepRight + sRight;
-//				vecReturn.replace(2, sRight);
-//			}
-						
-			
+			sReturnTag = this.getValue();			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:		
 		 

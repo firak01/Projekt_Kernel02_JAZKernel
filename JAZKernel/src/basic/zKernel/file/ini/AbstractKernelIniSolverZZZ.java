@@ -475,7 +475,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					if(sReturnLineSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sReturnLineSolved.equals(sReturnLine)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						if(!sReturnLineSolved.equals(sReturnLine)) {
+							objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						}
 					}
 				}						
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);

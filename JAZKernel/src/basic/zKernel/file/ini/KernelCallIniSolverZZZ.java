@@ -136,8 +136,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn; String sReturnInner = null;
-		String sReturnTag = null; String sReturnTagInner = null;
+		String sReturn = sExpressionIn; 
+		String sReturnTag = null; String sReturnLine = null;
+		String sReturnLineParsed = null; String sReturnLineParsedCallInner = null;
 		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -158,6 +159,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
 		}
+		objEntry.setRaw(sExpressionIn);		
+		sReturnLine = sExpressionIn;
+		sReturnTag = this.getValue();
+		objEntry.isParseCalled(true);
+						
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
@@ -181,7 +187,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-					
+			sReturnTag = this.getValue();	
+			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
+			sReturnLine = sReturnLineParsed;
+			
 			//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
 			bUseSolver = this.isSolverEnabledGeneral();//getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
@@ -211,16 +220,20 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceJavaCall.set(objEntry);
-				sReturnInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
-				sReturnTagInner = objJavaCallSolver.getValue();
+				sReturnLineParsedCallInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
 				objEntry = objReturnReferenceJavaCall.get();
 				
-				//TODO: Wenn mehrere Tags hintereinander sind, muss das "Aufaddiert" werden.
-				sReturnTag = sReturnInner;
-				
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-				if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);//NUR BEIM SOLVEN DEN WERT IN VEC(1) UEBERNEHMEN
-				this.setValue(sReturnTag);
+				//20250304: Beim Parsen ist dient das Parsen des inneren Tag dazu hier ggf. noch Entry-Werte z.B. isPath() oder so, zu setzten.
+				//          Falsch ist es aber den Wert des inneren Tags als eigenen Tag-Wert zu uebernehmen.
+				//sReturnTag = objJavaCallSolver.getValue();
+				//this.setValue(sReturnTag);
+																			
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen				
+				sReturnTag = sReturnLineParsedCallInner;
+								
+				//20250304: Den Returnwert des geparsten inneren Strings übernehmen. Der könnte geaendert worden sein.
+				vecReturn.replace(sReturnLineParsedCallInner);//NUR BEIM SOLVEN DEN WERT IN VEC(1) UEBERNEHMEN				
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			}else {
 				//Der JAVA-CALL Tag wird nicht verwendet. Aber der CALL-TAG schon.
 				//Aber die umgebenden Tags sollen drinbleiben, darum hier nicht nacharbeiten.
@@ -230,20 +243,24 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}
 		}//end main:
 		
-		if(sReturnTag!=null) this.setValue(sReturnTag);
-		if(objEntry!=null) {		
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.setValue(sReturn);
-				if(sExpressionIn!=null) {
-					
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
+		if(objEntry!=null) {
+			objEntry.setValue(sReturnLine);
+			if(bUseExpression) {		
+				if(bUseSolver && bUseSolverThis) {
 					//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
 					//     nur .isJavaCall() wird vorher gesetzt.
-					if(!sExpressionIn.equals(sReturn)) {					
-						objEntry.isParsedChanged(true);							
+					if(sReturnLineParsedCallInner!=null) {
+						if(sReturnLineParsed.equals(sReturnLineParsedCallInner)) {
+							objEntry.isCallParsedChanged(true);
+						}
 					}
+					
+					if(!sExpressionIn.equals(sReturnLine)) {					
+						objEntry.isParsedChanged(true);							
+					}															
 				}			
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 				this.adoptEntryValuesMissing(objEntry);

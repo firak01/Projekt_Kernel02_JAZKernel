@@ -981,17 +981,17 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen				
 				}
 								
-				//+++ Der Wert des Tags
-				
-				//    Merke: Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
+				//+++ Der Wert des Tags			
+				//Merke: Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
 				//    Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
-				sReturnTag = (String) vecReturn.get(1); 
 				
 				if(bRemoveOwnTagParts) {
 					String sTagStart = this.getTagPartOpening();
 					String sTagEnd = this.getTagPartClosing();								
 					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
 				}
+				
+				
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 				vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
 			}else {
@@ -1512,15 +1512,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 								sExpression = VectorUtilZZZ.implode(vecExpressionTemp);					
 							}
 						} //end while
+						sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
+						this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
 						
-						sReturnTag = sExpression;
-						objEntry.isVariableSubstituted(true);
-						this.setValue(sReturnTag);						
-						objEntry.setValue(sReturnTag);						
-						if(sReturnTag!=sExpressionOld) {													
+						sReturnLine = sExpression;
+						objEntry.setValue(sReturnLine);
+						
+						objEntry.isVariableSubstituted(true);																
+						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isVariableSubstitutedChanged(true);
-						}
-						sReturnLine=sReturnTag;
+						}							
 					}
 				}	
 				
@@ -1545,8 +1546,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							//Der INI-Pfad wird per RegEx-Ausdruck definiert.
 							//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
 					   
-							//Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, true); //auf jeden Fall um PATH-Anweisungen herum den Z-Tag entfernen
-							//Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+							
+							
 							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 							if(vecExpressionTemp==null) break;
 								
@@ -1560,13 +1561,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							}											
 						} //end while						
 						sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
-						objEntry.isPathSubstituted(true);
-						this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.				
-						objEntry.setValue(sReturnTag);
-						if(!sExpressionOld.equals(sReturnTag)) {							
+						this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
+						
+						sReturnLine = sExpression;
+						objEntry.setValue(sReturnLine);
+						
+						objEntry.isPathSubstituted(true);																
+						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isPathSubstitutedChanged(true);
 						}	
-						sReturnLine = sReturnTag;
+						
 					}//end if .isParseRegEx();
 				}//end if .getFlag(..USE_...Path...)
 								

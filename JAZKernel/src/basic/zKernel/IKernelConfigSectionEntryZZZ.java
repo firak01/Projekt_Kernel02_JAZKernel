@@ -219,9 +219,15 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isCall();
 	abstract void isCall(boolean bIsCall);
 	
+	public boolean isCallParsed();
+	abstract void isCallParsed(boolean bIsCallParsed);
+	
+	public boolean isCallParsedChanged();
+	abstract void isCallParsedChanged(boolean bIsCallParsedChanged);
+
 	public boolean isCallSolved();
 	abstract void isCallSolved(boolean bIsCallSolved);
-	
+		
 	public boolean isCallSolvedChanged();
 	abstract void isCallSolvedChanged(boolean bIsCallSolvedChanged);
 

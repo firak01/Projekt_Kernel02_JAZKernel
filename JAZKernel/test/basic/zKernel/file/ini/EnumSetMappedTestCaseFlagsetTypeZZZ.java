@@ -29,6 +29,7 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	CALL_UNEXPRESSED("call_unexpressed",TestUtilAsTestZZZ.sFLAGSET_CALL_UNEXPRESSED,"Flagset Variante: 'Call unexpressed'"),
 	CALL_UNSOLVED("call_unsolved",TestUtilAsTestZZZ.sFLAGSET_CALL_UNSOLVED,"Flagset Variante: 'Call unsolved'"),
 	JAVACALL_UNSOLVED("javacall_unsolved",TestUtilAsTestZZZ.sFLAGSET_JAVACALL_UNSOLVED,"Flagset Variante: 'JavaCall unsolved'"),
+	JAVACALL_SOLVED("javacall_solved",TestUtilAsTestZZZ.sFLAGSET_JAVACALL_SOLVED,"Flagset Variante: 'JavaCall solved'"),
 	;
 	
 	
