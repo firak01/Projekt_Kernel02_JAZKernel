@@ -167,7 +167,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isParseCalled(true);
+		
 
 		main:{
 			String sExpression = sExpressionIn;
@@ -256,12 +256,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 						if(sReturnLineParsed.equals(sReturnLineParsedCallInner)) {
 							objEntry.isCallParsedChanged(true);
 						}
-					}
-					
-					if(!sExpressionIn.equals(sReturnLine)) {					
-						objEntry.isParsedChanged(true);							
-					}															
-				}			
+					}																								
+				}
+				
+				if(!sExpressionIn.equals(sReturnLine)) {					
+					objEntry.isParsedChanged(true);							
+				}
+				
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 				this.adoptEntryValuesMissing(objEntry);
 			}

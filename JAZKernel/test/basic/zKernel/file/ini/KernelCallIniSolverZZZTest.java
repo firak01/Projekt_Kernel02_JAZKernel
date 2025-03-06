@@ -114,10 +114,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 			//++++++++++ PRE / POST
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
+			
 			
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
+			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+			
+			
 
 		
 			//### Vorgezogener letzter Fehlertest: ENDE
@@ -926,28 +929,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
-					
-//					//spannend, nicht aufgeloest, aber geparsed!!!
-//					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-//					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-////					if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted() ) {
-////						assertTrue(objEntry.isParsed());  
-////					}else {
-////						assertFalse(objEntry.isParsed());
-////					}
-//					assertTrue(objEntry.isParseCalled()); 
-//					assertTrue(objEntry.isExpression()); 
-//					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
-//					
-//					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
-//					
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-//					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -968,29 +950,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 
-					
-//					//spannend, nicht aufgeloest, aber geparsed!!!
-//					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-//					//Das gilt hier: Da nix aufgeloest wird durch den solver.
-//					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-////					if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted()) {
-////						assertTrue(objEntry.isParsed());  
-////					}else {
-////						assertFalse(objEntry.isParsed());
-////					}
-//					assertTrue(objEntry.isParseCalled());
-//					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
-//					assertTrue(objEntry.isExpression());					
-//					
-//					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
-//					
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-//					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix rausJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1004,32 +963,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 
-					
-//					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-////					if(bRemoveSuroundingSeparators | objEntryUsed.isPathSubstituted()) {
-////						assertTrue(objEntryUsed.isParsed());  
-////					}else {
-////						assertFalse(objEntryUsed.isParsed());
-////					}
-//					assertTrue(objEntryUsed.isParseCalled());
-//					assertFalse(objEntryUsed.isSolveCalled()); 
-//					assertTrue(objEntryUsed.isExpression());
-//					
-//					
-//					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
-//					
-//					
-//					sValueUsed = objEntryUsed.getValue();
-//					assertEquals(sExpressionSolved, sValueUsed);
-//					
-//					
-//					assertFalse(objEntryUsed.isDecrypted());
-//					assertNull(objEntryUsed.getValueDecrypted()); 				
-//					
-//					assertTrue(objEntryUsed.isCall());		//Beim Parsen wird das festgestellt
-//					assertFalse(objEntryUsed.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-//					assertNull(objEntryUsed.getCallingClassname());
-//					assertNull(objEntryUsed.getCallingMethodname());
 				}
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1047,31 +980,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 
-//					//spannend, nicht aufgeloest, aber geparsed!!!
-//					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-//					//Das gilt hier: Da nix aufgeloest wird durch den solver.
-//					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-////					if(bRemoveSuroundingSeparators | objEntryUsed.isPathSubstituted()) {
-////						assertTrue(objEntryUsed.isParsed());  
-////					}else {
-////						assertFalse(objEntryUsed.isParsed());
-////					}
-//					assertTrue(objEntryUsed.isParseCalled());
-//					assertTrue(objEntryUsed.isSolveCalled()); //Der konkrete Solver ist nicht involviert
-//					assertTrue(objEntryUsed.isExpression());
-//				
-//					assertFalse(objEntryUsed.isSolved()); //Der konkrete Solver ist nicht involviert
-//					
-//					assertFalse(objEntryUsed.isDecrypted());
-//					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertTrue(objEntryUsed.isCall());		//Beim Parsen wird das festgestellt
-//					assertFalse(objEntryUsed.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix rausJavaCall());
-//					assertNull(objEntryUsed.getCallingClassname());
-//					assertNull(objEntryUsed.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1085,16 +996,23 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		}
 		
 		
-		private boolean testCompute_Call_Unsolved_(String sExpressionSourceIn, String sExpressionSubstitudedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+		private boolean testCompute_Call_Unsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 			boolean bReturn = false;
 			try {
 				boolean btemp; 
 				
-				String sExpressionSource; 
-				String sExpressionSolved; String sValue; String sValueUsed;				
+				String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
+				String sValue;			
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-				IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+				IKernelConfigSectionEntryZZZ objEntry;  
 				
+				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+				
+				sExpression = sExpressionIn;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpressionSolvedIn;
+				sTag = sTagIn;
+				sTagSolved = sTagSolvedIn;
 				
 				//####################################################################################
 				//### EXPRESSION - CALL NICHT .solve
@@ -1124,142 +1042,60 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 							
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
-				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-					sExpressionSource = sExpressionSourceIn;
-					sExpressionSolved = sExpressionSolvedIn;		
+				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionSolver.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
+										
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					assertTrue(btemp);
 					
-					//spannend, nicht aufgeloest, aber geparsed!!!
-					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-//					if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted()) {
-//						assertTrue(objEntry.isParsed());  
-//					}else {
-//						assertFalse(objEntry.isParsed());
-//					}
-					assertTrue(objEntry.isParseCalled());
-					assertFalse(objEntry.isSolveCalled());
-					assertTrue(objEntry.isExpression());
-					
-					assertTrue(objEntry.isParsed()); //Der konkrete Solver ist nicht involviert
-					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sExpressionSource = sExpressionSourceIn;
-					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionSolver.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
 					assertEquals(sExpressionSolved, sValue);
 
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
 					
-					//spannend, nicht aufgeloest, aber geparsed!!!
-					//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-					//Das gilt hier: Da nix aufgeloest wird durch den solver.
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-//					if(bRemoveSuroundingSeparators | objEntry.isPathSubstituted()) {
-//						assertTrue(objEntry.isParsed());  
-//					}else {
-//						assertFalse(objEntry.isParsed());
-//					}
-					assertTrue(objEntry.isParseCalled());
-					assertTrue(objEntry.isSolveCalled());
-					assertTrue(objEntry.isExpression());
-					
-					assertTrue(objEntry.isParsed());
-					assertFalse(objEntry.isSolved());
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					assertTrue(btemp);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				//+++ Variante fuer den AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-					sExpressionSource = sExpressionSourceIn;
-					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntryUsed = objExpressionSolver.parseAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
-					assertNotNull(objEntryUsed);
+					objEntry = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+					assertNotNull(objEntry);
 					
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-//					if(bRemoveSuroundingSeparators | objEntryUsed.isPathSubstituted()) {
-//						assertTrue(objEntryUsed.isParsed());  
-//					}else {
-//						assertFalse(objEntryUsed.isParsed());
-//					}
-					assertTrue(objEntryUsed.isParseCalled()); 
-					assertFalse(objEntryUsed.isSolveCalled()); //hier wird nur der Parse Fall betrachtet	
-					assertTrue(objEntryUsed.isExpression());
-												
-					assertTrue(objEntryUsed.isParsed()); 
-					assertFalse(objEntryUsed.isSolved()); //hier wird nur der Parse Fall betrachtet
-					
-					sValueUsed = objEntryUsed.getValue();
-					assertEquals(sExpressionSolved, sValueUsed);
-									
-					assertFalse(objEntryUsed.isDecrypted());
-					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntryUsed.isCall()); 		//Beim Parsen wird das festgestellt
-					assertFalse(objEntryUsed.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntryUsed.getCallingClassname());
-					assertNull(objEntryUsed.getCallingMethodname());
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					assertTrue(btemp);
 				}
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-					sExpressionSource = sExpressionSourceIn;
-					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntryUsed = objExpressionSolver.solveAsEntry(sExpressionSource, bRemoveSuroundingSeparators);				
-					assertNotNull(objEntryUsed);
+					objEntry = objExpressionSolver.solveAsEntry(sExpression, bRemoveSuroundingSeparators);				
+					assertNotNull(objEntry);
 					
-					//also, pruefen, ob die Pfade aufgeloest sind... dann ist es klar, dass ein Unterschied vorhanden ist, auch wenn nix "gesolved" ist.
-//					if(bRemoveSuroundingSeparators | objEntryUsed.isPathSubstituted()) {
-//						assertTrue(objEntryUsed.isParsed());  
-//					}else {
-//						assertFalse(objEntryUsed.isParsed());
-//					}
-					assertTrue(objEntryUsed.isParseCalled());
-					assertTrue(objEntryUsed.isSolveCalled());
-					assertTrue(objEntryUsed.isExpression());
-					
-					assertTrue(objEntryUsed.isParsed()); //Hier wird ja auch der unsolved-Fall getestet.
-					assertFalse(objEntryUsed.isSolved()); //Hier wird ja auch der unsolved-Fall getestet.
-					
-					sValueUsed = objEntryUsed.getValue();
-					assertEquals(sExpressionSolved, sValueUsed);
-									
-					assertFalse(objEntryUsed.isDecrypted());
-					assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntryUsed.isCall()); 		//Beim Parsen wird das festgestellt
-					assertFalse(objEntryUsed.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
-					assertNull(objEntryUsed.getCallingClassname());
-					assertNull(objEntryUsed.getCallingMethodname());
+					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					assertTrue(btemp);
 				}
 				
 				bReturn = true;
@@ -1396,11 +1232,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 */
 		public void testCompute01ParseVsSolve(){
 			
-			boolean btemp; int itemp;
+			boolean btemp;
 			Vector3ZZZ<String> vecReturn = null; Vector3ZZZ<String> vecReturnSubstituted = null;
 			String sLineWithExpression = null; String sExpressionSolved = null;
 			String sValue; String sValueSubstituted;
-			String sTagStart; String sTagEnd;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";				
@@ -1505,7 +1340,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			boolean btemp;
 			String sValue; boolean bValue;
 			String sClassname; String sMethodname;
-			String sExpression ; String sExpressionSolved; String sExpressionSolvedTagless; String sValueAsExpression;
+			String sExpression ; String sExpressionSolved; String sValueAsExpression;
 			Vector<String> vecReturn = null;
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -1527,7 +1362,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
 				//Hier mit abgeschalteter Expression...
 				vecReturn = objExpressionSolver.parseFirstVector(sExpression); 
-				assertTrue(VectorUtilZZZ.isEmpty(vecReturn));
+				assertFalse(VectorUtilZZZ.isEmpty(vecReturn));
 				
 				//Jetzt den Parser und alles notwendig einschalten
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 

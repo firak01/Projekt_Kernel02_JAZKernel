@@ -1477,13 +1477,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				bUseParse = this.isParserEnabledThis();
 				if(!bUseParse) break main;
 				
-				
+				objEntry.isVariableSubstituteCalled(true);				
 				if(this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)) {
-					
+										
 					//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 					if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
-						objEntry.isVariableSubstituteCalled(true);
-						
+										
 						//ZUERST: Löse ggfs. übergebene Variablen auf.
 						//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
 											
@@ -1518,19 +1517,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						sReturnLine = sExpression;
 						objEntry.setValue(sReturnLine);
 						
-						objEntry.isVariableSubstituted(true);																
+																						
 						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isVariableSubstitutedChanged(true);
 						}							
-					}
+					}//end if .isParse(..)
+					objEntry.isVariableSubstituted(true);
 				}	
 				
-				if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {	
-					
+				objEntry.isPathSubstituteCalled(true);
+				if(this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) {											
 					//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 					if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
-						objEntry.isPathSubstituteCalled(true);
-						
+											
 						//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 						//Problem hier: [ ] ist auch der JSON Array-Ausdruck
 						String sExpressionOld = sExpression;
@@ -1565,15 +1564,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 						sReturnLine = sExpression;
 						objEntry.setValue(sReturnLine);
-						
-						objEntry.isPathSubstituted(true);																
+																												
 						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isPathSubstitutedChanged(true);
 						}	
 						
 					}//end if .isParseRegEx();
+					objEntry.isPathSubstituted(true);
 				}//end if .getFlag(..USE_...Path...)
-								
+						
+				
 				sExpression = sReturnLine;
 				sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 				sReturnTag = this.getValue();
