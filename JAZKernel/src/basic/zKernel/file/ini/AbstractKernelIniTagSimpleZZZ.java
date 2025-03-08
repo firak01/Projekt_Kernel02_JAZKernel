@@ -1544,9 +1544,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					        //sind auch Bestandteile des INI-Pfads (z.B. [SECTION]Property )
 							//Der INI-Pfad wird per RegEx-Ausdruck definiert.
 							//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
-					   
-							
-							
+					   														
 							Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 							if(vecExpressionTemp==null) break;
 								

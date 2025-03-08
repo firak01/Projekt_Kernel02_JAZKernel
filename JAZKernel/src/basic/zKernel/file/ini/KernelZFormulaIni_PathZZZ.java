@@ -359,7 +359,15 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sSection = StringZZZ.midLeftRightback(sTagValue, this.getTagPartOpening(), this.getSectionClosing());
 			String sProperty = StringZZZ.midLeftRightback(sTagValue, this.getSectionClosing(), this.getTagPartClosing());
 									
-			sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
+			//Zu einfach, was tun wenn kein Wert gefunden wird... einfach so belassen
+			//sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
+			IKernelConfigSectionEntryZZZ objEntrySearch = objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null);
+			if(objEntrySearch.hasAnyValue()) {
+				sReturnTag = objEntrySearch.getValue();
+			}else {
+				sReturnTag = sTagValue; //also unveraendert lassen.
+			}
+			
 			vecTagValueTotal.replace(sReturnTag);						
 			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
 			this.setValue(sReturnTag);

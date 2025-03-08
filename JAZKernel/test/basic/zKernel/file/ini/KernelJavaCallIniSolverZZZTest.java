@@ -97,19 +97,19 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	}
 	
 	
-	public void testCompute_Call() {
-		String sExpressionSource=null;
+	public void testCompute_JavaCall() {
+		String sExpression=null;
 //		try {
 		
 		//##################################
 		//### Vorgezogener letzter Fehlertest: START
 
 		//++++++++++ PRE / POST
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.DEFAULT);
 		
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.AS_ENTRY);
 
 	
 		//### Vorgezogener letzter Fehlertest: ENDE
@@ -117,27 +117,27 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	
 	
 		//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-		testCompute_JavaCall_(sExpressionSource,"","", TestSubtype.DEFAULT);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+		testCompute_JavaCall_(sExpression,"","", TestSubtype.DEFAULT);
 		
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-		testCompute_JavaCall_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+		testCompute_JavaCall_(sExpression,"","", TestSubtype.AS_ENTRY);
 		
 		
 		//Test ohne notwendige Pfadersetzung
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-		testCompute_JavaCall_(sExpressionSource,"","", TestSubtype.DEFAULT);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+		testCompute_JavaCall_(sExpression,"","", TestSubtype.DEFAULT);
 
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-		testCompute_JavaCall_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
+		testCompute_JavaCall_(sExpression,"","", TestSubtype.AS_ENTRY);
 
 		
 		//++++++++++ PRE / POST
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.DEFAULT);
 		
-		sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
+		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.AS_ENTRY);
 		
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
@@ -151,12 +151,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	private void testCompute_JavaCall_(String sExpressionIn, String sPreIn, String sPostIn, TestSubtype enumTestSubtype){
 		//SIEHE AUCH testCompute_CallWithPrePost
 		boolean btemp; int itemp;
-		
-		String sSection; String sProperty;
+				
 		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
-		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-	
-		String sValue;
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";	
 			
@@ -169,6 +165,34 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
+			//a)
+			sExpression = sPre + sExpressionIn + sPost;
+			sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+			sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+			
+			//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+			sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
+            
+			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			}else {
+				
+				TODOGOON20250308;
+				/* Irgendwie wird die Section / Property Kombination nicht mehr gefunden				 
+expected:
+<...ll><Z:Java><Z:Class>[basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName]</Z:Method></Z:Java>...> 
+but was:
+<...ll><Z:Java><Z:Class>[{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}]</Z:Method></Z:Java>...>
+				 */
+				
+				
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			}
 		
 
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -473,7 +497,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sTagSolved = sTagSolvedIn;
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
-			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.		
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
@@ -587,17 +610,24 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01parse(){
-		boolean btemp; String sSection; String sProperty; String sValue;
-		String sExpression; String sExpressionParsed;
-		String sTagStartZ;	String sTagEndZ;
-		Vector<String> vecReturn;
+		boolean btemp; 
+		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
+		String sValue; 
+		
+		String sTagStart = null; String sTagEnd = null;
+		String sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
+		String sTagEndZ = "</Z>";
+	
+		
 		
 		try {
+			
+			
 			//###############################################	
 			//### JAVA:CALL Ausdruck aus INI-Datei lesen
 			//###############################################
 			
-			////### Erst ohne Verarbeitung
+			////### OHNE EXPRESSION - Verarbeitung
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -618,22 +648,18 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 						
 			btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);//Sollte dann egal sein			
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
-			
-			
-			
-			//Anwenden der 1. Formel			
+						
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-			sExpressionParsed = sExpression;	
+			sExpressionSolved = sExpression;	
 			sValue = objExpressionSolver.parse(sExpression);			
-			assertEquals(sExpressionParsed, sValue);
-			
-			//Beim Parsen fuer den Wert des Tags selbst(!) ist es nicht egal, ob Expression(!) verwendet wird ....
-			//Dann wird nicht geparsed!!!
-			sExpressionParsed = sExpression;	
+			assertEquals(sExpressionSolved, sValue);
+		
+			sTag = null; //ohne Expression-Auswertung
+			sTagSolved = null;//ohne Expression-Auswertung
 			sValue = objExpressionSolver.getValue();
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sTag, sValue);
 			
-			//### Erst ohne Verarbeitung 2
+			//### OHNE SOLVER Verarbeitung 2
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //nun wird der Wert nach dem Parsen zumindest geaendert 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 						
@@ -655,28 +681,24 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 
 			//Es muss beim Parsen fuer den Wert des Tags selbst(!) ist es egal, ob ein Solver(!) verwendet wird ....
-			sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
 				
 			sValue = objExpressionSolver.parse(sExpression);
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sExpressionSolved, sValue);
+
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			
+			sTagStart = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Call>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);
 			
-			sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			
-			sTagStartZ = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Call>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);
-			
-			sTagStartZ = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Java>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);							
+			sTagStart = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Java>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);							
 			//sExpressionParsed = "<Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method>";
 			sValue = objExpressionSolver.getValue();
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sExpressionSolved, sValue);
 			
 			//### Teilberechnungen durchführen
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //nun wird der Wert nach dem Parsen zumindest geaendert 
@@ -699,30 +721,27 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		
 			
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, objExpressionSolver.getName());
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName());
 			sValue = objExpressionSolver.parse(sExpression);
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sExpressionSolved, sValue);
 			
 			//Es muss beim Parsen fuer den Wert des Tags selbst(!) egal sein, ob USECALL verwendet wird ....
-			sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			
-			sTagStartZ = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Call>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);
+			sTagStart = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Call>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);
 			
-			sTagStartZ = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Java>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);							
-			//sExpressionParsed = "<Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method>";
+			sTagStart = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Java>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);							
+			//sExpressionSolved = "<Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method>";
 		
 			sValue = objExpressionSolver.getValue();
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sExpressionSolved, sValue);
 			
 					
 			//### Nun die Gesamtberechnung durchführen
@@ -734,34 +753,31 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 						
 			btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
-		
-			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-						
+								
 			//Hier findet nur parse() statt. Darum wird nix aufgeloest, egal welche Flags gesetzt sind.
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, objExpressionSolver.getName());
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName());
 			sValue = objExpressionSolver.parse(sExpression);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
-			assertEquals(sExpressionParsed, sValue);
+			assertEquals(sExpressionSolved, sValue);
 			
 			//Es muss beim Parsen fuer den Wert des Tags selbst(!) egal sein, ob USECALL verwendet wird ....
-			sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
-			sTagEndZ = "</Z>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			
-			sTagStartZ = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Call>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);
+			sTagStart = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Call>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);
 			
-			sTagStartZ = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
-			sTagEndZ = "</Z:Java>";
-			sExpressionParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionParsed, sTagStartZ, sTagEndZ);							
+			sTagStart = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Java>";
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStart, sTagEnd);							
 			//sExpressionParsed = "<Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method>";
 		
 			sValue = objExpressionSolver.getValue();
-			assertEquals(sExpressionParsed, sValue);	
+			assertEquals(sExpressionSolved, sValue);	
 		//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
@@ -773,10 +789,12 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01solve(){
-		boolean btemp; String sSection; String sProperty; String sValue;
+		boolean btemp; 
 		String sExpression; String sExpressionSolved;
-		String sTagStartZ;	String sTagEndZ;
-		Vector<String> vecReturn;
+		String sValue; 
+		String sTagStart;	String sTagEnd;		
+		String sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
+		String sTagEndZ = "</Z>";
 		
 		try {
 			//###############################################	
@@ -785,7 +803,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			String sHostName = EnvironmentZZZ.getHostName(); ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";
 			
 			
-			////### Erst ohne Verarbeitung
+			////### OHNE EXPRESSION Verarbeitung
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -815,7 +833,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sValue = objExpressionSolver.solve(sExpression);			
 			assertEquals(sExpressionSolved, sValue);
 			
-			//### Erst ohne Verarbeitung 2
+			//### OHNE SOLVER Verarbeitung 2
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //nun wird der Wert nach dem Parsen zumindest geaendert 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 						
@@ -836,8 +854,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			
-			sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
-			sTagEndZ = "</Z>";
+
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
 				
 			sValue = objExpressionSolver.solve(sExpression);
@@ -884,8 +901,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 						
 			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus ABER Z:Call-Tag NICHT raus, da der Call Solver nicht als Objekt hier verwendet wird...			
 			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>"; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
-			sValue = objExpressionSolver.solve(sExpression);			
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			sValue = objExpressionSolver.solve(sExpression);						
 			assertEquals(sExpressionSolved, sValue);
 			
 		
@@ -902,12 +918,14 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	 */
 	public void testCompute01parseAsEntry(){
 		try {		
-			boolean btemp; String sSection; String sProperty; String sValue; boolean bValue; 
-			String sClassname;	String sMethodname;								
-			String sExpressionSource; String sExpression; String sExpressionSolved; IKernelConfigSectionEntryZZZ objEntry;
-			String sTagStartZ;	String sTagEndZ; String sHostName;
-			Vector<String> vecReturn;
+			boolean btemp; 
+											
+			String sExpression; String sExpressionSolved; IKernelConfigSectionEntryZZZ objEntry;
+			String sValue; boolean bValue;
+			String sHostName; String sClassname; String sMethodname;
 			
+			String sTagStartZ;	String sTagEndZ; 
+						
 			String sLineWithExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			
 			//###############################################	
@@ -985,11 +1003,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	 */
 	public void testCompute01solveAsEntry(){
 		try {		
-			boolean btemp; String sSection; String sProperty; String sValue; boolean bValue; 
-			String sClassname;	String sMethodname;								
-			String sExpressionSource; String sExpression; String sExpressionSolved; IKernelConfigSectionEntryZZZ objEntry;
-			String sTagStartZ;	String sTagEndZ; String sHostName;
-			Vector<String> vecReturn;
+			boolean btemp;  										
+			String sExpression; String sExpressionSolved; 
+			String sValue; boolean bValue;
+			IKernelConfigSectionEntryZZZ objEntry;
+			String sHostName; String sClassname; String sMethodname;
 			
 			String sLineWithExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			
