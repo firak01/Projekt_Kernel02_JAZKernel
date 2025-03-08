@@ -27,7 +27,7 @@ public interface ITreeNodeZZZ<T> extends Iterable<ITreeNodeZZZ<T>>, IOutputDebug
 	public ITreeNodeZZZ<T> addSiblingAsFirst(T siblingNode);
 	
 	public ITreeNodeZZZ<T> findTreeNode(Comparable<T> cmp);
-	public ITreeNodeZZZ<T>searchRoot();
+	public ITreeNodeZZZ<T> searchRoot();
 	
 	public boolean isEmptyNode();
 	public boolean isRoot();

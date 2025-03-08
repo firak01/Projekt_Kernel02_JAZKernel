@@ -313,6 +313,42 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
+			
+			TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
+			                 //dass objEntry.isCall(true) hier gesetzt ist.
+			                 //Dies hier einfach zu machen ist aber nicht generisch.
+			                 //Statt dessen muesste man:
+								//so etwas mit "ElternTags" erledigen
+			                    //getParentTag()
+			                    //getParentTags()
+			                    //UND
+			                    //Pro Tag müsste definiert werden, wie denn die Methode in objEntry heisst.
+			                    //Will man das nicht per Reflection API machen, geht das nur über eine Methode
+			                    //definiert in einem Interface:
+			                    //ITagContainedZZ
+								//    .getNameParent()
+			                    //
+								//Demnach in IIniTagContainedZZZ
+			                    //also eigentlich auch analog zu:   this.adoptEntryValuesMissing(objEntry);
+			                    //this.setEntryValue(true);
+			                    //            und darin steht dann XmlUtilZZZ.containsTagName(...
+			                    //
+								//und bezogen auf das ParentTag:
+					            //     .updateEntyValueByParent(objEntry, objParentDummy);
+								
+								//das wuerde bedeuten dass es eine Methode geben muesste
+			                    //in ITagContainedZZZ
+			                    //      .getTagParentDummy()
+			                    //
+			                    //Dann könnte man dieses Dummy Objekt dazu verwenden das objEntry-Objekt zu fuellen
+			                    //
+			                    //     objParentDummy.setEntryValue(true);
+								//
+								//
+								
+					            //
+
+			
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isJavaCall(true);
 			}

@@ -333,6 +333,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); 				
 					
+					TODOGOON20250308; //Es gibt keinen generischen Ansatz .isCall(true) zu erzeugen.
+					                  //Das koennte man in KernelJavaCallIniSolverZZZ.parseFirstVector(...) zwar speziell tun.
+					                  //Aber eigentlich will ich das irgendwie generisch machen...
+					                  //so etwas mit "ElternTags"
+					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
 					assertNull(objEntry.getCallingClassname());

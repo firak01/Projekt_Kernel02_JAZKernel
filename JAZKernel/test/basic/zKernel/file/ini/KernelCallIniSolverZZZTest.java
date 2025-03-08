@@ -554,7 +554,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
+				//Nur Call-Ebene, darum nicht: sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
+				
 				//Entferne die Z-Tags von der Zeile, was aber nicht gewünscht ist.  Zudem: Hier wird nur geparsed, also bleiben die anderen Tags auch drin
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
@@ -575,7 +576,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
+				//Nur Call-Ebene, darum nicht: sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
+				
 				//Entferne den Z-Tag von der Zeile, aber weil nur geparsed wird, bleiben der CALL-Tag und der JAVA-CALL Tag drin
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				

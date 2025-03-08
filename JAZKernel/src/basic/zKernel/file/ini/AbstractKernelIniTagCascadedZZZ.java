@@ -27,7 +27,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * In dieser Klasse wird das Ende Tag "von hinten" gesucht.
  * D.h. auch verschachtelte Tags funktionieren <Z> ... ... <Z> .. </Z> ... ... </Z>
  */
-public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ{
+public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IIniTagCascadedZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	
 	public AbstractKernelIniTagCascadedZZZ() throws ExceptionZZZ {
@@ -174,11 +174,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			String sTagClosing = this.getTagPartClosing();
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;			
-			String sReturnToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+			String sValueToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnSubstituted = this.substituteParsed(sReturnToSubstitute, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);	
+			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);	
 			//+++++++++++++++++++++++++
 			
 			objEntry = objReturnReferenceSubstitute.get();						
