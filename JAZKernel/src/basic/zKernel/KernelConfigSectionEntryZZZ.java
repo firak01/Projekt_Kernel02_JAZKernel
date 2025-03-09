@@ -84,13 +84,14 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bCall = false;
 	protected boolean bCallParsed = false;
 	protected boolean bCallParsedChanged = false;
+	protected boolean bCallSolveCalled = false;
 	protected boolean bCallSolved = false;
 	protected boolean bCallSolvedChanged = false;
 	
 	protected boolean bJavaCall = false;
-	protected boolean bIsJavaCallSolveCalled = false;
-	protected boolean bIsJavaCallSolved = false;
-	protected boolean bIsJavaCallSolvedChanged = false;
+	protected boolean bJavaCallSolveCalled = false;
+	protected boolean bJavaCallSolved = false;
+	protected boolean bJavaCallSolvedChanged = false;
 	
 	
 	protected String sCallingClassname = null;
@@ -728,8 +729,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
 	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
-	public void hasAnySectionExists(boolean bAnySectionExists) {
-		if(!this.bAnySectionExists) this.bAnySectionExists=bAnySectionExists;
+	public void hasAnySectionExists(boolean bHasAnySectionExists) {
+		if(!this.bAnySectionExists) this.bAnySectionExists=bHasAnySectionExists;
 	}
 		
 	@Override
@@ -739,8 +740,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
 	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
-		public void hasAnyPropertyExists(boolean bAnyPropertyExists) {
-		if(!this.bAnyPropertyExists) this.bAnyPropertyExists=bAnyPropertyExists;
+		public void hasAnyPropertyExists(boolean bHasAnyPropertyExists) {
+		if(!this.bAnyPropertyExists) this.bAnyPropertyExists=bHasAnyPropertyExists;
 	}
 		
 	
@@ -750,8 +751,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isExpression(boolean bExpression){
-		this.bExpression = bExpression;
+	public void isExpression(boolean bIsExpression){
+		if(!this.bExpression) this.bExpression = bIsExpression;
 	}
 
 	@Override
@@ -760,8 +761,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isFormula(boolean bFormula) {
-		this.bFormula = bFormula;
+	public void isFormula(boolean bIsFormula) {
+		if(!this.bFormula) this.bFormula = bIsFormula;
 	}
 	
 	
@@ -771,13 +772,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isFormulaSolved(boolean bFormulaSolved) {
-		this.bFormulaSolved = bFormulaSolved;
-	}
-	
-	@Override 
-	public void isFormulaMathSolved(boolean bFormulaMathSolved) {
-		this.bFormulaMathSolved = bFormulaMathSolved;
+	public void isFormulaSolved(boolean bIsFormulaSolved) {
+		if(!this.bFormulaSolved) this.bFormulaSolved = bIsFormulaSolved;
 	}
 	
 	@Override
@@ -785,6 +781,10 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return this.bFormulaMathSolved; 
 	} 
 	
+	@Override 
+	public void isFormulaMathSolved(boolean bIsFormulaMathSolved) {
+		if(!this.bFormulaMathSolved) this.bFormulaMathSolved = bIsFormulaMathSolved;
+	}
 	
 	@Override
 	public boolean isConversion() {
@@ -792,19 +792,20 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isConversion(boolean bConversion) {
-		this.bConversion = bConversion;
-	}
-	
-	@Override 
-	public void isConverted(boolean bConverted) {
-		this.bConverted = bConverted;
+	public void isConversion(boolean bIsConversion) {
+		if(!this.bConversion) this.bConversion = bIsConversion;
 	}
 	
 	@Override
 	public boolean isConverted() {
 		return this.bConverted; 
 	}
+	
+	@Override 
+	public void isConverted(boolean bIsConverted) {
+		if(!this.bConverted) this.bConverted = bIsConverted;
+	}
+	
 	
 	//#######################################
 	@Override 
@@ -813,8 +814,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isParseCalled(boolean bParseCalled) {
-		this.bParseCalled = bParseCalled;
+	public void isParseCalled(boolean bIsParseCalled) {
+		if(!this.bParseCalled) this.bParseCalled = bIsParseCalled;
 	}
 	
 	@Override 
@@ -823,8 +824,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isParsed(boolean bParsed) {
-		this.bParsed = bParsed;
+	public void isParsed(boolean bIsParsed) {
+		if(!this.bParsed) this.bParsed = bIsParsed;
 	}
 	
 	@Override 
@@ -833,8 +834,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isParsedChanged(boolean bParsedChanged) {
-		this.bParsedChanged = bParsedChanged;
+	public void isParsedChanged(boolean bIsParsedChanged) {
+		if(!this.bParsedChanged) this.bParsedChanged = bIsParsedChanged;
 	}
 	
 	//################################
@@ -844,8 +845,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isSubstituteCalled(boolean bSubstituteCalled) {
-		this.bSubstituteCalled = bSubstituteCalled;
+	public void isSubstituteCalled(boolean bIsSubstituteCalled) {
+		if(!this.bSubstituteCalled) this.bSubstituteCalled = bIsSubstituteCalled;
 	}
 	
 	public boolean isSubstituted() {
@@ -853,8 +854,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isSubstituted(boolean bSubstituted) {
-		this.bSubstituted = bSubstituted;
+	public void isSubstituted(boolean bIsSubstituted) {
+		if(!this.bSubstituted) this.bSubstituted = bIsSubstituted;
 	}
 	
 	@Override 
@@ -863,8 +864,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isSubstitutedChanged(boolean bSubstitutedChanged) {
-		this.bSubstitutedChanged = bSubstitutedChanged;
+	public void isSubstitutedChanged(boolean bIsSubstitutedChanged) {
+		if(!this.bSubstitutedChanged) this.bSubstitutedChanged = bIsSubstitutedChanged;
 	}
 	
 	//+++++++++++++++++++++++
@@ -875,8 +876,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isPathSubstituteCalled(boolean bSubstitutePathCalled) {
-		this.bPathSubstituteCalled = bSubstitutePathCalled;
+	public void isPathSubstituteCalled(boolean bIsSubstitutePathCalled) {
+		if(!this.bPathSubstituteCalled) this.bPathSubstituteCalled = bIsSubstitutePathCalled;
 	}
 	
 	@Override 
@@ -885,8 +886,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isPathSubstituted(boolean bPathSubstituted) {
-		this.bPathSubstituted = bPathSubstituted;
+	public void isPathSubstituted(boolean bIsPathSubstituted) {
+		if(!this.bPathSubstituted) this.bPathSubstituted = bIsPathSubstituted;
 	}
 	
 	@Override
@@ -895,8 +896,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isPathSubstitutedChanged(boolean bPathSubstitutedChanged) {
-		this.bPathSubstitutedChanged = bPathSubstitutedChanged;
+	public void isPathSubstitutedChanged(boolean bIsPathSubstitutedChanged) {
+		if(!this.bPathSubstitutedChanged) this.bPathSubstitutedChanged = bIsPathSubstitutedChanged;
 	}
 	
 	//+++++++++++++++++++++
@@ -906,8 +907,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public void isVariableSubstituteCalled(boolean bSubstituteVariableCalled) {
-		this.bVariableSubstituteCalled = bSubstituteVariableCalled;
+	public void isVariableSubstituteCalled(boolean bIsSubstituteVariableCalled) {
+		if(!this.bVariableSubstituteCalled) this.bVariableSubstituteCalled = bIsSubstituteVariableCalled;
 	}
 	
 	@Override
@@ -916,8 +917,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isVariableSubstituted(boolean bVariableSubstituted) {
-		this.bVariableSubstituted = bVariableSubstituted;
+	public void isVariableSubstituted(boolean bIsVariableSubstituted) {
+		if(!this.bVariableSubstituted) this.bVariableSubstituted = bIsVariableSubstituted;
 	}
 	
 	@Override
@@ -926,8 +927,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isVariableSubstitutedChanged(boolean bVariableSubstitutedChanged) {
-		this.bVariableSubstitutedChanged = bVariableSubstitutedChanged;
+	public void isVariableSubstitutedChanged(boolean bIsVariableSubstitutedChanged) {
+		if(!this.bVariableSubstitutedChanged) this.bVariableSubstitutedChanged = bIsVariableSubstitutedChanged;
 	}
 	
 	
@@ -939,8 +940,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isSolveCalled(boolean bSolveCalled) {
-		this.bSolveCalled = bSolveCalled;
+	public void isSolveCalled(boolean bIsSolveCalled) {
+		if(!this.bSolveCalled) this.bSolveCalled = bIsSolveCalled;
 	}
 	
 	@Override 
@@ -949,8 +950,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isSolved(boolean bSolved) {
-		this.bSolved = bSolved;
+	public void isSolved(boolean bIsSolved) {
+		if(!this.bSolved) this.bSolved = bIsSolved;
 	}
 	
 	
@@ -961,7 +962,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isSolvedChanged(boolean bIsSolvedChanged) {
-		this.bSolvedChanged = bIsSolvedChanged;
+		if(!this.bSolvedChanged) this.bSolvedChanged = bIsSolvedChanged;
 	}
 	//#####################################
 	
@@ -971,8 +972,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isJson(boolean bJson){
-		this.bJson = bJson;
+	public void isJson(boolean bIsJson){
+		if(!this.bJson) this.bJson = bIsJson;
 	}
 	
 	@Override
@@ -981,8 +982,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isJsonArray(boolean bJsonArray){
-		this.bJsonArray = bJsonArray;
+	public void isJsonArray(boolean bIsJsonArray){
+		if(!this.bJsonArray) this.bJsonArray = bIsJsonArray;
 	}
 	
 	@Override
@@ -991,18 +992,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isJsonMap(boolean bJsonMap){
-		this.bJsonMap = bJsonMap;
+	public void isJsonMap(boolean bIsJsonMap){
+		if(!this.bJsonMap) this.bJsonMap = bIsJsonMap;
 	}
 	
 	@Override
 	public boolean isCall() {
 		return this.bCall;
 	}
-	
+		
 	@Override
-	public void isCall(boolean bCall) {
-		this.bCall = bCall;
+	public void isCall(boolean bIsCall) {
+		if(!this.bCall) this.bCall = bIsCall;
 	}
 	
 	@Override
@@ -1012,7 +1013,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isCallParsed(boolean bIsCallParsed) {
-		this.bCallParsed = bIsCallParsed;
+		if(!this.bCallParsed) this.bCallParsed = bIsCallParsed;
 	}
 
 	@Override
@@ -1022,7 +1023,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isCallParsedChanged(boolean bIsCallParsedChanged) {
-		this.bCallParsedChanged = bIsCallParsedChanged;
+		if(!this.bCallParsedChanged) this.bCallParsedChanged = bIsCallParsedChanged;
+	}
+	
+	@Override
+	public boolean isCallSolveCalled() {
+		return this.bCallSolveCalled;
+	}
+	
+	@Override
+	public void isCallSolveCalled(boolean bIsCallSolveCalled) {
+		if(!this.bCallSolveCalled) this.bCallSolveCalled = bIsCallSolveCalled;
 	}
 	
 	@Override
@@ -1031,8 +1042,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isCallSolved(boolean bCallSolved) {
-		this.bCallSolved = bCallSolved;
+	public void isCallSolved(boolean bIsCallSolved) {
+		if(!this.bCallSolved) this.bCallSolved = bIsCallSolved;
 	}
 	
 	@Override
@@ -1042,7 +1053,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isCallSolvedChanged(boolean bIsCallSolvedChanged) {
-		this.bCallSolvedChanged = bIsCallSolvedChanged;
+		if(!this.bCallSolvedChanged) this.bCallSolvedChanged = bIsCallSolvedChanged;
 	}
 
 
@@ -1053,39 +1064,39 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void isJavaCall(boolean bJavaCall) {
-		this.bJavaCall = bJavaCall;
+	public void isJavaCall(boolean bIsJavaCall) {
+		if(!this.bJavaCall) this.bJavaCall = bIsJavaCall;
 	}
 	
 	@Override
 	public boolean isJavaCallSolveCalled() {
-		return this.bIsJavaCallSolveCalled;
+		return this.bJavaCallSolveCalled;
 	}
 
 	@Override
 	public void isJavaCallSolveCalled(boolean bIsJavaCallSolveCalled) {
-		this.bIsJavaCallSolveCalled = bIsJavaCallSolveCalled;
+		if(!this.bJavaCallSolveCalled) this.bJavaCallSolveCalled = bIsJavaCallSolveCalled;
 	}
 
 	
 	@Override
 	public boolean isJavaCallSolved() {
-		return this.bIsJavaCallSolved;
+		return this.bJavaCallSolved;
 	}
 
 	@Override
 	public void isJavaCallSolved(boolean bIsJavaCallSolved) {
-		this.bIsJavaCallSolved = bIsJavaCallSolved;
+		if(!this.bJavaCallSolved) this.bJavaCallSolved = bIsJavaCallSolved;
 	}
 	
 	@Override
 	public boolean isJavaCallSolvedChanged() {
-		return this.bIsJavaCallSolvedChanged;
+		return this.bJavaCallSolvedChanged;
 	}
 
 	@Override
 	public void isJavaCallSolvedChanged(boolean bIsJavaCallSolvedChanged) {
-		this.bIsJavaCallSolvedChanged = bIsJavaCallSolvedChanged;
+		if(!this.bJavaCallSolvedChanged) this.bJavaCallSolvedChanged = bIsJavaCallSolvedChanged;
 	}
 	
 	
@@ -1098,7 +1109,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isCacheSkipped(boolean bSkip) {
-		this.bSkipCache = bSkip;
+		if(!this.bSkipCache) this.bSkipCache = bSkip;
 	}
 
 	@Override
@@ -1136,7 +1147,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isExploded(boolean bIsExploded) {
-		this.bExploded = bIsExploded;
+		if(!this.bExploded) this.bExploded = bIsExploded;
 	}
 
 	@Override
@@ -1167,7 +1178,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override
 	public void isCrypt(boolean bCrypt) {
-		this.bCrypt = bCrypt;
+		if(!this.bCrypt) this.bCrypt = bCrypt;
 	}
 	
 	@Override
@@ -1178,7 +1189,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isDecrypted(boolean bDecrypted) {
-		this.bDecrypted = bDecrypted;
+		if(!this.bDecrypted) this.bDecrypted = bDecrypted;
 	}
 	
 	
@@ -1189,19 +1200,21 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 
 	@Override
-	public void isEncrypted(boolean bEncrypted) {
-		this.bEncrypted = bEncrypted;
+	public void isEncrypted(boolean bIsEncrypted) {
+		if(!this.bEncrypted) this.bEncrypted = bIsEncrypted;
 	}
-	
-	@Override
-	public void isRawDecrypted(boolean bRawDecrypted) {
-		this.bRawDecrypted = bRawDecrypted;
-	}
-	
+
 	@Override
 	public boolean isRawDecrypted() {
 		return this.bRawDecrypted;
 	}
+	
+	@Override
+	public void isRawDecrypted(boolean bIsRawDecrypted) {
+		if(!this.bRawDecrypted) this.bRawDecrypted = bIsRawDecrypted;
+	}
+	
+
 	
 	@Override
 	public VectorDifferenceZZZ<String> getRawDecryptedVector(){
@@ -1232,8 +1245,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 
 	@Override
-	public void isRawEncrypted(boolean bRawEncrypted) {
-		this.bRawEncrypted = bRawEncrypted;
+	public void isRawEncrypted(boolean bIsRawEncrypted) {
+		if(!this.bRawEncrypted) this.bRawEncrypted = bIsRawEncrypted;
 	}
 
 	@Override

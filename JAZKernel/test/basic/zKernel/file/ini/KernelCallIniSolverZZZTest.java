@@ -25,8 +25,17 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelCallIniSolverZZZTest  extends TestCase {
-		public final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
-		public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
+		protected final static String sEXPRESSION_JAVACALL01_PATHSECTION = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_PATHSECTION;
+		protected final static String sEXPRESSION_JAVACALL01_CLASS_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY;
+		protected final static String sEXPRESSION_JAVACALL01_METHOD_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_PATHPROPERTY;
+		protected final static String sEXPRESSION_JAVACALL01_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		protected final static String sEXPRESSION_JAVACALL01_CLASS_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT;
+		protected final static String sEXPRESSION_JAVACALL01_METHOD_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT;
+		//protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
+		protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+		
+		
+		//public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
 		
 		public enum TestSubtype{
 				DEFAULT,
@@ -113,11 +122,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			//### Vorgezogener letzter Fehlertest: START
 
 			//++++++++++ PRE / POST
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
 			
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
 			
 			
@@ -128,10 +137,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		
 		
 			//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT; 
 			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT; 
 			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
 			
 			
@@ -144,10 +153,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 			
 			//++++++++++ PRE / POST
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
 			
 //			} catch (ExceptionZZZ ez) {
@@ -182,29 +191,37 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Ohne Call-Berechung
-
+				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
+				
 				//c)
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-				//Beim Solven ohne call, bleibt alles an Tags drin.
+
+				//Konflikt: 
+				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
+				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
+				
+				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
+				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
+
+				
+				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
+                								
+				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+					btemp = testCompute_Call_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 				} else {
-					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					btemp = testCompute_Call_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				}
-			
+
+				
 
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -1289,7 +1306,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 				//################################
 				//### Mit Substitution
-				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 				
 				vecReturnSubstituted = objExpressionSolver.parseFirstVector(sLineWithExpression);
 				assertNotNull(vecReturnSubstituted);
@@ -1318,7 +1335,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//###############################
 				//### Nun die Gesamtberechnung, d.h. incl. Aufloesen durchführen
 				//Anwenden der ersten Formel: Erst jetzt kommt das Ergebnis raus	
-				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+				sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 				
 				sValue = objExpressionSolver.solve(sLineWithExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));

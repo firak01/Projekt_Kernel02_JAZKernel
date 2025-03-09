@@ -157,6 +157,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
+		objEntry.isSolveCalled(true);
+		objEntry.isCallSolveCalled(true); //Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
 		objEntry.isJavaCallSolveCalled(true);
 					
 		main:{
@@ -166,10 +168,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;
-			
-			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
-				objEntry.isJavaCall(true);
-			}
 			
 			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
@@ -312,9 +310,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-			
-			
-			TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
+		
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				
+				objEntry.isCall(true);
+				/* Zum suchen der Gegenstelle TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
 			                 //dass objEntry.isCall(true) hier gesetzt ist.
 			                 //Dies hier einfach zu machen ist aber nicht generisch.
 			                 //Statt dessen muesste man:
@@ -345,11 +345,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			                    //     objParentDummy.setEntryValue(true);
 								//
 								//
-								
-					            //
-
-			
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				 //TODOGOON20250308: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
+				 */
 				objEntry.isJavaCall(true);
 			}
 							

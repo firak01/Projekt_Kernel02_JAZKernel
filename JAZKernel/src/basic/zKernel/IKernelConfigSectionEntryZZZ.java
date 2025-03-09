@@ -225,6 +225,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isCallParsedChanged();
 	abstract void isCallParsedChanged(boolean bIsCallParsedChanged);
 
+	public boolean isCallSolveCalled();
+	abstract void isCallSolveCalled(boolean bIsCallSolveCalled);
+	
 	public boolean isCallSolved();
 	abstract void isCallSolved(boolean bIsCallSolved);
 		
@@ -285,4 +288,5 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	//In clonable protected
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;
+	
 }

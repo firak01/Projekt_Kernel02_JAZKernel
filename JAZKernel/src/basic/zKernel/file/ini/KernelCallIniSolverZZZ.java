@@ -175,7 +175,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-										
+							
+			//TODOGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJavaCall(true);
+			}
+			
 			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
 				objEntry.isCall(true);
 			}
@@ -345,9 +350,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		objEntry.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);		
 		objEntry.isSolveCalled(true);
-		
+				
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
@@ -405,7 +410,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);	
+		objEntry.isSolveCalled(true);
+		objEntry.isCallSolveCalled(true); //Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden, bzw. hier CHILD
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;

@@ -291,6 +291,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertTrue(objEntry.isParseCalled()); 					
 					assertFalse(objEntry.isSolveCalled()); //hier nur .parse() - Fall
+					assertFalse(objEntry.isCallSolveCalled()); //nur PARSE - Fall
+					assertFalse(objEntry.isJavaCallSolveCalled());
 					assertTrue(objEntry.isExpression());
 					
 					assertTrue(objEntry.isParsed());
@@ -308,7 +310,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 				case sFLAGSET_JAVACALL_SOLVED:
 					
 					assertTrue(objEntry.isParseCalled());
-					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					
+					assertFalse(objEntry.isSolveCalled()); //nur parse - Fall
+					assertFalse(objEntry.isCallSolveCalled()); //nur PARSE - Fall
+					assertFalse(objEntry.isJavaCallSolveCalled());
 					assertTrue(objEntry.isExpression());
 					
 					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
@@ -325,7 +330,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				case sFLAGSET_JAVACALL_UNSOLVED:
 					
 					assertTrue(objEntry.isParseCalled());
-					assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isSolveCalled()); //nur parse - Fall
+					assertFalse(objEntry.isCallSolveCalled()); //nur PARSE - Fall
+					assertFalse(objEntry.isJavaCallSolveCalled());
 					assertTrue(objEntry.isExpression());
 					
 					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
@@ -333,13 +340,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); 				
 					
-					TODOGOON20250308; //Es gibt keinen generischen Ansatz .isCall(true) zu erzeugen.
-					                  //Das koennte man in KernelJavaCallIniSolverZZZ.parseFirstVector(...) zwar speziell tun.
-					                  //Aber eigentlich will ich das irgendwie generisch machen...
-					                  //so etwas mit "ElternTags"
-					
+					/*Zum Suchen der Gegenstelle TODOGOON20250308;
+					 * 				//Es gibt keinen generischen Ansatz .isCall(true) zu erzeugen.
+					                 //Das koennte man in KernelJavaCallIniSolverZZZ.parseFirstVector(...) zwar speziell tun.
+					                 //Aber eigentlich will ich das irgendwie generisch machen...
+					                 //so etwas mit "ElternTags"
+					//TODOGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+					*/
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
+					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 					assertNull(objEntry.getCallingClassname());
 					assertNull(objEntry.getCallingMethodname());
 					break;
@@ -568,7 +577,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
+					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
@@ -577,6 +586,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+					assertTrue(objEntry.isCallSolveCalled());
+					assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
 					
 					assertTrue(objEntry.isParsed()); 
 					assertTrue(objEntry.isSolved()); 
@@ -608,8 +619,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
-					assertTrue(objEntry.isCall());
-					assertTrue(objEntry.isJavaCall());
+					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					assertTrue(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
 					assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 					assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
@@ -617,19 +628,21 @@ public class TestUtilAsTestZZZ extends TestCase{
 				case sFLAGSET_JAVACALL_UNSOLVED:
 					
 					assertTrue(objEntry.isParseCalled());
-					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+					assertTrue(objEntry.isSolveCalled()); 
+					//Generische Problematik. Stichwort TODOGOON20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
+					assertTrue(objEntry.isCallSolveCalled());
+					//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
 					assertTrue(objEntry.isExpression());
 										
 					assertTrue(objEntry.isParsed()); 							
-					assertTrue(objEntry.isSolved()); //Generell wurde ein Solver ausgefuehrt
-					
-					assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+					assertTrue(objEntry.isSolved()); //trotz JAVACALL-Unsolved Flag wird der CALL-Solver durchaus ausgefuehrt					
+					assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	//weil der Solver nicht betrachtet wird, kommt da nix raus
+					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
