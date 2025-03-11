@@ -135,8 +135,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = sExpressionIn;
-		String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
 		boolean bUseExpression = false; 
 		boolean bUseSolver = false;
 		boolean bUseSolverThis = false;
@@ -156,11 +155,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
-		objEntry.isCallSolveCalled(true); //Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
-		objEntry.isJavaCallSolveCalled(true);
-					
+		objEntry.setRaw(sExpressionIn);
+		this.updateValueSolveCalled();//Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
+		this.updateValueSolveCalled(objEntry);
+		sReturnLine = sExpressionIn;
+		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
@@ -178,7 +178,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 						
 			///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			String sValue=null;  
 			String sJavaCallClass = null; String sJavaCallMethod = null;
 											
 			//++++++++++++++++++++++++++++++++++++++++++++
@@ -186,7 +185,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			KernelJavaCall_ClassZZZ objJavaCallClass = new KernelJavaCall_ClassZZZ();
 			if(objJavaCallClass.isExpression(sExpression)){		
 				
-				sExpression = objJavaCallClass.parse(sExpression);
+				sReturnLine = objJavaCallClass.parse(sExpression);
 				sJavaCallClass = objJavaCallClass.getValue();
 				if(StringZZZ.isEmpty(sJavaCallClass)) break main;
 
@@ -195,8 +194,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				
 			}else{
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-				sValue = sExpression;	
-				sReturn = sValue;
+				sReturnLine = sExpression;					
 				break main;
 			}
 			
@@ -204,7 +202,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			//Nun den z:method Tag suchen
 			KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
 			if(objJavaCallMethod.isExpression(sExpression)){					
-				sExpression = objJavaCallMethod.parse(sExpression);
+				sReturnLine = objJavaCallMethod.parse(sExpression);
 				sJavaCallMethod = objJavaCallMethod.getValue();
 				if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
 				
@@ -212,8 +210,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				
 			}else{
 				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-				sValue = sExpression;
-				sReturn = sValue;
+				sReturnLine = sExpression;
 				break main;
 			}
 			
@@ -223,37 +220,61 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(objReturn==null)break main;		
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
-			objEntry.isJavaCallSolved(true);
-			sValue = objReturn.toString();
-			sReturnTag = sValue;
-			sReturn = sReturnTag;
-			
-			
+			this.updateValueSolved(objEntry);
+			sReturnTag = objReturn.toString();
+			sReturnLine = sReturnTag;			
 		}//end main:	
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);
-		if(objEntry!=null) {
-			//objEntry.setValue(VectorUtilZZZ.implode(vecReturn));	
-			objEntry.setValueCallSolved(sReturn);
-			//objEntry.isSolved(true);
-			//objEntry.isCallSolved(true);
-			
+		sReturn = sReturnLine;
+		this.setValue(sReturnTag);
+		if(objEntry!=null) {			
+			objEntry.setValueCallSolved(sReturnLine);		
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturn)) {				
-					//objEntry.isSolvedChanged(true);
-					objEntry.isJavaCallSolvedChanged(true);
+				if(!sExpressionIn.equals(sReturnLine)) {				
+					this.updateValueSolvedChanged(objEntry);					
 				}
 			}					
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);			
 		}		
-		//return vecReturn;
 		return sReturn;
 	}
 	
 	
+	//### aus IParseUserZZZ
+	@Override
+	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isCallSolveCalled(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		objEntry.isJavaCallSolveCalled(bIsSolveCalled);
+	}
 	
+	@Override
+	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isCallSolved(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		objEntry.isJavaCallSolved(bIsSolveCalled);
+	}
+	
+	@Override
+	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isCallSolvedChanged(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		objEntry.isJavaCallSolvedChanged(bIsSolveCalled);
+	}
 	
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
