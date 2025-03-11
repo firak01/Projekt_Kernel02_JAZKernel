@@ -183,10 +183,13 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
-			//a)
+			
+			
+			//c)
 			sExpression = sPre + sExpressionIn + sPost;
 			sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 			sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+			//Beim Solven ohne Solver, bleibt alles wie est ist.
 			
 			//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 			sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -194,11 +197,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
 			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
-            
+			
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-			}else {				
-				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			} else {
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			}
 		
 
@@ -527,11 +530,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 			assertTrue("Das Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER+"' sollte zur Verfügung stehen.", btemp);
 			
-			btemp = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //keinen Call - Solver nutzen
+			btemp = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); 
 			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
 			
 			btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); 
-			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp); //keinen JavaCall - Solver nutzen
 		
 		
 			

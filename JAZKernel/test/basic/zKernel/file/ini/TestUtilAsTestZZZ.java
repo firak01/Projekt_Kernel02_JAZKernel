@@ -330,8 +330,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 				case sFLAGSET_JAVACALL_UNSOLVED:
 					
 					assertTrue(objEntry.isParseCalled());
-					assertFalse(objEntry.isSolveCalled()); //nur parse - Fall
-					assertFalse(objEntry.isCallSolveCalled()); //nur PARSE - Fall
+					assertFalse(objEntry.isSolveCalled()); 
+					assertFalse(objEntry.isCallSolveCalled()); 
 					assertFalse(objEntry.isJavaCallSolveCalled());
 					assertTrue(objEntry.isExpression());
 					
@@ -345,7 +345,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					                 //Das koennte man in KernelJavaCallIniSolverZZZ.parseFirstVector(...) zwar speziell tun.
 					                 //Aber eigentlich will ich das irgendwie generisch machen...
 					                 //so etwas mit "ElternTags"
-					//TODOGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+					//TODOGOON20250308; //TICKETGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 					*/
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
@@ -629,8 +629,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertTrue(objEntry.isParseCalled());
 					assertTrue(objEntry.isSolveCalled()); 
-					//Generische Problematik. Stichwort TODOGOON20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
-					assertTrue(objEntry.isCallSolveCalled());
+					//Generische Problematik. Stichwort TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
+					//Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
+					//assertTrue(objEntry.isCallSolveCalled());
+					
+					//Generische Problematik. Da die Testutility von mehreren Solvern auf gerufen wird,
+			        //muss auch bei der abstrakten Klasse AbstractKernelIniSolverZZZ eine Methode ueberschreibbare Methode aufgerufen werden, 
+					//in welcher der EntryStatus fuer die Konkrete Klasse gemacht wird.
+					//UND ausgelesen wird.
+					
+					
 					//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
 					assertTrue(objEntry.isExpression());
 										

@@ -345,7 +345,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			                    //     objParentDummy.setEntryValue(true);
 								//
 								//
-				 //TODOGOON20250308: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
+				 //TODOGOON20250308; //TICKETGOON20250308;: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
 				 */
 				objEntry.isJavaCall(true);
 			}

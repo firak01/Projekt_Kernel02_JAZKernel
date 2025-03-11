@@ -410,6 +410,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
+		
+		//TODOGOON: ueberschreibbare Methode der Solver und auch Parser 
+		this.updateCalledValue(objEntry, "solve_case", true);
+		
 		sReturnLine=sExpressionIn;		
 		sReturnTag = this.getValue();
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
@@ -442,6 +446,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
+			
+			//TODOGOON20250308; //TICKETGOON20250308;;//Generische Problematik, wenn man hier nur auf den eigenen Solver abbprüft, kann man nicht das "Elternflag setzen"
 			
 			bUseSolverThis = this.isSolverEnabledThis();
 			if(!bUseSolverThis) break main;
