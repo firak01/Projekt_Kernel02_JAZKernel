@@ -11,7 +11,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
@@ -987,10 +987,10 @@ public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
 		objCrypt.setCharacterPoolAdditional("!");
 		
 		//USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER
-		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name(), true);
-		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name(), true);
-		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name(), true);
-		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name(), true);
+		objCrypt.setFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEUPPERCASE.name(), true);
+		objCrypt.setFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USENUMERIC.name(), true);
+		objCrypt.setFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USELOWERCASE.name(), true);
+		objCrypt.setFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name(), true);
 		
 		//Aufruf der privaten Testmethoden
 		String sEncrypted = testSetParameterByProgramAlias_Encrypted_NewValue1_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);

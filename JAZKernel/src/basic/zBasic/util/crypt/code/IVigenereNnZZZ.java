@@ -4,8 +4,8 @@ import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface IVigenereNnZZZ extends IVigenereZZZ, IROTUserZZZ, ICharacterPoolUserZZZ{
+public interface IVigenereNnZZZ extends IVigenereZZZ, IROTUserZZZ, ICharacterPoolEnabledZZZ{
 	
 }

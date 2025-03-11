@@ -1,7 +1,7 @@
 package basic.zBasic;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public class DummyTestObjectWithFlagByInterfaceExtendedZZZ extends AbstractObjectWithFlagZZZ<Object> implements IDummyTestObjectWithFlagByInterfaceExtendedZZZ{
 	private static final long serialVersionUID = 9214280301056845842L;
@@ -57,7 +57,7 @@ public class DummyTestObjectWithFlagByInterfaceExtendedZZZ extends AbstractObjec
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -102,7 +102,7 @@ public class DummyTestObjectWithFlagByInterfaceExtendedZZZ extends AbstractObjec
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

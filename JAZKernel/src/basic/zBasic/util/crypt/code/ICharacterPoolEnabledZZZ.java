@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
-public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
+public interface ICharacterPoolEnabledZZZ extends ICharacterPoolEnabledConstantZZZ{
 	   //Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen
 		//Merke: Diese Flags beziehen sich auf den Characterpool, d.h. nur wichtig in IVigenereNnZZZ
 		//public enum FLAGZ{
@@ -12,9 +12,9 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 		//}	
 		
 		//damit muss man nicht mehr tippen hinter dem enum .name()
-		public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag);
-		public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-		public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ; 
+		public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag);
+		public boolean setFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+		public boolean[] setFlag(ICharacterPoolEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ; 
 		boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 		
 		//Besonderheit bei Nn ist der CharacterPool

@@ -13,8 +13,8 @@ import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zUtil.io.IFileExpansionUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zUtil.io.KernelFileExpansionZZZ;
 import basic.zUtil.io.KernelFileZZZ;
@@ -86,7 +86,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				btemp = this.setFlag(stemp, true);
 				
 				if(btemp==false){ 								   
-					   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					   throw ez;		 
 				}
 			}

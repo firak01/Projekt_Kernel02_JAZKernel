@@ -1,7 +1,7 @@
 package basic.zBasic.component;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public interface IProgramRunnableZZZ extends IProgramZZZ, Runnable{ 		
 	//Merke: StartCutom() gibt es in IProgramZZZ, hier geht es darum, dass dieses Program in einer Endlsoscheife laufen darf.

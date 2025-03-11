@@ -3,7 +3,7 @@ package debug.zBasic.util.crypt;
 import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IROTZZZ;
@@ -44,7 +44,7 @@ public class DebugRotNn_MyPassordZZZ {
         try {        	
         	System.out.println("###################");
         	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE.name());
 			String rotNn = objCrypt.encrypt(input);
 			String roundTrip = objCrypt.decrypt(rotNn);
 			

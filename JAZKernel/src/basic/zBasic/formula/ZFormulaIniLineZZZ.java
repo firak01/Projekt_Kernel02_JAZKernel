@@ -8,9 +8,9 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmUtilZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
-import basic.zBasic.util.crypt.code.IROTUserConstantZZZ;
+import basic.zBasic.util.crypt.code.IROTEnabledConstantZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlDocumentUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -154,35 +154,35 @@ public class ZFormulaIniLineZZZ<T>  extends AbstractObjectWithFlagZZZ<T>{
 				StringBuilder objBuilderFlag = new StringBuilder();
 				
 				//USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER				
-				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name());
+					objBuilderFlag.append(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name());
 				}
-				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USELOWERCASE.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name());
+					objBuilderFlag.append(ICharacterPoolEnabledConstantZZZ.FLAGZ.USELOWERCASE.name());
 				}
-				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USENUMERIC.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name());
+					objBuilderFlag.append(ICharacterPoolEnabledConstantZZZ.FLAGZ.USENUMERIC.name());
 				}
-				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name());
+					objBuilderFlag.append(ICharacterPoolEnabledConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name());
 				}
-				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEUPPERCASE.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name());
+					objBuilderFlag.append(ICharacterPoolEnabledConstantZZZ.FLAGZ.USEUPPERCASE.name());
 				}
 				
 				//USESTRATEGY_CASECHANGE,USEBLANK
-				if(objCrypt.getFlag(IROTUserConstantZZZ.FLAGZ.USEBLANK.name())) {
+				if(objCrypt.getFlag(IROTEnabledConstantZZZ.FLAGZ.USEBLANK.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(IROTUserConstantZZZ.FLAGZ.USEBLANK.name());
+					objBuilderFlag.append(IROTEnabledConstantZZZ.FLAGZ.USEBLANK.name());
 				}
-				if(objCrypt.getFlag(IROTUserConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name())) {
+				if(objCrypt.getFlag(IROTEnabledConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name())) {
 					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
-					objBuilderFlag.append(IROTUserConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name());
+					objBuilderFlag.append(IROTEnabledConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name());
 				}
 								
 				//XML-Element setzen

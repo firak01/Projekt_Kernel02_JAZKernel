@@ -5,7 +5,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -97,7 +97,7 @@ public abstract class AbstractConsoleUserCryptZZZ extends AbstractConsoleUserZZZ
 			}
 			
 			//b) CharacterPool setzen, wenn verwendet
-			if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
+			if(objCrypt.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
 				sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL);
 				if(!StringZZZ.isEmpty(sInput)) {
 					objCrypt.setCharacterPoolBase(sInput);
@@ -108,7 +108,7 @@ public abstract class AbstractConsoleUserCryptZZZ extends AbstractConsoleUserZZZ
 				}
 				
 				//ba) Zusaetzlichen Zeichenpool setzen, wenn verwendet					
-				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
+				if(objCrypt.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
 					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL);
 					if(!StringZZZ.isEmpty(sInput)) {
 						objCrypt.setCharacterPoolAdditional(sInput);

@@ -8,7 +8,7 @@ import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
@@ -59,7 +59,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 				String stemp = sKey;
 				boolean btemp = this.setFlag(sKey, hmFlag.get(sKey));
 				if(btemp==false){
-					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
 				}
 			}
@@ -93,7 +93,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

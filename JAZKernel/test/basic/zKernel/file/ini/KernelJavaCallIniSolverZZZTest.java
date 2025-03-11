@@ -22,10 +22,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJavaCallIniSolverZZZTest  extends TestCase {
-	protected final static String sEXPRESSION_CALL01_PATHSECTION = "ArgumentSection for testCallComputed";
-	protected final static String sEXPRESSION_CALL01_CLASS_PATHPROPERTY = "JavaClass";
-	protected final static String sEXPRESSION_CALL01_METHOD_PATHPROPERTY = "JavaMethod";
-	protected final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java>"
+	public final static String sEXPRESSION_CALL01_PATHSECTION = "ArgumentSection for testCallComputed";
+	public final static String sEXPRESSION_CALL01_CLASS_PATHPROPERTY = "JavaClass";
+	public final static String sEXPRESSION_CALL01_METHOD_PATHPROPERTY = "JavaMethod";
+	public final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java>"
 															    + "<Z:Class>{["
 																+ KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_PATHSECTION + "]" 
 																+ KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY + "}"
@@ -35,12 +35,12 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 															    + "</Z:Method>"
 																+ "</Z:Java></Z:Call></Z>";
 	
-	protected final static String sEXPRESSION_CALL01_CLASS_DEFAULT = "basic.zBasic.util.machine.EnvironmentZZZ";
-	protected final static String sEXPRESSION_CALL01_METHOD_DEFAULT = "getHostName";
-	protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
+	public final static String sEXPRESSION_CALL01_CLASS_DEFAULT = "basic.zBasic.util.machine.EnvironmentZZZ";
+	public final static String sEXPRESSION_CALL01_METHOD_DEFAULT = "getHostName";
+	public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
 	
-	//protected final static String sEXPRESSION_ENCRYPTION02_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
-	//protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
+	//public final static String sEXPRESSION_ENCRYPTION02_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
+	//public final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	
 	private File objFile;
 	private IKernelZZZ objKernel;

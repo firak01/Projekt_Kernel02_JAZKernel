@@ -14,7 +14,7 @@ import basic.zBasic.util.datatype.character.AsciiZZZ;
  * @param numeric include numeric values
  * @return a list with mutated strings
  */
-public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserConstantZZZ{
+public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolEnabledConstantZZZ{
 	private static final long serialVersionUID = -7120488041281101978L;
 	ROTnumericZZZ() throws ExceptionZZZ {//Konstruktor auf PAKETEBENE Sichtbar
 		super();

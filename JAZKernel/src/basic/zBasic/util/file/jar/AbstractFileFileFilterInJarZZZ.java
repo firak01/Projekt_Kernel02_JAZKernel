@@ -23,11 +23,11 @@ import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zUtil.io.IFileExpansionUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithFlagZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{		
+public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithFlagZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionEnabledZZZ{		
 	protected FilenamePartFilterPathZipZZZ objFilterPath=null; //Der Dateipfad
 	protected FilenamePartFilterNameZipZZZ objFilterName=null; //Der ganze Name
 	protected FilenamePartFilterPathTotalZipZZZ objFilterPathTotal=null;//Der Dateipfad plus den ganzen Namen
@@ -72,7 +72,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithF
 					stemp = saFlagControlIn[iCount];
 					btemp = setFlag(stemp, true);
 					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+						   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 						   //doesn�t work. Only works when > JDK 1.4
 						   //Exception e = new Exception();
 						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");

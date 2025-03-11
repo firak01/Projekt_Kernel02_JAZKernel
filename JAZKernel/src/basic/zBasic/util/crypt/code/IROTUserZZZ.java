@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
-public interface IROTUserZZZ extends IROTUserConstantZZZ{
+public interface IROTUserZZZ extends IROTEnabledConstantZZZ{
 	   //Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen
 		//Merke: Diese Flags beziehen sich auf den Characterpool, d.h. nur wichtig in IVigenereNnZZZ
 		//public enum FLAGZ{

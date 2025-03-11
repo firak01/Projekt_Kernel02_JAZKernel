@@ -6,7 +6,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
@@ -92,7 +92,7 @@ public abstract class AbstractObjectWithFlagOnFlagListeningZZZ <T> extends Abstr
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

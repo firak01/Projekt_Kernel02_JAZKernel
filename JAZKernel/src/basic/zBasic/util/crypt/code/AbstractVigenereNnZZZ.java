@@ -14,7 +14,7 @@ import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
-public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implements IROTUserZZZ, ICharacterPoolUserZZZ{	
+public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implements IROTUserZZZ, ICharacterPoolEnabledZZZ{	
 	private static final long serialVersionUID = 1L;
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
@@ -544,7 +544,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
 		if(this.objCharacterMissingReplacement==null) {
-			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 		}
 		return this.objCharacterMissingReplacement;		
 	}
@@ -558,11 +558,11 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
-			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
-			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
-			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+			boolean bUseUppercasePool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC);
 			boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
+			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
@@ -665,7 +665,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 						
 			CharacterExtendedZZZ objCharMissingReplacement = null;
 			if(objCharMissingReplacementIn==null) {
-				objCharMissingReplacement=new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+				objCharMissingReplacement=new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			}else {
 				objCharMissingReplacement=objCharMissingReplacementIn;
 			}
@@ -782,23 +782,23 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	
 	
 	@Override
-	public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(ICharacterPoolEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(ICharacterPoolUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -809,7 +809,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 
 	@Override
-	public boolean proofFlagExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objEnumFlag.name());
 		}
 }

@@ -19,7 +19,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.config.IEnumSetKernelConfigDefaultEntryZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public class EnumSetUtilZZZ extends AbstractObjectZZZ{
 	protected EnumSet<?> enumSetCurrent=null;

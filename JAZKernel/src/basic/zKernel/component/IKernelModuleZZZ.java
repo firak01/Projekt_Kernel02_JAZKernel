@@ -1,9 +1,9 @@
 package basic.zKernel.component;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface IKernelModuleZZZ extends IFlagZUserZZZ {
+public interface IKernelModuleZZZ extends IFlagZEnabledZZZ {
 	public enum FLAGZ{
 		ISKERNELMODULE;
 	}	

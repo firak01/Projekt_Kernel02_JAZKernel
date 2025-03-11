@@ -1,9 +1,9 @@
 package basic.zBasic.component;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface IModuleZZZ extends IFlagZUserZZZ {
+public interface IModuleZZZ extends IFlagZEnabledZZZ {
 	public static String sMODULE_UNDEFINED="Modul_undefined";
 	
 	//Merke: Diese Methoden sind in AbstractKernelModule definiert. Müssen in Klassen, die nicht davon erben können extra implementiert werden.

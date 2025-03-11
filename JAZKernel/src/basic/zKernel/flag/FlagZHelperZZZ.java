@@ -55,7 +55,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZLocalSetBefore(IFlagZLocalUserZZZ obj, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZLocalSetBefore(IFlagZLocalEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 
@@ -202,7 +202,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZSetBefore(IFlagZUserZZZ obj, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZSetBefore(IFlagZEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 

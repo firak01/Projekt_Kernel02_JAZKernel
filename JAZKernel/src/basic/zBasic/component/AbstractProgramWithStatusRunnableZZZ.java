@@ -6,7 +6,7 @@ import java.util.Set;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectWithStatusZZZ;
+import basic.zBasic.IObjectWithStatusEnabledZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
@@ -14,7 +14,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalMessageUserZZZ;
@@ -127,22 +127,22 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 	
 	//### Aus IObjectWithStatusZZZ
 	@Override
-	public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IObjectWithStatusEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -150,19 +150,19 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
 	}
 	
 	@Override
-	public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 

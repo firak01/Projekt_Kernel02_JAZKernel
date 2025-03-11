@@ -1,5 +1,5 @@
 package basic.zBasic.util.crypt.code;
 
-public interface IROTnnZZZ extends ICharacterPoolUserZZZ{
+public interface IROTnnZZZ extends ICharacterPoolEnabledZZZ{
 
 }

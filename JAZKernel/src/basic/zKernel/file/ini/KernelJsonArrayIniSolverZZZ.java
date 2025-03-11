@@ -24,7 +24,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.

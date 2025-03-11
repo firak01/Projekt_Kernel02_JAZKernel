@@ -4,11 +4,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public class FlagZFassadeZZZ implements IConstantZZZ{
 
-	public static String[] seekFlagZrelevantForObject(IFlagZUserZZZ objSource, IFlagZUserZZZ objTarget) throws ExceptionZZZ{
+	public static String[] seekFlagZrelevantForObject(IFlagZEnabledZZZ objSource, IFlagZEnabledZZZ objTarget) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			if(objSource==null) {
@@ -54,7 +54,7 @@ public class FlagZFassadeZZZ implements IConstantZZZ{
 		
 	}
 	
-	public static String[] seekFlagZrelevantForObject(IFlagZUserZZZ objSource, IFlagZUserZZZ objTarget, boolean bValueToSearchFor) throws ExceptionZZZ{
+	public static String[] seekFlagZrelevantForObject(IFlagZEnabledZZZ objSource, IFlagZEnabledZZZ objTarget, boolean bValueToSearchFor) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			if(objSource==null) {

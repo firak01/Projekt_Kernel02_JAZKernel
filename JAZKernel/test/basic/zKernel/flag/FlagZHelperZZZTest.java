@@ -116,9 +116,9 @@ public class FlagZHelperZZZTest  extends TestCase{
 	    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
 	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 	    	Class<?> objClassByDirect = objTestWithFlagByDirect.getClass();
-    		String sName01 = IFlagZUserZZZ.FLAGZ.INIT.name(); 	
+    		String sName01 = IFlagZEnabledZZZ.FLAGZ.INIT.name(); 	
 	    	boolean bProof01 = FlagZHelperZZZ.proofFlagZDirectExists(objClassByDirect,sName01);		    			    
-	    	assertTrue("Das "+ IFlagZUserZZZ.FLAGZ.INIT.name() + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof01);
+	    	assertTrue("Das "+ IFlagZEnabledZZZ.FLAGZ.INIT.name() + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof01);
     	
 	    	//ByInterfaceObjekte
 	    	Class<?> objClassByInterface = objTestWithFlagByInterface.getClass();

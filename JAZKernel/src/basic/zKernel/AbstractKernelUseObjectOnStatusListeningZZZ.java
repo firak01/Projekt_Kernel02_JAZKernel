@@ -7,7 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
-import basic.zBasic.IObjectWithStatusZZZ;
+import basic.zBasic.IObjectWithStatusEnabledZZZ;
 import basic.zBasic.AbstractObjectWithFlagOnStatusListeningZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;

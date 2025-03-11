@@ -26,7 +26,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Erweiterung der Stream-Klasse um das zu verwendende CharacterSet / Encoding
  *  Klasse: Charset ALS ZWINGEND NOTWENDIG.

@@ -25,14 +25,14 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelCallIniSolverZZZTest  extends TestCase {
-		protected final static String sEXPRESSION_JAVACALL01_PATHSECTION = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_PATHSECTION;
-		protected final static String sEXPRESSION_JAVACALL01_CLASS_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY;
-		protected final static String sEXPRESSION_JAVACALL01_METHOD_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_PATHPROPERTY;
-		protected final static String sEXPRESSION_JAVACALL01_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		protected final static String sEXPRESSION_JAVACALL01_CLASS_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT;
-		protected final static String sEXPRESSION_JAVACALL01_METHOD_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT;
-		//protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
-		protected final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+		public final static String sEXPRESSION_JAVACALL01_PATHSECTION = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_PATHSECTION;
+		public final static String sEXPRESSION_JAVACALL01_CLASS_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY;
+		public final static String sEXPRESSION_JAVACALL01_METHOD_PATHPROPERTY = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_PATHPROPERTY;
+		public final static String sEXPRESSION_JAVACALL01_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+		public final static String sEXPRESSION_JAVACALL01_CLASS_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT;
+		public final static String sEXPRESSION_JAVACALL01_METHOD_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT;
+		//public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
+		public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 		
 		
 		//public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";

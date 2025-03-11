@@ -127,7 +127,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
 		if(this.objCharacterMissingReplacement==null) {
-			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 		}
 		return this.objCharacterMissingReplacement;		
 	}
@@ -141,11 +141,11 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
-			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
-			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
-			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+			boolean bUseUppercasePool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC);
 			boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
+			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
@@ -196,7 +196,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		
 	public static String encrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ {
 		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
-		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);
 	
 	}
@@ -266,7 +266,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 
 		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
-		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);		
 	}
 	
@@ -302,23 +302,23 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	
 	
 	@Override
-	public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(ICharacterPoolEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(ICharacterPoolUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -329,7 +329,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public boolean proofFlagExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	

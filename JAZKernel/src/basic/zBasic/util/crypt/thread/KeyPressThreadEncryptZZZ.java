@@ -10,7 +10,7 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;

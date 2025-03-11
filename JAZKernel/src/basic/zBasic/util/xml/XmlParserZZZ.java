@@ -11,7 +11,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Einfacher Parser um einen String in seine XML Bestandteile zu zerlegen.
  *  Einfach deshalb, weil kein (JDOM) XML Dokument benoetigt wird.
@@ -106,7 +106,7 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

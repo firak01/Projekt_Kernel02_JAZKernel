@@ -6,7 +6,7 @@ import basic.zBasic.component.AbstractProgramWithStatusRunnableZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
@@ -50,7 +50,7 @@ public abstract class AbstractDummyTestProgramWithStatusByInterfaceExtendedZZZ e
 					
 					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+					this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 				}
 			}//end main:
 			return baReturn;
@@ -95,7 +95,7 @@ public abstract class AbstractDummyTestProgramWithStatusByInterfaceExtendedZZZ e
 						
 						//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 						//    Es wird entfernt.
-						this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+						this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 					}
 				}//end main:
 				return baReturn;

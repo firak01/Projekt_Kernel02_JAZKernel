@@ -1,7 +1,7 @@
 package debug.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IROTZZZ;
@@ -17,7 +17,7 @@ public class DebugRotNnZZZ {
 			//Use this allowed characters
 			String sCharacterPool = " abcdefghijklmnopqrstuvwxyz?";
 			int iKeyLength=5;
-			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			
 			// Rotate the input string.
 	        // ... Then rotate the rotated string.
@@ -30,7 +30,7 @@ public class DebugRotNnZZZ {
 	        System.out.println(roundTrip);
 	        System.out.println("###################");
 	       	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE.name());
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			

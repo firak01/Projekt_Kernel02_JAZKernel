@@ -10,7 +10,7 @@ import basic.zBasic.ExceptionZZZ;
  * @author Fritz Lindhauer, 21.07.2022, 08:48:45
  * 
  */
-public interface IFlagZLocalUserZZZ{
+public interface IFlagZLocalEnabledZZZ{
 	public final String sERROR_FLAG_UNAVAILABLE = "this LOCAL flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 51;
 	

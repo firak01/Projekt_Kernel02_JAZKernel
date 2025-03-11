@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.util.console.multithread.IKeyPressThreadConstantZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 
 /**Konstanten, mit denen Werte in einer HashMap gespeichert werden.
@@ -21,13 +21,13 @@ public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstan
 	
 	//Merke: Mit "INPUT_FLAG" werden Eingabewerte gekennzeichnet, die später dann als Flag den Objekten übergeben werden können.	
 	public static String sINPUT_FLAG_USE_STRATEGY_CASECHANGE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name();
-	public static String sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name();
+	public static String sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolEnabledZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name();
 	
 	public static String sINPUT_FLAG_CHARACTER_BLANK = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USEBLANK.name();
-	public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
-	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE.name();
-	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();		
-	public static String sINPUT_FLAG_CHARACTER_ADDITIONAL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name();
+	public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE.name();
+	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE.name();
+	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC.name();		
+	public static String sINPUT_FLAG_CHARACTER_ADDITIONAL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER.name();
 	
 	public static String sOUTPUT_TEXT_ENCRYPTED = "OUTPUT_TEXT_ENCRYPTED";   
 	public static String sOUTPUT_TEXT_UNCRYPTED = "OUTPUT_TEXT_UNCRYPTED";

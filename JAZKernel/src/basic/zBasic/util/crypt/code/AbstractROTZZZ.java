@@ -63,23 +63,23 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public boolean getFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag) {		
+	public boolean getFlag(IROTEnabledConstantZZZ.FLAGZ objEnumFlag) {		
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IROTEnabledConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IROTUserConstantZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IROTEnabledConstantZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IROTUserConstantZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IROTEnabledConstantZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -90,7 +90,7 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public boolean proofFlagExists(IROTUserConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IROTEnabledConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	

@@ -23,9 +23,9 @@ import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
-import basic.zKernel.flag.IFlagZLocalUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
+import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ.FLAGZ;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -41,7 +41,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagZLocalUserZZZ{
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionEnabledZZZ, IFileExpansionProxyZZZ, IFlagZEnabledZZZ, IFlagZLocalEnabledZZZ{
 	private static final long serialVersionUID = 2355847392852232484L;
 	
 	private IFileExpansionZZZ objExpansion=null;
@@ -129,7 +129,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						btemp = this.setFlag(stemp, true);
 						
 						if(btemp==false){ 								   
-							   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+							   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 							   throw ez;		 
 						}
 					}
@@ -142,9 +142,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				IFileExpansionZZZ objFileExpansion = null;
 				if(objFileExpansionIn!=null) {
 					objFileExpansion = objFileExpansionIn;
-					this.setFlag(IFileExpansionUserZZZ.FLAGZ.USE_FILE_EXPANSION.name(),true);
+					this.setFlag(IFileExpansionEnabledZZZ.FLAGZ.USE_FILE_EXPANSION.name(),true);
 				}else{
-					if(this.getFlag(IFileExpansionUserZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+					if(this.getFlag(IFileExpansionEnabledZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
 						objFileExpansion = new FileExpansionZZZ((FileZZZ) this);							
 					}
 				}
@@ -242,23 +242,23 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 
 	//### Aus IFlagUserZZZ
 	@Override
-	public boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}	
 	
 	@Override
-	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IFlagZEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IFlagZUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IFlagZEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -269,12 +269,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 	
 	@Override
-	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean proofFlagSetBefore(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
@@ -686,15 +686,15 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, false, objUsingFlagZ);
 		}
 		
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, bLookupExplizitInHashMap, objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				
@@ -716,11 +716,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				

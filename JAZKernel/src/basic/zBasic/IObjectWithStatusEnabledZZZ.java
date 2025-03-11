@@ -10,7 +10,7 @@ import java.util.HashMap;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface IObjectWithStatusZZZ extends IObjectZZZ {
+public interface IObjectWithStatusEnabledZZZ extends IObjectZZZ {
 	//STATUSLOCAL_PROOF_VALUE     = Ueberpruefe die Werte in der Methode .proofStatusLocalValue(String sStatusName, boolean bValue) throws ExceptionZZZ {
 	//STATUSLOCAL_PROOF_VALUETRUE = Nur "true" Werte werden weiterverarbeitet, false Werte also ignieriert.
 	
@@ -19,14 +19,14 @@ public interface IObjectWithStatusZZZ extends IObjectZZZ {
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public abstract boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag);
-	public abstract boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public abstract boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag);
+	public abstract boolean setFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean[] setFlag(IObjectWithStatusEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.
 	//boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
 		
-	public abstract boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
-	public abstract boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.
+	public abstract boolean proofFlagExists(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.
 		
 	//KONVENTION, speichere alle jemals gesetzten StatusLocal-Werte in der Hashmap: 	
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();

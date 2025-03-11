@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public interface IROTZZZ extends ICryptZZZ{
 	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen	

@@ -7,7 +7,7 @@ import java.io.IOException;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;

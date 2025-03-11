@@ -2197,7 +2197,7 @@ public void testVecMidFirst(){
 			//#########################################################
 			//1. Methode: Ermittle ob ein Ausdruck wie im Kernel-Ini-Expression-Path vorkommt
 			String sPattern = KernelZFormulaIni_PathZZZ.sTAG_NAME;
-			String sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			String sString = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			
 
 			sString ="this is text";
@@ -2216,13 +2216,13 @@ public void testVecMidFirst(){
 //			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 //			assertTrue(btemp);
 			
-			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			sPattern = ".*[\\[]*[\\]]*.";  //finde einen Ausdruck in eckigen Klammern
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
 			
 			
-			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			sPattern = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text 
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
@@ -2243,7 +2243,7 @@ public void testVecMidFirst(){
 			assertTrue(btemp);
 			
 			//## Das gleiche(!) Pattern darf aber bei einem INI-Pfad nichts finden
-			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertFalse(btemp);
 			
@@ -2256,7 +2256,7 @@ public void testVecMidFirst(){
 			assertFalse(btemp);
 			
 			//#### 	Das gleiche Pattern muss aber eine Path finden
-			sString = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sString = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			btemp = StringZZZ.matchesPattern(sString, sPattern, false);
 			assertTrue(btemp);
 			

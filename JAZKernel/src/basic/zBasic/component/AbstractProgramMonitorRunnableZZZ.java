@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
@@ -161,7 +161,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 					
 					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+					this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 				}
 			}//end main:
 			return baReturn;

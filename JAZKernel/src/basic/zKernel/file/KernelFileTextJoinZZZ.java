@@ -18,7 +18,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.FileTextImportCrackZZZ;
@@ -89,7 +89,7 @@ public class KernelFileTextJoinZZZ extends AbstractKernelUseObjectZZZ{
 						stemp = saFlagControlIn[iCount];
 						btemp = setFlag(stemp, true);
 						if(btemp==false){ 
-							   ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							   ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							   throw ez;		 
 						}
 					}

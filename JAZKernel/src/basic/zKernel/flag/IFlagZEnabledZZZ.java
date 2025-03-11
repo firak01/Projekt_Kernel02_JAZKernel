@@ -2,9 +2,9 @@ package basic.zKernel.flag;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 
-public interface IFlagZUserZZZ{
+public interface IFlagZEnabledZZZ{
 	
 	//#############################################################
 	//### FLAGZ und FLAG - BASIS METHODEN
@@ -26,9 +26,9 @@ public interface IFlagZUserZZZ{
 	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
-	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag);
+	public abstract boolean setFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean[] setFlag(IFlagZEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.
 	//boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//public abstract boolean getFlag(Enum a) throws ExceptionZZZ;
@@ -53,8 +53,8 @@ public interface IFlagZUserZZZ{
 	
 	public abstract HashMap<String, Boolean>getHashMapFlagPassed();
 	public abstract void setHashMapFlagPassed(HashMap<String, Boolean> hmFlagPassed);
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
-	public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;
+	public String[] getFlagZ_passable(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
 	
 }

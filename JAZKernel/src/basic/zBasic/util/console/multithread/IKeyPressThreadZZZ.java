@@ -5,7 +5,7 @@ import java.util.Scanner;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
-public interface IKeyPressThreadZZZ extends IThreadUserZZZ{
+public interface IKeyPressThreadZZZ extends IThreadEnabledZZZ{
 	public long getSleepTime();
 	public void setSleepTime(long lSleepTime);
 

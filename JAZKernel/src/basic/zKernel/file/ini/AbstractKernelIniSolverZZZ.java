@@ -411,8 +411,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		objEntry.setRaw(sExpressionIn);
 		objEntry.isSolveCalled(true);
 		
-		//TODOGOON: ueberschreibbare Methode der Solver und auch Parser 
-		this.updateCalledValue(objEntry, "solve_case", true);
+		//TODOGOON20250311: ueberschreibbare Methode der Solver und auch Parser 
+		//this.updateCalledValue(objEntry, "solve_case", true);
 		
 		sReturnLine=sExpressionIn;		
 		sReturnTag = this.getValue();

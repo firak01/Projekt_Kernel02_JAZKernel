@@ -2,14 +2,14 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectWithStatusZZZ;
+import basic.zBasic.IObjectWithStatusEnabledZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
-public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
+public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusEnabledZZZ{
 	public final String sERROR_STATUS_UNAVAILABLE = "this LOCAL status is not available: ";
 	public final int iERROR_STATUS_UNAVAILABLE = 51;
 	

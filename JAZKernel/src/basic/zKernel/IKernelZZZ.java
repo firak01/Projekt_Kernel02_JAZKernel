@@ -18,12 +18,12 @@ import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IObjectWithExpressionZZZ, IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
+public interface IKernelZZZ extends IObjectWithExpressionZZZ, IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZEnabledZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		DUMMY; //die sollte in IFormula.... stehen USEFORMULA, USEFORMULA_MATH;

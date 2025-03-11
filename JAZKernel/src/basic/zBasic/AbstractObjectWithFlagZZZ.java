@@ -10,8 +10,8 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
-import basic.zKernel.flag.IFlagZLocalUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.event.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
@@ -19,7 +19,7 @@ import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
 
-public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Object> implements IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
+public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Object> implements IFlagZEnabledZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalEnabledZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -72,7 +72,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 				String stemp = sKey;
 				boolean btemp = this.setFlag(sKey, hmFlag.get(sKey));
 				if(btemp==false){
-					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
 				}
 			}
@@ -128,22 +128,22 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 	}
 	
 	@Override
-	public boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IFlagZEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IFlagZUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IFlagZEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -151,19 +151,19 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
 	}
 	
 	@Override
-	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean proofFlagSetBefore(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
@@ -269,7 +269,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -362,16 +362,16 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 		return this.getFlagZ_passable_(bValueToSearchFor, false, objUsingFlagZ);
 	}
 	
 	@Override
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 		return this.getFlagZ_passable_(bValueToSearchFor, bLookupExplizitInHashMap, objUsingFlagZ);
 	}
 		
-	private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+	private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			
@@ -394,11 +394,11 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+	public String[] getFlagZ_passable(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 		return this.getFlagZ_passable_(objUsingFlagZ);
 	}
 		
-	private String[] getFlagZ_passable_(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+	private String[] getFlagZ_passable_(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			
@@ -559,7 +559,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectZZZ<Obj
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

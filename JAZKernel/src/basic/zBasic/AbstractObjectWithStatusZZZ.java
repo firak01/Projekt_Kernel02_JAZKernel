@@ -17,7 +17,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
@@ -134,22 +134,22 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//### Aus IObjectWithStatusZZZ
 	@Override
-	public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IObjectWithStatusEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -157,19 +157,19 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
 	}
 	
 	@Override
-	public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
@@ -202,7 +202,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -246,7 +246,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 					
 					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+					this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 				}
 			}//end main:
 			return baReturn;
@@ -1172,7 +1172,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			boolean bProof = this.proofStatusLocalExists(sStatusName);
 			if(!bProof)break main;					
 			
-			if(this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED)) {
+			if(this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED)) {
 				bProof = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 				if(!bProof) break main;
 			}
@@ -1195,12 +1195,12 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(!bProof)break main;					
 			
 			boolean bProofValue = true;
-			if(this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED)) {
+			if(this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED)) {
 				bProofValue = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 			}
 			
 			boolean bProofMessage = true;
-			if(this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED)) {
+			if(this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED)) {
 				bProofMessage = this.proofStatusLocalMessageChanged(sStatusMessage);				
 			}
 			if(! (bProofValue | bProofMessage) ) break main;
@@ -1435,14 +1435,14 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;
-			boolean bFlag = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUE);
+			boolean bFlag = this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUE);
 			if(!bFlag) {
 				bReturn = true;
 				break main;
 			}
 			
 			if(!bStatusValue) { //Ggfs False Werte nicht weiter verarbeiten, also NUR True Werte
-				boolean bFlagTrue = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUETRUE);
+				boolean bFlagTrue = this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUETRUE);
 				if(bFlagTrue) break main;			
 			}
 			
@@ -1469,7 +1469,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;
-			boolean bFlag = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED);
+			boolean bFlag = this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUECHANGED);
 			if(!bFlag) {
 				bReturn = true;
 				break main;
@@ -1493,7 +1493,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusMessage))break main;
-			boolean bFlag = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED);
+			boolean bFlag = this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED);
 			if(!bFlag) {
 				bReturn = true;
 				break main;
@@ -1520,7 +1520,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(objStatusWithMessage==null)break main;
-			boolean bFlag = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED);
+			boolean bFlag = this.getFlag(IObjectWithStatusEnabledZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED);
 			if(!bFlag) {
 				bReturn = true;
 				break main;

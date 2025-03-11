@@ -2,7 +2,7 @@ package basic.zBasic.util.console.multithread;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IThreadUserZZZ {
+public interface IThreadEnabledZZZ {
 	public boolean start() throws ExceptionZZZ;
 	
 	public boolean isStopped();

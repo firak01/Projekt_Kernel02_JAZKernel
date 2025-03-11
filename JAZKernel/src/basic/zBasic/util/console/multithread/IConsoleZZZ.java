@@ -2,7 +2,7 @@ package basic.zBasic.util.console.multithread;
 
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
-public interface IConsoleZZZ extends IThreadUserZZZ {
+public interface IConsoleZZZ extends IThreadEnabledZZZ {
 	public long getSleepTime();
 	public void setSleepTime(long lSleepTime);
 	

@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ.FLAGZ;
 
 public interface IKernelFileIniZZZ extends IKernelUserZZZ{		
 	//Verwendete Konstanten stammen aus IniFile

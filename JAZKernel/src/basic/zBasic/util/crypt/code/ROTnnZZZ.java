@@ -106,11 +106,11 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
 		
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
-		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
-		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
-		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE);
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE);
+		boolean bUseNumeric = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
+		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 		return ROTnnZZZ.encrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
 	}
 	@Override
@@ -120,11 +120,11 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
 				
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
-		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
-		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
-		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE);
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE);
+		boolean bUseNumeric = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
+		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
 	}
 	

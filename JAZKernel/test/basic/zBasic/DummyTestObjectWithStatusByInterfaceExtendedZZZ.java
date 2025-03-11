@@ -5,7 +5,7 @@ import java.util.HashMap;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
@@ -49,7 +49,7 @@ public class DummyTestObjectWithStatusByInterfaceExtendedZZZ extends AbstractObj
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -94,7 +94,7 @@ public class DummyTestObjectWithStatusByInterfaceExtendedZZZ extends AbstractObj
 					
 					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+					this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 				}
 			}//end main:
 			return baReturn;

@@ -1,7 +1,7 @@
 package basic.zBasic;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
 
 public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWithFlagOnFlagListeningZZZ<Object> implements IDummyTestObjectWithFlagOnFlagListeningZZZ{
@@ -88,7 +88,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -134,7 +134,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

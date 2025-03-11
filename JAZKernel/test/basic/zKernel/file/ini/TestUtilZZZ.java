@@ -7,7 +7,7 @@ import java.io.IOException;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
@@ -132,9 +132,9 @@ public class TestUtilZZZ {
 				
 				//20220926 Tests fuer die Arbeit mit verschluesselten / encrypted Werten
 				String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
-				String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
-				String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
-				String sFlagLOWERcase = ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE.name();
+				String sFlagNumeric = ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC.name();
+				String sFlagUppercase = ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE.name();
+				String sFlagLOWERcase = ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE.name();
 				String sFlagBlank = IROTUserZZZ.FLAGZ.USEBLANK.name();
 				String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 				objStreamFile.println("[Section for testEncrypted]");
@@ -147,7 +147,7 @@ public class TestUtilZZZ {
 				objStreamFile.println("WertBencrypted="+sEncrypted);
 				objStreamFile.println("WertBforDecrypt="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 				
-				CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+				CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolEnabledZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 				sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false,false);
 				objStreamFile.println("WertC="+sValue);
 				objStreamFile.println("WertCencrypted="+sEncrypted);

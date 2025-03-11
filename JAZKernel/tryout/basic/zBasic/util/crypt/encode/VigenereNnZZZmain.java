@@ -5,7 +5,7 @@ import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnUiZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly
@@ -94,9 +94,9 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	    }
 
 	    IVigenereNnUiZZZ objVigenereUI = new VigenereNnUiZZZ(SchluesselWort,sFilePath);	    	    
-		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE,true);
-		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE,true);		
-		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC,true);		
+		objVigenereUI.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE,true);
+		objVigenereUI.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE,true);		
+		objVigenereUI.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC,true);		
 		objVigenereUI.setFlag(IROTUserZZZ.FLAGZ.USEBLANK,true);
 		
 		btemp = objVigenereUI.encryptUI();
@@ -141,9 +141,9 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	  
 		//ohne UI
 		VigenereNnZZZ objVigenere = new VigenereNnZZZ(sSchluesselwort);
-		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE, true);
-		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE, true);
-		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC, true);
+		objVigenere.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USELOWERCASE, true);
+		objVigenere.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEUPPERCASE, true);
+		objVigenere.setFlag(ICharacterPoolEnabledZZZ.FLAGZ.USENUMERIC, true);
 		objVigenere.setFlag(IROTUserZZZ.FLAGZ.USEBLANK, true);
 		String sEncrypted = objVigenere.encrypt(sText);
 		System.out.println("encrypted: " + sEncrypted);

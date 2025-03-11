@@ -7,8 +7,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zUtil.io.IFileExpansionUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileFilterZZZ extends AbstractObjectWithFlagZZZ implements IFilenameFilterExpansionUserZZZ{
@@ -57,7 +57,7 @@ public abstract class AbstractFileFilterZZZ extends AbstractObjectWithFlagZZZ im
 				stemp = saFlagControlIn[iCount];
 				btemp = setFlag(stemp, true);
 				if(btemp==false){ 								   
-					   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					   //doesn�t work. Only works when > JDK 1.4
 					   //Exception e = new Exception();
 					   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");

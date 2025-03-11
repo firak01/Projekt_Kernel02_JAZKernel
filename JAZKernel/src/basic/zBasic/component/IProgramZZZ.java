@@ -1,9 +1,9 @@
 package basic.zBasic.component;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface IProgramZZZ extends IModuleUserZZZ, IFlagZUserZZZ{	
+public interface IProgramZZZ extends IModuleUserZZZ, IFlagZEnabledZZZ{	
 	public boolean start() throws ExceptionZZZ;
 	public boolean startCustom() throws ExceptionZZZ;//das was ggfs. in run() aufgerufen wird. Merke: run() wird ja beim Thread-Start ausgeführt.
 	public boolean reset() throws ExceptionZZZ;

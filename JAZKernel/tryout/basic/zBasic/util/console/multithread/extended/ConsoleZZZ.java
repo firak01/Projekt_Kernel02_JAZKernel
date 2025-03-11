@@ -21,7 +21,7 @@ public class ConsoleZZZ extends AbstractObjectWithFlagZZZ implements IConsoleZZZ
 	private static ConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
 	
 	private KeyPressThreadZZZ objThreadKeyPress=null;
-	private IConsoleUserZZZ objConsoleUser = null;
+	private IConsoleEnabledZZZ objConsoleUser = null;
 	private ConsoleThreadZZZ objThreadConsole = null;
 	
 	//Variablen zur Steuerung des internen Threads
@@ -89,12 +89,12 @@ public class ConsoleZZZ extends AbstractObjectWithFlagZZZ implements IConsoleZZZ
 	}
 
 	@Override
-	public IConsoleUserZZZ getConsoleUserObject() {
+	public IConsoleEnabledZZZ getConsoleUserObject() {
 		return this.objConsoleUser;
 	}
 
 	@Override
-	public void setConsoleUserObject(IConsoleUserZZZ objConsoleUser) {
+	public void setConsoleUserObject(IConsoleEnabledZZZ objConsoleUser) {
 		this.objConsoleUser = objConsoleUser;
 	}
 
@@ -117,7 +117,7 @@ public class ConsoleZZZ extends AbstractObjectWithFlagZZZ implements IConsoleZZZ
 			KeyPressThreadZZZ objKeyPressThread = this.getKeyPressThread();
 			if(objKeyPressThread!=null) {
 			
-				IConsoleUserZZZ objConsoleUser = this.getConsoleUserObject();
+				IConsoleEnabledZZZ objConsoleUser = this.getConsoleUserObject();
 				if(objConsoleUser!=null) {
 					long lSleepTime = this.getConsoleSleepTime();
 					this.objThreadConsole = new ConsoleThreadZZZ(lSleepTime, objKeyPressThread);

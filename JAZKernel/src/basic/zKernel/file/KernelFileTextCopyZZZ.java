@@ -15,7 +15,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zKernel.IKernelZZZ;
 
@@ -79,7 +79,7 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 							stemp = saFlagControl[iCount];
 							btemp = setFlag(stemp, true);
 							if(btemp==false){ 								   
-								   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+								   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 								   //doesn�t work. Only works when > JDK 1.4
 								   //Exception e = new Exception();
 								   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");

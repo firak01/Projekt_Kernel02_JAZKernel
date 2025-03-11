@@ -2,7 +2,7 @@ package basic.zBasic;
 
 import basic.zBasic.component.AbstractProgramWithFlagRunnableZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ extends AbstractProgramWithFlagRunnableZZZ implements IDummyTestObjectWithFlagByInterfaceExtendedZZZ{
 	private static final long serialVersionUID = 2211658342508385648L;
@@ -44,7 +44,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -89,7 +89,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 				
 				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
 				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;

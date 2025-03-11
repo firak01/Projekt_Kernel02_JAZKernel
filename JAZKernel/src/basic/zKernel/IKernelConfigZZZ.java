@@ -1,13 +1,13 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Interface, welches von KernelConfigZZZ etc. eingebunden wird, um die Default Werte festzulegen.
  * @author lindhauer
  *
  */
-public interface IKernelConfigZZZ extends IFlagZUserZZZ,IKernelConfigProjectHelperZZZ, IKernelConfigConstantZZZ{
+public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectHelperZZZ, IKernelConfigConstantZZZ{
 	//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 	//          Das ist gescheitert, da zuviel zu ändern ist, u.a in der intern verwendeten GetOpt-Klasse.
 	final static String sPATTERN_DEFAULT="k:s:f:d:z:";	

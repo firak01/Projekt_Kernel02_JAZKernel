@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 	 
 	public class ConsoleThreadZZZ implements Runnable,IConsoleZZZ {
-		private IConsoleUserZZZ objConsoleUser = null;
+		private IConsoleEnabledZZZ objConsoleUser = null;
 		private KeyPressThreadZZZ objKeyPressThread = null;
 		private long lSleepTime = 1000;
 		private boolean bStop = false;
@@ -38,7 +38,7 @@ import java.util.Scanner;
 	                System.out.println("ConsoleThread.sleep: " + lSleepTime);
 	                Thread.sleep(lSleepTime);
 	                
-	                IConsoleUserZZZ objUser = this.getConsoleUserObject();
+	                IConsoleEnabledZZZ objUser = this.getConsoleUserObject();
 	                if(objUser!=null) {
 	                	boolean bStop = this.getKeyPressThread().isStopped(); 
 		                if(bStop) {
@@ -68,11 +68,11 @@ import java.util.Scanner;
     		this.isStopped(true);
     	}
 		@Override
-		public IConsoleUserZZZ getConsoleUserObject() {
+		public IConsoleEnabledZZZ getConsoleUserObject() {
 			return this.objConsoleUser;
 		}
 		@Override
-		public void setConsoleUserObject(IConsoleUserZZZ objConsoleUser) {
+		public void setConsoleUserObject(IConsoleEnabledZZZ objConsoleUser) {
 			this.objConsoleUser = objConsoleUser;
 		}
 		@Override
