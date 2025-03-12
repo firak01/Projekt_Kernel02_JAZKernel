@@ -143,7 +143,10 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}		
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
-		objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
+		//20250312 objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
+		
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
 		sReturn = sReturnLine;
@@ -200,7 +203,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objEntry.setValue(sReturnLine);
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {							
-						if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+						if(!sExpressionIn.equals(sReturnLine)) {
+							//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+							this.updateValueParsedChanged();
+							this.updateValueParsedChanged(objEntry);
+						}
 				}		
 			}
 			this.adoptEntryValuesMissing(objEntry);			

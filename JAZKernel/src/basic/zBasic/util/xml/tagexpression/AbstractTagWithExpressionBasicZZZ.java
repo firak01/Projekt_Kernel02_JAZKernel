@@ -559,66 +559,8 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public String makeAsExpression(String sString) throws ExceptionZZZ{
 		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());
 	}
-	
-	/* (non-Javadoc)
-	 * @see basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ#isParserEnabledThis()
-	 */
-		
-//	@Override
-//	public String parseAsExpression() throws ExceptionZZZ {
-//		String sExpression = this.getValue();
-//		return this.parseAsExpression(sExpression);
-//	}	
-//
-//
-//	@Override
-//	public String parseAsExpression(String sExpression) throws ExceptionZZZ{
-//		String sReturn = sExpression;
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
-//			
-//			Vector3ZZZ<String> vecAll = this.parseFirstVectorAsExpression(sExpression);
-//			
-//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-//			sReturn = VectorUtilZZZ.implode(vecAll);
-//			this.setValue((String) vecAll.get(1));
-//			
-//		}//end main:
-//		return sReturn;
-//	}
-	
-//	@Override
-//	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ{
-//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-//		String sReturn = sExpression;
-//		main:{
-//			if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;
-//			
-//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-//			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
-//			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-//		}//end main:
-//		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
-//		return vecReturn;	
-//	}
-	
-	
-	//### aus IExpressionUserZZZ
-//	@Override
-//	public Vector3ZZZ<String>parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ{
-//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sExpression)) break main;
-//						
-//			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-//			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-//			vecReturn = this.parseFirstVectorAsExpression(sExpression);			
-//			
-//		}//end main:
-//		this.setValue((String) VectorUtilZZZ.implode(vecReturn));
-//		return vecReturn;
-//	}
 
+	//### aus IConvertEnabledZZZ
 	@Override
 	public String convert(String sExpression) throws ExceptionZZZ {
 		return sExpression;

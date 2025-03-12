@@ -32,7 +32,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *
  * @param <T>
  */
-public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelEntryReferenceSolveUserZZZ, IKernelExpressionIniSolverZZZ,  IKernelZFormulaIni_PathZZZ, IKernelZFormulaIni_VariableZZZ, IKernelConfigSectionEntryUserZZZ, ICryptUserZZZ, IValueVariableUserZZZ, IParseEnabledZZZ, ISolveEnabledZZZ, IConvertEnabledZZZ{
+public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelEntryReferenceSolveUserZZZ, IKernelExpressionIniSolverZZZ,  IKernelZFormulaIni_PathZZZ, IKernelZFormulaIni_VariableZZZ, IKernelConfigSectionEntryUserZZZ, ICryptUserZZZ, IValueVariableUserZZZ, IParseUserZZZ, ISolveUserZZZ, IConvertEnabledZZZ{
 	private static final long serialVersionUID = -4816468638381054061L;	
 	protected ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
 			
@@ -220,7 +220,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public void updateValueSolveCalled(boolean bIsSolveCalled) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolveCalled(objEntry, true);
+		this.updateValueSolveCalled(objEntry, bIsSolveCalled);
 	}
 		
 	@Override
@@ -242,9 +242,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public void updateValueSolved(boolean bIsSolveCalled) throws ExceptionZZZ{
+	public void updateValueSolved(boolean bIsSolved) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolved(objEntry, true);
+		this.updateValueSolved(objEntry, bIsSolved);
 	}
 		
 	@Override
@@ -253,8 +253,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		objEntry.isSolved(bIsSolveCalled);
+	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolved) throws ExceptionZZZ{
+		objEntry.isSolved(bIsSolved);
 	}
 	
 	//+++++++++++++++++++++++++++++++++
@@ -266,9 +266,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(boolean bIsSolveCalled) throws ExceptionZZZ{
+	public void updateValueSolvedChanged(boolean bIsSolvedChanged) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolvedChanged(objEntry, true);
+		this.updateValueSolvedChanged(objEntry, bIsSolvedChanged);
 	}
 		
 	@Override
@@ -277,8 +277,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		objEntry.isSolvedChanged(bIsSolveCalled);
+	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolvedChanged) throws ExceptionZZZ{
+		objEntry.isSolvedChanged(bIsSolvedChanged);
 	}
 	
 	

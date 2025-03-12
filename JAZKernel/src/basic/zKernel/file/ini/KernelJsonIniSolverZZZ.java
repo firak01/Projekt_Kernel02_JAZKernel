@@ -217,7 +217,9 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}	
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		main:{			

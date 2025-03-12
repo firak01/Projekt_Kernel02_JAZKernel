@@ -1,14 +1,9 @@
 package basic.zKernel.file.ini;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConvertEnabledZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface ISolveUserZZZ extends ISolveEnabledZZZ{		
+public interface ISolveUserZZZ extends IKernelSolveEnabledZZZ{		
 	public boolean isSolve(String sExpression) throws ExceptionZZZ;
 		
 	public void updateValueSolveCalled() throws ExceptionZZZ;

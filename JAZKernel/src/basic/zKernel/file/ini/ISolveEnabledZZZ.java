@@ -28,15 +28,4 @@ public interface ISolveEnabledZZZ{
 	
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
-	
-	//Merke: Das steht fuer parse in IIniTagBasicZZZ
-	public IKernelConfigSectionEntryZZZ solveAsEntryNew(String sExpression) throws ExceptionZZZ;
-	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression) throws ExceptionZZZ;
-	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
-	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ;
-	public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
-	
-	//angedacht...
-	//public String[] solveAsArray(String sExpression) throws ExceptionZZZ;
-	//public String[] solveAsArray(String sExpression, String sDelimiter) throws ExceptionZZZ;
 }

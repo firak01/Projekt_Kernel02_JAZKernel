@@ -198,12 +198,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
 						
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 
 		main:{
 			String sExpression = sExpressionIn;
@@ -301,7 +302,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				}
 				
 				if(!sExpressionIn.equals(sReturnLine)) {					
-					objEntry.isParsedChanged(true);							
+					//objEntry.isParsedChanged(true);
+					this.updateValueParsedChanged();
+					this.updateValueParsedChanged(objEntry);
 				}
 				
 				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -593,4 +596,6 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+
 }//End class

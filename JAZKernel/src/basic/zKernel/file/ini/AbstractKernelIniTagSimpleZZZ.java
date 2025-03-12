@@ -38,7 +38,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 //ZUDEM IST DAS DIE STELLE, AN DER KERNEL INI-PFADE/-VARIABLEN "substitiuert" werden beim Parsen.
 //      Dadurch ist es notwendig eine Variablen HashMap zu verwalten und Flags für PATH und VARIABLE auch aufzunehmen
-public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelEntryReferenceExpressionUserZZZ, ISubstituteEnabledZZZ, IKernelEntryReferenceSubstituteUserZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, ISubstituteEnabledZZZ, IParseUserZZZ, IKernelEntryReferenceExpressionUserZZZ, IKernelEntryReferenceSubstituteUserZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
@@ -462,7 +462,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		objReturn = objEntry;
 	
 		main:{
@@ -492,7 +494,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		if(objEntry!=null) {	
 			objEntry.setValue(sReturn); 								
-			if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			if(!sExpressionIn.equals(sReturn)) {
+				//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				this.updateValueParsedChanged();
+				this.updateValueParsedChanged(objEntry);
+			}
 						
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);
@@ -543,7 +549,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
 		sReturn = sReturnLine;
@@ -586,10 +594,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
-			if(bUseExpression  || bUseParse) {				
-				objEntry.isParsed(true);
+			if(bUseExpression  || bUseParse) {								
 				if(sExpressionIn!=null) {				 								
-					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.					
+					if(!sExpressionIn.equals(sReturn)) {
+						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objEntry);
+					}
 				}							
 				this.adoptEntryValuesMissing(objEntry);
 			}
@@ -666,7 +677,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 				
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -705,7 +718,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {								 						
-				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				if(!sExpressionIn.equals(sReturnLine)) {
+					//objEntry.isParsedChanged(true); 
+					this.updateValueParsedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+					this.updateValueParsedChanged(objEntry);
+				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);
@@ -759,8 +776,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);
-			objEntry.isParseCalled(true); 
+			objEntry.setRaw(sExpressionIn);			
 			sReturnLine = sExpressionIn;
 			sReturnTag = this.getValue();
 			sReturn = sReturnLine;
@@ -803,7 +819,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bRemoveSurroundingSeparators);				
 				sReturnTag = this.getValue();
-				objEntry.isParsed(true);
+				//objEntry.isParsed(true); 20250312
+				this.updateValueParsed();
+				this.updateValueParsed(objEntry);
 			}else {
 				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
 				
@@ -827,7 +845,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturnLine);	
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {									
-					if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+					if(!sExpressionIn.equals(sReturn)) {
+						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objEntry);
+					}
 				}			
 			}
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
@@ -896,7 +918,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(objEntry!=null) {			
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {			 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				if(!sExpressionIn.equals(sReturn)) {
+					//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+					this.updateValueParsedChanged();
+					this.updateValueParsedChanged(objEntry);
+				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
@@ -955,7 +981,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			this.setRaw(sExpression);
 			objEntry.setRaw(sExpression);
-			objEntry.isParseCalled(true);	
+			//20250312 objEntry.isParseCalled(true);
+			this.updateValueParseCalled();
+			this.updateValueParseCalled(objEntry);
 			sReturnLine = sExpression;
 			sReturnTag = this.getValue();
 			bUseExpression = this.isExpressionEnabledGeneral(); 
@@ -1003,7 +1031,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//sReturnTag = (String) vecReturn.get(1);
 				sReturnTag = VectorUtilZZZ.implode(vecReturn);
 			}
-			objEntry.isParsed(true);
+			//20250312 objEntry.isParsed(true);
+			this.updateValueParsed();
+			this.updateValueParsed(objEntry);
 		}//end main:
 				
 		//#################################
@@ -1014,7 +1044,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(objEntry!=null) {			
 			objEntry.setValue(sReturnLine);	
 			if(sExpressionIn!=null) {								
-				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				if(!sExpressionIn.equals(sReturnLine)) {
+					//objEntry.isParsedChanged(true); 
+					this.updateValueParsedChanged();//zur Not nur, weil die Z-Tags entfernt wurden.
+					this.updateValueParsedChanged(objEntry);
+				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
@@ -1052,7 +1086,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			objEntry = new KernelConfigSectionEntryZZZ<T>(this); //Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
 			objReturnReference.set(objEntry);
-		}							
+		}	
+		
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		
 		main:{			
 			if(vecExpressionIn==null) break main;
@@ -1077,9 +1115,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(objEntry!=null) {
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			objEntry.setValue(sReturn);	
-			if(sExpressionIn!=null) {			
-				objEntry.isParseCalled(true); 								
-				if(!sExpressionIn.equals(sReturn)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+			if(sExpressionIn!=null) {							 								
+				if(!sExpressionIn.equals(sReturn)) {
+					//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+					this.updateValueParsedChanged();
+					this.updateValueParsedChanged(objEntry);
+				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
@@ -1087,6 +1128,92 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	//### Aus IParseUserZZZ
+	@Override
+	public boolean isParse(String sExpression) throws ExceptionZZZ {
+		return this.isExpression(sExpression);
+	}
+
+	@Override
+	public void updateValueParseCalled() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParseCalled(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParseCalled(boolean bIsParseCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParseCalled(objEntry, bIsParseCalled);
+	}
+
+
+	@Override
+	public void updateValueParseCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+		this.updateValueParseCalled(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParseCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ {
+		objEntry.isParsed(bIsSolveCalled);
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueParsed() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParsed(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParsed(boolean bIsParsed) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParsed(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParsed(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+		this.updateValueParsed(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParsed(IKernelConfigSectionEntryZZZ objEntry, boolean bIsParsed) throws ExceptionZZZ {
+		objEntry.isParsed(bIsParsed);
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueParsedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParsedChanged(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParsedChanged(boolean bIsParsedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.updateValueParsedChanged(objEntry, bIsParsedChanged);
+	}
+
+
+	@Override
+	public void updateValueParsedChanged(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+		this.updateValueParsedChanged(objEntry, true);
+	}
+
+
+	@Override
+	public void updateValueParsedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsParsedChanged)	throws ExceptionZZZ {
+		objEntry.isParsedChanged(bIsParsedChanged);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++
 	
 	
 	//### aus IExpressionUserZZZ	

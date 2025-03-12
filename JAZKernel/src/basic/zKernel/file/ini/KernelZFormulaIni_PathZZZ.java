@@ -294,7 +294,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		}			
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isParseCalled(true);		
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
 		sReturn = sReturnLine;
@@ -389,7 +391,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			if(sExpressionIn!=null) {								 						
-				if(!sExpressionIn.equals(sReturnLine)) objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+				if(!sExpressionIn.equals(sReturnLine)) {
+					//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+					this.updateValueParsedChanged();
+					this.updateValueParsedChanged(objEntry);
+				}
 			}			
 			this.adoptEntryValuesMissing(objEntry);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);

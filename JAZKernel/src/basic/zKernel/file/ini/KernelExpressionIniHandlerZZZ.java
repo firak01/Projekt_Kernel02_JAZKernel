@@ -155,7 +155,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isParseCalled(true);
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objEntry);
 		sReturnTag = this.getValue();
 		sReturnLine=sExpressionIn;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
@@ -177,6 +179,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			//objEntry.isParsed(true);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -188,9 +192,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {				
 				if(sExpressionIn!=null) {			 							
-					objEntry.isParsed(true);
 					if(!sExpressionIn.equals(sReturn)) {			
-						objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.									
+						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objEntry);
 					}
 				}						
 				this.adoptEntryValuesMissing(objEntry);

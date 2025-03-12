@@ -20,7 +20,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
  * @author Fritz Lindhauer, 20.07.2024, 08:03:01
  * 
  */
-public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T> implements IConvertEnabledZZZ{
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ<T> implements IConvertEnabledZZZ {
 	private static final long serialVersionUID = -5785934791199206030L;
 	
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
@@ -96,20 +96,9 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		//Merke: Mit Klassen auf dem Flag-Weg koennen hier das Flag abfragen.
 		return true;
 	}
-		
 	
-
-//	@Override
-//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-//		return vecExpression;
-//	}
-//
-//
-//	@Override
-//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-//		return vecExpression;
-//	}
-
-
+	
+	
+	
 	
 }//End class
