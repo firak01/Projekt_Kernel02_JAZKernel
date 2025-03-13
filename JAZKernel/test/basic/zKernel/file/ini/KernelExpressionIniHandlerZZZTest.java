@@ -18,8 +18,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelExpressionIniHandlerZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert1 ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.";
-	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert1 ist '{[Section A]Testentry1}'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
 	
 		
 	private File objFile;
@@ -251,7 +251,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 			//++++++++++++++++++++++++++++++++++
 			String[] saFlag = objExpressionHandler.getFlagZ();
-			assertEquals(14,saFlag.length);
+			assertEquals(15,saFlag.length);
 		
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -264,6 +264,11 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 //		try {			
 			//Test ohne notwendige Pfadersetzung
 			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT; 
+			sExpressionSolved = sExpression;
+			testCompute_PATH_(sExpression,sExpressionSolved);
+			
+			//Test mit Z-Tag drumherum. Erst jetzt ist es eine Expression und wird ersetzt
+			sExpression = "<Z>" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT + "</Z>"; 
 			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
 			testCompute_PATH_(sExpression,sExpressionSolved);
 			
@@ -285,6 +290,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 		
+			//PATH Berechnung
+			
+			//c) solve						
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			btemp = testCompute_PATH_(sExpression, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	//Z-Tags um PATH-Aufloesung immer rausrechnen!!!		
+			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -1836,23 +1848,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		String sTagEndZ = "</Z>";	
 		
 		try {		
+			
 			String sHostName = EnvironmentZZZ.getHostName();
 			assertNotNull(sHostName);
-		
-			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-			
-			
-			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
-			
-			//###########################
-		    //### objExpression
-			//#########################
-			
-			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
-			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
-			sExpressionSolvedTagless = "<Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt //INI-Pfade werden trotzdem ersetzt
-			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
-			assertEquals(sExpressionSolvedTagless, sValue);
 			
 			//+ Voraussetzungen fuer Aufruf in .ini pruefen
 			String sClassName = null;
@@ -1872,6 +1870,32 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sValue = objEntry.getValue();
 			assertEquals(sExpressionSolved_methodName, sValue);
 			sMethodName = sValue;
+			
+		
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+			
+			//+++ Ohne Call-Berechung
+			
+			//b)
+			sExpressionSource = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolvedTagless = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolvedTagless, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+			
+			//###########################
+		    //### objExpression
+			//#########################
+			
+			//+ Wichtige Hilfsmethode pruefen, wichtig ist false am Ende, damit wird von aussen nach innen das Tag entfernt.
+			sExpressionSource = "<Z><Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolvedTagless = "<Z:Call><Z:Java><Z:Class><Z>xyz</Z></Z:Class><Z:Method><Z>abcde</Z></Z:Method></Z:Java></Z:Call>"; //INI-Pfade werden trotzdem ersetzt //INI-Pfade werden trotzdem ersetzt
+			sValue = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
+			assertEquals(sExpressionSolvedTagless, sValue);
+			
+			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
@@ -1899,7 +1923,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//+++ Ohne Call-Berechung
 			//a)
 			sExpressionSource = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class><Z>" + sClassName + "</Z></Z:Class><Z:Method><Z>" + sMethodName +"</Z></Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
+			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
 			btemp = testCompute_CallJava_SolverUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)

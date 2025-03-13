@@ -1157,8 +1157,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 
 
 	@Override
-	public void updateValueParseCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ {
-		objEntry.isParsed(bIsSolveCalled);
+	public void updateValueParseCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsParseCalled) throws ExceptionZZZ {
+		objEntry.isParseCalled(bIsParseCalled);
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
