@@ -260,6 +260,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public String getValueCallSolvedAsExpression();
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) throws ExceptionZZZ;
 	
+	public String getValueFromTag();
+	public void setValueFromTag(String sValueFromTag);
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	//SONSTIGES:
 	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)

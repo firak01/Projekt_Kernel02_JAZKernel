@@ -594,6 +594,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(bUseExpression  || bUseParse) {								
 				if(sExpressionIn!=null) {				 								
 					if(!sExpressionIn.equals(sReturn)) {
@@ -714,6 +715,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(sExpressionIn!=null) {								 						
 				if(!sExpressionIn.equals(sReturnLine)) {
 					//objEntry.isParsedChanged(true); 
@@ -840,6 +842,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 		if(objEntry!=null) {			
 			objEntry.setValue(sReturnLine);	
+			objEntry.setValueFromTag(sReturnTag);
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {									
 					if(!sExpressionIn.equals(sReturn)) {
@@ -1040,6 +1043,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		if(objEntry!=null) {			
 			objEntry.setValue(sReturnLine);	
+			objEntry.setValueFromTag(sReturnTag);
 			if(sExpressionIn!=null) {								
 				if(!sExpressionIn.equals(sReturnLine)) {
 					//objEntry.isParsedChanged(true); 
@@ -1640,7 +1644,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 						sReturnLine = sExpression;
 						objEntry.setValue(sReturnLine);
-						
+						objEntry.setValueFromTag(sReturnTag);
 																						
 						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isVariableSubstitutedChanged(true);
@@ -1686,7 +1690,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 						sReturnLine = sExpression;
 						objEntry.setValue(sReturnLine);
-																												
+						objEntry.setValueFromTag(sReturnTag);
+						
 						if(!sExpressionOld.equals(sReturnLine)) {							
 							objEntry.isPathSubstitutedChanged(true);
 						}	
@@ -1712,6 +1717,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Der Wert ist nur der TagInhalt this.setValue(sReturn);		
 			if(objEntry!=null) {
 				objEntry.setValue(sReturnLine);
+				objEntry.setValueFromTag(sReturnTag);
 				if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
 					objEntry.isSubstituted(true);
 				}

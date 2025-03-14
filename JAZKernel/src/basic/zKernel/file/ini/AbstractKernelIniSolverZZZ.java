@@ -548,6 +548,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(bUseExpression) {			
 				if(bUseSolver && bUseSolverThis) {
 					if(sReturnLineSolved!=null) {
@@ -633,7 +634,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		sReturn = sReturnLine;
 		if(objEntry!=null) {		
 			objEntry.setValue(sReturnLine);
-						
+			objEntry.setValueFromTag(sReturnTag);			
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			this.adoptEntryValuesMissing(objEntry);			
 		}
@@ -739,7 +740,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {				
-			objEntry.setValue(sReturnLine);		
+			objEntry.setValue(sReturnLine);	
+			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}
 		return vecReturn;
@@ -819,6 +821,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(objEntry!=null) {
 			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			this.updateValueSolved(objEntry);
 			if(sExpressionIn!=null) {												
 				if(!sExpressionIn.equals(sReturn)) this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.									

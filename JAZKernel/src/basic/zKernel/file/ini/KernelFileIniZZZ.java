@@ -59,7 +59,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 31.08.2024, 08:07:50
  * 
  */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IValueVariableUserZZZ, IKernelZFormulaIni_VariableZZZ, IKernelZFormulaIni_PathZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IKernelExpressionIniHandlerUserZZZ, IKernelConfigSectionEntryUserZZZ, IValueVariableUserZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniParserZZZ, IKernelZFormulaIni_PathZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -71,11 +71,13 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 //	private boolean bFlagInit;
 		
 	private static final long serialVersionUID = -7112079956493555008L;
-	private IniFile objFileIni;
-	private File objFile;
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
-	private ICryptZZZ objCrypt = null;
-	private IKernelConfigSectionEntryZZZ objEntry = null;
+	protected IniFile objFileIni;
+	protected File objFile;
+	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable;
+	protected ICryptZZZ objCrypt = null;
+	//private IKernelConfigSectionEntryZZZ objEntry = null;
+	protected IKernelExpressionIniHandlerZZZ objExpressionHandler = null;
+	
 	
 	//20190718: Durch KernelConfigEntryZZZ - Klasse soll es nicht mehr notwendig sein die Werte in KernelFileIniZZZ zu speichern.
 	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
@@ -423,9 +425,12 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 @return the string entry at the section for the specified property
 	 @throws ExceptionZZZ
 	 */
-	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist. 
-		                                                             //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{		 
+		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		
+		//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten": //IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+		
 		main:{
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
@@ -455,9 +460,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			objReturnReference = objReturnReferenceIn;
 			objReturn = objReturnReference.get();
 		}
+
+		
 		if(objReturn==null) {
-			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										    //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturn = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
 			objReturnReference.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell aus dem FileIni-Objekt uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			
@@ -528,17 +535,13 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
-			KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
-			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-			
-			HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
-			KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
-				
+			IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandler();			
 			objReturnReference.set(objReturn);
 			String sReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);//Merke: parse() reicht nicht, da damit keine Formeln aufgeloest werden.	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression: '" + sReturnValue + "'");
-			objReturn = objReturnReference.get();			
+			objReturn = objReturnReference.get();
+			
+			
 		}//end main:
 		objReturnReference.set(objReturn);
 		return objReturn;
@@ -569,8 +572,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			objReturn = objReturnReference.get();
 		}
 		if(objReturn==null) {
-			objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-										    //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objReturn = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
 			objReturnReference.set(objReturn);
 		}//Achtung: Das objReturn Objekt NICHT generell aus dem FileIni-Objekt uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 			
@@ -600,8 +603,10 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty, String sSystemNumberIn) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-																	 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+		
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
@@ -650,9 +655,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
 		//!!! Das ist lediglich eine Untergeordnete Suchanfrage..., daher: 
-		//!!! Wichtig: Neues EntryObjekt für diese neue Suche verwenden !!!
-		IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-		 															 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		//Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile! //IKernelConfigSectionEntryZZZ objReturn = this.getEntryNew(); 
 		main:{
 			String sSectionUsed; String sProperty; String sSystemNumberUsed;
 				if(this.objFileIni==null){				
@@ -1449,21 +1453,20 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	//### aus IKernelConfigSectionEntryUserZZZ
 	@Override
 	public IKernelConfigSectionEntryZZZ getEntryNew() throws ExceptionZZZ {
-		this.objEntry = null; //Also explizit leer setzen, um etwas neues zu holen.
-		return this.getEntry();
+		IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandler();
+		return objExpressionHandler.getEntryNew(); //intern also explizit leer setzen, um etwas neues zu holen.
 	}
 	
 	@Override
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
-		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ<T>();			
-		}
-		return this.objEntry;
+		IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandler();
+		return objExpressionHandler.getEntry();
 	}
 	
 	@Override
-	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-		this.objEntry = objEntry;
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
+		IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandler();
+		objExpressionHandler.setEntry(objEntry);
 	}
 	
 	//######## AUS Interface IKernelFileZZZ
@@ -1542,14 +1545,14 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	 */
 	//Nein, speziell nur dann, wenn ein Cache vorliegt @Override
 	public void setVariable(String sVariable, String sValue, boolean bUncacheFormula) throws ExceptionZZZ{
-			this.getHashMapVariable().put(sVariable, sValue);		
-		
-			if(bUncacheFormula){
-				//20190817: Mit der Einführung des Cache für Ini - Einträge hat sich gezeigt, dass es notwendig ist, berechnete Ausdrücke nach Änderung der Variablen neu zu holen.
-				//                Darum wird für die Ausdrücke, die diese Variablen enthalten, der Cache "geskipped".
-				IKernelCacheZZZ objCache = this.getKernelObject().getCacheObject();		
-				objCache.isCacheSkippedContainingVariable(true, sVariable);
-			}
+		this.getHashMapVariable().put(sVariable, sValue);		
+	
+		if(bUncacheFormula){
+			//20190817: Mit der Einführung des Cache für Ini - Einträge hat sich gezeigt, dass es notwendig ist, berechnete Ausdrücke nach Änderung der Variablen neu zu holen.
+			//                Darum wird für die Ausdrücke, die diese Variablen enthalten, der Cache "geskipped".
+			IKernelCacheZZZ objCache = this.getKernelObject().getCacheObject();		
+			objCache.isCacheSkippedContainingVariable(true, sVariable);
+		}
 	}
 	
 	@Override
@@ -1561,29 +1564,6 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public String getVariable(String sVariable){
 		return (String) this.getHashMapVariable().get(sVariable);
 	}
-
-	//###### AUS INTERFACE ICachableObjectZZZ
-//	@Override
-//	public boolean isCacheSkipped() {
-//		return this.bSkipCache;
-//	}
-//
-//	@Override
-//	public void isCacheSkipped(boolean bValue) {
-//		this.bSkipCache=bValue;
-//	}
-//
-//	@Override
-//	public boolean wasValueComputed() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public String getValueForFilter() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 	
 	//### aus ICryptUserZZZ
 	@Override
@@ -1596,7 +1576,55 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		this.objCrypt = objCrypt;
 	}
 
+	
+	//######################################
+		//### Aus IKernelExpressionIniHandlerUserZZZ
+		//######################################
 		
+		@Override
+		public IKernelExpressionIniHandlerZZZ getExpressionHandler() throws ExceptionZZZ {		
+			if(this.objExpressionHandler==null) {
+				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
+				KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+				
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
+				KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
+				this.objExpressionHandler = objExpressionHandler;
+			}		
+			return this.objExpressionHandler;
+		}
+
+		@Override
+		public void setExpressionHandler(IKernelExpressionIniHandlerZZZ objExpressionHandler) throws ExceptionZZZ {
+			this.objExpressionHandler = objExpressionHandler;
+		}
+		
+		
+		//#######################################
+		//### ENTRY HANDLING
+		//#######################################
+		@Override
+		public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceTarget.set(this.getEntry());
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSource = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferenceSource.set(objEntry);
+			KernelConfigSectionEntryUtilZZZ.adoptEntryValuesMissing(objReturnReferenceTarget, objReturnReferenceSource);
+			
+			IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
+			this.setEntry(objEntryTarget);
+			
+			return true;
+		}
+
+		@Override
+		public boolean resetEntry() throws ExceptionZZZ {
+			return this.getEntry().reset();
+		}
+	
+	
 
 	//###################################################
 	//### Flag Handling
@@ -1737,6 +1765,48 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	@Override
 	public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+
+	//### Aus Interface IKernelExpressionIniParserZZZ	
+	@Override
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelExpressionIniParserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	
@@ -2171,23 +2241,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 
-	@Override
-	public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-		objReturnReferenceTarget.set(this.getEntry());
-		
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSource = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-		objReturnReferenceSource.set(objEntry);
-		KernelConfigSectionEntryUtilZZZ.adoptEntryValuesMissing(objReturnReferenceTarget, objReturnReferenceSource);
-		
-		IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
-		this.setEntry(objEntryTarget);
-		
-		return true;
-	}
+	
+	
 
-	@Override
-	public boolean resetEntry() throws ExceptionZZZ {
-		return this.getEntry().reset();
-	}
+	
 }

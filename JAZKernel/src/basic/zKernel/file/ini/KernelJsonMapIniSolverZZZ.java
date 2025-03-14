@@ -305,12 +305,13 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		if(vecReturn!=null) vecReturn.replace(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {
 				this.adoptEntryValuesMissing(objEntry);

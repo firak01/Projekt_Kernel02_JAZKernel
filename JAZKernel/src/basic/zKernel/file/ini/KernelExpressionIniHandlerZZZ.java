@@ -189,6 +189,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {				
 				if(sExpressionIn!=null) {			 							

@@ -201,6 +201,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {							
 						if(!sExpressionIn.equals(sReturnLine)) {

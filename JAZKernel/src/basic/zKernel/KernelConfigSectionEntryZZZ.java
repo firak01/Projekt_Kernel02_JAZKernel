@@ -453,6 +453,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		}
 	}
 	
+	
+	@Override
+	public String getValueFromTag() {
+		return this.sValue;
+	}
+	
+	@Override
+	public void setValueFromTag(String sValueFromTag) {
+		this.sValue = sValueFromTag;
+	}
+	
+	
 	//#################################
 	@Override 
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector(){

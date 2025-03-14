@@ -218,6 +218,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
 				objEntry.isSolved(true);				
 			}				
@@ -333,6 +334,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(objEntry.isFormulaMathSolved()) {
 				objEntry.isSolved(true);
 			}
