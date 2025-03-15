@@ -535,7 +535,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandler();			
+			IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandlerNew();			
 			objReturnReference.set(objReturn);
 			String sReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);//Merke: parse() reicht nicht, da damit keine Formeln aufgeloest werden.	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression: '" + sReturnValue + "'");
@@ -897,9 +897,9 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				 bReturn = true;
 				 				
 				} catch (IOException e) {									
-									ExceptionZZZ ez =	new ExceptionZZZ(	"IOException: '" + e.getMessage(),iERROR_RUNTIME,this,ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}
+					ExceptionZZZ ez =	new ExceptionZZZ(	"IOException: '" + e.getMessage(),iERROR_RUNTIME,this,ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
 			}//end main:
 			return bReturn;
 	}//end function
@@ -1578,51 +1578,60 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 
 	
 	//######################################
-		//### Aus IKernelExpressionIniHandlerUserZZZ
-		//######################################
+	//### Aus IKernelExpressionIniHandlerUserZZZ
+	//######################################
+	
+	@Override 
+	public IKernelExpressionIniHandlerZZZ getExpressionHandlerNew() throws ExceptionZZZ {		
 		
-		@Override
-		public IKernelExpressionIniHandlerZZZ getExpressionHandler() throws ExceptionZZZ {		
-			if(this.objExpressionHandler==null) {
-				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
-				KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
-				
-				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
-				KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
-				this.objExpressionHandler = objExpressionHandler;
-			}		
-			return this.objExpressionHandler;
-		}
-
-		@Override
-		public void setExpressionHandler(IKernelExpressionIniHandlerZZZ objExpressionHandler) throws ExceptionZZZ {
+		//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
+		KernelExpressionIniHandlerZZZ<T> exDummy = new KernelExpressionIniHandlerZZZ<T>();
+		String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+		
+		HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
+		KernelExpressionIniHandlerZZZ<T> objExpressionHandler = new KernelExpressionIniHandlerZZZ<T>((FileIniZZZ<T>) this, hmVariable, saFlagZpassed);
+		this.objExpressionHandler = objExpressionHandler;
+			
+		return this.objExpressionHandler;
+	}
+	
+	@Override
+	public IKernelExpressionIniHandlerZZZ getExpressionHandler() throws ExceptionZZZ {		
+		if(this.objExpressionHandler==null) {									
+			IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandlerNew();
 			this.objExpressionHandler = objExpressionHandler;
-		}
-		
-		
-		//#######################################
-		//### ENTRY HANDLING
-		//#######################################
-		@Override
-		public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceTarget.set(this.getEntry());
-			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSource = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSource.set(objEntry);
-			KernelConfigSectionEntryUtilZZZ.adoptEntryValuesMissing(objReturnReferenceTarget, objReturnReferenceSource);
-			
-			IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
-			this.setEntry(objEntryTarget);
-			
-			return true;
-		}
+		}		
+		return this.objExpressionHandler;
+	}
 
-		@Override
-		public boolean resetEntry() throws ExceptionZZZ {
-			return this.getEntry().reset();
-		}
+	@Override
+	public void setExpressionHandler(IKernelExpressionIniHandlerZZZ objExpressionHandler) throws ExceptionZZZ {
+		this.objExpressionHandler = objExpressionHandler;
+	}
+	
+	
+	//#######################################
+	//### ENTRY HANDLING
+	//#######################################
+	@Override
+	public boolean adoptEntryValuesMissing(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceTarget = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReferenceTarget.set(this.getEntry());
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceSource = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReferenceSource.set(objEntry);
+		KernelConfigSectionEntryUtilZZZ.adoptEntryValuesMissing(objReturnReferenceTarget, objReturnReferenceSource);
+		
+		IKernelConfigSectionEntryZZZ objEntryTarget = objReturnReferenceTarget.get();
+		this.setEntry(objEntryTarget);
+		
+		return true;
+	}
+
+	@Override
+	public boolean resetEntry() throws ExceptionZZZ {
+		return this.getEntry().reset();
+	}
 	
 	
 
