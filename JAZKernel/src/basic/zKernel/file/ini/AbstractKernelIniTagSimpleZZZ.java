@@ -1700,12 +1700,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					objEntry.isPathSubstituted(true);
 				}//end if .getFlag(..USE_...Path...)
 						
-				
-				sExpression = sReturnLine;
-				sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bRemoveSurroundingSeparators);
-				sReturnTag = this.getValue();
-				objEntry = objReturnReference.get();			
-																
+				if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
+					sExpression = sReturnLine;
+					sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bRemoveSurroundingSeparators);
+					sReturnTag = this.getValue();
+					objEntry = objReturnReference.get();			
+				}									
 				//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
 				//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
 				
