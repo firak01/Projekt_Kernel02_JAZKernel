@@ -809,17 +809,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
 					sReturnTag = (String) vecReturn.get(1); 
 				
-					String sTagStartZ = "<Z>";
-					String sTagEndZ = "</Z>";
-					
 					String sTagStart = this.getTagPartOpening();
 					String sTagEnd = this.getTagPartClosing();
 					
-					//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erlegigt wurde
-					//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.
-					if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-						sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-					}
+//					//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erlegigt wurde
+//					//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.
+//					String sTagStartZ = "<Z>";
+//					String sTagEndZ = "</Z>";					
+//					if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+//					}
 					this.setValue(sReturnTag);
 				}
 				
@@ -1022,17 +1021,17 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				//    Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.
 				
 				if(bRemoveOwnTagParts) {
-					String sTagStartZ = "<Z>";
-					String sTagEndZ = "</Z>";
 										
 					String sTagStart = this.getTagPartOpening();
 					String sTagEnd = this.getTagPartClosing();								
 					
-					//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erlegigt wurde
-					//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.
-					if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-						sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-					}					
+//					//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erlegigt wurde
+//					//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.
+//					String sTagStartZ = "<Z>";
+//					String sTagEndZ = "</Z>";					
+//					if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+//					}					
 				}
 				
 				

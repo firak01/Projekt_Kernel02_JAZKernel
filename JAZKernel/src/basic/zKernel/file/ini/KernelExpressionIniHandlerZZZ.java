@@ -248,7 +248,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);	
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objEntry);
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
@@ -304,8 +305,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objEntry = objReturnReferenceSolverCall.get();
 				if(bAnyCall) {				
 					this.getEntry().isCallSolved(true);
-					this.getEntry().setValueCallSolved(objEntry.getValue());
-					
+					this.getEntry().setValueCallSolved(objEntry.getValue());				
 					sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
 				}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
 			}//end if busecall
@@ -386,8 +386,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry.setValue(sReturn);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
-				if(!sExpressionIn.equals(sReturn)) {					
-					objEntry.isSolvedChanged(true);
+				if(!sExpressionIn.equals(sReturn)) {
+					this.updateValueSolvedChanged();
+					this.updateValueSolvedChanged(objEntry);
 				}
 			}
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
