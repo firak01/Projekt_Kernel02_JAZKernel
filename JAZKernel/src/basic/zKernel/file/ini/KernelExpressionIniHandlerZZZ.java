@@ -229,6 +229,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 */
 	@Override
 	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
+		
+		TODOGOON20250314;//Die gleichen Variablen verwenden wie in KernelJavaCallZZZ.solveParsed() !!!!
 		String sReturn = sExpressionIn;
 		String sReturnTag = sReturn;  //anders als sonst nicht NULL;
 		
@@ -303,8 +306,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();
-				if(bAnyCall) {				
-					this.getEntry().isCallSolved(true);
+				if(bAnyCall) {					
+					this.getEntry().isCallSolved(true); 
 					this.getEntry().setValueCallSolved(objEntry.getValue());				
 					sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
 				}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
@@ -381,9 +384,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//end main:
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
-		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
-		if(objEntry!=null) {		
+		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
+		if(objEntry!=null) {
 			objEntry.setValue(sReturn);
+			objEntry.setValueFromTag(sReturn);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
 				if(!sExpressionIn.equals(sReturn)) {
