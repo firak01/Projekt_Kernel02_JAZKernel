@@ -104,11 +104,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//######### Interfaces #############################################
 	
-	//### aus  ISolveEnabledZZZ
-	@Override
-	public boolean isSolverEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-	}
+	
 	
 	//### aus IParseEnabledZZZ
 	@Override
@@ -207,8 +203,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	
 	
-	
+	//### aus  ISolveEnabledZZZ
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+		
 	/** Berechne die INI-Werte. 
+	 *  Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * 	 
 	 *  STRATEGIE:
 	 *  1. Ini-Variablen und Pfade aufloesen (wird im solve(...) gemacht.
@@ -228,12 +230,29 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
 	 */
 	@Override
-	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+	public String solveParsed(String sExpression) throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+		return this.solveParsed_(sExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
+		return this.solveParsed_(sExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public String solveParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
+		return this.solveParsed_(sExpressionIn, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+
+
+	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
-		
-		TODOGOON20250314;//Die gleichen Variablen verwenden wie in KernelJavaCallZZZ.solveParsed() !!!!
-		String sReturn = sExpressionIn;
-		String sReturnTag = sReturn;  //anders als sonst nicht NULL;
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -253,18 +272,30 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objEntry);
+		sReturnLine = sExpressionIn;
+		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		sReturn = sReturnLine;this.updateValueSolveCalled(objEntry);
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
-												
-			if(!this.isSolverEnabledGeneral()) break main;			
-			if(!this.isSolverEnabledThis()) break main;
+			
+			bUseExpression = this.isExpressionEnabledGeneral();			
+			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;
-
 			
-			//Löse Pfade, etc. auf wird schon vorher gemacht....
-			//Löse nun die anderen Solver auf.
+			bUseSolver = this.isSolverEnabledGeneral();
+			if(!bUseSolver) break main;
+			
+			bUseSolverThis = this.isSolverEnabledThis(); 		
+			if(!bUseSolverThis) break main;			
+			
+			
+			//##################################
+			//### Besonderheiten dieses Solvers
+			//###################################
+			
+			//Löse die anderen Solver auf.
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
@@ -380,10 +411,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}//end if buseencryption
 						
 			
-			sReturn = sExpressionUsed;							
+			sReturnLine = sExpressionUsed;							
 		}//end main:
 						
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		sReturn = sReturnLine;
 		this.setValue(sReturn);	//Der Handler bekommt die ganze Zeile als Wert	
 		if(objEntry!=null) {
 			objEntry.setValue(sReturn);

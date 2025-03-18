@@ -22,8 +22,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert1 ist '<Z>{[Section A]Testentry1}</Z>'. FGL rulez.";
 	protected final static String sEXPRESSION_Expression01_SUBSTITUTED = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
-	
-		
+			
 	private File objFile;
 	private IKernelZZZ objKernel;
 	private FileIniZZZ<?> objFileIniTest=null;
@@ -32,8 +31,6 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	private KernelExpressionIniHandlerZZZ objExpressionHandler;
 	private KernelExpressionIniHandlerZZZ objExpressionHandlerInit;
 	
-	
-
 	protected void setUp(){
 		try {						
 			objFile = TestUtilZZZ.createKernelFileUsed();

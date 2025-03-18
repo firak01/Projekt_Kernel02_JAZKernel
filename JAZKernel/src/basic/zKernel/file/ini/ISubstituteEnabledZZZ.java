@@ -4,6 +4,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 
 public interface ISubstituteEnabledZZZ  extends IValueVariableUserZZZ, IKernelZFormulaIni_VariableZZZ, IKernelZFormulaIni_PathZZZ{
+	boolean isSubstituteEnabledThis() throws ExceptionZZZ;
+	boolean isSubstitutePathEnabledThis() throws ExceptionZZZ;
+	boolean isSubstituteVariableEnabledThis() throws ExceptionZZZ;
+	
 	boolean isSubstituteRelevant() throws ExceptionZZZ;
 	boolean isSubstitute(String sExpression) throws ExceptionZZZ;
 	boolean isSubstitutePath(String sExpression) throws ExceptionZZZ;     //wenn der PathTag in der Expression zutrifft

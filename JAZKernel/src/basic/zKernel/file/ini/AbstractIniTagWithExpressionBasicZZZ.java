@@ -324,41 +324,6 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
 	
-//	@Override
-//	public String parseAsExpression() throws ExceptionZZZ {
-//		String sExpression = this.getValue();
-//		return this.parseAsExpression(sExpression);
-//	}	
-//
-//
-//	@Override
-//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{
-//			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-//			
-//			Vector<String> vecAll = this.parseFirstVectorAsExpression(sLineWithExpression);
-//			
-//			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
-//			sReturn = VectorUtilZZZ.implode(vecAll);
-//			this.setValue(vecAll.get(1));
-//			
-//		}//end main:
-//		return sReturn;
-//	}
-//	
-//	@Override
-//	public Vector3ZZZ<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-//		main:{
-//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-//			//Fuer die EXPRESSION gilt: Es werden die Separatoren zurueckgegeben (mit true)
-//			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), true, false);
-//		}
-//		return vecReturn;
-//			
-//	}
-	
 	@Override
 	public String makeAsExpression(String sString) throws ExceptionZZZ{
 		return ExpressionIniUtilZZZ.makeAsExpression(sString, this.getName());

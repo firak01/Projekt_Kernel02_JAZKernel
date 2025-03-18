@@ -106,7 +106,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
 	}
 		
-	//### Aus ISolveEnabled		
+	//### aus ISolveEnablezZZZ
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {
+		return this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+	}
+		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
@@ -136,9 +141,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
-		boolean bUseExpression = false; 
-		boolean bUseSolver = false;
-		boolean bUseSolverThis = false;
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -164,19 +167,20 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();			
 			if(!bUseExpression) break main;
 			
 			String sExpression = sExpressionIn;
 			
-			bUseSolver = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
 			
-			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);		
+			bUseSolverThis = this.isSolverEnabledThis(); 		
 			if(!bUseSolverThis) break main;
 			
-			
-						
+			//##################################
+			//### Besonderheiten dieses Solvers
+			//###################################			
 			///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			String sJavaCallClass = null; String sJavaCallMethod = null;
 											
@@ -213,25 +217,26 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				sReturnLine = sExpression;
 				break main;
 			}
-			
-							
+									
 			//Nun die Methode aufrufen.
 			Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
 			if(objReturn==null)break main;		
 			
-			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
-			this.updateValueSolved(objEntry);
 			sReturnTag = objReturn.toString();
-			sReturnLine = sReturnTag;			
+			sReturnLine = sReturnTag;
+			this.updateValueSolved(objEntry);						
 		}//end main:	
 						
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+		//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 		sReturn = sReturnLine;
 		this.setValue(sReturnTag);
 		if(objEntry!=null) {			
-			objEntry.setValueCallSolved(sReturnLine);		
+			objEntry.setValueCallSolved(sReturnLine);	
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturnLine)) {				
+				if(!sExpressionIn.equals(sReturnLine)) {	
+					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);					
 				}
 			}					
@@ -428,13 +433,6 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return false;
 	}
 	
-	//### aus ISolveEnablezZZZ
-	@Override
-	public boolean isSolverEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-	}
-
-
 	//### Aus IKernelIniSolver
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sLineWithExpression) throws ExceptionZZZ {

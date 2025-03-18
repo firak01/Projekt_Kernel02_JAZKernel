@@ -87,123 +87,6 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	
-//	@Override
-//	//public Vector<String>parse(String sLineWithExpression) throws ExceptionZZZ{
-//	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-//		return this.parse(sLineWithExpression, true);
-//	}
-//	
-//	
-//	@Override
-//	//public Vector<String>parse(String sLineWithExpression) throws ExceptionZZZ{
-//	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-//		String sReturn = null;
-//		Vector<String>vecReturn = null; 
-//		main:{
-//			if(sLineWithExpression==null) break main;
-//			vecReturn = new Vector<String>(); //Merke: vecReturn wird am Schluss zu einem String zusammengefasst.			
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//			
-//			//Nun die Section suchen
-//			Vector<String>vecSection = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);	
-//			
-////			TODOGOON 20240821;
-//			//Wenn der Pfad aufgeloest ist nicht weiter machen.
-//			//also: .isExpression pruefen
-//			
-////			String sBefore = (String) vecSection.get(0);			
-////			String sSection = (String) vecSection.get(1);
-////			String sRest = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
-//			
-//			
-//			//TODOGOON 20240821: Diese Werte Ausrechnerei, die folgt ist ggfs. nicht mehr relevant
-//			//                   und stoert sogar.
-//			
-////			String sProperty = "";
-////			if(StringZZZ.contains(sRest,"</Z>")) {
-////				sProperty = StringZZZ.left(sRest, "</Z>");
-////			}else {
-////				sProperty = sRest;
-////			}
-////			
-////			
-////			if(StringZZZ.contains(sProperty,"</Z:val>")) {      //Wenn der Pfad Bestandteil einer Mathematischen Formel ist, also eine Section mit einem "Wert".
-////				sProperty = StringZZZ.left(sProperty, "</Z:val>");
-////			}
-////			
-//
-////			sRest = StringZZZ.right(sRest, sProperty);
-////						
-//
-////			if(StringZZZ.isEmpty(sSection) | StringZZZ.isEmpty(sProperty)){
-//				String sValue = VectorZZZ.implode(vecSection);
-//				
-//				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//				vecReturn.add(0, "");
-//				
-//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//				vecReturn.add(1, sValue);
-//				
-//				if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//				vecReturn.add(2, "");
-//				
-//				//Z-Tags "aus der Mitte entfernen"... Wichtig z.B. für Z:JavaCall Tags
-//				if(bRemoveSurroundingSeparators) {
-//					String sTagStart="<Z>";
-//					String sTagEnd="</Z>";
-//					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-//				}
-//				
-//				break main;
-////			}
-
-			
-			
-//#####################################################################################			
-				//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-//				String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
-//				if(StringZZZ.contains(sRest, sMathValueTag)){
-//					sBefore = (String) vecSection.get(0);
-//					sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
-//					//sProperty = StringZZZ.left(sProperty, sMathValueTag);												
-//				}
-									
-//				FileIniZZZ<T> objFileIni = this.getFileConfigKernelIni();
-//				if(objFileIni==null){
-//					ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;
-//				}
-//				
-//				//20080109: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
-//				//20230316: Aber, jetzt ist es allgemeingültiger nicht eine konkrete SystemNumber vorzugeben. Darum null dafür.
-//				//          Dann werden alle Sections durchsucht
-//				//String sSystemNr = this.getKernelObject().getSystemNumber();					
-//				//String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
-//				String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
-//				
-//				//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
-//				if(!StringZZZ.isEmpty(sValue)){
-//					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//					vecReturn.add(0, sBefore);
-//					
-//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//					vecReturn.add(1, sValue);
-//					
-//					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-//					vecReturn.add(2, sRest);
-//					
-//					//Z-Tags "aus der Mitte entfernen"... Wichtig z.B. für Z:JavaCall Tags
-//					String sTagStart="<Z>";
-//					String sTagEnd="</Z>";
-//					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
-//					
-//				}//end if sValue!=null
-//		}//end main:
-//		sReturn = VectorZZZ.implode(vecReturn);
-//		return sReturn;
-//	}
-	
 
 	//### aus IExpressionUserZZZ
 	@Override
@@ -294,7 +177,6 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		}			
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		//20250312 objEntry.isParseCalled(true);
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objEntry);
 		sReturnLine = sExpressionIn;
@@ -306,10 +188,10 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
 			String sExpression = sExpressionIn;
 			
-			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
+			boolean bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			boolean bUseExpressionPath = this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH);
+			boolean bUseExpressionPath = this.isSubstitutePathEnabledThis();
 			if(!bUseExpressionPath) break main;
 
 			bExpressionFound = this.isExpression(sExpressionIn); 
