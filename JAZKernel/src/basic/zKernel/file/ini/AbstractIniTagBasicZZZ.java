@@ -218,7 +218,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag;
+			sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
 			this.setValue(sReturnTag);
 			
 		}//end main:

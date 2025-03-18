@@ -411,6 +411,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = objReturnReference.get();	
 									
 			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -420,12 +421,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.setValueCallSolved(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			if(sExpressionIn!=null) {				
 				if(!sExpressionIn.equals(sReturnLine)) {				
-					this.updateValueSolvedChanged();;
+					this.updateValueSolvedChanged();
+					this.updateValueSolvedChanged(objEntry);
 				}
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			}		
 			this.adoptEntryValuesMissing(objEntry);	
 		}
 		return sReturn;	
@@ -496,7 +498,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //				
 //				}//end if bAnyJavaCall		
 					
-			
+			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
 		}//end main:
 		
@@ -507,13 +509,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.setValueCallSolved(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturnLine)) {	
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);
 				}
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			}			
 			this.adoptEntryValuesMissing(objEntry);
 		}
 		return sReturn;

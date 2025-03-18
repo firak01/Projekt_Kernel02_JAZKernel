@@ -234,13 +234,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objEntry.setValueCallSolved(sReturnLine);	
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(sExpressionIn!=null) {
 				if(!sExpressionIn.equals(sReturnLine)) {	
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);					
 				}
-			}					
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			}								
 			this.adoptEntryValuesMissing(objEntry);			
 		}		
 		return sReturn;

@@ -143,7 +143,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}		
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
-		//20250312 objEntry.isParseCalled(true); //weil parse ausgefuehrt wird. Merke: isParseChangedValue kommt am Schluss.
+		
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objEntry);
 		
@@ -176,16 +176,18 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			String sTagOpening = this.getTagPartOpening();
 			String sTagClosing = this.getTagPartClosing();
 			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
-			if (vecReturn==null)break main;			
+			if (vecReturn==null)break main;		
+			
+			//+++++++++++++++++++++++++
 			String sValueToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
-			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);	
-			//+++++++++++++++++++++++++
-			
+			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);				
 			objEntry = objReturnReferenceSubstitute.get();						
 			vecReturn.replace(1,sReturnSubstituted);			
+			//+++++++++++++++++++++++++
+			
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
@@ -202,17 +204,16 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {							
-						if(!sExpressionIn.equals(sReturnLine)) {
-							//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+						if(!sExpressionIn.equals(sReturnLine)) {							
 							this.updateValueParsedChanged();
 							this.updateValueParsedChanged(objEntry);
 						}
 				}		
 			}
-			this.adoptEntryValuesMissing(objEntry);			
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			this.adoptEntryValuesMissing(objEntry);						
 		}
 		return vecReturn;
 	}

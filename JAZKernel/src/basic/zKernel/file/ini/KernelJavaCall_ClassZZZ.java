@@ -76,19 +76,17 @@ public class KernelJavaCall_ClassZZZ<T> extends AbstractIniTagSimpleZZZ<T>{//Abs
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 			bUseParse = this.isParserEnabledThis();
-			if(bUseParse) {			
-				if(bRemoveSurroundingSeparators) {
-					String sTagStart = "<Z>"; //this.getTagStarting();
-					String sTagEnd = "</Z>";  //this.getTagClosing();
-					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
-					sReturn = sReturnTag;
-					this.setValue(sReturnTag);
+			if(!bUseParse) break main;
+			
+			if(bRemoveSurroundingSeparators) {
+				String sTagStart = "<Z>"; //this.getTagStarting();
+				String sTagEnd = "</Z>";  //this.getTagClosing();
+				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen
+				sReturn = sReturnTag;
+				this.setValue(sReturnTag);
 					
-					vecExpressionIn.replace(sReturn);
-				}	
-			}else {
-				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
-			}
+				vecExpressionIn.replace(sReturn);
+			}				
 	        //++++ der custom Code
                       
 		}//end main:

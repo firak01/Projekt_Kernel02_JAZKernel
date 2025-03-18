@@ -496,17 +496,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
 			
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;	
+			
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
-			if(vecReturn==null)break main;
 			objEntry = objReturnReferenceParse.get();
-			
-			//solve ruft immer parse() auf, wenn die generelle Auswertung der Expression abgeschaltet ist,
-			//so wird .isParseCalled() dort trotzdem gesetzt sein.
-			bUseExpression = this.isExpressionEnabledGeneral(); 
-			if(!bUseExpression) break main;		
+			if(vecReturn==null)break main;			
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten.
 						
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
@@ -525,15 +524,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bUseSolverThis = this.isSolverEnabledThis();
 			if(!bUseSolverThis) break main;
 			
-			sReturnTag2Solve = sReturnTag; //(String) vecReturn.get(1); //Nicht sReturnTag zu verwenden ist Absicht, im Ausdruck aus dem Vector der Zeile sind dann für das solven ggfs. noch wichtige Tags drin.
+			//###########################
+			sReturnTag2Solve = sReturnTag; 
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
-			sReturnLineSolved = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			sReturnTag = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceSolve.get();		
+			//##########################
 			
-			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post
-			sReturnTag = this.getValue(); 
+			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
 			
@@ -549,19 +549,20 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			
+			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
 				if(bUseSolver && bUseSolverThis) {
 					if(sReturnLineSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
 						if(!sReturnLineSolved.equals(sReturnLine)) {
+							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
 							this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}
 					}
-				}						
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
-				
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				}																		
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}

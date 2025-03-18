@@ -129,11 +129,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 * ABER: macht kein vollständiges solve()!!!
 	 **/
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bIgnoreCase) throws ExceptionZZZ {
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturnTag=null; String sReturnLine=null;
-		String sReturn = sExpressionIn; //Darin können also auch Variablen, etc. sein
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		boolean bUseExpression = false; boolean bUseParse = false;
 		
-		boolean bUseExpression=false;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -149,48 +148,66 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		//20250312 objEntry.isParseCalled(true);
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objEntry);
-		sReturnTag = this.getValue();
-		sReturnLine=sExpressionIn;
-		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		
-		main:{			
+		main:{		
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
+			String sExpression = sExpressionIn;
+			
+			this.setRaw(sExpressionIn);
+			objEntry.setRaw(sExpressionIn);	
+			
+			sReturnTag = this.getValue();
+			sReturnLine=sExpressionIn;
+			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+			sReturn = sReturnLine;
+						
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;						
+			
+			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+			if(XmlUtilZZZ.isExpression(sExpression)) {
+				objEntry.isExpression(true);				
+			}
 						
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			bUseParse = this.isParserEnabledThis();
+			if(!bUseParse) break main;
+			
+			//###########################################
+			//### 
+			//###########################################
+			
 			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParserSuper.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParserSuper.get();
+			if(vecReturn==null) break main;
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 			
-			//objEntry.isParsed(true);
+			this.updateValueParsed();
+			this.updateValueParsed(objEntry);
 		}//end main:
 		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		//Nein, nichts ersetzten, die ganze Zeile behaelt beim Parsen auch die Tags. if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
+		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
 		this.setValue(sReturnTag);	
-				
+		sReturn = sReturnLine;	
+		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {				
 				if(sExpressionIn!=null) {			 							
-					if(!sExpressionIn.equals(sReturn)) {			
-						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+					if(!sExpressionIn.equals(sReturn)) {								
 						this.updateValueParsedChanged();
 						this.updateValueParsedChanged(objEntry);
 					}
@@ -274,7 +291,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		this.updateValueSolveCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
-		sReturn = sReturnLine;this.updateValueSolveCalled(objEntry);
+		sReturn = sReturnLine;
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
@@ -338,9 +355,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();
 				if(bAnyCall) {					
-					this.getEntry().isCallSolved(true); 
-					this.getEntry().setValueCallSolved(objEntry.getValue());				
-					sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					this.getEntry().isCallSolved(true);
+					objEntry.isCallSolved(true);
+					
+					String sValueCallSolved = objEntry.getValue(); //Zur Verarbeitung weitergeben
+					this.getEntry().setValueCallSolved(sValueCallSolved);										
+					objEntry.setValueCallSolved(sValueCallSolved);
+					sExpressionUsed = sValueCallSolved;
 				}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
 			}//end if busecall
 											
@@ -420,14 +441,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		if(objEntry!=null) {
 			objEntry.setValue(sReturn);
 			objEntry.setValueFromTag(sReturn);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			if(sExpressionIn!=null) {
 				objEntry.isSolved(true);
-				if(!sExpressionIn.equals(sReturn)) {
+				if(!sExpressionIn.equals(sReturnLine)) {
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);
 				}
-			}
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			}			
 			this.adoptEntryValuesMissing(objEntry);
 		}
 		return sReturn;				
