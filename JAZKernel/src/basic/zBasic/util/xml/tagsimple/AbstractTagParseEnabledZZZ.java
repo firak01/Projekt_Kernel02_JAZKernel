@@ -87,22 +87,29 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 	
 	@Override
-	public String parse(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sReturn = null;
+	public String parse(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		String sReturnLine = sExpressionIn;		
 		main:{
-			Vector3ZZZ<String> vecParse = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-			if(vecParse!=null) {
-				this.setValue((String) vecParse.get(1)); //uebernimm also das 1. Element			
-				sReturn = VectorUtilZZZ.implode(vecParse); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
-			}
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			Vector3ZZZ<String> vecParsePost = this.parsePost(vecParse, bRemoveSurroundingSeparators);
-			if(vecParsePost!=null) {
-				this.setValue((String) vecParsePost.get(1)); //uebernimm also das 1. Element			
-				sReturn = VectorUtilZZZ.implode(vecParsePost); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
-			}
-		}
-		return sReturn;
+			String sExpression = sExpressionIn;
+			
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			String sReturnTag = (String) vecReturn.get(1); //uebernimm also das 1. Element
+			this.setValue(sReturnTag);
+			
+			
+			vecReturn = this.parsePost(vecReturn, bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			sReturnTag = (String) vecReturn.get(1); //uebernimm also das nun ggfs. auch leere 1. Element
+			this.setValue(sReturnTag);
+			
+			sReturnLine = VectorUtilZZZ.implode(vecReturn); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.								
+		}//end main: 
+		return sReturnLine;
 	}
 	
 	
@@ -135,10 +142,18 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		main:{			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+			String sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
+			this.setValue(sTag);
+						
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
-			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);										
+			vecReturn = this.parseFirstVectorPost(vecReturn, bRemoveSurroundingSeparators);	
+			if(vecReturn==null) break main;
+			
+			sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
+			this.setValue(sTag);
 		}
 		return vecReturn;
 	}

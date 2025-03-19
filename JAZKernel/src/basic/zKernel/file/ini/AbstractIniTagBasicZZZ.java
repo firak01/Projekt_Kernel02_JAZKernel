@@ -106,8 +106,12 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				sDelimiter = sDelimiterIn;
 			}
 			
-			Vector<String> vecParsed = this.parseFirstVector(sLineWithExpression);
-			String sParsed = vecParsed.get(1);
+			Vector<String> vecReturn = this.parseFirstVector(sLineWithExpression);
+			if(vecReturn==null)break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+		
+			String sParsed = vecReturn.get(1);
+			this.setValue(sParsed);
 			
 			String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
 			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
@@ -115,7 +119,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			
 			//Fasse nun zusammen.
 			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
-			listasReturnParsed.add(vecParsed.get(0));
+			listasReturnParsed.add(vecReturn.get(0));
 			
 			//Fuer den Wert lediglich
 			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
@@ -126,7 +130,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				listasReturnParsed.add(sValue);
 				listasValueParsed.add(sValue);
 			}
-			listasReturnParsed.add(vecParsed.get(2));
+			listasReturnParsed.add(vecReturn.get(2));
 			
 			this.setValue(listasValueParsed);
 			saReturn = listasReturnParsed.toStringArray();				
@@ -146,26 +150,27 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		return this.parse_(sLineWithExpression, bRemoveSurroundingSeparators);
 	}	
 	
-	private String parse_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+		String sReturnLine = sExpressionIn;
 		String sReturnTag = null;
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sLineWithExpression, bRemoveSurroundingSeparators);
-			if(vecExpression==null) break main;
-
-			sReturnTag = (String) vecExpression.get(1);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			sReturnTag = (String) vecReturn.get(1);
 			this.setValue(sReturnTag);
 							
-			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
-			sReturnTag = (String) vecExpression.get(1);
+			vecReturn = this.parsePost(vecReturn, bRemoveSurroundingSeparators);
+			sReturnTag = (String) vecReturn.get(1); //den ggfs. leer gewordenen Tag setzen
 			this.setValue(sReturnTag);
 				
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
-			sReturn = VectorUtilZZZ.implode(vecExpression);									
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
 		}//end main:
-		return sReturn;
+		return sReturnLine;
 	}	
 	
 	@Override

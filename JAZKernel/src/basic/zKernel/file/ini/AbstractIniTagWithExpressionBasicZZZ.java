@@ -165,10 +165,10 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}
 	
 	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null; //new String[];//sLineWithExpression;
+	public String[] parseAsArray(String sExpressionIn, String sDelimiterIn) throws ExceptionZZZ{
+		String[] saReturn = null; 
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
@@ -179,27 +179,34 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				sDelimiter = sDelimiterIn;
 			}
 			
-			Vector3ZZZ<String> vecParsed = this.parseFirstVector(sLineWithExpression);
-			String sParsed = VectorUtilZZZ.implode(vecParsed);
+			String sExpression = sExpressionIn;
 			
-			String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);
+			if(vecReturn==null)break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			String sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
+				
+			String sReturnLine = VectorUtilZZZ.implode(vecReturn);			
+			String[] saExpression = StringZZZ.explode(sReturnLine, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
 			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
 			this.setValue(listasValue);		
 			
 			//Fasse nun zusammen.
 			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
-			listasReturnParsed.add((String) vecParsed.get(0));
+			listasReturnParsed.add((String) vecReturn.get(0));
 			
 			//Fuer den Wert lediglich
 			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
 			
 			String sValue = null;			
-			for(String sExpression : saExpression) {
-				sValue = this.parse(sExpression);
+			for(String sExpressionTemp : saExpression) {
+				sValue = this.parse(sExpressionTemp);
 				listasReturnParsed.add(sValue);
 				listasValueParsed.add(sValue);
 			}
-			listasReturnParsed.add((String) vecParsed.get(2));
+			listasReturnParsed.add((String) vecReturn.get(2));
 			
 			this.setValue(listasValueParsed);
 			saReturn = listasReturnParsed.toStringArray();				

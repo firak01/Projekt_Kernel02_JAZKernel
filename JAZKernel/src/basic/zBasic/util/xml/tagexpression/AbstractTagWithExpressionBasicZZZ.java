@@ -277,7 +277,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}	
 	
 	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		String sReturn = sExpressionIn;
+		String sReturnLine = sExpressionIn;
 		String sReturnTag = "";
 		main:{			
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -291,20 +291,19 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			//Bei einfachen Tags den Ersten Vektor holen
 			String sExpression = sExpressionIn;
-			Vector3ZZZ<String> vecExpression = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
-			if(vecExpression==null) break main;
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bRemoveSurroundingSeparators);
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-//			sReturnTag = (String) vecExpression.get(1);
-//			sReturn = sReturnTag;
-			//NEIN, auf gar keinen Fall diesen Wert uebernehmen. Damit wuerde hier der Wert des Tags selbst ueberschrieben
-			//this.setValue(sReturnTag);	
-				
-			vecExpression = this.parsePost(vecExpression, bRemoveSurroundingSeparators);
+			sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
+			
+			vecReturn = this.parsePost(vecReturn, bRemoveSurroundingSeparators);
 			
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
-			sReturn = VectorUtilZZZ.implode(vecExpression);									
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
 		}//end main:
-		return sReturn;
+		return sReturnLine;
 	}	
 	
 	@Override

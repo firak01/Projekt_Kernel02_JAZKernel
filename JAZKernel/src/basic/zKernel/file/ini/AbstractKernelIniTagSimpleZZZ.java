@@ -580,7 +580,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
-		
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
+			
 			//Tags entfernen und eigenen Wert setzen
 			vecReturn = this.parsePost(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();//Der eigene Wert, ohne drumherum
@@ -708,11 +712,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = super.parseFirstVector(sExpression, bRemoveSurroundingSeparators); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
 			//objEntry = objReturnReferenceParserSuper.get();
 			if(vecReturn==null) break main;	
-						
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
 			sReturnTag = (String)vecReturn.get(1);
-									
+			this.setValue(sReturnTag);
+			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			sReturnTag = this.substituteParsed(sReturnTag, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);						
+			sReturnTag = this.substituteParsed(sReturnTag, objReturnReferenceSubstitute, bRemoveSurroundingSeparators);
+			this.setValue(sReturnTag);
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 						
@@ -1361,7 +1367,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	private String substitute_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
-		String sReturnParsed = null;
+		String sReturnLine = null; String sReturnTag = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false;
 		
@@ -1380,7 +1386,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//unten objEntry immer an das ReferenceOjekt zurueckgeben
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);		
 		objEntry.isSubstituteCalled(true);
 		
 		main:{
@@ -1396,45 +1402,61 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) {				
-				sReturnParsed = (String) vecReturn.get(1);							
-			}else {
-				sReturnParsed = sExpression;
-			}
-		
-			//Rufe nun substituteParsed() auf...		
-			if(!this.getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE)
-			|  !this.getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH)) break main;
-			
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+							
+			sReturnTag = (String) vecReturn.get(1);							
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+					
+			//Rufe nun substituteParsed() auf...	
+			if(!this.isSubstituteEnabledThis()) break main;
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			
-			sReturnParsed = this.substituteParsed(sReturnParsed, objReturnReferenceSolve, bRemoveSurroundingSeparators);				
+			sReturnLine = this.substituteParsed(sReturnLine, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			sReturnTag = this.getValue();
 			objEntry = objReturnReferenceSolve.get();										
 		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnParsed!=null) vecReturn.replace(sReturnParsed);
-			
-		if(objEntry!=null) {	
-			if(!bUseExpression) {
-				objEntry.setValue(sReturn);
-			}else {
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				objEntry.isSubstituted(true);
-				objEntry.setValue(sReturn);
-				if(sExpressionIn!=null) {
-					if(!sExpressionIn.equals(sReturn)) {					
-						objEntry.isPathSubstitutedChanged(true);
-					}
-					
-				}			
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-				this.adoptEntryValuesMissing(objEntry);
-			}
-		}
-		return sReturn;	
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
+		if(objEntry!=null) {
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			if(sExpressionIn!=null) {								 						
+				if(!sExpressionIn.equals(sReturnLine)) {
+					objEntry.isPathSubstitutedChanged(true);
+				}
+			}			
+			this.adoptEntryValuesMissing(objEntry);
+		}		
+		return sReturn;
+		
+//		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+//		if(vecReturn!=null && sReturnLine!=null) vecReturn.replace(sReturnLine);
+//			
+//		if(objEntry!=null) {	
+//			if(!bUseExpression) {
+//				objEntry.setValue(sReturn);
+//			}else {
+//				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+//				objEntry.isSubstituted(true);
+//				objEntry.setValue(sReturn);
+//				if(sExpressionIn!=null) {
+//					if(!sExpressionIn.equals(sReturn)) {					
+//						objEntry.isPathSubstitutedChanged(true);
+//					}
+//					
+//				}			
+//				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+//				this.adoptEntryValuesMissing(objEntry);
+//			}
+//		}
+//		return sReturn;	
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1591,7 +1613,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	/* Aufloesen der INI-Pfade und Variablen. */
 	private String substituteParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
-		boolean bUseExpression=false; boolean bUseParse=false;
+		boolean bUseExpression=false; boolean bUseParse=false; boolean bUseSubstitute = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -1624,56 +1646,60 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParse = this.isParserEnabledThis();
 			if(!bUseParse) break main;
 			
+			bUseSubstitute = this.isSubstituteEnabledThis();
+			if(!bUseSubstitute) break main;
+			
 			objEntry.isVariableSubstituteCalled(true);				
 			if(this.isSubstituteVariableEnabledThis()) {
 									
-				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
-				if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
+			//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
+			if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
 									
-					//ZUERST: Löse ggfs. übergebene Variablen auf.
-					//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
+				//ZUERST: Löse ggfs. übergebene Variablen auf.
+				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
 										
-					//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
-					//       Hier aber ein 
-					String sExpressionOld = sExpression;
-					String sExpressionTemp;					
+				//Merke: Fuer einfache Tag gibt es keine zu verarbeitenden Flags, also muss man auch keine suchen und uebergeben.
+				//       Hier aber ein 
+				String sExpressionOld = sExpression;
+				String sExpressionTemp;					
 					
-					ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
-					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
+				ZTagFormulaIni_VariableZZZ<T> exDummy = new ZTagFormulaIni_VariableZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
 						
-					ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
-					while(objVariable.isExpression(sExpression)){
-						//Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
+				while(objVariable.isExpression(sExpression)){
+					//Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
 						
-						//Auf gar keinen Fall den Z-Tag entfernen, sonst können nachfolgende PATH - Anweisungen nicht mehr gefunden werden.
-						Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false); //auf jeden Fall um Variablen herum den Z-Tag entfernen
-						if(vecExpressionTemp==null) break;
-						
-						sExpressionTemp = (String) vecExpressionTemp.get(1);
-						if(StringZZZ.isEmpty(sExpressionTemp)) {
-							break;
-						}else if(sExpression.equals(sExpressionTemp)) {
-							break;
-						}else{
-							sExpression = VectorUtilZZZ.implode(vecExpressionTemp);					
-						}
-					} //end while
-					sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
-					this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
+					//Auf gar keinen Fall den Z-Tag entfernen, sonst können nachfolgende PATH - Anweisungen nicht mehr gefunden werden.
+					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+					if(vecExpressionTemp==null) break;
+					if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.	
 					
-					sReturnLine = sExpression;
-					objEntry.setValue(sReturnLine);
-					objEntry.setValueFromTag(sReturnTag);
+					sExpressionTemp = (String) vecExpressionTemp.get(1);
+					if(sExpression.equals(sExpressionTemp)) {
+						break;
+					}else{
+						sExpression = VectorUtilZZZ.implode(vecExpressionTemp);					
+					}
+				} //end while
+				sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
+				objVariable.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
+					
+				sReturnLine = sExpression;
+				objEntry.setValue(sReturnLine);
+				objEntry.setValueFromTag(sReturnTag);
 																					
-					if(!sExpressionOld.equals(sReturnLine)) {							
-						objEntry.isVariableSubstitutedChanged(true);
-					}							
-				}//end if .isParse(..)
-				objEntry.isVariableSubstituted(true);
-			}	
+				if(!sExpressionOld.equals(sReturnLine)) {							
+					objEntry.isVariableSubstitutedChanged(true);
+				}							
+			}//end if .isParse(..)
+			objEntry.isVariableSubstituted(true);
+		}	
 			
-			objEntry.isPathSubstituteCalled(true);
-			if(this.isSubstitutePathEnabledThis()){											
+		TODOGOON20250319;//if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+		objEntry.isPathSubstituteCalled(true);
+		if(this.isSubstitutePathEnabledThis()){											
 				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 				if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
 										

@@ -461,8 +461,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				ex.setEntry(objEntry);
 												
 				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
+				if(vecValue==null) break main;
+				
 				String sValue = vecValue.get(1);
-								
+				if(StringZZZ.isEmpty(sValue)) break;
+				
 				if(!StringZZZ.equals(sValue,sExpression)){
 					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
 					objEntry = objReturnReferenceIn.get();
