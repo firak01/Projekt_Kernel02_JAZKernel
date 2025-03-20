@@ -381,12 +381,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) {				
-				sReturnTag = (String) vecReturn.get(1);
-			}		
+			if(vecReturn==null) break main;
+			
+			sReturnTag = (String) vecReturn.get(1);		
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
-			//20250312 objEntry.isParsed(true);
 			this.updateValueParsed();
 			this.updateValueParsed(objEntry);
 		}//end main:
@@ -397,17 +396,17 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		sReturn = sReturnLine;			
 		
 		if(objEntry!=null) {
-			objEntry.setValue(sReturn);
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {	
-				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturn);
+				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturnLine);
 				if(sExpressionIn!=null) {														
-					if(!sExpressionIn.equals(sReturn)) {					
-						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+					if(!sExpressionIn.equals(sReturnLine)) {											
 						this.updateValueParsedChanged();
 						this.updateValueParsedChanged(objEntry);
 					}
-				}			
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				}							
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}				

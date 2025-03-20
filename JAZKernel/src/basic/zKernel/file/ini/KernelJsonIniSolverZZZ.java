@@ -243,21 +243,30 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) {
-				sReturnTag = (String) vecReturn.get(1);
-			}
+			if(vecReturn!=null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			sReturnTag = (String) vecReturn.get(1);			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);
+		vecReturn.replace(sReturnTag);
+		this.setValue(sReturnTag);
 		sReturn = sReturnLine;				
 		
 		if(objEntry!=null) {
-			objEntry.setValue(sReturn);			
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression) {
+			if(bUseExpression) {	
+				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturnLine);
+				if(sExpressionIn!=null) {														
+					if(!sExpressionIn.equals(sReturnLine)) {											
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objEntry);
+					}
+				}							
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}				

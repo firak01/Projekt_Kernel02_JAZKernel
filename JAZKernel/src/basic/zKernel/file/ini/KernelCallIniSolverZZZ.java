@@ -194,11 +194,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.setRaw(sExpressionIn);		
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
-		//20250312 objEntry.isParseCalled(true);
 						
 		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
+		
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objEntry);
 
@@ -225,7 +225,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			sReturnTag = this.getValue();	
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			sReturnTag = (String)vecReturn.get(1);
 			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
 			sReturnLine = sReturnLineParsed;
 			sReturn = sReturnLine;
@@ -287,6 +289,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {		
 				if(bUseSolver && bUseSolverThis) {
 					//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
@@ -299,12 +302,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				}
 				
 				if(!sExpressionIn.equals(sReturnLine)) {					
-					//objEntry.isParsedChanged(true);
 					this.updateValueParsedChanged();
 					this.updateValueParsedChanged(objEntry);
-				}
-				
-				if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+				}							
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}					

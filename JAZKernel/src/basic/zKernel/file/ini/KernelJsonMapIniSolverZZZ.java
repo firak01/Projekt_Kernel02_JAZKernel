@@ -168,20 +168,22 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public HashMap<String,String> computeLinkedHashMap(String sLineWithExpression) throws ExceptionZZZ{
+	public HashMap<String,String> computeLinkedHashMap(String sExpressionIn) throws ExceptionZZZ{
 		LinkedHashMap<String,String> hmReturn = new LinkedHashMap<String,String>();
-		String sReturn = sLineWithExpression;  //Hole den Wert innerhalb von JSON:MAP. Merke: Ausgangswert ist normalerweise schon ein nach Z-Tag geparster Wert.
-		String sReturnTag = null;
+		String sReturn = sExpressionIn;  //Hole den Wert innerhalb von JSON:MAP. Merke: Ausgangswert ist normalerweise schon ein nach Z-Tag geparster Wert.
+		String sReturnTag = null; String sReturnLine = null;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
-			Vector<String> vecAll = this.parseFirstVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-						
+			Vector<String> vecReturn = this.parseFirstVector(sExpressionIn);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			if(vecReturn==null) break main;		
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
 			//Beschränke das Ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturnTag = vecAll.get(1);
-			sReturn = sReturnTag;
+			sReturnTag = vecReturn.get(1);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 				KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
@@ -204,8 +206,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 					objEntryInner.setValueFormulaSolvedAndConverted(sExpression);
 				}
 				sReturnTag=sExpression;
-				sReturn = sReturnTag;
-				//sReturn = VectorZZZ.implode(vecAll);
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+				sReturn = sReturnLine;
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen
@@ -298,9 +300,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn!=null) {
-				sReturnTag = (String) vecReturn.get(1);
-			}
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			sReturnTag = (String) vecReturn.get(1);			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:
 		

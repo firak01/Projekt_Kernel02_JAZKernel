@@ -49,14 +49,16 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String> parseFirstVector(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
 			//Nein, der Konverter nutzt das Flag auch nicht if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
+			if(vecReturn==null) break main;						
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			//nun den mittleren Teil weiter verarbeiten, sprich leersetzen
 			vecReturn.replace("");

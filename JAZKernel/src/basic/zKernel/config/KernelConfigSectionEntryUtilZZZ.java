@@ -460,12 +460,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
 				ex.setEntry(objEntry);
 												
-				Vector<String>vecValue=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
-				if(vecValue==null) break main;
-				
-				String sValue = vecValue.get(1);
-				if(StringZZZ.isEmpty(sValue)) break;
-				
+				Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
+				if(vecReturn==null) break main;
+				if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+
+				String sValue = vecReturn.get(1);
 				if(!StringZZZ.equals(sValue,sExpression)){
 					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
 					objEntry = objReturnReferenceIn.get();

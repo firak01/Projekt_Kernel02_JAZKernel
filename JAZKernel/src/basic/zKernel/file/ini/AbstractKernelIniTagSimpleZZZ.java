@@ -713,6 +713,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//objEntry = objReturnReferenceParserSuper.get();
 			if(vecReturn==null) break main;	
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
+			
 			sReturnTag = (String)vecReturn.get(1);
 			this.setValue(sReturnTag);
 			
@@ -798,7 +799,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);			
 			sReturnLine = sExpressionIn;
-			sReturnTag = this.getValue();
+			sReturnTag = (String) vecExpressionIn.get(1);//hier nicht: this.getValue(); weil der ja erst ggfs. hier geholt wird.
 			sReturn = sReturnLine;
 			
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
@@ -1695,9 +1696,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}//end if .isParse(..)
 			objEntry.isVariableSubstituted(true);
 		}	
-			
-		TODOGOON20250319;//if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
+						
 		objEntry.isPathSubstituteCalled(true);
 		if(this.isSubstitutePathEnabledThis()){											
 				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
@@ -1720,27 +1719,26 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				   														
 						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 						if(vecExpressionTemp==null) break;
-							
+						if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+						
 						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
-						if(StringZZZ.isEmpty(sExpressionTemp)) {
-							break;
-						}else if(sExpression.equals(sExpressionTemp)) {
+						if(sExpression.equals(sExpressionTemp)) {
 							break;
 						}else{
 							sExpression = sExpressionTemp;						
 						}											
 					} //end while						
-					sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
-					this.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
 					
+					sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
+					objFormulaIniPath.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
+						
 					sReturnLine = sExpression;
 					objEntry.setValue(sReturnLine);
 					objEntry.setValueFromTag(sReturnTag);
-					
+																						
 					if(!sExpressionOld.equals(sReturnLine)) {							
 						objEntry.isPathSubstitutedChanged(true);
-					}	
-					
+					}										
 				}//end if .isParseRegEx();
 				objEntry.isPathSubstituted(true);
 			}//end if .getFlag(..USE_...Path...)
