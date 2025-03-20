@@ -188,6 +188,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
+			sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
+			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);

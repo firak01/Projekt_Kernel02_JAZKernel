@@ -127,14 +127,16 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		
 	//###### Getter / Setter
 		
-	public ArrayList<String> computeArrayList(String sExpression) throws ExceptionZZZ{
+	public ArrayList<String> computeArrayList(String sExpressionIn) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
-		String sReturn = sExpression;
+		String sReturnTag = null; String sReturnLine = sExpressionIn; String sReturn = sReturnLine;
 		main:{			
-			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
 			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
 		
+			String sExpression = sExpressionIn;
+			
 			Vector<String> vecReturn = this.parseFirstVector(sExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
@@ -144,7 +146,9 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
 			
 			//Beschränke das ausrechnen auf den JSON-Array Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturn = vecReturn.get(1);
+			sReturnTag = vecReturn.get(1);
+			this.setValue(sReturnTag);
+			
 			if(this.getFlag("useFormula_math")==true){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 

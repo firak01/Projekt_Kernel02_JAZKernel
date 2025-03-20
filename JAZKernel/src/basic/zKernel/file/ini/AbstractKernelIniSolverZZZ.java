@@ -507,6 +507,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(vecReturn==null)break main;			
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 						
+			sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
+			
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
 //			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
 			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);			
