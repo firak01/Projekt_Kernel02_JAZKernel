@@ -767,8 +767,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
-		String sExpressionIn = null; Vector3ZZZ<String> vecReturn = vecExpressionIn;
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+		String sExpressionIn = null; 
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;				
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
@@ -965,9 +966,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.parsePost_(vecExpression, objReturnReference, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
 	}
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
-		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		Vector3ZZZ<String> vecReturn = vecExpressionIn; //Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;		
 		boolean bUseExpression = false; boolean bUseParse = false;
 				
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -989,7 +990,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		String sExpressionIn = null;
 		main:{
-			if(vecExpressionIn==null) break main;
+			if(vecExpressionIn==null) break main;			
 			
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -998,8 +999,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setRaw(sExpressionIn);
 		
 			sReturnTag = this.getValue();
-			sReturnLine = sExpressionIn;
-			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+			sReturnLine = sExpressionIn;			
 			sReturn = sReturnLine;
 			
 			bUseExpression = this.isExpressionEnabledGeneral(); 

@@ -174,11 +174,11 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 	
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		Vector3ZZZ<String>vecReturn = vecExpressionIn;
 		String sReturnTag=null;
 		main:{
-			vecReturn = this.parseFirstVectorPostCustom(vecExpression, bRemoveSurroundingSeparators);
+			vecReturn = this.parseFirstVectorPostCustom(vecExpressionIn, bRemoveSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
 			this.setValue(sReturnTag);		
 		}

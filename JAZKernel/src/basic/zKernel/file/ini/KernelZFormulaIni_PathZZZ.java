@@ -155,7 +155,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn = null; String sReturnTag = null; String sReturnLine = null; 
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null; String sReturnSubstituted = null; 
 		boolean bExpressionFound = false;
 		
 		//20240919: Dummy debug mit diesen statischen Werten
@@ -247,16 +247,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 			IKernelConfigSectionEntryZZZ objEntrySearch = objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null);
 			if(objEntrySearch.hasAnyValue()) {
-				sReturnTag = objEntrySearch.getValue();
+				sReturnSubstituted = objEntrySearch.getValue();
 			}else {
-				sReturnTag = sTagValue; //also unveraendert lassen.
-			}
-			
-			vecTagValueTotal.replace(sReturnTag);						
+				sReturnSubstituted = sTagValue; //also unveraendert lassen.
+			}			
+			vecTagValueTotal.replace(sReturnSubstituted);						
 			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
-			this.setValue(sReturnTag);
-			
-			
+			this.setValue(sReturnTag);	
 			vecReturn.replace(sReturnTag); //Übernimm den ersetzten Wert mit ggfs. vorhandenen Zeichen drumherum in die Rückgabe
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
