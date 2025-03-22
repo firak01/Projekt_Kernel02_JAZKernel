@@ -481,10 +481,15 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					IKernelZZZ objKernel = this.getKernelObject();		
 					KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
 					
+					//Merke: Beim Parsen (parseFirstVector) werden interen Variabelen im objEntry gesetzt.
+					//       Darum darf man dies nicht unterschlagen, indem man z.B. direkt solveParsed(sExpression) aufruft.
+					
+					
 					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 					ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					objReturnReferenceJavaCall.set(objEntry);
-					sReturnLine=objJavaCallSolver.solveParsed(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+					//sReturnLine=objJavaCallSolver.solveParsed(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+					sReturnLine = objJavaCallSolver.solve(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
 					objEntry = objReturnReferenceJavaCall.get();
 					
 					//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen

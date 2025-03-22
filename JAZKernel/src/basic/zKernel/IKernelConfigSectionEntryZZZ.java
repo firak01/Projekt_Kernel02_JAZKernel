@@ -225,6 +225,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isCallParsedChanged();
 	abstract void isCallParsedChanged(boolean bIsCallParsedChanged);
 
+	public boolean isCallParseCalled();
+	abstract void isCallParseCalled(boolean bIsCallParseCalled);
+		
 	public boolean isCallSolveCalled();
 	abstract void isCallSolveCalled(boolean bIsCallSolveCalled);
 	
@@ -237,6 +240,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isJavaCall();
 	abstract void isJavaCall(boolean bIsJavaCall);
 	
+	public boolean isJavaCallParseCalled();
+	abstract void isJavaCallParseCalled(boolean bIsJavaCallSolveCalled);
+		
 	public boolean isJavaCallSolveCalled();
 	abstract void isJavaCallSolveCalled(boolean bIsJavaCallSolveCalled);
 	

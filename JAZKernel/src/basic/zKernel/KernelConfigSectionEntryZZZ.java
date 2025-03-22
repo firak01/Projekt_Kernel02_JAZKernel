@@ -82,6 +82,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bJsonMap = false;
 	
 	protected boolean bCall = false;
+	
+	protected boolean bCallParseCalled = false;
 	protected boolean bCallParsed = false;
 	protected boolean bCallParsedChanged = false;
 	protected boolean bCallSolveCalled = false;
@@ -89,6 +91,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bCallSolvedChanged = false;
 	
 	protected boolean bJavaCall = false;
+	protected boolean bJavaCallParseCalled = false;
+	protected boolean bJavaCallParsed = false;
+	protected boolean bJavaCallParsedChanged = false;
 	protected boolean bJavaCallSolveCalled = false;
 	protected boolean bJavaCallSolved = false;
 	protected boolean bJavaCallSolvedChanged = false;
@@ -1018,6 +1023,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(!this.bCall) this.bCall = bIsCall;
 	}
 	
+	
+	@Override
+	public boolean isCallParseCalled() {
+		return this.bCallParseCalled;
+	}
+
+	@Override
+	public void isCallParseCalled(boolean bIsCallParseCalled) {
+		if(!this.bCallParseCalled)this.bCallParseCalled = bIsCallParseCalled;
+	}
+
 	@Override
 	public boolean isCallParsed() {
 		return this.bCallParsed;
@@ -1079,6 +1095,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void isJavaCall(boolean bIsJavaCall) {
 		if(!this.bJavaCall) this.bJavaCall = bIsJavaCall;
 	}
+	
+	@Override
+	public boolean isJavaCallParseCalled() {
+		return this.bJavaCallSolveCalled;
+	}
+
+	@Override
+	public void isJavaCallParseCalled(boolean bIsJavaCallParseCalled) {
+		if(!this.bJavaCallSolveCalled) this.bJavaCallSolveCalled = bIsJavaCallParseCalled;
+	}
+	
 	
 	@Override
 	public boolean isJavaCallSolveCalled() {
@@ -1453,6 +1480,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}
 		}
 
+		
 
 
 				

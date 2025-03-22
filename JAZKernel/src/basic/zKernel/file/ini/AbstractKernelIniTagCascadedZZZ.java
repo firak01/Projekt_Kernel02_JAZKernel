@@ -175,7 +175,11 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.		   
 			String sTagOpening = this.getTagPartOpening();
 			String sTagClosing = this.getTagPartClosing();
-			vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
+			//20250322; //ich will aber die umgebenden Separtoren erst einmal erhalten. 
+			//            Wenn man sie central haelt, dann gehen sie automatisch beim solven, substitute, etc verloeren
+			//            also nicht: vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
+			//TODOGOON20250322; Mache eine Methode, die nur untenstehendes aufruft. wg. des Namens... vecReturn = StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
+			vecReturn = StringZZZ.vecMidCascadedKeep(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;		
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
