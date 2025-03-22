@@ -435,7 +435,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
 			}//end if buseencryption
 						
-			
+			objEntry.isSolved(true);
 			sReturnLine = sExpressionUsed;							
 		}//end main:
 						
@@ -446,8 +446,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry.setValue(sReturn);
 			objEntry.setValueFromTag(sReturn);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
-			if(sExpressionIn!=null) {
-				objEntry.isSolved(true);
+			if(sExpressionIn!=null) {				
 				if(!sExpressionIn.equals(sReturnLine)) {
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);

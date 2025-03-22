@@ -1628,6 +1628,13 @@ public class StringZZZ implements IConstantZZZ{
 		return vecMidCascadedKeepSeparatorCentral(sStringToParse, sSepLeft, sSepRight, bExactMatch);
 	}
 	
+	public static Vector3ZZZ<String>vecMidKeepSeparator(String sStringToParse, String sSepLeft, String sSepRight) throws ExceptionZZZ{		
+		return vecMidCascadedKeep(sStringToParse, sSepLeft, sSepRight, true);
+	}
+	
+	public static Vector3ZZZ<String>vecMidKeepSeparator(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+		return vecMidCascadedKeep(sStringToParse, sSepLeft, sSepRight, bExactMatch);
+	}
 	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
