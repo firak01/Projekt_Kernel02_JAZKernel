@@ -215,7 +215,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.setRaw(sExpressionIn);	
 		//20250312 objEntry.isParseCalled(true);
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objEntry);
+		this.updateValueParseCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		main:{			
@@ -258,13 +258,13 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {	
 				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturnLine);
 				if(sExpressionIn!=null) {														
 					if(!sExpressionIn.equals(sReturnLine)) {											
 						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objEntry);
+						this.updateValueParsedChanged(objReturnReference);
 					}
 				}							
 				this.adoptEntryValuesMissing(objEntry);

@@ -145,7 +145,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		objEntry.setRaw(sExpressionIn);
 		
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objEntry);
+		this.updateValueParseCalled(objReturnReference);
 		
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
@@ -208,12 +208,12 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression | bUseParse) {
 				if(sExpressionIn!=null) {							
 						if(!sExpressionIn.equals(sReturnLine)) {							
 							this.updateValueParsedChanged();
-							this.updateValueParsedChanged(objEntry);
+							this.updateValueParsedChanged(objReturnReference);
 						}
 				}		
 			}

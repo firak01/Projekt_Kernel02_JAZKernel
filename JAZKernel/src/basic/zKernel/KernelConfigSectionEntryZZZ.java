@@ -1085,7 +1085,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 
-	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean isJavaCall() {
 		return this.bJavaCall;
@@ -1096,17 +1096,38 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(!this.bJavaCall) this.bJavaCall = bIsJavaCall;
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean isJavaCallParseCalled() {
-		return this.bJavaCallSolveCalled;
+		return this.bJavaCallParseCalled;
 	}
 
 	@Override
 	public void isJavaCallParseCalled(boolean bIsJavaCallParseCalled) {
-		if(!this.bJavaCallSolveCalled) this.bJavaCallSolveCalled = bIsJavaCallParseCalled;
+		if(!this.bJavaCallParseCalled) this.bJavaCallParseCalled = bIsJavaCallParseCalled;
 	}
 	
+	@Override
+	public boolean isJavaCallParsed() {
+		return this.bJavaCallParsed;
+	}
+
+	@Override
+	public void isJavaCallParsed(boolean bIsJavaCallParsed) {
+		if(!this.bJavaCallParsed) this.bJavaCallParsed = bIsJavaCallParsed;
+	}
 	
+	@Override
+	public boolean isJavaCallParsedChanged() {
+		return this.bJavaCallParsedChanged;
+	}
+
+	@Override
+	public void isJavaCallParsedChanged(boolean bIsJavaCallParsedChanged) {
+		if(!this.bJavaCallParsedChanged) this.bJavaCallParsedChanged = bIsJavaCallParsedChanged;
+	}
+	
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean isJavaCallSolveCalled() {
 		return this.bJavaCallSolveCalled;

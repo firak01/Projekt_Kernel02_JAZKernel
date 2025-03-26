@@ -200,7 +200,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.setRaw(sExpressionIn);	
 		
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objEntry);
+		this.updateValueParseCalled(objReturnReference);
 
 		main:{
 			String sExpression = sExpressionIn;
@@ -289,7 +289,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {		
 				if(bUseSolver && bUseSolverThis) {
 					//++++ Die Besonderheit ist hier: CALL und JAVA_CALL werden in einer Klasse erledigt....
@@ -303,7 +303,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				
 				if(!sExpressionIn.equals(sReturnLine)) {					
 					this.updateValueParsedChanged();
-					this.updateValueParsedChanged(objEntry);
+					this.updateValueParsedChanged(objReturnReference);
 				}							
 				this.adoptEntryValuesMissing(objEntry);
 			}

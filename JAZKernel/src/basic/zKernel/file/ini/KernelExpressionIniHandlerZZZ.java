@@ -149,7 +149,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objEntry);
+		this.updateValueParseCalled(objReturnReference);
 		
 		main:{		
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -198,7 +198,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 			
 			this.updateValueParsed();
-			this.updateValueParsed(objEntry);
+			this.updateValueParsed(objReturnReference);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
@@ -208,12 +208,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {				
 				if(sExpressionIn!=null) {			 							
 					if(!sExpressionIn.equals(sReturn)) {								
 						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objEntry);
+						this.updateValueParsedChanged(objReturnReference);
 					}
 				}						
 				this.adoptEntryValuesMissing(objEntry);

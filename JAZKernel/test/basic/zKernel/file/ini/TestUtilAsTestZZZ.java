@@ -365,8 +365,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 				switch(sFlagSet) {
 				//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 				case sFLAGSET_UNEXPRESSED:
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-					assertTrue(objEntry.isSolveCalled()); //dito mit solve(). Der Solve-Schritt wurde gemacht.
+					assertTrue(objEntry.isSolveCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch der solve() Schritt aufgerufen worden....
+					assertFalse(objEntry.isParseCalled()); //...aber, danach wurde abgebrochen
 					assertFalse(objEntry.isExpression());
 						
 					assertFalse(objEntry.isParsed()); //sollte ohne EXPRESSION abgebrochen worden sein

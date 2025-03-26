@@ -173,7 +173,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		objEntry.setRaw(sExpressionIn);	
 		//20250312 objEntry.isParseCalled(true);
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objEntry);
+		this.updateValueParseCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		
 		main:{	
@@ -209,14 +209,13 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturn);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression) {
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {							 							
 					if(!sExpressionIn.equals(sReturn)) {
-						//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
 						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objEntry);
+						this.updateValueParsedChanged(objReturnReference);
 					}
 				}			
 				
