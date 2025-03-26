@@ -997,7 +997,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sValue = objEntry.getValue();
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, "Z");
+			sExpressionSolved = sExpression;
+			
+			//Beim PARSEN belibt der Z-Tag enthalten
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, "Z");
+			
 			//Beim PARSEN bleibt der Tagname des Solvers im Gesamtstring erhalten.
 			//Darum hier nicht: sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName());
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein, abzueglich der Z-Tags, die wg. Parse wegfallen.",sExpressionSolved, sValue);
