@@ -628,8 +628,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isExpression());									
 					assertTrue(objEntry.isParsed());
 					
-					assertFalse(objEntry.isSolved()); //durch Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der Solver zwar aufgerufen, aber nicht ausgefuehrt
-					assertFalse(objEntry.isCallSolved()); //durch Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der Solver zwar aufgerufen, aber nicht ausgefuehrt					
+					assertTrue(objEntry.isSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der allgemeine Solver ausgefuehrt
+					assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
 					assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 					
 					assertFalse(objEntry.isDecrypted());

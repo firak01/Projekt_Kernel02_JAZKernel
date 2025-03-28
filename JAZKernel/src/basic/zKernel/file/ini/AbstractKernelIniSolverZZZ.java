@@ -527,6 +527,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bUseSolverThis = this.isSolverEnabledThis();
 			if(!bUseSolverThis) break main;
 			
+			TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
+			
 			//###########################
 			sReturnTag2Solve = sReturnTag; 
 			

@@ -191,37 +191,25 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 						
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-				//+++ Mit Call-Berechnung OHNE JavaCall-Berechnung
+				//+++ Ohne Call-Berechnung
 				
-				//c)
+				//d)
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
-
-				//Konflikt: 
-				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
-				//      ABER: bRemoveSurrounding ist false gesetzt!!! -> D.h. AEUSSERE Tags bleiben drin.
-				
-				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
-				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-
-				
-				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);//DerGesamtsolver sollte aber ausgefuehrt werden und fuer das Entfernen der Z-Tags sorgen!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                								
-				
+                
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+					btemp = testCompute_Call_CallUnsolved_(sExpression,  sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 				} else {
-					btemp = testCompute_Call_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					btemp = testCompute_Call_CallUnsolved_(sExpression,  sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				}
-
-				
 
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
@@ -513,7 +501,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
 
-				
 				
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				
