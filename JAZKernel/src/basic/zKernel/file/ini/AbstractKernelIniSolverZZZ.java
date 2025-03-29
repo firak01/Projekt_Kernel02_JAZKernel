@@ -493,6 +493,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		sReturn = sReturnLine;
 		
 		main:{
+		solverThis:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
 			
@@ -524,10 +525,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			//TODOGOON20250308; //TICKETGOON20250308;;//Generische Problematik, wenn man hier nur auf den eigenen Solver abbprüft, kann man nicht das "Elternflag setzen"
 			
+			//TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
 			bUseSolverThis = this.isSolverEnabledThis();
-			if(!bUseSolverThis) break main;
+			if(!bUseSolverThis) break solverThis;
 			
-			TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
+			
 			
 			//###########################
 			sReturnTag2Solve = sReturnTag; 
@@ -538,6 +540,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry = objReturnReferenceSolve.get();		
 			//##########################
 			
+			}//end solveThis:
+		
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
@@ -694,7 +698,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		objEntry.setRaw(sExpressionIn);
 		sReturnTag = this.getValue();
 		sReturnLine = sExpressionIn;	
-		main:{	
+		main:{
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
 						
@@ -705,7 +709,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(!bUseSolver) break main;
 										
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-			if(!bUseSolverThis) break main;
+			//Nein, denn der generelle Solver wird ja ausgefuerht if(!bUseSolverThis) break main;
 			
 			
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
@@ -723,7 +727,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(bRemoveSurroundingSeparators & bUseExpression) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also von aussen nach innen!!!				
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false); //also von aussen nach innen!!!				
 			}
 			
 			
