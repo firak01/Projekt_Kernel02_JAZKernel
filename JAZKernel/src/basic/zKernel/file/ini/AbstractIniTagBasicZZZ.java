@@ -146,24 +146,24 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 				
 	@Override
-	public String parse(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return this.parse_(sLineWithExpression, bRemoveSurroundingSeparators);
+	public String parse(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+		return this.parse_(sLineWithExpression, bKeepSurroundingSeparators);
 	}	
 	
-	private String parse_(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
 		String sReturnLine = sExpressionIn;
 		String sReturnTag = null;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bRemoveSurroundingSeparators);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bKeepSurroundingSeparators);
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			sReturnTag = (String) vecReturn.get(1);
 			this.setValue(sReturnTag);
 							
-			vecReturn = this.parsePost(vecReturn, bRemoveSurroundingSeparators);
+			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1); //den ggfs. leer gewordenen Tag setzen
 			this.setValue(sReturnTag);
 				
@@ -179,17 +179,17 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, true);
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parsePost_(vecExpression, bKeepSurroundingSeparators, true);
 	}
 
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, bRemoveSurroundingSeparators, bRemoveOwnTagParts);
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, bKeepSurroundingSeparators, bRemoveOwnTagParts);
 	}
 
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sReturnTag = null;		
@@ -207,7 +207,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 			bUseParse = this.isParserEnabledThis();
 			if(bUseParse) {			
-				if(bRemoveSurroundingSeparators) {
+				if(!bKeepSurroundingSeparators) {
 					String sTagStart = "<Z>"; //this.getTagStarting();
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen
@@ -221,7 +221,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			}
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
-			vecReturn = this.parsePostCustom(vecReturn, bRemoveSurroundingSeparators);
+			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparators);
 			sReturnTag = (String) vecReturn.get(1);
 			sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
 			this.setValue(sReturnTag);
@@ -239,7 +239,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 
 
 	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
 		return vecExpression;
 	}
 	
@@ -280,12 +280,12 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorPostCustom_(vecExpression, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVectorPostCustom_(vecExpression, bKeepSurroundingSeparators);
 
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sReturnTag = null;

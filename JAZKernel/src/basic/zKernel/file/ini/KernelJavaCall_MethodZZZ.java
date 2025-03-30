@@ -48,12 +48,12 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//A
 		}
 		
 		@Override
-		public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-			return this.parsePostCustom_(vecExpression, bRemoveSurroundingSeparators);
+		public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+			return this.parsePostCustom_(vecExpression, bKeepSurroundingSeparators);
 		}
 		
 		//Methode mit Reference Objekt
-		private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
 			Vector3ZZZ<String> vecReturn = vecExpressionIn; 
 			String sReturn; String sReturnTag = null;
 			String sExpression;
@@ -71,7 +71,7 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//A
 				//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
 				bUseParse = this.isParserEnabledThis();
 				if(bUseParse) {			
-					if(bRemoveSurroundingSeparators) {
+					if(!bKeepSurroundingSeparators) {
 						String sTagStart = "<Z>"; //this.getTagStarting();
 						String sTagEnd = "</Z>";  //this.getTagClosing();
 						sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd);  //also von innen nach aussen

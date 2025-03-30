@@ -82,11 +82,11 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	}
 	
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseFirstVector_(sLineWithExpression, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+		return this.parseFirstVector_(sLineWithExpression, bKeepSurroundingSeparators);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sLineWithExpression;
 		boolean bUseExpression = false;
@@ -128,7 +128,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			vecReturn.replace(vecSection.get(0), sValue, vecSection.get(2));
 			
 			// Z-Tags entfernen.
-			if(bRemoveSurroundingSeparators) {
+			if(!bKeepSurroundingSeparators) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);

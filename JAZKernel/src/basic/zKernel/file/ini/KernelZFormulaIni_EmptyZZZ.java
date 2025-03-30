@@ -49,7 +49,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpressionIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{
+	public Vector3ZZZ<String> parseFirstVector(String sExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
 			//Nein, der Konverter nutzt das Flag auch nicht if(!this.getFlag(IIniTagWithExpressionZZZ.FLAGZ.USEEXPRESSION)) break main;			

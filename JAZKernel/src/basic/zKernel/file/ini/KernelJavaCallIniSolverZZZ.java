@@ -272,12 +272,32 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParseCalled) throws ExceptionZZZ {
 		super.updateValueParseCalled(objReturnReference, bIsParseCalled);
 		
-		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		//Den "Elternparser", siehe dazu auch TicketGOON20250308
 		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-		objEntry.isCallParseCalled(bIsParseCalled);
+		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+			objEntry.isCallParseCalled(bIsParseCalled);
+		}
 		
-		//Den eigenen Solver
-		objEntry.isJavaCallParseCalled(bIsParseCalled);
+		//Den eigenen Parser
+		if(this.isParserEnabledThis()) {
+			objEntry.isJavaCallParseCalled(bIsParseCalled);
+		}
+	}
+	
+	@Override
+	public void updateValueParsed(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsJavaCallParsed) throws ExceptionZZZ {
+		super.updateValueParsed(objReturnReference, bIsJavaCallParsed);
+		
+		//Den "ElternPaser", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+			objEntry.isCallParsed(bIsJavaCallParsed);
+		}
+		
+		//Den eigenen Parser
+		if(this.isParserEnabledThis()) {
+			objEntry.isJavaCallParsed(bIsJavaCallParsed);
+		}
 	}
 	
 	//### aus ISolveUserZZZ
@@ -314,21 +334,29 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		super.updateValueSolved(objEntry, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-		objEntry.isCallSolved(bIsSolveCalled);
+		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+			objEntry.isCallSolved(bIsSolveCalled);
+		}
 		
 		//Den eigenen Solver
-		objEntry.isJavaCallSolved(bIsSolveCalled);
+		if(this.isSolverEnabledThis()) {
+			objEntry.isJavaCallSolved(bIsSolveCalled);
+		}
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveChanged) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objEntry, bIsSolveChanged);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-		objEntry.isCallSolvedChanged(bIsSolveCalled);
+		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+			objEntry.isCallSolvedChanged(bIsSolveChanged);
+		}
 		
 		//Den eigenen Solver
-		objEntry.isJavaCallSolvedChanged(bIsSolveCalled);
+		if(this.isSolverEnabledThis()) {
+			objEntry.isJavaCallSolvedChanged(bIsSolveChanged);
+		}
 	}
 	
 	//### aus IParseEnabled		
@@ -339,17 +367,22 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparators);
 	}
 		
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{		
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
+	@Override
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
 		String sReturnTag = null; String sReturnLine=null;
@@ -429,7 +462,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			//Z:call drumherum entfernen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
 			

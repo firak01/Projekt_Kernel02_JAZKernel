@@ -880,7 +880,6 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	
 	private static String getExpressionTagpartsContainedRemoved_(String sExpression, String sTagName, boolean bLeaveTagContent, boolean bLeaveTagInterContent, String sTagNameContainer) throws ExceptionZZZ {
 		String sReturn = sExpression;		
 		main:{
@@ -922,6 +921,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return getExpressionTagContainedRemoved_(sExpression, sTagPartOpening, sTagPartClosing,true, true, sTagPartContainerOpening, sTagPartContainerClosing);
 	}
 	
+
+	
 	private static String getExpressionTagContainedRemoved_(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bLeaveTagContent,  boolean bLeaveTagInterContent, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
 		String sReturn = sExpression;
 		main:{
@@ -932,7 +933,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
 			
 			//Den Container Tag parsen aus dem String
-			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sExpression, sTagPartContainerOpening, sTagPartContainerClosing);//Also MIT CONTAINER Tags holen, ohne Exactmatch
+			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false);//Also MIT CONTAINER Tags holen, ohne Exactmatch
 			//Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidFirstKeepSeparatorCentral(sValueExpression, sTagContainerStart, sTagContainerEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
 			if(vecExpression==null) break main;
 
@@ -940,7 +941,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			String sExpressionInner = (String) vecExpression.get(1);
 			if(StringZZZ.isEmpty(sExpressionInner)) break main;
 									
-			Vector3ZZZ<String> vecExpressionInner = vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagPartOpening, sTagPartClosing, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
+			Vector3ZZZ<String> vecExpressionInner = StringZZZ.vecMidFirst(sExpressionInner, sTagPartOpening, sTagPartClosing, true);//Also MIT Tags holen, Merke, das wird gemacht, um ggfs. "Zwischen den Tags stehenden Text" zu behalten.
 			if(vecExpressionInner!=null) {
 				if(!bLeaveTagInterContent) {
 					vecExpressionInner.replace(0,""); //allen Content vor dem Tag entfernen
@@ -1107,457 +1108,460 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	//######################################################
 	//### SURROUNDING A CONTAINER
 	//######################################################
+	
+	
+	
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagName, String sTagContainerName) throws ExceptionZZZ {
-			return getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagName, true, true, sTagContainerName);
-		}
-		
-		//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut, String sTagContainerName) throws ExceptionZZZ {
-			return getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagName, bDirectionFromInToOut, true, sTagContainerName);
-		}
-		
-		//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerName) throws ExceptionZZZ {
-			String sReturn = sExpression;		
-			main:{
-				if(StringZZZ.isEmpty(sExpression)) break main;
-				if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagName));
-				if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagContainerName));
-									
-				String sTagStart; String sTagEnd;
-				sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
-				sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
-				
-				String sTagContainerStart = XmlUtilZZZ.computeTagPartOpening(sTagContainerName);
-				String sTagContainerEnd = XmlUtilZZZ.computeTagPartClosing(sTagContainerName);
-						
-				sReturn = getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStart, sTagEnd, bDirectionFromInToOut, bAnyPosition, sTagContainerStart, sTagContainerEnd);
-			}//end main;
-			return sReturn;
-		}
-		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing ) throws ExceptionZZZ {
-			return getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, true, sTagPartContainerOpening, sTagPartContainerClosing);
-		}
-		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			if(bDirectionFromInToOut) {
-				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-			}else {
-				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-			}
-			
-		}
-		
-		public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			if(bDirectionFromInToOut) {
-				return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
-			}else {
-				return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
-			}
-			
-		}
-		
-		
-		public static String getExpressionTagpartsContainerSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			String sReturn = sExpression;
-			main:{
-				if(StringZZZ.isEmpty(sExpression)) break main;
-				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
-			
-				//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true, sTagPartContainerOpening, sTagPartContainerClosing);
-
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
-				
-			}//end main:
-			return sReturn;
-		}
-		
-		public static String getExpressionTagpartsContainerSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			String sReturn = sExpression;
-			main:{
-				if(StringZZZ.isEmpty(sExpression)) break main;
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagName, String sTagContainerName) throws ExceptionZZZ {
+		return getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagName, true, true, sTagContainerName);
+	}
+	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sValueExpression, String sTagName, boolean bDirectionFromInToOut, String sTagContainerName) throws ExceptionZZZ {
+		return getExpressionTagpartsContainerSurroundingRemoved(sValueExpression, sTagName, bDirectionFromInToOut, true, sTagContainerName);
+	}
+	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagContainerName) throws ExceptionZZZ {
+		String sReturn = sExpression;		
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagName));
+			if(XmlUtilZZZ.ensureExpressionTagNameValid(sTagContainerName));
 								
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
-				
-				//Container herausloesen, diese Tags sollen im Mittelteil des 3er Vectors sein.
-				Vector3ZZZ<String>vecReturn =StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false);
-				
-				//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				//Vector3ZZZ<String>vec = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
+			String sTagStart; String sTagEnd;
+			sTagStart = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			sTagEnd = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			String sTagContainerStart = XmlUtilZZZ.computeTagPartOpening(sTagContainerName);
+			String sTagContainerEnd = XmlUtilZZZ.computeTagPartClosing(sTagContainerName);
+					
+			sReturn = getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagStart, sTagEnd, bDirectionFromInToOut, bAnyPosition, sTagContainerStart, sTagContainerEnd);
+		}//end main;
+		return sReturn;
+	}
+	
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing ) throws ExceptionZZZ {
+		return getExpressionTagpartsContainerSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, true, sTagPartContainerOpening, sTagPartContainerClosing);
+	}
+	
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		if(bDirectionFromInToOut) {
+			return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
+		}else {
+			return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
+		}
+		
+	}
+	
+	public static String getExpressionTagpartsContainerSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		if(bDirectionFromInToOut) {
+			return getExpressionTagpartsContainerSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
+		}else {
+			return getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
+		}
+		
+	}
+	
+	
+	public static String getExpressionTagpartsContainerSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
+		
+			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true, sTagPartContainerOpening, sTagPartContainerClosing);
 
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
-				
-			}//end main:
-			return sReturn;
-		}
-		
-		//####################################
-		public static String getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			String sReturn = sExpression;
-			main:{
-				if(StringZZZ.isEmpty(sExpression)) break main;
-				if(StringZZZ.isEmpty(sTagPartOpening)) break main;
-				if(StringZZZ.isEmpty(sTagPartClosing)) break main;
-				if(StringZZZ.isEmpty(sTagPartContainerOpening)) break main;
-				if(StringZZZ.isEmpty(sTagPartContainerClosing)) break main;
-																			
-				Vector3ZZZ<String>vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false); //Also mit Tags holen, die dann in der Mitte erhalten bleiben
-				if(vecReturn==null) break main;
-				
-				//Dogwatch-Klauseln
-			    //A) Der Container Tag muss in der Mitte stehen
-				String sCONTAINER = (String) vecReturn.get(1);
-				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				
-				//Nun müssen aus dem PRE bzw. POST Teil die umgebendenden TagParts rausgenommen werden.
-				String sPRE = (String) vecReturn.get(0);				
-				String sPOST = (String) vecReturn.get(2);
-				
-				//B) Watchdog clausel fuer die gleiche GESAMT Anzahl von Tags in sPRE, sPOST!!!
-				//   PROBLEMATISCH FUER INNEN NACH AUSSEN
-				int iCountOPENING = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
-				iCountOPENING = iCountOPENING + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-				
-				int iCountCLOSING = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				iCountCLOSING = iCountCLOSING + XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				
-				if(iCountOPENING != iCountCLOSING){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				
-				//C) Watchdog clausel fuer die SYMMETRISCHE gleiche Anzahl von Tags pro sPRE, bzw. sPOST
-				//   PROBLEMATISCH FUER DAS ENTFERNEN VON TAGS VON AUSSEN nach INNEN
-				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
-				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
-				
-				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				
-				if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				
-				
-				int iPreStart = StringZZZ.count(sPRE, sTagPartOpening);
-				int iPreEnd = StringZZZ.count(sPRE, sTagPartClosing);
-				
-				int iPostStart = StringZZZ.count(sPOST, sTagPartOpening);
-				int iPostEnd = StringZZZ.count(sPOST, sTagPartClosing);
-				
-				int iPreRemovable = iPreStart - iPreEnd;
-				if(iPreRemovable<=0) break main; //dann ist nix zu entfernen
-				
-				int iPostRemovable = iPostEnd - iPostStart;
-				if(iPostRemovable<=0) break main; //dann ist nix zu entfernen
-				
-				if(iPostRemovable==0 || iPreRemovable==0) break main; //wenn es kein passenden zu ersetztenden String gibt, abbruch.
-				sPRE = StringZZZ.replaceFromLeft1(sPRE, sTagPartOpening, "");
-				sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
-				
-				
-				vecReturn.replace(0, sPRE);
-				vecReturn.replace(2, sPOST);
-				
-				sReturn = VectorUtilZZZ.implode(vecReturn);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
-				
-			}//end main:
-			return sReturn;
-		}
-		
-		public static String getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
-			String sReturn = sExpression;
-			Vector3ZZZ<String>vecReturn=null;
-			main:{
-				if(StringZZZ.isEmpty(sExpression)) break main;
-				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String getExpressionTagpartsContainerSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
 							
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
+			
+			//Container herausloesen, diese Tags sollen im Mittelteil des 3er Vectors sein.
+			Vector3ZZZ<String>vecReturn =StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false);
+			
+			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			//Vector3ZZZ<String>vec = StringZZZ.vecMid(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
 
-				//TODOGOON: Iregendwie fehlt hier noch die Schärfe, wo der Unterschied ist!!!!
-				if(!bAnyPosition) {
-					//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-					vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-					
-					//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
-					//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
+			
+		}//end main:
+		return sReturn;
+	}
+		
+	//####################################
+	public static String getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			if(StringZZZ.isEmpty(sTagPartOpening)) break main;
+			if(StringZZZ.isEmpty(sTagPartClosing)) break main;
+			if(StringZZZ.isEmpty(sTagPartContainerOpening)) break main;
+			if(StringZZZ.isEmpty(sTagPartContainerClosing)) break main;
+																		
+			Vector3ZZZ<String>vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false); //Also mit Tags holen, die dann in der Mitte erhalten bleiben
+			if(vecReturn==null) break main;
+			
+			//Dogwatch-Klauseln
+		    //A) Der Container Tag muss in der Mitte stehen
+			String sCONTAINER = (String) vecReturn.get(1);
+			if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
+				ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			//Nun müssen aus dem PRE bzw. POST Teil die umgebendenden TagParts rausgenommen werden.
+			String sPRE = (String) vecReturn.get(0);				
+			String sPOST = (String) vecReturn.get(2);
+			
+			//B) Watchdog clausel fuer die gleiche GESAMT Anzahl von Tags in sPRE, sPOST!!!
+			//   PROBLEMATISCH FUER INNEN NACH AUSSEN
+			int iCountOPENING = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
+			iCountOPENING = iCountOPENING + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+			
+			int iCountCLOSING = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+			iCountCLOSING = iCountCLOSING + XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+			
+			if(iCountOPENING != iCountCLOSING){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			//C) Watchdog clausel fuer die SYMMETRISCHE gleiche Anzahl von Tags pro sPRE, bzw. sPOST
+			//   PROBLEMATISCH FUER DAS ENTFERNEN VON TAGS VON AUSSEN nach INNEN
+			int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
+			int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
+			
+			int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+			int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+			
+			if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			
+			int iPreStart = StringZZZ.count(sPRE, sTagPartOpening);
+			int iPreEnd = StringZZZ.count(sPRE, sTagPartClosing);
+			
+			int iPostStart = StringZZZ.count(sPOST, sTagPartOpening);
+			int iPostEnd = StringZZZ.count(sPOST, sTagPartClosing);
+			
+			int iPreRemovable = iPreStart - iPreEnd;
+			if(iPreRemovable<=0) break main; //dann ist nix zu entfernen
+			
+			int iPostRemovable = iPostEnd - iPostStart;
+			if(iPostRemovable<=0) break main; //dann ist nix zu entfernen
+			
+			if(iPostRemovable==0 || iPreRemovable==0) break main; //wenn es kein passenden zu ersetztenden String gibt, abbruch.
+			sPRE = StringZZZ.replaceFromLeft1(sPRE, sTagPartOpening, "");
+			sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
+			
+			
+			vecReturn.replace(0, sPRE);
+			vecReturn.replace(2, sPOST);
+			
+			sReturn = VectorUtilZZZ.implode(vecReturn);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {
+		String sReturn = sExpression;
+		Vector3ZZZ<String>vecReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sExpression)) break main;
+			
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
+			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
+			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
+						
 
-				}else {
-					
-					//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-					vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-					
-					//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
-					//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
-
-					
-					
-				}
+			//TODOGOON: Iregendwie fehlt hier noch die Schärfe, wo der Unterschied ist!!!!
+			if(!bAnyPosition) {
+				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 				
-				if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
+				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
+				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+
+			}else {
 				
-			}//end main:
-			return sReturn;
-		}
+				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
+				
+				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
+				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
+
+				
+				
+			}
+			
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
+			
+		}//end main:
+		return sReturn;
+	}
 		
 			
 		
 		
-		public static void getExpressionTagpartsContainerSurroundingRemovedFromInToOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-				if(vecReturn==null)break main;				
-								
-				XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
-				XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
-				XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening);
-				XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing);
-				
-				//Dogwatch-Klauseln
-			    //A) Der Container Tag muss in der Mitte stehen
-				String sCONTAINER = (String) vecReturn.get(1);
-				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-				String sPRE = (String) vecReturn.get(0);				
-				String sPOST = (String) vecReturn.get(2);
-								
-				//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
-				int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
-				iCountOPENING_TOTAL = iCountOPENING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-				
-				int iCountCLOSING_TOTAL = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
-				
-				if(iCountOPENING_TOTAL != iCountCLOSING_TOTAL){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-
-				//Zaehle die Tags fuer weitere Watchdog clauseln
-				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
-				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
-				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
-				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-
-				
-				
-				//C) Watchdog clausel fuer Beschraenkung der Anzahl auf maximal 1 umgebungstag.
-				//   !!! Dies ist nur problematisch fuer das Entfernen der Tags von innen nach aussen.
-				//   TODOGOON: Damit das funktioniert muessten beim Entfernen 2 Bedingungen abgeprueft werden.
-				//             1) Hinter dem oeffnenden Tag (,welches einem zu loeschenden Tagnamen entspricht)
-				//				  gibt es ein passendes schliessendes Tag.
-				//                Dann ignoriere den TagPart fuer die Loeschung.
-				//             2) Es gibt keine weiteren Tags hinter dem offnenden Tag (siehe 1) und dem passenden schliessenden Tag. 
-
-				
-				if(iCountOPENING_PRE >= 2) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}						
-				if(iCountCLOSING_POST >= 2) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}
-				
-
-				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
-				//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
-				if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
-
-												
-				//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
-				if(iCountOPENING_PRE > iCountCLOSING_POST) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
-				}
-				
-				
-				//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
-				if(iCountOPENING_PRE <= 0) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}
-				
-				
-				//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
-				//   Etwas genauer als das einfache zaehlen der Gesamttags.			
-				if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-
-				
-				//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
-				if(iCountOPENING_PRE<(iCountCLOSING_PRE+1)) {					
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(iCountCLOSING_POST<(iCountOPENING_POST+1)) {					
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
+	public static void getExpressionTagpartsContainerSurroundingRemovedFromInToOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+			if(vecReturn==null)break main;				
+							
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
+			XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening);
+			XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing);
 			
-								
-				String sPREold = sPRE;				
-				String sPOSTold = sPOST;
-				
-				if(bRemoveAnyPosition) {
-					while(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {						
-						sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");						
-						sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
-												
-						if(sPREold.equals(sPRE) | sPOSTold.equals(sPOST)) break; //sonst ggfs. Endlosschleifengefahr.
-						sPREold=sPRE;
-						sPOSTold=sPOST;
-					}//end while
-				
-					//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
-
-				}else {
-					//Nur 1x entfernen
-					if(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {
-						sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");
-						sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
-					}	
-					
-					//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
-					
-				}//end if bRemoveAnyPosition	
-		
-				vecReturn.replace(0,sPRE);
-				vecReturn.replace(2,sPOST);
-			}//end main
-		}	
-		
-		
-			
-		public static void getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-			    //Verglichen mit ...FromIntoOut gilt also:
-				//Alle endsWith werden zu startWith und alle startWith werden zu endsWith.
-			    //und leftbacks werden zu right und alle rightbacks zu left.
-			
-				if(vecReturn==null)break main;
-				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
-				if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
-				if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
-				
-				//Dogwatch-Klauseln
-			    //A) Der Container Tag muss in der Mitte stehen
-				String sCONTAINER = (String) vecReturn.get(1);
-				
-				//Hier keinen Fehler werfen, da ggfs. auch Strings ohne Tag drum verarbeitet werden.
-				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
-//					ExceptionZZZ ez = new ExceptionZZZ("Expected an opening container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			//Dogwatch-Klauseln
+		    //A) Der Container Tag muss in der Mitte stehen
+//				String sCONTAINER = (String) vecReturn.get(1);
+//				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
+//					ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //					throw ez;
-					break main;
-				}
-				
-				//Wenn ein oeffnendes Tag da war aber dann doch den Fehler werfen wenn der schliessende Tag nicht da ist.
-				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
-					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-								
-				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-				String sPRE = (String) vecReturn.get(0);				
-				String sPOST = (String) vecReturn.get(2);
-				
-				//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
-				int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
-				iCountOPENING_TOTAL = iCountOPENING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
-				
-				int iCountCLOSING_TOTAL = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
-				iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
-				
-				if(iCountOPENING_TOTAL != iCountCLOSING_TOTAL){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				//Zähle die Tags fuer die Watchdog clauseln
-				int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
-				int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
-				int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
-				int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+//				}
+//				
+//				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
+//					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+			
+			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+			String sPRE = (String) vecReturn.get(0);				
+			String sPOST = (String) vecReturn.get(2);
+							
+			//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
+			int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
+			iCountOPENING_TOTAL = iCountOPENING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+			
+			int iCountCLOSING_TOTAL = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+			iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
+			
+			if(iCountOPENING_TOTAL != iCountCLOSING_TOTAL){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 
-				
-				//C) Watchdoc clausel fuer Beschraenkung der Anzahl auf max 1 Umgebungstag
-				//   Diese ist fuer AUSSEN nach INNEN nicht so problematisch																
-				//........
-				
-				
-				//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
-				//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
-				if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
+			//Zaehle die Tags fuer weitere Watchdog clauseln
+			int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+			int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
+			int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
+			int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
 
-												
-				//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
-				if(iCountOPENING_PRE > iCountCLOSING_POST) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
-				}
+			
+			
+			//C) Watchdog clausel fuer Beschraenkung der Anzahl auf maximal 1 umgebungstag.
+			//   !!! Dies ist nur problematisch fuer das Entfernen der Tags von innen nach aussen.
+			//   TODOGOON: Damit das funktioniert muessten beim Entfernen 2 Bedingungen abgeprueft werden.
+			//             1) Hinter dem oeffnenden Tag (,welches einem zu loeschenden Tagnamen entspricht)
+			//				  gibt es ein passendes schliessendes Tag.
+			//                Dann ignoriere den TagPart fuer die Loeschung.
+			//             2) Es gibt keine weiteren Tags hinter dem offnenden Tag (siehe 1) und dem passenden schliessenden Tag. 
+
+			
+			if(iCountOPENING_PRE >= 2) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_TOOMANY + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}						
+			if(iCountCLOSING_POST >= 2) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_TOOMANY + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}
+			
+
+			//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
+			//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
+			if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
+
+											
+			//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
+			if(iCountOPENING_PRE > iCountCLOSING_POST) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
+			
+			//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
+			if(iCountOPENING_PRE <= 0) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}
+			
+			
+			//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
+			//   Etwas genauer als das einfache zaehlen der Gesamttags.			
+			if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			
+			//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
+			if(iCountOPENING_PRE<(iCountCLOSING_PRE+1)) {					
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(iCountCLOSING_POST<(iCountOPENING_POST+1)) {					
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+		
+							
+			String sPREold = sPRE;				
+			String sPOSTold = sPOST;
+			
+			if(bRemoveAnyPosition) {
+				while(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {						
+					sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");						
+					sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
+											
+					if(sPREold.equals(sPRE) | sPOSTold.equals(sPOST)) break; //sonst ggfs. Endlosschleifengefahr.
+					sPREold=sPRE;
+					sPOSTold=sPOST;
+				}//end while
+			
+				//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
+
+			}else {
+				//Nur 1x entfernen
+				if(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {
+					sPRE = StringZZZ.replaceFromRight1(sPRE,sTagPartOpening, "");
+					sPOST = StringZZZ.replaceFromLeft1(sPOST, sTagPartClosing, "");
+				}	
 				
+				//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
 				
-				//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
-				if(iCountOPENING_PRE <= 0) {
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;					
-				}
-				
-				
-				//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
-				//   Etwas genauer als das einfache zaehlen der Gesamttags.			
-				if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
-					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				//Warum kam diese Clausel eigentlich rein??? Vielleicht Entfernen von Innen nach Aussen?
-				//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
+			}//end if bRemoveAnyPosition	
+	
+			vecReturn.replace(0,sPRE);
+			vecReturn.replace(2,sPOST);
+		}//end main
+	}	
+	
+	
+		
+	public static void getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bRemoveAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+		    //Verglichen mit ...FromIntoOut gilt also:
+			//Alle endsWith werden zu startWith und alle startWith werden zu endsWith.
+		    //und leftbacks werden zu right und alle rightbacks zu left.
+		
+			if(vecReturn==null)break main;
+			
+//			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
+//			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));				
+//			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartContainerOpening));
+//			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
+			
+			//Dogwatch-Klauseln
+		    //A) Der Container Tag muss in der Mitte stehen
+//				String sCONTAINER = (String) vecReturn.get(1);
+			
+//				//Hier keinen Fehler werfen, da ggfs. auch Strings ohne Tag drum verarbeitet werden.
+//				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
+////					ExceptionZZZ ez = new ExceptionZZZ("Expected an opening container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+////					throw ez;
+//					break main;
+//				}
+//				
+//				//Wenn ein oeffnendes Tag da war aber dann doch den Fehler werfen wenn der schliessende Tag nicht da ist.
+//				if(!StringZZZ.endsWith(sCONTAINER, sTagPartContainerClosing)){
+//					ExceptionZZZ ez = new ExceptionZZZ("Expected a closing container tagpart at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+							
+			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+			String sPRE = (String) vecReturn.get(0);				
+			String sPOST = (String) vecReturn.get(2);
+			
+			//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
+			int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
+			iCountOPENING_TOTAL = iCountOPENING_TOTAL + XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+			
+			int iCountCLOSING_TOTAL = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);
+			iCountCLOSING_TOTAL = iCountCLOSING_TOTAL + XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);
+			
+			if(iCountOPENING_TOTAL != iCountCLOSING_TOTAL){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_UNEQUAL_TOTAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Zähle die Tags fuer die Watchdog clauseln
+			int iCountOPENING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);								
+			int iCountCLOSING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartClosing, false);				
+			int iCountCLOSING_PRE = XmlUtilZZZ.countTagPart(sPRE, sTagPartClosing, false);				
+			int iCountOPENING_POST = XmlUtilZZZ.countTagPart(sPOST, sTagPartOpening, false);
+
+			
+			//C) Watchdoc clausel fuer Beschraenkung der Anzahl auf max 1 Umgebungstag
+			//   Diese ist fuer AUSSEN nach INNEN nicht so problematisch																
+			//........
+			
+			
+			//D) Watchdoc clausel fuer Beschraenkung der Anzahl auf min 1 Umgebungstag				
+			//Keine Exception werfen. Wenn gar kein Umgebungstag da ist, einfach vorzeitig beenden.
+			if(iCountOPENING_PRE==0 && iCountCLOSING_PRE==0 && iCountOPENING_POST==0 && iCountCLOSING_POST==0 ) break main;
+
+											
+			//Ea) Watchdog clausel dafuer, dass fuer jedes in POST geschlossenem Tag ein geoeffnetes Tag in PRE gibt.
+			if(iCountOPENING_PRE > iCountCLOSING_POST) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_MISSING + ": '" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
+			
+			//Eb) Watchdog clausel dafuer, dass fuer jedes in PRE geschlossenem Tag ein geoeffnetes Tag in POST gibt.												
+			if(iCountOPENING_PRE <= 0) {
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_MISSING + ": '" + sTagPartOpening + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}
+			
+			
+			//Ec) Watchdog clausel dafuer, das es fuer jedes in PRE nicht geschlossene Tag ein schliessendes Tag in sPOST gibt. 
+			//   Etwas genauer als das einfache zaehlen der Gesamttags.			
+			if(iCountOPENING_PRE-iCountCLOSING_PRE != iCountCLOSING_POST-iCountOPENING_POST){
+				ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_UNEQUAL + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Warum kam diese Clausel eigentlich rein??? Vielleicht Entfernen von Innen nach Aussen?
+			//F) Watchdog clausel dafuer, das es mindestens 1 ueberzaehliges Tag gibt vor und nach dem Container, der entfernt werden darf.
 //				if(iCountOPENING_PRE<=iCountCLOSING_PRE+1) {					
 //					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_OPENING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //					throw ez;
@@ -1567,80 +1571,74 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 //					ExceptionZZZ ez = new ExceptionZZZ(XmlUtilZZZ.sERROR_TAGPARTS_SURROUNDING_CONTAINER_CLOSING_SURPLUS_MISSING + ": '" + sTagPartOpening +"'/'" + sTagPartClosing + "'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //					throw ez;
 //				}
+		
 			
-				
-				
-				
-				String sPREold = sPRE;				
-				String sPOSTold = sPOST;
-				
-				if(bRemoveAnyPosition) {
-					while(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {						
-						sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");						
-						sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
-												
-						if(sPREold.equals(sPRE) | sPOSTold.equals(sPOST)) break; //sonst ggfs. Endlosschleifengefahr.
-						sPREold=sPRE;
-						sPOSTold=sPOST;
-					}//end while
-				
-					//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
+			
+			
+			String sPREold = sPRE;				
+			String sPOSTold = sPOST;
+			
+			if(bRemoveAnyPosition) {
+				while(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {						
+					sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");						
+					sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
+											
+					if(sPREold.equals(sPRE) | sPOSTold.equals(sPOST)) break; //sonst ggfs. Endlosschleifengefahr.
+					sPREold=sPRE;
+					sPOSTold=sPOST;
+				}//end while
+			
+				//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
 
-				}else {
-					//Nur 1x entfernen
-					if(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {
-						sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");
-						sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
-					}	
-					
-					//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
-					
-				}//end if bRemoveAnyPosition	
-		
-				vecReturn.replace(0,sPRE);
-				vecReturn.replace(2,sPOST);
-			}//end main
-		}	
-		
-		
-		//################
-		//Merke: Default ist ...FromInToOut... , ... bAnyPosition ...
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
-			}//end main
-		}
-		
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
+			}else {
+				//Nur 1x entfernen
+				if(StringZZZ.contains(sPRE, sTagPartOpening, false) & StringZZZ.contains(sPOST, sTagPartClosing, false)) {
+					sPRE = StringZZZ.replaceFromLeft1(sPRE,sTagPartOpening, "");
+					sPOST = StringZZZ.replaceFromRight1(sPOST, sTagPartClosing, "");
+				}	
+				
+				//Merke: Wg. Container, wird nix aus dem mittleren Teil entfernt.
+				
+			}//end if bRemoveAnyPosition	
+	
+			vecReturn.replace(0,sPRE);
+			vecReturn.replace(2,sPOST);
+		}//end main
+	}	
+	
+	
+	//################
+	//Merke: Default ist ...FromInToOut... , ... bAnyPosition ...
+	public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
+		}//end main
+	}
+	
+	public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
+		}//end main
+	}
+	
+	public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+			if(bDirectionFromInToOut) {
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-			}//end main
-		}
+			}else {
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
+			}
+		}//end main
+	}	
+	
+	
+	public static void getExpressionTagpartsContainerSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
+		main:{
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
+		}//end main
+	}
 		
-		public static void getExpressionTagpartsContainerSurroundingRemoved(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-				if(bDirectionFromInToOut) {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-				}else {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromOutToIn(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-				}
-			}//end main
-		}	
-		
-		
-		public static void getExpressionTagpartsContainerSurroundingRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, true, sTagPartContainerOpening, sTagPartContainerClosing);
-			}//end main
-		}
-		
-		public static void getExpressionTagpartsSurroundingContainerRemovedFromIntoOut(Vector3ZZZ<String>vecReturn, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, String sTagPartContainerOpening, String sTagPartContainerClosing) throws ExceptionZZZ {		
-			main:{
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemovedFromInToOut(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, sTagPartContainerOpening, sTagPartContainerClosing);
-			}//end main
-		}
-
-
+	
 	//######################################################
 	//### SURROUNDING
 	//######################################################

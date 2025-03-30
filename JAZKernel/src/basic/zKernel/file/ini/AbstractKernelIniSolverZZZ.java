@@ -420,7 +420,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
 	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
-	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
 		
 	@Override
 	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
@@ -503,7 +503,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Rufe nun parseFirstVector() auf... (und nicht das gesamte Parse!!!
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
-			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bRemoveSurroundingSeparators);
+			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null)break main;			
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
@@ -512,8 +512,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.setValue(sReturnTag);
 			
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
-//			//Nur so werden die Z-Tags auch entfernt, auch wenn der Solver selbst deaktiviert ist.
-			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse, bRemoveSurroundingSeparators);			
+			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse);			
 			sReturnTag = this.getValue();
 			if(vecReturn==null) break main;
 		
@@ -542,9 +541,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			}//end solveThis:
 		
+			//... das post vorbereiten
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferencePost= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReferencePost.set(objEntry);
+		
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
-			vecReturn = this.solvePost(vecReturn, bRemoveSurroundingSeparators);
+			vecReturn = this.solvePost(vecReturn, objReturnReferencePost, bRemoveSurroundingSeparators);
 			
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
 			sReturnTag = this.getValue();
@@ -656,7 +659,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
 	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
-	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
 	
 	
 	@Override
@@ -739,6 +742,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
+			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
 		}//end main:
 	

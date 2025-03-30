@@ -182,10 +182,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
 			//+++ Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
-			//a)
+			//c)
 			sExpression = sPre + sExpressionIn + sPost;
 			sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 			sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+			//Beim Solven ohne Solver, bleibt alles wie est ist.
 			
 			//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 			sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -195,9 +196,9 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
 			
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
-			}else {
-				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			} else {
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			}
 
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -537,7 +538,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objExpressionSolver.getValue();
@@ -577,7 +578,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				objEntry = objExpressionSolver.parseAsEntry(sExpression);				
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
@@ -1085,7 +1086,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//Merke: Da der Call-Solver nicht verwendet wird, sind seine Tags drumherum...
 			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>";
-			assertEquals("Mit Aufloesung ist das der zu errechnende Wert, ohne Tags drumherum (ausser dem hier nicht verwendeten Call-Tag).",sExpressionSolved, sValue);
+			assertEquals(sExpressionSolved, sValue);
 	
 			//Merke: Da der Call-Solver nicht verwendet wird, kann hier nur false sein...
 			bValue = objEntry.isCall(); //wird beim Parsen gesetzt
