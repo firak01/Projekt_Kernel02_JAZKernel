@@ -104,8 +104,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//######### Interfaces #############################################
 	
-	
-	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//### aus IParseEnabledZZZ
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {

@@ -139,6 +139,13 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return false;
 	}
 	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sLineWithExpression

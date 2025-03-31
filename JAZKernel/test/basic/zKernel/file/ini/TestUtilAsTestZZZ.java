@@ -555,10 +555,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isExpression());
 										
 					assertTrue(objEntry.isParsed()); 							
-					assertFalse(objEntry.isSolved()); //Generell wurde KEIN Solver ausgefuehrt
+					assertTrue(objEntry.isSolved()); //Generell wurde ein Solver ausgefuehrt
 					
-					assertFalse(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
-					assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+					assertFalse(objEntry.isCallSolved());//Der konkrete CALL-Solver ist nicht involviert
+					assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.

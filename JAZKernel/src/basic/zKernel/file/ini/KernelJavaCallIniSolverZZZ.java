@@ -105,7 +105,65 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
 	}
+	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
+		if(this.isParserEnabledThis()) {
+		
+			//Den "ElternPaser", siehe dazu auch TicketGOON20250308
+			/* Zum suchen der Gegenstelle TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
+            //dass objEntry.isCall(true) hier gesetzt ist.
+            //Dies hier einfach zu machen ist aber nicht generisch.
+            //Statt dessen muesste man:
+				//so etwas mit "ElternTags" erledigen
+               //getParentTag()
+               //getParentTags()
+               //UND
+               //Pro Tag müsste definiert werden, wie denn die Methode in objEntry heisst.
+               //Will man das nicht per Reflection API machen, geht das nur über eine Methode
+               //definiert in einem Interface:
+               //ITagContainedZZ
+				//    .getNameParent()
+               //
+				//Demnach in IIniTagContainedZZZ
+               //also eigentlich auch analog zu:   this.adoptEntryValuesMissing(objEntry);
+               //this.setEntryValue(true);
+               //            und darin steht dann XmlUtilZZZ.containsTagName(...
+               //
+				//und bezogen auf das ParentTag:
+	            //     .updateEntyValueByParent(objEntry, objParentDummy);
+				
+				//das wuerde bedeuten dass es eine Methode geben muesste
+               //in ITagContainedZZZ
+               //      .getTagParentDummy()
+               //
+               //Dann könnte man dieses Dummy Objekt dazu verwenden das objEntry-Objekt zu fuellen
+               //
+               //     objParentDummy.setEntryValue(true);
+				//
+				//
+//TODOGOON20250308; //TICKETGOON20250308;: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
+*/		
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)){
+					objEntry.isCall(true);
+					this.getEntry().isCall(true);
+				}
+			}
+			
+				
+			//Den eigenen Parser							
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)) {
+				objEntry.isJavaCall(true);
+				this.getEntry().isJavaCall(true);
+			}
+		}
+	}
+	
 	//### aus ISolveEnablezZZZ
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
@@ -361,140 +419,109 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparators);
-	}
-		
-	//### Aus IKernelEntryExpressionUserZZZ	
-	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{		
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
-	}
-	
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sExpressionIn;
-		String sReturnTag = null; String sReturnLine=null;
-		boolean bUseExpression=false; 
-		
-		IKernelConfigSectionEntryZZZ objEntry = null;
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
-		if(objReturnReferenceIn==null) {
-			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();															
-		}else {
-			objReturnReference = objReturnReferenceIn;
-			objEntry = objReturnReference.get();
-		}
-		
-		if(objEntry==null) {
-			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
-			objReturnReference.set(objEntry);
-		}	
-		
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
-		sReturnLine=sExpressionIn;
-		sReturnTag = this.getValue();
-		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
-		
-		main:{			
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-			
-			bUseExpression = this.isExpressionEnabledGeneral();
-			if(!bUseExpression) break main;
-		
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-				
-				objEntry.isCall(true);
-				objEntry.isJavaCall(true);
-				/* Zum suchen der Gegenstelle TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
-			                 //dass objEntry.isCall(true) hier gesetzt ist.
-			                 //Dies hier einfach zu machen ist aber nicht generisch.
-			                 //Statt dessen muesste man:
-								//so etwas mit "ElternTags" erledigen
-			                    //getParentTag()
-			                    //getParentTags()
-			                    //UND
-			                    //Pro Tag müsste definiert werden, wie denn die Methode in objEntry heisst.
-			                    //Will man das nicht per Reflection API machen, geht das nur über eine Methode
-			                    //definiert in einem Interface:
-			                    //ITagContainedZZ
-								//    .getNameParent()
-			                    //
-								//Demnach in IIniTagContainedZZZ
-			                    //also eigentlich auch analog zu:   this.adoptEntryValuesMissing(objEntry);
-			                    //this.setEntryValue(true);
-			                    //            und darin steht dann XmlUtilZZZ.containsTagName(...
-			                    //
-								//und bezogen auf das ParentTag:
-					            //     .updateEntyValueByParent(objEntry, objParentDummy);
-								
-								//das wuerde bedeuten dass es eine Methode geben muesste
-			                    //in ITagContainedZZZ
-			                    //      .getTagParentDummy()
-			                    //
-			                    //Dann könnte man dieses Dummy Objekt dazu verwenden das objEntry-Objekt zu fuellen
-			                    //
-			                    //     objParentDummy.setEntryValue(true);
-								//
-								//
-				 //TODOGOON20250308; //TICKETGOON20250308;: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
-				 */				
-			}
-							
-			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
-			//Z:call drumherum entfernen
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparators);
-			objEntry = objReturnReferenceParse.get();
-			if(vecReturn==null) break main;
-			
-			sReturnTag = (String) vecReturn.get(1);		
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			
-			this.updateValueParsed();
-			this.updateValueParsed(objReturnReference);
-		}//end main:
-		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		vecReturn.replace(sReturnTag);
-		this.setValue(sReturnTag);	
-		sReturn = sReturnLine;			
-		
-		if(objEntry!=null) {
-			objEntry.setValue(sReturnLine);
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression) {	
-				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturnLine);
-				if(sExpressionIn!=null) {														
-					if(!sExpressionIn.equals(sReturnLine)) {											
-						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objReturnReference);
-					}
-				}							
-				this.adoptEntryValuesMissing(objEntry);
-			}
-		}				
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
+//		return this.parseFirstVector_(sLineWithExpression, null, true);
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+//		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparators);
+//	}
+//		
+//	//### Aus IKernelEntryExpressionUserZZZ	
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ{		
+//		return this.parseFirstVector_(sExpression, objReturnReferenceIn, true);
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
+//		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+//	}
+//	
+//	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
+//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+//		String sReturn = sExpressionIn;
+//		String sReturnTag = null; String sReturnLine=null;
+//		boolean bUseExpression=false; 
+//		
+//		IKernelConfigSectionEntryZZZ objEntry = null;
+//		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
+//		if(objReturnReferenceIn==null) {
+//			objReturnReference =  new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();															
+//		}else {
+//			objReturnReference = objReturnReferenceIn;
+//			objEntry = objReturnReference.get();
+//		}
+//		
+//		if(objEntry==null) {
+//			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+//			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+//			objReturnReference.set(objEntry);
+//		}	
+//		
+//		this.setRaw(sExpressionIn);
+//		objEntry.setRaw(sExpressionIn);	
+//
+//		this.updateValueParseCalled();
+//		this.updateValueParseCalled(objReturnReference);
+//		sReturnLine=sExpressionIn;
+//		sReturnTag = this.getValue();
+//		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+//		
+//		main:{			
+//			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+//			
+//			bUseExpression = this.isExpressionEnabledGeneral();
+//			if(!bUseExpression) break main;
+//		
+//			this.updateValueParseCustom(objReturnReference, sExpressionIn);
+//			
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+//				
+//				
+//						
+//			}
+//							
+//			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+//			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
+//			//Z:call drumherum entfernen
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//			objReturnReferenceParse.set(objEntry);
+//			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparators);
+//			objEntry = objReturnReferenceParse.get();
+//			if(vecReturn==null) break main;
+//			
+//			sReturnTag = (String) vecReturn.get(1);		
+//			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+//			
+//			this.updateValueParsed();
+//			this.updateValueParsed(objReturnReference);
+//		}//end main:
+//		
+//		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
+//		vecReturn.replace(sReturnTag);
+//		this.setValue(sReturnTag);	
+//		sReturn = sReturnLine;			
+//		
+//		if(objEntry!=null) {
+//			objEntry.setValue(sReturnLine);
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+//			if(bUseExpression) {	
+//				if(objEntry.isEncrypted()) objEntry.setValueEncrypted(sReturnLine);
+//				if(sExpressionIn!=null) {														
+//					if(!sExpressionIn.equals(sReturnLine)) {											
+//						this.updateValueParsedChanged();
+//						this.updateValueParsedChanged(objReturnReference);
+//					}
+//				}							
+//				this.adoptEntryValuesMissing(objEntry);
+//			}
+//		}				
+//		return vecReturn;
+//	}
 	
 	@Override
 	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{

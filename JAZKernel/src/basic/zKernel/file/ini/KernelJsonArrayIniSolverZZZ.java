@@ -189,6 +189,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
+	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
 
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	

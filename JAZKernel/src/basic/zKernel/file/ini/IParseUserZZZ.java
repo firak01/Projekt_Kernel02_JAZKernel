@@ -12,6 +12,8 @@ public interface IParseUserZZZ extends IKernelParseEnabledZZZ{
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ;
 	
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpression) throws ExceptionZZZ;
+	
 	public void updateValueParsed() throws ExceptionZZZ;
 	public void updateValueParsed(boolean bIsSolveCalled) throws ExceptionZZZ;
 	public void updateValueParsed(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;

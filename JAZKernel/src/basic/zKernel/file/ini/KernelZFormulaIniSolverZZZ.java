@@ -356,6 +356,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//### Aus IParseEnabledZZZ	
 	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//### aus IConvertableZZZ
 		@Override
 		public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
@@ -575,4 +582,6 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+	
 }//End class

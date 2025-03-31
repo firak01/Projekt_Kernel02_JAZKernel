@@ -140,7 +140,13 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
 	}
 	
+	//### Aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
 		
+	}
+
 	//### Aus IKernelEntryExpressionUserZZZ
 			
 	//##############################################################

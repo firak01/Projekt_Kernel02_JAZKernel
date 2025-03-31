@@ -118,6 +118,39 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 
 		//### aus IParseUserZZZ
 		@Override
+		public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+			super.updateValueParseCustom(objReturnReference, sExpressionIn);
+			
+			if(this.isParserEnabledThis()) {
+				IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+				
+				//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+					objEntry.isJavaCall(true);
+				}
+				
+							
+				if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+					objEntry.isCall(true);
+				}
+			}
+		}
+
+
+		@Override
+		public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+			super.updateValueSolved(objEntry, bIsSolveCalled);
+					
+			//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+			//... den es hier nicht gibt. Anders als beim JAVACALL-SOLVER
+			
+			//Den eigenen Solver
+			if(this.isSolverEnabledThis()) {
+				objEntry.isCallSolved(bIsSolveCalled);
+			}
+		}
+		
+		@Override
 		public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
 			super.updateValueSolveCalled(objEntry, bIsSolveCalled);
 					
@@ -126,18 +159,6 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			//Den eigenen Solver
 			objEntry.isCallSolveCalled(bIsSolveCalled);
-		}
-		
-		@Override
-		public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-			super.updateValueSolved(objEntry, bIsSolveCalled);
-					
-			//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-			//... gibt es hier nicht
-			
-			
-			//Den eigenen Solver
-			objEntry.isCallSolved(bIsSolveCalled);
 		}
 		
 		@Override
@@ -208,15 +229,17 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-							
-			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJavaCall(true);
-			}
+				
+			this.updateValueParseCustom(objReturnReference, sExpression);
 			
-			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
-				objEntry.isCall(true);
-			}
+//			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+//				objEntry.isJavaCall(true);
+//			}
+//			
+//			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
+//				objEntry.isCall(true);
+//			}
 			
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.

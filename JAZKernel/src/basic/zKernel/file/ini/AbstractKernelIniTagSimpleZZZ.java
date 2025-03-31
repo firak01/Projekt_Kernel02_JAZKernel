@@ -469,11 +469,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-
+			String sExpression = sExpressionIn;
 			
 			//Es soll immer ein Entry Objekt zurückkommen, darum hier erst auf das Expression-Flag abpruefen.
-			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
+			
+			this.updateValueParseCustom(objReturnReference, sExpression);
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParse = this.isParserEnabledThis();
@@ -486,7 +488,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
 			objReturnReferenceParse.set(objEntry);
-			String sExpression = sExpressionIn;
 			sReturn = this.parse(sExpression, objReturnReferenceParse, bKeepSurroundingSeparators);
 			objEntry = objReturnReferenceParse.get();
 			objReturn = objEntry;
@@ -564,11 +565,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			if(XmlUtilZZZ.isExpression(sExpression)) {
-				objEntry.isExpression(true);				
-			}
-						
+			this.updateValueParseCustom(objReturnReference, sExpression);
+									
 			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
@@ -692,10 +690,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;		
 			
-			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.					
-			if(XmlUtilZZZ.isExpression(sExpression)){
-				objEntry.isExpression(true);
-			}	
+			this.updateValueParseCustom(objReturnReference, sExpression);
 						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
 			bUseParse = this.isParserEnabledThis();
@@ -1147,6 +1142,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.isExpression(sExpression);
 	}
 
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ{
+		//super.updateValueParseCustom(objReturnReference, sExpressionIn);
+		
+		//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+		//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		if(XmlUtilZZZ.isExpression(sExpressionIn)){
+			objEntry.isExpression(true);
+			this.getEntry().isExpression(true);
+		}
+	}
+		
 	@Override
 	public void updateValueParseCalled() throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();

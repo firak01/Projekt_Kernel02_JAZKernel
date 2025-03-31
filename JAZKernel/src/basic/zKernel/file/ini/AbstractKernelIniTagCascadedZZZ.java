@@ -159,12 +159,8 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.			
-			if(XmlUtilZZZ.isExpression(sExpression)){
-				objEntry.isExpression(true);
-			}	
-														
+			this.updateValueParseCustom(objReturnReference, sExpression);
+			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			//Merke: Darum vorher vecReturn schon initialisieren.
 			bUseParse = this.isParserEnabledThis();
@@ -220,6 +216,20 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			this.adoptEntryValuesMissing(objEntry);						
 		}
 		return vecReturn;
+	}
+	
+	//### aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		//super.updateValueParseCustom(objReturnReference, sExpressionIn);
+				
+		//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+		//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		if(XmlUtilZZZ.isExpression(sExpressionIn)){
+			objEntry.isExpression(true);
+			this.getEntry().isExpression(true);
+		}	
 	}
 	
 	//### aus IExpressionUserZZZ	
