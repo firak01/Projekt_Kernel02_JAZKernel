@@ -712,7 +712,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(!bUseSolver) break main;
 										
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-			//Nein, denn der generelle Solver wird ja ausgefuerht if(!bUseSolverThis) break main;
+			//Nein, denn der generelle Solver wird ja ausgefuehrt if(!bUseSolverThis) break main;
 			
 			
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
@@ -722,7 +722,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				if(sTagStart.equalsIgnoreCase("<Z>")) {
 					//dann mache nix... der Tag wird spaeter behandelt...
 				}else {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
 				}
 			}	
 			
@@ -730,7 +730,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(bRemoveSurroundingSeparators & bUseExpression) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false); //also von aussen nach innen!!!				
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
 			}
 			
 			

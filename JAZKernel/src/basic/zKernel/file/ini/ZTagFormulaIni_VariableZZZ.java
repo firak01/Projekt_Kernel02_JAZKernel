@@ -131,7 +131,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			if(!bKeepSurroundingSeparators) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);//also an jeder Position (d.h. nicht nur am Anfang), von innen nach aussen.
 			}
 			
 			this.setValue((String) vecReturn.get(1));

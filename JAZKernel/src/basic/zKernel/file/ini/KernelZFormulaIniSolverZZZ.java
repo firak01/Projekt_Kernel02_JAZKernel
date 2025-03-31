@@ -322,7 +322,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				}else {
 					//Also: FORMULA-Tag soll aufgeloest werden, FORMULA-MATH aber nicht. 
 					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.					
-					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);
+					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);//also an jeder Position (d.h. nicht nur am Anfang), von innen nach aussen.
 					objEntry.isSolved(true);
 				}//end if bUseFormulaMath					
 			}//end if bUseFormula			

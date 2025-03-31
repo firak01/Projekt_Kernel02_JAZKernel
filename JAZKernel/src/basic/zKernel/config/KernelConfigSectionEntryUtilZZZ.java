@@ -1701,7 +1701,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true);  //also an jeder Stelle (d.h. nicht mehr am Anfang), also von innen nach aussen!!!
 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
@@ -1719,7 +1719,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, true);
+			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, true);  //also ggfs. an jeder Stelle (d.h. nicht mehr am Anfang), also von innen nach aussen!!!
 
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");

@@ -840,11 +840,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 //				String sTagStartZ = "<Z>";
 //				String sTagEndZ = "</Z>";					
 //				if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
-//				}
-				this.setValue(sReturnTag);
+				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Postition (d.h. nicht nur am Anfang), also von aussen nach innen!!!
+//				}				
 			}
-				
+			this.setValue(sReturnTag);	
+			
 			//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparators);				
 			sReturnTag = this.getValue();			
@@ -1033,7 +1033,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 //				String sTagStartZ = "<Z>";
 //				String sTagEndZ = "</Z>";					
 //				if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
 				this.setValue(sReturnTag);		
 //				}					
 			}

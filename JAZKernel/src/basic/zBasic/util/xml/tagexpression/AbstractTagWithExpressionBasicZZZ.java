@@ -370,7 +370,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 //				String sTagStartZ = "<Z>";
 //				String sTagEndZ = "</Z>";				
 //				if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also von aussen nach innen!!!
+				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Stelle (d.h. nicht mehr am Anfang), also von aussen nach innen!!!
 //				}	
 								
 				this.setValue(sReturnTag);	
