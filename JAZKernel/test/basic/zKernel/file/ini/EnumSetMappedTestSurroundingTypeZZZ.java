@@ -9,10 +9,10 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 public enum EnumSetMappedTestSurroundingTypeZZZ implements IEnumSetMappedTestSurroundingZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
-	PARSE_KEEP_SURROUNDING("parse_keep_surrounding", "pks", true,"Variante: 'Keep Surrounding on Parse', default"),
-	PARSE_REMOVE_SURROUNDING("parse_remove_surrounding","prs", false,"Variante: 'Remove Surrounding on Parse', nicht default"),
-	SOLVE_KEEP_SURROUNDING("solve_keep_surrounding","sks", false, "Variante: 'Keep Surrounding on Solve', nicht default"),
-	SOLVE_REMOVE_SURROUNDING("solve_remove_surrounding", "srs", true, "Variante: 'Keep Surrounding on Solve', nicht default"),
+	PARSE_KEEP("parse_keep", "pk", true,"Variante: 'Keep Surrounding on Parse', default"),
+	PARSE_REMOVE("parse_remove","pr", false,"Variante: 'Remove Surrounding on Parse', nicht default"),
+	SOLVE_KEEP("solve_keep","sk", false, "Variante: 'Keep Surrounding on Solve', nicht default"),
+	SOLVE_REMOVE("solve_remove", "sr", true, "Variante: 'Keep Surrounding on Solve', nicht default"),
 	;
 	
 

@@ -1673,6 +1673,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, true);
 	}
 	
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagPartOpening, sTagPartClosing, true, bDirectionFromInToOut);
+	}
+	
 	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
 		if(bDirectionFromInToOut) {
 			return getExpressionTagpartsSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, bAnyPosition);
@@ -1681,17 +1685,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		}
 		
 	}
-	
-	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagPartOpening, String sTagPartClosing, boolean bDirectionFromInToOut) throws ExceptionZZZ {
-		if(bDirectionFromInToOut) {
-			return getExpressionTagpartsSurroundingRemovedFromInToOut(sExpression, sTagPartOpening, sTagPartClosing, true);
-		}else {
-			return getExpressionTagpartsSurroundingRemovedFromOutToIn(sExpression, sTagPartOpening, sTagPartClosing, true);
-		}
 		
-	}
-	
-	
 	public static String getExpressionTagpartsSurroundingRemovedFromInToOut(String sExpression, String sTagPartOpening, String sTagPartClosing) throws ExceptionZZZ {
 		String sReturn = sExpression;
 		main:{
