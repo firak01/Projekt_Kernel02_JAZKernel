@@ -400,8 +400,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}	
 	
 	@Override
-	public String parse(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parse_(sExpression, null, bKeepSurroundingSeparators);
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parse_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++
@@ -427,8 +427,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseAsEntry_(sExpression, null, bKeepSurroundingSeparators);
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	@Override
@@ -437,11 +437,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseAsEntry_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parseAsEntry_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;		
 		String sReturn = sExpressionIn;
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -488,7 +488,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Mit Reference geht ab: AbstractKernelIniTagSimpleZZZ
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>(); 			
 			objReturnReferenceParse.set(objEntry);
-			sReturn = this.parse(sExpression, objReturnReferenceParse, bKeepSurroundingSeparators);
+			sReturn = this.parse(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			objReturn = objEntry;
 		}//end main:
@@ -515,11 +515,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.parse_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public String parse(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parse_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -575,7 +575,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParse = this.isParserEnabledThis();
 			if(!bUseParse) break main;
 						
-			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparators);
+			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
@@ -584,7 +584,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setValue(sReturnTag);
 			
 			//Tags entfernen und eigenen Wert setzen
-			vecReturn = this.parsePost(vecReturn, objReturnReference, bKeepSurroundingSeparators);
+			vecReturn = this.parsePost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();//Der eigene Wert, ohne drumherum
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);			
 		}//end main:
@@ -612,7 +612,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
-	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{	
+	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{	
 	//+++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
@@ -621,9 +621,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparators);
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	@Override
@@ -632,13 +632,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparators, bRemoveOwnTagParts);
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
 	}
 	
 	//### Aus IKernelEntryReferenceExpressionUserZZZ	
@@ -648,11 +648,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -704,7 +704,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			//objReturnReferenceParserSuper.set(objEntry);
 			//vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParserSuper, bRemoveSurroundingSeparators);
-			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparators); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
+			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
 			//objEntry = objReturnReferenceParserSuper.get();
 			if(vecReturn==null) break main;	
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
@@ -713,7 +713,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setValue(sReturnTag);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			sReturnTag = this.substituteParsed(sReturnTag, objReturnReferenceSubstitute, bKeepSurroundingSeparators);
+			sReturnTag = this.substituteParsed(sReturnTag, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);
 			this.setValue(sReturnTag);
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
@@ -722,7 +722,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParserSuper.set(objEntry);
-			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparators);
+			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:		
@@ -753,16 +753,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bKeepSurroundingSeparators, true);
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
-		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bKeepSurroundingSeparators, bRemoveOwnTagParts);
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+		return this.parseFirstVectorPost_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+	private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sExpressionIn = null; 
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;				
@@ -803,7 +803,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParse = this.isParserEnabledThis();
 			if(!bUseParse) break main;
 						
-			if(!bKeepSurroundingSeparators) {
+			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).
 				//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)
 				String sTagStartZ = "<Z>";
@@ -841,7 +841,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setValue(sReturnTag);	
 			
 			//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
-			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparators);				
+			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);				
 			sReturnTag = this.getValue();			
 			
 			this.updateValueParsed();
@@ -879,12 +879,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVectorPostCustom_(vecExpression, objReturnReference, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVectorPostCustom_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//Methode mit Reference Objekt
-	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn = null;		
@@ -950,16 +950,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, objReturnReference, bKeepSurroundingSeparators, true);
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parsePost_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, objReturnReference, bKeepSurroundingSeparators, bRemoveOwnTagParts);
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parsePost_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
 	}
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = vecExpressionIn; //Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;		
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -1004,7 +1004,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParse = this.isParserEnabledThis();
 			if(!bUseParse) break main;
 			
-			if(!bKeepSurroundingSeparators) {
+			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).
 				//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)
 				String sTagStartZ = "<Z>";
@@ -1034,7 +1034,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}
 			
 			//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
-			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparators);
+			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		
@@ -1069,12 +1069,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePostCustom_(vecExpression, objReturnReference, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parsePostCustom_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//Methode mit Reference Objekt
-	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sExpressionIn = null;		
@@ -1402,7 +1402,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.substitute_(sExpressionIn, objReturnReferenceIn, true);
 	}
 	
-	private String substitute_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	private String substitute_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		String sReturn=sExpressionIn;
 		String sReturnLine = null; String sReturnTag = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
@@ -1437,7 +1437,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Rufe nun parse() auf...				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry); 
-			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparators);
+			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
@@ -1451,7 +1451,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			
-			sReturnLine = this.substituteParsed(sReturnLine, objReturnReferenceSolve, bKeepSurroundingSeparators);
+			sReturnLine = this.substituteParsed(sReturnLine, objReturnReferenceSolve, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			objEntry = objReturnReferenceSolve.get();										
 		}//end main:
@@ -1504,11 +1504,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public String substituteParsedPost(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.substituteParsedPost_(sExpression, objReturnReference, bKeepSurroundingSeparators);
+	public String substituteParsedPost(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.substituteParsedPost_(sExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private String substituteParsedPost_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+	private String substituteParsedPost_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;		
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
@@ -1543,7 +1543,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//... hier koennte noch etwas passieren
 							
 			//ggfs. weitere Sachen aus dem Tag oder dem Return rausrechnen, falls gewuenscht				
-			sReturn = this.substituteParsedPostCustom(sReturn, objReturnReference, bKeepSurroundingSeparators);				
+			sReturn = this.substituteParsedPostCustom(sReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);				
 							
 		}//end main:
 							
@@ -1559,12 +1559,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public String substituteParsedPostCustom(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.substituteParsedPostCustom_(sExpression, objReturnReference, bKeepSurroundingSeparators);
+	public String substituteParsedPostCustom(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.substituteParsedPostCustom_(sExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//Methode mit Reference Objekt
-	private String substituteParsedPostCustom_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+	private String substituteParsedPostCustom_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null;		
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
@@ -1623,8 +1623,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	@Override
-	public String substituteParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators)	throws ExceptionZZZ {
-		return this.substituteParsed_(sExpressionIn, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public String substituteParsed(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse)	throws ExceptionZZZ {
+		return this.substituteParsed_(sExpressionIn, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 
 	@Override
@@ -1633,22 +1633,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	@Override
-	public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.substituteParsed_(vecExpression, null, bKeepSurroundingSeparators);
+	public String substituteParsed(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.substituteParsed_(vecExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	@Override
-	public String substituteParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.substituteParsed_(vecExpression, objReturnReference, bKeepSurroundingSeparators);
+	public String substituteParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.substituteParsed_(vecExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	@Override
-	public String substituteParsed(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.substituteParsed_(sExpression, null, bKeepSurroundingSeparators);
+	public String substituteParsed(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.substituteParsed_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 
 	/* Aufloesen der INI-Pfade und Variablen. */
-	private String substituteParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators)	throws ExceptionZZZ {
+	private String substituteParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse)	throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		boolean bUseExpression=false; boolean bUseParse=false; boolean bUseSubstitute = false;
 		
@@ -1781,7 +1781,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					
 			if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
 				sExpression = sReturnLine;
-				sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bKeepSurroundingSeparators);
+				sReturnLine = this.substituteParsedPost(sExpression, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 				sReturnTag = this.getValue();
 				objEntry = objReturnReference.get();			
 			}									
@@ -1809,14 +1809,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return sReturn;	
 	}
 	
-	private String substituteParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	private String substituteParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		String sReturn = "";
 		String sReturnSubstituted = null;
 		main:{
 			if(vecExpression==null) break main;
 			
 			String sExpression = (String) vecExpression.get(1);
-			sReturnSubstituted = this.substituteParsed(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+			sReturnSubstituted = this.substituteParsed(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 							
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
 			vecExpression.replace(sReturnSubstituted);			

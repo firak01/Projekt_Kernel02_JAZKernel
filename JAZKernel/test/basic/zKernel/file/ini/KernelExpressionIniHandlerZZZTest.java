@@ -298,7 +298,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}
 	}
 	
-	private boolean testCompute_PATH_unexpressed_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_unexpressed_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -355,7 +355,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_PATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -412,7 +412,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 
-	private boolean testCompute_PATH_PATH_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_PATH_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -456,7 +456,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 								
@@ -468,7 +468,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_PATH_VARIABLE_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_VARIABLE_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -515,7 +515,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				
@@ -528,7 +528,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 
 	
-	private boolean testCompute_PATH_SOLVER_unsolve_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_SOLVER_unsolve_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -572,7 +572,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				
@@ -584,7 +584,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 
-	private boolean testCompute_PATH_FORMULA_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_FORMULA_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -633,7 +633,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
-				sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 
 				}
@@ -648,7 +648,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 
 	
-	private boolean testCompute_PATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -687,7 +687,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 					//sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";			
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, bRemoveSuroundingSeparators); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
+					sValue = objExpressionHandler.parse(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				
@@ -695,7 +695,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 					//sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";			
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSuroundingSeparators); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
+					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
 					assertEquals(sExpressionSolved, sValue);
 				}
 				
@@ -895,7 +895,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 
 
-	private boolean testCompute_MATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_MATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -934,7 +934,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -942,7 +942,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -956,7 +956,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_MATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_MATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -1001,7 +1001,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1009,7 +1009,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1610,7 +1610,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}		
 	}
 	
-	private boolean testCompute_JsonMap_JsonUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonMap_JsonUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -1655,7 +1655,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1665,7 +1665,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1680,7 +1680,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 	
 	
-	private boolean testCompute_JsonMap_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonMap_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -1726,7 +1726,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1736,7 +1736,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1750,7 +1750,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_JsonMap_(String sExpressionSourceIn, String sExpressionSolvedIn, HashMap hmExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonMap_(String sExpressionSourceIn, String sExpressionSolvedIn, HashMap hmExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -1798,7 +1798,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					hmExpressionSolved = hmExpressionSolvedIn;		
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1809,7 +1809,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					hmExpressionSolved = hmExpressionSolvedIn;
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2023,7 +2023,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 	
 	
-	private boolean testCompute_CallJava_unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_CallJava_unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -2072,7 +2072,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2089,7 +2089,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2111,7 +2111,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 
 	
-	private boolean testCompute_CallJava_CallJava_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_CallJava_CallJava_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -2160,7 +2160,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2177,7 +2177,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2198,7 +2198,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_CallJava_Solver_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_CallJava_Solver_unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -2243,7 +2243,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2253,7 +2253,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2265,7 +2265,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_CallJava_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_CallJava_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -2314,7 +2314,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2332,7 +2332,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSource = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -2926,7 +2926,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 	}
 	
-	private boolean testCompute_Encrypted_(String sExpressionSourceIn, String sExpressionSolvedIn, ArrayList alExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encrypted_(String sExpressionSourceIn, String sExpressionSolvedIn, ArrayList alExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -2969,10 +2969,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					alExpressionSolved = alExpressionSolvedIn;		
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -2991,10 +2991,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					alExpressionSolved = alExpressionSolvedIn;
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -3015,7 +3015,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encrypted_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encrypted_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3058,10 +3058,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -3080,10 +3080,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -3105,7 +3105,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encrypted_EncryptionUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encrypted_EncryptionUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3147,10 +3147,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.parseAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -3168,10 +3168,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 					
-					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();	
 					
@@ -3637,7 +3637,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		*/
 	}
 	
-	private boolean testCompute_JsonArray_(String sExpressionSourceIn, String sExpressionSolvedIn, ArrayList alExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_(String sExpressionSourceIn, String sExpressionSolvedIn, ArrayList alExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3685,7 +3685,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					alExpressionSolved = alExpressionSolvedIn;		
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3696,7 +3696,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					alExpressionSolved = alExpressionSolvedIn;
 					sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3709,7 +3709,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_JsonArray_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3755,7 +3755,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3765,7 +3765,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3779,7 +3779,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_JsonArray_JsonUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_JsonUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -3824,7 +3824,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;					
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3834,7 +3834,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sExpressionSource = sExpressionSourceIn;							
 					sExpressionSolved = sExpressionSolvedIn;
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSuroundingSeparators);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

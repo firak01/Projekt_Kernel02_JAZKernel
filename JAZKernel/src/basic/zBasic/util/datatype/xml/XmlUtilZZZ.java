@@ -943,11 +943,11 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		main:{
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparators, false);			
+			vecReturn = StringZZZ.vecMidFirst(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, false);			
 		}
 		return vecReturn;
 	}

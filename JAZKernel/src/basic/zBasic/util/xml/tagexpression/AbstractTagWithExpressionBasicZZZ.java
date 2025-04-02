@@ -272,11 +272,11 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}	
 	
 	@Override
-	public String parse(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parse_(sExpression, bKeepSurroundingSeparators);
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
 	}	
 	
-	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		String sReturnLine = sExpressionIn;
 		String sReturnTag = "";
 		main:{			
@@ -291,14 +291,14 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			//Bei einfachen Tags den Ersten Vektor holen
 			String sExpression = sExpressionIn;
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparators);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse);
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			sReturnTag = (String) vecReturn.get(1);
 			this.setValue(sReturnTag);
 			
-			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparators);
+			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
 			
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
@@ -312,17 +312,17 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, bKeepSurroundingSeparators, true);
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators,
+	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse,
 			boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, bKeepSurroundingSeparators, bRemoveOwnTagParts);
+		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
 	}
 	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sReturn = null;
 		String sReturnTag = null;
@@ -350,7 +350,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 							
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens					
-			if(!bKeepSurroundingSeparators) {
+			if(!bKeepSurroundingSeparatorsOnParse) {
 				String sTagStartZ = "<Z>"; //this.getTagStarting();
 				String sTagEndZ = "</Z>";  //this.getTagClosing();
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
@@ -378,7 +378,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
-			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparators);
+			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = (String) vecReturn.get(1);
 			sReturn = sReturnTag;
 			this.setValue(sReturnTag);
@@ -397,12 +397,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parsePostCustom_(vecExpression, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parsePostCustom_(vecExpression, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//Methode mit Reference Objekt
-	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
+	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn; String sReturn;
 		String sExpressionIn = null; 
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -454,14 +454,14 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse);
 	}
 
 	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
-	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		String sExpression = null;
 		main:{
@@ -478,12 +478,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sExpression = sExpressionIn;
 			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparators, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse, false);
 			if(vecReturn==null)break main;			
 						
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
-			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparators);		
+			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse);		
 		}
 		return vecReturn;
 	}
@@ -495,12 +495,12 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		}
 		
 		@Override
-		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-			return this.parseFirstVectorPostCustom_(vecExpression, bKeepSurroundingSeparators);
+		public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+			return this.parseFirstVectorPostCustom_(vecExpression, bKeepSurroundingSeparatorsOnParse);
 		}
 		
 		//Methode ohne Refernce-Objekt
-		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+		private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
 			String sReturn = null;
 			String sReturnTag = null;
@@ -530,16 +530,16 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 		}
 
 		@Override
-		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-			return this.parseFirstVectorPost_(vecExpression, bKeepSurroundingSeparators, true);
+		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+			return this.parseFirstVectorPost_(vecExpression, bKeepSurroundingSeparatorsOnParse, true);
 		}
 		
 		@Override
-		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-			return this.parseFirstVectorPost_(vecExpression, bKeepSurroundingSeparators, bRemoveOwnTagParts);
+		public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+			return this.parseFirstVectorPost_(vecExpression, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
 		}
 		
-		private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparators, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		private Vector3ZZZ<String> parseFirstVectorPost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
 			Vector3ZZZ<String> vecReturn = vecExpressionIn;
 			String sReturn = null; String sReturnTag = null;
 			main:{
@@ -547,7 +547,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				sReturnTag = (String) vecReturn.get(1);		
 				this.setValue(sReturnTag);	
 				
-				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparators);
+				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
 				sReturnTag = (String) vecReturn.get(1);
 				this.setValue(sReturnTag);
 			}//end main

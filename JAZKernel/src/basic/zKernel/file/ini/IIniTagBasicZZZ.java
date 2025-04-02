@@ -14,9 +14,9 @@ public interface IIniTagBasicZZZ extends ITagBasicZZZ, IExpressionUserZZZ, IValu
 	
 //	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ;
 //	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression) throws ExceptionZZZ;
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
+//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ;
 //	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn) throws ExceptionZZZ;
-//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
+//	public IKernelConfigSectionEntryZZZ parseAsEntry(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ;
 	
 	public String[] parseAsArray(String sExpression) throws ExceptionZZZ;
 	public String[] parseAsArray(String sExpression, String sDelimiter) throws ExceptionZZZ;

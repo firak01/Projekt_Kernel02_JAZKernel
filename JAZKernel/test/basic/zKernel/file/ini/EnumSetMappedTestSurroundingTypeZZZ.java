@@ -4,33 +4,37 @@ import java.util.EnumSet;
 
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 
-public enum EnumSetMappedTestCaseSolverTypeZZZ implements IEnumSetMappedTestCaseZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+public enum EnumSetMappedTestSurroundingTypeZZZ implements IEnumSetMappedTestSurroundingZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
-	PARSE("parse",TestUtilAsTestZZZ.sCASE_PARSE,"Variante: 'Parse'"),
-	SOLVE("solve",TestUtilAsTestZZZ.sCASE_SOLVE,"Variante: 'Solve'"),
-	PARSE_AS_ENTRY("parse_as_entry",TestUtilAsTestZZZ.sCASE_PARSE_AS_ENTRY,"Variante: 'Parse as entry'"),
-	SOLVE_AS_ENTRY("solve_as_entry",TestUtilAsTestZZZ.sCASE_SOLVE_AS_ENTRY,"Variante: 'Solve as entry'");
+	PARSE_KEEP_SURROUNDING("parse_keep_surrounding", "pks", true,"Variante: 'Keep Surrounding on Parse', default"),
+	PARSE_REMOVE_SURROUNDING("parse_remove_surrounding","prs", false,"Variante: 'Remove Surrounding on Parse', nicht default"),
+	SOLVE_KEEP_SURROUNDING("solve_keep_surrounding","sks", false, "Variante: 'Keep Surrounding on Solve', nicht default"),
+	SOLVE_REMOVE_SURROUNDING("solve_remove_surrounding", "srs", true, "Variante: 'Keep Surrounding on Solve', nicht default"),
+	;
 	
 
 private String name, abbr;
 
-//aus IEnumSetMappedTestCaseZZZ:
-private String sTestCaseMessage;
+//aus IEnumSetMappedSurroudingZZZ:
+private String sSurroundingTestMessage;
+private boolean bSurroundingValueUsed;
 
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //          In der Util-Klasse habe ich aber einen Workaround gefunden.
-EnumSetMappedTestCaseSolverTypeZZZ(){	
+EnumSetMappedTestSurroundingTypeZZZ(){	
 }
 
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //EnumSetMappedStatusTestTypeZZZ(String fullName, String abbr) {
 //Analog zu einem Beispiel aus dem OBPN Projekt: STATUSLOCAL(int iStatusGroupId, String sAbbreviation, String sStatusMessage, String sDescription) {
-EnumSetMappedTestCaseSolverTypeZZZ(String fullName, String abbr, String sTestCaseMessage) {
+EnumSetMappedTestSurroundingTypeZZZ(String fullName, String abbr, boolean bSurroundingValueUsed, String sSurroundingTestMessage) {
     this.name = fullName;
     this.abbr = abbr;
-    this.sTestCaseMessage = sTestCaseMessage;
+    this.bSurroundingValueUsed = bSurroundingValueUsed;
+    this.sSurroundingTestMessage = sSurroundingTestMessage;
 }
 
 
@@ -51,8 +55,8 @@ public String getAbbreviation() {
 }
 
 // the valueOfMethod <--- Translating from DB
-public static EnumSetMappedTestCaseSolverTypeZZZ fromAbbreviation(String s) {
-    for (EnumSetMappedTestCaseSolverTypeZZZ state : values()) {
+public static EnumSetMappedTestSurroundingTypeZZZ fromAbbreviation(String s) {
+    for (EnumSetMappedTestSurroundingTypeZZZ state : values()) {
         if (s.equals(state.getAbbreviation()))
             return state;
     }
@@ -65,7 +69,7 @@ public String getDescription(){
 }
 
 public EnumSet<?>getEnumSetUsed(){
-	return EnumSetMappedTestCaseSolverTypeZZZ.getEnumSet();
+	return EnumSetMappedTestSurroundingTypeZZZ.getEnumSet();
 }
 
 /* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
@@ -78,13 +82,13 @@ public static <E> EnumSet getEnumSet() {
 	//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 	
 	//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-	Class<EnumSetMappedTestCaseSolverTypeZZZ> enumClass = EnumSetMappedTestCaseSolverTypeZZZ.class;
-	EnumSet<EnumSetMappedTestCaseSolverTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+	Class<EnumSetMappedTestSurroundingTypeZZZ> enumClass = EnumSetMappedTestSurroundingTypeZZZ.class;
+	EnumSet<EnumSetMappedTestSurroundingTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
 	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
 	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
-		set.add((EnumSetMappedTestCaseSolverTypeZZZ) obj);
+		set.add((EnumSetMappedTestSurroundingTypeZZZ) obj);
 	}
 	return set;
 	
@@ -115,16 +119,21 @@ public String getName() {
 }
 
 //##########################################################
-//aus IEnumSetMappedTestCaseZZZ
+//aus IEnumSetMappedTestSurroundingZZZ
 @Override
-public String getTestCaseMessage() {
-	return sTestCaseMessage;
+public String getSurroundingTestMessage() {
+	return this.sSurroundingTestMessage;
 }
 
 //@Override
 //public String setTestCaseMessage(String sTestCaseMessage) {
 //	this.sTestCaseMessage = sTestCaseMessage;
 //}
+
+@Override
+public boolean getSurroundingValueUsed() {
+	return this.bSurroundingValueUsed;
+}
 
 
 

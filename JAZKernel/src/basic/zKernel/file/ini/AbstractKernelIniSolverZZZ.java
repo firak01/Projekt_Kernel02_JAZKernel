@@ -348,23 +348,23 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 
 	@Override
-	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-		return this.solveParsed_(vecExpression, null, bRemoveSuroundingSeparators);
+	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparatorsOnSolve) throws ExceptionZZZ {
+		return this.solveParsed_(vecExpression, null, bRemoveSurroundingSeparatorsOnSolve);
 	}
 	
 	@Override
-	public String solveParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
-		return this.solveParsed_(vecExpression, objReturnReference, bRemoveSuroundingSeparators);
+	public String solveParsed(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparatorsOnSolve) throws ExceptionZZZ {
+		return this.solveParsed_(vecExpression, objReturnReference, bRemoveSurroundingSeparatorsOnSolve);
 	}
 
-	private String solveParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ {
+	private String solveParsed_(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparatorsOnSolve) throws ExceptionZZZ {
 		String sReturn = "";
 		String sReturnTag = null;
 		main:{
 			if(vecExpression==null) break main;
 			
 			String sExpression = (String) vecExpression.get(1);
-			sReturnTag = this.solveParsed(sExpression, objReturnReference, bRemoveSuroundingSeparators);
+			sReturnTag = this.solveParsed(sExpression, objReturnReference, bRemoveSurroundingSeparatorsOnSolve);
 			sReturn = sReturnTag;
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -420,7 +420,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
 	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
-	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ;
 		
 	@Override
 	public Vector3ZZZ<String> solvePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
@@ -659,7 +659,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
 	//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
 	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
-	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparators) throws ExceptionZZZ;
+	//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ;
 	
 	
 	@Override

@@ -129,11 +129,11 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	}	
 	
 	@Override
-	public String parse(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
-		return this.parse_(sExpression, bKeepSurroundingSeparators);
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{
+	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		String sReturn = sExpressionIn;
 		main:{			
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -147,7 +147,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 						
 			String sExpression = sExpressionIn;
 			
-			sReturn = super.parse(sExpression, bKeepSurroundingSeparators);
+			sReturn = super.parse(sExpression, bKeepSurroundingSeparatorsOnParse);
 		}//end main:
 		return sReturn;
 	}

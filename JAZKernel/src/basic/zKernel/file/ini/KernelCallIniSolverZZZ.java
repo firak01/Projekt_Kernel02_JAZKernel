@@ -127,11 +127,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
 					objEntry.isJavaCall(true);
+					this.getEntry().isJavaCall(true);
 				}
 				
 							
 				if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 					objEntry.isCall(true);
+					this.getEntry().isCall(true);
 				}
 			}
 		}
@@ -181,17 +183,17 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{		
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 		
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn; 
 		String sReturnTag = null; String sReturnLine = null;
@@ -246,7 +248,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparators);
+			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
@@ -283,7 +285,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceJavaCall.set(objEntry);
-				sReturnLineParsedCallInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bKeepSurroundingSeparators);
+				sReturnLineParsedCallInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bKeepSurroundingSeparatorsOnParse);
 				objEntry = objReturnReferenceJavaCall.get();
 				
 				//20250304: Beim Parsen ist dient das Parsen des inneren Tag dazu hier ggf. noch Entry-Werte z.B. isPath() oder so, zu setzten.

@@ -1305,7 +1305,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	//########################################################################
 
-	private boolean testCompute_FORMULA_MATH_5Solved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_FORMULA_MATH_5Solved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -1364,7 +1364,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
 				//+++ Teilberechnungen durchführen, aber es wird nur geparsed... kein solve. 
-				vecValue = objFormulaSolver.parseFirstVector(sExpression, bRemoveSuroundingSeparators);					
+				vecValue = objFormulaSolver.parseFirstVector(sExpression, bRemoveSurroundingSeparatorsOnSolve);					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertTrue(StringZZZ.contains(sValue,sTag,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.				
 
@@ -1378,7 +1378,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ Nun die Gesamtberechnung durchführen, aber es wird nur geparsed... nicht aufgeloest.
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 					
 				sValue = objFormulaSolver.getValue();
@@ -1399,7 +1399,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				//TODOGOON20240114;//Beim solven muss der Wert ohne umgebenden z:formula-Tag zugewiesen werden.
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objFormulaSolver.getValue(); //Der geparste Wert des Tags selbst enthaelt keine umgebenden Tags. Also wieder den Tag rausrechnen.
@@ -1420,7 +1420,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {			
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
 				assertNotNull(objEntry);
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
@@ -1433,7 +1433,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, bRemoveSuroundingSeparators);
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);
 				assertNotNull(objEntry);
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.

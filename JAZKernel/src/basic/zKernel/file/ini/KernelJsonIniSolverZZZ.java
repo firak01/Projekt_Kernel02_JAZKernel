@@ -188,17 +188,17 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 		
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{		
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ{		
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{		
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = sExpressionIn;
 		String sReturnTag = null; String sReturnLine = null;
@@ -248,7 +248,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparators);
+			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn!=null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.

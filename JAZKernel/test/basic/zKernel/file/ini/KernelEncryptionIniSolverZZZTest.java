@@ -283,7 +283,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	
 	
 	
-	private boolean testCompute_Encryption_Unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_Unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -325,7 +325,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -361,7 +361,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -391,7 +391,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
 				assertNotNull(objEntryUsed);
 							
 				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
@@ -421,7 +421,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntryUsed = objSectionEntryReference.get();
@@ -639,7 +639,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encryption_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -684,7 +684,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 
 				//Der Wert des Tags unterscheidet sich vom Wert der gesamt geparsten Zeile
@@ -726,7 +726,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -741,7 +741,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				
 				assertTrue(objEntry.isParseCalled());
-				if(bRemoveSuroundingSeparators) {
+				if(bRemoveSurroundingSeparatorsOnSolve) {
 					assertTrue(objEntry.isParsedChanged());
 				}else {
 					assertFalse(objEntry.isParsedChanged());						
@@ -764,14 +764,14 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
 				assertNotNull(objEntryUsed);
 												
 				sValue = objExpressionSolver.getValue();				
 				assertEquals(sExpressionSolved, sValue);
 
 				assertTrue(objEntryUsed.isParseCalled());
-				if(bRemoveSuroundingSeparators) {
+				if(bRemoveSurroundingSeparatorsOnSolve) {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}else {
 					assertFalse(objEntryUsed.isParsedChanged());						
@@ -795,7 +795,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);				
 				assertNotNull(objEntryUsed);
 				
 				//Der Wert des Tags unterscheidet sich vom Wert der gesamt geparsten Zeile
@@ -803,7 +803,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 				
 				assertTrue(objEntryUsed.isParseCalled());				
-				if(bRemoveSuroundingSeparators) {
+				if(bRemoveSurroundingSeparatorsOnSolve) {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}else {
 					assertFalse(objEntryUsed.isParsedChanged());						
@@ -835,7 +835,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	
 	
 	
-	private boolean testCompute_Encryption_EncryptionUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSuroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_EncryptionUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		try {
@@ -872,7 +872,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -880,7 +880,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				//spannend, nicht aufgeloest, aber geparsed!!!
 				//allerdings gibt es nur einen Unterschied, wenn die umgebenden Tags entfernt wurden!!!
-//				if(bRemoveSuroundingSeparators) {
+//				if(bRemoveSurroundingSeparatorsOnSolve) {
 //					assertTrue(objEntry.isParsed());  
 //				}else {
 //					assertFalse(objEntry.isParsed());
@@ -916,7 +916,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSuroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -950,7 +950,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sExpression = sExpressionSourceIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSuroundingSeparators);				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
 				assertNotNull(objEntryUsed);
 				sValueUsed = objEntryUsed.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);

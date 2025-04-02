@@ -5,4 +5,5 @@ public interface IEnumSetMappedTestCaseZZZ extends IEnumSetMappedZZZ{
 	
 	//weitere Erweiterungen, speziell für TESTCASE
 	public String getTestCaseMessage();
+	
 }

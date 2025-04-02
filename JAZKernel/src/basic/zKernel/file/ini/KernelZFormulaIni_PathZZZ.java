@@ -138,8 +138,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//### aus IKernelEntryExpressionUserZZZ
@@ -149,11 +149,11 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparators);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparators) throws ExceptionZZZ {
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null; String sReturnSubstituted = null; 
 		boolean bExpressionFound = false;
@@ -198,7 +198,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			if(!bExpressionFound)break main;
 			
 			//++++++++++++++++++++++++++++++++++++++
-			boolean bReturnSeparators = bKeepSurroundingSeparators;
+			boolean bReturnSeparators = bKeepSurroundingSeparatorsOnParse;
 			
 			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen
 			String sTagXPathStarting = this.getTagPartOpening();
@@ -258,7 +258,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags rausrechnen, falls gewuenscht. BESONDERHEIT: Hier nicht versuchen den einenen Path-Tag rauszurechnen [...]
-			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparators, false);
+			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse, false);
 			sReturnTag = this.getValue();			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		}//end main:		

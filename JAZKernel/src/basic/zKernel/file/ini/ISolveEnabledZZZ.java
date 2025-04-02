@@ -18,7 +18,7 @@ public interface ISolveEnabledZZZ{
 	public String solve(String sExpression) throws ExceptionZZZ;	//ruft parse() auf... und anschliessend solveParsed()....
 	public String solve(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
 
-	public String solveParsed(String sExpression, boolean bRemoveSuroundingSeparators) throws ExceptionZZZ;
+	public String solveParsed(String sExpression, boolean bRemoveSurroundingSeparatorsOnSolve) throws ExceptionZZZ;
 	public String solveParsed(String sExpression) throws ExceptionZZZ;
 	public String solveParsed(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ;
 	public String solveParsed(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;
