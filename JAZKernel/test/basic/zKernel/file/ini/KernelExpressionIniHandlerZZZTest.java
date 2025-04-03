@@ -7,6 +7,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
@@ -136,7 +137,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 		//B) Test mit Z-Tag drumherum. Erst jetzt ist es eine Expression und wird ersetzt
 		sExpression = "<Z>" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_UNEXPRESSED + "</Z>";
-		sExpressionSubstituted = "<Z>Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.</Z>";
+		sExpressionSubstituted = "<Z>" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED +"</Z>";
 		sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
 		testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved);
 		
@@ -186,8 +187,18 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++
-						
+			//F) PATH Berechnung
+			//a)parse
+			
+			//b) rechne umgebende Z-Tags raus
+			
+			//c) solve und behalte umgebenden Z-Tags						
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;
+			btemp = testCompute_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	//Z-Tags um PATH-Aufloesung immer rausrechnen!!!		
+				
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//##########################################################
@@ -203,14 +214,14 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
-			btemp = testCompute_PATH_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_PATH_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 	
 
 			//d) solve, unexpressed Fall
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;						
-			btemp = testCompute_PATH_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
+			btemp = testCompute_PATH_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++
@@ -251,12 +262,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//b) rechne umgebende Z-Tags raus
 			
-			//c) solve, unsolved Fall					
+			//Ec) solve, unsolved Fall					
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted;
-			btemp = testCompute_PATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-	
+			sExpressionSolved = sTagStartZ + sExpressionSubstituted + sTagEndZ;
+			btemp = testCompute_PATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
 
 			//d) solve, unsolved Fall - Rechne fuer das Ergebnis die umgebenden Z-Tags raus
 			//   Merke: Der deaktivierte Solver laesst die Z-Tags drin.
@@ -264,7 +275,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted;
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);						
-			btemp = testCompute_PATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
+			btemp = testCompute_PATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
 			
 			
 			
@@ -274,11 +285,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//b) rechne umgebende Z-Tags raus
 			
-			//c) solve						
+			//c) solve und behalte umgebenden Z-Tags						
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
-			btemp = testCompute_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	//Z-Tags um PATH-Aufloesung immer rausrechnen!!!		
+			sExpressionSolved = sTagStartZ + sExpressionSolved + sTagEndZ;
+			btemp = testCompute_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	//Z-Tags um PATH-Aufloesung immer rausrechnen!!!		
 						
 			
 			//d) Rechne fuer das Ergebnis die umgebenden Z-Tags raus
@@ -286,7 +298,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_PATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 		
 				
@@ -298,7 +310,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}
 	}
 	
-	private boolean testCompute_PATH_unexpressed_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_unexpressed_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -337,13 +349,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {											
-					sValue = objExpressionHandler.parse(sExpressionSource);
+					sValue = objExpressionHandler.parse(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {											
-					sValue = objExpressionHandler.parse(sExpressionSource);
+					sValue = objExpressionHandler.parse(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSolved, sValue);
 				}
 				
@@ -355,7 +367,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_PATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -394,14 +406,14 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {											
-					sValue = objExpressionHandler.parse(sExpressionSource);
+					sValue = objExpressionHandler.parse(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {											
-					sValue = objExpressionHandler.parse(sExpressionSource);
-					assertEquals(sExpressionSolved, sValue);
+					sValue = objExpressionHandler.solve(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
+					assertEquals(sExpressionSubstituted, sValue);
 				}
 				
 				bReturn = true;
@@ -648,7 +660,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 
 	
-	private boolean testCompute_PATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -687,7 +699,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 					//sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";			
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
+					sValue = objExpressionHandler.parse(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed()); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
 					assertEquals(sExpressionSubstituted, sValue);
 				}
 				
@@ -695,7 +707,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 
 					//sExpressionSolved = "Der dynamische Wert ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";			
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
+					sValue = objExpressionHandler.solve(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed()); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
 					assertEquals(sExpressionSolved, sValue);
 				}
 				

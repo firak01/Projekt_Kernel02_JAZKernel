@@ -198,7 +198,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		String sReturn = sExpressionIn; 
 		String sReturnTag = null; String sReturnLine = null;
 		String sReturnLineParsed = null; String sReturnLineParsedCallInner = null;
-		boolean bUseExpression=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
+		boolean bUseExpression=false; boolean bUseParserThis=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -243,6 +243,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //				objEntry.isCall(true);
 //			}
 			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			bUseParserThis = this.isParserEnabledThis();
+			if(!bUseParserThis) break main;
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.

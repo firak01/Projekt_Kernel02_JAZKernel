@@ -156,7 +156,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null; String sReturnSubstituted = null; 
-		boolean bExpressionFound = false;
+		boolean bExpressionFound = false; boolean bCascadedExpressionFound = false;
 		
 		//20240919: Dummy debug mit diesen statischen Werten
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>";			
@@ -205,8 +205,15 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
 			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
 		
-			vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
-	
+			String sTagValueTotal=null;
+			if(StringZZZ.isEmpty(sSepLeft)){
+				sTagValueTotal = (String) vecReturn.get(0);
+			}else {
+				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
+				sTagValueTotal = (String) vecReturn.get(1);
+				bCascadedExpressionFound = true;
+			}
+			
 			//Loesungsansatz: Arbeite mit einer nicht weiter verwendeten Kopie des Ini-Objekts		
 			FileIniZZZ<T> objFileIni = this.getFileConfigKernelIni();
 			if(objFileIni==null){
@@ -235,8 +242,6 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//Merke: Es gibt: KernelZZZ.computeSectionFromSystemSection(sSystemSection)
 			//                Damit wird eine Section aus abcsection!01 geholt. 
-						
-			String sTagValueTotal = (String) vecReturn.get(1);
 			Vector3ZZZ<String> vecTagValueTotal = StringZZZ.vecMidFirstKeepSeparatorCentral(sTagValueTotal, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			
 			String sTagValue = (String) vecTagValueTotal.get(1);
@@ -254,8 +259,13 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			vecTagValueTotal.replace(sReturnSubstituted);						
 			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
 			this.setValue(sReturnTag);	
-			vecReturn.replace(sReturnTag); //Übernimm den ersetzten Wert mit ggfs. vorhandenen Zeichen drumherum in die Rückgabe
-			
+			if(bCascadedExpressionFound) {
+				vecReturn.replace(1,sReturnTag); //Uebernimm den ersetzten Wert mit ggfs. vorhandenen Zeichen drumherum in die Rückgabe
+			}else {
+				vecReturn.replace(0,"");
+				vecReturn.replace(1,sReturnTag); //Wenn kein Tag drumherum, uebernimm den Wert an Stelle 1 UND setze drumherum alles leer
+				vecReturn.replace(2,"");
+			}
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags rausrechnen, falls gewuenscht. BESONDERHEIT: Hier nicht versuchen den einenen Path-Tag rauszurechnen [...]
 			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse, false);

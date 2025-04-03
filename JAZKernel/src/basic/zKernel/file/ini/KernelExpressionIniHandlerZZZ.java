@@ -107,8 +107,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	//### Aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		
+		super.updateValueParseCustom(objReturnReference, sExpressionIn);
 	}
 
 	//### aus IParseEnabledZZZ
@@ -136,7 +135,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParserThis= false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -172,14 +171,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;						
 			
-			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-			if(XmlUtilZZZ.isExpression(sExpression)) {
-				objEntry.isExpression(true);				
-			}
-						
+			this.updateValueParseCustom(objReturnReference, sExpression);
+
+//			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+//			if(XmlUtilZZZ.isExpression(sExpression)) {
+//				objEntry.isExpression(true);				
+//			}
+									
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledThis();
+			if(!bUseParserThis)break main;
 			
 			//###########################################
 			//### 

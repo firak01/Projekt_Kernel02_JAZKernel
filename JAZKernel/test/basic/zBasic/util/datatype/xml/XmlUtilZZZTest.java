@@ -17,6 +17,9 @@ public class XmlUtilZZZTest extends TestCase{
 		    			
 	}//END setup
 	 
+	
+	 
+	 
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 //+++ PREVIOUS
 	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -46,6 +49,14 @@ public class XmlUtilZZZTest extends TestCase{
 			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
+			
+			//++++++++++++++++++++++++
+			//+++ Einfache Verschachtelung aus der Praxis, es gibt keinen Tagname vorher, also den einzigen holen.
+			sExpression="Der dynamische Wert1 ist '{[Section A]Testentry1}'. FGL rulez.";
+			sExpressionSolved = null;
+			sStringToSearch= "{[";
+			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
 			//+++++ Negativtest ohne Suchwert im String
