@@ -1356,32 +1356,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 */
 		public void testCompute01asEntry(){
 			boolean btemp;
-			String sValue; boolean bValue;
+			String sValue; boolean bValue; String sValueFromParse;
 			String sClassname; String sMethodname;
 			String sExpression ; String sExpressionSolved; String sValueAsExpression;
 			Vector<String> vecReturn = null;
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			try {				
-				sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
-								
-				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
-				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", btemp);
-				
-				//#################################################################################
-				//### PARSE #######################################################################
-				//#################################################################################
-				
-				//##########################################################
-				//Teilberechnungen durchführen
-				IKernelConfigSectionEntryZZZ objEntryTemp = new KernelConfigSectionEntryZZZ();//Hierin können während der Verarbeitung Zwischenergebnisse abgelegt werden, z.B. vor der Entschluesselung der pure Verscluesselte Wert.
-				objExpressionSolver.setEntry(objEntryTemp);
-			
-				//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
-				//Hier mit abgeschalteter Expression...
-				vecReturn = objExpressionSolver.parseFirstVector(sExpression); 
-				assertFalse(VectorUtilZZZ.isEmpty(vecReturn));
-				
+			try {													
 				//Jetzt den Parser und alles notwendig einschalten
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
@@ -1404,16 +1385,41 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
-				vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); 
+				//#################################################################################
+				//### PARSE #######################################################################
+				//#################################################################################
 				
-				
-				
-				//### Nun die Gesamtberechnung durchführen				
-				IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.parseAsEntryNew(sExpression);
-				sValue = objEntry.getValue();
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+								
+				sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
 				sExpressionSolved = sExpression;
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				
+				IKernelConfigSectionEntryZZZ objEntryTemp = new KernelConfigSectionEntryZZZ();//Hierin können während der Verarbeitung Zwischenergebnisse abgelegt werden, z.B. vor der Entschluesselung der pure Verscluesselte Wert.
+				objExpressionSolver.setEntry(objEntryTemp);
+			
+				//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
+				//Hier mit abgeschalteter Expression...
+				vecReturn = objExpressionSolver.parseFirstVector(sExpression); 
+				assertFalse(VectorUtilZZZ.isEmpty(vecReturn));
+			
+				sValue = VectorUtilZZZ.implode(vecReturn);				
+				assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpressionSolved, sValue);
+				
+				sValueFromParse = sValue;
+				
+				//###########################################################
+				//### Gesamtberechnung: OHNE AUFLOESUNG
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+							
+				sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
+				sExpressionSolved = sExpression;
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.	
+				
+				IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.parseAsEntryNew(sExpression);
+				sValue = objEntry.getValue();				
+
 				assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sExpressionSolved, sValue);
 			
 				sValueAsExpression = objEntry.getValueFormulaSolvedAndConverted();
@@ -1421,16 +1427,23 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertTrue("Auch nur mit Parsen liegt eine Expression vor",objEntry.isExpression());
 				
 				//###########################################################
-				//Anwenden der ersten Formel	
+				//### Gesamtberechnung: MIT AUFLOESUNG
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+				sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
+				sExpressionSolved = sExpression;				
+				//Nur durch Parsen wird nichts aufgeloest... trotz Aufloesen Flag, also nicht:   sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				
+				
 				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.parseAsEntryNew(sExpression);
 				sValue = objEntry2.getValue();
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");
-				assertFalse("Auch nur mit Parsen soll der geparste Wert anders als die Eingabe sein.",sExpression.equals(sValue));
+				assertEquals("Auch nur mit Parsen soll der geparste Wert anders als die Eingabe sein.",sExpressionSolved,sValue);
 				
 				
 				//20230426: DAS IST VORERST DAS ZIEL, DAMIT IN DER FTPCREDENTIALS MASKE DER VERSCHLUESSELTE WERT AUCH ANGEZEIGT WERDEN KANN!!!
-				bValue = objEntry2.isCall();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe2: '" + bValue + "'\n");
+				bValue = objEntry2.isCall();				
 				assertTrue(bValue);
 				
 				bValue = objEntry2.isJavaCall();
@@ -1443,52 +1456,35 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sMethodname = objEntry2.getCallingMethodname();
 				assertNull("NULL erwartet. Wert ist aber '" + sMethodname + "'", sMethodname);
 				
-				//TESTE DEN WERT:
-				sValue = objEntry2.getValue();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe5: '" + sValue + "'\n");
-				
-				sExpressionSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; //auch ohne Solver werden die Pfade substituiert!!!
-				//Ohne .solve(...) verschwindet nur der Z-Tag
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				
-				//<Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method>		
-				assertEquals(sExpressionSolved,sValue);
-				
-				
 				
 				//##############################################
 				//### SOLVE ####################################
 				//##############################################
+				btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
 				sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;//Merke: Die Aufloesung von Formeln wird dann vom ExpressionSolver gemacht!!!
-								
-				IKernelConfigSectionEntryZZZ objEntry3 = objExpressionSolver.solveAsEntryNew(sExpression);
-				sValue = objEntry3.getValue();				
-				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");
+				//sExpressionSolved = sExpression;
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sExpressionSolved = EnvironmentZZZ.getHostName();	
 				
-				//20230426: DAS IST VORERST DAS ZIEL, DAMIT IN DER FTPCREDENTIALS MASKE DER VERSCHLUESSELTE WERT AUCH ANGEZEIGT WERDEN KANN!!!
-				bValue = objEntry3.isCall();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe2: '" + bValue + "'\n");
+				IKernelConfigSectionEntryZZZ objEntry3 = objExpressionSolver.solveAsEntryNew(sExpression);
+				sValue = objEntry3.getValue();
+				assertEquals(sExpressionSolved, sValue);
+				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
+				
+				bValue = objEntry3.isCall();				
 				assertTrue(bValue);
 				
 				bValue = objEntry3.isJavaCall();
 				assertTrue(bValue);
 								
 				sClassname = objEntry3.getCallingClassname();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe3: '" + sClassname + "'\n");
 				assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",sClassname);
 				
 				sMethodname = objEntry3.getCallingMethodname();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe4: '" + sMethodname + "'\n");
 				assertEquals("getHostName",sMethodname);
 				
-				//TESTE DEN WERT:
-				sValue = objEntry3.getValue();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe5: '" + sValue + "'\n");
-				sExpressionSolved = EnvironmentZZZ.getHostName();				
-				assertEquals(sExpressionSolved,sValue);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
 			} catch (ExceptionZZZ ez) {
