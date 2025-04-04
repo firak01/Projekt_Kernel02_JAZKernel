@@ -1693,7 +1693,6 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening));
 			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing));	
 					
-			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, true, true);  //also an jeder Stelle (d.h. nicht mehr am Anfang), also von innen nach aussen!!!
 
@@ -1710,8 +1709,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
 			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
-			
-			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+						
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
 			KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagPartOpening, sTagPartClosing, bAnyPosition, true);  //also ggfs. an jeder Stelle (d.h. nicht mehr am Anfang), also von innen nach aussen!!!
 
@@ -1729,15 +1727,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sExpression)) break main;			
 			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
 			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
-					
-			
-			//Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
+											
 			Vector3ZZZ<String>vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-			//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd);
-
-			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
-			
+		
+			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);	
 		}//end main:
 		return sReturn;
 	}
@@ -1749,27 +1742,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			XmlUtilZZZ.ensureTagPartOpening(sTagPartOpening);
 			XmlUtilZZZ.ensureTagPartClosing(sTagPartClosing);
-			
-			//TODOGOON: Iregendwie fehlt hier noch die Schärfe, wo der Unterschied ist!!!!
-			if(!bAnyPosition) {
-				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-				
+		
+			if(bAnyPosition) {
 				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
-				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);
-
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
+								
 			}else {
-				
-				//vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
-				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen
-				
-				//nur vecMid reicht schon. Das würde dann noch weiteres entfernen... 			
-				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemovedFromOutToIn(vecReturn, sTagStart, sTagEnd, bAnyPosition);								
+				if(!StringZZZ.startsWithIgnoreCase(sExpression, sTagPartOpening)) break main;				
+				vecReturn = StringZZZ.vecMid(sExpression, sTagPartOpening, sTagPartClosing, false);//Also ohne Tags holen												
 			}
 			
 			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Expression per Schleife veraendert nach = '"+sReturn+"'");
-			
 		}//end main:
 		return sReturn;
 	}

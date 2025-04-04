@@ -101,17 +101,10 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//if(btemp==false) break main;
 			
 			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
-			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
-			//Also: 
-			//boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			//Also auf echtes TAG pruefen
 			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			if(!bAsTagFound) break main;
-			
-			int iIndexClosing = sLine.toLowerCase().indexOf(this.getTagPartClosing().toLowerCase());
-			iIndexClosing=iIndexClosing+this.getTagPartClosing().length();
-			String sRest = sLine.substring(iIndexClosing);
-			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
-			
+				
 			bReturn = true;
 		}//end main
 		return bReturn;
