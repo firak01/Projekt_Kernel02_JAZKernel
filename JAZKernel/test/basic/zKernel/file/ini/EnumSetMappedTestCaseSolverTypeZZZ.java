@@ -11,7 +11,9 @@ public enum EnumSetMappedTestCaseSolverTypeZZZ implements IEnumSetMappedTestCase
 	PARSE("parse",TestUtilAsTestZZZ.sCASE_PARSE,"Variante: 'Parse'"),
 	SOLVE("solve",TestUtilAsTestZZZ.sCASE_SOLVE,"Variante: 'Solve'"),
 	PARSE_AS_ENTRY("parse_as_entry",TestUtilAsTestZZZ.sCASE_PARSE_AS_ENTRY,"Variante: 'Parse as entry'"),
-	SOLVE_AS_ENTRY("solve_as_entry",TestUtilAsTestZZZ.sCASE_SOLVE_AS_ENTRY,"Variante: 'Solve as entry'");
+	SOLVE_AS_ENTRY("solve_as_entry",TestUtilAsTestZZZ.sCASE_SOLVE_AS_ENTRY,"Variante: 'Solve as entry'"),
+	AS_ENTRY("as_entry", TestUtilAsTestZZZ.sCASE_AS_ENTRY,"Variante: 'as entry'"),
+	;
 	
 
 private String name, abbr;

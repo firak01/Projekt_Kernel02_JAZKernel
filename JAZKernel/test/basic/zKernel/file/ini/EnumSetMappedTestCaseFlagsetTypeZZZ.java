@@ -19,7 +19,10 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	//Die finale Konstanten (z.B. TestUtilAsTestZZZ.sUNEXPRESSED) sind notwendig, um in einer switch...case Abfrage genutzt zu werden.
 		
 	UNEXPRESSED("unexpressed",TestUtilAsTestZZZ.sFLAGSET_UNEXPRESSED,"Flagset Variante: 'Unexpressed'"),
+	UNPARSED("unparsed",TestUtilAsTestZZZ.sFLAGSET_UNPARSED,"Flagset Variante: 'Unparsed'"),
 	UNSOLVED("unsolved",TestUtilAsTestZZZ.sFLAGSET_UNSOLVED,"Flagset Variante: 'Unsolved'"),
+	UNPARSED_UNSOLVED("unparsed_unsolved",TestUtilAsTestZZZ.sFLAGSET_UNPARSED_UNSOLVED,"Flagset Variante: 'Unparsed' und 'Unsolved'"),
+	
 	FORMULA_MATH_UNSOLVED("formula_math_unsolved",TestUtilAsTestZZZ.sFLAGSET_MATH_UNSOLVED,"Flagset Variante: 'Formula Math unsolved'"),
 	SOLVED("solved",TestUtilAsTestZZZ.sFLAGSET_SOLVED,"Flagset Variante: 'Solved'"),
 	

@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import junit.framework.TestCase;
 
@@ -15,7 +16,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 	//Diese finale Konstanten sind notwendig, um in einer switch...case Abfrage genutzt zu werden.
 	//Das funktioniert nämlich nicht, da es keine finale Konstante ist   case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():	
 	public static final String sFLAGSET_UNEXPRESSED="uex";
+	public static final String sFLAGSET_UNPARSED="upa";
 	public static final String sFLAGSET_UNSOLVED="uso";
+	public static final String sFLAGSET_UNPARSED_UNSOLVED="upa_uso";
+	
 	public static final String sFLAGSET_MATH_UNSOLVED="muso";
 	public static final String sFLAGSET_SOLVED="so";
 	public static final String sFLAGSET_UNSUBSTITUTED="usu";
@@ -24,14 +28,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static final String sFLAGSET_CALL_UNEXPRESSED="cuex";
 	public static final String sFLAGSET_CALL_UNSOLVED="cus";
 	public static final String sFLAGSET_JAVACALL_UNSOLVED="jcus";
-	public static final String sFLAGSET_JAVACALL_SOLVED="jcs";
-	
-	
+	public static final String sFLAGSET_JAVACALL_SOLVED="jcs";	
 	
 	public static final String sCASE_PARSE="p";
 	public static final String sCASE_SOLVE="s";
 	public static final String sCASE_PARSE_AS_ENTRY="pae";
 	public static final String sCASE_SOLVE_AS_ENTRY="sae";
+	public static final String sCASE_AS_ENTRY="ae";
 	
 		
 	
@@ -51,6 +54,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;
 			}	
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//https://stackoverflow.com/questions/18412936/or-operator-in-switch-case
+			//also man kann in diesem Ausdruck nicht "verodern" ||, da dies keine feststehende Expression ist, sondern zur Laufzeit gebaut wuerde
+			//case sCASE_SOLVE || sCASE_AS_ENTRY:{
+			//praktikable Loesung: Schreibe die Cases untereinander und lasse das break weg!
+			case sCASE_AS_ENTRY:
 			case sCASE_SOLVE:{
 				assertFileIniEntry_solve(objEnumTestFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
 				break;
@@ -77,7 +85,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sFlagSet = objEnumTestFlagset.getAbbreviation();
 
 				switch(sFlagSet) {
-				//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
+				//Merke: Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 				case sFLAGSET_UNEXPRESSED:
 					assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!					
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
@@ -357,294 +365,408 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			
-			
 			String sCaseSet = TestUtilAsTestZZZ.sCASE_SOLVE;
 			String sFlagSet = objEnumTestFlagset.getAbbreviation();
 			
 			
-				switch(sFlagSet) {
-				//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
-				case sFLAGSET_UNEXPRESSED:
-					assertTrue(objEntry.isSolveCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch der solve() Schritt aufgerufen worden....
-					assertFalse(objEntry.isParseCalled()); //...aber, danach wurde abgebrochen
-					assertFalse(objEntry.isExpression());
-						
-					assertFalse(objEntry.isParsed()); //sollte ohne EXPRESSION abgebrochen worden sein
-					assertFalse(objEntry.isSolved()); //sollte ohne EXPRESSION abgebrochen worden sein
+			String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
+			
+			
+			
+			switch(sFlagSet) {
+			//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
+			case sFLAGSET_UNEXPRESSED:
+				assertTrue(objEntry.isSolveCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch der solve() Schritt aufgerufen worden....
+				assertFalse(objEntry.isParseCalled()); //...aber, danach wurde abgebrochen
+				assertFalse(objEntry.isExpression());
+													
+				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertFalse(objEntry.isParsed()); //sollte ohne EXPRESSION abgebrochen worden sein
+				assertFalse(objEntry.isPathSubstituted());				
+				assertFalse(objEntry.isVariableSubstituted());
+				assertFalse(objEntry.isParsedChanged());
+				
+				//Keine Solver Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertFalse(objEntry.isSolved()); //sollte ohne EXPRESSION abgebrochen worden sein
+				assertFalse(objEntry.isSolvedChanged());						
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;	
+			case sFLAGSET_UNPARSED:
+				//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled());
+				
+				//+++++++++++++++++++++++++++++++++++++++
+				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertFalse(objEntry.isParsed());
+				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				assertFalse(objEntry.isPathSubstituteCalled());
+				assertFalse(objEntry.isVariableSubstituteCalled());
+								 				
+				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				//	if(sExpression.equals(sExpressionSubstituted)) { 
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}else {
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}
+				//}
+				
+				assertFalse(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				//++++++++++++++++++++++++++++++++++++++++++
+				//Keine Solver Ergebnisse
+				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
+				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
+														
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				//+++ Kann hier eigentlich nicht abgefragt werden, weil ggfs. eine Expression ohne CALL-Ausdruck vorliegt
+				//assertFalse(objEntry.isCall());
+				//assertFalse(objEntry.isJavaCall());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				
+				//Wert mit speziellen Entry-Formelwert vergleichen
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+							
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+				
+				break;		
+			case sFLAGSET_UNSOLVED:					
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled());
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//Parser Ergebnisse
+				assertTrue(objEntry.isParsed());
+				assertTrue(objEntry.isPathSubstituteCalled());
+				assertTrue(objEntry.isVariableSubstituteCalled());
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			
+				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				//	if(sExpression.equals(sExpressionSubstituted)) { 
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}else {
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}
+				//}
+				
+				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++
+				//Keine Solver Ergebnisse
+				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
+				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
+				
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				//+++ Kann hier eigentlich nicht abgefragt werden, weil ggfs. eine Expression ohne CALL-Ausdruck vorliegt
+				//assertFalse(objEntry.isCall());
+				//assertFalse(objEntry.isJavaCall());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				
+				//Wert mit speziellen Entry-Formelwert vergleichen
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+							
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+				
+				break;
+			case sFLAGSET_UNPARSED_UNSOLVED:
+				//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled());
+				
+				//+++++++++++++++++++++++++++++++++++++++
+				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertFalse(objEntry.isParsed());
+				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				assertFalse(objEntry.isPathSubstituteCalled());
+				assertFalse(objEntry.isVariableSubstituteCalled());
+				
+				 
+				
+				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				//	if(sExpression.equals(sExpressionSubstituted)) { 
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}else {
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}
+				//}
+				
+				assertFalse(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				//++++++++++++++++++++++++++++++++++++++++++
+				//Keine Solver Ergebnisse
+				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
+				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
+														
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				//+++ Kann hier eigentlich nicht abgefragt werden, weil ggfs. eine Expression ohne CALL-Ausdruck vorliegt
+				//assertFalse(objEntry.isCall());
+				//assertFalse(objEntry.isJavaCall());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				
+				//Wert mit speziellen Entry-Formelwert vergleichen
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+							
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+				
+				break;										
+			case sFLAGSET_MATH_UNSOLVED:	//Es wird z:Formula gesolved!!!				
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled());
 
-					
-					assertFalse(objEntry.isParsedChanged());
-					assertFalse(objEntry.isPathSubstituted());
-					assertFalse(objEntry.isSolvedChanged());						
-					
-					//+++ kann man hier doch auch eigentlich nicht so abfragen					
-					assertFalse(objEntry.isVariableSubstituted());
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-				case sFLAGSET_UNSOLVED:					
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled());
-					assertTrue(objEntry.isPathSubstituteCalled());
-					assertTrue(objEntry.isVariableSubstituteCalled());
-					
-					assertTrue(objEntry.isParsed()); 
-					assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
-					assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
-					
-					assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-					//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					//	if(sExpression.equals(sExpressionSubstituted)) { 
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}else {
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}
-					//}
-					
-					assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
-					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-					
-					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					//+++ Kann hier eigentlich nicht abgefragt werden, weil ggfs. eine Expression ohne CALL-Ausdruck vorliegt
-					//assertFalse(objEntry.isCall());
-					//assertFalse(objEntry.isJavaCall());
-					//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					//assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());	
-					break;
-					
-				case sFLAGSET_MATH_UNSOLVED:	//Es wird z:Formula gesolved!!!				
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled());
-
-					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
-										
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSubstituted)) {						
-						assertFalse(objEntry.isPathSubstituted());
-					}else {
-						assertTrue(objEntry.isPathSubstituted());
-					}	
-					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}
-															
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());	
-					break;
-					
-				case sFLAGSET_SOLVED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-					
-					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved()); 
-					
-					
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.					
-					if(sExpression.equals(sExpressionSubstituted)) {						
-						assertFalse(objEntry.isPathSubstituted());
-					}else {
-						assertTrue(objEntry.isPathSubstituted());
-					}					
-					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}
-				
-					//+++ kann man hier doch auch eigentlich nicht so abfragen					
-					assertFalse(objEntry.isVariableSubstituted());
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-				
-				case sFLAGSET_UNSUBSTITUTED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-					
-					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved());
-										
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					assertFalse(objEntry.isPathSubstituted());
-					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}																							
-					
-					//+++ kann man hier doch auch eigentlich nicht so abfragen					
-					assertFalse(objEntry.isVariableSubstituted());
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-										
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-					
-				case sFLAGSET_SUBSTITUTED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-					
-					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved());
-					
-					
-					//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
-					if(sExpression.equals(sExpressionSubstituted)) {						
-						assertFalse(objEntry.isPathSubstituted());
-					}else {
-						assertTrue(objEntry.isPathSubstituted());
-					}					
-					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}																								
-					
-					//+++ kann man hier doch auch eigentlich nicht so abfragen					
-					assertFalse(objEntry.isVariableSubstituted());
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-				case sFLAGSET_CALL_UNSOLVED:					
-					assertTrue(objEntry.isParseCalled());
-					assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
-					assertTrue(objEntry.isExpression());
-										
-					assertTrue(objEntry.isParsed()); 							
-					assertTrue(objEntry.isSolved()); //Generell wurde ein Solver ausgefuehrt
-					
-					assertFalse(objEntry.isCallSolved());//Der konkrete CALL-Solver ist nicht involviert
-					assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist nicht involviert
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-				
-				case sFLAGSET_JAVACALL_SOLVED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-					assertTrue(objEntry.isCallSolveCalled());
-					assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
-					
-					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved()); 
-					
-					assertTrue(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
-										
-					if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-						assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-					}else {
-						assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-					}
-				
-					assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-					//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					//	if(sExpression.equals(sExpressionSubstituted)) { 
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}else {
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}
-					//}
-					
-					
-					assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
-					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-					
-					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertTrue(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
-					assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-
-				case sFLAGSET_JAVACALL_UNSOLVED:
-					
-					assertTrue(objEntry.isParseCalled());
-					assertTrue(objEntry.isSolveCalled()); 
-					
-					//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
-					//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
-					//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
-					assertTrue(objEntry.isCallSolveCalled());
-					assertTrue(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
+				assertTrue(objEntry.isParsed()); 
+				assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
 									
-					
-					//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
-					assertTrue(objEntry.isExpression());									
-					assertTrue(objEntry.isParsed());
-					
-					assertTrue(objEntry.isSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der allgemeine Solver ausgefuehrt
-					assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
-					assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
-					
-					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					break;
-				
-				default:
-					fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
-					break;
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+				if(sExpression.equals(sExpressionSubstituted)) {						
+					assertFalse(objEntry.isPathSubstituted());
+				}else {
+					assertTrue(objEntry.isPathSubstituted());
+				}	
+				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
 				}
+														
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());	
+				break;
+				
+			case sFLAGSET_SOLVED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+				
+				assertTrue(objEntry.isParsed()); 
+				assertTrue(objEntry.isSolved()); 
+				
+				
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.					
+				if(sExpression.equals(sExpressionSubstituted)) {						
+					assertFalse(objEntry.isPathSubstituted());
+				}else {
+					assertTrue(objEntry.isPathSubstituted());
+				}					
+				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+				}
+			
+				//+++ kann man hier doch auch eigentlich nicht so abfragen					
+				assertFalse(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+			
+			case sFLAGSET_UNSUBSTITUTED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+				
+				assertTrue(objEntry.isParsed()); 
+				assertTrue(objEntry.isSolved());
+									
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+				assertFalse(objEntry.isPathSubstituted());
+				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+				}																							
+				
+				//+++ kann man hier doch auch eigentlich nicht so abfragen					
+				assertFalse(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+									
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+				
+			case sFLAGSET_SUBSTITUTED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+				
+				assertTrue(objEntry.isParsed()); 
+				assertTrue(objEntry.isSolved());
+				
+				
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+				if(sExpression.equals(sExpressionSubstituted)) {						
+					assertFalse(objEntry.isPathSubstituted());
+				}else {
+					assertTrue(objEntry.isPathSubstituted());
+				}					
+				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+				}																								
+				
+				//+++ kann man hier doch auch eigentlich nicht so abfragen					
+				assertFalse(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+			case sFLAGSET_CALL_UNSOLVED:					
+				assertTrue(objEntry.isParseCalled());
+				assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+				assertTrue(objEntry.isExpression());
+									
+				assertTrue(objEntry.isParsed()); 							
+				assertTrue(objEntry.isSolved()); //Generell wurde ein Solver ausgefuehrt
+				
+				assertFalse(objEntry.isCallSolved());//Der konkrete CALL-Solver ist nicht involviert
+				assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist nicht involviert
+				
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+				assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+			
+			case sFLAGSET_JAVACALL_SOLVED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+				assertTrue(objEntry.isCallSolveCalled());
+				assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+				
+				assertTrue(objEntry.isParsed()); 
+				assertTrue(objEntry.isSolved()); 
+				
+				assertTrue(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+									
+				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+				}
+			
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				//	if(sExpression.equals(sExpressionSubstituted)) { 
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}else {
+				//		assertFalse(objEntry.isSubstitutedChanged());
+				//	}
+				//}
+				
+				
+				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
+				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+				assertTrue(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
+				assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNotNull("NOT NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+
+			case sFLAGSET_JAVACALL_UNSOLVED:
+				
+				assertTrue(objEntry.isParseCalled());
+				assertTrue(objEntry.isSolveCalled()); 
+				
+				//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
+				//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
+				//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
+				assertTrue(objEntry.isCallSolveCalled());
+				assertTrue(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
+								
+				
+				//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+				assertTrue(objEntry.isExpression());									
+				assertTrue(objEntry.isParsed());
+				
+				assertTrue(objEntry.isSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der allgemeine Solver ausgefuehrt
+				assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
+				assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
+				
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+				assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				break;
+			
+			default:
+				fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
+				break;
+			}
 									
 			bReturn = true;
 		}//end main:

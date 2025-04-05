@@ -2636,8 +2636,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
-			//#####################################
-			TODOGOON20250405;//Mache diesen neuen Typen
+			//######################################################################################
 			objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED_UNSOLVED;
 			
 			//### Generellen Solver und generellen Parser deaktiviert
@@ -2655,17 +2654,51 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertEquals(sExpressionSolved, sValue);			
 			
 			//Wert mit Entry-Wert vergleichen
-			objEntry = objFileIniTest.getEntry();
+			objEntry = objFileIniTest.getEntry();			
+			assertNotNull(objEntry);
+			assertEquals(sValue, objEntry.getValue());
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			TODOGOON20250405;//Beim Entrytypen nicht zwischen Parse und Solve unterscheiden. Ist ja irgendwie nur solve oder beides.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
 			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
+			//##############################################################################
+			objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED;
 			
 			//######################################
-			//### Generellen Solver deaktiviert, der generelle Parser aber aktiviert
+			//### Generellen Solver aktiviert, der generelle Parser (bleibt) aber aktiviert
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, false); //ohne aktivierten Parser keine SUBSTITUTION  
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+
+			//Solver ist deaktiviert, aber der darin ausgefuehrte Parser soll die Substitution trotzdem machen
+			sExpression = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
+			sExpressionSubstituted = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";;
+			sExpressionSolved = sExpression;
+			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(sExpressionSolved, sValue);			
+			
+			//Wert mit Entry-Wert vergleichen
+			objEntry = objFileIniTest.getEntry();
+			assertNotNull(objEntry);
+			assertEquals(sValue, objEntry.getValue());	
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
+			
+			//##################################################################################
+			objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			
+			//######################################
+			//### Generellen Solver deaktiviert, der generelle Parser aber (wieder) aktiviert
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true); //ohne aktivierten Parser keine SUBSTITUTION  
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+			
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 
@@ -2679,26 +2712,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//Wert mit Entry-Wert vergleichen
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
-			assertEquals(sValue, objEntry.getValue());			
-			assertTrue(objEntry.isExpression()); //Zumindest die PATH Anweisungen wurden ersetzt
+			assertEquals(sValue, objEntry.getValue());	
 			
-			assertFalse(objEntry.isFormula());
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
 			
-			assertTrue(objEntry.isSolveCalled()); //Solver gestartet, aber nicht er wird nicht ausgeführt.
-			assertFalse(objEntry.isSolvedChanged()); //Merke: PATH Anweisungen werden auch ohne Solver ersetzt.
-			
-			assertFalse(objEntry.isCall()); 		//Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
-			assertFalse(objEntry.isJavaCall());	    //Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
-			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-			
-			//Wert mit speziellen Entry-Formelwert vergleichen
-			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
-						
-			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
-			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
-
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
