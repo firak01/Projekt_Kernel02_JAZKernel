@@ -7,6 +7,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -2598,21 +2599,26 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpressionSource; 
-			String sExpressionSolved; String sValue;				
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
+			String sValue;				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry;
 		
 			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
 			
-			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
 			
 			//###########################################################
-			//Anwenden der ersten Formel, ohne Berechnung
+			//Auswahl des Testanalysezweigs
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = null;
+			
+			
+			//Als Grundlage erst einmal alle Flags aktiviert
 			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
-			btemp = objExpressionHandler.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
@@ -2630,13 +2636,43 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
+			//#####################################
+			TODOGOON20250405;//Mache diesen neuen Typen
+			objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED_UNSOLVED;
 			
-			//######################################
-			//### Solver generell deaktiviert
+			//### Generellen Solver und generellen Parser deaktiviert
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,false); //ohne aktivierten Parser keine SUBSTITUTION  
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+						
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+
+			//Solver ist deaktiviert und Parser auch, daher keine Substitution, es wird also nur der Wert aus der INI-Datei direkt gelesen
+			sExpression = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
+			sExpressionSubstituted = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";;
+			sExpressionSolved = sExpression;
+			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(sExpressionSolved, sValue);			
 			
-			sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
+			//Wert mit Entry-Wert vergleichen
+			objEntry = objFileIniTest.getEntry();
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			TODOGOON20250405;//Beim Entrytypen nicht zwischen Parse und Solve unterscheiden. Ist ja irgendwie nur solve oder beides.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
+			
+			
+			//######################################
+			//### Generellen Solver deaktiviert, der generelle Parser aber aktiviert
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+
+			//Solver ist deaktiviert, aber der darin ausgefuehrte Parser soll die Substitution trotzdem machen
+			sExpression = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z></Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
+			sExpressionSubstituted = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";;
+			sExpressionSolved = sExpressionSubstituted;
 			sValue = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
 			assertEquals(sExpressionSolved, sValue);			
 			
