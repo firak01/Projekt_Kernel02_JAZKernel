@@ -49,6 +49,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
 			String[] saFlagFileIni= {
 							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
+							IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name(),
 							IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH.name(),
 							IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE.name(),
 							IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name(),
