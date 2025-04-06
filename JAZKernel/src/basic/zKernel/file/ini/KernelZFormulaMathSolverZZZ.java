@@ -5,8 +5,11 @@ import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -273,20 +276,20 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 				 sReturnTag = sExpression;			 
 			}else{
 				//Da gibt es wohl nix weiter auszurechen...	also die Werte als String nebeneinander setzen....
-				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-				ZTagFormulaMath_ValueZZZ<T> objValue = new ZTagFormulaMath_ValueZZZ<T>();
+				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String aufaddiert.
+				//TODOGOON20250406; //Die Expression muss sich dabei immer weiter reduzieren... Also Tags suchen...
 				
-				String sExpressionOld = sFormulaExpression; 
-				while(objValue.isExpression(sExpressionOld)){
-					sExpression = objValue.parse(sExpressionOld);  //TODOGOON: 20241212: Das muesste ja eigentlich .solve sein...
-//						String sDebug = (String) vecValue.get(1);
-//						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
-//						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
+				String sRemaining = sExpression;
+				String sRemainingOld = sRemaining;
+				while(XmlUtilZZZ.isExpression4TagXml(sRemaining, ZTagFormulaMath_ValueZZZ.sTAG_NAME)){
+					ZTagFormulaMath_ValueZZZ<T> objValue = new ZTagFormulaMath_ValueZZZ<T>();
+					Vector3ZZZ<String> vecRemaining = objValue.parseFirstVector(sRemaining, false); 					
+					sRemaining = VectorUtilZZZ.implode(vecRemaining);
 					
-					if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
-					sExpressionOld = sExpression;
-				}													
-				 sReturnTag = sExpression;				 
+					if(sRemainingOld.equals(sRemaining)) break; //Sicherheitsmassnahme gegen Endlosschleife
+					sRemainingOld = sRemaining;
+				}
+				sReturnTag = sRemainingOld;							
 			}//end if operator.isExpression(...)						
 		}//end main:
 

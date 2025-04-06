@@ -282,23 +282,30 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			sReturnTag = objReturn.toString();
 			sReturnLine = sReturnTag;
+			
+			this.updateValueSolved();
 			this.updateValueSolved(objEntry);						
 		}//end main:	
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
-		sReturn = sReturnLine;
 		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {			
 			objEntry.setValueCallSolved(sReturnLine);	
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturnLine)) {	
-					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry);					
-				}
-			}								
+			
+			if(bUseExpression && bUseSolver && bUseSolverThis) {
+				if(sExpressionIn!=null) {
+					if(!sExpressionIn.equals(sReturnLine)) {	
+						this.updateValueSolvedChanged();
+						this.updateValueSolvedChanged(objEntry);					
+					}
+				}	
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+			}
 			this.adoptEntryValuesMissing(objEntry);			
 		}		
 		return sReturn;

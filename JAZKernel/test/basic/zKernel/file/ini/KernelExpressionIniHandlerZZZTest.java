@@ -19,11 +19,16 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
-public class KernelExpressionIniHandlerZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_Expression01_UNEXPRESSED = "Der dynamische Wert1 ist '{[Section A]Testentry1}'. FGL rulez.";
-	protected final static String sEXPRESSION_Expression01_DEFAULT = "Der dynamische Wert1 ist '<Z>{[Section A]Testentry1}</Z>'. FGL rulez.";
-	protected final static String sEXPRESSION_Expression01_SUBSTITUTED = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
-	protected final static String sEXPRESSION_Expression01_SOLVED = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+public class KernelExpressionIniHandlerZZZTest extends TestCase {
+	//Variante, um die Z-Tags aussen drumherumgebaut werden koennen
+	protected final static String sEXPRESSION_Expression01_DEFAULT01 = "Der dynamische Wert1 ist '{[Section A]Testentry1}'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SUBSTITUTED01 = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SOLVED01 = "Der dynamische Wert1 ist 'Testvalue1 to be found'. FGL rulez.";
+	
+	//Variante mit Z-Tags innen
+	protected final static String sEXPRESSION_Expression01_DEFAULT02 = "Der dynamische Wert1 ist '<Z>{[Section A]Testentry1}</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SUBSTITUTED02 = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_Expression01_SOLVED02 = "Der dynamische Wert1 ist '<Z>Testvalue1 to be found</Z>'. FGL rulez.";
 			
 	private File objFile;
 	private IKernelZZZ objKernel;
@@ -144,23 +149,22 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 		
             //################################################################
-			//A) Test ohne notwendige Pfadersetzung, weil zwar ein PATH-AUSDRUCK aber keine Expression vorliegt
-			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_UNEXPRESSED;
+			//A) Test (01) ohne notwendige Pfadersetzung, weil zwar ein PATH-AUSDRUCK aber keine Expression vorliegt
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT01;
 			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression;
-			
+			sExpressionSolved = sExpression;			
 			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved);
 			
-			//B) Test mit Z-Tag AUSSEN drumherum. Erst jetzt ist es eine Expression und wird ersetzt
-			sExpression = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_UNEXPRESSED + sTagEndZ;
-			sExpressionSubstituted = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED + sTagEndZ;
-			sExpressionSolved = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED + sTagEndZ;
+			//B) Test (01) mit Z-Tag AUSSEN drumherum. Erst jetzt ist es eine Expression und wird ersetzt
+			sExpression = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT01 + sTagEndZ;
+			sExpressionSubstituted = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED01 + sTagEndZ;
+			sExpressionSolved = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED01 + sTagEndZ;
 			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved);
 			
-			//C) Test mit Z-Tag unmittelbar um den PATH herum. Erst jetzt ist es eine Expression und wird ersetzt
-			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT;
-			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED;
-			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
+			//C) Test (02) mit Z-Tag unmittelbar um den PATH herum. Jetzt ist es eine Expression und wird ersetzt
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
+			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;
 			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved);
 			
 			//TODO diesen String testen:  String sExpressionSource2 = "Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.";		
@@ -720,12 +724,24 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	public void testCompute_MATH() {
 		String sExpression=null; String sExpressionSubstituted; String sExpressionSolved=null;
 //		try {
-			//Test ohne MATH-Expression
-			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT;
-			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED;
-			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+
+		//B) Tests mit MATH-Expression (die Testwerte sind in der Funktion) //TODO: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
+		testCompute_MATH_();
+		
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+		
+		
+			//A) Test ohne MATH-Expression
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
+			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;
 			
 			testCompute_MATH_(sExpression,sExpressionSubstituted, sExpressionSolved);
+			
+			//B) Tests mit MATH-Expression (die Testwerte sind in der Funktion) //TODO: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
+			testCompute_MATH_();
 			
 			//sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 			//sExpressionFormulaMathSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
@@ -748,20 +764,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 						
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//##########################################################
-			//### Math-Ausdruck drin, OHNE einen OPERATOR zu verwenden
-			//##########################################################
-				
-			//c) solve
-			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
-			sExpression = sExpressionSourceFormulaMath;
-			sExpressionSubstituted = sExpression;
-			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			sExpressionSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
-			//sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
-
-			
+						
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 						
@@ -800,8 +803,37 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+		
+	private void testCompute_MATH_() {
+		try {
+			boolean btemp;
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";						
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved;
+			String sExpressionSourceFormulaMath; String sExpressionFormulaMathSubstituted; String sExpressionFormulaMathSolved;
+						
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
+			//##########################################################
+			//### Math-Ausdruck drin, OHNE einen OPERATOR zu verwenden
+			//##########################################################
+				
+			//c) solve
+			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
+			sExpression = sExpressionSourceFormulaMath;
+			sExpressionSubstituted = sExpression;
+			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
+			sExpressionSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
+			//sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
+	
 			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+	
 			//##########################################################
 			//### Math-Ausdruck drin, 
 			//### OHNE einen OPERATOR zu 
@@ -812,7 +844,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
 			sExpressionFormulaMathSolved = sExpressionSourceFormulaMath;			
 			btemp = testCompute_MATH_unsolved_(sExpressionSourceFormulaMath, sExpressionFormulaMathSubstituted, sExpressionFormulaMathSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
+	
 			//b) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";			
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
@@ -828,17 +860,23 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//sExpressionFormulaMathSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSubstituted, sTagStartZ, sTagEndZ);
 			//unsolved Fall: sExpressionFormulaMathSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
 			sExpressionFormulaMathSolved = sExpressionFormulaMathSubstituted;
-			//sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);			
+			//sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);
+			
+			//...nur MATH-Solver wird nicht aufgeloest... Formula-Solver schon
+			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
 			btemp = testCompute_MATH_unsolved_(sExpressionSourceFormulaMath, sExpressionFormulaMathSubstituted, sExpressionFormulaMathSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
-
+	
 			//d) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
 			sExpressionFormulaMathSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSubstituted, sTagStartZ, sTagEndZ);
 			//unsolved Fall: sExpressionFormulaMathSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
 			sExpressionFormulaMathSolved = sExpressionFormulaMathSubstituted;
-			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);			 			
-			btemp = testCompute_MATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);
+			
+			//...Ohne Formula-Tags
+			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
+			btemp = testCompute_MATH_unsolved_(sExpressionSourceFormulaMath, sExpressionFormulaMathSubstituted, sExpressionFormulaMathSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//##########################################################
 			//### Math-Ausdruck drin, OHNE einen OPERATOR zu verwenden
@@ -849,7 +887,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
+	
 			//b) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpression = sExpressionSourceFormulaMath;
@@ -867,7 +905,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = "Der dynamische Wert ist '<Z>23</Z>'. FGL rulez.";
 			//sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
-
+	
 			//d) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpression = sExpressionSourceFormulaMath;
@@ -888,8 +926,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
 			sExpressionFormulaMathSolved = sExpressionFormulaMathSubstituted;
+			
+			sExpression = sExpressionSourceFormulaMath;
+			sExpressionSubstituted = sExpressionFormulaMathSubstituted;
+			sExpressionSolved = sExpressionFormulaMathSolved;
+			//sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpressionSourceFormulaMath, sExpressionFormulaMathSubstituted, sExpressionSourceFormulaMath, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
+	
 			//b) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpressionFormulaMathSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSourceFormulaMath, sTagStartZ, sTagEndZ);
@@ -898,14 +941,20 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpression = sExpressionSourceFormulaMath;
 			sExpressionSubstituted = sExpressionFormulaMathSubstituted;
 			sExpressionSolved = sExpressionFormulaMathSolved;
+			sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 						
 			//c) solve
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
 			sExpressionFormulaMathSolved = "Der dynamische Wert ist '<Z>6</Z>'. FGL rulez.";
-			btemp = testCompute_MATH_(sExpressionSourceFormulaMath, sExpressionFormulaMathSubstituted, sExpressionFormulaMathSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
-
+						
+			sExpression = sExpressionSourceFormulaMath;
+			sExpressionSubstituted = sExpressionFormulaMathSubstituted;			
+			sExpressionSolved= sExpressionFormulaMathSolved;
+			//sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
+	
 			//d) ohne Z-Tags
 			sExpressionSourceFormulaMath="Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
 			sExpressionFormulaMathSubstituted = sExpressionSourceFormulaMath;
@@ -913,13 +962,11 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			sExpression = sExpressionSourceFormulaMath;
 			sExpressionSubstituted = sExpressionFormulaMathSubstituted;			
-			sExpressionSolved= sExpressionFormulaMathSolved;			
+			sExpressionSolved= sExpressionFormulaMathSolved;
+			sExpressionSolved= KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 						
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			
-						
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++									
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -1092,17 +1139,18 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#### Hier das Substitute ausschalten, wg. Solve wird der Z-Tag aber trotzdem entfernt.
 			sSection = "Section for testCompute";
 			sProperty = "Formula1";						
-			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sTagSolved = "{[Section A]Testentry1}";
 			btemp = testCompute_PATH_IniUsed_Unsubstituted_(sSection, sProperty, sExpressionSolved, sTagSolved);	
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//#### Hier das Solve ausschalten, ohne SOLVE bleibt das Z-Tag drin, auch wenn sutbstituiert wird
+			//#### Hier das Solve ausschalten, ohne SOLVE bleibt das Z-Tag drin, auch wenn substituiert wird
 			sSection = "Section for testCompute";
 			sProperty = "Formula1";
-			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED;//ohne Formelberechnung bleibt der umgebende Z-Tag drin			
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;//ohne Formelberechnung bleibt der umgebende Z-Tag drin
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sTagSolved = "Testvalue1 to be found";
 			btemp = testCompute_PATH_IniUsed_Unsolved_(sSection, sProperty, sExpressionSolved, sTagSolved);	
 			
@@ -1112,7 +1160,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//#### Hier komplett aufloesen
 			sSection = "Section for testCompute";
 			sProperty = "Formula1";
-			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sTagSolved = "Testvalue1 to be found";
 			btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved, sTagSolved);	
 			

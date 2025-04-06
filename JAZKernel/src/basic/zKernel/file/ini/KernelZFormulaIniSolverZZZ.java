@@ -237,8 +237,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//############################################
 	private String solveParsed_Formula_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Merke: Vesuche das gleich zu halten mit AbstractKernelIniSolver.solve_()
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sExpression = null;			
-		String sTagParsed = "";
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null;			
+		String sExpression = null; String sTagParsed = "";
 		//Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
@@ -304,8 +304,12 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 					String sExpressionWithTagsOld = sExpression;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
-												
-						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
+									
+						//TODOGOON20250406;//Wahrscheinlich waere es guenstiger sofort mit dem bereits geparsten Wert weiterzuarbeiten aber noch fehlt die post - Methode mit String Argument. 
+						//String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
+						//aber es fehlt objMathSolver.solvePost(sExpressionMathParsedAndSolved);
+						
+						String sExpressionMathParsedAndSolved = objMathSolver.solve(sExpressionWithTags, bRemoveSurroundingSeparators);
 						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTags=sExpressionMathParsedAndSolved;	
 						sReturnTag = objMathSolver.getValue();														
@@ -323,9 +327,12 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					//Also: FORMULA-Tag soll aufgeloest werden, FORMULA-MATH aber nicht. 
 					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.					
 					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);//also an jeder Position (d.h. nicht nur am Anfang), von innen nach aussen.
-					objEntry.isSolved(true);
+					sReturnTag = sReturnLine;
 				}//end if bUseFormulaMath					
-			}//end if bUseFormula			
+			}//end if bUseFormula		
+						
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
@@ -333,23 +340,22 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		sReturn = sReturnLine;
 		
 		if(objEntry!=null) {
+			objEntry.setValueFormulaSolvedAndConverted(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			if(objEntry.isFormulaMathSolved()) {
-				objEntry.isSolved(true);
-			}
-			
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+						
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
-				if(sTagParsed!=null) {
-					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
-					//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-					if(!sTagParsed.equals(sReturnTag)) objEntry.isSolvedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.	
+				if(sExpressionIn!=null) {				
+					if(!sExpressionIn.equals(sReturnLine)) {				
+						this.updateValueSolvedChanged();
+						this.updateValueSolvedChanged(objEntry);
+					}
 				}
-			}
-			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+			}			
 				
-			this.adoptEntryValuesMissing(objEntry);
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);				
+			this.adoptEntryValuesMissing(objEntry);						
 		}	
 		return sReturn;	
 	}
