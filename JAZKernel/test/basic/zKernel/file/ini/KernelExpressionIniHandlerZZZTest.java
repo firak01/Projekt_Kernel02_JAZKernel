@@ -1439,23 +1439,28 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//a) ohne jedliche Aufloesung
 				sSection = "Section for testComputeMathValue";
 				sProperty = "Formula1";	
-				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
+				//ohne Solver bleiben die Z-Tags drin: 
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				sTagSolved = "<Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math>";
 				btemp = testCompute_PATH_IniUsed_Unsolved_(sSection, sProperty, sExpressionSolved, sTagSolved);	
 				
 				//b) ohne FORMULA Aufloesung
 				sSection = "Section for testComputeMathValue";
 				sProperty = "Formula1";							
-				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:formala><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula></Z>'. FGL rulez.";
+				
+				//Generelle Aufloesung erwuenst. Dann fliegen die Z-Tags raus.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				sTagSolved = "<Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math>";
 				btemp = testCompute_PATH_IniUsed_(sSection, sProperty, sExpressionSolved, sTagSolved);
 				
 				//c) ohne MATH Aufloesung
 				sSection = "Section for testComputeMathValue";
-				sProperty = "Formula1";	
+				sProperty = "Formula1";	//Merke: Das Z-Formula Tag fliegt raus.								
 				sExpressionSolved = "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+				
+				//Generelle Aufloesung erwuenst. Dann fliegen die Z-Tags raus.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				sTagSolved = "<Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math>";
 				btemp = testCompute_MATH_IniUsed_unsolved_(sSection, sProperty, sExpressionSolved, sTagSolved);	
