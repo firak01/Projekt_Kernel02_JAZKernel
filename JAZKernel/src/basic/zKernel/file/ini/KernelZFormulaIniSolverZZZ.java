@@ -305,14 +305,23 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					String sExpressionWithTagsOld = sExpression;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
 									
+						//TODOGOON20250406; bzw. TODOGOON20250409; 
+						//Statt objMathSolver.solve aufzurufen (in dem ja noch einmal ein parse gemacht wird solveParsed aufrufen und dahinter solveParsedWrapup
+//						String sExpressionMathParsedAndSolved = objMathSolver.solve(sExpressionWithTags, bRemoveSurroundingSeparators);
+//						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
+//						sExpressionWithTags=sExpressionMathParsedAndSolved;	
+//						sReturnTag = objMathSolver.getValue();			
+						
+						
 						//TODOGOON20250406;//Wahrscheinlich waere es guenstiger sofort mit dem bereits geparsten Wert weiterzuarbeiten aber noch fehlt die post - Methode mit String Argument. 
-						//String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
+						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
 						//aber es fehlt objMathSolver.solvePost(sExpressionMathParsedAndSolved);
 						
-						String sExpressionMathParsedAndSolved = objMathSolver.solve(sExpressionWithTags, bRemoveSurroundingSeparators);
+						sExpressionMathParsedAndSolved = objMathSolver.solveParsedWrapup(sExpressionMathParsedAndSolved);
+						
 						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTags=sExpressionMathParsedAndSolved;	
-						sReturnTag = objMathSolver.getValue();														
+						sReturnTag = objMathSolver.getValue();												
 					}
 					
 										
@@ -359,6 +368,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}	
 		return sReturn;	
 	}
+	
+	//############
+	//Neu: Mache daraus 
+	
+	
+	
+	//############
 	
 	//### Aus IParseEnabledZZZ	
 	
@@ -589,5 +605,6 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 
+	
 	
 }//End class

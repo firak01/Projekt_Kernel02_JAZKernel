@@ -404,6 +404,37 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return this.parse_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
+	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
+	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{	
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
+		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
+		return this.parseFirstVector_(sExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null);
+	}
+
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
+	}
+
+	
 	//++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ{
@@ -611,36 +642,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return sReturn;
 	}
 	
-	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
-	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{	
-	//+++++++++++++++++++++++++++++++++++++++++++++
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
-		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPost(vecExpression, null);
-	}
-
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parseFirstVectorPost(vecExpression, null, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
-	}
-	
+		
 	//### Aus IKernelEntryReferenceExpressionUserZZZ	
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
