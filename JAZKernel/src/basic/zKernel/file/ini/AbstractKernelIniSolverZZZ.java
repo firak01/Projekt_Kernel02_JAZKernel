@@ -512,6 +512,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				String sTagEndZ = "</Z>";
 				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
 			}
+			
+			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
+			//vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
+			sReturnLine = this.solvePostCustom(sReturnLine, objReturnReference, bRemoveSurroundingSeparators);
+			objEntry = objReturnReference.get();
+			
 				
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
@@ -650,7 +656,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
 			sReturnTag = this.getValue();
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -811,8 +817,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
 			objReturnReference.set(objEntry);
 		}	
-		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 		
+						
+		main:{
+			String sExpression = VectorUtilZZZ.implode(vecExpressionIn);
+			
+	/*
 		TODOGOO20250409; Hier dann ggfs. solveParseWrapup mit dem String aufrufen..
 		
 		this.setRaw(sExpressionIn);
@@ -862,6 +872,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
+			
+			 */
+		
+			TODOGOON20250409;//DAS PROBLEM ist nun, das sReturnLine alle richtig hat. ABER in vecReturn(0) bzw. (1) gibt es noch die Tags
+			                 //WAS wenn wir alles in vec(1) schreiben und 0 bzw. 2 dann leersetzen!!!
+			sReturnLine = this.solveParsedWrapup(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+			sReturnTag = this.getValue();
 		}//end main:
 	
 			
@@ -1011,7 +1028,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}			
 		
 		sReturnTag = this.getValue();
-		sReturnLine = sExpression;
+		sReturnLine = sExpressionIn;
 		
 		main:{	
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -1026,8 +1043,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
 			//!!! hier wuerde dann etwas konkretes stehen.
 						
-			sReturnTag = sExpressionIn;
-			sReturnLine = sExpressionIn;
+			sReturnTag = sExpression;
+			sReturnLine = sExpression;
 		}//end main:
 	
 		//#################################

@@ -516,20 +516,21 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
 					
 					
-					TODOGOON20250409;//Hier ist vielleicht eine Kombination aus solveParsed() und solveParsedWrapup() effizienter.
-					                 //interne Variablen im objEntry kann man auch in solveParsed() setzen...
-					
+				
 					//Merke: Beim Parsen (parseFirstVector) werden interen Variabelen im objEntry gesetzt.
 					//       Darum darf man dies nicht unterschlagen, indem man z.B. direkt solveParsed(sExpression) aufruft.
-										
-					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
+					//Aber: 20250409 Das sollte nun an anderer Stelle schon erledigt werden.
+					
 					ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					objReturnReferenceJavaCall.set(objEntry);
-					//sReturnLine=objJavaCallSolver.solveParsed(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
-					sReturnLine = objJavaCallSolver.solve(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+					
+					//sReturnLine = objJavaCallSolver.solve(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+					sReturnLine = objJavaCallSolver.solveParsed(sExpression, objReturnReferenceJavaCall, bRemoveSurroundingSeparators);
+					sReturnLine = objJavaCallSolver.solveParsedWrapup(sReturnLine, objReturnReference, bRemoveSurroundingSeparators);
 					objEntry = objReturnReferenceJavaCall.get();
 					
 					//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
+					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 					sReturnTag = objJavaCallSolver.getValue();
 				
 //				}else {

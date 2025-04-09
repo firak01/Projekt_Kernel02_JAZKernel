@@ -845,6 +845,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);				
 			sReturnTag = this.getValue();			
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 			
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);
@@ -852,7 +853,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
-		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);						
+		vecReturn.replace(sReturnTag);						
 		this.setValue(sReturnTag);
 		sReturn = sReturnLine;
 				
