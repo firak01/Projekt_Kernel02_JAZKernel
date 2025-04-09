@@ -305,19 +305,15 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					String sExpressionWithTagsOld = sExpression;
 					while(objMathSolver.isExpression(sExpressionWithTags)){
 									
-						//TODOGOON20250406; bzw. TODOGOON20250409; 
-						//Statt objMathSolver.solve aufzurufen (in dem ja noch einmal ein parse gemacht wird solveParsed aufrufen und dahinter solveParsedWrapup
+						//20250409 Statt objMathSolver.solve aufzurufen (in dem ja noch einmal ein parse gemacht wird solveParsed aufrufen und dahinter solveParsedWrapup
 //						String sExpressionMathParsedAndSolved = objMathSolver.solve(sExpressionWithTags, bRemoveSurroundingSeparators);
 //						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 //						sExpressionWithTags=sExpressionMathParsedAndSolved;	
 //						sReturnTag = objMathSolver.getValue();			
-						
-						
-						//TODOGOON20250406;//Wahrscheinlich waere es guenstiger sofort mit dem bereits geparsten Wert weiterzuarbeiten aber noch fehlt die post - Methode mit String Argument. 
-						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);
-						//aber es fehlt objMathSolver.solvePost(sExpressionMathParsedAndSolved);
-						
-						sExpressionMathParsedAndSolved = objMathSolver.solveParsedWrapup(sExpressionMathParsedAndSolved);
+												
+						//Wahrscheinlich ist es guenstiger sofort mit dem bereits geparsten Wert weiterzuarbeiten. 
+						String sExpressionMathParsedAndSolved = objMathSolver.solveParsed(sExpressionWithTags);						
+						sExpressionMathParsedAndSolved = objMathSolver.solveParsedWrapup(sExpressionMathParsedAndSolved); //entspricht der solvePost()-Methode.
 						
 						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTags=sExpressionMathParsedAndSolved;	

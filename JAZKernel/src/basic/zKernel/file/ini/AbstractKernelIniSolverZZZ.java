@@ -425,117 +425,111 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return this.solveParsed_(sExpression, null, bRemoveSurroundingSeparators);
 	}
 	
-	
-	//########################################
-	//TODOGOON20250409: Mache daraus solveParsedWrapup, eine Methode, die nach einem solveParsed aufgerufen werden kann, um das zu erledigen, was sonst in solvePost gemacht wird.
-	//ISolveEnabledZZZ
-	
-	//Merke: Methode nur mit String als Eingabeparameter und nicht Vektor, das solveParsed nur String zurueckliefert und hier mit dem Wert weitergearbeitet wird.
+	/** Methode, die Nacharbeiten und customSolve-Methode aufruft.
+	 *  Sie kann nach der der solveParsed() Methode eingesetzt werden, um ggfs. Tags zu eintfernen, etc.
+	 *  
+	 *  Hintergrund:
+	 *  Statt dem vollständigen solve() aufzurufen ist es ggfs. günstiger schon auf das Ergebnis des Parsens zuzugreifen.
+	 *  was mit solveParsed() passiert.
+	 *  nun müssen noch "Nacharbeiten" gemacht werden, wie sie auch in solvePost() gemacht würden.
+	 *  
+	 *   Im Gegensatz zu einer "Post" Methode, die "intern" am Ende einer Methode (hier solve() ) aufgerufen wird,
+	 *   gehe ich bei einer "Wrapup" Methdoe davon aus, das sie "extern" nach einer anderen Methode aufgerufen wird. D.h. nicht innerhalb der Methode, am Ende.
+	 *  
+	 * @param sExpression
+	 * Merke: Methode nur mit String als Eingabeparameter und nicht Vektor, das solveParsed nur String zurueckliefert und hier mit dem Wert weitergearbeitet wird.
+	 * 
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	@Override
 	public String solveParsedWrapup(String sExpression) throws ExceptionZZZ {
-		boolean bIgnoreCase = true;
-		
-//		//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-//		//Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.		   
-//		String sTagOpening = this.getTagPartOpening();
-//		String sTagClosing = this.getTagPartClosing();
-//		//20250322; //ich will aber die umgebenden Separtoren erst einmal erhalten. 
-//		//            Wenn man sie central haelt, dann gehen sie automatisch beim solven, substitute, etc verloeren
-//		//            also nicht: vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);			
-//		Vector3ZZZ<String> vecReturn = StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
-//		if (vecReturn==null)break main;		
-//		if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-		
 		return solveParsedWrapup_(sExpression, null, true);
 	}
 	
-		
+	@Override
+	public String solveParsedWrapup(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return solveParsedWrapup_(sExpression, null, bRemoveSurroundingSeparators);
+	}
 	
-	//+++++++++++++++++++++
-		//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
-		//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
-		//            Ist der Solver deaktiviert, findet dann auch das Entfernen umgebender Tags nicht statt.
-		//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
-		//public abstract Vector3ZZZ<String> parseFirstVectorSolverCustomPost(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ;
-		
-	
-		private String solveParsedWrapup_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {						
-			String sReturn = null;
-			String sReturnTag = null; String sReturnLine = null;
-			String sExpression=null;
-			boolean bUseExpression = false;
-			boolean bUseSolver = false;
-			boolean bUseSolverThis = false;		
+	private String solveParsedWrapup_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {						
+		String sReturn = null;
+		String sReturnTag = null; String sReturnLine = null;
+		String sExpression=null;
+		boolean bUseExpression = false;
+		boolean bUseSolver = false;
+		boolean bUseSolverThis = false;		
 			
 			
-			IKernelConfigSectionEntryZZZ objEntry = null;
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
-			if(objReturnReferenceIn==null) {				
-				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
-			}else {
-				objReturnReference = objReturnReferenceIn;
-				objEntry = objReturnReference.get();
-			}
-			if(objEntry==null) {
-				//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-				//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
-				objReturnReference.set(objEntry);
-			}	
-			
-			sReturnTag = this.getValue();
-			sReturnLine = sExpressionIn;	
-			main:{				
-				if(StringZZZ.isEmpty(sExpressionIn)) break main;
-				sExpression = sExpressionIn;
-				
-				bUseExpression = this.isExpressionEnabledGeneral(); 
-				if(!bUseExpression) break main;
-							
-				bUseSolver = this.isSolverEnabledGeneral();
-				if(!bUseSolver) break main;
-								
-				this.setRaw(sExpression);
-				objEntry.setRaw(sExpression);
-				
-				bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-				//Nein, denn der generelle Solver wird ja ausgefuehrt if(!bUseSolverThis) break main;
-				
-				
-				//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
-				if(bUseExpression & bUseSolver & bUseSolverThis){
-					String sTagStart = this.getTagPartOpening();
-					String sTagEnd = this.getTagPartClosing();
-					if(sTagStart.equalsIgnoreCase("<Z>")) {
-						//dann mache nix... der Tag wird spaeter behandelt...
-					}else {
-						sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
-					}
-				}	
-				
-				//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
-				if(bRemoveSurroundingSeparators & bUseExpression) {
-					String sTagStartZ = "<Z>";
-					String sTagEndZ = "</Z>";
-					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
-				}
-				
-				this.updateValueSolved();
-				this.updateValueSolved(objEntry);
-			}//end main:
-		
-				
-			//#################################
-			//Den Wert ersetzen, wenn es was zu ersetzen gibt.						
-			this.setValue(sReturnTag);
-			sReturn = sReturnLine;
-			
-			if(objEntry!=null) {				
-				objEntry.setValue(sReturnLine);	
-				objEntry.setValueFromTag(sReturnTag);
-				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-			}
-			return sReturn;
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
 		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+			objReturnReference.set(objEntry);
+		}	
+			
+		sReturnTag = this.getValue();
+		sReturnLine = sExpressionIn;	
+		main:{				
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			sExpression = sExpressionIn;
+				
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;
+							
+			bUseSolver = this.isSolverEnabledGeneral();
+			if(!bUseSolver) break main;
+								
+			this.setRaw(sExpression);
+			objEntry.setRaw(sExpression);
+				
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			//Nein, denn der generelle Solver wird ja ausgefuehrt if(!bUseSolverThis) break main;
+				
+				
+			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
+			if(bUseExpression & bUseSolver & bUseSolverThis){
+				String sTagStart = this.getTagPartOpening();
+				String sTagEnd = this.getTagPartClosing();
+				if(sTagStart.equalsIgnoreCase("<Z>")) {
+					//dann mache nix... der Tag wird spaeter behandelt...
+				}else {
+					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
+				}
+			}	
+				
+			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+			if(bRemoveSurroundingSeparators & bUseExpression) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
+			}
+				
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
+		}//end main:
+		
+				
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.						
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+			
+		if(objEntry!=null) {				
+			objEntry.setValue(sReturnLine);	
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return sReturn;
+	}
 	
 	//++++++++++++++++++++++
 
@@ -764,6 +758,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return sReturn;				
 	}
 
+	
+	@Override
+	public String solveParsedWrapup(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+		return solveParsedWrapup_(sExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
+	public String solveParsedWrapup(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return solveParsedWrapup_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
 	//+++++++++++++++++++++
 	//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
@@ -807,6 +812,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objReturnReference.set(objEntry);
 		}	
 		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+		
+		TODOGOO20250409; Hier dann ggfs. solveParseWrapup mit dem String aufrufen..
+		
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
 		sReturnTag = this.getValue();

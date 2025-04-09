@@ -467,8 +467,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String sValue = vecReturn.get(1);
 				if(!StringZZZ.equals(sValue,sExpression)){
 					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
-					objEntry = objReturnReferenceIn.get();
-										
+					objEntry = objReturnReferenceIn.get();										
+					//Merke: Hier nicht anschliessend solveParsedWrapup(sExpression) aufrufen. Das "Aufraeumen" der aufrufenden Methode ueberlassen. Sie will ja ggfs. noch andere Solver aufrufen.
+					
 					if(!StringZZZ.equals(sValue,sExpression)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sExpression + "' nach '" + sValue +"'");
 					}
