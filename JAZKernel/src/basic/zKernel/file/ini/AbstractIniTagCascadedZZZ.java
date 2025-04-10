@@ -48,7 +48,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 					
 			//Bei CASCADED Tags alle Untertags holen.
 			//TODOGOON: Das muesste bei cascaded aber eigentlich AllVector sein.
-			//Vector<String>vecAll = this.parseAllVector(sLineWithExpression);
+			//Vector<String>vecAll = this.parseAllVector(sExpression);
 			Vector3ZZZ<String>vecReturn = this.parseFirstVector(sExpressionIn);
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.

@@ -459,12 +459,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				}
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
 				ex.setEntry(objEntry);
-												
-				Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
+				
+				//TODOGOON20250409: Loesungsansatz... wenn man will, das in objEntry entsprechende Statuswerte gesetzt werden, dann muss man auch mit dem Objekt der Klasse selbst arbeiten 
+				//                  und nicht mit dem static Aufruf einer Hilfsmethode. 
+				//                  Kein Wunder das in der Analyse durch die JUnit-Tests bei CallIniSolver die Z-Tags fehlen.
+				//Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
+				Vector3ZZZ<String>vecReturn = ex.parseFirstVector(sExpression);
 				if(vecReturn==null) break main;
 				if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 
-				String sValue = vecReturn.get(1);
+				String sValue = (String) vecReturn.get(1);
 				if(!StringZZZ.equals(sValue,sExpression)){
 					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
 					objEntry = objReturnReferenceIn.get();										

@@ -64,17 +64,17 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	* @see basic.zKernel.file.ini.AbstractIniTagSimpleZZZ#isConvertRelevant(java.lang.String)
 	*/
 	@Override
-	public boolean isConvertRelevant(String sLineWithExpression) throws ExceptionZZZ {
+	public boolean isConvertRelevant(String sExpressionIn) throws ExceptionZZZ {
 	//Nein return this.isParseRelevant(sStringToProof);
 	boolean bReturn = false;
 	main:{
-		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 		
-		bReturn = this.getEmpty().equalsIgnoreCase(sLineWithExpression);
+		bReturn = this.getEmpty().equalsIgnoreCase(sExpressionIn);
 		if(bReturn) break main;
 	
 		
-		bReturn = XmlUtilZZZ.isSurroundedByTag(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing());		
+		bReturn = XmlUtilZZZ.isSurroundedByTag(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing());		
 	}//end main
 	return bReturn;
 	}

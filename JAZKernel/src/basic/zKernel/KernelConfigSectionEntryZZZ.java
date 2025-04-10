@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Vector;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
@@ -12,6 +13,7 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -455,6 +457,16 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 				this.hasAnyValue(false);
 				this.hasNullValue(false);
 			}
+		}
+	}
+	
+	@Override
+	public void setValueAsString(Vector<String> vecValue) {
+		if(vecValue!=null) {
+			String sValue = VectorUtilZZZ.implode(vecValue);
+			this.setValue(sValue);
+		}else {
+			this.setValue((String) null);
 		}
 	}
 	

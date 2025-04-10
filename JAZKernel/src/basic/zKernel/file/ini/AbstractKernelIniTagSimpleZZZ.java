@@ -1711,6 +1711,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					//Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
 						
 					//Auf gar keinen Fall den Z-Tag entfernen, sonst können nachfolgende PATH - Anweisungen nicht mehr gefunden werden.
+					//Merke: Weil es ein SimpleTag ist, kann man keine objReference uebergeben. 
 					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false); //auf jeden Fall um Variablen herum den Z-Tag entfernen
 					if(vecExpressionTemp==null) break;
 					if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.	
@@ -1756,7 +1757,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						//Der INI-Pfad wird per RegEx-Ausdruck definiert.
 						//IDEE: Der RegEx-Ausdruck muss Hochkommata zwischen den [ ] ausschliessen!
 				   														
-						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
+						//Merke: Es ist nicht nur ein simpleTag, dann kann man auch eine objReturnReference uebergeben.
+						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, objReturnReference, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 						if(vecExpressionTemp==null) break;
 						if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 						

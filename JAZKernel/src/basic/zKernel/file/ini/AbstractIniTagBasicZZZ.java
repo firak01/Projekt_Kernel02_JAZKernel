@@ -87,15 +87,15 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	//### aus IIniTagBasicZZZ  	
 	@Override
-	public String[] parseAsArray(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseAsArray(sLineWithExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);
+	public String[] parseAsArray(String sExpression) throws ExceptionZZZ{
+		return this.parseAsArray(sExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);
 	}
 	
 	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null; //new String[];//sLineWithExpression;
+	public String[] parseAsArray(String sExpression, String sDelimiterIn) throws ExceptionZZZ{
+		String[] saReturn = null; 
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
@@ -106,7 +106,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 				sDelimiter = sDelimiterIn;
 			}
 			
-			Vector<String> vecReturn = this.parseFirstVector(sLineWithExpression);
+			Vector<String> vecReturn = this.parseFirstVector(sExpression);
 			if(vecReturn==null)break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 		
@@ -125,8 +125,8 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
 			
 			String sValue = null;			
-			for(String sExpression : saExpression) {
-				sValue = this.parse(sExpression);
+			for(String sExpressionTemp : saExpression) {
+				sValue = this.parse(sExpressionTemp);
 				listasReturnParsed.add(sValue);
 				listasValueParsed.add(sValue);
 			}
@@ -141,13 +141,13 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	//### Aus IParseEnabledZZZ	
 	@Override
-	public String parse(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parse_(sLineWithExpression, true);
+	public String parse(String sExpression) throws ExceptionZZZ{
+		return this.parse_(sExpression, true);
 	}
 				
 	@Override
-	public String parse(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parse_(sLineWithExpression, bKeepSurroundingSeparatorsOnParse);
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
 	}	
 	
 	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
@@ -249,7 +249,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
 	 * ist der Ausdruck NACH der ersten Expression.
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
@@ -431,8 +431,8 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
-		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+	public boolean isExpression(String sExpression) throws ExceptionZZZ {
+		return XmlUtilZZZ.isExpression4TagXml(sExpression, this.getName());
 	}	
 	
 	

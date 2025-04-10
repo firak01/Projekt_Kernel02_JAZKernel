@@ -162,12 +162,23 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public void setValue(String sValue) throws ExceptionZZZ {
 		
 		this.hasAnyValue(true);
-		this.getValueVector().add(sValue);	
-		if(sValue!=null){		
+		if(sValue!=null) {
 			this.hasNullValue(false);
-		}else{
+			this.getValueVector().add(sValue);	
+		}else {
 			this.hasNullValue(true);
-		}		
+		}
+	}
+	
+	@Override
+	public void setValueAsString(Vector<String> vecValue) throws ExceptionZZZ {
+		
+		if(vecValue!=null) {
+			String sValue = VectorUtilZZZ.implode(vecValue);
+			this.setValue(sValue);
+		}else {
+			this.setValue((String) null);
+		}
 	}
 
 	@Override
@@ -459,7 +470,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 
 	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
-	//public Vector<String>parseFirstVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	//public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		

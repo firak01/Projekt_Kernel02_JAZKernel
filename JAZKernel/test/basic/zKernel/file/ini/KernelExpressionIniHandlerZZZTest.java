@@ -2091,18 +2091,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//+++ E) Mit CALL-Berechnung
-				
-			//b)
+			//+++ C) Ohne jegliche CallJava-Berechnung, aber der generelle Solver ist aktiviert
+			
+			//c) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
 			sExpressionSource = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			sExpressionSolved = sExpressionSubstituted; //sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			
-			
-			
+			sExpressionSolved = sExpressionSubstituted;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);//Call Tag raus, der ist aktiviert
+			//der eigene Tag bleibt drin, weil deaktiviert sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);			
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);  //Z-Tag raus, weil gewuenscht
+			btemp = testCompute_CallJava_CallJava_unsolved_(sExpressionSource, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -2200,7 +2199,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted; // "<Z><Z:Call><Z:Java><Z:Class><Z>basic.zBasic.util.machine.EnvironmentZZZ</Z></Z:Class><Z:Method><Z>getHostName</Z></Z:Method></Z:Java></Z:Call></Z>";						
 			btemp = testCompute_CallJava_(sExpressionSource, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-				
+			
 			//b)
 			sExpressionSource = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;

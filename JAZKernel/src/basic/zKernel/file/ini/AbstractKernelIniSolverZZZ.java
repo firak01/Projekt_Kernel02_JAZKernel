@@ -537,6 +537,129 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return sReturn;
 	}
 	
+	
+	
+	/** Methode, die Nacharbeiten und customSolve-Methode aufruft.
+	 *  Sie kann nach der der solveParsed() Methode eingesetzt werden, um ggfs. Tags zu eintfernen, etc.
+	 *  
+	 *  Hintergrund:
+	 *  Statt dem vollständigen solve() aufzurufen ist es ggfs. günstiger schon auf das Ergebnis des Parsens zuzugreifen.
+	 *  was mit solveParsed() passiert.
+	 *  nun müssen noch "Nacharbeiten" gemacht werden, wie sie auch in solvePost() gemacht würden.
+	 *  
+	 *   Im Gegensatz zu einer "Post" Methode, die "intern" am Ende einer Methode (hier solve() ) aufgerufen wird,
+	 *   gehe ich bei einer "Wrapup" Methodo davon aus, das sie "extern" nach einer anderen Methode aufgerufen wird. D.h. nicht innerhalb der Methode, am Ende.
+	 *  
+	 *   BESONDERHEIT 20250409:
+	 *   DAS PROBLEM ist nun, das sReturnLine alle richtig hat. ABER in vecReturn(0) bzw. (1) gibt es noch die Tags
+	 *   WAS wenn wir alles in vec(1) schreiben und 0 bzw. 2 dann leersetzen!!!
+	 *	 Da das Veraendern von den Indices 0 bzw. 2 nicht nachvollziehbar waere dies nicht machen. 
+	 *   STATT DESSEN GIBT ES DIESE METHODE MIT VECTOR ALS EINGABEPARAMETER (trotz der erzeugten Coderedundanz)	
+	 *    
+	 * @param sExpression
+	 * Merke: Methode nur mit String als Eingabeparameter und nicht Vektor, das solveParsed nur String zurueckliefert und hier mit dem Wert weitergearbeitet wird.
+	 * 
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	@Override
+	public Vector3ZZZ<String> solveParsedWrapup(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return solveParsedWrapup_(vecExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solveParsedWrapup(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return solveParsedWrapup_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> solveParsedWrapup_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {						
+		Vector3ZZZ<String> vecReturn = null; //String sReturn = null; 
+		String sReturnTag = null; //String sReturnLine = null;
+		String sExpression=null;
+		boolean bUseExpression = false;
+		boolean bUseSolver = false;
+		boolean bUseSolverThis = false;		
+			
+			
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell mit .getEntry() und darin ggfs. .getEntryNew() versuchen zu uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+			objReturnReference.set(objEntry);
+		}	
+			
+		sReturnTag = this.getValue();		
+		//sReturnLine = sExpressionIn;
+		vecReturn = vecExpressionIn;
+		main:{		
+			if(VectorUtilZZZ.isEmpty(vecExpressionIn)) break main;
+			//sExpression = sExpressionIn;
+						
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;
+							
+			bUseSolver = this.isSolverEnabledGeneral();
+			if(!bUseSolver) break main;
+								
+			this.setRaw(sExpression);
+			objEntry.setRaw(sExpression);
+				
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			//Nein, denn der generelle Solver wird ja ausgefuehrt if(!bUseSolverThis) break main;
+				
+				
+			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
+			if(bUseExpression & bUseSolver & bUseSolverThis){
+				String sTagStart = this.getTagPartOpening();
+				String sTagEnd = this.getTagPartClosing();
+				if(sTagStart.equalsIgnoreCase("<Z>")) {
+					//dann mache nix... der Tag wird spaeter behandelt...
+				}else {
+					//sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
+					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionIn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
+				}
+			}	
+				
+			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+			if(bRemoveSurroundingSeparators & bUseExpression) {
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				//sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
+				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!
+			}
+			
+			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
+			//sReturnLine = this.solvePostCustom(sReturnLine, objReturnReference, bRemoveSurroundingSeparators);
+			vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
+
+			objEntry = objReturnReference.get();
+			
+				
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
+		}//end main:
+		
+				
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.						
+		this.setValue(sReturnTag);
+		//sReturn = sReturnLine;
+			
+		if(objEntry!=null) {				
+			objEntry.setValueAsString(vecReturn);	
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}
+		return vecReturn;
+	}
 	//++++++++++++++++++++++
 
 	//### IKernelEntryReferenceSolveUserZZZ	
@@ -775,6 +898,16 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return solveParsedWrapup_(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
 	}
 	
+	@Override
+	public Vector3ZZZ<String> solveParsedWrapup(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ {
+		return solveParsedWrapup_(vecExpression, objReturnReferenceIn, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solveParsedWrapup(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
+		return solveParsedWrapup_(vecExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+	}
+	
 	//+++++++++++++++++++++
 	//Merke: Folgende Methoden koennen nur im konkreten Solver implementiert werden.
 	//       Z.B. kennt nur der konkrete Solver das Flag, das ihn deaktiviert.
@@ -795,9 +928,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	private Vector3ZZZ<String> solvePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
-		String sReturn = null;
-		String sReturnTag = null; String sReturnLine = null;
-		String sExpressionIn=null;
+		//String sReturn = null;
+		String sReturnTag = null; //String sReturnLine = null;
+		//String sExpressionIn=null;
 		boolean bUseExpression = false;
 		boolean bUseSolver = false;
 		boolean bUseSolverThis = false;		
@@ -820,16 +953,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 						
 		main:{
-			String sExpression = VectorUtilZZZ.implode(vecExpressionIn);
+			//String sExpression = VectorUtilZZZ.implode(vecExpressionIn);		
+			//this.setRaw(sExpressionIn);
+			//objEntry.setRaw(sExpressionIn);
+			sReturnTag = this.getValue();
+			//sReturnLine = sExpressionIn;	
 			
-	/*
-		TODOGOO20250409; Hier dann ggfs. solveParseWrapup mit dem String aufrufen..
-		
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);
-		sReturnTag = this.getValue();
-		sReturnLine = sExpressionIn;	
-		main:{
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;			
 						
@@ -868,16 +997,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			
 			sReturnTag = (String) vecReturn.get(1);
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			//sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
 			
-			 */
-		
-			TODOGOON20250409;//DAS PROBLEM ist nun, das sReturnLine alle richtig hat. ABER in vecReturn(0) bzw. (1) gibt es noch die Tags
-			                 //WAS wenn wir alles in vec(1) schreiben und 0 bzw. 2 dann leersetzen!!!
-			sReturnLine = this.solveParsedWrapup(sExpression, objReturnReferenceIn, bRemoveSurroundingSeparators);
+			vecReturn = this.solveParsedWrapup(vecReturn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
 		}//end main:
 	
@@ -886,10 +1011,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		vecReturn.replace(sReturnTag);						
 		this.setValue(sReturnTag);
-		sReturn = sReturnLine;
+		//sReturn = sReturnLine;
 		
 		if(objEntry!=null) {				
-			objEntry.setValue(sReturnLine);	
+			objEntry.setValueAsString(vecReturn);	
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		}

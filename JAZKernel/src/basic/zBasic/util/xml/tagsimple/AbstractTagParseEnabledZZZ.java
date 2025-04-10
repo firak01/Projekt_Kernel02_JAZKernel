@@ -118,7 +118,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
 	 * ist der Ausdruck NACH der ersten Expression.
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
@@ -132,7 +132,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
 	 * ist der Ausdruck NACH der ersten Expression.
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
