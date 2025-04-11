@@ -14,8 +14,8 @@ public interface IConversionUserZZZ extends IConvertEnabledZZZ{
 	public String convertAsExpression() throws ExceptionZZZ;
 	public String convertAsExpression(String sExpression) throws ExceptionZZZ;
 
-	//public Vector<String> parseFirstVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ;
-	//public Vector<String> parseAllVectorAsExpression(String sLineWithExpression) throws ExceptionZZZ;
+	//public Vector<String> parseFirstVectorAsExpression(String sExpression) throws ExceptionZZZ;
+	//public Vector<String> parseAllVectorAsExpression(String sExpression) throws ExceptionZZZ;
 	
 	
 	//Merke: Auf dieser Ebene der Vererbung gibt es keine Kernel Flags, also geht nicht

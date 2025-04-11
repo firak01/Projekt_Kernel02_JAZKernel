@@ -228,7 +228,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ
@@ -439,16 +439,16 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 
 	//### Aus Interface IParseEnabledZZZ		
 	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
+	public String[] parseAsArray(String sExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			
 			//Ergaenzen der Elternmethode um das nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				saReturn = super.parseAsArray(sLineWithExpression, sDelimiter);
+				saReturn = super.parseAsArray(sExpression, sDelimiter);
 			}else {
-				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
+				saReturn = StringZZZ.explode(sExpression, sDelimiter);
 			}		
 		}//end main
 		return saReturn;
@@ -489,16 +489,16 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
 	 */
 	@Override
-	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sLineWithExpression) throws ExceptionZZZ {
+	public IKernelConfigSectionEntryZZZ parseAsEntryNew(String sExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{		
 			
 			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				objReturn = super.parseAsEntryNew(sLineWithExpression);
+				objReturn = super.parseAsEntryNew(sExpression);
 			}else {
-				objReturn.setValue(sLineWithExpression);
+				objReturn.setValue(sExpression);
 			}									
 		}//end main:
 		return objReturn;

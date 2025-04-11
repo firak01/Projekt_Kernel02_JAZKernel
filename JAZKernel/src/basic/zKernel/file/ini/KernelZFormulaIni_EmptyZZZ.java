@@ -44,8 +44,8 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		
 	//### Aus IIniTagBasicZZZ
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sLineWithExpression, true);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ{
+		return this.parseFirstVector(sExpression, true);
 	}
 	
 	@Override

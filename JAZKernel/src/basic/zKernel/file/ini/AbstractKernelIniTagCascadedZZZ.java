@@ -95,7 +95,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	
 	//### aus IParseEnabledZZZ
 	//Die Idee ist, das die konkreten Klassen den ersten Vector parsen
-	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	//also ggfs. überschreiben: public Vector<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {

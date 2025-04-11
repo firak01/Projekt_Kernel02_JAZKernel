@@ -178,13 +178,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, true);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparatorsOnParse);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//### Aus IKernelEntryExpressionUserZZZ	
@@ -385,7 +385,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	//Analog zu AbstractkernelIniSolverZZZ, nur jetzt mit Call-Tag (vorher aber noch Pfade und ini-Variablen aufloesen)
 	/**Methode ersetzt in der Zeile alle CALL Werte.
 	 * Methode überschreibt den abstrakten "solver", weil erst einmal Pfade oder Variablen ersetzt werden sollen.
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ

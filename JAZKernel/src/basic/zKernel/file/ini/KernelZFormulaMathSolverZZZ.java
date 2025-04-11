@@ -151,7 +151,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 
 	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ

@@ -72,17 +72,17 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	 }//end function KernelExpressionMathSolverNew_
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector_(sLineWithExpression);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sLineWithExpression) throws ExceptionZZZ{
+	private Vector3ZZZ<String> parseFirstVector_(String sExpression) throws ExceptionZZZ{
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector3ZZZ<String> vecSection = super.parseFirstVector(sLineWithExpression);	
+			Vector3ZZZ<String> vecSection = super.parseFirstVector(sExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);

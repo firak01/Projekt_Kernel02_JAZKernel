@@ -250,7 +250,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 *  IDEE: 
 	 *  Die Entschluesselung zuletzt. Damit kann z.B. theoretisch in den JSON-Werten verschluesselter Inhalt enthalten sein.
 	 *  
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objReturnReference
 	 * @return
 	 * @throws ExceptionZZZ

@@ -92,40 +92,40 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		return objReturn;
 	}
 	
-	public static String getAsString(IConvertEnabledZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public static String getAsString(IConvertEnabledZZZ objExpression, String sExpression) throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
 			if(objExpression==null) break main;
 			
-			sReturn = objExpression.convert(sLineWithExpression);
+			sReturn = objExpression.convert(sExpression);
 		}
 		return sReturn;
 	}
 	
-	public String getAsString(String sLineWithExpression)throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public String getAsString(String sExpression)throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
 			if(!this.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION))break main;
 			
-			sReturn = KernelZFormulaIniConverterZZZ.getAsStringStatic(sLineWithExpression);
+			sReturn = KernelZFormulaIniConverterZZZ.getAsStringStatic(sExpression);
 		}//end main:
 		return sReturn;		
 	}
 	
-	public static String getAsStringStatic(String sLineWithExpression)throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+	public static String getAsStringStatic(String sExpression)throws ExceptionZZZ{
+		String sReturn = sExpression;
 		main:{
 			
 			IConvertEnabledZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();//Klasse ohne Kernel oder Expression Flags
-			if((objExpression).isConvertRelevant(sLineWithExpression)){				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+			if((objExpression).isConvertRelevant(sExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sExpression);
 				break main;
 			}
 			
 			//Wie soll das gehen... nach der Umstrukturieren hat die Klasse nun doch KErnel, FileIni und Expression Flags
 			objExpression = new ZTagFormulaIni_NullZZZ(); //Klasse ohne Kernel oder Expression Flags
-			if(objExpression.isConvertRelevant(sLineWithExpression)){				
-				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+			if(objExpression.isConvertRelevant(sExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sExpression);
 				break main;
 			}						
 		}

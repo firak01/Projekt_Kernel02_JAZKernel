@@ -200,13 +200,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	//### aus IParseEnabled		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, true);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sLineWithExpression, null, bKeepSurroundingSeparatorsOnParse);
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 		
 	//### Aus IKernelEntryExpressionUserZZZ	

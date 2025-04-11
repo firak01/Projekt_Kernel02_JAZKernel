@@ -73,25 +73,25 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	 *
 	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
 	 * 
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseFirstVector_(sLineWithExpression, true);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, true);
 	}
 	
 	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parseFirstVector_(sLineWithExpression, bKeepSurroundingSeparatorsOnParse);
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse);
 	}
 	
-	private Vector3ZZZ<String>parseFirstVector_(String sLineWithExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
-		String sReturn = sLineWithExpression;
+		String sReturn = sExpression;
 		boolean bUseExpression = false;
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			
 			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION);
 			if(!bUseExpression) break main;
@@ -100,7 +100,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			if(!bUseExpressionPath) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
+			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
 			
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;

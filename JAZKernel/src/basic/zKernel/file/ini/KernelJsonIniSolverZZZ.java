@@ -124,10 +124,10 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 }//end function KernelJsonIniSolverNew_
 					
 	//###### Getter / Setter
-	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
+	public HashMap<String,String> computeHashMap(String sExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)==false) break main; 			
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
@@ -137,7 +137,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
 			objJsonMapSolver.setFlag(saFlag,true);
-			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);			
+			hmReturn=objJsonMapSolver.computeHashMapFromJson(sExpression);			
 			}				
 		}//end main:
 		this.setValue(hmReturn);
@@ -299,7 +299,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
-	 * @param sLineWithExpression
+	 * @param sLine
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ

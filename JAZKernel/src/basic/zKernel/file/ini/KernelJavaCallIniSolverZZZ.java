@@ -171,7 +171,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ
@@ -531,14 +531,14 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 //	}
 	
 	@Override
-	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
+	public String[] parseAsArray(String sExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
-				saReturn = super.parseAsArray(sLineWithExpression, sDelimiter);
+				saReturn = super.parseAsArray(sExpression, sDelimiter);
 			}else {
-				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
+				saReturn = StringZZZ.explode(sExpression, sDelimiter);
 			}		
 		}//end main
 		return saReturn;

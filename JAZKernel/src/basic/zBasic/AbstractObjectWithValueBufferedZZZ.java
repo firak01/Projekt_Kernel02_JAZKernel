@@ -1,6 +1,9 @@
 package basic.zBasic;
 
+import java.util.Vector;
+
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 
 public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObjectWithValueZZZ<T> implements IValueBufferedUserZZZ{
 	private static final long serialVersionUID = -2430016737090603862L;
@@ -56,6 +59,9 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 			this.hasNullValue(true);
 		}		
 	}
+	
+	
+	
 	//####################################################
 	
 }

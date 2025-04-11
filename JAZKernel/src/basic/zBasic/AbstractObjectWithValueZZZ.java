@@ -1,5 +1,8 @@
 package basic.zBasic;
 
+import java.util.Vector;
+
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T> implements IValueUserZZZ{
@@ -68,6 +71,17 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 		}else{
 			this.hasNullValue(true);
 		}		
+	}
+	
+	@Override
+	public void setValueAsString(Vector<String> vecValue) throws ExceptionZZZ {
+		
+		if(vecValue!=null) {
+			String sValue = VectorUtilZZZ.implode(vecValue);
+			this.setValue(sValue);
+		}else {
+			this.setValue((String) null);
+		}
 	}
 	
 	@Override

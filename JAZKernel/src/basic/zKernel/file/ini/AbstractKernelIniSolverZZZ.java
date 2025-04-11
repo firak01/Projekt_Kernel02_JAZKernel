@@ -664,8 +664,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 
 	//### IKernelEntryReferenceSolveUserZZZ	
 	@Override
-	public String solve(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
-		return this.solve_(sLineWithExpression, objReturnReference, true);
+	public String solve(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		return this.solve_(sExpression, objReturnReference, true);
 	}
 	
 	@Override
@@ -812,7 +812,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden (!!!!) , wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * Nachfolgender Code ist also eine Art Blaupause.
-	 * @param sLineWithExpression
+	 * @param sExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ

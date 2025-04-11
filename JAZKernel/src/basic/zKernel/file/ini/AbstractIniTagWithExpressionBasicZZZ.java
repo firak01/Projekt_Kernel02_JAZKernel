@@ -160,8 +160,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Aus IIniTagBasicZZZ
 	@Override
-	public String[] parseAsArray(String sLineWithExpression) throws ExceptionZZZ{
-		return this.parseAsArray(sLineWithExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);
+	public String[] parseAsArray(String sExpression) throws ExceptionZZZ{
+		return this.parseAsArray(sExpression, IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR);
 	}
 	
 	@Override
@@ -327,8 +327,8 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### aus IExpressionUserZZZ
 	@Override
-	public boolean isExpression(String sLineWithExpression) throws ExceptionZZZ {
-		return XmlUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
+	public boolean isExpression(String sExpression) throws ExceptionZZZ {
+		return XmlUtilZZZ.isExpression4TagXml(sExpression, this.getName());
 	}	
 	
 	@Override
