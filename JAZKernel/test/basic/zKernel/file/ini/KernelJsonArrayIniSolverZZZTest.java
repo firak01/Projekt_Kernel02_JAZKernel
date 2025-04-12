@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
 	public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
+	TODOGOON20250412;//Mache hier auch wie bei MAP: ...CONTENT.... ...SOLVED...
 	
 	private File objFile;
 	private IKernelZZZ objKernel;

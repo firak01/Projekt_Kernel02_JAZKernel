@@ -620,15 +620,21 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						throw ez;
 					}
 			 		
-			 		IKernelConfigSectionEntryZZZ objEntry = null;
-					if(objReturnReferenceIn==null) {				
+			 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
+					IKernelConfigSectionEntryZZZ objEntry = null;
+					if(objReturnReferenceIn==null) {
+						objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					}else {
-						objEntry = objReturnReferenceIn.get();
-					}			
-					if(objEntry==null) {
-						objEntry = new KernelConfigSectionEntryZZZ();				
+						objReturnReference = objReturnReferenceIn;
 					}
-			 		
+					
+					objEntry = objReturnReference.get();
+					if(objEntry==null) {						
+						objEntry = new KernelConfigSectionEntryZZZ(); 
+						objReturnReference.set(objEntry);
+					}else {						
+					}
+			 					 		
 					//Einschraenkung auch auf das was im Ini-File moeglich ist.
 			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 					if(bUseJsonArray) {
@@ -686,15 +692,21 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					throw ez;
 				}
 				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
 				IKernelConfigSectionEntryZZZ objEntry = null;
-				if(objReturnReferenceIn==null) {				
+				if(objReturnReferenceIn==null) {
+					objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				}else {
-					objEntry = objReturnReferenceIn.get();
-				}			
-				if(objEntry==null) {
-					objEntry = new KernelConfigSectionEntryZZZ();				
+					objReturnReference = objReturnReferenceIn;
 				}
 				
+				objEntry = objReturnReference.get();
+				if(objEntry==null) {					
+					objEntry = new KernelConfigSectionEntryZZZ();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+					objReturnReference.set(objEntry);
+				}else {					
+				}
+								
 				ArrayList<String> alsRawJsonSolved=null;
 				boolean bAnyJson = false;
 				
@@ -715,7 +727,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
 										
 					KernelJsonArrayIniSolverZZZ ex = new KernelJsonArrayIniSolverZZZ(objFileIni, saFlag);
-					alstemp = ex.computeArrayList(sRaw);
+					//20250412; das scheint zu klappen alstemp = ex.computeArrayList(sRaw);
+					//aber eigentlich muss es sein
+					ex.solve(sRaw,objReturnReference);
+					alstemp = ex.getValueArrayList();
 					if(alstemp.isEmpty()) {				
 					}else{
 						bAnyJson = true;
@@ -753,15 +768,22 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
 			IKernelConfigSectionEntryZZZ objEntry = null;
-			if(objReturnReferenceIn==null) {				
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			}else {
-				objEntry = objReturnReferenceIn.get();
-			}			
-			if(objEntry==null) {
-				objEntry = new KernelConfigSectionEntryZZZ();				
+				objReturnReference = objReturnReferenceIn;
 			}
 			
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {				
+				objEntry = new KernelConfigSectionEntryZZZ();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+				objReturnReference.set(objEntry);
+			}else {
+			}
+			
+		
 			boolean bAnyJson = false;
 			
 			HashMap<String,String> hmtemp = null;
@@ -780,7 +802,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
 								
 				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlag);
-				hmtemp = ex.computeLinkedHashMap(sRaw); //TODO GOON 20241009; //Eingentlich muss noch eine Reference fuer objEntry uebergeben werden.
+				//DAS KLAPPT 20250412  hmtemp = ex.computeLinkedHashMap(sRaw); //TODO GOON 20241009; //Eigentlich muss noch eine Reference fuer objEntry uebergeben werden.
+				//TODOGOON20250412; //das sollte docch eigentlich ...
+				ex.solve(sRaw, objReturnReferenceIn); //...sein.Darin dann solveParsed und darin dann irgendwann computeLinkedHashMap();
+				hmtemp = ex.getValueHashMap();
 				if(hmtemp==null || hmtemp.isEmpty()) {				
 				}else{
 					bAnyJson = true;

@@ -211,10 +211,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen
-			if(!JsonUtilZZZ.isJsonValid(sReturn)) break main;
+			if(!JsonUtilZZZ.isJsonValid(sReturnTag)) break main;
 			
 			//Ziel: Die Reihenfolge berücksichtige		
-			hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturn);
+			hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturnTag);
 			this.setValue(hmReturn);
 			this.setValue(sReturnTag);
 			//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;
