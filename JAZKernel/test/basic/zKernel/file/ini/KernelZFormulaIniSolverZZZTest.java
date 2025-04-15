@@ -1962,7 +1962,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";	
-					IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSUBSTITUTED;
+					IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.PATH_UNSUBSTITUTED;
 			
 					sExpression = sExpressionIn;
 					sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -2122,7 +2122,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";	
-					IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.SUBSTITUTED;
+					IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.PATH_SUBSTITUTED;
 			
 					sExpression = sExpressionIn;	
 					sExpressionSubstituted = sExpressionSubstitutedIn;

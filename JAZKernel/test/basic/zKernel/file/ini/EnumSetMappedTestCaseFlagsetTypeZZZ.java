@@ -26,8 +26,10 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	FORMULA_MATH_UNSOLVED("formula_math_unsolved",TestUtilAsTestZZZ.sFLAGSET_MATH_UNSOLVED,"Flagset Variante: 'Formula Math unsolved'"),
 	SOLVED("solved",TestUtilAsTestZZZ.sFLAGSET_SOLVED,"Flagset Variante: 'Solved'"),
 	
-	UNSUBSTITUTED("unsubstituted",TestUtilAsTestZZZ.sFLAGSET_UNSUBSTITUTED,"Flagset Variante: 'Unsubstituted'"),
-	SUBSTITUTED("substituted",TestUtilAsTestZZZ.sFLAGSET_SUBSTITUTED,"Flagset Variante: 'Substituted'"),
+	PATH_UNSUBSTITUTED("path_unsubstituted",TestUtilAsTestZZZ.sFLAGSET_PATH_UNSUBSTITUTED,"Flagset Variante: 'Path Unsubstituted'"),
+	PATH_SUBSTITUTED("path_substituted",TestUtilAsTestZZZ.sFLAGSET_PATH_SUBSTITUTED,"Flagset Variante: 'Path Substituted'"),
+	VARIABLE_UNSUBSTITUTED("variable_unsubstituted",TestUtilAsTestZZZ.sFLAGSET_VARIABLE_UNSUBSTITUTED,"Flagset Variante: 'Variable Unsubstituted'"),
+	VARIABLE_SUBSTITUTED("variable_substituted",TestUtilAsTestZZZ.sFLAGSET_VARIABLE_SUBSTITUTED,"Flagset Variante: 'Variable Substituted'"),
 	
 	CALL_UNEXPRESSED("call_unexpressed",TestUtilAsTestZZZ.sFLAGSET_CALL_UNEXPRESSED,"Flagset Variante: 'Call unexpressed'"),
 	CALL_UNSOLVED("call_unsolved",TestUtilAsTestZZZ.sFLAGSET_CALL_UNSOLVED,"Flagset Variante: 'Call unsolved'"),

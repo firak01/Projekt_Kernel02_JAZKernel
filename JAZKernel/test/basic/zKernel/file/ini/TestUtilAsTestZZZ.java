@@ -22,8 +22,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 	
 	public static final String sFLAGSET_MATH_UNSOLVED="muso";
 	public static final String sFLAGSET_SOLVED="so";
-	public static final String sFLAGSET_UNSUBSTITUTED="usu";
-	public static final String sFLAGSET_SUBSTITUTED="su";
+	public static final String sFLAGSET_PATH_UNSUBSTITUTED="pusu";
+	public static final String sFLAGSET_PATH_SUBSTITUTED="psu";
+	public static final String sFLAGSET_VARIABLE_UNSUBSTITUTED="vusu";
+	public static final String sFLAGSET_VARIABLE_SUBSTITUTED="vsu";
 	
 	public static final String sFLAGSET_CALL_UNEXPRESSED="cuex";
 	public static final String sFLAGSET_CALL_UNSOLVED="cus";
@@ -222,7 +224,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
-				case sFLAGSET_UNSUBSTITUTED:
+				case sFLAGSET_PATH_UNSUBSTITUTED:
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.
@@ -251,7 +253,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					
 					break;
-				case sFLAGSET_SUBSTITUTED:				
+				case sFLAGSET_PATH_SUBSTITUTED:				
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.
@@ -609,7 +611,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				break;
 			
-			case sFLAGSET_UNSUBSTITUTED:
+			case sFLAGSET_PATH_UNSUBSTITUTED:
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
@@ -638,7 +640,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				break;
 				
-			case sFLAGSET_SUBSTITUTED:
+			case sFLAGSET_PATH_SUBSTITUTED:
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
