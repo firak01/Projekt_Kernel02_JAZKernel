@@ -378,16 +378,15 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 			String sValue; 
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry;
-			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			sTag = sTagIn;
 			sTagSolved = sTagSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 			
 			//####################################################################################
 			//### EXPRESSIONSOLVER - NICHT EXPRESSION BEHANDLUNG
@@ -424,12 +423,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				assertEquals(sTagSolved, sValue);
 									
 				objEntry = objSectionEntryReference.get();
-				assertNotNull(objEntry);
-									
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);				
+				assertNotNull(objEntry);			
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -444,11 +438,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -459,11 +448,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 							
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
 			}
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -477,14 +461,14 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
 			}
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
 			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);	
+
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -501,16 +485,15 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 			String sValue; 		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry;
-						
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
-			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
+									
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			sTag = sTagIn;
 			sTagSolved = sTagSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
@@ -546,13 +529,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				assertEquals(sTagSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
-				assertNotNull(objEntry);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
-		
+				assertNotNull(objEntry);		
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -567,12 +544,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 									
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
-				
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -584,12 +555,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
-	
 			}
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -601,15 +566,14 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
-				assertNotNull(objEntry);
-				
-				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-				assertTrue(btemp);
-				
+				assertNotNull(objEntry);				
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -1022,9 +986,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sMethodname = objEntry.getCallingMethodname();
 			assertNull("NULL erwartet. Wert ist aber '" + sMethodname + "'", sMethodname);
 
-			
-
-			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
@@ -1040,7 +1001,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			boolean btemp;  										
 			String sExpression; String sExpressionSolved; 
 			String sValue; boolean bValue;
-			IKernelConfigSectionEntryZZZ objEntry;
+			IKernelConfigSectionEntryZZZ objEntry=null;
 			String sHostName; String sClassname; String sMethodname;
 			
 			String sLineWithExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -1071,8 +1032,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
-			
-			
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 						
 			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus UND Z:Call-Tag auch raus			
