@@ -245,13 +245,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 			
-			if(objEntry.isSubstituted()) {
-				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
-				//und ggfs. Value-Eintraege setzen
-				
-				
-			}
-			
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);
 		}//end main:

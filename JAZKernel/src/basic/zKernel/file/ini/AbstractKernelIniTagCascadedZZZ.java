@@ -185,7 +185,14 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objReturnReferenceSubstitute.set(objEntry);
 			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
 			objEntry = objReturnReferenceSubstitute.get();						
-			vecReturn.replace(1,sReturnSubstituted);			
+			vecReturn.replace(1,sReturnSubstituted);
+			
+			if(objEntry.isSubstituted()) {
+				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
+				//und ggfs. Value-Eintraege setzen
+				this.updateValueParseCustom(objReturnReference, sReturnLine);			
+			}
+			
 			//+++++++++++++++++++++++++
 			
 			
