@@ -1149,15 +1149,35 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ{
-		//super.updateValueParseCustom(objReturnReference, sExpressionIn);
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ{
+		//oberste Klasse erreicht   super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
-		//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-		//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
-		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-		if(XmlUtilZZZ.isExpression(sExpressionIn)){
-			objEntry.isExpression(true);
-			this.getEntry().isExpression(true);
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+	
+	
+		//#######################################################
+		//Flags entscheiden ob es weitergeht.
+		if(this.isExpressionEnabledGeneral()) {
+
+			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
+			if(XmlUtilZZZ.isExpression(sExpressionIn)){
+				objEntry.isExpression(true);
+				this.getEntry().isExpression(true);
+			}
 		}
 	}
 		

@@ -219,18 +219,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	}
 	
 	//### aus IParseUserZZZ
-	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		//super.updateValueParseCustom(objReturnReference, sExpressionIn);
-				
-		//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-		//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
-		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-		if(XmlUtilZZZ.isExpression(sExpressionIn)){
-			objEntry.isExpression(true);
-			this.getEntry().isExpression(true);
-		}	
-	}
+
 	
 	//### aus IExpressionUserZZZ	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.

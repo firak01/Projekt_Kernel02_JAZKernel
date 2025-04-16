@@ -51,6 +51,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sCaseSet = objEnumTestCase.getAbbreviation();
 			
 			switch(sCaseSet) {
+			case sCASE_PARSE_AS_ENTRY:
 			case sCASE_PARSE:{
 				assertFileIniEntry_parse(objEnumTestFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
 				break;
@@ -60,6 +61,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//also man kann in diesem Ausdruck nicht "verodern" ||, da dies keine feststehende Expression ist, sondern zur Laufzeit gebaut wuerde
 			//case sCASE_SOLVE || sCASE_AS_ENTRY:{
 			//praktikable Loesung: Schreibe die Cases untereinander und lasse das break weg!
+			case sCASE_SOLVE_AS_ENTRY:
 			case sCASE_AS_ENTRY:
 			case sCASE_SOLVE:{
 				assertFileIniEntry_solve(objEnumTestFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
@@ -191,12 +193,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 					
 				case sFLAGSET_SOLVED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertFalse(objEntry.isSolveCalled());
+					assertTrue(objEntry.isExpression()); 	//ohne Expression-Nutzung kein Expression Eintrag!!!
+					assertTrue(objEntry.isParseCalled()); 	//Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
+					assertFalse(objEntry.isSolveCalled()); //Noch wurde Solve nicht aufgerufen
 				
 					assertTrue(objEntry.isParsed()); 
-					assertTrue(objEntry.isSolved());
+					assertFalse(objEntry.isSolved());      //Noch wurde Solve nicht aufgerufen
 					
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged()); 

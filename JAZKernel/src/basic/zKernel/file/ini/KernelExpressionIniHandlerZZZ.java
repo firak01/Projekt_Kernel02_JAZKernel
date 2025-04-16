@@ -106,8 +106,52 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//### Aus IParseUserZZZ
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		super.updateValueParseCustom(objReturnReference, sExpressionIn);
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		
+		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		
+		
+			//#####################################################################
+			//Flags entscheiden, ob es weiter geht
+			if(!this.isExpressionEnabledGeneral()) break main;
+			if(!this.isParserEnabledGeneral()) break main;
+			super.updateValueParseCustom(objReturnReference, sExpressionIn); //isExpression setzen
+					
+			if(!this.isParserEnabledThis()) break main;
+			
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe z.B. auch KernelCallIniSolverZZZ			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			
+			objEntry = objReturnReference.get();			
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelCallIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isCall(true);
+				this.getEntry().isCall(true);
+			}
+			
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJavaCall(true);
+				this.getEntry().isJavaCall(true);
+			}
+		
+		}//end main:
 	}
 
 	//### aus IParseEnabledZZZ
@@ -135,7 +179,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false; boolean bUseParserThis= false;
+		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -171,12 +215,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;						
 			
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+			
 			this.updateValueParseCustom(objReturnReference, sExpression);
-
-//			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
-//			if(XmlUtilZZZ.isExpression(sExpression)) {
-//				objEntry.isExpression(true);				
-//			}
 									
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledThis();
@@ -202,6 +244,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
+			
+			if(objEntry.isSubstituted()) {
+				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
+				//und ggfs. Value-Eintraege setzen
+				
+				
+			}
 			
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);

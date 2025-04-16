@@ -9,6 +9,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface IParseEnabledZZZ {
+	boolean isParserEnabledGeneral() throws ExceptionZZZ;
 	boolean isParserEnabledThis() throws ExceptionZZZ;
 
 	boolean isParseRelevant() throws ExceptionZZZ;//ob ein Tag ueberhaupt fuer das parsen relevant ist

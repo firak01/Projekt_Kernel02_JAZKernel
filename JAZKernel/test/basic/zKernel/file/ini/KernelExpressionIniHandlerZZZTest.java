@@ -461,7 +461,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 
-	private boolean testCompute_PATH_PATH_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_PATH_unsubstituted_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -469,8 +469,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				boolean btemp;
 			
 				String sExpressionSource; String sExpressionSubstituted; String sExpressionSolved; String sValue;
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-				IKernelConfigSectionEntryZZZ objEntry=null;
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
 						
 				sExpressionSource = sExpressionSourceIn;
@@ -503,7 +502,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 						
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {				
-					sValue = objExpressionHandler.parse(sExpressionSource);
+					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSubstituted, sValue);
 					
 					objEntry = objSectionEntryReference.get();
@@ -512,8 +511,11 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sValue = objExpressionHandler.solve(sExpressionSource, bRemoveSurroundingSeparatorsOnSolve);
+					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSolved, sValue);
+					
+					objEntry = objSectionEntryReference.get();
+					assertNotNull(objEntry);
 				}
 								
 				bReturn = true;
@@ -2182,17 +2184,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//+++ C) Ohne jegliche CallJava-Berechnung, aber der generelle Solver ist aktiviert
-			
-			//c) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
+			//+++ E) Mit CALL-Berechnung
+			//a)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			sExpressionSolved = sExpressionSubstituted;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);//Call Tag raus, der ist aktiviert
-			//der eigene Tag bleibt drin, weil deaktiviert sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);			
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);  //Z-Tag raus, weil gewuenscht
-			btemp = testCompute_CallJava_CallJava_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
+			sExpressionSolved = sExpressionSubstituted; // "<Z><Z:Call><Z:Java><Z:Class><Z>basic.zBasic.util.machine.EnvironmentZZZ</Z></Z:Class><Z:Method><Z>getHostName</Z></Z:Method></Z:Java></Z:Call></Z>";						
+			btemp = testCompute_CallJava_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -2277,7 +2275,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//der eigene Tag bleibt drin, weil deaktiviert sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME);			
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);  //Z-Tag raus, weil gewuenscht
 			btemp = testCompute_CallJava_CallJava_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
+						
 			//d) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -2498,8 +2496,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				assertFalse(objEntry.isCall()); 		//Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
-				assertFalse(objEntry.isJavaCall());	    //Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isCall()); 		    //Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isJavaCall());	    //Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -2513,8 +2511,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				assertTrue(objEntry.isCall());		//Wert kommt aus parse()
-				assertTrue(objEntry.isJavaCall());	//Wert kommt aus parse()
+				assertTrue(objEntry.isCall());		//Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isJavaCall());	//Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -2665,8 +2663,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				assertFalse(objEntry.isCall()); 		//Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
-				assertFalse(objEntry.isJavaCall());	    //Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isCall()); 		//Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isJavaCall());	//Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -2681,8 +2679,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				assertTrue(objEntry.isCall());
-				assertTrue(objEntry.isJavaCall());
+				assertTrue(objEntry.isCall());		//Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der CallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
+				assertTrue(objEntry.isJavaCall());  //Beim updateCustom() wird im ExpressionHandler alles geprueft. Beim Solven erst wuerde der JavaCallIniSolver erst aufgerufen, mit seinem parse(). Wert kommt aus parse()
 				assertNotNull(objEntry.getCallingClassname());
 				assertNotNull(objEntry.getCallingMethodname());
 			}

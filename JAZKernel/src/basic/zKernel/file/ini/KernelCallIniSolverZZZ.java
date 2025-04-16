@@ -124,6 +124,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(this.isParserEnabledThis()) {
 				IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 				
+				//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+				//weil sie ihrerseits mit .solve() ausgeführt werden.
+				
+				//DARUM:
+				//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+				
 				//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
 					objEntry.isJavaCall(true);

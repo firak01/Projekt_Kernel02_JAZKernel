@@ -117,10 +117,15 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	return bReturn;
 	}
 	
-	//### Aus IParseEnabledZZZ	
+	//### Aus IParseEnabledZZZ
+	@Override
+	public boolean isParserEnabledGeneral() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER);
+	}
+	
 	@Override
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER);
+		return this.isParserEnabledGeneral();
 	}
 
 	@Override
