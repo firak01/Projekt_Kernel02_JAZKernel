@@ -90,7 +90,7 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	abstract void isPathSubstituteCalled(boolean bIsSubstitutedCalled);
 		
 	public boolean isPathSubstituted();
-	abstract void isPathSubstituted(boolean bIsPathSolved);
+	abstract void isPathSubstituted(boolean bIsPathSubstituted);
 	
 	public boolean isPathSubstitutedChanged();
 	abstract void isPathSubstitutedChanged(boolean bIsPathSubstitutedChanged);

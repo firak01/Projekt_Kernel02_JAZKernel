@@ -207,85 +207,95 @@ public class TestUtilAsTestZZZ extends TestCase{
 					}
 					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert
 					
+					assertTrue(objEntry.isPathSubstituted());
+					//+++ kann man hier doch auch eigentlich nicht so abfragen
 					if(sExpression.equals(sExpressionSubstituted)) {						
-						assertFalse(objEntry.isPathSubstituted());
+						assertFalse(objEntry.isPathSubstitutedChanged());
 					}else {
-						assertFalse(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstitutedChanged());
 					}	
+					//++++++++++++++++++++++++++++++++++++++++++
 					
+					assertTrue(objEntry.isVariableSubstituted());
 					//+++ kann man hier doch auch eigentlich nicht so abfragen					
-					assertFalse(objEntry.isVariableSubstituted());
+					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-					
-							
+												
 					assertFalse(objEntry.isDecrypted());
-					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.				
 					break;
 				case sFLAGSET_PATH_UNSUBSTITUTED:
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.
-								
-					assertTrue(objEntry.isParsed()); 
-					assertFalse(objEntry.isSolved());
-
-					
 					sExpressionSolved = sExpressionSolvedIn;
+					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+										
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
 						assertTrue(objEntry.isParsedChanged());
-					}	
-					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert
+					}
+					assertTrue(objEntry.isParsed());
 					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertTrue(objEntry.isPathSubstituteCalled());																
+					assertFalse(objEntry.isPathSubstitutedChanged());									
 					assertFalse(objEntry.isPathSubstituted());
+					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					
+					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertFalse(objEntry.isVariableSubstituteCalled());
+																		//+++ kann man hier doch auch eigentlich nicht so abfragen														
 					assertFalse(objEntry.isVariableSubstituted());
-															
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					
+					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.					
+					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert									 
+					assertFalse(objEntry.isSolved()); //Der Solve-Schritt wurde nicht gemacht.
+					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-					
 					break;
-				case sFLAGSET_PATH_SUBSTITUTED:				
-					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.
-					
+										
+				case sFLAGSET_PATH_SUBSTITUTED:
 					sExpressionSolved = sExpressionSolvedIn;
+					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+										
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
 						assertTrue(objEntry.isParsedChanged());
-					}						
-					if(sExpression.equals(sExpressionSubstituted)) {						
-						assertFalse(objEntry.isPathSubstituted());
+					}
+					assertTrue(objEntry.isParsed());
+					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertTrue(objEntry.isPathSubstituteCalled());					
+					if(sExpression.equals(sExpressionSubstituted)) {  //+++ kann man hier doch auch eigentlich nicht so abfragen						
+						assertFalse(objEntry.isPathSubstitutedChanged());
 					}else {
-						assertTrue(objEntry.isPathSubstituted());
+						assertTrue(objEntry.isPathSubstitutedChanged());
 					}					
-					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert									 
-																
-					//+++ kann man hier doch auch eigentlich nicht so abfragen					
+					assertTrue(objEntry.isPathSubstituted());
+					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					
+					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertFalse(objEntry.isVariableSubstituteCalled());
+																		//+++ kann man hier doch auch eigentlich nicht so abfragen														
 					assertFalse(objEntry.isVariableSubstituted());
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					
+					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde nicht gemacht.					
+					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert									 
+					assertFalse(objEntry.isSolved()); //Der Solve-Schritt wurde nicht gemacht.
+					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-					
-					assertFalse(objEntry.isCall());
-					assertFalse(objEntry.isJavaCall());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 					break;
-				
+					
 				case sFLAGSET_CALL_UNSOLVED:
 					
 					assertTrue(objEntry.isParseCalled()); 					
@@ -579,69 +589,91 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());	
 				break;
 				
-			case sFLAGSET_SOLVED:
+			case sFLAGSET_SOLVED:				
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+									
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+//				if(sExpression.equals(sExpressionSolved)) {
+//					assertFalse(objEntry.isParsedChanged());						
+//				}else {
+//					assertTrue(objEntry.isParsedChanged());
+//				}
+				assertTrue(objEntry.isParsed());
 				
-				assertTrue(objEntry.isParsed()); 
-				assertTrue(objEntry.isSolved()); 
-				
-				
-				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.					
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isPathSubstituteCalled());																
 				if(sExpression.equals(sExpressionSubstituted)) {						
 					assertFalse(objEntry.isPathSubstituted());
 				}else {
 					assertTrue(objEntry.isPathSubstituted());
-				}					
+				}									
+				assertTrue(objEntry.isPathSubstituted());
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				//+++Varaiablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isVariableSubstituteCalled());
+																	//+++ kann man hier doch auch eigentlich nicht so abfragen														
+				assertTrue(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
 				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
 					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}else {
 					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-				}
-			
-				//+++ kann man hier doch auch eigentlich nicht so abfragen					
-				assertFalse(objEntry.isVariableSubstituted());
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				}				
+				assertTrue(objEntry.isSolved());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				break;
 			
 			case sFLAGSET_PATH_UNSUBSTITUTED:
+				sExpressionSolved = sExpressionSolvedIn;
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-				
-				assertTrue(objEntry.isParsed()); 
-				assertTrue(objEntry.isSolved());
 									
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+//				if(sExpression.equals(sExpressionSolved)) {
+//					assertFalse(objEntry.isParsedChanged());						
+//				}else {
+//					assertTrue(objEntry.isParsedChanged());
+//				}
+				assertTrue(objEntry.isParsed());
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isPathSubstituteCalled());																
+				assertFalse(objEntry.isPathSubstitutedChanged());									
 				assertFalse(objEntry.isPathSubstituted());
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				//+++Varaiablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isVariableSubstituteCalled());
+																	//+++ kann man hier doch auch eigentlich nicht so abfragen														
+				assertTrue(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
 				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
 					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}else {
 					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
-				}																							
+				}				
+				assertTrue(objEntry.isSolved());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
-				//+++ kann man hier doch auch eigentlich nicht so abfragen					
-				assertFalse(objEntry.isVariableSubstituted());
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-									
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				break;
-				
+
 			case sFLAGSET_PATH_SUBSTITUTED:
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
@@ -669,11 +701,6 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				break;
 			case sFLAGSET_CALL_UNSOLVED:					
 				assertTrue(objEntry.isParseCalled());
