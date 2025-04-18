@@ -406,7 +406,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();
-				if(bAnyCall) {					
+				if(bAnyCall) {						
 					this.getEntry().isCallSolved(true);
 					objEntry.isCallSolved(true);
 					
@@ -481,9 +481,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					
 					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
-			}//end if buseencryption
-						
-			objEntry.isSolved(true);
+			}//end if buseencryption						
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
 			sReturnLine = sExpressionUsed;							
 		}//end main:
 						

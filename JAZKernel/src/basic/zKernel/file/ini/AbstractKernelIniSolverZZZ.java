@@ -278,6 +278,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	@Override
 	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolvedChanged) throws ExceptionZZZ{
+		//oberste ebene erreicht. Gibt es nicht:   super.updateValueSolvedChanged(bIsSolvedChanged);
 		objEntry.isSolvedChanged(bIsSolvedChanged);
 	}
 	
@@ -764,7 +765,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			sReturnTag = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
-			objEntry = objReturnReferenceSolve.get();		
+			sReturnLineSolved = objEntry.getValue(); //Die Aufloesung der Zeile innerhalb des Tags.
+			objEntry = objReturnReferenceSolve.get();								
 			//##########################
 			
 			}//end solveThis:
@@ -797,7 +799,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					if(sReturnLineSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sReturnLineSolved.equals(sReturnLine)) {
+						if(!sReturnLineSolved.equals(sReturnTag2Solve)) {
 							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
 							this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}

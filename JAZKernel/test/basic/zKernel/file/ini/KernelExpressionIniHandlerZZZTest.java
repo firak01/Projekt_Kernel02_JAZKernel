@@ -2935,15 +2935,16 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 		
 			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+			String sHostName = EnvironmentZZZ.getHostName();
 			//TODO 20241011: Source und Solved und solvedTagless etc. an die Methoden von aussen uebergeben, so dass die verschiednesten String sgetestet werden koennen.
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
 			//Alles aufloesen
-			//A) einfach
+			//A) einfach ohne extra SUBSTITUTION
 			sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpressionSubstituted;
+			sExpressionSolved = sHostName;
 			btemp = testCompute_CallJavaEntry_Detail_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -2972,15 +2973,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = testCompute_CallJavaEntry_Detail_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
 			
 			//Alles aufloesen
-			//A) einfach
+			//A) einfach (ohne extra SUBSTITUTION)
 			sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpressionSubstituted;
+			sExpressionSolved = sHostName;
 			btemp = testCompute_CallJavaEntry_Detail_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
 		
 			//B) mit substitution, etc.
-			
-			
+			sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSolved = sHostName;
+			btemp = testCompute_CallJavaEntry_Detail_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);			
 			
 			
 		} catch (ExceptionZZZ ez) {
