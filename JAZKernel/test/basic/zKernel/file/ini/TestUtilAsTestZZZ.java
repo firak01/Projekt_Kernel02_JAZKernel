@@ -605,9 +605,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isPathSubstituteCalled());																
 				if(sExpression.equals(sExpressionSubstituted)) {						
-					assertFalse(objEntry.isPathSubstituted());
+					assertFalse(objEntry.isPathSubstitutedChanged());
 				}else {
-					assertTrue(objEntry.isPathSubstituted());
+					assertTrue(objEntry.isPathSubstitutedChanged());
 				}									
 				assertTrue(objEntry.isPathSubstituted());
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -773,8 +773,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
 				//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
 				//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
-				assertTrue(objEntry.isCallSolveCalled());
-				assertTrue(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
+				//ABER: Wenn der Solver generel aus gestellt wird, dann wird nix dahinter aufgerufen.
+				assertFalse(objEntry.isCallSolveCalled());
+				assertFalse(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
 								
 				
 				//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
@@ -782,7 +783,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isParsed());
 				
 				assertTrue(objEntry.isSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der allgemeine Solver ausgefuehrt
-				assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
+				assertFalse(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
 				assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 				
 				assertFalse(objEntry.isDecrypted());

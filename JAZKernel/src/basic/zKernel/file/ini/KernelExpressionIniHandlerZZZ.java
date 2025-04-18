@@ -127,10 +127,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		
 			//#####################################################################
 			//Flags entscheiden, ob es weiter geht
-			if(!this.isExpressionEnabledGeneral()) break main;
-			if(!this.isParserEnabledGeneral()) break main;
 			super.updateValueParseCustom(objReturnReference, sExpressionIn); //isExpression setzen
 					
+			if(!this.isExpressionEnabledGeneral()) break main;
+			if(!this.isParserEnabledGeneral()) break main;
 			if(!this.isParserEnabledThis()) break main;
 			
 			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
@@ -212,14 +212,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 			sReturn = sReturnLine;
 						
+			this.updateValueParseCustom(objReturnReference, sExpression);
+						
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;						
 			
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
-			
-			this.updateValueParseCustom(objReturnReference, sExpression);
-									
+						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledThis();
 			if(!bUseParserThis)break main;
