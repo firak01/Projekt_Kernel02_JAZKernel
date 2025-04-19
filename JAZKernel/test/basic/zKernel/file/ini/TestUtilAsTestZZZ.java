@@ -633,8 +633,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				break;
 			
-			case sFLAGSET_PATH_UNSUBSTITUTED:
-				sExpressionSolved = sExpressionSolvedIn;
+			case sFLAGSET_PATH_UNSUBSTITUTED:				
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 									
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -702,6 +701,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				break;
+				
 			case sFLAGSET_CALL_UNSOLVED:					
 				assertTrue(objEntry.isParseCalled());
 				assertTrue(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
@@ -725,32 +725,41 @@ public class TestUtilAsTestZZZ extends TestCase{
 			case sFLAGSET_JAVACALL_SOLVED:
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-				assertTrue(objEntry.isCallSolveCalled());
-				assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
-				
 				assertTrue(objEntry.isParsed()); 
-				assertTrue(objEntry.isSolved()); 
 				
-				assertTrue(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
-									
+				//+++++++++++++++++++++++
+				assertTrue(objEntry.isPathSubstituteCalled());
+				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression.equals(sExpressionSubstituted)) { 
+						assertFalse(objEntry.isSubstitutedChanged());
+					}else {
+						assertTrue(objEntry.isSubstitutedChanged());
+					}
+				}
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				//++++++++++++++++++++++++
+				//++++++++++++++++++++++++
+				
+				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//++++++++++++++++++++++++				
+				//++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
 					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}else {
 					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
 				}
-			
-				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				//	if(sExpression.equals(sExpressionSubstituted)) { 
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}else {
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}
-				//}
+				assertTrue(objEntry.isSolved());
+				//+++++++++++++++++++++++++
+				//+++++++++++++++++++++++++
+				assertTrue(objEntry.isCallSolveCalled());
+				assertTrue(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
+				//+++++++++++++++++++++++++
+				//+++++++++++++++++++++++++
+				assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+				assertTrue(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+				//+++++++++++++++++++++++++
 				
-				
-				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -766,35 +775,65 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;
 
 			case sFLAGSET_JAVACALL_UNSOLVED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				
-				assertTrue(objEntry.isParseCalled());
-				assertTrue(objEntry.isSolveCalled()); 
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+	//			if(sExpression.equals(sExpressionSolved)) {
+	//				assertFalse(objEntry.isParsedChanged());						
+	//			}else {
+	//				assertTrue(objEntry.isParsedChanged());
+	//			}
+				assertTrue(objEntry.isParsed());
 				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isPathSubstituteCalled());						
+				if(objEntry.isPathSubstituted()){ 
+					if(sExpression.equals(sExpressionSubstituted)) { 
+						assertFalse(objEntry.isPathSubstitutedChanged());
+					}else {
+						assertTrue(objEntry.isPathSubstitutedChanged());
+					}
+				}													
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
+				//+++Varaiablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isVariableSubstituteCalled());
+																	//+++ kann man hier doch auch eigentlich nicht so abfragen														
+				assertTrue(objEntry.isVariableSubstituted());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
+				if(sExpressionSolved.equals(sExpressionSubstituted)) {
+					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}else {
+					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+				}				
+				assertTrue(objEntry.isSolved());
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
 				//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
 				//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
 				//ABER: Wenn der Solver generel aus gestellt wird, dann wird nix dahinter aufgerufen.
-				assertFalse(objEntry.isCallSolveCalled());
-				assertFalse(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
-								
-				
-				//der CallSolver prueft vorher das Flag ab. Der JavaCallSolver wird also gar nicht involviert, wenn Flag=false;    assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
-				assertTrue(objEntry.isExpression());									
-				assertTrue(objEntry.isParsed());
-				
-				assertTrue(objEntry.isSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der allgemeine Solver ausgefuehrt
-				assertFalse(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
-				assertFalse(objEntry.isJavaCallSolved());//Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
 				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-				assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
+				assertTrue(objEntry.isCallSolveCalled());
+				assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+				assertTrue(objEntry.isJavaCallSolveCalled()); //aufgerufen wird der JavaCall-Solver ja, dann aber nicht weitergemacht.
+				assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+								
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				break;
-			
+				
 			default:
 				fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
 				break;
