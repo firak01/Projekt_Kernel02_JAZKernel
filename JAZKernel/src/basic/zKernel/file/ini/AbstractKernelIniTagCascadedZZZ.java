@@ -187,9 +187,10 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objEntry = objReturnReferenceSubstitute.get();						
 			vecReturn.replace(1,sReturnSubstituted);
 			
-			if(objEntry.isSubstituted()) {
-				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
-				//und ggfs. Value-Eintraege setzen
+			//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
+			//und ggfs. wieder (neu gefundene) Value-Eintraege setzen
+			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
+			if(objEntry.isSubstituted()) {				
 				this.updateValueParseCustom(objReturnReference, sReturnLine);			
 			}
 			

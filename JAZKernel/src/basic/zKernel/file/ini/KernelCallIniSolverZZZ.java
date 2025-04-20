@@ -507,9 +507,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseCall = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(!bUseCall) break main;
 			
-//TODOGOON20250311;//Testweise hier die Flag-Abfrage auskommentiert, damit diese Abfrage im JavaCall-Solver selbst gemacht werden.
-//				bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-//				if(bUseCallJava) {									
+				bUseCallJava = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+				if(bUseCallJava) {									
 					//Analog zum vorgehen in parseFirstVector(...), nur hier wird vom JavaCallIniSolver.solveParsed() aufgerufen.
 					sExpression = sReturnTag;
 					
@@ -545,7 +544,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //					sExpression = sReturn;				
 //					sReturn = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelCallIniSolverZZZ.sTAG_NAME);							
 //				
-//				}//end if bAnyJavaCall		
+				}//end if bUseJavaCall		
 					
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);

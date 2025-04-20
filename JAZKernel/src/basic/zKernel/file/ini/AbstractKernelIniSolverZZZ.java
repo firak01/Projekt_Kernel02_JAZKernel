@@ -764,11 +764,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
-			sReturnTag = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
+			sReturnTagSolved = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
 			sReturnLineSolved = objEntry.getValue(); //Die Aufloesung der Zeile innerhalb des Tags.
 			objEntry = objReturnReferenceSolve.get();								
 			//##########################
 			
+			sReturnTag = sReturnTagSolved;
 			}//end solveThis:
 		
 			//... das post vorbereiten
