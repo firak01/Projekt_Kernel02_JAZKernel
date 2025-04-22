@@ -13,6 +13,12 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 
+/** TAGS ohne FlagZZZ Behandlung
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 21.04.2025, 09:56:19
+ * 
+ */
 public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IParseEnabledZZZ, ITagBasicZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
@@ -59,6 +65,11 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	//######## Getter / Setter ##################
 	
 	//### Aus IParseEnabledZZZ
+	@Override 
+	public boolean isParserEnabledGeneral() throws ExceptionZZZ{
+		return true;
+	}
+	
 	@Override
 	public boolean isParseRelevant() throws ExceptionZZZ{
 		return true;
@@ -83,18 +94,27 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 	@Override
 	public String parse(String sExpression) throws ExceptionZZZ {
-		return this.parse(sExpression, true);
+		return this.parse_(sExpression, true, true);
 	}
 	
 	@Override
-	public String parse(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse, true);
+	}
+	
+	@Override
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
+	}
+
+	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		String sReturnLine = sExpressionIn;		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
 			String sExpression = sExpressionIn;
 			
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
@@ -123,7 +143,17 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 */
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
-		return this.parseFirstVector(sExpression, true);
+		return this.parseFirstVector_(sExpression, true, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 	}
 	
 	
@@ -135,8 +165,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	 * @param sExpression
 	 * @throws ExceptionZZZ
 	 */
-	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 
 		main:{			

@@ -393,8 +393,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			switch(sFlagSet) {
 			//Das ist keine Konstante, case EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED.getAbbreviation():
 			case sFLAGSET_UNEXPRESSED:
-				assertTrue(objEntry.isSolveCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch der solve() Schritt aufgerufen worden....
-				assertFalse(objEntry.isParseCalled()); //...aber, danach wurde abgebrochen
+				assertTrue(objEntry.isSolveCalled()); //auch ohne Expression Auswertung wurde hier solve() aufgerufen.
+				assertFalse(objEntry.isParseCalled()); //... danach wurde abgebrochen, also auch kein parse ausgefuehrt.
 				assertFalse(objEntry.isExpression());
 													
 				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
@@ -469,15 +469,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 			case sFLAGSET_UNSOLVED:					
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled());
+				
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Parser Ergebnisse
-				assertTrue(objEntry.isParsed());
-				assertTrue(objEntry.isPathSubstituteCalled());
-				assertTrue(objEntry.isVariableSubstituteCalled());
-				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-			
+				assertFalse(objEntry.isParsed()); //
+				
+				//++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isPathSubstituteCalled());				
 				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 				//	if(sExpression.equals(sExpressionSubstituted)) { 
 				//		assertFalse(objEntry.isSubstitutedChanged());
@@ -485,12 +484,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//		assertFalse(objEntry.isSubstitutedChanged());
 				//	}
 				//}
-				
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+				//++++++++++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isVariableSubstituteCalled());
+				//Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
-				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++
 				//Keine Solver Ergebnisse
+				assertTrue(objEntry.isSolveCalled());  //aufgerufen wurde der Solver ja...
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
 				
@@ -515,18 +519,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 			case sFLAGSET_UNPARSED_UNSOLVED:
 				//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled());
-				
+									
 				//+++++++++++++++++++++++++++++++++++++++
 				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 				assertFalse(objEntry.isParsed());
-				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-				assertFalse(objEntry.isPathSubstituteCalled());
-				assertFalse(objEntry.isVariableSubstituteCalled());
 				
-				 
-				
+				//+++++++++++++++++++++++++++++++++++++++
+				assertFalse(objEntry.isPathSubstituteCalled());				
 				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 				//	if(sExpression.equals(sExpressionSubstituted)) { 
 				//		assertFalse(objEntry.isSubstitutedChanged());
@@ -534,7 +534,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//		assertFalse(objEntry.isSubstitutedChanged());
 				//	}
 				//}
-				
+				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertFalse(objEntry.isVariableSubstituteCalled());
 				assertFalse(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -542,6 +545,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				//++++++++++++++++++++++++++++++++++++++++++
 				//Keine Solver Ergebnisse
+				assertTrue(objEntry.isSolveCalled()); //aufgerufen wurde der Solver ja
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
 														
@@ -565,24 +569,30 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;										
 			case sFLAGSET_MATH_UNSOLVED:	//Es wird z:Formula gesolved!!!				
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled());
-
-				assertTrue(objEntry.isParsed()); 
-				assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
 									
+				//++++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+				assertTrue(objEntry.isParsed()); 
+				//+++++++++++++++++++++++++++++++				
+				//+++++++++++++++++++++++++++++++					
 				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 				if(sExpression.equals(sExpressionSubstituted)) {						
 					assertFalse(objEntry.isPathSubstituted());
 				}else {
 					assertTrue(objEntry.isPathSubstituted());
 				}	
+				
+				//+++++++++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled());
 				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
 					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}else {
 					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
 				}
-														
+				assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
+				//++++++++++++++++++++++				
+				//++++++++++++++++++++++									
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
@@ -850,7 +860,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-				sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 				if(sExpressionSolved.equals(sExpressionSubstituted4Compare)) {
 					assertFalse(objEntry.isSolvedChanged()); 
 				}else {

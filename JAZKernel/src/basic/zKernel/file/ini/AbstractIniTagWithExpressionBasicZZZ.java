@@ -128,34 +128,34 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return this.isParserEnabledGeneral();
 	}
 
-	@Override
-	public String parse(String sExpression) throws ExceptionZZZ{
-		return this.parse_(sExpression, true);
-	}	
-	
-	@Override
-	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
-	}
-	
-	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		String sReturn = sExpressionIn;
-		main:{			
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			
-			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
-			if(!bUseExpression) break main;
-							
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			boolean bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
-						
-			String sExpression = sExpressionIn;
-			
-			sReturn = super.parse(sExpression, bKeepSurroundingSeparatorsOnParse);
-		}//end main:
-		return sReturn;
-	}
+//	@Override
+//	public String parse(String sExpression) throws ExceptionZZZ{
+//		return this.parse_(sExpression, true);
+//	}	
+//	
+//	@Override
+//	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+//		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
+//	}
+//	
+//	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+//		String sReturn = sExpressionIn;
+//		main:{			
+//			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+//			
+//			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+//			if(!bUseExpression) break main;
+//							
+//			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+//			boolean bUseParse = this.isParserEnabledThis();
+//			if(!bUseParse) break main;
+//						
+//			String sExpression = sExpressionIn;
+//			
+//			sReturn = super.parse(sExpression, bKeepSurroundingSeparatorsOnParse);
+//		}//end main:
+//		return sReturn;
+//	}
 	
 		
 	//++++++++++++++++++++++++++++++++++++++++++++++

@@ -155,120 +155,119 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	}
 
 	//### aus IParseEnabledZZZ
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse, true);
-	}
-		
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+//		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
+//		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse, true);
+//	}
+//		
 	//### Aus IKernelEntryExpressionUserZZZ	
-	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
-		return this.parseFirstVector_(sExpression, objReturnReference, true, true);
-	}
-
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse, true);
-	}
-	
-	/**Methode ueberschreibt das parsen des cascaded Tags.
-	 * Loest nun INI-Pfade und INI-Variablen auf, 
-	 * ABER: macht kein vollständiges solve()!!!
-	 **/
-	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
-		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
-		
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
-		IKernelConfigSectionEntryZZZ objEntry = null;
-		if(objReturnReferenceIn==null) {
-			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-		}else {
-			objReturnReference = objReturnReferenceIn;
-		}
-		objEntry = objReturnReference.get();
-		if(objEntry==null) {
-			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
-			objEntry = new KernelConfigSectionEntryZZZ<T>();
-			objReturnReference.set(objEntry);
-		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
-		
-		main:{		
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-			
-			String sExpression = sExpressionIn;
-			
-			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);	
-			
-			sReturnTag = this.getValue();
-			sReturnLine=sExpressionIn;
-			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
-			sReturn = sReturnLine;
-						
-			this.updateValueParseCustom(objReturnReference, sExpression);
-						
-			bUseExpression = this.isExpressionEnabledGeneral();
-			if(!bUseExpression) break main;						
-			
-			bUseParser = this.isParserEnabledGeneral();
-			if(!bUseParser) break main;
-						
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParserThis = this.isParserEnabledThis();
-			if(!bUseParserThis)break main;
-			
-			//###########################################
-			//### 
-			//###########################################
-			
-			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParserSuper.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
-			objEntry = objReturnReferenceParserSuper.get();
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = (String) vecReturn.get(1);
-			this.setValue(sReturnTag);
-			
-			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
-			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
-			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = this.getValue();
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
-			
-			this.updateValueParsed();
-			this.updateValueParsed(objReturnReference);
-		}//end main:
-		
-		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
-		this.setValue(sReturnTag);	
-		sReturn = sReturnLine;	
-		
-		if(objEntry!=null) {
-			objEntry.setValue(sReturnLine);
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression) {				
-				if(sExpressionIn!=null) {			 							
-					if(!sExpressionIn.equals(sReturn)) {								
-						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objReturnReference);
-					}
-				}						
-				this.adoptEntryValuesMissing(objEntry);
-			}
-		}
-		return vecReturn;
-	}
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
+//		return this.parseFirstVector_(sExpression, objReturnReference, true, true);
+//	}
+//
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+//		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse, true);
+//	}
+//	
+//	/**Methode ueberschreibt das parsen des cascaded Tags.
+//	 * Loest nun INI-Pfade und INI-Variablen auf, 
+//	 * ABER: macht kein vollständiges solve()!!!
+//	 **/
+//	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
+//		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
+//		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+//		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
+//		
+//		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+//		IKernelConfigSectionEntryZZZ objEntry = null;
+//		if(objReturnReferenceIn==null) {
+//			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//		}else {
+//			objReturnReference = objReturnReferenceIn;
+//		}
+//		objEntry = objReturnReference.get();
+//		if(objEntry==null) {
+//			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+//			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+//			objEntry = new KernelConfigSectionEntryZZZ<T>();
+//			objReturnReference.set(objEntry);
+//		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+//
+//		this.updateValueParseCalled();
+//		this.updateValueParseCalled(objReturnReference);
+//		
+//		main:{		
+//			if(StringZZZ.isEmpty(sExpressionIn)) break main;			
+//			String sExpression = sExpressionIn;
+//			
+//			this.setRaw(sExpressionIn);
+//			objEntry.setRaw(sExpressionIn);	
+//			
+//			sReturnTag = this.getValue();
+//			sReturnLine=sExpressionIn;
+//			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+//			sReturn = sReturnLine;
+//						
+//			this.updateValueParseCustom(objReturnReference, sExpression);
+//						
+//			bUseExpression = this.isExpressionEnabledGeneral();
+//			if(!bUseExpression) break main;						
+//			
+//			bUseParser = this.isParserEnabledGeneral();
+//			if(!bUseParser) break main;
+//						
+//			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+//			bUseParserThis = this.isParserEnabledThis();
+//			if(!bUseParserThis)break main;
+//			
+//			//###########################################
+//			//### 
+//			//###########################################
+//			
+//			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+//			objReturnReferenceParserSuper.set(objEntry);
+//			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
+//			objEntry = objReturnReferenceParserSuper.get();
+//			if(vecReturn==null) break main;
+//			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+//			
+//			sReturnTag = (String) vecReturn.get(1);
+//			this.setValue(sReturnTag);
+//			
+//			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+//			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht			
+//			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
+//			sReturnTag = this.getValue();
+//			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
+//			
+//			this.updateValueParsed();
+//			this.updateValueParsed(objReturnReference);
+//		}//end main:
+//		
+//		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
+//		this.setValue(sReturnTag);	
+//		sReturn = sReturnLine;	
+//		
+//		if(objEntry!=null) {
+//			objEntry.setValue(sReturnLine);
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+//			if(bUseExpression) {				
+//				if(sExpressionIn!=null) {			 							
+//					if(!sExpressionIn.equals(sReturn)) {								
+//						this.updateValueParsedChanged();
+//						this.updateValueParsedChanged(objReturnReference);
+//					}
+//				}						
+//				this.adoptEntryValuesMissing(objEntry);
+//			}
+//		}
+//		return vecReturn;
+//	}
 	
 	
 	

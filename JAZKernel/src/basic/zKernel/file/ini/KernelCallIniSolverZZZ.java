@@ -453,7 +453,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		sReturn = sReturnLine;
 				
 		if(objEntry!=null) {
-			objEntry.setValueCallSolved(sReturnLine);
+			if(bUseSolver & bUseSolverThis) objEntry.setValueCallSolved(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
@@ -554,7 +554,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		sReturn = sReturnLine;
 		this.setValue(sReturnTag);
 		if(objEntry!=null) {		
-			objEntry.setValueCallSolved(sReturnLine);
+			if(bUseSolver & bUseSolverThis) objEntry.setValueCallSolved(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);

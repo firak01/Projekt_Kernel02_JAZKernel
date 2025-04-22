@@ -124,7 +124,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnSubstituted = null; String sReturnTag = null; String sReturnLine = null;
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -141,37 +141,42 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}		
-		this.setRaw(sExpressionIn);		
-		objEntry.setRaw(sExpressionIn);
 		
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objReturnReference);
 		
-		sReturnLine = sExpressionIn;
-		sReturnTag = this.getValue();
-		sReturn = sReturnLine;
-		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
-		
-		main:{			
+		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
+			
+			this.setRaw(sExpressionIn);		
+			objEntry.setRaw(sExpressionIn);
+		
+			sReturnTag = this.getValue();
+			sReturnLine = sExpressionIn;
+			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+			sReturn = sReturnLine;
+		
+			this.updateValueParseCustom(objReturnReference, sExpression);
 			
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			this.updateValueParseCustom(objReturnReference, sExpression);
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+				
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
+			bUseParserThis = this.isParserEnabledThis();
+		    if(!bUseParserThis) break main;
 			
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			//Merke: Darum vorher vecReturn schon initialisieren.
-			bUseParse = this.isParserEnabledThis();
-		    if(!bUseParse) break main;
-			
-						 
-			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
+		    //###########################################
+			//### 
+			//###########################################
+					 			
 			//Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.		   
 			String sTagOpening = this.getTagPartOpening();
 			String sTagClosing = this.getTagPartClosing();
-			//20250322; //ich will aber die umgebenden Separtoren erst einmal erhalten. 
+			//20250322; //ich will aber die umgebenden Separatoren erst einmal erhalten. 
 			//            Wenn man sie central haelt, dann gehen sie automatisch beim solven, substitute, etc verloeren
 			//            also nicht: vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);			
 			vecReturn = StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
@@ -179,6 +184,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			//+++++++++++++++++++++++++
+			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 			String sValueToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 								    					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -192,16 +198,20 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
 			if(objEntry.isSubstituted()) {				
 				this.updateValueParseCustom(objReturnReference, sReturnLine);			
-			}
-			
+			}			
 			//+++++++++++++++++++++++++
 			
+			sReturnTag = (String) vecReturn.get(1);
+			this.setValue(sReturnTag);
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueParsed();
+			this.updateValueParsed(objReturnReference);
 		}//end main:			
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -213,7 +223,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression | bUseParse) {
+			if(bUseExpression & bUseParser & bUseParserThis) {
 				if(sExpressionIn!=null) {							
 						if(!sExpressionIn.equals(sReturnLine)) {							
 							this.updateValueParsedChanged();

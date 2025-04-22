@@ -413,13 +413,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, true);
+		return this.parseFirstVector_(sExpression, null, true, true);
 	}
 	
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		//Muss ueberschrieben werden, damit die "einfache Tag" Methode nicht greift und wir mit der parse - Methode dieser konkreten Klasse arbeiten.
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse, true);
 	}
 	
 	@Override
@@ -649,15 +649,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//### Aus IKernelEntryReferenceExpressionUserZZZ	
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
-		return this.parseFirstVector_(sExpression, objReturnReference, true);
+		return this.parseFirstVector_(sExpression, objReturnReference, true, true);
 	}
 
 	@Override
 	public Vector3ZZZ<String> parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse);
+		return this.parseFirstVector_(sExpression, objReturnReferenceIn, bKeepSurroundingSeparatorsOnParse, true);
 	}
 	
-	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
@@ -1213,7 +1213,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		objEntry.isParseCalled(bIsParseCalled);
 	}
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void updateValueParsed() throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
@@ -1792,7 +1791,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 							sExpression = sExpressionTemp;						
 						}											
 					} //end while						
-					
+					//TODOGOON: Der ganze String ist eigentlich nicht der PATH-Tag, ergo sExpressionTagTemp = vecExpressionTemp.get(1) oben verwenden.
 					sReturnTag = sExpression; //!!! 20250205: Das hat aber noch die TagName-Werte drin.. Er wird dann in parseFirstVectorPost rausgerechnet
 					objFormulaIniPath.setValue(sReturnTag);//Das braucht noch nicht der endgueltige TAG-Wert sein,da ggfs. noch der TAG-Selbst drum ist.
 						

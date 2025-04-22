@@ -100,21 +100,15 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 			if(!bUseExpressionPath) break main;
 			
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
+			Vector3ZZZ<String> vecSection = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse);
+			
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			//Vector3ZZZ<String> vecSection = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
 			
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;
 			if(!(StringZZZ.isEmpty(sVariableName))){
 				sValue = this.getVariable(sVariableName);									
-//				HashMapCaseInsensitiveZZZ<String,String> hmVariableValue = this.getHashMapVariable();
-//					if(hmVariableValue==null){
-//						ExceptionZZZ ez = new ExceptionZZZ("HashMapCaseInsensitiveZZZ VariableValuei", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;
-//					}
-//					
-//					//Nicht caseSensitive Variablen
-//					sReturn = (String) hmVariableValue.get(sVariableName);
-					
 			}//end if isempty(sVariableName)
 			
 			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen						

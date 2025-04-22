@@ -22,6 +22,13 @@ import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryption_CodeZZZ;
 
+
+/**  TAGS mit FLAGZ Behandlung
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 21.04.2025, 09:57:12
+ * 
+ */
 public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
 	private static final long serialVersionUID = -367756957686201953L;
 
@@ -279,15 +286,20 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	
 	@Override
 	public String parse(String sLExpression) throws ExceptionZZZ{
-		return this.parse_(sLExpression, true);
+		return this.parse_(sLExpression, true, true);
 	}	
 	
 	@Override
 	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
-	}	
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse, true);
+	}
 	
-	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	@Override
+	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
+		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
+	}
+	
+	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
 		String sReturnLine = sExpressionIn;
 		String sReturnTag = "";
 		main:{			
@@ -302,7 +314,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			//Bei einfachen Tags den Ersten Vektor holen
 			String sExpression = sExpressionIn;
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse);
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
@@ -453,7 +465,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 */
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
-		return this.parseFirstVector_(sExpression, true);
+		return this.parseFirstVector_(sExpression, true, true);
 	}
 	
 	/**
@@ -463,16 +475,21 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	 * 
 	 * @param sExpression
 	 * @throws ExceptionZZZ
-	 */
+	 * */
 	@Override
 	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse);
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String>parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
+		return this.parseFirstVector_(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 	}
 
 	//Nein, auf dieser Ebene ist es ein einfache Tag und kennt IKernelConfigSectionEntryZZZ ueberhaupt nicht.
 	//public Vector<String>parseFirstVector(String sExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		
-	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
 		String sExpression = null;
 		main:{
@@ -481,7 +498,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 						
 			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
-									
+								
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			boolean bUseParse = this.isParserEnabledThis();
 			if(!bUseParse) break main;
@@ -489,7 +506,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sExpression = sExpressionIn;
 			
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse, false);
+			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 			if(vecReturn==null)break main;			
 						
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
