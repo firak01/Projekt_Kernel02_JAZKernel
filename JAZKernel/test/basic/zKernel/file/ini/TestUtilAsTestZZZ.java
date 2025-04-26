@@ -45,16 +45,20 @@ public class TestUtilAsTestZZZ extends TestCase{
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 			
-	public static boolean assertFileIniEntry(IEnumSetMappedTestCaseZZZ objEnumTestCase, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn) throws ExceptionZZZ{
+	public static boolean assertFileIniEntry(IEnumSetMappedTestCaseZZZ objEnumTestCase, IEnumSetMappedTestFlagsetZZZ objEnumFunction,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			boolean bIsExpressionValidForTest=false;
 			
 			String sCaseSet = objEnumTestCase.getAbbreviation();
 			
 			switch(sCaseSet) {
 			case sCASE_PARSE_AS_ENTRY:
 			case sCASE_PARSE:{
-				assertFileIniEntry_parse(objEnumTestFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
+				bIsExpressionValidForTest = TestUtilAsTestZZZ.isExpressionValidForFlagset_parse(objEnumFunction, sExpressionIn);
+				if(bIsExpressionValidForTest) {
+					assertFileIniEntry_parse(objEnumFunction,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
+				}
 				break;
 			}	
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -65,7 +69,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 			case sCASE_SOLVE_AS_ENTRY:
 			case sCASE_AS_ENTRY:
 			case sCASE_SOLVE:{
-				assertFileIniEntry_solve(objEnumTestFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
+				bIsExpressionValidForTest = TestUtilAsTestZZZ.isExpressionValidForFlagset_solve(objEnumFunction, sExpressionIn);
+				if(bIsExpressionValidForTest) {
+					assertFileIniEntry_solve(objEnumFunction,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn);
+				}
 				break;
 			}
 			default:
@@ -419,12 +426,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;	
 			case sFLAGSET_UNPARSED:
 				//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
-				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-				assertTrue(objEntry.isSolveCalled());
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!									
 				
 				//+++++++++++++++++++++++++++++++++++++++
 				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 				assertFalse(objEntry.isParsed());
 				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
 				assertFalse(objEntry.isPathSubstituteCalled());
@@ -445,6 +451,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				//++++++++++++++++++++++++++++++++++++++++++
 				//Keine Solver Ergebnisse
+				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
 														
@@ -468,12 +475,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;		
 			case sFLAGSET_UNSOLVED:					
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
-				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
 				
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Parser Ergebnisse
-				assertFalse(objEntry.isParsed()); //
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....									
+				assertTrue(objEntry.isParsed()); //Auch ohne Solver wird geparsed
 				
 				//++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isPathSubstituteCalled());				
@@ -523,7 +530,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++
 				//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-				assertFalse(objEntry.isParsed());
+				assertFalse(objEntry.isParsed());     //Nun wird weder geparsed noch gesolved.
 				
 				//+++++++++++++++++++++++++++++++++++++++
 				assertFalse(objEntry.isPathSubstituteCalled());				
@@ -899,5 +906,32 @@ public class TestUtilAsTestZZZ extends TestCase{
 		}//end main:
 		return bReturn;
 	}
+	
+	public static boolean isExpressionValidForFlagset_parse(IEnumSetMappedTestFlagsetZZZ objEnumFunction, String sExpressionIn) throws ExceptionZZZ {
+		boolean bReturn = false;		
+		main:{
+			//+++ TEST DISPATCHER (light) +++++++++++
+			//Wenn ein Ausdruck keine Expression ist, dann nur den _unexpressed Test erlauben:
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
 
+	public static boolean isExpressionValidForFlagset_solve(IEnumSetMappedTestFlagsetZZZ objEnumFunction, String sExpressionIn) throws ExceptionZZZ {
+		boolean bReturn = false;		
+		main:{
+			//+++ TEST DISPATCHER (light) +++++++++++
+			//Wenn ein Ausdruck keine Expression ist, dann nur den _unexpressed Test erlauben:
+			boolean bHasZ = XmlUtilZZZ.isExpression4TagXml(sExpressionIn, KernelExpressionIniHandlerZZZ.sTAG_NAME);
+			if(!bHasZ) {
+				if(!(objEnumFunction == EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED)) {
+					break main;
+				}
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
 }
