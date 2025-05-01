@@ -237,7 +237,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//############################################
 	private String solveParsed_Formula_(String sExpressionIn,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		//Merke: Vesuche das gleich zu halten mit AbstractKernelIniSolver.solve_()
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null;			
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;			
 		String sExpression = null; String sTagParsed = "";
 		//Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
@@ -263,6 +263,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		objEntry.isSolveCalled(true);
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
 		sReturn = sReturnLine;
 		
 		main:{			
@@ -317,7 +319,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 						
 						if(sExpressionWithTags.equals(sExpressionMathParsedAndSolved)) break; //Sicherheitsmassnahme gegen Endlosschleife
 						sExpressionWithTags=sExpressionMathParsedAndSolved;	
-						sReturnTag = objMathSolver.getValue();												
+						sReturnTag = objMathSolver.getValue();	
+						sReturnTagSolved = sReturnTag;
 					}
 					
 										
@@ -333,6 +336,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					//Dann muss/darf nur der FORMULA-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.					
 					sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, KernelZFormulaIniSolverZZZ.sTAG_NAME);//also an jeder Position (d.h. nicht nur am Anfang), von innen nach aussen.
 					sReturnTag = sReturnLine;
+					sReturnTagSolved = sReturnTag;
 				}//end if bUseFormulaMath					
 			}//end if bUseFormula		
 						
@@ -351,8 +355,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 						
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
-				if(sExpressionIn!=null) {				
-					if(!sExpressionIn.equals(sReturnLine)) {				
+				if(sReturnTagSolved!=null) {				
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objEntry);
 					}

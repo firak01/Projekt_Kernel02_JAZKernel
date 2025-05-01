@@ -319,7 +319,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 
 
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
 		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -342,6 +342,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		this.updateValueSolveCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		sReturnTagParsed = sExpressionIn;
+		sReturnTagSolved = sExpressionIn;
 		sReturn = sReturnLine;
 		
 		main:{
@@ -483,7 +485,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}//end if buseencryption						
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
-			sReturnLine = sExpressionUsed;							
+			sReturnLine = sExpressionUsed;	
+			sReturnTagSolved = sReturnLine;
 		}//end main:
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -493,8 +496,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry.setValue(sReturn);
 			objEntry.setValueFromTag(sReturn);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
-			if(sExpressionIn!=null) {				
-				if(!sExpressionIn.equals(sReturnLine)) {
+			if(sReturnTagSolved!=null) {				
+				if(!sReturnTagSolved.equals(sReturnTagParsed)) {
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);
 				}

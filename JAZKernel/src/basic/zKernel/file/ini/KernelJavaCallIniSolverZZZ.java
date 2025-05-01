@@ -198,7 +198,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
 		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -221,6 +221,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		this.updateValueSolveCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		sReturnTagParsed = sExpressionIn;
+		sReturnTagSolved = sExpressionIn;
 		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
@@ -281,6 +283,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(objReturn==null)break main;		
 			
 			sReturnTag = objReturn.toString();
+			sReturnTagSolved = sReturnTag;
 			sReturnLine = sReturnTag;
 			
 			this.updateValueSolved();
@@ -298,8 +301,8 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
-				if(sExpressionIn!=null) {
-					if(!sExpressionIn.equals(sReturnLine)) {	
+				if(sReturnTagSolved!=null) {
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {	
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objEntry);					
 					}

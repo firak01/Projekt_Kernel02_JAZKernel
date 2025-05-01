@@ -174,9 +174,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			btemp = objFormulaSolver.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
-											
+			
+			boolean bUseExpressionGeneral = objFormulaSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objFormulaSolver.isSolverEnabledGeneral();
+			
 			sValue = objFormulaSolver.solve(sExpression);
-			assertEquals(sExpressionSolved, sValue);
+			String sExpressionSolvedTemp = sExpressionSolved;
+			if(bUseExpressionGeneral && bUseSolver){
+				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			}
+			assertEquals(sExpressionSolvedTemp, sValue);
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Anstellen der PathSubstitution, die Z-Tags verschwinden.

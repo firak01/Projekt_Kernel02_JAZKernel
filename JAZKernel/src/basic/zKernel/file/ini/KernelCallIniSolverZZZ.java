@@ -398,7 +398,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null; 
 		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 			
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -420,6 +420,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		this.updateValueSolveCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
 		sReturn = sReturnLine;
 		main:{			
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -442,6 +444,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Aufloesen des CALL-Tags
 			sReturnLine = this.solveParsed_JavaCall_(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
+			sReturnTagSolved = sReturnTag;
 			objEntry = objReturnReference.get();	
 									
 			this.updateValueSolved();
@@ -459,8 +462,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
-				if(sExpressionIn!=null) {				
-					if(!sExpressionIn.equals(sReturnLine)) {				
+				if(sReturnTagSolved!=null) {				
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objEntry);
 					}
@@ -474,7 +477,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	private String solveParsed_JavaCall_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
 		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
 		boolean bUseCall = false; boolean bUseCallJava = false;
 		
@@ -498,6 +501,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		this.updateValueSolveCalled(objEntry);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schliesslich ist das eine solve ! PARSED ! Methode, also nicht this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
 		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
@@ -537,7 +542,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 					sReturnTag = objJavaCallSolver.getValue();
-				
+					sReturnTagSolved = sReturnTag;
 //				}else {
 //					//Also: CALL-Tag soll aufgeloest werden, JAVA-CALL aber nicht. 
 //					//Dann muss/darf nur der CALL-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
@@ -558,8 +563,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
-			if(sExpressionIn!=null) {
-				if(!sExpressionIn.equals(sReturnLine)) {	
+			if(sReturnTagSolved!=null) {
+				if(!sReturnTagSolved.equals(sReturnTagParsed)) {	
 					this.updateValueSolvedChanged();
 					this.updateValueSolvedChanged(objEntry);
 				}

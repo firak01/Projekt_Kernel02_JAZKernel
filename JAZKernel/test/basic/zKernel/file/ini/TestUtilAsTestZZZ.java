@@ -642,9 +642,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
 				if(sExpressionSolved.equals(sExpressionSubstituted)|sExpressionSolved.equals(sExpression)) {
-					assertFalse(objEntry.isSolvedChanged()); //es wurden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isSolvedChanged()); //Das reine Entfernen der Z-Tags aendert nichts am solve-Ergebnis.
 				}else {
-					assertTrue(objEntry.isSolvedChanged()); //es werden ja die Z-Tags drumherum ZUMINDEST entfernt also "veraendert"
+					assertTrue(objEntry.isSolvedChanged());  //Das reine Entfernen der Z-Tags aendert nichts am solve-Ergebnis. 
 				}				
 				assertTrue(objEntry.isSolved());
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

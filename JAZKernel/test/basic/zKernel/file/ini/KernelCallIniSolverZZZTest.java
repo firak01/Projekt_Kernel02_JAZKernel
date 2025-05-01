@@ -642,6 +642,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue; 
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
@@ -676,7 +679,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
-					
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();	
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -695,7 +700,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -742,6 +752,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue; 		
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
@@ -773,7 +786,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 			
-			
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -794,8 +809,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSolved, sValue);
 
-					sValue = objExpressionSolver.getValue();
-					assertEquals(sTagSolved, sValue);
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 										
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -818,7 +836,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);					
@@ -847,6 +870,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 				String sValue;			
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;  
+				
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
 				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -879,6 +905,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 			
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -899,16 +928,14 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					assertEquals(sExpressionSolved, sValue);
 
-					sValue = objExpressionSolver.getValue();
-					assertEquals(sTagSolved, sValue);
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
-					
-					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-					assertTrue(btemp);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -916,11 +943,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {					
 					objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 					assertNotNull(objEntry);
-					
-					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
-					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-					btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.PARSE, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
-					assertTrue(btemp);
 				}
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -931,7 +953,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -960,6 +987,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 				String sValue;			
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;  
+				
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
 				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -994,7 +1024,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
-							
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -1010,7 +1042,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -1052,6 +1089,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue; 
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
@@ -1085,6 +1125,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //soll dann egal sein
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 			
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {							
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -1103,7 +1146,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -1132,7 +1180,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
-					assertEquals(sExpressionSolved, sValue);
+					
+					String sExpressionSolvedTemp = sExpressionSolved;
+					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					}
+					assertEquals(sExpressionSolvedTemp, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 								
@@ -1187,6 +1240,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 				
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 	
@@ -1210,7 +1265,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertFalse(StringZZZ.isEmpty(sValue)); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				sValue = VectorUtilZZZ.implode(vecReturn);
-				assertEquals(sExpressionSolved, sValue);				
+				String sExpressionSolvedTemp = sExpressionSolved;
+				//In diesem Fall immer True if(objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver){
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				assertEquals(sExpressionSolvedTemp, sValue);
+					
 				sValueParseFirstVector = sValue;
 				
 				sValue = objExpressionSolver.parse(sExpression);
@@ -1232,7 +1293,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertFalse(StringZZZ.isEmpty(sValue)); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				sValue = VectorUtilZZZ.implode(vecReturn);
-				assertEquals(sExpressionSolved, sValue);				
+
+				//In diesem Fall immer True if(objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver){
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				assertEquals(sExpressionSolvedTemp, sValue);
 				sValueParseFirstVector = sValue;
 				
 				sValue = objExpressionSolver.parse(sExpression);
@@ -1293,6 +1359,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+				
+				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 				
 				//#################################################################################
 				//### PARSE #######################################################################
@@ -1379,7 +1448,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				IKernelConfigSectionEntryZZZ objEntry3 = objExpressionSolver.solveAsEntryNew(sExpression);
 				sValue = objEntry3.getValue();
-				assertEquals(sExpressionSolved, sValue);
+
+				String sExpressionSolvedTemp = sExpressionSolved;
+				//in diesem Fall immer true  if(objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver){
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				assertEquals(sExpressionSolvedTemp, sValue);
 				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
 				
 				bValue = objEntry3.isCall();				

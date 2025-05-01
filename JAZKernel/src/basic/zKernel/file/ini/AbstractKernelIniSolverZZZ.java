@@ -676,7 +676,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
-		String sReturnTag2Solve = null; String sReturnTagSolved = null;	String sReturnLineSolved = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	String sReturnLineSolved = null;	
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
@@ -738,11 +738,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 						
 			sReturnTag = (String) vecReturn.get(1);
+			sReturnTagParsed = sReturnTag;
+			sReturnTagSolved = sReturnTag;
 			this.setValue(sReturnTag);
 			
 //			//Da wir hier verkuerzt parseFirstVector aufrufen... Explizit parsePost() ausfuehren.
-			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse);			
+			vecReturn = this.parsePost(vecReturn, objReturnReferenceParse);
 			sReturnTag = this.getValue();
+			sReturnTagParsed = sReturnTag;
+			sReturnTagSolved = sReturnTag;
 			if(vecReturn==null) break main;
 		
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
@@ -797,10 +801,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
 				if(bUseSolver && bUseSolverThis) {
-					if(sReturnLineSolved!=null) {
+					if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sReturnLineSolved.equals(sReturnTag2Solve)) {
+						if(!sReturnTagSolved.equals(sReturnTagParsed)) {
 							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
 							this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}
