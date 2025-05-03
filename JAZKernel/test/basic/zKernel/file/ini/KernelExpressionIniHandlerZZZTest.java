@@ -3072,7 +3072,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 			
 			boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
-			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+			boolean bUseSolver = objFileIniTest.isSolverEnabledGeneral();
 			
 			sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 			

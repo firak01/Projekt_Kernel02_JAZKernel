@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface IKernelSolveEnabledZZZ extends ISolveEnabledZZZ{
+public interface IKernelSolveZZZ extends ISolveZZZ{
 		public IKernelConfigSectionEntryZZZ solveAsEntryNew(String sExpression) throws ExceptionZZZ;
 		public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression) throws ExceptionZZZ;
 		public IKernelConfigSectionEntryZZZ solveAsEntry(String sExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ;

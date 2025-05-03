@@ -19,7 +19,7 @@ import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
  * @author Fritz Lindhauer, 21.04.2025, 09:56:19
  * 
  */
-public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IParseEnabledZZZ, ITagBasicZZZ{			
+public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IParseZZZ, ITagBasicZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.

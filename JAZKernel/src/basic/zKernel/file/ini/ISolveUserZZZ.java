@@ -3,7 +3,7 @@ package basic.zKernel.file.ini;
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface ISolveUserZZZ extends IKernelSolveEnabledZZZ{		
+public interface ISolveUserZZZ extends IKernelSolveZZZ{		
 	public boolean isSolve(String sExpression) throws ExceptionZZZ;
 		
 	public void updateValueSolveCalled() throws ExceptionZZZ;

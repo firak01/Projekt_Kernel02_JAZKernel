@@ -304,6 +304,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}
 	
+
 	@Override
 	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
@@ -338,6 +339,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}
 	
+	
+	//#### aus ISOlveZZZZ
 	@Override
 	public boolean isSolveRelevant(String sExpression) throws ExceptionZZZ {
 		return this.isSolve(sExpression);

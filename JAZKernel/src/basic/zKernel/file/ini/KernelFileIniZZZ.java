@@ -59,7 +59,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 31.08.2024, 08:07:50
  * 
  */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IKernelExpressionIniHandlerUserZZZ, IKernelConfigSectionEntryUserZZZ, IValueVariableUserZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniParserZZZ, IKernelZFormulaIni_PathZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IKernelExpressionIniHandlerUserZZZ, IKernelConfigSectionEntryUserZZZ, IValueVariableUserZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniParserZZZ, IKernelZFormulaIni_PathZZZ, ISolveEnabledZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -1574,6 +1574,69 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	}
 
 	
+	//#####################################
+	//#### aus ISolveEnabledZZZ
+	//#####################################
+	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
+	@Override
+	public boolean isSolverEnabledThis() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+	
+	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
+	@Override 
+	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isSolverEnabledEveryRelevant() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			//Hier kaeme dann das ueberschiebene rein, z.B. "Elternsolver"
+							
+		}//end main:
+		return bReturn;
+	}
+	
+
+	@Override
+	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+	
+	@Override 
+	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			bReturn = this.isSolverEnabledEveryRelevantThis();
+			if(!bReturn) break main;
+			
+			bReturn = this.isSolverEnabledGeneral();
+			if(!bReturn) break main;						
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override 
+	public boolean isSolverEnabledAnyRelevant() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
+			//       Muss also immer eine extra Abfrage bleiben.
+			boolean bReturn1 = this.isSolverEnabledThis();						
+			boolean bReturn2 = this.isSolverEnabledGeneral();
+			
+			bReturn = bReturn1 | bReturn2;
+		}//end main:
+		return bReturn;
+	}
+
+		
+		
+	
 	//######################################
 	//### Aus IKernelExpressionIniHandlerUserZZZ
 	//######################################
@@ -2246,9 +2309,4 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-	
-	
-
-	
 }
