@@ -371,7 +371,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -528,7 +529,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -606,7 +608,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bRemoveSurroundingSeparatorsOnSolve) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -681,7 +684,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bRemoveSurroundingSeparatorsOnSolve) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				
 				bReturn = true;
@@ -750,7 +754,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				
 				bReturn = true;
@@ -825,7 +830,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				
 				//++++++++++++++++++++++++++++++++++++++++++++
@@ -1195,7 +1201,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1271,7 +1278,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
@@ -1489,7 +1497,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objEntry.getValueFromTag();
 				assertEquals(sTagSolved, sValue);
@@ -1559,7 +1568,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objEntry.getValueFromTag();
 				assertEquals(sTagSolved, sValue);
@@ -1629,7 +1639,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objEntry.getValueFromTag();
 				assertEquals(sTagSolved, sValue);
@@ -1762,7 +1773,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objEntry.getValueFromTag();
 				assertEquals(sTagSolved, sValue);
@@ -1825,8 +1837,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
-				
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
@@ -1886,7 +1898,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				
 				bReturn = true;
@@ -1947,7 +1960,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				
 				bReturn = true;
@@ -2147,7 +2161,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2229,7 +2244,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -2311,7 +2327,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2624,7 +2641,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
@@ -2725,7 +2743,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
@@ -2820,7 +2839,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
@@ -2913,7 +2933,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
@@ -2998,7 +3019,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver){
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);
 			
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
@@ -3081,7 +3103,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver){
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);
 			
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
@@ -3165,7 +3188,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver){
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);
 			
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
@@ -3326,7 +3350,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);			
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);			
 			
 			//Wert mit Entry-Wert vergleichen
 			objEntry = objFileIniTest.getEntry();			
@@ -3408,7 +3433,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);			
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);		
 			
 			//Wert mit Entry-Wert vergleichen
 			objEntry = objFileIniTest.getEntry();			
@@ -3506,7 +3532,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);		
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);	
 			
 			//Wert mit Entry-Wert vergleichen
 			objEntry = objFileIniTest.getEntry();
@@ -3897,7 +3924,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bRemoveSurroundingSeparatorsOnSolve) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
@@ -3998,7 +4026,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bRemoveSurroundingSeparatorsOnSolve) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
@@ -4093,7 +4122,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bRemoveSurroundingSeparatorsOnSolve) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					IKernelConfigSectionEntryZZZ objEntry = objExpressionHandler.solveAsEntry(sExpressionSource, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
 					assertNotNull(objEntry);
@@ -4232,7 +4262,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
+				
 				assertFalse(objEntry.isJson());
 				assertFalse(objEntry.isJsonArray());
 				
@@ -4305,7 +4337,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
+				
 				assertFalse(objEntry.isJson());
 				assertFalse(objEntry.isJsonArray());
 				
@@ -4377,7 +4411,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
+				
 				assertFalse(objEntry.isJson());
 				assertFalse(objEntry.isJsonArray());
 				
@@ -4663,7 +4699,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -4743,7 +4780,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -4822,7 +4860,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
@@ -4932,7 +4971,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver){
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				
 				
 				bReturn = true;

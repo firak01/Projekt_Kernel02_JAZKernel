@@ -183,7 +183,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			if(bUseExpressionGeneral && bUseSolver){
 				sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			}
-			assertEquals(sExpressionSolvedTemp, sValue);
+			sExpressionSolved = sExpressionSolvedTemp;
+			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Anstellen der PathSubstitution, die Z-Tags verschwinden.

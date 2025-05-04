@@ -777,16 +777,18 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//##########################
 			
 			sReturnTag = sReturnTagSolved;
-			}//end solveThis:
+		}//end solveThis:	
 		
 			//... das post vorbereiten
+		    //Merke: Das wird wg. des aktivieretn generellen Solvers immer ausgeführt. Intern wird dann auf den deaktivierten aktuellen Solver geprueft.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferencePost= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferencePost.set(objEntry);
 		
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
 			vecReturn = this.solvePost(vecReturn, objReturnReferencePost, bRemoveSurroundingSeparators);
-			
+		
+		
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
@@ -803,7 +805,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
-				if(bUseSolver && bUseSolverThis) {
+				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {
 					if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
@@ -987,13 +989,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				String sTagStart = this.getTagPartOpening();
 				String sTagEnd = this.getTagPartClosing();
 				if(sTagStart.equalsIgnoreCase("<Z>")) {
-					//dann mache nix... der Tag wird spaeter behandelt...
+					//dann mache nix... der reine Z-Tag wird spaeter behandelt...
 				}else {
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
 				}
 			}	
 			
-			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht, auch wenn der aktuelle Solver deakiviert ist, der generelle Solver aber aktiviert ist. 
 			if(bRemoveSurroundingSeparators & bUseExpression) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";

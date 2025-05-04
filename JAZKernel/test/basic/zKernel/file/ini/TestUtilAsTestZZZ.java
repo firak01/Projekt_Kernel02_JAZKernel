@@ -767,7 +767,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
 				//ABER: Wenn der Solver generel aus gestellt wird, dann wird nix dahinter aufgerufen.
 				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-				assertFalse(objEntry.isCallSolveCalled());
+				assertTrue(objEntry.isCallSolveCalled());
 				assertFalse(objEntry.isCallSolved());					
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

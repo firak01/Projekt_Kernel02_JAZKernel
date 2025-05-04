@@ -201,11 +201,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);//DerGesamtsolver sollte aber ausgefuehrt werden und fuer das Entfernen der Z-Tags sorgen!!!
 				
-				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags. 
+				//Merke: Diese Werte sind immer ohne die umgebenden Tags. Das wird gemacht durch PARSE. Ein abgestellter SOLVER aendert nichts daran.
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-				//sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
                 
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 					btemp = testCompute_Call_CallUnsolved_(sExpression,  sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
@@ -705,7 +706,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -813,7 +815,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 										
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -841,7 +844,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);					
@@ -932,7 +936,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -958,7 +963,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -1047,7 +1053,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 
 					objEntry = objSectionEntryReference.get();
 					assertNotNull(objEntry);
@@ -1151,7 +1158,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 					
 					sValue = objExpressionSolver.getValue();
 					assertEquals(sTagSolved, sValue);
@@ -1185,7 +1193,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
-					assertEquals(sExpressionSolvedTemp, sValue);
+					sExpressionSolved = sExpressionSolvedTemp;
+					assertEquals(sExpressionSolved, sValue);
 				}
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 								
@@ -1270,7 +1279,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 					
 				sValueParseFirstVector = sValue;
 				
@@ -1454,7 +1464,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver){
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				assertFalse("Mit Aufloesung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
 				
 				bValue = objEntry3.isCall();				

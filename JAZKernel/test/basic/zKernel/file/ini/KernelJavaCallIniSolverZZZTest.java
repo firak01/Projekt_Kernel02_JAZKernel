@@ -441,7 +441,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolvedTemp, sValue);
@@ -474,7 +475,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
 			
@@ -559,7 +561,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolvedTemp, sValue);
@@ -589,7 +592,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);				
