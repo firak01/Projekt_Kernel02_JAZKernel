@@ -753,10 +753,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-				sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
+				//sExpressionSubstituted4Compare = sExpressionSubstituted;
 				if(sExpressionSolved.equals(sExpressionSubstituted4Compare)) {
 					assertFalse(objEntry.isSolvedChanged()); 
 				}else {
+					System.out.println("sExpressionSolved="+sExpressionSolved);
+					System.out.println("sExpressionSubstituted4Compare="+sExpressionSubstituted4Compare);
 					assertTrue(objEntry.isSolvedChanged());
 				}				
 				assertTrue(objEntry.isSolved());
