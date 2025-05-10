@@ -393,7 +393,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
-			String sExpressionSubstituted4Compare=null;
+			String sExpressionSubstituted2compareWithParsed=null; String sExpressionParsed2compareWithSubstituted=null;
 			
 			
 			
@@ -738,7 +738,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isPathSubstituteCalled());						
 				if(objEntry.isPathSubstituted()){ 
-					if(sExpression.equals(sExpressionSubstituted)) { 
+					sExpressionSubstituted2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
+					sExpressionParsed2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+					System.out.println("sExpressionParsed2compare="+sExpressionParsed2compareWithSubstituted);
+					System.out.println("sExpressionSubstituted2compare="+sExpressionSubstituted2compareWithParsed);
+					if(sExpressionParsed2compareWithSubstituted.equals(sExpressionSubstituted2compareWithParsed)) { 
 						assertFalse(objEntry.isPathSubstitutedChanged());
 					}else {
 						assertTrue(objEntry.isPathSubstitutedChanged());
@@ -754,11 +758,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 				//System.out.println("sExpressionSolved="+sExpressionSolved);
-				//sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-				sExpressionSubstituted4Compare = sExpressionSubstituted;
+				//sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);				
+				sExpressionSubstituted2compareWithParsed = sExpressionSubstituted;
 				System.out.println("sExpressionSolved="+sExpressionSolved);
-				System.out.println("sExpressionSubstituted4Compare="+sExpressionSubstituted4Compare);
-				if(sExpressionSolved.equals(sExpressionSubstituted4Compare)) {
+				System.out.println("sExpressionSubstituted2compare="+sExpressionSubstituted2compareWithParsed);
+				if(sExpressionSolved.equals(sExpressionSubstituted2compareWithParsed)) {
 					assertFalse(objEntry.isSolvedChanged()); 
 				}else {					
 					assertTrue(objEntry.isSolvedChanged());
@@ -873,10 +877,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 				//System.out.println("sExpressionSolved="+sExpressionSolved);
 				//sExpressionSubstituted4Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-				sExpressionSubstituted4Compare = sExpressionSubstituted;
+				sExpressionSubstituted2compareWithParsed = sExpressionSubstituted;
 				System.out.println("sExpressionSolved="+sExpressionSolved);
-				System.out.println("sExpressionSubstituted4Compare="+sExpressionSubstituted4Compare);
-				if(sExpressionSolved.equals(sExpressionSubstituted4Compare)) {
+				System.out.println("sExpressionSubstituted4Compare="+sExpressionSubstituted2compareWithParsed);
+				if(sExpressionSolved.equals(sExpressionSubstituted2compareWithParsed)) {
 					assertFalse(objEntry.isSolvedChanged()); 
 				}else {					
 					assertTrue(objEntry.isSolvedChanged());

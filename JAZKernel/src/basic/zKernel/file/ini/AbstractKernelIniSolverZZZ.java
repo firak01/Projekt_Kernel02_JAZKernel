@@ -679,11 +679,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	private String solve_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn,	boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
-		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	String sReturnLineSolved = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
+		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";	
 		
 		//############
 		//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
@@ -753,6 +756,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(vecReturn==null) break main;
 		
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
+			sReturnLineParsed = sReturnLine;
+			if(bRemoveSurroundingSeparators) {
+				sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
+			}else {
+				sReturnLineParsed2compareWithSolved = sReturnLineParsed;				
+			}
 			
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();
@@ -785,13 +794,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objReturnReferencePost.set(objEntry);
 		
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
-			vecReturn.replace(sReturnTag);
+			vecReturn.replace(sReturnTag);			
 			vecReturn = this.solvePost(vecReturn, objReturnReferencePost, bRemoveSurroundingSeparators);
 		
+			Vector3ZZZ<String> vecReturn2compareWithParsed = (Vector3ZZZ) vecReturn.clonez();
+			vecReturn2compareWithParsed.replace(sReturnTag);
+			sReturnLineSolved2compareWithParsed = VectorUtilZZZ.implode(vecReturn2compareWithParsed); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
 		
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
+			sReturnLineSolved = sReturnLine;
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -806,10 +819,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
 				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {
-					if(sReturnTagSolved!=null) {
+					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
 							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
 							this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}
