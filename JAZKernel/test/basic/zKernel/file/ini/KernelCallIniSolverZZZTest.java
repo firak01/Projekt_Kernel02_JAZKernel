@@ -1235,14 +1235,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			boolean btemp;
 			Vector3ZZZ<String> vecReturn = null; Vector3ZZZ<String> vecReturnSubstituted = null;
 			String sExpression = null; String sExpressionSolved = null;
-			String sValue; String sValueSubstituted; String sValueParseFirstVector;
-			
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";				
+			String sValue; String sValueParseFirstVector;
+							
 			try {									
 				String sHostName = EnvironmentZZZ.getHostName();
-				
-				
 				
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
@@ -1265,9 +1261,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				btemp = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); 
 				assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 				
-				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
-				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				
+			
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 	
 				
@@ -1289,13 +1283,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sValue = (String) vecReturn.get(1);
 				assertFalse(StringZZZ.isEmpty(sValue)); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
-				sValue = VectorUtilZZZ.implode(vecReturn);
-				String sExpressionSolvedTemp = sExpressionSolved;
-				//In diesem Fall immer True if(objEnumSurrounding.getSurroundingValueUsed()) {
-				if(bUseExpressionGeneral && bUseSolver){
-					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				}
-				sExpressionSolved = sExpressionSolvedTemp;
+				sValue = VectorUtilZZZ.implode(vecReturn);				
 				assertEquals(sExpressionSolved, sValue);
 					
 				sValueParseFirstVector = sValue;
@@ -1303,6 +1291,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sValue = objExpressionSolver.parse(sExpression);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
 				assertEquals("parse(s) und parseFirstVector(s) sollte gleich sein",sValueParseFirstVector, sValue);
+				
+				
+				
 				
 				//################################
 				//### Mit Substitution
@@ -1319,12 +1310,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				assertFalse(StringZZZ.isEmpty(sValue)); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				sValue = VectorUtilZZZ.implode(vecReturn);
-
-				//In diesem Fall immer True if(objEnumSurrounding.getSurroundingValueUsed()) {
-				if(bUseExpressionGeneral && bUseSolver){
-					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				}
-				assertEquals(sExpressionSolvedTemp, sValue);
+				assertEquals(sExpressionSolved, sValue);
+							
 				sValueParseFirstVector = sValue;
 				
 				sValue = objExpressionSolver.parse(sExpression);
@@ -1340,7 +1327,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sValue = objExpressionSolver.solve(sExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausaugabe: '" + sValue + "'\n");
-								
+				
 				sHostName = EnvironmentZZZ.getHostName();
 				assertEquals(sHostName, sValue);
 				
