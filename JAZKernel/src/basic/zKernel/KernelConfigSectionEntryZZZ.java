@@ -35,6 +35,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected String sSystemNumber = null;
 	
 	protected VectorZZZ<String> vecHistorySolveCalled = new VectorZZZ<String>();
+	protected VectorZZZ<String> vecHistoryParseCalled = new VectorZZZ<String>();
 	
 	protected VectorDifferenceZZZ<String> vecRaw = new VectorDifferenceZZZ<String>();	
 	protected VectorDifferenceZZZ<String> vecValueAsExpression = new VectorDifferenceZZZ<String>();
@@ -423,6 +424,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setHistorySolveCalled(String sTagName) throws ExceptionZZZ{
 		this.getHistorySolveCalledVector().add(sTagName);
+	}
+	
+	//##############################
+	@Override 
+	public VectorZZZ<String> getHistoryParseCalledVector() throws ExceptionZZZ{
+		return this.vecHistoryParseCalled;
+	}
+	
+	@Override
+	public void setHistoryParseCalled(String sTagName) throws ExceptionZZZ{
+		this.getHistoryParseCalledVector().add(sTagName);
 	}
 
 	//###############################

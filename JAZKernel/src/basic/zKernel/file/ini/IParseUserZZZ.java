@@ -7,6 +7,11 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 public interface IParseUserZZZ extends IKernelParseEnabledZZZ{
 	public boolean isParse(String sExpression) throws ExceptionZZZ;
 	
+	public void addHistoryParseCalled() throws ExceptionZZZ;
+	public void addHistoryParseCalled(String sTagName) throws ExceptionZZZ;
+	public void addHistoryParseCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ;
+	public void addHistoryParseCalled(IKernelConfigSectionEntryZZZ objEntry, String sTagName) throws ExceptionZZZ;
+	
 	public void updateValueParseCalled() throws ExceptionZZZ;
 	public void updateValueParseCalled(boolean bIsSolveCalled) throws ExceptionZZZ;
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;

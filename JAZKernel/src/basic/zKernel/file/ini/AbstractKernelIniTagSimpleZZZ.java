@@ -1147,7 +1147,35 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public boolean isParse(String sExpression) throws ExceptionZZZ {
 		return this.isExpression(sExpression);
 	}
-
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override 
+	public void addHistoryParseCalled() throws ExceptionZZZ{
+		String sTagName = this.getName();
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistoryParseCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistoryParseCalled(String sTagName) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistoryParseCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistoryParseCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
+		String sTagName = this.getName();
+		this.addHistoryParseCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistoryParseCalled(IKernelConfigSectionEntryZZZ objEntry, String sTagName) throws ExceptionZZZ{
+		objEntry.setHistoryParseCalled(sTagName);
+	}
+	
+	
+	
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ{
 		//oberste Klasse erreicht   super.updateValueParseCustom(objReturnReference, sExpressionIn);
@@ -1211,6 +1239,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParseCalled) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isParseCalled(bIsParseCalled);
+			
+		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+		this.addHistoryParseCalled(objEntry);
 	}
 
 	@Override
