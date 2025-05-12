@@ -369,29 +369,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	//### aus ISolveUserZZZ
-//	@Override
-//	public void updateValueSolveCalled() throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-//		this.updateValueSolveCalled(objEntry, true);
-//	}
-//	
-//	@Override
-//	public void updateValueSolveCalled(boolean bIsSolveCalled) throws ExceptionZZZ{
-//		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-//		this.updateValueSolveCalled(objEntry, bIsSolveCalled);
-//	}
-//		
-//	@Override
-//	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
-//		this.updateValueSolveCalled(objEntry, true);
-//	}
-	
 	@Override
 	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
 		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-		objEntry.isCallSolveCalled(bIsSolveCalled);
+		objEntry.isCallSolveCalled(bIsSolveCalled);//der Aufruf findet immer statt, auch ohne gesetztes Flag
 		
 		//Den eigenen Solver
 		objEntry.isJavaCallSolveCalled(bIsSolveCalled);

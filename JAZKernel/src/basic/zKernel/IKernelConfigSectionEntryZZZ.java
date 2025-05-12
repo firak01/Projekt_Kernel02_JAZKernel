@@ -8,9 +8,11 @@ import basic.zBasic.IValueArrayUserZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zBasic.IValueMapUserZZZ;
 import basic.zBasic.IValueUserZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
@@ -43,6 +45,9 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	public String getSystemNumber();
 	public void setSystemNumber(String sSystemNumber);
+	
+	public VectorZZZ<String> getHistorySolveCalledVector() throws ExceptionZZZ;
+	public void setHistorySolveCalled(String sTagName) throws ExceptionZZZ;
 	
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();

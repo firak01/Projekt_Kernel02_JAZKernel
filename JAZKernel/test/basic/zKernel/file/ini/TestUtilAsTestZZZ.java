@@ -1,8 +1,11 @@
 package basic.zKernel.file.ini;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
@@ -902,10 +905,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
 				
-				TODOGOON20250511;//Hier also differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
-				//assertFalse(objEntry.isJavaCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.				
-				assertTrue(objEntry.isJavaCallSolveCalled());   //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-				
+				//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+				boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
+				if(bCallSolverCalledPrevious) {
+					System.out.println(("Vorher wurde Call-Solver aufgerufen. Also Java-Call-Solver nicht direkt aufgerufen."));
+					assertFalse(objEntry.isJavaCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				}else {
+					System.out.println(("Vorher wurde Call-Solver NOCH NICHT aufgerufen. Also JavaCall-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isJavaCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+				}
 				assertFalse(objEntry.isJavaCallSolved());      //Aber: Das es gilt auch beim direkten Aufruf: Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());

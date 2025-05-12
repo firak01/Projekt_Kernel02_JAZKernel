@@ -71,11 +71,15 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 		return objReturn;
 	}
 	
-	public static boolean containsString(Vector vecIn, String sToFind, boolean bIgnoreCase) throws ExceptionZZZ{
+	public static boolean containsString(Vector vecIn, String sToFind) throws ExceptionZZZ{
+		return 	VectorUtilZZZ.containsString(vecIn, sToFind, true);
+	}
+	
+	public static boolean containsString(Vector vecIn, String sToFind, boolean bExactMatch) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			ExtendedVectorZZZ vecExtended = new ExtendedVectorZZZ(vecIn);
-			bReturn = vecExtended.containsString(sToFind,bIgnoreCase);
+			bReturn = vecExtended.containsString(sToFind,!bExactMatch); //!!!Achtung VectorZZZ verwendet ignoreCase und nicht wie alle StringZZZ-Methoden bExcactMatch
 		}//end main:
 		return bReturn;		
 	}

@@ -211,6 +211,32 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return this.isExpression(sExpression);
 	}
 	
+	//+++++++++++++++
+	@Override 
+	public void addHistorySolveCalled() throws ExceptionZZZ{
+		String sTagName = this.getName();
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistorySolveCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySolveCalled(String sTagName) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistorySolveCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySolveCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
+		String sTagName = this.getName();
+		this.addHistorySolveCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySolveCalled(IKernelConfigSectionEntryZZZ objEntry, String sTagName) throws ExceptionZZZ{
+		objEntry.setHistorySolveCalled(sTagName);
+	}
+	
+	//++++++++++++++++++++++
 	@Override
 	public void updateValueSolveCalled() throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
@@ -231,6 +257,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
 		objEntry.isSolveCalled(bIsSolveCalled);
+		
+		
+		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+		this.addHistorySolveCalled(objEntry);
 	}
 	
 	//+++++++++++++++++++++++++++++++++

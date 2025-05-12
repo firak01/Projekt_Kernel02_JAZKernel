@@ -14,6 +14,7 @@ import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -32,6 +33,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	protected IIniStructurePositionZZZ objIniPosition = null;
 	protected String sSystemNumber = null;
+	
+	protected VectorZZZ<String> vecHistorySolveCalled = new VectorZZZ<String>();
+	
 	protected VectorDifferenceZZZ<String> vecRaw = new VectorDifferenceZZZ<String>();	
 	protected VectorDifferenceZZZ<String> vecValueAsExpression = new VectorDifferenceZZZ<String>();
 	
@@ -407,6 +411,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setSystemNumber(String sSystemNumber) {
 		this.sSystemNumber = sSystemNumber;
+	}
+	
+	
+	//##############################
+	@Override 
+	public VectorZZZ<String> getHistorySolveCalledVector() throws ExceptionZZZ{
+		return this.vecHistorySolveCalled;
+	}
+	
+	@Override
+	public void setHistorySolveCalled(String sTagName) throws ExceptionZZZ{
+		this.getHistorySolveCalledVector().add(sTagName);
 	}
 
 	//###############################

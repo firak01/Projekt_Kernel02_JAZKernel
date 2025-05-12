@@ -5,7 +5,11 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface ISolveUserZZZ extends IKernelSolveZZZ{		
 	public boolean isSolve(String sExpression) throws ExceptionZZZ;
-		
+	public void addHistorySolveCalled() throws ExceptionZZZ;
+	public void addHistorySolveCalled(String sTagName) throws ExceptionZZZ;
+	public void addHistorySolveCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ;
+	public void addHistorySolveCalled(IKernelConfigSectionEntryZZZ objEntry, String sTagName) throws ExceptionZZZ;
+	
 	public void updateValueSolveCalled() throws ExceptionZZZ;
 	public void updateValueSolveCalled(boolean bIsSolveCalled) throws ExceptionZZZ;
 	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ;
