@@ -399,7 +399,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null; 
-		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
+		boolean bUseExpression = false; boolean bUseSolver = false; //boolean bUseSolverThis = false;
 			
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -431,11 +431,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 						
 			String sExpression = sExpressionIn;
 			
-			bUseSolver = this.isSolverEnabledGeneral();
-			if(!bUseSolver) break main;
+//			bUseSolver = this.isSolverEnabledGeneral();
+//			if(!bUseSolver) break main;
+//			
+//			bUseSolverThis = this.isSolverEnabledThis(); 		
+//			if(!bUseSolverThis) break main;
 			
-			bUseSolverThis = this.isSolverEnabledThis(); 		
-			if(!bUseSolverThis) break main;
+			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
 			
 			//##################################
 			//### Besonderheiten dieses Solvers
@@ -456,12 +459,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		sReturn = sReturnLine;
 				
 		if(objEntry!=null) {
-			if(bUseSolver & bUseSolverThis) objEntry.setValueCallSolved(sReturnLine);
+//			if(bUseSolver & bUseSolverThis) objEntry.setValueCallSolved(sReturnLine);
+			if(bUseSolver) objEntry.setValueCallSolved(sReturnLine);
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		
-			if(bUseExpression && bUseSolver && bUseSolverThis) {
+			//if(bUseExpression && bUseSolver && bUseSolverThis) {
+			if(bUseExpression && bUseSolver) {
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();

@@ -379,12 +379,9 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = sExpressionIn;
-		String sReturnTag = null;
-		HashMap<String,String> hmReturn = null;
-		
-		boolean bUseExpression = false; 
-		boolean bUseSolver = false;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
+		HashMap<String,String> hmReturn = null;		
+		boolean bUseExpression = false; boolean bUseSolver = false; //boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -402,21 +399,30 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
-		
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objEntry);
+		sReturnLine = sExpressionIn;
+		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
+		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-						
+			
+			String sExpression = sExpressionIn;
+			
 			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
-			String sExpression = sExpressionIn;
-			String sExpressionUsed = sExpression;
+			//##################################
+			//### Besonderheiten dieses Solvers
+			//###################################		
 			
-
+			//Berechnen der HashMap aus einem vermeintlichen JSON-Ausdruck
+			String sExpressionUsed = sExpression;
 			hmReturn = this.computeHashMapFromJson(sExpression);
 			if(hmReturn!=null) {
 				//sExpressionUsed = HashMapExtendedZZZ.computeDebugString(hmReturn);
@@ -424,20 +430,37 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			}
 			
 			sReturnTag = sExpressionUsed;
+			sReturnTagSolved = sReturnTag;
 			sReturn = sReturnTag;
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
 		}//end main:	
 	
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
-		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
+		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert
+		sReturn = sReturnLine;
 		
-			if(hmReturn!=null) {
-				objEntry.isMapValue(true);
-				objEntry.isJsonMap(true);
-				objEntry.setValue(hmReturn);
-			}						
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+		if(objEntry!=null) {		
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+			
+			if(bUseExpression && bUseSolver) {
+				if(sReturnTagSolved!=null) {				
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
+						this.updateValueSolvedChanged();
+						this.updateValueSolvedChanged(objEntry);
+					}
+										
+					if(hmReturn!=null) {
+						objEntry.isMapValue(true);//Sollte das nicht im PARSE gesetzt werden?
+						objEntry.isJsonMap(true);
+						objEntry.setValue(hmReturn);
+					}	
+				}
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+			}
 			this.adoptEntryValuesMissing(objEntry);			
 		}
 		return sReturn;				

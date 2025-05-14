@@ -730,8 +730,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					//20250412; das scheint zu klappen alstemp = ex.computeArrayList(sRaw);
 					//aber eigentlich muss es sein
 					ex.solve(sRaw,objReturnReference);
-					alstemp = ex.getValueArrayList();
-					if(alstemp.isEmpty()) {				
+					alstemp = ex.getValueArrayList();					
+					if(alstemp==null || alstemp.isEmpty()) {				
 					}else{
 						bAnyJson = true;
 					}

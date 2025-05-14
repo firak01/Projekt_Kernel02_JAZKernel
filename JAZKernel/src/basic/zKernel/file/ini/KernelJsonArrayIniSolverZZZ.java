@@ -137,18 +137,23 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		
 			String sExpression = sExpressionIn;
 			
-			Vector<String> vecReturn = this.parseFirstVector(sExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			//Sehr flexibel gehalten... Wenn auf 0: Dann waren die Tags nicht (mehr) drumherum
+			sReturnTag = (String)vecReturn.get(1);
+			if(StringZZZ.isEmpty(sReturnTag)){
+				sReturnTag = (String)vecReturn.get(0);								
+			}
+			if(StringZZZ.isEmpty(sReturnTag)) break main; //Dann ist der Tag-Wert nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			this.setValue(sReturnTag);
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
 			
 			//Beschränke das ausrechnen auf den JSON-Array Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturnTag = vecReturn.get(1);
-			this.setValue(sReturnTag);
-			
+		
 			if(this.getFlag("useFormula_math")==true){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
@@ -167,7 +172,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			
 			
 			//JsonArray ja = JsonEasyZZZ.toJsonArray(sReturn);
-			alsReturn = JsonUtilZZZ.toArrayListString(sReturn);
+			alsReturn = JsonUtilZZZ.toArrayListString(sReturnTag);
 			
 			//Verwendete Lösung für die HashMap
 //			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
@@ -342,13 +347,9 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sExpression = sExpressionIn;
-		String sReturn = sExpression;
-		String sReturnTag = null;
+		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
 		ArrayList<String> alsReturn = null;
-		
-		boolean bUseExpression = false; 
-		boolean bUseSolver = false;
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -366,36 +367,68 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);			
-		
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objEntry);
+		sReturnLine = sExpressionIn;
+		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
+		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 						
+			String sExpression = sExpressionIn;
+			
 			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 						
-			alsReturn = this.computeArrayList(sExpression);
+			//##################################
+			//### Besonderheiten dieses Solvers
+			//###################################		
+			
+			//Berechnen der ArrayList aus einem vermeintlichen JSON-Ausdruck
+			String sExpressionUsed = sExpression;
+			alsReturn = this.computeArrayList(sExpressionUsed);
 			if(alsReturn!=null) {
-				sReturnTag = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
-				sReturn = sReturnTag;
-			}						
+				sExpressionUsed = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);				
+			}	
+			sReturnTag = sExpressionUsed;
+			sReturnTagSolved = sReturnTag;
+			sReturn = sReturnTag;
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objEntry);
 		}//end main:	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
+		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert
+		sReturn = sReturnLine;
+		
 		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);			
+			objEntry.setValue(sReturnLine);			
+			objEntry.setValueFromTag(sReturnTag);
+			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			
-			if(alsReturn!=null) {
-				objEntry.isArrayValue(true);
-				objEntry.isJsonArray(true);
-				objEntry.setValue(alsReturn);
-			}						
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);			
+			if(bUseExpression && bUseSolver) {
+				if(sReturnTagSolved!=null) {				
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
+						this.updateValueSolvedChanged();
+						this.updateValueSolvedChanged(objEntry);
+					}
+				}
+				
+				if(alsReturn!=null) {
+					objEntry.isArrayValue(true); //sollte das nicht beim Parse schon erledigt werden?
+					objEntry.isJsonArray(true);
+					objEntry.setValue(alsReturn);
+				}	
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+			}
+			
+			this.adoptEntryValuesMissing(objEntry);										
 		}
 		return sReturn;				
 	}

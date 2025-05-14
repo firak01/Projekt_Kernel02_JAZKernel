@@ -1014,7 +1014,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//String sExpression = VectorUtilZZZ.implode(vecExpressionIn);		
 			//this.setRaw(sExpressionIn);
 			//objEntry.setRaw(sExpressionIn);
-			sReturnTag = this.getValue();
+			//sReturnTag = this.getValue();
 			//sReturnLine = sExpressionIn;	
 			
 			if(vecExpressionIn==null) break main;
@@ -1029,36 +1029,35 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			//Nein, denn der generelle Solver wird ja ausgefuehrt if(!bUseSolverThis) break main;
 			
-			
-			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
-			if(bUseExpression & bUseSolver & bUseSolverThis){
-				String sTagStart = this.getTagPartOpening();
-				String sTagEnd = this.getTagPartClosing();
-				if(sTagStart.equalsIgnoreCase("<Z>")) {
-					//dann mache nix... der reine Z-Tag wird spaeter behandelt...
-				}else {
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
-				}
-			}	
-			
-			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht, auch wenn der aktuelle Solver deakiviert ist, der generelle Solver aber aktiviert ist. 
-			if(bRemoveSurroundingSeparators & bUseExpression) {
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";
-				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
-			}
+//paasiert auch im Wrapup...			
+//			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
+//			if(bUseExpression & bUseSolver & bUseSolverThis){
+//				String sTagStart = this.getTagPartOpening();
+//				String sTagEnd = this.getTagPartClosing();
+//				if(sTagStart.equalsIgnoreCase("<Z>")) {
+//					//dann mache nix... der reine Z-Tag wird spaeter behandelt...
+//				}else {
+//					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
+//				}
+//			}	
+//			
+//			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht, auch wenn der aktuelle Solver deakiviert ist, der generelle Solver aber aktiviert ist. 
+//			if(bRemoveSurroundingSeparators & bUseExpression) {
+//				String sTagStartZ = "<Z>";
+//				String sTagEndZ = "</Z>";
+//				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
+//			}
 			
 			
 			//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
 			vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-			objEntry = objReturnReference.get();
-			
-			
-			sReturnTag = (String) vecReturn.get(1);
+			objEntry = objReturnReference.get();						
+			//sReturnTag = (String) vecReturn.get(1);
 			//sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
-			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+// passiert auch im Wrapup
+//			this.updateValueSolved();
+//			this.updateValueSolved(objEntry);
 			
 			vecReturn = this.solveParsedWrapup(vecReturn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();

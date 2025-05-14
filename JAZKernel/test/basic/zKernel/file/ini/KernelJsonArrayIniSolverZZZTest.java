@@ -21,8 +21,15 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
-	public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
-	TODOGOON20250412;//Mache hier auch wie bei MAP: ...CONTENT.... ...SOLVED...
+	protected final static String sEXPRESSION_JSONARRAY01_CONTENT_SOLVED = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]";
+	protected final static String sEXPRESSION_JSONARRAY01_SOLVED = "<Z>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT_SOLVED + "</Z>";
+	protected final static String sEXPRESSION_JSONARRAY01_CONTENT = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]";
+	protected final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT +"</JSON:ARRAY></JSON></Z>";
+
+	//public final static String sEXPRESSION_JSONARRAY01_SOLVED = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
+	//public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
+	
+	
 	
 	private File objFile;
 	private IKernelZZZ objKernel;
@@ -1147,7 +1154,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	
 	//########################################################################
 
-	private boolean testCompute_JsonArray_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_(String sExpressionIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
@@ -1184,7 +1191,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				
 				//+++ Teilberechnungen durchführen.
@@ -1240,7 +1247,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
@@ -1276,7 +1283,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
@@ -1310,7 +1317,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);
