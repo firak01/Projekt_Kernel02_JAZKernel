@@ -165,12 +165,31 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isJson();
 	abstract void isJson(boolean bIsJson);
 	
+	public boolean isJsonSolveCalled();
+	abstract void isJsonSolveCalled(boolean bIsJsonSolveCalled);
+	
+	public boolean isJsonSolved();
+	abstract void isJsonSolved(boolean bIsJsonSolved);
+	
+	public boolean isJsonSolvedChanged();
+	abstract void isJsonSolvedChanged(boolean bIsJsonSolvedChanged);
+	
 	public boolean isJsonMap();
 	abstract void isJsonMap(boolean bIsJsonMap);
 	
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
+	
+	public boolean isJsonArraySolveCalled();
+	abstract void isJsonArraySolveCalled(boolean bIsJsonArraySolveCalled);
 
+	public boolean isJsonArraySolved();
+	abstract void isJsonArraySolved(boolean bIsJsonArraySolvedChanged);
+
+	public boolean isJsonArraySolvedChanged();
+	abstract void isJsonArraySolvedChanged(boolean bIsJsonArraySolvedChanged);
+
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//CRYPT
 	public boolean isCrypt();

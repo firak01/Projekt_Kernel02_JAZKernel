@@ -88,6 +88,15 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bJsonArray = false;
 	protected boolean bJsonMap = false;
 	
+	protected boolean bJsonSolveCalled = false;
+	protected boolean bJsonSolved = false;
+	protected boolean bJsonSolvedChanged = false;
+
+	protected boolean bJsonArraySolveCalled = false;
+	protected boolean bJsonArraySolved = false;
+	protected boolean bJsonArraySolvedChanged = false;
+	
+	
 	protected boolean bCall = false;
 	
 	protected boolean bCallParseCalled = false;
@@ -1034,6 +1043,37 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public boolean isJsonSolveCalled() {		
+		return bJsonSolveCalled;
+	}
+
+	@Override
+	public void isJsonSolveCalled(boolean bIsJsonSolveCalled) {
+		this.bJsonSolveCalled = bIsJsonSolveCalled;
+	}
+
+	@Override
+	public boolean isJsonSolved() {		
+		return this.bJsonSolved;
+	}
+
+	@Override
+	public void isJsonSolved(boolean bIsJsonSolved) {
+		this.bJsonSolved = bIsJsonSolved;
+	}
+
+	@Override
+	public boolean isJsonSolvedChanged() {		
+		return this.bJsonSolvedChanged;
+	}
+
+	@Override
+	public void isJsonSolvedChanged(boolean bIsJsonSolvedChanged) {
+		this.bJsonSolvedChanged = bIsJsonSolvedChanged;
+	}
+
+	//+++++++++++++++++++++++++++++++++++
+	@Override
 	public boolean isJsonArray(){
 		return this.bJsonArray;
 	}
@@ -1044,6 +1084,37 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
+	public boolean isJsonArraySolveCalled() {		
+		return this.bJsonArraySolveCalled;
+	}
+
+	@Override
+	public void isJsonArraySolveCalled(boolean bIsJsonArraySolveCalled) {
+		this.bJsonArraySolveCalled = bIsJsonArraySolveCalled;
+	}
+
+	@Override
+	public boolean isJsonArraySolved() {		
+		return this.bJsonArraySolved;
+	}
+
+	@Override
+	public void isJsonArraySolved(boolean bIsJsonArraySolved) {
+		this.bJsonArraySolved = bIsJsonArraySolved;
+	}
+
+	@Override
+	public boolean isJsonArraySolvedChanged() {		
+		return this.bJsonArraySolvedChanged;
+	}
+
+	@Override
+	public void isJsonArraySolvedChanged(boolean bIsJsonArraySolvedChanged) {
+		this.bJsonArraySolvedChanged = bIsJsonArraySolvedChanged;
+	}
+	
+	//++++++++++++++++++++
+	@Override
 	public boolean isJsonMap(){
 		return this.bJsonMap;
 	}
@@ -1053,6 +1124,9 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(!this.bJsonMap) this.bJsonMap = bIsJsonMap;
 	}
 	
+
+	
+	//#############################################
 	@Override
 	public boolean isCall() {
 		return this.bCall;
@@ -1540,10 +1614,4 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 				this.getPropertiesSearchedHashMap().putAsLast(sProperty, bExists);
 			}
 		}
-
-		
-
-
-				
-		
 }

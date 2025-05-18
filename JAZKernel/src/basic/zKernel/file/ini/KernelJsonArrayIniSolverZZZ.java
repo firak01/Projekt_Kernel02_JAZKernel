@@ -195,11 +195,68 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 	
-	//### Aus IParseUserZZZ
+	//### aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+		super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
+		if(this.isParserEnabledThis()) {
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJson(true);
+				this.getEntry().isJson(true);
+			}
+			
+						
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isJsonArray(true);
+				this.getEntry().isJsonArray(true);
+			}
+		}
+	}
+
+	//### aus ISolveUserZZZ
+	@Override
+	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isJsonSolved(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		if(this.isSolverEnabledThis()) {
+			objEntry.isJsonArraySolved(bIsSolveCalled);
+		}
+	}
+	
+	@Override
+	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isJsonSolveCalled(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		objEntry.isJsonArraySolveCalled(bIsSolveCalled);
+	}
+	
+	@Override
+	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		objEntry.isJsonSolvedChanged(bIsSolveCalled);
+		
+		//Den eigenen Solver
+		objEntry.isJsonArraySolvedChanged(bIsSolveCalled);
 	}
 
 	//### aus IParseEnabled		

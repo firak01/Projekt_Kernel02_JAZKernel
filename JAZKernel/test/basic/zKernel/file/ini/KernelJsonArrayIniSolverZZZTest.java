@@ -8,6 +8,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
@@ -115,11 +117,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testCompute_JsonArray(){
-		String sExpressionSource=null;
+	public void testCompute_JsonArray(){		
 //		try {			
-			sExpressionSource = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			testCompute_JsonArray_(sExpressionSource);
+			String sExpression=null; String sExpressionSubstituted=null; String sExpressionSolved=null; ArrayList<String>alsExpressionSolved=null;
+		
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_SOLVED;
+			alsExpressionSolved = new ArrayList();
+			alsExpressionSolved.add("TESTWERT2DO2JSON01");
+			alsExpressionSolved.add("TESTWERT2DO2JSON02");
+			testCompute_JsonArray_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved);
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
@@ -130,34 +138,34 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_JsonArray_(String sExpressionSourceIn){
+	private void testCompute_JsonArray_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn) {
 		
-		boolean btemp; int itemp;
-		
-		String sSection; String sProperty;
-		String sExpressionSource; 
-		String sExpressionSolved; String sExpressionSolvedTemp;
-		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-	
-		String sValue;
-		String sTagStartZ = "<Z>";
-		String sTagEndZ = "</Z>";	
-		
-		try {		
+		try {
+			
+			boolean btemp; int itemp;
+			
+			String sSection; String sProperty;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sExpressionSolvedTemp;  ArrayList<String>alsExpressionSolved;
 					
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-			
+				
 			//+++ Mit JsonArray-Berechnung
-			
+				
 			//d)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
 			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
-
+			alsExpressionSolved = alsExpressionSolvedIn;
+			
 			sExpressionSolvedTemp = sExpressionSolved;
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
 			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolvedTemp, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
@@ -169,122 +177,124 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Expression-Berechnung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved,  EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_JsonArray_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_JsonArray_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 			
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne jegliche Solver-Berechnung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 			
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Ohne Json-Solver-Berechung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne Solver, bleibt alles wie est ist.
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//+++ Ohne JsonArraySolver-Berechung
 			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne encryption, bleibt alles an Tags drin.
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
 			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;	
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Mit JsonArray-Berechnung
 			//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSourceIn; 
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpressionIn; 
 			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
+			sExpression = sExpressionIn;
+			sExpressionSolved = sExpression;			
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
 			
 			//Wichtig: JSON:ARRAY soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
@@ -292,17 +302,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().  
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolvedTemp, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 
 			//d)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
 
 			sExpressionSolvedTemp = sExpressionSolved;
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
 			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
-			btemp = testCompute_JsonArray_(sExpressionSource, sExpressionSolvedTemp, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -310,17 +320,25 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	}
 	
 	
-	private boolean testCompute_JsonArray_Unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_Unexpressed_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; 
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";		
 						
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNEXPRESSED;
+			
+
 			//##########################################
 			//### Expression unsolved Fall
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Ansonsten wird der Wert sofort ausgerechnet 
@@ -344,14 +362,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 			
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 				
 				
@@ -371,7 +389,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 				//+++ Teilberechnungen durchführen
 				//    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert 
-				vecValue = objExpressionSolver.parseFirstVector(sExpressionSolved, bRemoveSurroundingSeparatorsOnSolve);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpressionSolved, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
 				
@@ -381,7 +399,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				
 				//+++ Nun die Gesamtberechnung durchführen
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference,bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference,objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
 				objEntry = objSectionEntryReference.get();
@@ -413,10 +431,13 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -433,84 +454,69 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isJsonMap());						
 			
 				assertTrue(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());	
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertFalse(objEntry.isSolvedChanged());					
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
-							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
+				assertNotNull(objEntry);
 				
-				assertFalse(objEntryUsed.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
-				assertFalse(objEntryUsed.isVariableSubstituted()); //ueberhaupt keine Expression verarbeitung
-				
-				assertFalse(objEntryUsed.isJson()); //ueberhaupt keine Expression verarbeitung 
-				assertFalse(objEntryUsed.isJsonArray());
-				assertFalse(objEntryUsed.isJsonMap());	
-				
-				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntryUsed.isSolvedChanged());	
-				
-				sValueUsed = objEntryUsed.getValue();
+				sValueUsed = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				
+				assertFalse(objEntry.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
+				assertFalse(objEntry.isVariableSubstituted()); //ueberhaupt keine Expression verarbeitung
+				
+				assertFalse(objEntry.isJson()); //ueberhaupt keine Expression verarbeitung 
+				assertFalse(objEntry.isJsonArray());
+				assertFalse(objEntry.isJsonMap());	
+				
+				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+				assertFalse(objEntry.isSolvedChanged());	
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
-				assertFalse(objEntryUsed.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
-				assertFalse(objEntryUsed.isVariableSubstituted()); //ueberhaupt keine Expression verarbeitung
+				assertFalse(objEntry.isPathSubstituted()); //ueberhaupt keine Expression verarbeitung
+				assertFalse(objEntry.isVariableSubstituted()); //ueberhaupt keine Expression verarbeitung
 				
-				assertFalse(objEntryUsed.isJson()); //ueberhaupt keine Expression verarbeitung 
-				assertFalse(objEntryUsed.isJsonArray());
-				assertFalse(objEntryUsed.isJsonMap());
+				assertFalse(objEntry.isJson()); //ueberhaupt keine Expression verarbeitung 
+				assertFalse(objEntry.isJsonArray());
+				assertFalse(objEntry.isJsonMap());
 				
-				assertTrue(objEntryUsed.isSolveCalled());
-				assertFalse(objEntryUsed.isSolvedChanged());	
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isSolveCalled());
+				assertFalse(objEntry.isSolvedChanged());	
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+						
+			objEntry = objSectionEntryReference.get();
+			assertNotNull(objEntry);
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -521,17 +527,24 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 
 	//##############################################################################
 	
-	private boolean testCompute_JsonArray_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_Unsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null;  IKernelConfigSectionEntryZZZ objEntry=null; 
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
 			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
+						
 			//##########################################
 			//### Expression unsolved Fall
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
@@ -555,13 +568,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
-			
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
-				
+						
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg false die Tags nicht entfernt
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, false);					
@@ -573,7 +585,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 				//+++ Teilberechnungen durchführen
 				//    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert 
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, bRemoveSurroundingSeparatorsOnSolve);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
 				
@@ -583,14 +595,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				//+++ Nun die Gesamtberechnung durchführen
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -603,31 +615,26 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
-				assertTrue(objEntry.isJsonArray());
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertTrue(objEntry.isJsonArray());			
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -641,93 +648,78 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isSolvedChanged());
 				
 				assertTrue(objEntry.isJson());
-				assertTrue(objEntry.isJsonArray());
-								
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertTrue(objEntry.isJsonArray());			
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
-							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
+				assertNotNull(objEntry);
+				
+				sValueUsed = objEntry.getValue();
+				assertEquals(sExpressionSolved, sValueUsed);
+
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
 
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());														
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());														
 			
-				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntryUsed.isSolvedChanged());
-				
-				sValueUsed = objEntryUsed.getValue();
-				assertEquals(sExpressionSolved, sValueUsed);
-				
-				assertTrue(objEntryUsed.isJson());
-				assertTrue(objEntryUsed.isJsonArray());
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+				assertFalse(objEntry.isSolvedChanged());
+								
+				assertTrue(objEntry.isJson());
+				assertTrue(objEntry.isJsonArray());
+
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
-
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 	
-				assertTrue(objEntryUsed.isSolveCalled());
-				assertFalse(objEntryUsed.isSolvedChanged());		
+				assertTrue(objEntry.isSolveCalled());
+				assertFalse(objEntry.isSolvedChanged());		
 				
-				assertTrue(objEntryUsed.isJson());
-				assertTrue(objEntryUsed.isJsonArray());
-								
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isJson());
+				assertTrue(objEntry.isJsonArray());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+			
+			objEntry = objSectionEntryReference.get();
+			assertNotNull(objEntry);
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -740,16 +732,23 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	
 	//########################################################################
 	
-	private boolean testCompute_JsonArray_JsonUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_JsonUnsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null; 
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
 			
 			//##########################################
 			//### Expression unsolved Fall
@@ -774,12 +773,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
-			
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
 				
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg false die Tags nicht entfernt
@@ -792,26 +790,24 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 				//+++ Teilberechnungen durchführen
 				//    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert 
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, bRemoveSurroundingSeparatorsOnSolve);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
 				
 				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
-			
-				
-				
+											
 				//+++ Nun die Gesamtberechnung durchführen
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -821,31 +817,26 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 				
 				assertFalse(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertFalse(objEntry.isSolvedChanged());								
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -855,87 +846,70 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 				
 				assertTrue(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());
-								
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertFalse(objEntry.isSolvedChanged());			
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
+				assertNotNull(objEntry);
 							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntryUsed.isSolvedChanged());
+				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+				assertFalse(objEntry.isSolvedChanged());
 				
-				sValueUsed = objEntryUsed.getValue();
+				sValueUsed = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 					
-				assertTrue(objEntryUsed.isSolveCalled());
-				assertFalse(objEntryUsed.isSolvedChanged());
-								
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isSolveCalled());
+				assertFalse(objEntry.isSolvedChanged());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+						
+			objEntry = objSectionEntryReference.get();
+			assertNotNull(objEntry);
 			
-			bReturn = true;
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -947,16 +921,23 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	//########################################################################
 	
 	
-	private boolean testCompute_JsonArray_JsonArrayUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_JsonArrayUnsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";		
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
 			
 			//##########################################
 			//### Expression unsolved Fall
@@ -981,13 +962,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
-			
-			
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+						
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
-								
+									
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg false die Tags nicht entfernt
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, false);					
@@ -999,7 +979,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 				//+++ Teilberechnungen durchführen
 				//    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert 
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, bRemoveSurroundingSeparatorsOnSolve);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
 				
@@ -1009,14 +989,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				//+++ Nun die Gesamtberechnung durchführen
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -1026,31 +1006,27 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isVariableSubstituted());
 			
 				assertFalse(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertFalse(objEntry.isSolvedChanged());				
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
+
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -1062,88 +1038,72 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 										
 			
 				assertTrue(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());
-								
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				assertFalse(objEntry.isSolvedChanged());				
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
-							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-				}
-				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
-				
-				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntryUsed.isSolvedChanged());
-				
-				sValueUsed = objEntryUsed.getValue();
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
+				assertNotNull(objEntry);
+
+				sValueUsed = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
 				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				}else {
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+				}
+				
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
+				
+				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+				assertFalse(objEntry.isSolvedChanged());				
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
-				objEntryUsed = objSectionEntryReference.get();
-				assertNotNull(objEntryUsed);
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
 				
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 
 					
-				assertTrue(objEntryUsed.isSolveCalled());
-				assertFalse(objEntryUsed.isSolvedChanged());		
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isSolveCalled());
+				assertFalse(objEntry.isSolvedChanged());		
 			}
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-			bReturn = true;
+			objEntry = objSectionEntryReference.get();
+			assertNotNull(objEntry);
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -1154,16 +1114,23 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	
 	//########################################################################
 
-	private boolean testCompute_JsonArray_(String sExpressionIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_JsonArray_JsonArraySolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";		
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+
+			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
 			
 			//##########################################
 			//### Expression solved Fall
@@ -1188,11 +1155,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;		
 				
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg false die Tags nicht entfernt
@@ -1205,7 +1172,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 				//+++ Teilberechnungen durchführen
 				//    Es werden nomalerweise die Tags entfernt, bei einem angestellten Solver werden sie beim parsen ignoriert 
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, bRemoveSurroundingSeparatorsOnSolve);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				String sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
 				assertEquals(sExpressionSolvedTemp, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
@@ -1216,14 +1183,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				//+++ Nun die Gesamtberechnung durchführen
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -1234,30 +1201,25 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertFalse(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolvedChanged());
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
 					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
 					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
@@ -1270,90 +1232,76 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				assertTrue(objEntry.isSolveCalled());
 				assertTrue(objEntry.isSolvedChanged());
-				
-				assertFalse(objEntry.isDecrypted());
-				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
+				assertNotNull(objEntry);
 							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());													
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());													
 			
-				assertFalse(objEntryUsed.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntryUsed.isSolvedChanged());				
+				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+				assertFalse(objEntry.isSolvedChanged());				
 				
-				sValueUsed = objEntryUsed.getValue();
+				sValueUsed = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValueUsed);
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
-				objEntryUsed = objSectionEntryReference.get();
+				objEntry = objSectionEntryReference.get();
 				
 				
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(bRemoveSurroundingSeparatorsOnSolve) {
-					assertTrue(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				if(objEnumSurrounding.getSurroundingValueUsed()) {
+					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
 				}
-//				assertTrue(objEntryUsed.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
+//				assertTrue(objEntry.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 					
-				assertTrue(objEntryUsed.isSolveCalled());
-				assertTrue(objEntryUsed.isSolvedChanged());		
-				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertTrue(objEntry.isSolveCalled());
+				assertTrue(objEntry.isSolvedChanged());		
+
 			}
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-			bReturn = true;
+			objEntry = objSectionEntryReference.get();
+			assertNotNull(objEntry);
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			assertTrue(btemp);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

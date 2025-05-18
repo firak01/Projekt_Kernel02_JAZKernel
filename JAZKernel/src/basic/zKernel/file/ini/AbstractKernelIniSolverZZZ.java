@@ -236,7 +236,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		objEntry.setHistorySolveCalled(sTagName);
 	}
 	
-	//++++++++++++++++++++++
 	@Override
 	public void updateValueSolveCalled() throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();

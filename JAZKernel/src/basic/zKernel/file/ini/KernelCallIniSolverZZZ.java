@@ -144,7 +144,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}
 		}
 
-
+		//###  aus ISolveUserZZZ
 		@Override
 		public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
 			super.updateValueSolved(objEntry, bIsSolveCalled);
@@ -668,4 +668,4 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 
-}//End class
+}
