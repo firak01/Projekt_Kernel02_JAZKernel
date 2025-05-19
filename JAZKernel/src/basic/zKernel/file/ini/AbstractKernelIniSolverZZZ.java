@@ -197,13 +197,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 	//### Aus IObject with Expression
 	
+		
+	//### aus IParseEnabledZZZ
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return this.isSolverEnabledThis();
+	}
 	
-	
-	//### Aus IParseEnabled
-//	@Override
-//	public boolean isParserEnabledThis() throws ExceptionZZZ{
-//		return this.isSolverEnabledEveryRelevant();		
-//	}
 	
 	//### Aus ISolveUserZZZ
 	@Override

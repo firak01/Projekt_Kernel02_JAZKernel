@@ -166,8 +166,16 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	//### aus ISolveEnablezZZZ
 	@Override
-	public boolean isSolverEnabledThis() throws ExceptionZZZ {
-		return this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+	public boolean isSolverEnabledThis() throws ExceptionZZZ {		
+		boolean bReturn = false;
+		main:{
+		  bReturn = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+		  if(!bReturn) break main;
+		  
+		  bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+		  if(!bReturn) break main;		  
+		}//end main:
+		return bReturn;
 	}
 		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
