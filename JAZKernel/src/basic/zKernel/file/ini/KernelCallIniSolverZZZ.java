@@ -181,11 +181,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
-	//### aus IParseEnabled		
-	@Override 
-	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
-	}
+//	//### aus IParseEnabled		
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
 		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override

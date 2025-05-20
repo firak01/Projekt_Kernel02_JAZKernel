@@ -396,7 +396,18 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 
 	
-	//### Aus IParseEnabledZZZ		
+	//### aus IParseEnabledZZZ
+	@Override
+	//Im ersten Wurf abstract lassen. 
+	//public abstract boolean isParserEnabledThis() throws ExceptionZZZ;
+
+	//Aber eigentlich immer true. Falls ggfs. notwendig ein Interface fuer Parser machen, also wie IKernelCallIniSolverZZZ => IKernelCallIniParserZZZ. 
+	//und da hinein ein enum FLAGZ usexxx definieren. Darum ggfs. in der erbenden Klasse ueberschreiben.
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		//z.B. Moeglichekeit fuer Solver: return this.isSolverEnabledThis(); //(halt gleich wie solver), es gibt auch (noch) kein eigenes Flag dafuer. 
+		return true; //Default, weil: Tags ohne Flag-Steuerung werden immer geparsed.
+	}
+	
 	@Override
 	public String parse(String sExpression) throws ExceptionZZZ{
 		return this.parse_(sExpression, null, true);

@@ -108,10 +108,10 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
-	@Override 
-	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
-	}
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
 	
 	//### Aus IParseUserZZZ
 	@Override

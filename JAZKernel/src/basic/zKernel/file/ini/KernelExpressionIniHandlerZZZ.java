@@ -104,6 +104,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//######### Interfaces #############################################
 	
+	//+++++++++++++++++++++++++++++++++++++++++
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+	}
+	
 	//### Aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {

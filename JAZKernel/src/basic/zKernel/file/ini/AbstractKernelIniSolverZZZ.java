@@ -197,15 +197,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 	//### Aus IObject with Expression
 	
-		
-	//### aus IParseEnabledZZZ
-	@Override 
-	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return this.isSolverEnabledThis(); //(Default halt gleich wie solver), es gibt auch kein eigenes Flag dafuer. 
-		//                    return true; //ABER: Tags ohne Flag-Steuerung werden immer geparsed, darum ggfs. doch in der erbenden Klasse ueberschreiben.
-	}
-	
-	
 	//### Aus ISolveUserZZZ
 	@Override
 	public boolean isSolve(String sExpression) throws ExceptionZZZ {

@@ -204,6 +204,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++
+	//### aus IParseEnabled		
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
+	
 	//### aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {

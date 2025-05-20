@@ -1336,7 +1336,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			
 			//########################################################################################
-		    //2. Test: Expression enabled, Parser enabled, Json disabled			
+		    //2. Test: Expression enabled, Parser enabled, JsonSolve disabled			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -1348,8 +1348,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
 			
 			
 			//########################################################################################
