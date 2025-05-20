@@ -470,7 +470,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			}	
 			sReturnTag = sExpressionUsed;
 			sReturnTagSolved = sReturnTag;
-			sReturn = sReturnTag;
+			sReturnLine = sReturnTag;
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);

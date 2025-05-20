@@ -1123,6 +1123,10 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
+			String sExpressionSubstituted2compareWithSolved=null; String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
+			String sExpression2compareWithSubstituted=null; String sExpressionSubstituted2compareWithExpression = null;
+			
+			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
 			
@@ -1219,12 +1223,32 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(objEnumSurrounding.getSurroundingValueUsed()) {
-					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-				}else {
-					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-				}
+//				if(objEnumSurrounding.getSurroundingValueUsed()) {
+//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+//				}else {
+//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+//				}
 //				assertTrue(objEntry.isParsedChanged()); //Beim Aufloesen werden die Z-Tags des Solvers entfernt also "veraendert"
+				
+//				if(sExpression.equals(sExpressionSolved)) {
+//					assertFalse(objEntry.isParsedChanged()); 
+//				}else {
+//					assertTrue(objEntry.isParsedChanged()); 
+//				}
+				
+				
+				sExpressionSubstituted2compareWithSolved = sExpressionSubstituted;				
+				sExpressionSubstituted2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compareWithSolved, sTagStartZ, sTagEndZ);				
+				sExpressionSolved2compareWithSubstituted = sExpressionSolved;
+				sExpressionSolved2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved2compareWithSubstituted, sTagStartZ, sTagEndZ);				
+				System.out.println("sExpressionSolved2compareWithSubstituted="+sExpressionSolved2compareWithSubstituted);
+				System.out.println("sExpressionSubstituted2compareWithSolved="+sExpressionSubstituted2compareWithSolved);
+				if(sExpressionSolved2compareWithSubstituted.equals(sExpressionSubstituted2compareWithSolved)) {
+					assertFalse(objEntry.isParsedChanged()); 
+				}else {					
+					assertTrue(objEntry.isParsedChanged());
+				}
+				
 				
 				
 				assertFalse(objEntry.isPathSubstituted());
