@@ -106,6 +106,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+	}
+	
 	//### Aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {

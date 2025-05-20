@@ -808,7 +808,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	 */
 	public void testCompute01solve(){
 		boolean btemp; 
-		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
+		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagTemp; String sTagSolved;
 		String sValue; 
 		String sTagStart; String sTagEnd;		
 		String sTagStartZ = "<Z>"; //Zwar wird der Solver nicht ausgefuehrt, aber die Expression wird schon aufgeloest.
@@ -847,9 +847,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
-			//der Gesamtausdruck		
-			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-			sExpressionSolved = sExpression;	
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sExpressionSubstituted;
+			
+			//der Gesamtausdruck			
 			sValue = objExpressionSolver.solve(sExpression);			
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -867,20 +869,22 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
-			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			
-			//+++ der Gesmtausdruck
-			sExpressionSolved= sExpression;
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSolved = sExpressionSubstituted; //weil der Solver an sich nicht ausgefuehrt wird, bleibt der Z-Tag drin.
+						
+			//+++ der Gesmtausdruck			
 			//ohne Solver Verarbeitung bleibt der Z-Tag drin
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				
 			sValue = objExpressionSolver.solve(sExpression);
 			assertEquals(sExpressionSolved, sValue);
 			
-			//+++ nur der Tagwert selbst (siehe auch PARSE Test)
-			sExpressionSolved = sExpression;
-			
+			//+++ nur der Tagwert selbst (siehe auch PARSE Test)			
 			//Es muss beim Parsen fuer den Wert des Tags selbst(!) ist es egal, ob ein Solver(!) verwendet wird ....
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSolved = sExpressionSubstituted;			
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			
 			sTagStart = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
@@ -902,28 +906,43 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); 
 			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
 			
-			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSolved = sExpressionSubstituted;//aber weil ein Solver an sich ausgefuehrt wird, kommt das Z-Tag weg
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			
-			//+++ der Gesamtausdruck
-			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>";		//Da der Z-Call Solver nicht involviert ist, ist das quasi wie einfacher Text zu behandeln.
+			//+++ der Gesamtausdruck			
 			sValue = objExpressionSolver.solve(sExpression);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++ nur der Tagwert selbst
-			sTag = sHostName;
+			sTagTemp = sExpressionSubstituted;
+			sTagStart = sTagStartZ; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = sTagEndZ;
+			sTagTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagTemp, sTagStart, sTagEnd);
+						
+			sTagStart = "<Z:Call>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Call>";
+			sTagTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagTemp, sTagStart, sTagEnd);
+			
+			sTagStart = "<Z:Java>"; //Ist ja nicht innerhalb des Tags vorhanden
+			sTagEnd = "</Z:Java>";
+			sTagTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagTemp, sTagStart, sTagEnd);
+			
+			sTag = sTagTemp;
 			sTagSolved = sTag;
 			sValue = objExpressionSolver.getValue();
 			assertEquals(sTagSolved, sValue);
 			
-					
-			//### Nun die Gesamtberechnung durchführen
+			//### mit CALL Verarbeitung		
+			//+++ der Gesamtausdruck
 			btemp = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); 
 			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
-						
-			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-					
+														
 			//+++ der Gesamtausdruck
-			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus ABER Z:Call-Tag NICHT raus, da der Call Solver nicht als Objekt hier verwendet wird...			
+			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus ABER Z:Call-Tag NICHT raus, da der Call Solver nicht als Objekt hier verwendet wird...
+			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>"; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
 			sValue = objExpressionSolver.solve(sExpression);						
 			assertEquals(sExpressionSolved, sValue);
