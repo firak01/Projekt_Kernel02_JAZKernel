@@ -1223,6 +1223,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				
 				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				
+				TODGOON20250520;//Das funktioniert alles nicht... vielleicht eine Loesung wie 
 //				if(objEnumSurrounding.getSurroundingValueUsed()) {
 //					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
 //				}else {
