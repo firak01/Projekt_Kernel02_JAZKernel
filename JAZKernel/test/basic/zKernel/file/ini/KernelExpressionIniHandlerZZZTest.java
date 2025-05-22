@@ -317,7 +317,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				IKernelConfigSectionEntryZZZ objEntry=null;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 				
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
@@ -382,7 +382,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
@@ -404,7 +404,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 				IKernelConfigSectionEntryZZZ objEntry=null;
 												
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 				
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -458,7 +458,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -544,7 +544,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_PATH_VARIABLE_unsubstituted_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_VARIABLE_unsubstituted_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
@@ -559,7 +559,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";		
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.VARIABLE_UNSUBSTITUTED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.VARIABLE_UNSUBSTITUTED;
 				
 				//#########################################################
 				//#### SECTION A ##########################################
@@ -602,10 +602,10 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpression, bRemoveSurroundingSeparatorsOnSolve);
+					sValue = objExpressionHandler.solve(sExpression, objEnumSurrounding.getSurroundingValueUsed());
 
 					String sExpressionSolvedTemp = sExpressionSolved;
-					if(bRemoveSurroundingSeparatorsOnSolve) {
+					if(objEnumSurrounding.getSurroundingValueUsed()) {
 						sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSolved = sExpressionSolvedTemp;
@@ -619,7 +619,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 												
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -778,7 +778,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null;
 				IKernelConfigSectionEntryZZZ objEntry=null;				
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
 				
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";					
@@ -841,7 +841,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -2126,7 +2126,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
 								
 				//####################################################################################
 				//### EXPRESSION - NICHT JSON BEHANDLUNG .solve
@@ -2192,7 +2192,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				
@@ -2223,7 +2223,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONMAP_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONMAP_UNSOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - NICHT JSONMAP BEHANDLUNG .solve
@@ -2291,7 +2291,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				
@@ -2322,7 +2322,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				hmExpressionSolved = hmExpressionSolvedIn;
 				sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONMAP_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONMAP_SOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - Kompletter .solve
@@ -2389,7 +2389,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -2644,7 +2644,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 			
 			//####################################################################################
 			//### EXPRESSION - NICHT EXPRESSION BEHANDLUNG .solve
@@ -2718,7 +2718,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
 			
@@ -2746,7 +2746,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION - NICHT EXPRESSION BEHANDLUNG .solve
@@ -2820,7 +2820,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 						
 			bReturn = true;
@@ -2846,7 +2846,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION - CALL NICHT .solve
@@ -2909,7 +2909,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -2935,7 +2935,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 						
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
 		
 			//####################################################################################
 			//### EXPRESSION .solve
@@ -3010,7 +3010,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -3029,17 +3029,16 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 			String sValue; 		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
-			
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
+				
 			sSection = sSectionIn;
 			sProperty = sPropertyIn;
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 			
 			//####################################################################################
 			//### EXPRESSION - INI Handler .solve
@@ -3090,7 +3089,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 						
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			//###############################################################
 						
@@ -3111,16 +3110,15 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sValue; 		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
 			sSection = sSectionIn;
 			sProperty = sPropertyIn;
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION - INI Handler .solve
@@ -3173,7 +3171,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			
 			//###############################################################
 						
@@ -3206,7 +3204,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
 						
 			//####################################################################################
 			//### EXPRESSION - INI Handler
@@ -3258,7 +3256,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 					
 			bReturn = true;
@@ -3365,14 +3363,13 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sValue; 		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 	
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;		
-				
-			IEnumSetMappedTestFlagsetZZZ  objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED_UNSOLVED;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";							
+			IEnumSetMappedTestFlagsetZZZ  objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED_UNSOLVED;
 
 			
 			//###########################################################
@@ -3427,7 +3424,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
 			
@@ -3450,15 +3447,14 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 			String sValue; 		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
-			
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			
+				
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;		
-				
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNPARSED;
 			
 			//###########################################################
 			// unparsed 
@@ -3510,7 +3506,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 		
 			bReturn = true;
@@ -3530,18 +3526,17 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
 			String sValue; 		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
-	
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
-
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
-			
+			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
+						
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;		
-			
-			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
-				
+
+
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+		
 			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
@@ -3568,7 +3563,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
 			
 			
-			objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION - NICHT .solve
@@ -3590,7 +3585,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.			
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -3617,7 +3612,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
 
 			//##################################################################
 						
@@ -3677,7 +3672,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE,EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 						
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -3704,7 +3699,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sFormulaSolvedAndConverted; String sFormulaSolvedAndConvertedAsExpression;
 			String sHostName = EnvironmentZZZ.getHostName();
 
-			IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.SOLVED;
 			
 			//###################################################		
 			
@@ -3758,7 +3753,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			
 		bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -4825,7 +4820,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				alsExpressionSolved = alsExpressionSolvedIn;		
 				sExpressionSolved = sExpressionSolvedIn; //hmExpressionSolved.toString();
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - JSONARRAY .solve
@@ -4893,7 +4888,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				
@@ -4923,7 +4918,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - NICHT JSONMAP BEHANDLUNG .solve
@@ -4990,7 +4985,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				
@@ -5020,7 +5015,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - NICHT JSONMAP BEHANDLUNG .solve
@@ -5085,7 +5080,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				
@@ -5165,7 +5160,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
 				IEnumSetMappedTestCaseZZZ objEnumTestCase = EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY;
 				IEnumSetMappedTestSurroundingZZZ objEnumSurrounding = EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE;
 				
@@ -5226,7 +5221,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					
 					//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 					//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-					btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+					btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 					assertTrue(btemp);
 
 					
@@ -5261,7 +5256,7 @@ boolean testCompute_JsonArray_IniUsed_Detail_(String sSectionIn, String sPropert
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";	
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
 				IEnumSetMappedTestCaseZZZ objEnumTestCase = EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY;
 				IEnumSetMappedTestSurroundingZZZ objEnumSurrounding = EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE;
 				
@@ -5332,7 +5327,7 @@ boolean testCompute_JsonArray_IniUsed_Detail_(String sSectionIn, String sPropert
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 
 				

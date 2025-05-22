@@ -666,7 +666,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
 				
 				
 				//####################################################################################
@@ -748,7 +748,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -778,7 +778,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sTagSolvedIn;
 
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++			
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
@@ -868,7 +868,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 		
 				bReturn = true;
@@ -898,7 +898,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 				//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.		
@@ -995,7 +995,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -1025,7 +1025,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 				
 				//####################################################################################
 				//### EXPRESSION - CALL NICHT .solve
@@ -1099,7 +1099,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;
@@ -1127,7 +1127,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 
-				IEnumSetMappedTestFlagsetZZZ objEnumFunction = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 				
 				//####################################################################################
 				//### EXPRESSIONSOLVER - NICHT EXPRESSION BEHANDLUNG
@@ -1222,7 +1222,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 								
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumTestCase, objEnumFunction, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 				assertTrue(btemp);
 				
 				bReturn = true;

@@ -31,15 +31,13 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	VARIABLE_UNSUBSTITUTED("variable_unsubstituted",TestUtilAsTestZZZ.sFLAGSET_VARIABLE_UNSUBSTITUTED,"Flagset Variante: 'Variable Unsubstituted'"),
 	VARIABLE_SUBSTITUTED("variable_substituted",TestUtilAsTestZZZ.sFLAGSET_VARIABLE_SUBSTITUTED,"Flagset Variante: 'Variable Substituted'"),
 	
-	CALL_UNEXPRESSED("call_unexpressed",TestUtilAsTestZZZ.sFLAGSET_CALL_UNEXPRESSED,"Flagset Variante: 'Call unexpressed'"),
 	CALL_UNSOLVED("call_unsolved",TestUtilAsTestZZZ.sFLAGSET_CALL_UNSOLVED,"Flagset Variante: 'Call unsolved'"),
 	JAVACALL_UNSOLVED("javacall_unsolved",TestUtilAsTestZZZ.sFLAGSET_JAVACALL_UNSOLVED,"Flagset Variante: 'JavaCall unsolved'"),
 	JAVACALL_SOLVED("javacall_solved",TestUtilAsTestZZZ.sFLAGSET_JAVACALL_SOLVED,"Flagset Variante: 'JavaCall solved'"),
 	
 	JSON_SOLVED("json_solved",TestUtilAsTestZZZ.sFLAGSET_JSON_SOLVED,"Flagset Variante: 'Json solved'"),
 	JSON_UNSOLVED("json_unsolved",TestUtilAsTestZZZ.sFLAGSET_JSON_UNSOLVED,"Flagset Variante: 'Json unsolved'"),
-	
-	JSONARRAY_UNEXPRESSED("jsonarray_unexpressed",TestUtilAsTestZZZ.sFLAGSET_JSONARRAY_UNEXPRESSED,"Flagset Variante: 'JsonArray unexpressed'"),	
+			
 	JSONARRAY_SOLVED("jsonarray_solved",TestUtilAsTestZZZ.sFLAGSET_JSONARRAY_SOLVED,"Flagset Variante: 'JsonArray solved'"),
 	JSONARRAY_UNSOLVED("jsonarray_unsolved",TestUtilAsTestZZZ.sFLAGSET_JSONARRAY_UNSOLVED,"Flagset Variante: 'JsonArray unsolved'"),
 	
