@@ -152,9 +152,190 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-			//+++ Mit JsonArray-Berechnung
+			//3d)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = sExpressionSubstitutedIn;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
+			
+			//###########################
+		    //### objExpression
+			//#########################
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ 1. Ohne jegliche Expression-Berechnung
+			//1a)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sExpression; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved,  EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//1b)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sExpression;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//1c)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sExpression; 			
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
-			//d)
+			//1d)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sExpression;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ 2. Ohne jegliche Solver-Berechnung
+			//2a)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted;		
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//2b)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//2c)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted; 		
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+				
+			//2d)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			//Wenn unsolved, dann bleibt das Z-Tag drin... 
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ 3. Ohne Json-Solver-Berechung
+			//3a)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//3b)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = sExpressionSubstitutedIn;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+
+			//3c)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			//Beim Solven ohne Solver, bleibt alles wie est ist.
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			//3d)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = sExpressionSubstitutedIn;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			//+++ 4. Ohne JsonArraySolver-Berechung
+			//4a)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//4b)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn; 
+			//der Solver an sich wird ja ausgefuehrt, also Z-Tag weg...
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//4c)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+		
+			//4d)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;			
+			//der Solver an sich wird ja ausgefuehrt, also Z-Tag weg...
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ 5. Mit JsonArray-Berechnung
+			//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSubstitutedIn; 
+			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+
+			//5b)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
+			sExpressionSolved = sExpression;			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
+			//5c)
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
+			
+			//Wichtig: JSON:ARRAY soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.			
+			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
+			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
+			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
+			//5d)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
@@ -165,173 +346,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
 			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
 			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-		
-			
-			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
-			
-			//###########################
-		    //### objExpression
-			//#########################
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne jegliche Expression-Berechnung
-			//a)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
 			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved,  EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//b)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression;			
-			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//c)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression; 			
-			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-			//d)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression;
-			btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne jegliche Solver-Berechnung
-			//a)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted;			
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//b)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//c)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted; 			
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-				
-			//d)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-			//Wenn unsolved, dann bleibt das Z-Tag drin... 
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne Json-Solver-Berechung
-			//a)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//b)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
-			sExpressionSolved = sExpressionSubstitutedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);			
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
-			//c)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;
-			//Beim Solven ohne Solver, bleibt alles wie est ist.
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			//d)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
-			sExpressionSolved = sExpressionSubstitutedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			//+++ Ohne JsonArraySolver-Berechung
-			//a)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//b)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn; 
-			//der Solver an sich wird ja ausgefuehrt, also Z-Tag weg...
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//c)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-		
-			//d)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;			
-			//der Solver an sich wird ja ausgefuehrt, also Z-Tag weg...
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Mit JsonArray-Berechnung
-			//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn; 
-			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
-			//b)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			sExpressionSolved = sExpression;			
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-			
-			//c)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
-			
-			//Wichtig: JSON:ARRAY soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.			
-			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
-			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
-			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().  
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
-			//d)
-			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
-
-			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
-			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
-			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -743,6 +759,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 			
+			String sExpressionSubstituted2Compare = null;
+			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
 			
@@ -783,23 +801,29 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 									
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg false die Tags nicht entfernt
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, false);					
-				sValue = VectorUtilZZZ.implode(vecValue);
-				assertEquals(sExpression, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
-				
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
-			
-				//+++ Teilberechnungen durchführen
-				//    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert 
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
-				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				
+				sExpressionSubstituted2Compare = sExpressionSubstituted;
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+					sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false); 
+				}
+				assertEquals(sExpressionSubstituted2Compare, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+				
+				
 				
 				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
-
 				
+				sExpressionSubstituted2Compare = sExpressionSubstituted;
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonIniSolverZZZ.sTAG_NAME, false);				
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2Compare=" + sExpressionSubstituted2Compare);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
+				assertEquals(sExpressionSubstituted2Compare, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+
+				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+							
 				//+++ Nun die Gesamtberechnung durchführen
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
