@@ -47,6 +47,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 	//ist nur uex: public static final String sFLAGSET_JSONARRAY_UNEXPRESSED="jauex";
 	public static final String sFLAGSET_JSONARRAY_SOLVED="jas";
 	public static final String sFLAGSET_JSONARRAY_UNSOLVED="jaus";
+	public static final String sFLAGSET_JSONARRAY_JSONARRAY_UNSOLVED="jajaus";
 		
 	//ist nur uex: public static final String sFLAGSET_JSONMAP_UNEXPRESSED="jmuex";
 	public static final String sFLAGSET_JSONMAP_SOLVED="jms";
@@ -167,9 +168,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isVariableSubstituteCalled());
 					
 					assertTrue(objEntry.isParsed()); 
-					assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
-				
-					
+					assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein									
 					if(sExpression.equals(sExpressionSolved)) {
 						assertFalse(objEntry.isParsedChanged());						
 					}else {
@@ -178,14 +177,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert
 										
 					assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-					//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					//	if(sExpression.equals(sExpressionSubstituted)) { 
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}else {
-					//		assertFalse(objEntry.isSubstitutedChanged());
-					//	}
-					//}
-					
+					if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+						if(sExpression.equals(sExpressionSubstituted)) { 
+							assertFalse(objEntry.isSubstitutedChanged());
+						}else {
+							assertFalse(objEntry.isSubstitutedChanged());
+						}
+					}					
 					assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -477,10 +475,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//fail("Testutil for flagset missing: " + sFLAGSET_JSON_UNSOLVED);
 					break;
 				case sFLAGSET_JSONARRAY_UNSOLVED:
+				case sFLAGSET_JSONARRAY_JSONARRAY_UNSOLVED: //Beim Parsen verhalten sich beide Flagsets identisch
 					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					
 					//++++++++++++++++++++++
-					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+					assertTrue(objEntry.isParseCalled());
+					//Kann hier nur getestet werden, weil nicht gesolved wurde
 					sExpression2compareWithSolved = sExpression;
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved=" + sExpression2compareWithSolved);
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSolved=" + sExpressionSolved);
@@ -492,11 +492,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isParsed());
 										
 					//+++++++++++++++++++++++
-					assertTrue(objEntry.isPathSubstituteCalled());
-					sExpression2compareWithSubtituted = sExpression;
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubtituted=" + sExpression2compareWithSubtituted);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
-					if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					assertTrue(objEntry.isPathSubstituteCalled());									
+					if(objEntry.isPathSubstituted()){ 
+						//Kann hier nur getestet werden, weil nicht gesolved wurde
+						sExpression2compareWithSubtituted = sExpression;
+						if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+							sExpression2compareWithSubtituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubtituted, sTagStartZ, sTagEndZ, false);
+						}
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubtituted=" + sExpression2compareWithSubtituted);
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);
 						if(sExpression2compareWithSubtituted.equals(sExpressionSubstituted)) { 
 							assertFalse(objEntry.isSubstitutedChanged());
 						}else {
@@ -543,83 +547,71 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_UNSOLVED);
 					break;
-//				case sFLAGSET_JSONARRAY_UNEXPRESSED:
-//					assertFalse(objEntry.isExpression()); //Generelle Expression wird nicht genutzt
-//				
-//					//+++++++++++++++++++++++
-//					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, es wurde parse gestartet....
-//					assertFalse(objEntry.isParsedChanged());
-//					assertFalse(objEntry.isParsed()); 
-//				
-//					//+++++++++++++++++++++++
-//					
-//					assertFalse(objEntry.isPathSubstituteCalled());					
-//					assertFalse(objEntry.isPathSubstituted());
-//					
-//					//++++++++++++++++++++++++
-//					assertFalse(objEntry.isVariableSubstituteCalled());				
-//					assertFalse(objEntry.isVariableSubstituted());								
-//					
-//					//++++++++++++++++++++++++
-//					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde ja NICHT gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-//					assertFalse(objEntry.isSolved()); //sollte ohne Expression abgebrochen worden sein
-//					//++++++++++++++++++++++++
-//
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());							
-//					break;
+				case sFLAGSET_JSONARRAY_SOLVED:
+					assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 					
-					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_UNEXPRESSED);	
-//				case sFLAGSET_JSONARRAY_JSONARRAY_UNEXPRESSED:
-//					assertFalse(objEntry.isExpression()); //Generelle Expression wird nicht genutzt
-//				
-//					//+++++++++++++++++++++++
-//					assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-//					assertFalse(objEntry.isParsedChanged());
-//					assertTrue(objEntry.isParsed()); 
-//				
-//					//+++++++++++++++++++++++
-//					
-//					assertTrue(objEntry.isPathSubstituteCalled());
-//					if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-//						if(sExpression.equals(sExpressionSubstituted)) { 
-//							assertFalse(objEntry.isPathSubstitutedChanged());
-//						}else {
-//							assertTrue(objEntry.isPathSubstitutedChanged());
-//						}
-//					}
-//					assertTrue(objEntry.isPathSubstituted());
-//					
-//					//++++++++++++++++++++++++
-//					assertTrue(objEntry.isVariableSubstituteCalled());				
-//					assertTrue(objEntry.isVariableSubstituted());								
-//					
-//					//++++++++++++++++++++++++
-//					assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde ja NICHT gemacht.
-//					assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
-//					assertFalse(objEntry.isSolved()); //sollte ohne Expression abgebrochen worden sein
-//					//++++++++++++++++++++++++
-//					
-//					
-//					
-//					
-//				
-//					assertFalse(objEntry.isDecrypted());
-//					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-//					
-//					assertFalse(objEntry.isCall());
-//					assertFalse(objEntry.isJavaCall());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());							
-//					break;
+					//++++++++++++++++++++++
+					assertTrue(objEntry.isParseCalled()); //Es ist geparsed worden....
+					//Kann nicht getestet wurde, weil SOLVE den Tag ggfs. verfaelscht: objEntry.isParsedChanged()					
+					assertTrue(objEntry.isParsed());
+										
+					//+++++++++++++++++++++++
+					assertTrue(objEntry.isPathSubstituteCalled());										
+					if(objEntry.isPathSubstituted()){ 
+					//Kann nicht getestet wurde, weil SOLVE den Tag ggfs. verfaelscht: objEntry.isSubstitutedChanged()
+					}
+					assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+					//++++++++++++++++++++++++
+					//++++++++++++++++++++++++
 					
-					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_JSONARRAY_UNEXPRESSED);	
+					
+					assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+					//++++++++++++++++++++++++				
+					//++++++++++++++++++++++++
+					assertFalse(objEntry.isSolveCalled()); //Wir sind im PARSE Test, da wurde noch nix gesolved					
+					assertFalse(objEntry.isSolvedChanged()); 
+					assertFalse(objEntry.isSolved());
+					//+++++++++++++++++++++++++
+					//+++++++++++++++++++++++++
+					
+					assertTrue(objEntry.isJson()); //Kommt aus parse
+					assertFalse(objEntry.isJsonMap());
+					assertTrue(objEntry.isJsonArray());
+									
+					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					assertFalse(objEntry.isCallSolveCalled());
+					assertFalse(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
+					//+++++++++++++++++++++++++
+					//+++++++++++++++++++++++++
+					assertFalse(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+					assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+					//+++++++++++++++++++++++++
+					
+					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
+					assertFalse(objEntry.isDecrypted());
+					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+					
+					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
+					assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+					assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+					
+					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_SOLVED);
+					break;
+				//Merke: Folgende Test sind zwar denkbar aber unnoetig
+					// case sFLAGSET_JSONARRAY_UNEXPRESSED:
+					//Merke: Diese Flagset Konstellation gibt es nicht. 
+					//       Sinnvoll ist ein Test wenn die Expressionbehandlung ganz ausgeschaltet ist.					
+					//       Auch JSONARRAY sollte getestet werden wenn die Expressionbehandlung ganz ausgeschaltet ist.
+					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_UNEXPRESSED);
+					//break;
+					//case sFLAGSET_JSONARRAY_JSONARRAY_UNEXPRESSED:
+					//Merke: Diese Konstellation gibt es fuer einen "Untersolver" nicht. Es kann nur die Expressionbehandlung ganz ausgeschaltet werden.
+					//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_UNEXPRESSED);
+					//break;	
 				default:
 					fail("Test Flagset '" + sFlagSet + "' im Case '"+sCaseSet+"' ist nicht definiert");
 					break;
@@ -1440,7 +1432,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
 				assertFalse(objEntry.isSolvedChanged()); 
-				assertTrue(objEntry.isSolved());     //Aufgerufen wurde der generelle solver ja...
+				assertFalse(objEntry.isSolved());     
 				//+++++++++++++++++++++++++
 				//+++++++++++++++++++++++++
 				
@@ -1470,7 +1462,80 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 				
 				//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_UNSOLVED);
-				break;			
+				break;
+			case sFLAGSET_JSONARRAY_JSONARRAY_UNSOLVED:
+				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+				
+				//++++++++++++++++++++++ Weil der Tag nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
+				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+				sExpression2compareWithSubstituted = sExpression;
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				}
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) {
+					assertFalse(objEntry.isParsedChanged());						
+				}else {
+					assertTrue(objEntry.isParsedChanged());
+				}
+				assertTrue(objEntry.isParsed());
+									
+				//+++++++++++++++++++++++ weil der Tag nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
+				assertTrue(objEntry.isPathSubstituteCalled());
+				sExpression2compareWithSubstituted = sExpression;
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				}
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+						assertFalse(objEntry.isSubstitutedChanged());
+					}else {
+						assertTrue(objEntry.isSubstitutedChanged());
+					}
+				}
+				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist													
+				//++++++++++++++++++++++++
+				//++++++++++++++++++++++++
+				
+				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+				//++++++++++++++++++++++++				
+				//++++++++++++++++++++++++
+				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
+				assertFalse(objEntry.isSolvedChanged()); 
+				assertTrue(objEntry.isSolved());      //Ausgefuerhrt wurde der generelle Solver ja...     
+				//+++++++++++++++++++++++++
+				//+++++++++++++++++++++++++
+				
+				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
+				assertFalse(objEntry.isJsonMap());
+				assertTrue(objEntry.isJsonArray());
+								
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				assertFalse(objEntry.isCallSolveCalled());
+				assertFalse(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
+				//+++++++++++++++++++++++++
+				//+++++++++++++++++++++++++
+				assertFalse(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+				assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+				//+++++++++++++++++++++++++
+				
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				
+				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
+				assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+				assertFalse(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+				
+				//fail("Testutil for flagset missing: " + sFLAGSET_JSONARRAY_JSONARRAY_UNSOLVED);
+				break;		
 			case sFLAGSET_JSONMAP_SOLVED:
 				assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 				
