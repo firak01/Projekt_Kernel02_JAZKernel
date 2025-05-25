@@ -151,6 +151,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null; String sReturnSubstituted = null; 
 		boolean bExpressionFound = false; boolean bCascadedExpressionFound = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
 		//20240919: Dummy debug mit diesen statischen Werten
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>";			
 		//sExpression = "<Z:Call><Z:Java><Z:Class><Z>irgendwas</Z></Z:Class><Z:Method><Z>nochnemethod</Z></Z:Method></Z:Java></Z:Call>";					
@@ -264,6 +267,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse, false);
 			sReturnTag = this.getValue();			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueParsed();
+			this.updateValueParsed(objReturnReference);
 		}//end main:		
 		 
 		//Aus AbstractKernelIniTagSimpleZZZ
@@ -275,7 +281,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null)objReturnReference.set(objEntry);
 			if(sExpressionIn!=null) {								 						
-				if(!sExpressionIn.equals(sReturnLine)) {
+				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
 					this.updateValueParsedChanged();
 					this.updateValueParsedChanged(objReturnReference);
 				}

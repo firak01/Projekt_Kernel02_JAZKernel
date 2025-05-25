@@ -539,13 +539,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//end main:
 		
 		if(objEntry!=null) {	
-			objEntry.setValue(sReturn); 								
-			if(!sExpressionIn.equals(sReturn)) {
-				//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-				this.updateValueParsedChanged();
-				this.updateValueParsedChanged(objReturnReference);
-			}
-						
+			objEntry.setValue(sReturn); 														
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 			this.adoptEntryValuesMissing(objEntry);
 		}	
@@ -568,6 +562,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 		
 		//############
 		//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
@@ -644,12 +641,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null) objReturnReference.set(objEntry);
 			if(bUseExpression  || bUseParse) {								
-				if(sExpressionIn!=null) {				 								
-					if(!sExpressionIn.equals(sReturn)) {						
+				if(sExpressionIn!=null) {
+					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
 						this.updateValueParsedChanged();
 						this.updateValueParsedChanged(objReturnReference);
 					}
-				}							
+				}						
 				this.adoptEntryValuesMissing(objEntry);
 			}			
 		}		
@@ -672,6 +671,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParse = false;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
@@ -741,6 +743,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueParsed();
+			this.updateValueParsed(objReturnReference);
 		}//end main:		
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -752,8 +757,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null)objReturnReference.set(objEntry);
 			if(sExpressionIn!=null) {								 						
-				if(!sExpressionIn.equals(sReturnLine)) {
-					this.updateValueParsedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+					this.updateValueParsedChanged();
 					this.updateValueParsedChanged(objReturnReference);
 				}
 			}			
@@ -784,7 +791,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;				
 		boolean bUseExpression = false; boolean bUseParse = false;
 		
-			
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -822,8 +830,6 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).
 				//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";
 					
 				String sTagContainerStart = this.getTagPartOpening();
 				String sTagContainerEnd = this.getTagPartClosing();					
@@ -861,30 +867,32 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturnTag = this.getValue();			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 			
-			this.updateValueParsed();
-			this.updateValueParsed(objReturnReference);
+//			this.updateValueParsed();
+//			this.updateValueParsed(objReturnReference);
 		}//end main:
 				
 		//#################################
 		//Den Wert ersetzen, wenn es was zu ersetzen gibt.		
 		vecReturn.replace(sReturnTag);						
 		this.setValue(sReturnTag);
-		sReturn = sReturnLine;
-				
-		if(objEntry!=null) {			
-			objEntry.setValue(sReturnLine);	
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReference!=null) objReturnReference.set(objEntry);
-			if(bUseExpression | bUseParse) {
-				if(sExpressionIn!=null) {									
-					if(!sExpressionIn.equals(sReturnLine)) {						
-						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objReturnReference);
-					}
-				}			
-			}
-			this.adoptEntryValuesMissing(objEntry);
-		}
+//		sReturn = sReturnLine;
+//				
+//		if(objEntry!=null) {			
+//			objEntry.setValue(sReturnLine);	
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReference!=null) objReturnReference.set(objEntry);
+//			if(bUseExpression | bUseParse) {
+//				if(sExpressionIn!=null) {									
+//					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+//						this.updateValueParsedChanged();
+//						this.updateValueParsedChanged(objReturnReference);
+//					}
+//				}			
+//			}
+//			this.adoptEntryValuesMissing(objEntry);
+//		}
 		return vecReturn;
 	}
 
@@ -906,6 +914,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn = null;		
 		boolean bUseExpression = false;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -949,8 +960,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		if(objEntry!=null) {			
 			objEntry.setValue(sReturn);	
 			if(sExpressionIn!=null) {			 								
-				if(!sExpressionIn.equals(sReturn)) {
-					//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
+				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
 					this.updateValueParsedChanged();
 					this.updateValueParsedChanged(objReturnReference);
 				}
@@ -980,7 +992,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		Vector3ZZZ<String> vecReturn = vecExpressionIn; //Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;		
 		boolean bUseExpression = false; boolean bUseParse = false;
-				
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+						
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				
@@ -995,8 +1010,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objReturnReference.set(objEntry);
 		}							
 		
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
+//		this.updateValueParseCalled();
+//		this.updateValueParseCalled(objReturnReference);
 		
 		String sExpressionIn = null;
 		main:{
@@ -1023,10 +1038,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).
-				//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";
-					
+				//Aber behalte die Z-Tags innerhalb des Container Tags (z.B. hier z:Formula muss weiterhin Z-Tags enthalten)					
 				String sTagContainerStart = this.getTagPartOpening();
 				String sTagContainerEnd = this.getTagPartClosing();					
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd); //also von aussen nach innen!!!				
@@ -1055,26 +1067,28 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 		
-			this.updateValueParsed();
-			this.updateValueParsed(objReturnReference);
+//			this.updateValueParsed();
+//			this.updateValueParsed(objReturnReference);
 		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturnTag);
-		sReturn = sReturnLine;
-		
-		if(objEntry!=null) {			
-			objEntry.setValue(sReturnLine);	
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReference!=null) objReturnReference.set(objEntry);
-			if(sExpressionIn!=null) {								
-				if(!sExpressionIn.equals(sReturnLine)) {
-					this.updateValueParsedChanged();//zur Not nur, weil die Z-Tags entfernt wurden.
-					this.updateValueParsedChanged(objReturnReference);
-				}
-			}			
-			this.adoptEntryValuesMissing(objEntry);
-		}
+//		sReturn = sReturnLine;
+//		
+//		if(objEntry!=null) {			
+//			objEntry.setValue(sReturnLine);	
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReference!=null) objReturnReference.set(objEntry);
+//			if(sExpressionIn!=null) {
+//				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+//					this.updateValueParsedChanged();
+//					this.updateValueParsedChanged(objReturnReference);
+//				}
+//			}			
+//			this.adoptEntryValuesMissing(objEntry);
+//		}
 		return vecReturn;
 	}
 
@@ -1093,10 +1107,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	//Methode mit Reference Objekt
 	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
-		String sReturn = null;
+		String sReturn = null; String sReturnLine = null;
 		String sExpressionIn = null;		
 		boolean bUseExpression = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+				
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				
@@ -1112,8 +1129,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}	
 		
 		//20250312 objEntry.isParseCalled(true);
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
+		//this.updateValueParseCalled();
+		//this.updateValueParseCalled(objReturnReference);
 		
 		main:{			
 			if(vecExpressionIn==null) break main;
@@ -1123,8 +1140,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);
 			
-			sReturn = (String) vecExpressionIn.get(1);
-					
+			//sReturn = (String) vecExpressionIn.get(1);
+			//sReturnLine = VectorUtilZZZ.implode(vecExpressionIn);		
 			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
 				
@@ -1135,18 +1152,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 		//#################################
 		
-		if(objEntry!=null) {
-			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
-			objEntry.setValue(sReturn);	
-			if(sExpressionIn!=null) {							 								
-				if(!sExpressionIn.equals(sReturn)) {
-					//objEntry.isParsedChanged(true); //zur Not nur, weil die Z-Tags entfernt wurden.
-					this.updateValueParsedChanged();
-					this.updateValueParsedChanged(objReturnReference);
-				}
-			}			
-			if(objReturnReference!=null) objReturnReference.set(objEntry);
-		}
+//		if(objEntry!=null) {
+//			if(vecReturn!=null) sReturn = VectorUtilZZZ.implode(vecReturn);
+//			objEntry.setValue(sReturn);	
+//			if(sExpressionIn!=null) {							 								
+//				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+//				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+//					this.updateValueParsedChanged();
+//					this.updateValueParsedChanged(objReturnReference);
+//				}
+//			}			
+//			if(objReturnReference!=null) objReturnReference.set(objEntry);
+//		}
 		return vecReturn;
 	}
 

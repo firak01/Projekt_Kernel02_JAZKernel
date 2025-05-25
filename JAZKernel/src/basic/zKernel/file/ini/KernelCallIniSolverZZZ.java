@@ -211,6 +211,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		String sReturnLineParsed = null; String sReturnLineParsedCallInner = null;
 		boolean bUseExpression=false; boolean bUseParserThis=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
 		if(objReturnReferenceIn==null) {
@@ -320,6 +323,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				//Der Reine CALL-Tag Wert
 				sReturnTag = this.getValue();
 			}
+			
+			this.updateValueParsed();
+			this.updateValueParsed(objReturnReference);
 		}//end main:
 		
 		this.setValue(sReturnTag);
@@ -340,10 +346,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					}																								
 				}
 				
-				if(!sExpressionIn.equals(sReturnLine)) {					
+				String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+				if(!sExpression2Compare.equals(sReturnLine2Compare)) {
 					this.updateValueParsedChanged();
 					this.updateValueParsedChanged(objReturnReference);
-				}							
+				}		
 				this.adoptEntryValuesMissing(objEntry);
 			}
 		}					

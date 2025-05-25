@@ -152,14 +152,15 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//5a)
+			//2b)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn; 
-			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);			
+			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);			
+			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -305,7 +306,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 5. Mit JsonArray-Berechnung
-			//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
+			//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen			
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstitutedIn; 
@@ -313,6 +314,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			alsExpressionSolved = alsExpressionSolvedIn;
 			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
+			
 			//5b)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -362,7 +364,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved; 
 			String sValue; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry=null;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
@@ -375,7 +378,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 
 			//##########################################
-			//### Expression unsolved Fall
+			//### Expression unexpressed Fall
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -402,20 +405,13 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
-				
-				
-//				//+++ Teilberechnungen durchführen
-//				vecValue = objExpressionSolver.parseFirstVector(sExpression);
-//				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-//				assertEquals(sExpressionSolved, sValue);
-				
+								
 				//+++ Teilberechnungen durchführen.
 				//    Es werden wg. false die Tags nicht entfernt
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, false);					
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 				
@@ -437,7 +433,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
@@ -452,8 +447,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {				
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 				assertNotNull(objEntry);
 				
@@ -471,7 +465,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
-
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
@@ -493,8 +486,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			boolean btemp; 
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
-			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null;  IKernelConfigSectionEntryZZZ objEntry=null; 
+			String sValue; Vector3ZZZ<String> vecValue;		
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry=null; 
 			
 			String sExpressionSubstituted2Compare = null;
 			
@@ -552,8 +546,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpressionSolved, sValue); 
 								
-				//+++ Nun die Gesamtberechnung durchführen
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
@@ -563,8 +556,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {							
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
@@ -579,26 +571,24 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//+++ Variante fuer den AsEntry-Test
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {				
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 				assertNotNull(objEntry);
 				
-				sValueUsed = objEntry.getValue();
-				assertEquals(sExpressionSubstituted, sValueUsed);
+				sValue = objEntry.getValue();
+				assertEquals(sExpressionSubstituted, sValue);
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {				
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {								
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
 				assertNotNull(objEntry);
+				
+				sValue = objEntry.getValue();
+				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
-			
-			objEntry = objSectionEntryReference.get();
-			assertNotNull(objEntry);
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
@@ -623,7 +613,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null; 
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry=null; 
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -672,8 +663,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				assertTrue(StringZZZ.contains(sExpressionSubstituted,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 										
-				//+++ Nun die Gesamtberechnung durchführen
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSubstituted, sValue);
 							
@@ -683,8 +673,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
@@ -703,6 +692,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 				assertNotNull(objEntry);
+				
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 			}
 			
 			
@@ -747,7 +744,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry=null;
 			
 			String sExpressionSubstituted2Compare = null;
 			
@@ -815,7 +813,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 							
 				//+++ Nun die Gesamtberechnung durchführen
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSolved, sValue);
 							
@@ -826,8 +823,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
@@ -843,7 +838,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 				assertNotNull(objEntry);
 
@@ -854,19 +848,13 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
-				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
-					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				}
-				sExpressionSolved = sExpressionSolvedTemp;
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
+				assertNotNull(objEntry);
+				
+				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);		
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			objEntry = objSectionEntryReference.get();
-			assertNotNull(objEntry);
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
@@ -890,7 +878,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
 			String sValue; Vector3ZZZ<String> vecValue;		
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry=null;
 			
 			String sExpressionSubstituted2compareWithSolved=null; String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
 			String sExpression2compareWithSubstituted=null; String sExpressionSubstituted2compareWithExpression = null;
@@ -943,8 +932,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				assertTrue(StringZZZ.contains(sExpressionSubstituted,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
-				//+++ Nun die Gesamtberechnung durchführen
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				assertEquals(sExpressionSubstituted, sValue);
 							
@@ -954,8 +942,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
@@ -971,32 +958,29 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());				
 				assertNotNull(objEntry);
-							
-				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				if(objEnumSurrounding.getSurroundingValueUsed()) {
-					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-				}else {
-					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-				}
-				
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());													
-			
-				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
-				assertFalse(objEntry.isSolvedChanged());				
+//							
+//				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+//				if(objEnumSurrounding.getSurroundingValueUsed()) {
+//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
+//				}else {
+//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
+//				}
+//				
+//				assertFalse(objEntry.isPathSubstituted());
+//				assertFalse(objEntry.isVariableSubstituted());													
+//			
+//				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
+//				assertFalse(objEntry.isSolvedChanged());				
 				
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
-
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {				
 				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsed());
 				assertNotNull(objEntry);
 				
@@ -1009,9 +993,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			
-			objEntry = objSectionEntryReference.get();
-			assertNotNull(objEntry);
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.

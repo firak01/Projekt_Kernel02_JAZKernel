@@ -155,6 +155,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		String sExpressionIn=null; String sExpression;	
 		boolean bUseExpression  = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				
@@ -213,7 +216,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			if(bUseExpression) {
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {							 							
-					if(!sExpressionIn.equals(sReturn)) {
+					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
 						this.updateValueParsedChanged();
 						this.updateValueParsedChanged(objReturnReference);
 					}
