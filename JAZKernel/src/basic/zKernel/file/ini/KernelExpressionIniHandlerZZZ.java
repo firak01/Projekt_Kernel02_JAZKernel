@@ -131,32 +131,89 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objReturnReference.set(objEntry);
 			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
 		
 			//#####################################################################
 			//Flags entscheiden, ob es weiter geht
-			super.updateValueParseCustom(objReturnReference, sExpressionIn); //isExpression setzen
+			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
 					
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
 			if(!this.isParserEnabledThis()) break main;
 			
-			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
-			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			//20250526: Der KernelExpressionIniHandler macht folgendes:
+			//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
+			//          Nun kann man sich überlegen, ob man beim PARSEN auch jeden einzelnen Solver aufruft und seine "parse" Methode nutzt.
+			//Alternativ kann man ein Dummy - Objekt verwenden und von jeder Klasse die "updateValueParseCustom" Methode aufrufen. 
+			//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
+			
+			//##########################.
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
+			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+			
+			if(bUseFormula) {				
+				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+					
+				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
+				objFormulaSolver.updateValueParseCustom(objReturnReference, sExpression);
+			}
+				
+									
+			if(bUseCall){
+				KernelCallIniSolverZZZ<T> callSolverDummy = new KernelCallIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callSolverDummy, true);
+				
+				KernelCallIniSolverZZZ objCallSolver = new KernelCallIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+				objCallSolver.updateValueParseCustom(objReturnReference, sExpression);
+			}
+			
+		
+			if(bUseJson) {
+				KernelJsonIniSolverZZZ<T> jsonSolverDummy = new KernelJsonIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+				
+				KernelJsonIniSolverZZZ objJsonSolver = new KernelJsonIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+				objJsonSolver.updateValueParseCustom(objReturnReference, sExpression);
+			}								
+									
+			if(bUseEncryption) {
+				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
+				
+				KernelEncryptionIniSolverZZZ objEncryptionSolver = new KernelEncryptionIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+				objEncryptionSolver.updateValueParseCustom(objReturnReference, sExpression);
+			}			
+			
+			
+			
+			//################################################################################################
+			//Alternativ kann man hier verkürzt alle möglichen Tags aufnehmen...
 			
 			//DARUM:
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe z.B. auch KernelCallIniSolverZZZ			
 			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 			
-			objEntry = objReturnReference.get();			
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelCallIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isCall(true);
-				this.getEntry().isCall(true);
-			}
+			//#####################################################################
+//			objEntry = objReturnReference.get();			
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelCallIniSolverZZZ.sTAG_NAME, false)) {
+//				objEntry.isCall(true);
+//				this.getEntry().isCall(true);
+//			}
+//			
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+//				objEntry.isJavaCall(true);
+//				this.getEntry().isJavaCall(true);
+//			}
 			
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJavaCall(true);
-				this.getEntry().isJavaCall(true);
-			}
+			//#####################################################################
+			
+			
 		
 		}//end main:
 	}

@@ -176,9 +176,89 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	//### Aus IParseUserZZZ
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		main:{
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+	
+		if(StringZZZ.isEmpty(sExpressionIn)) break main;
+		String sExpression = sExpressionIn;
+	
+		//#####################################################################
+		//Flags entscheiden, ob es weiter geht
+		super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
+				
+		if(!this.isExpressionEnabledGeneral()) break main;
+		if(!this.isParserEnabledGeneral()) break main;
+		if(!this.isParserEnabledThis()) break main;
 		
+		//20250526: Der KernelExpressionIniHandler macht folgendes:
+		//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
+		//          Nun kann man sich überlegen, ob man beim PARSEN auch jeden einzelnen Solver aufruft und seine "parse" Methode nutzt.
+		//Alternativ kann man ein Dummy - Objekt verwenden und von jeder Klasse die "updateValueParseCustom" Methode aufrufen. 
+		//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
+		
+		//##########################.
+		boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+		boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+		if(!(bUseJson | bUseJsonMap | bUseJsonArray )) break main;
+		
+		//Merke: Json wird dann in den "Untersolvern" eh schon behandelt.
+		if(bUseJsonArray) {				
+			KernelJsonArrayIniSolverZZZ<T> jsonArraySolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonArraySolverDummy, true);
+				
+			KernelJsonArrayIniSolverZZZ<T> objJsonArraySolver = new KernelJsonArrayIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+			objJsonArraySolver.updateValueParseCustom(objReturnReference, sExpression);
+		}
+			
+								
+		if(bUseJsonMap){
+			KernelJsonMapIniSolverZZZ<T> jsonMapSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonMapSolverDummy, true);
+			
+			KernelJsonMapIniSolverZZZ<T> objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+			objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);
+		}
+	
+		
+		//################################################################################################
+		//Alternativ kann man hier verkürzt alle möglichen Tags aufnehmen...
+		
+		//DARUM:
+		//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe z.B. auch KernelCallIniSolverZZZ			
+		//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+		
+		//#####################################################################
+//		objEntry = objReturnReference.get();			
+//		if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelCallIniSolverZZZ.sTAG_NAME, false)) {
+//			objEntry.isCall(true);
+//			this.getEntry().isCall(true);
+//		}
+//		
+//		if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+//			objEntry.isJavaCall(true);
+//			this.getEntry().isJavaCall(true);
+//		}
+		
+		//#####################################################################
+		
+		
+	
+	}//end main
 	}
 
 	//### aus IParseEnabled		
