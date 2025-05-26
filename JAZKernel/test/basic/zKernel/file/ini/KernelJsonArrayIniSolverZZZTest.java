@@ -23,10 +23,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_JSONARRAY01_CONTENT_SOLVED = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]";
-	protected final static String sEXPRESSION_JSONARRAY01_SOLVED = "<Z>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT_SOLVED + "</Z>";
-	protected final static String sEXPRESSION_JSONARRAY01_CONTENT = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]";
-	protected final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT +"</JSON:ARRAY></JSON></Z>";
+	public final static String sEXPRESSION_JSONARRAY01_CONTENT_SOLVED = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]";
+	public final static String sEXPRESSION_JSONARRAY01_SOLVED = "<Z>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT_SOLVED + "</Z>";
+	public final static String sEXPRESSION_JSONARRAY01_CONTENT = "[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]";
+	public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>" + KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_CONTENT +"</JSON:ARRAY></JSON></Z>";
 
 	//public final static String sEXPRESSION_JSONARRAY01_SOLVED = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
 	//public final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
@@ -756,7 +756,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_JSONARRAY_UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
 			
 			//##########################################
 			//### Expression unsolved Fall
@@ -775,10 +775,10 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 			
-			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false);
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
-			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);//Sollte dann egal sein
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, false);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();

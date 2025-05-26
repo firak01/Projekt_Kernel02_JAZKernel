@@ -204,19 +204,23 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		if(!this.isParserEnabledGeneral()) break main;
 		if(!this.isParserEnabledThis()) break main;
 		
+		if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+			objEntry.isJson(true);
+			this.getEntry().isJson(true);
+		}
+		
 		//20250526: Der KernelExpressionIniHandler macht folgendes:
 		//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
 		//          Nun kann man sich überlegen, ob man beim PARSEN auch jeden einzelnen Solver aufruft und seine "parse" Methode nutzt.
 		//Alternativ kann man ein Dummy - Objekt verwenden und von jeder Klasse die "updateValueParseCustom" Methode aufrufen. 
 		//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
 		
-		//##########################.
-		boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+		//##########################.	
 		boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
-		if(!(bUseJson | bUseJsonMap | bUseJsonArray )) break main;
+		if(!(bUseJsonMap | bUseJsonArray )) break main;
 		
-		//Merke: Json wird dann in den "Untersolvern" eh schon behandelt.
+	
 		if(bUseJsonArray) {				
 			KernelJsonArrayIniSolverZZZ<T> jsonArraySolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
 			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonArraySolverDummy, true);
