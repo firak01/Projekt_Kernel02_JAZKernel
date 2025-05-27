@@ -197,6 +197,12 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 	//### Aus IObject with Expression
 	
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return this.isSolverEnabledThis(); //das wäre default, es gibt kein eigenes Flag für den Parser speziel  
+	}
+	
 	//### Aus ISolveUserZZZ
 	@Override
 	public boolean isSolve(String sExpression) throws ExceptionZZZ {

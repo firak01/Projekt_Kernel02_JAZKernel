@@ -228,6 +228,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isSolvedChanged());
 					assertFalse(objEntry.isSolved());
 					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					
+										
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -720,6 +723,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertFalse(objEntry.isSolved()); //sollte ohne EXPRESSION abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());						
 				
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 				assertFalse(objEntry.isDecrypted());
@@ -764,7 +779,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isSolveCalled());
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
-														
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -814,6 +840,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isSolveCalled());  //aufgerufen wurde der Solver ja...
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
+				
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
 				assertFalse(objEntry.isDecrypted());
@@ -865,7 +903,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isSolveCalled()); //aufgerufen wurde der Solver ja
 				assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
 				assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
-														
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind					
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -923,6 +972,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++				
 				//++++++++++++++++++++++									
 				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
@@ -979,6 +1039,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isSolved());
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				break;
@@ -1021,6 +1092,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}					
 				assertTrue(objEntry.isSolved());
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
@@ -1074,6 +1156,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertFalse(objEntry.isVariableSubstituted());
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				break;
@@ -1157,12 +1251,26 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				
 				assertTrue(objEntry.isSolved());
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
 				//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
 				//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
-				//ABER: Wenn der Solver generel aus gestellt wird, dann wird nix dahinter aufgerufen.
+
+				//DEFAULT: Wenn der Solver generel ausgestellt wird, dann wird nix dahinter aufgerufen.
+				//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserenabledThis.      
 				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 				
 				//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
@@ -1186,6 +1294,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+				
 				assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 				assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
@@ -1236,6 +1345,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isSolvedChanged());
 				}
 				assertTrue(objEntry.isSolved());
+				
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				
 				//+++++++++++++++++++++++++
 				//+++++++++++++++++++++++++
 				assertTrue(objEntry.isCallSolveCalled());
@@ -1341,7 +1463,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 												
 				assertTrue(objEntry.isSolved());
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				assertFalse(objEntry.isJson()); //Ergebnisse kommen vom Parsen, JSON unsolved
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//Frueher: Ist der JavaCall-SOLVER deaktiviert, wird nun nicht der CallSolver aufgerufen, also das Kennzeichen nicht gesetzt
 				//Jetzt 20250311: Durch die zu ueberschreibende Methode aus ISolveUserZZZ .updateValueSolveCalled(...) werden alle relevanten Kennzeichen gesetzt
@@ -1351,9 +1485,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isCallSolveCalled());
 				assertTrue(objEntry.isCallSolved()); //trotz Deaktivierung des Solvers mit JAVACALL-Unsolved Flag wird der CALL-Solver ausgefuehrt					
 
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++
+				
 				assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++							
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
 				bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
@@ -1423,15 +1563,29 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++
 				
 				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+					
+				
+				
+				
 				//++++++++++++++++++++++++				
 				//++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
 				assertFalse(objEntry.isSolvedChanged()); 
 				assertTrue(objEntry.isSolved());
 				//+++++++++++++++++++++++++
-				//+++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
 				
 				assertFalse(objEntry.isJson()); //Ergebnisse kommen vom Parsen, JSON unsolved		
+				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1497,7 +1651,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				assertTrue(objEntry.isSolved());
 				//+++++++++++++++++++++++++
-				//+++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				
 				assertTrue(objEntry.isJson());
 				assertFalse(objEntry.isJsonMap());
@@ -1571,7 +1734,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertFalse(objEntry.isSolvedChanged()); 
 				assertTrue(objEntry.isSolved());     //solve selbst wurde ja ausgefuehrt. 
 				//+++++++++++++++++++++++++
-				//+++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				
 				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
 				assertFalse(objEntry.isJsonMap());
@@ -1713,7 +1885,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				assertTrue(objEntry.isSolved());
 				//+++++++++++++++++++++++++
-				//+++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+						
+				sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+				assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				
 				assertTrue(objEntry.isJson());
 				assertTrue(objEntry.isJsonMap());

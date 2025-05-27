@@ -3649,27 +3649,29 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sValue = objEntry.getValue();
 			assertEquals(sValueFromFunction,sValue);
 			
-			assertTrue(objEntry.isExpression()); 
-			
-			assertFalse(objEntry.isFormula());
-			
-			//Merke: Der Solver wird zwar ausgefuehrt. INI-Pfade werden auch ausgetauscht
-			//       (was kein solve ist, sondern ein substitute!). Aber der JAVACall wird nicht gemacht und daher kein Wert veraendert!
-			assertTrue(objEntry.isSolveCalled()); //der Solver wirg immer gestartet, wenn auch nicht immer ausgefuehrt
-			assertFalse(objEntry.isSolvedChanged());
-			
-			assertTrue(objEntry.isCall()); 		//Wert kommt aus parse()
-			assertTrue(objEntry.isJavaCall());	//Wert kommt aus parse()
-			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-						
-			//Wert mit speziellen Entry-Formelwert vergleichen
-			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
-						
-			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
-			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+//			assertTrue(objEntry.isExpression()); 
+//			
+//			assertFalse(objEntry.isFormula());
+//			
+//			//Merke: Der Solver wird zwar ausgefuehrt. INI-Pfade werden auch ausgetauscht
+//			//       (was kein solve ist, sondern ein substitute!). Aber der JAVACall wird nicht gemacht und daher kein Wert veraendert!
+//			assertTrue(objEntry.isSolveCalled()); //der Solver wirg immer gestartet, wenn auch nicht immer ausgefuehrt
+//			assertFalse(objEntry.isSolvedChanged());
+//			
+//			assertTrue(objEntry.isCall()); 		//Wert kommt aus parse()
+//			assertTrue(objEntry.isJavaCall());	//Wert kommt aus parse()
+//			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+//			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+//						
+//			//Wert mit speziellen Entry-Formelwert vergleichen
+//			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+//			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+//						
+//			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+//			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE,EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);

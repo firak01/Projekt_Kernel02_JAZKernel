@@ -119,7 +119,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		//### aus IParseUserZZZ
 		@Override
 		public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-			super.updateValueParseCustom(objReturnReference, sExpressionIn);
+			super.updateValueParseCustom(objReturnReference, sExpressionIn); //setzt ggfs. isExpression
 			
 			if(this.isParserEnabledThis()) {
 				IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
@@ -181,11 +181,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
-//	//### aus IParseEnabled		
-//	@Override 
-//	public boolean isParserEnabledThis() throws ExceptionZZZ {
-//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
-//	}
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+	}
 		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
 	@Override
