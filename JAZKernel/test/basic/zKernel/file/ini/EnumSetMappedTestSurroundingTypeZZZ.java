@@ -132,7 +132,17 @@ public String getSurroundingTestMessage() {
 
 @Override
 public boolean getSurroundingValueUsed() {
-	return this.bSurroundingValueUsed;
+	return this.bSurroundingValueUsed; //Aber, das ist fuer´s Behalten oder Entfernen des Z-Tags nicht ausschlaggebend. Dies ist nur der Wert.
+}
+
+@Override
+public boolean isSurroundingValueToRemove_OnParse() {
+	return !this.getSurroundingValueUsed();
+}
+
+@Override
+public boolean isSurroundingValueToRemove_OnSolve() {
+	return this.getSurroundingValueUsed();
 }
 
 

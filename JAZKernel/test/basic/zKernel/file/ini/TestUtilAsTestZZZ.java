@@ -26,7 +26,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static final String sFLAGSET_UNSOLVED="uso";
 	public static final String sFLAGSET_UNPARSED_UNSOLVED="upa_uso";
 	
+	public static final String sFLAGSET_FORMULA_UNSOLVED="fuso";
+	public static final String sFLAGSET_FORMULA_SOLVED="fso";
+	
 	public static final String sFLAGSET_MATH_UNSOLVED="muso";
+	public static final String sFLAGSET_MATH_SOLVED="mso";
+	
 	public static final String sFLAGSET_SOLVED="so";
 	public static final String sFLAGSET_PATH_UNSUBSTITUTED="pusu";
 	public static final String sFLAGSET_PATH_SUBSTITUTED="psu";

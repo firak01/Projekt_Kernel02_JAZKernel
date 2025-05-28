@@ -1858,7 +1858,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					sReturnLine = sExpression;
 					objEntry.setValue(sReturnLine);
 					objEntry.setValueFromTag(sReturnTag);
-																						
+					this.setValue(sReturnTag);																	
 					if(!sExpressionOld.equals(sReturnLine)) {							
 						objEntry.isPathSubstitutedChanged(true);
 					}										
