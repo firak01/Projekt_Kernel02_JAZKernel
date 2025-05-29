@@ -151,9 +151,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//##########################.
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
-			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+			if(!(bUseFormula | bUseCall | bUseJavaCall | bUseJson | bUseEncryption )) break main;
 			
 			if(bUseFormula) {				
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
@@ -165,12 +166,21 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 				
 									
-			if(bUseCall){
-				KernelCallIniSolverZZZ<T> callSolverDummy = new KernelCallIniSolverZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callSolverDummy, true);
+			if(bUseCall | bUseJavaCall){
 				
-				KernelCallIniSolverZZZ objCallSolver = new KernelCallIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-				objCallSolver.updateValueParseCustom(objReturnReference, sExpression);
+				if(bUseJavaCall) {  //nur einen von beiden ausfuehren
+					KernelJavaCallIniSolverZZZ<T> callSolverDummy = new KernelJavaCallIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callSolverDummy, true);
+					
+					KernelJavaCallIniSolverZZZ objCallSolver = new KernelJavaCallIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+					objCallSolver.updateValueParseCustom(objReturnReference, sExpression);					
+				}else { //Wenn JavaCall ausgefuehrt werden soll, dann wird isCall aus dem ElternTag auch gesetzt.
+					KernelCallIniSolverZZZ<T> callSolverDummy = new KernelCallIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callSolverDummy, true);
+					
+					KernelCallIniSolverZZZ objCallSolver = new KernelCallIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+					objCallSolver.updateValueParseCustom(objReturnReference, sExpression);
+				}
 			}
 			
 		

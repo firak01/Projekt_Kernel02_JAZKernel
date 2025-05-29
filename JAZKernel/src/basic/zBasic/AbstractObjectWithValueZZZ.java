@@ -36,8 +36,8 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	@Override
 	public boolean reset() throws ExceptionZZZ{
 		//super.reset();//gibt es nicht, da oberste Ebene 
-		this.resetValues();
-		return true;
+		return this.resetValues();
+		
 	}
 	
 	@Override

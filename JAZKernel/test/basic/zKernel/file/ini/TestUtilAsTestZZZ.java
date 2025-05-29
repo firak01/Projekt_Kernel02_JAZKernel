@@ -1276,7 +1276,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				//DEFAULT: Wenn der Solver generel ausgestellt wird, dann wird nix dahinter aufgerufen.
 				//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserenabledThis.      
-				assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+				assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
 				
 				//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
 				bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
@@ -1298,7 +1298,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+				assertFalse(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
 				
 				assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 				assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
@@ -1752,7 +1752,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
 				assertFalse(objEntry.isJsonMap());
-				assertTrue(objEntry.isJsonArray()); //JSON_ARRAY wird nicht benutzt
+				assertFalse(objEntry.isJsonArray()); //JSON_ARRAY wird nicht benutzt
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.

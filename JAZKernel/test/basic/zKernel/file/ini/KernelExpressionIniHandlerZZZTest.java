@@ -696,19 +696,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 
-	private boolean testCompute_PATH_FORMULA_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_PATH_FORMULA_unsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
 			try {
 				boolean btemp; String stemp;				
-				String sExpressionSource; String sExpressionSubstituted; String sExpressionSolved; String sValue;
+				String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sValue;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
@@ -739,14 +739,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ ... parse sollte aber IMMER den Z-Tag entfernen...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {																	
-					sValue = objExpressionHandler.parse(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.parse(sExpression, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -758,7 +759,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					sValue = objExpressionHandler.solve(sExpressionSource, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.solve(sExpression, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSolved;
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
@@ -832,6 +833,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 						
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 
@@ -840,7 +842,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed()); //false ist wichtig, damit die Z-Tags enthalten bleiben, die die Formeln umgeben
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1173,19 +1175,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	}
 
 
-	private boolean testCompute_MATH_unsolved_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_MATH_unsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
 			try {
-				String sExpressionSource; String sExpressionSubstituted; String sExpressionSolved; String sValue;
+				String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sValue;
 				boolean btemp;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
 				
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
@@ -1216,14 +1218,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 						
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1237,9 +1240,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
-					tring sExpressionSurroundedTemp = sExpressionSolved;
+					String sExpressionSurroundedTemp = sExpressionSolved;
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
@@ -1264,19 +1267,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_MATH_(String sExpressionSourceIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_MATH_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		
 		main:{
 			try {
-				String sExpressionSource; String sExpressionSubstituted; String sExpressionSolved; String sValue;
+				String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sValue;
 				boolean btemp; String stemp;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null; IKernelConfigSectionEntryZZZ objEntry=null;
 				
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";	
 				
-				sExpressionSource = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
@@ -1311,14 +1314,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade (substituiert)
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1332,7 +1336,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpressionSource, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
+					sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSolved;
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
@@ -2056,46 +2060,39 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 				
-			//################################################################
-			//### Varianten JSON-HashMap aufzuloesen
-			//#################################################################
-			
-			//c)
+			//2b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
-			hmExpressionSolved = new HashMap();
-			//sExpressionSolved = "<Z>{UIText01=TESTWERT2DO2JSON01, UIText02=TESTWERT2DO2JSON02}</Z>";
-			//TODOGOON20250412;//Die Reihenfolge der Werte passt nicht 01 solte der erste Wert in der HashMap sein. Ich weiss Maps sind nicht sortiert, sollten sie aber....
-			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_SOLVED;
-			btemp = testCompute_JsonMap_JsonMapSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, hmExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+						
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//################################################################
-			//### Varianten JSON nicht aufzuloesen
+			//### 1. Varianten JSON nicht aufzuloesen
 			//#################################################################
-			//a)
+			//1a)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;			
 			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
+			//1b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
+			//1c)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpression;
 			sExpressionSubstituted = sExpression;
 			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
-			//d)
+			//1d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;			
@@ -2104,29 +2101,29 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			
 			//################################################################
-			//### Varianten JSON-HashMap nicht aufzuloesen
+			//### 2. Varianten JSON-HashMap nicht aufzuloesen
 			//#################################################################
 			
-			//a)
+			//2a)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;			
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
+			//2b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
+			//2c)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 
-			//d)
+			//2d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
@@ -2134,17 +2131,17 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//################################################################
-			//### Varianten JSON-HashMap aufzuloesen
+			//### 3. Varianten JSON-HashMap aufzuloesen
 			//#################################################################
 			
-			//a)
+			//3a)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			hmExpressionSolved = new HashMap();
 			sExpressionSolved = sExpression;		
 			btemp = testCompute_JsonMap_JsonMapSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, hmExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
+			//3b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			hmExpressionSolved = new HashMap();
@@ -2152,7 +2149,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonMapSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, hmExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
+			//3c)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			hmExpressionSolved = new HashMap();
@@ -2161,7 +2158,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_SOLVED;
 			btemp = testCompute_JsonMap_JsonMapSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, hmExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
-			//d)
+			//3d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			hmExpressionSolved = new HashMap();
@@ -2232,6 +2229,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 								
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -2239,7 +2237,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -2340,7 +2338,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
-				
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -2348,7 +2346,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -2448,6 +2446,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
@@ -2455,7 +2454,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -2551,15 +2550,14 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ B) Ohne Solver-Berechung
-				
-			//Bd)
+			
+			//Bb) Merke: Ohne Solver-Berechnung bleibt der Z-Tag immer drin.
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			sExpressionSolved = sExpressionSubstituted;			
-			//ohne solver bleibt der Z-Tag drin  sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_CallJava_Solver_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			
+			sExpressionSolved = sExpressionSubstituted;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			btemp = testCompute_CallJava_Solver_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+							
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -2570,25 +2568,25 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ A) Ohne jegliche Expression-Berechnung
-			//a)
+			//Aa)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			btemp = testCompute_CallJava_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
+			//Ab)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;			
 			btemp = testCompute_CallJava_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
+			//Ac)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression; 			
 			btemp = testCompute_CallJava_unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
-			//d)
+			//Ad)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
@@ -2596,20 +2594,20 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ B) Ohne Solver-Berechung
-			//a)
+			//Ba)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>" + sClassName + "</Z:Class><Z:Method>" + sMethodName +"</Z:Method></Z:Java></Z:Call></Z>"; //INI-Pfade werden trotzdem ersetzt
 			btemp = testCompute_CallJava_Solver_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b) Merke: Ohne Solver-Berechnung bleibt der Z-Tag immer drin.
+			//Bb) Merke: Ohne Solver-Berechnung bleibt der Z-Tag immer drin.
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_CallJava_Solver_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
-			//c) Merke: Ohne Solver-Berechnung bleibt der Z-Tag immer drin. 
+			//Bc) Merke: Ohne Solver-Berechnung bleibt der Z-Tag immer drin. 
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;			
 			sExpressionSolved = sExpressionSubstituted;
@@ -2622,21 +2620,23 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			//ohne solver bleibt der Z-Tag drin  sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_CallJava_Solver_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
+
+			
 			//+++ C) Ohne jegliche CallJava-Berechnung, aber der generelle Solver ist aktiviert
-			//a) Merke: Beim Parsen bleiben alle Tags drin
+			//Ca) Merke: Beim Parsen bleiben alle Tags drin
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted;			
 			btemp = testCompute_CallJava_CallJava_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)Merke; Beim Parsen bleiben alle Tags drin, nur der umbebende Z-Tag soll jetzt raus
+			//Cb)Merke; Beim Parsen bleiben alle Tags drin, nur der umbebende Z-Tag soll jetzt raus
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted;			
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);  //Z-Tag raus, weil gewuenscht
 			btemp = testCompute_CallJava_CallJava_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
+			//Cc) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted;
@@ -2645,7 +2645,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);  //Z-Tag raus, weil gewuenscht
 			btemp = testCompute_CallJava_CallJava_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 						
-			//d) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
+			//Cd) Merke: Es wird aber trotzdem eine CALL-Berechnung gemacht, darum ist der Tag dann im Enderegebnis raus.
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted;
@@ -2659,26 +2659,26 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ E) Mit CALL-Berechnung
-			//a)
+			//Ea)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted; // "<Z><Z:Call><Z:Java><Z:Class><Z>basic.zBasic.util.machine.EnvironmentZZZ</Z></Z:Class><Z:Method><Z>getHostName</Z></Z:Method></Z:Java></Z:Call></Z>";						
 			btemp = testCompute_CallJava_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
+			//Eb)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sExpressionSubstituted; //sExpressionSolved = "<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_CallJava_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
+			//Ec)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = "<Z>" + sHostName + "</Z>";			
 			btemp = testCompute_CallJava_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
-			//d)		
+			//Ed)		
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 			sExpressionSolved = sHostName;
@@ -2686,11 +2686,11 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			
 			//#####################################
-			//### INI FILE
+			//### F) INI FILE
 			//### Merke: Auf dieser obersten Ebene kann man NICHT steuern "mit oder ohne umgebende Tags".
 			//#####################################
 									
-			//a) ohne EXPRESSION - Berechnung
+			//Fa) ohne EXPRESSION - Berechnung
 			sSection = "Section for testCall";
 			sProperty = "WertCalled";
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -2700,7 +2700,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			btemp = testCompute_CallJava_IniUsed_unexpressed_(sSection, sProperty, sExpression, sExpressionSubstituted, sExpressionSolved);
 		
 				
-			//b ) ohne SOLVER - Berechnung
+			//Fb ) ohne SOLVER - Berechnung
 			sSection = "Section for testCall";
 			sProperty = "WertCalled";
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -2709,7 +2709,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSolved = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;    //"<Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call>";
 			btemp = testCompute_CallJava_IniUsed_unsolved_(sSection, sProperty, sExpression, sExpressionSubstituted, sExpressionSolved);	
 	
-			//c) mit CALL-Berechnung
+			//Fc) mit CALL-Berechnung
 			sSection = "Section for testCall";
 			sProperty = "WertCalled";
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -2772,6 +2772,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){
@@ -2779,7 +2780,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				
 				String sExpressionSurroundedTemp = sExpressionSubstituted;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -2877,6 +2878,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){	
@@ -2884,7 +2886,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				
 				String sExpressionSurroundedTemp = sExpressionSubstituted;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -2980,6 +2982,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 
 			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
@@ -2987,7 +2990,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				
 				String sExpressionSurroundedTemp = sExpressionSubstituted;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -3075,6 +3078,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
@@ -3082,7 +3086,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				
 				String sExpressionSurroundedTemp = sExpressionSubstituted;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -3404,12 +3408,10 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			
 			//4)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			//sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;			
 			sExpressionSolved = sExpressionSubstituted;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_CallJavaEntry_Detail_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
-			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -3418,7 +3420,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpressionSubstituted = sExpression;              
 			sExpressionSolved = sExpressionSubstituted;
 			btemp = testCompute_CallJavaEntry_Detail_SolverUnparsedUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);			
-			
+						
 			//2)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; //sExpression = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
 			sExpressionSubstituted = sExpression;              
@@ -3428,18 +3430,16 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			//3)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			sExpressionSolved = sExpressionSubstituted;
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);//Call Tag raus, der ist aktiviert
+			sExpressionSolved = sExpressionSubstituted;			
 			btemp = testCompute_CallJavaEntry_Detail_SolverUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
 			
 			//4)
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			//sExpressionSolved = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
+			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;			
 			sExpressionSolved = sExpressionSubstituted;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_CallJavaEntry_Detail_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);
-			
+
 			//Alles aufloesen
 			//A) einfach ohne extra SUBSTITUTION
 			sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -3599,7 +3599,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
 			//######################################
-			//### Generellen Solver aktiviert, der generelle Parser (bleibt) aber aktiviert
+			//### Generellen Parser deaktivieren
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, false); //ohne aktivierten Parser keine SUBSTITUTION  
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
 			
@@ -3737,11 +3737,10 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
 
 			//##################################################################
-						
 			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 
-			btemp = objExpressionHandler.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
@@ -3749,13 +3748,25 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 		
 			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
-							
-			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
-			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", btemp);
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+				
+			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
 		
+			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+
+			
+			//NUN DEAKTIVIEREN						
+			btemp = objFileIniTest.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
+		
+			btemp = objFileIniTest.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
+		
+			
 			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 			
 			objEntry = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled");
@@ -3764,33 +3775,11 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			assertEquals(sExpressionSolved,sValue);
 			sValueFromFunction = sValue;
 			
-			
 			//Wert mit Entry-Wert vergleichen
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
 			sValue = objEntry.getValue();
 			assertEquals(sValueFromFunction,sValue);
-			
-//			assertTrue(objEntry.isExpression()); 
-//			
-//			assertFalse(objEntry.isFormula());
-//			
-//			//Merke: Der Solver wird zwar ausgefuehrt. INI-Pfade werden auch ausgetauscht
-//			//       (was kein solve ist, sondern ein substitute!). Aber der JAVACall wird nicht gemacht und daher kein Wert veraendert!
-//			assertTrue(objEntry.isSolveCalled()); //der Solver wirg immer gestartet, wenn auch nicht immer ausgefuehrt
-//			assertFalse(objEntry.isSolvedChanged());
-//			
-//			assertTrue(objEntry.isCall()); 		//Wert kommt aus parse()
-//			assertTrue(objEntry.isJavaCall());	//Wert kommt aus parse()
-//			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
-//			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
-//						
-//			//Wert mit speziellen Entry-Formelwert vergleichen
-//			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-//			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
-//						
-//			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
-//			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -4868,14 +4857,14 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
-				
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 							
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -4973,6 +4962,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 							
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -4980,7 +4970,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -5079,6 +5069,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionHandler.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionHandler.isParserEnabledGeneral();
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
@@ -5086,7 +5077,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;

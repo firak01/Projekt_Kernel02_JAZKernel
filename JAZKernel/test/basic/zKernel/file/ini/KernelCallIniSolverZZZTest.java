@@ -679,6 +679,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();	
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
@@ -686,7 +687,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -728,7 +729,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objEntry.getValue();
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -817,6 +818,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -824,7 +826,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -863,7 +865,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objEntry.getValue();
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -955,7 +957,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSolved;					
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {						
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {						
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}					
 					sExpressionSolved = sExpressionSurroundedTemp;
@@ -994,7 +996,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objEntry.getValue();
 										
 					String sExpressionSurroundedTemp = sExpressionSubstituted;				
-					if(objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}					
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1085,6 +1087,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
@@ -1092,7 +1095,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					assertEquals(sExpressionSolved, sValue);
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1126,7 +1129,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objEntry.getValue();
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1208,6 +1211,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {							
@@ -1215,7 +1219,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
@@ -1256,7 +1260,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					sValue = objEntry.getValue();
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
-					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 					}
 					sExpressionSubstituted = sExpressionSurroundedTemp;
