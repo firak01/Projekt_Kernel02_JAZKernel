@@ -670,7 +670,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParse = false; boolean bUseParserThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -693,26 +693,26 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objReturnReference);
 		
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		
-		sReturnTag = this.getValue();
-		sReturnLine=sExpressionIn;
-		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
-		sReturn = sReturnLine;
-				
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
+				
+			this.setRaw(sExpressionIn);
+			objEntry.setRaw(sExpressionIn);	
 			
+			sReturnTag = this.getValue();
+			sReturnLine=sExpressionIn;
+			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
+			sReturn = sReturnLine;
+						
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;		
 			
 			this.updateValueParseCustom(objReturnReference, sExpression);
 						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledThis();
+			if(!bUseParserThis) break main;
 			
 			//###########################################
 			//### 

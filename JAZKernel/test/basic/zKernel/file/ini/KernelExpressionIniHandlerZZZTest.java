@@ -2059,15 +2059,14 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 					
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-				
-			//2b)
-			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
-			sExpressionSubstituted = sExpression;
-			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
-						
 			
+			//3a)
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSubstituted = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;//es gibt noch keinen Testfall fuer Substitute
+			hmExpressionSolved = new HashMap();
+			sExpressionSolved = sExpressionSubstituted;//nur parse
+			btemp = testCompute_JsonMap_JsonMapSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, hmExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+											
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//################################################################
@@ -2082,6 +2081,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//1b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -2095,8 +2095,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//1d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			sExpressionSolved = sExpression;			
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);			
 			btemp = testCompute_JsonMap_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
@@ -2110,12 +2111,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSolved = sExpression;			
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
+
 			//2b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
 			
 			//2c)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
@@ -2126,6 +2130,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//2d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			btemp = testCompute_JsonMap_JsonMapUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -2144,6 +2149,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//3b)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			hmExpressionSolved = new HashMap();
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
@@ -2161,6 +2167,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//3d)
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
 			hmExpressionSolved = new HashMap();
 			//sExpressionSolved = "<Z>{UIText01=TESTWERT2DO2JSON01, UIText02=TESTWERT2DO2JSON02}</Z>";
 			//TODOGOON20250412;//Die Reihenfolge der Werte passt nicht 01 solte der erste Wert in der HashMap sein. Ich weiss Maps sind nicht sortiert, sollten sie aber....
@@ -4601,7 +4608,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			String sExpression=null; String sExpressionSubstituted=null; String sExpressionSolved=null; ArrayList<String>alsExpressionSolved=null;
 			
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSubstituted = sExpression;
+			sExpressionSubstituted = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;//es gibt noch keinen substituted Testfall.
 			sExpressionSolved = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_SOLVED;
 			alsExpressionSolved = new ArrayList();
 			alsExpressionSolved.add("TESTWERT2DO2JSON01");

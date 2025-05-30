@@ -949,8 +949,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseSolverThis = objExpressionSolver.isSolverEnabledThis();
-				
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+								
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();

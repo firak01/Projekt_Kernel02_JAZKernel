@@ -160,11 +160,12 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 			sReturn = sReturnLine;
 
-			this.updateValueParseCustom(objReturnReference, sExpression);
-						
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
+			this.updateValueParseCustom(objReturnReference, sExpression);
+						
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
 			

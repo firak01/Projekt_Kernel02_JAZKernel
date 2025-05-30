@@ -231,12 +231,39 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
 			
-	//### Aus IParseUserZZZ
+	//+++++++++++++++++++++++++++++++++++++++++
+	//### aus IParseEnabled		
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
 	
+	//### aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+		super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
+		if(this.isParserEnabledThis()) {
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJson(true);
+				this.getEntry().isJson(true);
+			}
+			
+						
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isJsonMap(true);
+				this.getEntry().isJsonMap(true);
+			}
+		}
 	}
 
 				
