@@ -152,14 +152,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//2b)
+			//2c)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);			
-			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = sExpressionSubstituted; 		
 			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);			
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -1034,9 +1032,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
 		
 			//### VORGEZOGENER FEHLERTEST ENDE
 			
@@ -1066,8 +1064,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
 			
 			
 			//########################################################################################

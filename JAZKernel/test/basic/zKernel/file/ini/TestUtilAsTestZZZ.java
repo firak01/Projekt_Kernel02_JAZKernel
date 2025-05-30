@@ -579,7 +579,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertTrue(objEntry.isJson()); //JSON_ARRAY unsolved, aber JSON solved
 					assertFalse(objEntry.isJsonMap());
-					assertFalse(objEntry.isJsonArray());
+					assertTrue(objEntry.isJsonArray()); //Stammt aus parse
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -1865,7 +1865,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
 				assertFalse(objEntry.isSolvedChanged()); 
-				assertTrue(objEntry.isSolved());     //solve selbst wurde ja ausgefuehrt. 
+				assertFalse(objEntry.isSolved());     //solve wird aber nicht abgeschlossen 
 				//+++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
