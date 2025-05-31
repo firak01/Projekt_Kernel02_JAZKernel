@@ -130,8 +130,8 @@ public String getSurroundingTestMessage() {
 //	this.sTestCaseMessage = sTestCaseMessage;
 //}
 
-@Override
-public boolean getSurroundingValueUsed() {
+//@Override
+private boolean getSurroundingValueUsed() {
 	return this.bSurroundingValueUsed; //Aber, das ist fuer´s Behalten oder Entfernen des Z-Tags nicht ausschlaggebend. Dies ist nur der Wert.
 }
 

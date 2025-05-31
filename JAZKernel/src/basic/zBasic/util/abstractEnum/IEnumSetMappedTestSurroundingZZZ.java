@@ -5,7 +5,7 @@ public interface IEnumSetMappedTestSurroundingZZZ extends IEnumSetMappedZZZ{
 	
 	//weitere Erweiterungen, speziell für TESTCASE
 	public String getSurroundingTestMessage();
-	public boolean getSurroundingValueUsed(); //was in der Enumeration eingestellt ist
+	//public boolean getSurroundingValueUsed(); //was in der Enumeration eingestellt ist
 	
 	//Komfortable für if-Abfragen, denn was in der Enumeration eingestellt ist, wird ggfs. anders interpretiert.
 	public boolean isSurroundingValueToRemove_OnParse();
