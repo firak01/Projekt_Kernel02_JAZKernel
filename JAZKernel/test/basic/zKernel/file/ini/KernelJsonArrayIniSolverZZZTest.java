@@ -152,13 +152,15 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//2c)
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ 3. Ohne Json-Solver-Berechung
+			//3a)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstituted; 		
+			sExpressionSolved = sExpressionSubstitutedIn;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+						
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -225,7 +227,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-			//Wenn unsolved, dann bleibt das Z-Tag drin... 
+			//wenn der Solver Generell abgestellt ist, wird auch solvePost, etc. nicht ausgefuehrt
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
 			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -400,7 +402,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
@@ -524,6 +526,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -531,7 +534,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				//+++ Teilberechnungen durchführen.
 //			    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsed());					
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				if(bUseParser) {
+					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				}else {
+					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				}
 				sExpressionSubstituted2Compare = sExpressionSubstituted;
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
@@ -557,7 +564,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {							
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSolved = sExpressionSolvedTemp;
@@ -648,6 +655,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -658,7 +666,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 				
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				if(bUseParser) {
+					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				}else {
+					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				}
 				assertTrue(StringZZZ.contains(sExpressionSubstituted,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 										
 				//+++ Nun die Gesamtberechnung durchführen				
@@ -674,7 +686,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsed());
 				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSolved = sExpressionSolvedTemp;
@@ -693,7 +705,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				sValue = objEntry.getValue();
 				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSolved = sExpressionSolvedTemp;
@@ -708,22 +720,20 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				sValue = objEntry.getValue();
 				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.getSurroundingValueUsed()) {
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
 					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
 				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
-						
-			objEntry = objSectionEntryReference.get();
-			assertNotNull(objEntry);
-			
+							
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
 			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
 			assertTrue(btemp);
 
+			bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -781,7 +791,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-						
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 									
@@ -798,7 +809,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				
 				
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				if(bUseParser) {
+					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				}else {
+					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				}
 				
 				sExpressionSubstituted2Compare = sExpressionSubstituted;
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
@@ -917,7 +932,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -928,7 +943,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 				
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				if(bUseParser) {
+					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				}else {
+					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				}
 				assertTrue(StringZZZ.contains(sExpressionSubstituted,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
 				//+++ Nun die Gesamtberechnung durchführen				

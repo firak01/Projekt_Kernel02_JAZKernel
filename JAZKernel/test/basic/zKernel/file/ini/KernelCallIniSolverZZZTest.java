@@ -679,7 +679,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();	
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
@@ -818,7 +818,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -949,7 +949,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 								
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {		
@@ -1087,7 +1087,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
@@ -1211,7 +1211,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 				boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral();
+				boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {							

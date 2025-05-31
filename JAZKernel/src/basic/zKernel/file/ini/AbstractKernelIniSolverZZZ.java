@@ -674,8 +674,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry = objReturnReference.get();
 			
 				
-			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+//			this.updateValueSolved();
+//			this.updateValueSolved(objEntry);
 		}//end main:
 		
 				
@@ -684,11 +684,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setValue(sReturnTag);
 		//sReturn = sReturnLine;
 			
-		if(objEntry!=null) {				
-			objEntry.setValueAsString(vecReturn);	
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-		}
+//		if(objEntry!=null) {				
+//			objEntry.setValueAsString(vecReturn);	
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+//		}
 		return vecReturn;
 	}
 	//++++++++++++++++++++++
@@ -1052,9 +1052,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//sReturnTag = (String) vecReturn.get(1);
 			//sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
-// passiert auch im Wrapup
-//			this.updateValueSolved();
-//			this.updateValueSolved(objEntry);
 			
 			vecReturn = this.solveParsedWrapup(vecReturn, objReturnReferenceIn, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
@@ -1067,11 +1064,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setValue(sReturnTag);
 		//sReturn = sReturnLine;
 		
-		if(objEntry!=null) {				
-			objEntry.setValueAsString(vecReturn);	
-			objEntry.setValueFromTag(sReturnTag);
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
-		}
+//		if(objEntry!=null) {				
+//			objEntry.setValueAsString(vecReturn);	
+//			objEntry.setValueFromTag(sReturnTag);
+//			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+//		}
 		return vecReturn;
 	}
 	

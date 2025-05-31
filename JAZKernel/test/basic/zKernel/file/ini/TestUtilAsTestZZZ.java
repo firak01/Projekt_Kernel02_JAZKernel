@@ -1828,11 +1828,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 				sExpression2compareWithSolved = sExpression;
-				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+				if(objEntry.isSolved() && objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) { //ohne das Solve ausgefuehrt wurde wird auch nichts veraendert.
 					sExpression2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSolved, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved (veraendert)=" + sExpression2compareWithSolved);
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved (unveraendert)=" + sExpression2compareWithSolved);	
 				}
 				
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved=" + sExpression2compareWithSolved);
+				
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSolved=" + sExpressionSolved);
 				if(sExpression2compareWithSolved.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
@@ -1844,10 +1847,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 				assertTrue(objEntry.isPathSubstituteCalled());
 				sExpression2compareWithSubstituted = sExpression;
-				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+				if(objEntry.isSolved() && objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) { //Ohne das der Solver abgeschlossen wurde, wird auch nichts entfernt.
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (veraendert)=" + sExpression2compareWithSubstituted);
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);					
 				}
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+				
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
 				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
@@ -1878,9 +1884,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 				
-				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
+				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen.
 				assertFalse(objEntry.isJsonMap());
-				assertFalse(objEntry.isJsonArray()); //JSON_ARRAY wird nicht benutzt
+				assertTrue(objEntry.isJsonArray()); //Ergebnisse kommen vom Parsen, darum wird JsonArray auch gefunden, obwohl der generelle Solver deaktiviert ist. 
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -2059,11 +2065,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 				sExpression2compareWithSolved = sExpression;
-				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+				if(objEntry.isSolved() && objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) { //ohne das solve ausgefuehrt wurde wird auch nichts veraendert
 					sExpression2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSolved, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved (veraendert)=" + sExpression2compareWithSolved);
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved (unveraendert)=" + sExpression2compareWithSolved);
 				}
-				
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSolved=" + sExpression2compareWithSolved);
+							
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSolved=" + sExpressionSolved);
 				if(sExpression2compareWithSolved.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						

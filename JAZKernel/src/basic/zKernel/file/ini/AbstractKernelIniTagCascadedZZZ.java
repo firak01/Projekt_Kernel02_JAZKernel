@@ -162,7 +162,10 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
-											
+			
+			//Direkte nachdem feststeht, dass Expression behandelt werden die Tags analysieren!!!
+			this.updateValueParseCustom(objReturnReference, sExpression); 
+			
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
 			
@@ -170,7 +173,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			bUseParserThis = this.isParserEnabledThis();
 		    if(!bUseParserThis) break main;
 			
-		    this.updateValueParseCustom(objReturnReference, sExpression);
+		    
 			
 		    
 		    //###########################################

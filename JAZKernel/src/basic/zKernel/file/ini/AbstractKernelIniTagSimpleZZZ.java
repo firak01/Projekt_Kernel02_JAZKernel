@@ -489,7 +489,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	private IKernelConfigSectionEntryZZZ parseAsEntry_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;		
 		String sReturn = sExpressionIn;
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -520,11 +520,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
+			//Direkte nachdem feststeht, dass Expression behandelt werden die Tags analysieren!!!
 			this.updateValueParseCustom(objReturnReference, sExpression);
 			
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledThis();
+			if(!bUseParserThis) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 			//Merke: in Elternklassen gibt es diese Methode nur ohne Reference, da ohne KernelEbene das Objekt nicht vorhanden ist.
@@ -875,6 +879,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Postition (d.h. nicht nur am Anfang), also von aussen nach innen!!!
 //				}				
 			}
+			vecReturn.replace(sReturnTag);
 			this.setValue(sReturnTag);	
 			
 			//+++ ggfs. weitere Sachen aus der Zeile (!) rausrechnen, falls gewuenscht
@@ -1805,11 +1810,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 				ZTagFormulaIni_VariableZZZ<T> objVariable = new ZTagFormulaIni_VariableZZZ<T>(this.getHashMapVariable(), saFlagZpassed); 
 				while(objVariable.isExpression(sExpression)){
-					//Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, true); //auf jeden Fall um Variablen herum den Z-Tag entfernen
-						
+											
 					//Auf gar keinen Fall den Z-Tag entfernen, sonst können nachfolgende PATH - Anweisungen nicht mehr gefunden werden.
 					//Merke: Weil es ein SimpleTag ist, kann man keine objReference uebergeben. 
-					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false); //auf jeden Fall um Variablen herum den Z-Tag entfernen
+					Vector3ZZZ<String> vecExpressionTemp =  objVariable.parseFirstVector(sExpression, false);
 					if(vecExpressionTemp==null) break;
 					if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.	
 					

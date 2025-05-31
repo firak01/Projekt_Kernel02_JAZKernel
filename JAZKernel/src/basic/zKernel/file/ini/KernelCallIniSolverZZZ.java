@@ -209,7 +209,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		String sReturn = sExpressionIn; 
 		String sReturnTag = null; String sReturnLine = null;
 		String sReturnLineParsed = null; String sReturnLineParsedCallInner = null;
-		boolean bUseExpression=false; boolean bUseParserThis=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
+		boolean bUseExpression=false; boolean bUseParser = false; boolean bUseParserThis=false; boolean bUseSolver=false; boolean bUseCall=false; boolean bUseSolverThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -246,17 +246,12 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 				
+			//Direkte nachdem feststeht, dass Expression behandelt werden die Tags analysieren!!!
 			this.updateValueParseCustom(objReturnReference, sExpression);
 			
-//			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
-//				objEntry.isJavaCall(true);
-//			}
-//			
-//			if(XmlUtilZZZ.containsTagName(sExpression, this.getName(), false)){
-//				objEntry.isCall(true);
-//			}
-			
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
