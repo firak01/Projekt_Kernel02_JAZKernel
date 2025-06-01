@@ -146,10 +146,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}		
 		
 		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
-		
+		this.updateValueParseCalled(objReturnReference);		
 		main:{
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
 			
 			this.setRaw(sExpressionIn);		
@@ -173,9 +172,6 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			bUseParserThis = this.isParserEnabledThis();
 		    if(!bUseParserThis) break main;
 			
-		    
-			
-		    
 		    //###########################################
 			//### 
 			//###########################################
@@ -222,10 +218,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
-			
-			this.updateValueParsed();
-			this.updateValueParsed(objReturnReference);
 		}//end main:			
+		this.updateValueParsed();
+		this.updateValueParsed(objReturnReference);
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		//
 		this.setValue(sReturnTag);

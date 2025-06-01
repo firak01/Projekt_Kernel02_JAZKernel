@@ -502,9 +502,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					//+++++++++++++++++++++++++
 					
-					assertFalse(objEntry.isJson()); //bei diesem Flagset wird json nicht aufgeloest
+					assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 					assertFalse(objEntry.isJsonMap());
-					assertFalse(objEntry.isJsonArray());
+					assertTrue(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -1717,7 +1717,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 				
-				assertFalse(objEntry.isJson()); //Ergebnisse kommen vom Parsen, JSON unsolved		
+				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen, auch wenn nicht gesolved wird (JSON unsolved) so wird geparsed		
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen

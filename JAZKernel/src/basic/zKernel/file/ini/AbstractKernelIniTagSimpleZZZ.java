@@ -593,34 +593,39 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Achtung: Das objReturn Objekt NICHT generell versuchen mit .getEnry() und ggfs. dann darin .getEntryNew() uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 						
 		}
-		
-		this.setRaw(sExpressionIn);		
-		objEntry.setRaw(sExpressionIn);
-		
+
+		//das ist zwar dann auch in .parseFirstVector() aber die Genauigkeit fordert es an dieser Stelle.
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objReturnReference);
-		sReturnLine = sExpressionIn;
-		sReturnTag = this.getValue();
-		vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
-		sReturn = sReturnLine;
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;
-						
-			bUseExpression = this.isExpressionEnabledGeneral();
-			if(!bUseExpression) break main;
+			
+			this.setRaw(sExpressionIn);		
+			objEntry.setRaw(sExpressionIn);
+
+			sReturnTag = this.getValue();
+			sReturnLine = sExpressionIn;
+			vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+			sReturn = sReturnLine;
+					
+			//auch das waere doppelt
+			//bUseExpression = this.isExpressionEnabledGeneral();
+			//if(!bUseExpression) break main;
 			
 			//das waere dann doppelt und sogar zeitteuer.... this.updateValueParseCustom(objReturnReference, sExpression);
+			
+			//nachfolgendes wird schon in parseFirstVector gemacht.
+			//Darf jett nicht gemacht werden, da man dann ggfs. zu frueh abbricht.
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+			//bUseParse = this.isParserEnabledThis();
+			//if(!bUseParse) break main;
 			
 			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
-						
+											
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
@@ -808,7 +813,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		Vector3ZZZ<String> vecReturn = vecExpressionIn;
 		String sExpressionIn = null; 
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;				
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -841,10 +846,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturnTag = (String) vecExpressionIn.get(1);//hier nicht: this.getValue(); weil der ja erst ggfs. hier geholt wird.
 			sReturn = sReturnLine;
 			
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+			
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledThis();
+			if(!bUseParserThis) break main;
 						
 			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).
@@ -1299,7 +1307,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		objReturnReference.set(objEntry);
-		if(this.isParserEnabledThis()) {
+		//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+		if(this.isParserEnabledGeneral()) {
 			this.updateValueParsed(objReturnReference, true);
 		}
 	}
@@ -1311,27 +1320,27 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		objReturnReference.set(objEntry);
-		if(this.isParserEnabledThis()) {
-			this.updateValueParsed(objReturnReference, true);
-		}
+		this.updateValueParsed(objReturnReference, true);
 	}
 
 
 	@Override
 	public void updateValueParsed(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		if(this.isParserEnabledThis()) {
-			this.updateValueParsed(objReturnReference, true);
-		}
+		this.updateValueParsed(objReturnReference, true);		
 	}
 
 
 	@Override
 	public void updateValueParsed(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsed) throws ExceptionZZZ {
-		
-		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-		if(this.isParserEnabledThis()) {
-			objEntry.isParsed(bIsParsed);
-		}
+		main:{
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			if(!this.isExpressionEnabledGeneral()) break main;
+				
+			//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+			if(this.isParserEnabledGeneral()) {
+				objEntry.isParsed(bIsParsed);
+			}
+		}//end main:
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

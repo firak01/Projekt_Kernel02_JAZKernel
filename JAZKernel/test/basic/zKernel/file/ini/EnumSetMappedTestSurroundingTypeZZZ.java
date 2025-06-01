@@ -12,7 +12,7 @@ public enum EnumSetMappedTestSurroundingTypeZZZ implements IEnumSetMappedTestSur
 	PARSE_KEEP("parse_keep", "pk", true,"Variante: 'Keep Surrounding on Parse', default"),
 	PARSE_REMOVE("parse_remove","pr", false,"Variante: 'Remove Surrounding on Parse', nicht default"),
 	SOLVE_KEEP("solve_keep","sk", false, "Variante: 'Keep Surrounding on Solve', nicht default"),
-	SOLVE_REMOVE("solve_remove", "sr", true, "Variante: 'Keep Surrounding on Solve', nicht default"),
+	SOLVE_REMOVE("solve_remove", "sr", true, "Variante: 'Remove Surrounding on Solve', default"),
 	;
 	
 
@@ -137,12 +137,12 @@ private boolean getSurroundingValueUsed() {
 
 @Override
 public boolean isSurroundingValueToRemove_OnParse() {
-	return !this.getSurroundingValueUsed();
+	return this.getSurroundingValueUsed();
 }
 
 @Override
 public boolean isSurroundingValueToRemove_OnSolve() {
-	return this.getSurroundingValueUsed();
+	return !this.getSurroundingValueUsed();
 }
 
 
