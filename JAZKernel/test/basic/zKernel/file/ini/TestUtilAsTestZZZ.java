@@ -1871,7 +1871,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
 				assertFalse(objEntry.isSolvedChanged()); 
-				assertFalse(objEntry.isSolved());     //solve wird aber nicht abgeschlossen 
+				assertTrue(objEntry.isSolved());     //Solve wird sogar abgeschlossen, nur JSON_ARRAY bleibt unaufgeloest. 
 				//+++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				

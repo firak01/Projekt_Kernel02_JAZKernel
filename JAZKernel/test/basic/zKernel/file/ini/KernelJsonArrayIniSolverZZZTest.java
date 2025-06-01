@@ -152,16 +152,13 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//3d)
+			//2c)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
-			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			sExpressionSolved = sExpressionSubstitutedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			alsExpressionSolved = alsExpressionSolvedIn;			
-			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-						
+			sExpressionSolved = sExpressionSubstituted; 		
+			alsExpressionSolved = alsExpressionSolvedIn;
+			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+									
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
 			//###########################
@@ -269,7 +266,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;			
 			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
+		
 			//+++ 4. Ohne JsonArraySolver-Berechung
 			//4a)
 			sExpression = sExpressionIn;
@@ -500,7 +497,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 						
 			//##########################################
 			//### Expression unsolved Fall

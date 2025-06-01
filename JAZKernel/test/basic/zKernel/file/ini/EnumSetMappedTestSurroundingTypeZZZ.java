@@ -137,11 +137,22 @@ private boolean getSurroundingValueUsed() {
 
 @Override
 public boolean isSurroundingValueToRemove_OnParse() {
+	return !this.getSurroundingValueUsed();
+}
+
+@Override
+public boolean isSurroundingValueToKeep_OnParse() {
 	return this.getSurroundingValueUsed();
 }
 
 @Override
 public boolean isSurroundingValueToRemove_OnSolve() {
+	return this.getSurroundingValueUsed();
+}
+
+
+@Override
+public boolean isSurroundingValueToKeep_OnSolve() {
 	return !this.getSurroundingValueUsed();
 }
 

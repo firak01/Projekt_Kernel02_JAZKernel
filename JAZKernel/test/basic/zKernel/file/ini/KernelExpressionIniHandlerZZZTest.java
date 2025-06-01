@@ -4634,13 +4634,14 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			//String sSection; String sProperty;	
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
-								
-			//2c)
+				
+			//1a)
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
 			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -5029,8 +5030,9 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				String sExpression; String sExpressionSubstituted; HashMap hmExpressionSolved; String sExpressionSolved;
 				String sValue;				
-				IKernelConfigSectionEntryZZZ objEntry=null; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=null;
-
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				IKernelConfigSectionEntryZZZ objEntry=null; 
+				
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";	
 				
@@ -5080,8 +5082,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
-					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
 					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
@@ -5097,7 +5098,6 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 					sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
 					String sExpressionSolvedTemp = sExpressionSolved;
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
