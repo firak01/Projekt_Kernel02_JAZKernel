@@ -10,5 +10,6 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface IParseEnabledZZZ {
 	boolean isParserEnabledGeneral() throws ExceptionZZZ;
-	boolean isParserEnabledThis() throws ExceptionZZZ;	
+	boolean isParserEnabledThis() throws ExceptionZZZ;	 //normalerweise der Wert vom getFlag(... USE ...) des entsprechenden Interface des Solves/Parsers
+	boolean isParserEnabledCustom() throws ExceptionZZZ; //darin können auch die "KindTags" beruecksichtigt werden, also auch deren getFlag(... USE ...) Werte.
 }

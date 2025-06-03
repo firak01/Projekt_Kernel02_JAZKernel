@@ -108,7 +108,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	//### aus IParseEnabled		
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+		//das wäre default, s. Solver:  return this.isSolverEnabledThis();
+		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER); 
 	}
 	
 	//### Aus IParseUserZZZ
@@ -140,7 +141,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
-			if(!this.isParserEnabledThis()) break main;
+			if(!this.isParserEnabledCustom()) break main;
 			
 			//20250526: Der KernelExpressionIniHandler macht folgendes:
 			//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
@@ -153,8 +154,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+			boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
-			if(!(bUseFormula | bUseCall | bUseJavaCall | bUseJson | bUseEncryption )) break main;
+			if(!(bUseFormula | bUseCall | bUseJavaCall | bUseJson | bUseJsonArray | bUseJsonMap | bUseEncryption )) break main;
 			
 			if(bUseFormula) {				
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
@@ -184,7 +187,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 			
 		
-			if(bUseJson) {
+			if(bUseJson | bUseJsonMap | bUseJsonArray) {
 				KernelJsonIniSolverZZZ<T> jsonSolverDummy = new KernelJsonIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
 				

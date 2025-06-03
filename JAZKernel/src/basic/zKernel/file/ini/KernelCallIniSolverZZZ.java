@@ -108,83 +108,116 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	//###### Getter / Setter
 	
 	//### aus ITagBasicZZZ
-		@Override
-		public String getNameDefault() throws ExceptionZZZ {
-		
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
 		return KernelCallIniSolverZZZ.sTAG_NAME;
 	}
 	
 		
-
-		//### aus IParseUserZZZ
-		@Override
-		public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-			super.updateValueParseCustom(objReturnReference, sExpressionIn); //setzt ggfs. isExpression
-			
-			if(this.isParserEnabledThis()) {
-				IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+	//### aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+		
+			//#####################################################################
+			//Flags entscheiden, ob es weiter geht
+			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
+					
+			if(!this.isExpressionEnabledGeneral()) break main;
+			if(!this.isParserEnabledGeneral()) break main;
+			if(!this.isParserEnabledCustom()) break main;
+							
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
 				
-				//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
-				//weil sie ihrerseits mit .solve() ausgeführt werden.
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
 				
-				//DARUM:
-				//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
-				
-				//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
-					objEntry.isJavaCall(true);
-					this.getEntry().isJavaCall(true);
-				}
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJavaCall(true);
+				this.getEntry().isJavaCall(true);
+			}
 				
 							
-				if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-					objEntry.isCall(true);
-					this.getEntry().isCall(true);
-				}
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isCall(true);
+				this.getEntry().isCall(true);
 			}
-		}
+		}//end main:
+	}
 
-		//###  aus ISolveUserZZZ
-		@Override
-		public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-			super.updateValueSolved(objEntry, bIsSolveCalled);
-					
-			//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-			//... den es hier nicht gibt. Anders als beim JAVACALL-SOLVER
-			
-			//Den eigenen Solver
-			if(this.isSolverEnabledThis()) {
-				objEntry.isCallSolved(bIsSolveCalled);
-			}
-		}
+	//###  aus ISolveUserZZZ
+	@Override
+	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		//... den es hier nicht gibt. Anders als beim JAVACALL-SOLVER
 		
-		@Override
-		public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-			super.updateValueSolveCalled(objEntry, bIsSolveCalled);
-					
-			//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-			//... gibt es hier nicht
-			
-			//Den eigenen Solver
-			objEntry.isCallSolveCalled(bIsSolveCalled);
+		//Den eigenen Solver
+		if(this.isSolverEnabledThis()) {
+			objEntry.isCallSolved(bIsSolveCalled);
 		}
+	}
 		
-		@Override
-		public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-			super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
-					
-			//Den "Elternsolver", siehe dazu auch TicketGOON20250308
-			//... gibt es hier nicht
-			
-			//Den eigenen Solver
-			objEntry.isCallSolvedChanged(bIsSolveCalled);		
-		}
+	@Override
+	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		//... gibt es hier nicht
+		
+		//Den eigenen Solver
+		objEntry.isCallSolveCalled(bIsSolveCalled);
+	}
+	
+	@Override
+	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+				
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		//... gibt es hier nicht
+		
+		//Den eigenen Solver
+		objEntry.isCallSolvedChanged(bIsSolveCalled);		
+	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
-	@Override 
-	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
+		
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		//Ziel ist, dass Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bEnabledThis = this.isParserEnabledThis();
+			boolean bEnabledJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+					
+			bReturn = bEnabledThis | bEnabledJavaCall;
+		}
+		return bReturn;
 	}
 		
 	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
@@ -674,6 +707,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+	
 
 
 }

@@ -174,6 +174,26 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
 	
+	//### aus IParseEnabled		
+//	@Override 
+//	public boolean isParserEnabledThis() throws ExceptionZZZ {
+//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
+//	}
+	
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		//Ziel ist, dass Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bEnabledThis = this.isParserEnabledThis();
+			boolean bEnabledJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+			boolean bEnabledJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+					
+			bReturn = bEnabledThis | bEnabledJsonArray | bEnabledJsonMap;
+		}
+		return bReturn;
+	}
+	
 	//### Aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
@@ -202,7 +222,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				
 		if(!this.isExpressionEnabledGeneral()) break main;
 		if(!this.isParserEnabledGeneral()) break main;
-		if(!this.isParserEnabledThis()) break main;
+		if(!this.isParserEnabledCustom()) break main;
 		
 		if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 			objEntry.isJson(true);

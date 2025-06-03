@@ -200,8 +200,19 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//### aus IParseEnabled		
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return this.isSolverEnabledThis(); //das wäre default, es gibt kein eigenes Flag für den Parser speziel  
+		//das ist default, es gibt kein eigenes Flag für den Parser speziell
+		//Merke: Auch innerhalb der .parseFirstVector(), etc Methoden wird immer auf das gesetzte Flag geprueft.
+		//       Damit wirkt sich ein Ueberschreiben dieser Methode (z.B. mit return true) auch nur begrenzt aus.
+		return this.isSolverEnabledThis();  
 	}
+	
+	
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		//das ist default. Ziel ist aber, das Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
+		return this.isParserEnabledThis();
+	}
+	
 	
 	//### Aus ISolveUserZZZ
 	@Override

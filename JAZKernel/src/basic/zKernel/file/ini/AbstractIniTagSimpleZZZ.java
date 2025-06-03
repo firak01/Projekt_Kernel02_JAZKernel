@@ -93,7 +93,13 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 	//### Aus IParseEnabledZZZ
 	@Override
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		//Merke: Mit Klassen auf dem Flag-Weg koennen hier das Flag abfragen.
+		//Merke: Klassen auf dem Flag-Weg koennen hier das Flag abfragen.
+		return true;
+	}
+	
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		//Merke: Klassen auf dem Flag-Weg koennen hier das Flag (auch ihrer Kind-Tags-Parser) abfragen.
 		return true;
 	}
 	
