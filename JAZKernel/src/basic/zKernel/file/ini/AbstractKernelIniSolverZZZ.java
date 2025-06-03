@@ -208,8 +208,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	@Override
-	public boolean isParserEnabledCustom() throws ExceptionZZZ {
-		//das ist default. Ziel ist aber, das Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
+	public boolean isParserEnabledCustom() throws ExceptionZZZ{
+		//Durch Ueberschreiben dieser Methode koennen Solver, die von einem anderen Solver abhaengen 
+		//sich auch deaktiveren wenn der andere Solver deaktiviert ist. Z.B. JSON_ARRAY Flag haengt von JSON ab.
 		return this.isParserEnabledThis();
 	}
 	

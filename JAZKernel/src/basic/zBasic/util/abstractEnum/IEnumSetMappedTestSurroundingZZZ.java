@@ -4,7 +4,7 @@ public interface IEnumSetMappedTestSurroundingZZZ extends IEnumSetMappedZZZ{
 	public static String sENUMNAME="SURROUNDING";
 	
 	//weitere Erweiterungen, speziell für TESTCASE
-	public String getSurroundingTestMessage();
+	public String getSurroundingValueUsedTestMessage();
 	//public boolean getSurroundingValueUsed(); //was in der Enumeration eingestellt ist
 	
 	//Komfortable für if-Abfragen, denn was in der Enumeration eingestellt ist, wird ggfs. anders interpretiert.

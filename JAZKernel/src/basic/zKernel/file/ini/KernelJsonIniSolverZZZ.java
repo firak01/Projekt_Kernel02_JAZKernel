@@ -186,10 +186,10 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		boolean bReturn = false;
 		main:{
 			boolean bEnabledThis = this.isParserEnabledThis();
-			boolean bEnabledJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
-			boolean bEnabledJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+			//boolean bEnabledJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+			//boolean bEnabledJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 					
-			bReturn = bEnabledThis | bEnabledJsonArray | bEnabledJsonMap;
+			bReturn = bEnabledThis;//| bEnabledJsonArray | bEnabledJsonMap;
 		}
 		return bReturn;
 	}

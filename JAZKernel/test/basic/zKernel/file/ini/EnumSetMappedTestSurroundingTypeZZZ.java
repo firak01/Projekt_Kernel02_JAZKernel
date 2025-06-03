@@ -9,18 +9,18 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 public enum EnumSetMappedTestSurroundingTypeZZZ implements IEnumSetMappedTestSurroundingZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
-	PARSE_KEEP("parse_keep", "pk", true,"Variante: 'Keep Surrounding on Parse', default"),
+	PARSE_KEEP("parse_keep", "pk", true,"Variante: 'Keep Surrounding on Parse', default ist true"),
 	PARSE_REMOVE("parse_remove","pr", false,"Variante: 'Remove Surrounding on Parse', nicht default"),
 	SOLVE_KEEP("solve_keep","sk", false, "Variante: 'Keep Surrounding on Solve', nicht default"),
-	SOLVE_REMOVE("solve_remove", "sr", true, "Variante: 'Remove Surrounding on Solve', default"),
+	SOLVE_REMOVE("solve_remove", "sr", true, "Variante: 'Remove Surrounding on Solve', default ist true"),
 	;
 	
 
 private String name, abbr;
 
 //aus IEnumSetMappedSurroudingZZZ:
-private String sSurroundingTestMessage;
-private boolean bSurroundingValueUsed;
+private String sSurroundingValueUsedTestMessage;
+private boolean bSurroundingValueUsedForMethod;
 
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //          In der Util-Klasse habe ich aber einen Workaround gefunden.
@@ -33,8 +33,8 @@ EnumSetMappedTestSurroundingTypeZZZ(){
 EnumSetMappedTestSurroundingTypeZZZ(String fullName, String abbr, boolean bSurroundingValueUsed, String sSurroundingTestMessage) {
     this.name = fullName;
     this.abbr = abbr;
-    this.bSurroundingValueUsed = bSurroundingValueUsed;
-    this.sSurroundingTestMessage = sSurroundingTestMessage;
+    this.bSurroundingValueUsedForMethod = bSurroundingValueUsed;
+    this.sSurroundingValueUsedTestMessage = sSurroundingTestMessage;
 }
 
 
@@ -121,8 +121,8 @@ public String getName() {
 //##########################################################
 //aus IEnumSetMappedTestSurroundingZZZ
 @Override
-public String getSurroundingTestMessage() {
-	return this.sSurroundingTestMessage;
+public String getSurroundingValueUsedTestMessage() {
+	return this.sSurroundingValueUsedTestMessage;
 }
 
 //@Override
@@ -131,29 +131,29 @@ public String getSurroundingTestMessage() {
 //}
 
 //@Override
-private boolean getSurroundingValueUsed() {
-	return this.bSurroundingValueUsed; //Aber, das ist fuer´s Behalten oder Entfernen des Z-Tags nicht ausschlaggebend. Dies ist nur der Wert.
+private boolean getSurroundingValueUsedForMethod() {
+	return this.bSurroundingValueUsedForMethod; //Aber, das ist fuer´s Behalten oder Entfernen des Z-Tags nicht ausschlaggebend. Dies ist nur der Wert.
 }
 
 @Override
 public boolean isSurroundingValueToRemove_OnParse() {
-	return !this.getSurroundingValueUsed();
+	return !this.getSurroundingValueUsedForMethod();
 }
 
 @Override
 public boolean isSurroundingValueToKeep_OnParse() {
-	return this.getSurroundingValueUsed();
+	return this.getSurroundingValueUsedForMethod();
 }
 
 @Override
 public boolean isSurroundingValueToRemove_OnSolve() {
-	return this.getSurroundingValueUsed();
+	return this.getSurroundingValueUsedForMethod();
 }
 
 
 @Override
 public boolean isSurroundingValueToKeep_OnSolve() {
-	return !this.getSurroundingValueUsed();
+	return !this.getSurroundingValueUsedForMethod();
 }
 
 

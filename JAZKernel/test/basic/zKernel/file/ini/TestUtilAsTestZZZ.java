@@ -502,9 +502,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					//+++++++++++++++++++++++++
 					
-					assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					assertFalse(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 					assertFalse(objEntry.isJsonMap());
-					assertTrue(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					assertFalse(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -579,7 +579,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertTrue(objEntry.isJson()); //JSON_ARRAY unsolved, aber JSON solved
 					assertFalse(objEntry.isJsonMap());
-					assertTrue(objEntry.isJsonArray()); //Stammt aus parse
+					assertFalse(objEntry.isJsonArray()); //JSON_ARRAY unsolve
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -1697,9 +1697,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 					
-				
-				
-				
+			
 				//++++++++++++++++++++++++				
 				//++++++++++++++++++++++++
 				assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
@@ -1716,8 +1714,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-				
-				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen, auch wenn nicht gesolved wird (JSON unsolved) so wird geparsed		
+				assertFalse(objEntry.isJson()); 		
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
@@ -1884,9 +1881,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 				
-				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen.
+				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen. JSON wird ausgefuehrt
 				assertFalse(objEntry.isJsonMap());
-				assertTrue(objEntry.isJsonArray()); //Ergebnisse kommen vom Parsen, darum wird JsonArray auch gefunden, obwohl der generelle Solver deaktiviert ist. 
+				assertFalse(objEntry.isJsonArray()); //Ergebnisse kommen vom Parsen, JSON_ARRAY wird nicht. 
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.

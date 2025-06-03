@@ -110,7 +110,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
 		//das wäre default, s. Solver:  return this.isSolverEnabledThis();
 		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER); 
-	}
+	}	
 	
 	//### Aus IParseUserZZZ
 	@Override
