@@ -234,6 +234,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
 	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
+		
+	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {		
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
@@ -244,6 +249,18 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			bReturn = bEnabledThis && bEnabledJson ;
 		}
 		return bReturn; 	
+	}
+	
+	//### aus IParseEnabled		
+	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
 	}
 	
 	//### aus IParseUserZZZ
@@ -275,17 +292,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 
 				
-	//### aus IParseEnabled		
-	//Analog zu KernelJsonMapIniSolverZZZ, KernelZFormulaMathSolver, KernelEncrytptionIniSolver aufbauen...	
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sExpression, null, true);
-	}
 	
-	@Override
-	public Vector3ZZZ<String> parseFirstVector(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
-		return this.parseFirstVector_(sExpression, null, bKeepSurroundingSeparatorsOnParse);
-	}
 		
 	//### Aus IKernelEntryExpressionUserZZZ	
 	@Override

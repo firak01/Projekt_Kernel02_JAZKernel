@@ -507,7 +507,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
-		//20250312 objEntry.isParseCalled(true);
+
 		this.updateValueParseCalled();
 		this.updateValueParseCalled(objReturnReference);
 		objReturn = objEntry;

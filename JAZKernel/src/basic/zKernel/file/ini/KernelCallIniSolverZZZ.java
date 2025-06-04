@@ -201,11 +201,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
-	//### aus IParseEnabled		
-//	@Override 
-//	public boolean isParserEnabledThis() throws ExceptionZZZ {
-//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
-//	}
+	//### aus IParseEnabled			
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
 		
 	@Override
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {
@@ -213,9 +213,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		boolean bReturn = false;
 		main:{
 			boolean bEnabledThis = this.isParserEnabledThis();
-			boolean bEnabledJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			//boolean bEnabledJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 					
-			bReturn = bEnabledThis | bEnabledJavaCall;
+			bReturn = bEnabledThis;// && bEnabledJavaCall;
 		}
 		return bReturn;
 	}

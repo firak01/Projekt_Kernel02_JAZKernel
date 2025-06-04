@@ -396,14 +396,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertFalse(objEntry.isJavaCallSolveCalled());
 					assertTrue(objEntry.isExpression());
 					
-					assertTrue(objEntry.isParsed());
+					assertFalse(objEntry.isParsed());
 					assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 					
 					assertFalse(objEntry.isDecrypted());
 					assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 					
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					//kann ja theoretisch auch ein anderrer Call sein... assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					//kann ja theoretisch auch ein anderer Call sein... assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 					assertNull(objEntry.getCallingClassname());
 					assertNull(objEntry.getCallingMethodname());
 					break;
@@ -447,8 +447,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					                 //so etwas mit "ElternTags"
 					//TODOGOON20250308; //TICKETGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 					*/
-					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+					assertFalse(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 					assertNull(objEntry.getCallingClassname());
 					assertNull(objEntry.getCallingMethodname());
 					break;
@@ -502,9 +502,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					//+++++++++++++++++++++++++
 					
-					assertFalse(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 					assertFalse(objEntry.isJsonMap());
-					assertFalse(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					assertTrue(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -577,9 +577,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					//+++++++++++++++++++++++++
 					
-					assertTrue(objEntry.isJson()); //JSON_ARRAY unsolved, aber JSON solved
+					assertTrue(objEntry.isJson()); //Werte kommen aus dem Parsen.  
 					assertFalse(objEntry.isJsonMap());
-					assertFalse(objEntry.isJsonArray()); //JSON_ARRAY unsolve
+					assertTrue(objEntry.isJsonArray());
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -1714,7 +1714,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-				assertFalse(objEntry.isJson()); 		
+				assertTrue(objEntry.isJson()); 		
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
@@ -1881,9 +1881,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 				
-				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen. JSON wird ausgefuehrt
+				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen.
 				assertFalse(objEntry.isJsonMap());
-				assertFalse(objEntry.isJsonArray()); //Ergebnisse kommen vom Parsen, JSON_ARRAY wird nicht. 
+				assertTrue(objEntry.isJsonArray()); 
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.

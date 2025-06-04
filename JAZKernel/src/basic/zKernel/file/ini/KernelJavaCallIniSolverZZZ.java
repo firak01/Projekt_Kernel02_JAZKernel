@@ -108,10 +108,23 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
-//	@Override 
-//	public boolean isParserEnabledThis() throws ExceptionZZZ {
-//		return true; //das wäre default, s. Solver:  return this.isSolverEnabledThis();
-//	}
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
+	
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		//Ziel ist, dass Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bEnabledThis = this.isParserEnabledThis();
+			boolean bEnabledCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+					
+			bReturn = bEnabledThis && bEnabledCall;
+		}
+		return bReturn;
+	}
 	
 	//### Aus IParseUserZZZ
 	@Override

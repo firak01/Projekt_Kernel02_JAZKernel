@@ -16,6 +16,7 @@ import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -119,6 +120,56 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
+		
+	@Override 
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		TODOGOON20250605://anpassen
+		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bEnabledThis = this.isParserEnabledThis();
+					
+			bReturn = bEnabledThis && bEnabledJson ;
+		}
+		return bReturn; 	
+	}
+	
+	//### aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
+		TODOGOON20250605://anpassen
+		super.updateValueParseCustom(objReturnReference, sExpressionIn);
+		
+		if(this.isParserEnabledThis()) {
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJson(true);
+				this.getEntry().isJson(true);
+			}
+			
+						
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isJsonMap(true);
+				this.getEntry().isJsonMap(true);
+			}
+		}
+	}
+
 	
 	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
 	//### aus ISolveEnabled

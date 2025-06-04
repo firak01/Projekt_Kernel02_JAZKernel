@@ -111,10 +111,10 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01(){
-		String sValue; String sExpressionSolved; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
+		String sValue; String sExpressionSolved; String sExpression; String sExpessionSourceFormulaMath;
 		String sTagStartZ;	String sTagEndZ;
 		boolean btemp; IKernelConfigSectionEntryZZZ objEntryTemp;
-		sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
+		sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
 		
 		try {			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
@@ -134,7 +134,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			
 			//### Teilberechnungen durchführen
-			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
+			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(2))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.		
@@ -142,9 +142,10 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//### Gesamtberechnung durchführen
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+			sExpressionSolved = sExpression;
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);			
 		
-			sValue = objExpressionSolver.parse(sExpressionSource);
+			sValue = objExpressionSolver.parse(sExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpressionSolved, sValue);
 		
 			//Entry auswerten
@@ -170,7 +171,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 		
 			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED;
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
-			sValue = objExpressionSolver.solve(sExpressionSource);			
+			sValue = objExpressionSolver.solve(sExpression);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
 			assertEquals(sExpressionSolved, sValue);

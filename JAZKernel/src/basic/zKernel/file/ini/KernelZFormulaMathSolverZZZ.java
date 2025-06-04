@@ -108,6 +108,75 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 
 	//### Andere Interfaces	
 	
+	//### aus IParseEnabled				
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
+		
+	@Override 
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		TODOGOON20250604;//Flags anpassen
+		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bEnabledThis = this.isParserEnabledThis();
+					
+			bReturn = bEnabledThis && bEnabledJson ;
+		}
+		return bReturn; 	
+	}
+	
+	//### aus IParseUserZZZ
+	@Override
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		TODOGOON20250604;//anpassen
+		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+		
+			//#####################################################################
+			super.updateValueParseCustom(objReturnReference, sExpressionIn);
+		
+			if(!this.isParserEnabledThis()) break main;
+			
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isJson(true);
+				this.getEntry().isJson(true);
+			}
+			
+						
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isJsonArray(true);
+				this.getEntry().isJsonArray(true);
+			}
+		}//end main:		
+	}
+
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus ISolveEnabledZZZ
 	//Merke: Mit folgender Methode wird über das konkrete Flag dieser Solver ein-/ausgeschaltet. 
@@ -142,12 +211,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		return false;
 	}
 	
-	//### Aus IParseUserZZZ
-	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
