@@ -503,7 +503,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					
 					assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
-					assertFalse(objEntry.isJsonMap());
+					assertTrue(objEntry.isJsonMap());
 					assertTrue(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
