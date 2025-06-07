@@ -473,7 +473,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			sReturnTag = sExpressionUsed;
 			sReturnTagSolved = sReturnTag;
-			sReturn = sReturnTag;
+			sReturnLine = sReturnTag;
+			sReturn = sReturnLine;
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objEntry);
@@ -495,11 +496,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 						this.updateValueSolvedChanged(objEntry);
 					}
 										
-					if(hmReturn!=null) {
-						objEntry.isMapValue(true);//Sollte das nicht im PARSE gesetzt werden?
-						objEntry.isJsonMap(true);
-						objEntry.setValue(hmReturn);
-					}	
+					if(hmReturn!=null) {						
+						objEntry.isJsonMap(true);//Sollte das nicht im PARSE gesetzt werden?
+						objEntry.setValue(hmReturn); //Merke: Das wird nicht im PARSE gesetzt, da wir ja es hier mit einem SOLVE Wert zu tun haben 
+					}else{
+						objEntry.isJsonMap(false);
+					}
 				}
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
 			}

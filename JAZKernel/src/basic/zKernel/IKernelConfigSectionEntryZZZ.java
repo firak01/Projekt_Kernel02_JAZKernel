@@ -140,10 +140,14 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Formula
 	public boolean isFormula();
-	abstract void isFormula(boolean bIsFormulaSolved);
-	
+	abstract void isFormula(boolean bIsFormula);
 	public boolean isFormulaSolved();
 	abstract void isFormulaSolved(boolean bIsFormulaSolved);
+	
+	
+	public boolean isFormulaMath();
+	abstract void isFormulaMath(boolean bIsFormuaMath);
+	
 	
 	
 	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();

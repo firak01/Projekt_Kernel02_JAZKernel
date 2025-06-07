@@ -143,24 +143,46 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
 			if(!this.isParserEnabledCustom()) break main;
-							
+				
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
+				objEntry.isCall(true);
+				this.getEntry().isCall(true);
+			}
+			
+			//########################
 			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
 			//weil sie ihrerseits mit .solve() ausgeführt werden.
 				
 			//DARUM:
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
-				
-			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJavaCall(true);
-				this.getEntry().isJavaCall(true);
-			}
-				
-							
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-				objEntry.isCall(true);
-				this.getEntry().isCall(true);
-			}
+			//Das kann man auch 
+			//a) durch die Flags steuern
+			//b) durch direkten Aufruf der "Untersolver".custom-Methode
+			//c) durch Analyse der Tags
+		
+//			//a)
+//			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+//			//boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+//			if(!bUseJavaCall) break main; // | bUseJsonArray )) break main;
+//								
+//			if(bUseJavaCall) {
+				//b)
+				KernelJavaCallIniSolverZZZ<T> javaCallSolverDummy = new KernelJavaCallIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, javaCallSolverDummy, true);
+					
+				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+				objJavaCallSolver.updateValueParseCustom(objReturnReference, sExpression);
+//			}
+		
+			
+//			//c)
+//			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+//				objEntry.isJavaCall(true);
+//				this.getEntry().isJavaCall(true);
+//			}
+			
+			
 		}//end main:
 	}
 

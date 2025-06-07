@@ -401,7 +401,6 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//### Aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
-		TODOGOON20250604;// is.Werte und Flags anpassen
 		main:{
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -430,8 +429,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		if(!this.isParserEnabledCustom()) break main;
 		
 		if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-			objEntry.isJson(true);
-			this.getEntry().isJson(true);
+			objEntry.isFormula(true);
+			this.getEntry().isFormula(true);
 		}
 		
 		//20250526: Der KernelExpressionIniHandler macht folgendes:
@@ -441,27 +440,27 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
 		
 		//##########################.	
-		boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
-		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
-		if(!(bUseJsonMap | bUseJsonArray )) break main;
+		boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);
+//		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+		if(!bUseFormulaMath) break main; // | bUseJsonArray )) break main;
 		
 	
-		if(bUseJsonArray) {				
-			KernelJsonArrayIniSolverZZZ<T> jsonArraySolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
-			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonArraySolverDummy, true);
+		if(bUseFormulaMath) {				
+			KernelZFormulaMathSolverZZZ<T> formulaMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaMathSolverDummy, true);
 				
-			KernelJsonArrayIniSolverZZZ<T> objJsonArraySolver = new KernelJsonArrayIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-			objJsonArraySolver.updateValueParseCustom(objReturnReference, sExpression);
+			KernelZFormulaMathSolverZZZ<T> objFormulaMathSolver = new KernelZFormulaMathSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+			objFormulaMathSolver.updateValueParseCustom(objReturnReference, sExpression);
 		}
 			
 								
-		if(bUseJsonMap){
-			KernelJsonMapIniSolverZZZ<T> jsonMapSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
-			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonMapSolverDummy, true);
-			
-			KernelJsonMapIniSolverZZZ<T> objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-			objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);
-		}
+//		if(bUseJsonMap){
+//			KernelJsonMapIniSolverZZZ<T> jsonMapSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
+//			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonMapSolverDummy, true);
+//			
+//			KernelJsonMapIniSolverZZZ<T> objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+//			objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);
+//		}
 	
 		
 		//################################################################################################

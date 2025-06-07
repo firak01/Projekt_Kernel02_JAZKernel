@@ -503,8 +503,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					
 					assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
-					assertTrue(objEntry.isJsonMap());
-					assertTrue(objEntry.isJsonArray()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					//Zwar gilt: Bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
+					//ABER:      Auf einzelne Werte kann nicht geprueft werden, da das Flagset sowohl für Map als auch Array verwendet wird
+					//assertTrue(objEntry.isJsonMap());
+					//assertTrue(objEntry.isJsonArray()); 
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -717,7 +719,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					
 					assertTrue(objEntry.isJson()); //JSON_ARRAY unsolved, aber JSON solved
-					assertFalse(objEntry.isJsonMap());
+					assertTrue(objEntry.isJsonMap()); //Wert kommt aus parse..
 					assertFalse(objEntry.isJsonArray());
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2082,9 +2084,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 				sExpression2compareWithSubstituted = sExpression;
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (veraendert)=" + sExpression2compareWithSubstituted);
+					sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted (veraendert)=" + sExpressionSubstituted);
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted (unveraendert)=" + sExpressionSubstituted);
 				}
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+				
+									
 				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
 						assertFalse(objEntry.isSubstitutedChanged());
@@ -2115,7 +2123,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				
 				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
-				assertFalse(objEntry.isJsonMap());
+				assertTrue(objEntry.isJsonMap());
 				assertFalse(objEntry.isJsonArray()); //JSON_ARRAY wird nicht benutzt
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

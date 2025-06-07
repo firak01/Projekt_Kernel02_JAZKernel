@@ -340,6 +340,21 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		return false;
 	}
 	
+
+	//### Aus IParseEnabledZZZ
+	@Override 
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {		
+		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			//boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			//boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);
+			boolean bEnabledThis = this.isParserEnabledThis();
+					
+			bReturn = bEnabledThis;// && bUseFormulaMath && bUseFormula;
+		}
+		return bReturn; 	
+	}
 	
 	//### Aus IParseUserZZZ
 	@Override

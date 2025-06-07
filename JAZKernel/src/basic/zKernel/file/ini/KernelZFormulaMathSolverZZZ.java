@@ -112,26 +112,25 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
 		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+		//this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);
 	}
 		
 	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {
-		TODOGOON20250604;//Flags anpassen
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
-			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bEnabledFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bEnabledThis = this.isParserEnabledThis();
 					
-			bReturn = bEnabledThis && bEnabledJson ;
+			bReturn = bEnabledThis && bEnabledFormula ;
 		}
 		return bReturn; 	
 	}
 	
 	//### aus IParseUserZZZ
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
-		TODOGOON20250604;//anpassen
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {		
 		main:{
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 			IKernelConfigSectionEntryZZZ objEntry = null;
@@ -163,15 +162,15 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
 			
 			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJson(true);
-				this.getEntry().isJson(true);
+			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelZFormulaIniSolverZZZ.sTAG_NAME, false)) {
+				objEntry.isFormula(true);
+				this.getEntry().isFormula(true);
 			}
 			
 						
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-				objEntry.isJsonArray(true);
-				this.getEntry().isJsonArray(true);
+				objEntry.isFormulaMath(true);
+				this.getEntry().isFormulaMath(true);
 			}
 		}//end main:		
 	}

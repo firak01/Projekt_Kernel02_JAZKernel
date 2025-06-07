@@ -531,12 +531,18 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 						
 				//+++ Teilberechnungen durchführen.
 //			    Es werden nomalerweise die Tags entfernt, aber ohne einen angestellten Solver werden sie beim parsen ignoriert
-				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());					
-				if(bUseParser) {
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = VectorUtilZZZ.implode(vecValue);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression='"+sExpression+"'" );
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue='"+sValue+"'" );
+				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				
+				
+				if(bUseParser && bUseExpressionGeneral) {
 					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				}else {
 					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
-				}
+				}								
 				sExpressionSubstituted2Compare = sExpressionSubstituted;
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
@@ -664,7 +670,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 				
-				if(bUseParser) {
+				if(bUseParser && bUseExpressionGeneral) {
 					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				}else {
 					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
@@ -806,7 +812,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				
 				
 				
-				if(bUseParser) {
+				if(bUseParser && bUseExpressionGeneral) {
 					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				}else {
 					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
@@ -940,7 +946,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 				
-				if(bUseParser) {
+				if(bUseParser && bUseExpressionGeneral) {
 					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				}else {
 					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist

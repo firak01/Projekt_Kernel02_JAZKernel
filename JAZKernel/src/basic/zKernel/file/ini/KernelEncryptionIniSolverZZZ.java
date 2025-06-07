@@ -129,14 +129,13 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		
 	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {
-		TODOGOON20250605://anpassen
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
-			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			//boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			boolean bEnabledThis = this.isParserEnabledThis();
 					
-			bReturn = bEnabledThis && bEnabledJson ;
+			bReturn = bEnabledThis;// && bEnabledJson ;
 		}
 		return bReturn; 	
 	}
@@ -144,7 +143,6 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	//### aus IParseUserZZZ
 	@Override
 	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		TODOGOON20250605://anpassen
 		super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
 		if(this.isParserEnabledThis()) {
@@ -157,15 +155,16 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
 			
 			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJson(true);
-				this.getEntry().isJson(true);
-			}
+		
+//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+//				objEntry.isJson(true);
+//				this.getEntry().isJson(true);
+//			}
 			
 						
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
-				objEntry.isJsonMap(true);
-				this.getEntry().isJsonMap(true);
+				objEntry.isEncrypted(true);
+				this.getEntry().isEncrypted(true);
 			}
 		}
 	}
@@ -510,12 +509,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return saReturn;
 	}
 	
-	//### Aus IParseUserZZZ
-	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 
 	//### aus IExpressionUserZZZ
 //	@Override

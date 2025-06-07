@@ -66,6 +66,21 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 		return true;
 	}
 	
+	//### Aus IParseEnabledZZZ
+	@Override 
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {		
+		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		boolean bReturn = false;
+		main:{
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);
+			boolean bEnabledThis = this.isParserEnabledThis();
+					
+			bReturn = bEnabledThis && bUseFormulaMath && bUseFormula;
+		}
+		return bReturn; 	
+	}
+	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
@@ -219,4 +234,6 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	public boolean proofFlagSetBefore(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+	
 }//End class

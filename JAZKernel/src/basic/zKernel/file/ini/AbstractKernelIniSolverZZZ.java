@@ -209,6 +209,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	@Override
 	public boolean isParserEnabledCustom() throws ExceptionZZZ{
+		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		
 		//Durch Ueberschreiben dieser Methode koennen Solver, die von einem anderen Solver abhaengen 
 		//sich auch deaktiveren wenn der andere Solver deaktiviert ist. Z.B. JSON_ARRAY Flag haengt von JSON ab.
 		return this.isParserEnabledThis();
@@ -794,10 +796,13 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnTagSolved = sReturnTag;
 			if(vecReturn==null) break main;
 		
-			sReturnLine = VectorUtilZZZ.implode(vecReturn); //Zwischenstand ENTRY-Zeile
+			//Zwischenstand, falls nach dem Parsen beendet ist, Solver also nicht weiter ausgeführt wird
+			sReturnLine = VectorUtilZZZ.implode(vecReturn); 
 			sReturnLineParsed = sReturnLine;
-			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
-			
+			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);			
+			if(bRemoveSurroundingSeparators) {
+				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
+			}
 			
 			//Rufe nun solveParsed() auf...
 			bUseSolver = this.isSolverEnabledGeneral();

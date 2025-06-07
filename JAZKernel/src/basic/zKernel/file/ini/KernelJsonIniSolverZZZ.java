@@ -228,35 +228,58 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.isJson(true);
 			this.getEntry().isJson(true);
 		}
+				
+		//########################
+		//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+		//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+		//DARUM:
+		//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+		//Das kann man auch 
+		//a) durch die Flags steuern
+		//b) durch direkten Aufruf der "Untersolver".custom-Methode
+		//c) durch Analyse der Tags
+	
+//		//a)
+//		boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+//		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+//		if(!(bUseJsonMap | bUseJsonArray )) break main;
+//							
 		
-		//20250526: Der KernelExpressionIniHandler macht folgendes:
-		//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
-		//          Nun kann man sich überlegen, ob man beim PARSEN auch jeden einzelnen Solver aufruft und seine "parse" Methode nutzt.
-		//Alternativ kann man ein Dummy - Objekt verwenden und von jeder Klasse die "updateValueParseCustom" Methode aufrufen. 
-		//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
+		String[] saFlagZpassed=null;
+//		if(bUseJsonArray) {				
+		KernelJsonArrayIniSolverZZZ<T> jsonArraySolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
+		saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonArraySolverDummy, true);
+			
+		KernelJsonArrayIniSolverZZZ<T> objJsonArraySolver = new KernelJsonArrayIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+		objJsonArraySolver.updateValueParseCustom(objReturnReference, sExpression);
+//		}
+		
+							
+//		if(bUseJsonMap){
+		KernelJsonMapIniSolverZZZ<T> jsonMapSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
+		saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonMapSolverDummy, true);
+		
+		KernelJsonMapIniSolverZZZ<T> objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+		objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);
+//		}
+	
+		
+//		//c)
+//		//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+//		if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+//			objEntry.isJavaCall(true);
+//			this.getEntry().isJavaCall(true);
+//		}
+
+		
+		
 		
 		//##########################.	
-		boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
-		boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
-		if(!(bUseJsonMap | bUseJsonArray )) break main;
+		
 		
 	
-		if(bUseJsonArray) {				
-			KernelJsonArrayIniSolverZZZ<T> jsonArraySolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
-			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonArraySolverDummy, true);
-				
-			KernelJsonArrayIniSolverZZZ<T> objJsonArraySolver = new KernelJsonArrayIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-			objJsonArraySolver.updateValueParseCustom(objReturnReference, sExpression);
-		}
-			
-								
-		if(bUseJsonMap){
-			KernelJsonMapIniSolverZZZ<T> jsonMapSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
-			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonMapSolverDummy, true);
-			
-			KernelJsonMapIniSolverZZZ<T> objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-			objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);
-		}
+		
 	
 		
 		//################################################################################################
