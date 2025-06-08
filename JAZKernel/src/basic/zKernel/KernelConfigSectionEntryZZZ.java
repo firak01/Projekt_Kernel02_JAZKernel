@@ -98,6 +98,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bJsonArraySolved = false;
 	protected boolean bJsonArraySolvedChanged = false;
 	
+	protected boolean bJsonMapSolveCalled = false;
+	protected boolean bJsonMapSolved = false;
+	protected boolean bJsonMapSolvedChanged = false;
+	
+	
 	
 	protected boolean bCall = false;
 	
@@ -1141,6 +1146,38 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void isJsonMap(boolean bIsJsonMap){
 		if(!this.bJsonMap) this.bJsonMap = bIsJsonMap;
 	}
+	
+	
+	@Override
+	public boolean isJsonMapSolveCalled() {		
+		return this.bJsonMapSolveCalled;
+	}
+
+	@Override
+	public void isJsonMapSolveCalled(boolean bIsJsonMapSolveCalled) {
+		this.bJsonMapSolveCalled = bIsJsonMapSolveCalled;
+	}
+
+	@Override
+	public boolean isJsonMapSolved() {		
+		return this.bJsonMapSolved;
+	}
+
+	@Override
+	public void isJsonMapSolved(boolean bIsJsonMapSolved) {
+		this.bJsonMapSolved = bIsJsonMapSolved;
+	}
+
+	@Override
+	public boolean isJsonMapSolvedChanged() {		
+		return this.bJsonMapSolvedChanged;
+	}
+
+	@Override
+	public void isJsonMapSolvedChanged(boolean bIsJsonMapSolvedChanged) {
+		this.bJsonMapSolvedChanged = bIsJsonMapSolvedChanged;
+	}
+
 	
 
 	

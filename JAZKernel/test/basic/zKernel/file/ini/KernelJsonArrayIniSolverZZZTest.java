@@ -225,8 +225,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-			//wenn der Solver Generell abgestellt ist, wird auch solvePost, etc. nicht ausgefuehrt
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
 			btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
@@ -337,17 +336,11 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 
 			//5d)
 			sExpression = sExpressionIn;
-			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSolvedIn; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
-			sExpressionSolved = "[TESTWERT2DO2JSON01, TESTWERT2DO2JSON02]"; //Der ArrayList.toString() Ausdruck
+			sExpressionSubstituted = sExpressionSubstitutedIn;			
+			sExpressionSolved = sExpressionSolvedIn;					
 			alsExpressionSolved = alsExpressionSolvedIn;
-			
-			sExpressionSolvedTemp = sExpressionSolved;
-			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.
-			sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp, "JSON");//einen Tag eines nicht genutzten Solvers drumpacken
-			//der Z-Tag ist auch weg sExpressionSolvedTemp = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolvedTemp);//Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
-			alsExpressionSolved = alsExpressionSolvedIn;
-			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolvedTemp, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			//Wichtig: JSON und JSON:MAP sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.			
+			btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -488,7 +481,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null; 
 			
-			String sExpressionSubstituted2Compare = null;
+			String sExpressionSubstituted2Compare = null; String sExpressionSurroundedTemp = null;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -535,14 +528,22 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				sValue = VectorUtilZZZ.implode(vecValue);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression='"+sExpression+"'" );
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue='"+sValue+"'" );
-				assertEquals(sExpression, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				
+				sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
+				assertEquals(sExpressionSubstituted, sValue);
 				
 				
 				if(bUseParser && bUseExpressionGeneral) {
 					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				}else {
 					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
-				}								
+				}
+				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+				
 				sExpressionSubstituted2Compare = sExpressionSubstituted;
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
 				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
@@ -557,8 +558,13 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 								
 				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
-				assertEquals(sExpressionSolved, sValue);
-							
+				sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
+				assertEquals(sExpressionSubstituted, sValue);
+				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);		
 			}
@@ -900,6 +906,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sExpressionSubstituted2compareWithSolved=null; String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
 			String sExpression2compareWithSubstituted=null; String sExpressionSubstituted2compareWithExpression = null;
 			
+			String sExpressionSubstituted2Compare = null; String sExpressionSurroundedTemp = null;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
@@ -953,8 +960,26 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				}
 				assertTrue(StringZZZ.contains(sExpressionSubstituted,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
+				
+				sExpressionSubstituted2Compare = sExpressionSubstituted;
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonMapIniSolverZZZ.sTAG_NAME, false);
+				sExpressionSubstituted2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2Compare, KernelJsonIniSolverZZZ.sTAG_NAME, false);				
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2Compare=" + sExpressionSubstituted2Compare);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
+				assertEquals(sExpressionSubstituted2Compare, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+					
+				//+++ Nun die Gesamtberechnung durchführen
+				sValue = VectorUtilZZZ.implode(vecValue);
+				assertEquals(sExpressionSolved, sValue); 
+				
 				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
 				assertEquals(sExpressionSubstituted, sValue);
 							
 				objEntry = objSectionEntryReference.get();
@@ -981,19 +1006,6 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
 				assertNotNull(objEntry);
-//							
-//				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-//				if(objEnumSurrounding.isSurroundingValueToRemove_On()) {
-//					assertTrue(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum entfernt also "veraendert"
-//				}else {
-//					assertFalse(objEntry.isParsedChanged()); //es werden ja die Z-Tags drumherum NICHT entfernt also "veraendert"
-//				}
-//				
-//				assertFalse(objEntry.isPathSubstituted());
-//				assertFalse(objEntry.isVariableSubstituted());													
-//			
-//				assertFalse(objEntry.isSolveCalled()); //es ist auch kein Solver involviert
-//				assertFalse(objEntry.isSolvedChanged());				
 				
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);

@@ -178,8 +178,19 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public boolean isJsonSolvedChanged();
 	abstract void isJsonSolvedChanged(boolean bIsJsonSolvedChanged);
 	
+	
 	public boolean isJsonMap();
 	abstract void isJsonMap(boolean bIsJsonMap);
+	
+	public boolean isJsonMapSolveCalled();
+	abstract void isJsonMapSolveCalled(boolean bIsJsonMapSolveCalled);
+
+	public boolean isJsonMapSolved();
+	abstract void isJsonMapSolved(boolean bIsJsonMapSolvedChanged);
+
+	public boolean isJsonMapSolvedChanged();
+	abstract void isJsonMapSolvedChanged(boolean bIsJsonMapSolvedChanged);
+
 	
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
