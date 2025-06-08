@@ -154,7 +154,29 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertTrue(objEntryTemp.isJson()); //das hat der Parser alles herausgefunden.
 			assertTrue(objEntryTemp.isJsonMap());
 			
-			//### Anwenden der ersten Formel
+			//### Anwenden der ohne komplettaufloesung
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
+			
+//			sTagStartZ = "<Z>";
+//			sTagEndZ = "</Z>";
+//			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+//		
+//			sTagStartZ = objExpressionSolver.getTagStarting();
+//			sTagEndZ = objExpressionSolver.getTagClosing();
+//			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
+		
+			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, KernelJsonMapIniSolverZZZ.sTAG_NAME);
+			sValue = objExpressionSolver.solve(sExpression);			
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");			
+			assertEquals(sExpressionSolved, sValue);
+
+			
+			//### Anwenden der Komplettaufloesung
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
 			
@@ -170,22 +192,25 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 //			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ);			
 		
 			sExpressionSolved = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED;
-			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
+//ohne JSON TAG drumherum			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
 			sValue = objExpressionSolver.solve(sExpression);			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
 			assertEquals(sExpressionSolved, sValue);
 
+			//################################################################
 			//Entry auswerten
 			objEntryTemp = objExpressionSolver.getEntry();
 			assertTrue(objEntryTemp.isParseCalled());
 			assertTrue(objEntryTemp.isParsedChanged());
+			assertTrue(objEntryTemp.isParsed());
 			
 			assertTrue(objEntryTemp.isJson());
 			assertTrue(objEntryTemp.isJsonMap());
 			
 			assertTrue(objEntryTemp.isSolveCalled());
 			assertTrue(objEntryTemp.isSolvedChanged());
+			assertTrue(objEntryTemp.isSolved());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
