@@ -111,9 +111,10 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute01(){
-		String sValue; String sExpressionSolved; String sExpression; String sExpessionSourceFormulaMath;
+		String sValue; String sExpressionSolved; String sExpression;
+		IKernelConfigSectionEntryZZZ objEntry=null;
 		String sTagStartZ;	String sTagEndZ;
-		boolean btemp; IKernelConfigSectionEntryZZZ objEntryTemp;
+		boolean btemp; 
 		sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
 		
 		try {			
@@ -132,21 +133,22 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
 			
-			
-			//### Teilberechnungen durchführen
+			//######################################################
+			//### 1.1. Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
 			assertTrue(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
 			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
-			//Entry auswerten
-			objEntryTemp = objExpressionSolver.getEntry();
-			assertTrue(objEntryTemp.isParseCalled());
-			assertFalse(objEntryTemp.isJson()); //das hat der Parser alles herausgefunden.
-			assertFalse(objEntryTemp.isJsonMap());
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//zu 1.1. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			assertFalse(objEntry.isJson()); //das hat der Parser alles herausgefunden.
+			assertFalse(objEntry.isJsonMap());
 			
-			
-			//### Gesamtberechnung durchführen
+			//#########################################################
+			//### 1.2. Gesamtberechnung durchführen
 			sTagStartZ = "<Z>";
 			sTagEndZ = "</Z>";
 			sExpressionSolved = sExpression;
@@ -155,14 +157,15 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sValue = objExpressionSolver.parse(sExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpressionSolved, sValue);
 		
-			//Entry auswerten
-			objEntryTemp = objExpressionSolver.getEntry();
-			assertTrue(objEntryTemp.isParseCalled());
-			assertFalse(objEntryTemp.isJson()); //das hat der Parser alles herausgefunden.
-			assertFalse(objEntryTemp.isJsonMap());
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//zu 1.2. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			assertFalse(objEntry.isJson()); //das hat der Parser alles herausgefunden.
+			assertFalse(objEntry.isJsonMap());
 			
 			//#################################################
-			//### Anwenden der ohne komplettaufloesung
+			//### 1.3. Anwenden der ohne komplettaufloesung
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
 			
@@ -185,15 +188,16 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");			
 			assertEquals(sExpressionSolved, sValue);
 
-			//Entry auswerten
-			objEntryTemp = objExpressionSolver.getEntry();
-			assertTrue(objEntryTemp.isParseCalled());
-			assertTrue(objEntryTemp.isJson()); //das hat der Parser alles herausgefunden.
-			assertFalse(objEntryTemp.isJsonMap());
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//zu 1.3. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			assertTrue(objEntry.isJson()); //das hat der Parser alles herausgefunden.
+			assertFalse(objEntry.isJsonMap());
 			
 			
-			
-			//### Anwenden der Komplettaufloesung
+			//################################################################
+			//### 1.4. Anwenden der Komplettaufloesung
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
 			
@@ -215,20 +219,22 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			assertEquals(sExpressionSolved, sValue);
 
-			//################################################################
-			//Entry auswerten
-			objEntryTemp = objExpressionSolver.getEntry();
-			assertTrue(objEntryTemp.isParseCalled());
-			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ... 
-			//... assertTrue(objEntryTemp.isParsedChanged());
-			assertTrue(objEntryTemp.isParsed());
+			//+++++++++++++++++++++++++++++++++++++++++++
+			//zu 1.4. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ...
+			//... das gilt fuer die allgemeinen Testmethoden. 
+			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
+			assertFalse(objEntry.isParsedChanged());
+			assertTrue(objEntry.isParsed());
 			
-			assertTrue(objEntryTemp.isJson());
-			assertTrue(objEntryTemp.isJsonMap());
+			assertTrue(objEntry.isJson());
+			assertTrue(objEntry.isJsonMap());
 			
-			assertTrue(objEntryTemp.isSolveCalled());
-			assertTrue(objEntryTemp.isSolvedChanged());
-			assertTrue(objEntryTemp.isSolved());
+			assertTrue(objEntry.isSolveCalled());
+			assertTrue(objEntry.isSolvedChanged());
+			assertTrue(objEntry.isSolved());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -239,14 +245,18 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	 */
 	public void testComputeHashMapFromJson(){
 		String sValue; String sExpression; String sExpressionSource; String sExpressionSource2;String sExpessionSourceFormulaMath;
-		String sTagStartZ;	String sTagEndZ;
+		IKernelConfigSectionEntryZZZ objEntry=null;
+		String sTagStart;	String sTagEnd;
+
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 		Vector<String> vecReturn; HashMap<String,String> hm; String sLineWithJson;
 		boolean btemp;
 		
 		try {
 			
 			//######################################
-			//Einfacher Test: Leerstring
+			//A) Einfacher Test: Leerstring
 			sExpressionSource = "";
 			sExpression = sExpressionSource;
 			sLineWithJson = sExpression;
@@ -254,7 +264,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertNotNull(hm);
 			assertEquals(0,hm.size());//Leerstring ist kein gültiger JSON String, darum kommt nix raus.
 			
-			//Einfacher Test: Dummystring
+			//######################################
+			//B) Einfacher Test: Dummystring
 			sExpressionSource = "dummy";
 			sExpression = sExpressionSource;
 			sLineWithJson = sExpression;
@@ -262,9 +273,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertNotNull(hm);
 			assertEquals(0,hm.size());//"dummy" ist kein gültiger JSON-Hashmpa String, darum kommt nix raus.
 			
-						
+					
 			//###############################################################
-			//Einfacher Test: Den JSON-Map source String direkt uebernehmen.
+			//C) Einfacher Test: Den JSON-Map source String direkt uebernehmen.
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
 			sExpression = sExpressionSource;
 			sLineWithJson = sExpression;
@@ -272,32 +283,29 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertNotNull(hm);
 			assertEquals(2,hm.size());
 			
-			
+					
 			//###############################################################
-			//Aus dem Source String den reinen Json-Part machen. 
+			//D) Aus dem Source String den reinen Json-Part machen. 
 			//False steht für "von aussen nach innen" statt true = "von innen nach aussen".
 			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;;
-			
-			sTagStartZ = "<Z>";
-			sTagEndZ = "</Z>";
 			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSource, sTagStartZ, sTagEndZ, false);
 			
-			sTagStartZ = "<JSON>";
-			sTagEndZ = "</JSON>";
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false);
+			sTagStart = "<JSON>";
+			sTagEnd = "</JSON>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd, false);
 			
-			sTagStartZ = "<JSON:MAP>";
-			sTagEndZ = "</JSON:MAP>";
-			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ, false);
+			sTagStart = "<JSON:MAP>";
+			sTagEnd = "</JSON:MAP>";
+			sExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStart, sTagEnd, false);
 			
 			sLineWithJson = sExpression;
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
 			assertEquals(2,hm.size());
 			
-			
+			//##############################################################################
 			//####### Gesamtpaket testen, d.h. mit echt geparsten Werten
-			//### Teilberechnungen durchführen - JSON unsolved			
+			//### 2.1. Teilberechnungen durchführen - JSON unsolved JSON MAP unsolved	
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -320,15 +328,37 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			//ohne gueltigen Json-String wird keine HashMap erzeugt.
 			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
 			assertEquals(0,hm.size());
 			
-			//+++###################################################################################
-			//### Teilberechnungen durchführen - JSON MAP unsolved
+			//+++++++++++++++++++++++++++++++++++++++
+			//zu 2.1. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ...
+			//... das gilt fuer die allgemeinen Testmethoden. 
+			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
+			assertFalse(objEntry.isParsedChanged());
+			assertTrue(objEntry.isParsed());
+			
+			assertFalse(objEntry.isJson());     //beide Flags sind auf "not use"
+			assertFalse(objEntry.isJsonMap());
+			
+			assertFalse(objEntry.isSolveCalled()); //solve spielt hier keine Rolle
+			assertFalse(objEntry.isSolvedChanged());
+			assertFalse(objEntry.isSolved());
+			
+			
+			//###################################################################################
+			//### 2.2. Teilberechnungen durchführen - JSON solved, JSON MAP unsolved
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); 
 			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, false); 
+			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
+						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
 			assertTrue(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
@@ -336,27 +366,122 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 						
 			//ohne gueltigen Json-String wird keine HashMap erzeugt.
 			sLineWithJson = vecReturn.get(1); 
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(0,hm.size());
+			
+			//+++++++++++++++++++++++++++++++++++++++
+			//zu 2.2. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ...
+			//... das gilt fuer die allgemeinen Testmethoden. 
+			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
+			assertFalse(objEntry.isParsedChanged());
+			assertTrue(objEntry.isParsed());
+			
+			assertTrue(objEntry.isJson());
+			assertFalse(objEntry.isJsonMap()); //JSON MAP Flag "not used"
+			
+			assertFalse(objEntry.isSolveCalled()); //solve spielt hier keine Rolle
+			assertFalse(objEntry.isSolvedChanged());
+			assertFalse(objEntry.isSolved());
+					
+			//######################################################################################
+			//### 2.3. Nun die Teilberechnung durchführen JSON unsolved, JSON MAP solved
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); 
+			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
+						
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); 
+			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
+			
+			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);			
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+					
+			//2.3.1
+			sLineWithJson = vecReturn.get(1); //ist ein gültiger JSON String
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
 			assertEquals(2,hm.size());
-					
+			
+			//2.3.2
+			sLineWithJson = vecReturn.get(0); //ist kein gültiger JSON String, darum kommt nix raus.
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(0,hm.size());//Also der String ist auch kein gueltiger
+			
+			//zu 2.3.2. Wert ermitteln
+			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+						
+			//+++++++++++++++++++++++++++++++++++++++
+			//zu 2.3. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ...
+			//... das gilt fuer die allgemeinen Testmethoden. 
+			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
+			assertFalse(objEntry.isParsedChanged());
+			assertTrue(objEntry.isParsed());
+			
+			assertTrue(objEntry.isJson()); //!!! obwohl JSON "not used"
+			assertTrue(objEntry.isJsonMap());
+			
+			assertFalse(objEntry.isSolveCalled()); //solve spielt hier keine Rolle
+			assertFalse(objEntry.isSolvedChanged());
+			assertFalse(objEntry.isSolved());
+	
+			
+			
 			//######################################################################################
-			//### Nun die Gesamtberechnung durchführen
+			//### 2.4. Nun die Teileberechnung durchführen JSON solved, JSON MAP solved
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); 
+			assertTrue("Das Flag '"+ IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +" sollte zur Verfügung stehen.", btemp);
+						
 			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); 
 			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-						
-			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			
+			//2.4.1.
+			sLineWithJson = vecReturn.get(0); //ist kein gültiger JSON String, darum kommt nix raus.
+			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
+			assertNotNull(hm);
+			assertEquals(0,hm.size());
+			
+			//2.4.2.
+			sLineWithJson = vecReturn.get(1); //ist ein gültiger JSON String
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
 			assertEquals(2,hm.size());
-				
-			//##### Wert ermitteln
+			
+			//zu 2.2. Wert ermitteln
 			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+						
+			//+++++++++++++++++++++++++++++++++++++++
+			//zu 2.2. Entry auswerten
+			objEntry = objExpressionSolver.getEntry();
+			assertTrue(objEntry.isParseCalled());
+			//Wenn gesolved wurde kann man das nicht mehr erkennen, also ob die Aenderung am Parsen oder am Solven liegt  ...
+			//... das gilt fuer die allgemeinen Testmethoden. 
+			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
+			assertFalse(objEntry.isParsedChanged());
+			assertTrue(objEntry.isParsed());
 			
+			assertTrue(objEntry.isJson());
+			assertTrue(objEntry.isJsonMap());
+			
+			assertFalse(objEntry.isSolveCalled()); //solve spielt hier keine Rolle
+			assertFalse(objEntry.isSolvedChanged());
+			assertFalse(objEntry.isSolved());
+									
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

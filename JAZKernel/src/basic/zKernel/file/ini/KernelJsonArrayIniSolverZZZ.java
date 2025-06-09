@@ -208,12 +208,24 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	//### aus IParseEnabled				
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	 //Ziel ist es das Parsen vom Solven zu entkoppelt.
+	 //Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	 //return true; 
+		  
+	  boolean bReturn = false;
+		main:{
+//				  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+//				  if(!bReturn) break main;
+		  
+		  bReturn = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+		  if(!bReturn) break main;		  
+		}//end main:
+		return bReturn;
 	}
 		
 	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {		
-		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
+		//Ziel ist, dass Solver, die Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
 			boolean bEnabledThis = this.isParserEnabledThis();
