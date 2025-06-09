@@ -121,67 +121,56 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			boolean bEnabledThis = this.isParserEnabledThis();
 			boolean bEnabledCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 					
-			bReturn = bEnabledThis && bEnabledCall;
+			bReturn = bEnabledCall || bEnabledThis;
 		}
 		return bReturn;
 	}
 	
 	//### Aus IParseUserZZZ
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		super.updateValueParseCustom(objReturnReference, sExpressionIn);
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		
-		if(this.isParserEnabledThis()) {
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
 		
-			//Den "ElternPaser", siehe dazu auch TicketGOON20250308
-			/* Zum suchen der Gegenstelle TODOGOON20250308;//Der KernelJavaCallIniSolverZZZTest geht davon aus, 
-            //dass objEntry.isCall(true) hier gesetzt ist.
-            //Dies hier einfach zu machen ist aber nicht generisch.
-            //Statt dessen muesste man:
-				//so etwas mit "ElternTags" erledigen
-               //getParentTag()
-               //getParentTags()
-               //UND
-               //Pro Tag müsste definiert werden, wie denn die Methode in objEntry heisst.
-               //Will man das nicht per Reflection API machen, geht das nur über eine Methode
-               //definiert in einem Interface:
-               //ITagContainedZZ
-				//    .getNameParent()
-               //
-				//Demnach in IIniTagContainedZZZ
-               //also eigentlich auch analog zu:   this.adoptEntryValuesMissing(objEntry);
-               //this.setEntryValue(true);
-               //            und darin steht dann XmlUtilZZZ.containsTagName(...
-               //
-				//und bezogen auf das ParentTag:
-	            //     .updateEntyValueByParent(objEntry, objParentDummy);
-				
-				//das wuerde bedeuten dass es eine Methode geben muesste
-               //in ITagContainedZZZ
-               //      .getTagParentDummy()
-               //
-               //Dann könnte man dieses Dummy Objekt dazu verwenden das objEntry-Objekt zu fuellen
-               //
-               //     objParentDummy.setEntryValue(true);
-				//
-				//
-//TODOGOON20250308; //TICKETGOON20250308;: Merke - Dann muesste es analog zu den PARENT - Tagname auch eine Loesung fuer alle CHILD - Tagnamen geben.
-*/		
-			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-			if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+			//#####################################################################
+			super.updateValueParseCustom(objReturnReference, sExpressionIn);
+						
+			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
+			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			
+			//DARUM:
+			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
+			
+			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(this.isParserEnabledCustom()) {
 				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)){
 					objEntry.isCall(true);
 					this.getEntry().isCall(true);
 				}
 			}
-			
-				
-			//Den eigenen Parser							
+					
+			if(!this.isParserEnabledThis()) break main;								
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)) {
 				objEntry.isJavaCall(true);
 				this.getEntry().isJavaCall(true);
 			}
-		}
+		}//end main:		}
 	}
 	
 	//### aus ISolveEnablezZZZ

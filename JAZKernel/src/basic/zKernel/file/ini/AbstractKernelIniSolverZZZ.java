@@ -663,7 +663,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(bRemoveSurroundingSeparators & bUseExpression) {
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
-				//sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!				
+				
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!
 			}
 			
@@ -778,7 +778,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null)break main;			
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break solverThis; //Dann ist der Tag nicht enthalten oder "Solver fuer den Tag" deaktiviert
 						
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnTagParsed = sReturnTag;

@@ -719,12 +719,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
-						
+			
+			this.updateValueParseCustom(objReturnReference, sExpression);
+			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
 			bUseParserThis = this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
-			
-			this.updateValueParseCustom(objReturnReference, sExpression);
 						
 			//###########################################
 			//### 

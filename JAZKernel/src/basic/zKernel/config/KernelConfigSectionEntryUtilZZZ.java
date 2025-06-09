@@ -2029,7 +2029,33 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					if(sValueOld.equals(sValue))  break; //sonst ggfs. Endlosschleifengefahr.
 					sValueOld = sValue;
 				}//end while									
+				
+				//##################### bAnyPosition = true 
+				//### FALLS DER GANZE STRING AUF POSITION 0 STEHT ihn auch dort ersetzten				
+				while(StringZZZ.contains(sBefore, sTagPartOpening, false) & StringZZZ.contains(sBefore, sTagPartClosing, false)) {
 					
+					if(!StringZZZ.isEmpty(sBefore)){										
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagPartOpening, true);
+						vecTemp.replace(1,"");
+						sBefore = VectorUtilZZZ.implode(vecTemp);						
+					}
+						
+					if(!StringZZZ.isEmpty(sBefore)){																		
+						Vector3ZZZ<String> vecTemp = StringZZZ.vecMidFirst(sBefore, sTagPartClosing, true);
+						vecTemp.replace(1,"");
+						sBefore = VectorUtilZZZ.implode(vecTemp);
+					}
+					
+					if(sBeforeOld.equals(sBefore)) break; //sonst ggfs. Endlosschleifengefahr.
+					sBeforeOld=sBefore;		
+					
+					if(!StringZZZ.isEmpty(sBefore)){																						
+						vecReturn.replace(0, sBefore);
+					}else{
+						vecReturn.replace(0,"");
+					}
+				}//end while
+				//#####################
 		}else{
 
 			while(StringZZZ.startsWithIgnoreCase(sBefore, sTagPartOpening) & StringZZZ.endsWithIgnoreCase(sRest, sTagPartClosing)) {

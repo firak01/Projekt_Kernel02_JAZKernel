@@ -216,10 +216,10 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
-			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			boolean bEnabledThis = this.isParserEnabledThis();
-					
-			bReturn = bEnabledThis && bEnabledJson ;
+			boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+				
+			bReturn = bEnabledJson || bEnabledThis; 
 		}
 		return bReturn; 	
 	}
@@ -249,7 +249,6 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			//#####################################################################
 			super.updateValueParseCustom(objReturnReference, sExpressionIn);
 		
-			if(!this.isParserEnabledThis()) break main;
 			
 			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
 			//weil sie ihrerseits mit .solve() ausgeführt werden.
@@ -258,11 +257,14 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
 			
 			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
-			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
-				objEntry.isJson(true);
-				this.getEntry().isJson(true);
+			if(this.isParserEnabledCustom()) {
+				if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
+					objEntry.isJson(true);
+					this.getEntry().isJson(true);
+				}
 			}
-								
+		
+			if(!this.isParserEnabledThis()) break main;			
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isJsonArray(true);
 				this.getEntry().isJsonArray(true);
