@@ -308,7 +308,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(!bUseParser) break main;
 						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParserThis = this.isParserEnabledThis();
+			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.

@@ -169,7 +169,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			this.updateValueParseCustom(objReturnReference, sExpression); 
 					
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
-			bUseParserThis = this.isParserEnabledThis();
+			bUseParserThis = this.isParserEnabledCustom();//.isParserEnabledThis();
 		    if(!bUseParserThis) break main;
 			
 		    //###########################################

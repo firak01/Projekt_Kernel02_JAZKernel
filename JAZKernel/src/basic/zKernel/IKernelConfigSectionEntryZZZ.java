@@ -52,6 +52,10 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public VectorZZZ<String> getHistoryParseCalledVector() throws ExceptionZZZ;
 	public void setHistoryParseCalled(String sTagName) throws ExceptionZZZ;
 	
+	public VectorZZZ<String> getHistorySubstituteCalledVector() throws ExceptionZZZ;
+	public void setHistorySubstituteCalled(String sTagName) throws ExceptionZZZ;
+	
+	
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
 	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;

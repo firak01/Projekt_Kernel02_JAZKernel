@@ -527,7 +527,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(!bUseParser) break main;
 						
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			bUseParserThis = this.isParserEnabledThis();
+			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -723,7 +723,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.updateValueParseCustom(objReturnReference, sExpression);
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
-			bUseParserThis = this.isParserEnabledThis();
+			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
 						
 			//###########################################
@@ -851,7 +851,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			bUseParserThis = this.isParserEnabledThis();
+			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
 						
 			if(!bKeepSurroundingSeparatorsOnParse) {
@@ -1266,6 +1266,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}
 	}
 		
+	//##############################################################
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void updateValueParseCalled() throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
@@ -1301,6 +1303,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.addHistoryParseCalled(objEntry);
 	}
 
+	//+++++++++++++++++++++++++++++++++++++
 	@Override
 	public void updateValueParsed() throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
@@ -1377,6 +1380,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++
+	//#####################################
+	
 	
 	
 	//### aus IExpressionUserZZZ	
@@ -1782,7 +1787,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSubstituteCalled(true);
+		
+		this.updateValueSubstituteCalled();
+		this.updateValueSubstituteCalled(objReturnReference);	
 		sReturnLine = sExpressionIn;
 		sReturnTag = this.getValue();
 		sReturn = sReturnLine;	
@@ -1794,13 +1801,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;					
 						
-			bUseParse = this.isParserEnabledThis();
+			bUseParse = this.isParserEnabledCustom(); //.isParserEnabledThis();
 			if(!bUseParse) break main;
 			
 			bUseSubstitute = this.isSubstituteEnabledThis();
 			if(!bUseSubstitute) break main;
 
-			objEntry.isVariableSubstituteCalled(true);				
+			//objEntry.isVariableSubstituteCalled(true);	
+			this.updateValueVariableSubstituteCalled();
+			this.updateValueVariableSubstituteCalled(objReturnReference);
 			if(this.isSubstituteVariableEnabledThis()) {
 									
 			//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
@@ -1841,13 +1850,18 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				objEntry.setValueFromTag(sReturnTag);
 																					
 				if(!sExpressionOld.equals(sReturnLine)) {							
-					objEntry.isVariableSubstitutedChanged(true);
+					this.updateValueVariableSubstitutedChanged();
+					this.updateValueVariableSubstitutedChanged(objReturnReference);	
 				}							
 			}//end if .isParse(..)
-			objEntry.isVariableSubstituted(true);
+			//objEntry.isVariableSubstituted(true);
+			this.updateValueVariableSubstituted();
+			this.updateValueVariableSubstituted(objReturnReference);
 		}	
 						
-		objEntry.isPathSubstituteCalled(true);
+		//objEntry.isPathSubstituteCalled(true);
+		this.updateValuePathSubstituteCalled();
+		this.updateValuePathSubstituteCalled(objReturnReference);
 		if(this.isSubstitutePathEnabledThis()){											
 				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
 				if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
@@ -1888,10 +1902,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					objEntry.setValueFromTag(sReturnTag);
 					this.setValue(sReturnTag);																	
 					if(!sExpressionOld.equals(sReturnLine)) {							
-						objEntry.isPathSubstitutedChanged(true);
+						//objEntry.isPathSubstitutedChanged(true);
+						this.updateValuePathSubstitutedChanged();
+						this.updateValuePathSubstitutedChanged(objReturnReference);
 					}										
 				}//end if .isParseRegEx();
-				objEntry.isPathSubstituted(true);
+				//objEntry.isPathSubstituted(true);
+				this.updateValuePathSubstituted();
+				this.updateValuePathSubstituted(objReturnReference);
 			}//end if .getFlag(..USE_...Path...)
 					
 			if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
@@ -1902,7 +1920,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}									
 			//Merke: Weitere Aufloesung bedarf das explizite solver-Flag
 			//if(!this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER)) break main;
-			
+						
+			this.updateValueSubstituted();
+			this.updateValueSubstituted(objReturnReference);
 		}//end main:
 		this.setValue(sReturnTag);			
 		sReturn = sReturnLine;
@@ -1914,10 +1934,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null)objReturnReferenceIn.set(objEntry);
 			if(objEntry.isPathSubstituted() | objEntry.isVariableSubstituted()) {
-				objEntry.isSubstituted(true);
+				this.updateValueSubstituted(objReturnReference);
 			}
 			if(objEntry.isPathSubstitutedChanged() | objEntry.isVariableSubstitutedChanged()) {
-				objEntry.isSubstitutedChanged(true);				
+				this.updateValueSubstitutedChanged(objReturnReference);				
 			}				
 			this.adoptEntryValuesMissing(objEntry);			
 		}
@@ -1939,7 +1959,389 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}//end main:
 		return sReturn;
 	}
+	
+	
+	//### Aus ISubstituteUserZZZ
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override 
+	public void addHistorySubstituteCalled() throws ExceptionZZZ{
+		String sTagName = this.getName();
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistorySubstituteCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySubstituteCalled(String sTagName) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		this.addHistorySubstituteCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySubstituteCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
+		String sTagName = this.getName();
+		this.addHistorySubstituteCalled(objEntry, sTagName);
+	}
+	
+	@Override
+	public void addHistorySubstituteCalled(IKernelConfigSectionEntryZZZ objEntry, String sTagName) throws ExceptionZZZ{
+		objEntry.setHistorySubstituteCalled(sTagName);
+	}
 		
+	//#######################################
+	@Override
+	public void updateValueSubstituteCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference,String sExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+	//++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueSubstituteCalled() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueSubstituteCalled(boolean bIsSubstituteCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSubstituteCalled(objReturnReference, bIsSubstituteCalled);
+	}
+
+
+	@Override
+	public void updateValueSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSubstituteCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isSubstituteCalled(bIsSubstituteCalled);
+			
+		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+		this.addHistorySubstituteCalled(objEntry);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueSubstituted() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+		if(this.isParserEnabledGeneral()) {
+			this.updateValueSubstituted(objReturnReference, true);
+		}
+	}
+
+
+	@Override
+	public void updateValueSubstituted(boolean bIsParsed) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSubstituted(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueSubstituted(objReturnReference, true);		
+	}
+
+
+	@Override
+	public void updateValueSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsed) throws ExceptionZZZ {
+		main:{
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			if(!this.isExpressionEnabledGeneral()) break main;
+				
+			//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+			if(this.isParserEnabledGeneral()) {
+				objEntry.isSubstituted(bIsParsed);
+			}
+		}//end main:
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueSubstitutedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueSubstitutedChanged(boolean bIsParsedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSubstitutedChanged(objReturnReference, bIsParsedChanged);
+	}
+
+
+	@Override
+	public void updateValueSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsedChanged)	throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isSubstitutedChanged(bIsParsedChanged);
+	}
+		
+
+	//+++++++++++++++++++++++++++++++++++
+	//###################################
+		
+	//##############################################################
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueVariableSubstituteCalled() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueVariableSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituteCalled(boolean bIsSubstituteCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueVariableSubstituteCalled(objReturnReference, bIsSubstituteCalled);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueVariableSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParseCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isVariableSubstituteCalled(bIsParseCalled);
+			
+		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+		this.addHistorySubstituteCalled(objEntry);
+	}
+
+	//+++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueVariableSubstituted() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+		if(this.isParserEnabledGeneral()) {
+			this.updateValueVariableSubstituted(objReturnReference, true);
+		}
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituted(boolean bIsParsed) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueVariableSubstituted(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueVariableSubstituted(objReturnReference, true);		
+	}
+
+
+	@Override
+	public void updateValueVariableSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSubstituted) throws ExceptionZZZ {
+		main:{
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			if(!this.isExpressionEnabledGeneral()) break main;
+				
+			//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+			if(this.isParserEnabledGeneral()) {
+				objEntry.isVariableSubstituted(bIsSubstituted);
+			}
+		}//end main:
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueVariableSubstitutedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueVariableSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstitutedChanged(boolean bIsParsedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueVariableSubstitutedChanged(objReturnReference, bIsParsedChanged);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueVariableSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValueVariableSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsedChanged)	throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isVariableSubstitutedChanged(bIsParsedChanged);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++
+	//#####################################
+	
+	//##############################################################
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValuePathSubstituteCalled() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValuePathSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValuePathSubstituteCalled(boolean bIsPathSubstituteCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValuePathSubstituteCalled(objReturnReference, bIsPathSubstituteCalled);
+	}
+
+
+	@Override
+	public void updateValuePathSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValuePathSubstituteCalled(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValuePathSubstituteCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParseCalled) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isPathSubstituteCalled(bIsParseCalled);
+			
+		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+		this.addHistorySubstituteCalled(objEntry);
+	}
+
+	//+++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValuePathSubstituted() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+		if(this.isParserEnabledGeneral()) {
+			this.updateValuePathSubstituted(objReturnReference, true);
+		}
+	}
+
+
+	@Override
+	public void updateValuePathSubstituted(boolean bIsPathSubstituted) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValuePathSubstituted(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValuePathSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValuePathSubstituted(objReturnReference, true);		
+	}
+
+
+	@Override
+	public void updateValuePathSubstituted(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsed) throws ExceptionZZZ {
+		main:{
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			if(!this.isExpressionEnabledGeneral()) break main;
+				
+			//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+			if(this.isParserEnabledGeneral()) {
+				objEntry.isPathSubstituted(bIsParsed);
+			}
+		}//end main:
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValuePathSubstitutedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValuePathSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValuePathSubstitutedChanged(boolean bIsPathSubstitutedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValuePathSubstitutedChanged(objReturnReference, bIsPathSubstitutedChanged);
+	}
+
+
+	@Override
+	public void updateValuePathSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValuePathSubstitutedChanged(objReturnReference, true);
+	}
+
+
+	@Override
+	public void updateValuePathSubstitutedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsedChanged)	throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		objEntry.isPathSubstitutedChanged(bIsParsedChanged);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++
+	//#####################################
+	
 	
 	//### Aus IValueVariableUserZZZ
 	@Override

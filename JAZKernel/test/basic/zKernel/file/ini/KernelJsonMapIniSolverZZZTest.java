@@ -736,7 +736,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 			
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
@@ -856,7 +856,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
@@ -1010,7 +1010,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
@@ -1136,7 +1136,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
@@ -1289,7 +1289,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
-			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledThis();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {

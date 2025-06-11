@@ -698,9 +698,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
 					if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
-							assertFalse(objEntry.isSubstitutedChanged());
+							assertFalse(objEntry.isPathSubstitutedChanged());
 						}else {
-							assertTrue(objEntry.isSubstitutedChanged());
+							assertTrue(objEntry.isPathSubstitutedChanged());
 						}
 					}
 					assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
@@ -708,7 +708,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//++++++++++++++++++++++++
 					
 					assertTrue(objEntry.isVariableSubstituteCalled()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
-					//auf WErte kann hier nicht abgefragt werden, ggf. ja keine Variablen im String drin.
+					//auf Werte kann hier nicht abgefragt werden, ggf. ja keine Variablen im String drin.
 					assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 					//++++++++++++++++++++++++				
 					//++++++++++++++++++++++++
@@ -718,8 +718,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//+++++++++++++++++++++++++
 					//+++++++++++++++++++++++++
 					
-					assertTrue(objEntry.isJson()); //JSON_ARRAY unsolved, aber JSON solved
-					assertTrue(objEntry.isJsonMap()); //Wert kommt aus parse..
+					assertTrue(objEntry.isJson()); //JSON_MAP unsolved, aber JSON solved
+					assertFalse(objEntry.isJsonMap()); //Wert kommt aus parse.. zwar ist parserEnabledCustom=true, aber parserEnabledThis=false
 					assertFalse(objEntry.isJsonArray());
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -955,13 +955,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				//++++++++++++++++++++++++++++++++
 				assertTrue(objEntry.isPathSubstituteCalled());				
-				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				//	if(sExpression.equals(sExpressionSubstituted)) { 
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}else {
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}
-				//}
+				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression.equals(sExpressionSubstituted)) { 
+						assertFalse(objEntry.isPathSubstitutedChanged());
+					}else {
+						assertFalse(objEntry.isPathSubstitutedChanged());
+					}
+				}
 				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
 				//++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++
@@ -1017,13 +1017,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				//+++++++++++++++++++++++++++++++++++++++
 				assertFalse(objEntry.isPathSubstituteCalled());				
-				//if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				//	if(sExpression.equals(sExpressionSubstituted)) { 
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}else {
-				//		assertFalse(objEntry.isSubstitutedChanged());
-				//	}
-				//}
+				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression.equals(sExpressionSubstituted)) { 
+						assertFalse(objEntry.isPathSubstitutedChanged());
+					}else {
+						assertFalse(objEntry.isPathSubstitutedChanged());
+					}
+				}
 				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2123,7 +2123,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 				
 				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen
-				assertTrue(objEntry.isJsonMap());
+				assertFalse(objEntry.isJsonMap()); //isParserEnabledCustom=true, aber isParserEnabledThis=false also wird der eigene Tag nicht gefunden
 				assertFalse(objEntry.isJsonArray()); //JSON_ARRAY wird nicht benutzt
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
