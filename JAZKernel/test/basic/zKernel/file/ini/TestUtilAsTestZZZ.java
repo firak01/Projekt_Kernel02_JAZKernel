@@ -581,7 +581,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					
 					assertTrue(objEntry.isJson()); //Werte kommen aus dem Parsen.  
 					assertFalse(objEntry.isJsonMap());
-					assertTrue(objEntry.isJsonArray());
+					assertFalse(objEntry.isJsonArray());
 									
 					//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -1885,7 +1885,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				assertTrue(objEntry.isJson()); //Ergebnisse kommen vom Parsen.
 				assertFalse(objEntry.isJsonMap());
-				assertTrue(objEntry.isJsonArray()); 
+				assertFalse(objEntry.isJsonArray()); 
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.

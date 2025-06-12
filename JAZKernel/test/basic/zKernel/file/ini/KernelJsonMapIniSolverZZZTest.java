@@ -361,15 +361,15 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 						
-			//ohne gueltigen Json-String wird keine HashMap erzeugt.
+			//wg USEJSON wird ein JSON-String auf Position 1 gestellt. Ohne gueltigen Json-String wuerde keine HashMap erzeugt.
 			sLineWithJson = vecReturn.get(1); 
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);
-			assertEquals(0,hm.size());
+			assertEquals(2,hm.size());
 			
 			//+++++++++++++++++++++++++++++++++++++++
 			//zu 2.2. Entry auswerten
@@ -447,7 +447,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
 			//2.4.1.
 			sLineWithJson = vecReturn.get(0); //ist kein gültiger JSON String, darum kommt nix raus.
@@ -1418,7 +1420,11 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//### Teilberechnungen durchführen
 			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			vecValue = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty(vecValue.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
+			
 			
 			
 			//### Nun die Gesamtberechnung durchführen

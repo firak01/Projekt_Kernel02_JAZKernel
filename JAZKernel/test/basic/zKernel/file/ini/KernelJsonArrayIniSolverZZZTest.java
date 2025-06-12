@@ -405,12 +405,16 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertEquals(sExpression, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
-				
-				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String vor der Map (BZW: UNEXPRESSED), in der 3ten Position ist der String nach der Map.
+								
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+				assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+				assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
+				assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+				
+				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String vor der Map (BZW: UNEXPRESSED), in der 3ten Position ist der String nach der Map.
 				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 				
 				//+++ Nun die Gesamtberechnung durchführen
@@ -1055,7 +1059,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//### VORGEZOGENER FEHLERTEST START
 			
-		    //3. Test: Expression enabled, Parser enabled, JsonSolve disabled			
+		    //3. Test: Expression enabled, Parser enabled, Json & JsonArray disabled			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -1065,11 +1069,14 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor dem Array (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach dem Array.
-		
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
 			//### VORGEZOGENER FEHLERTEST ENDE
 			
 			//###############################################
@@ -1083,13 +1090,15 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
-			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+						
 			//### Teilberechnungen durchführen
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
 			
 			//########################################################################################
 		    //2. Test: Expression enabled, Parser disabled, JsonSolve enabled			
@@ -1102,15 +1111,16 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			
-			
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
 			//########################################################################################
-		    //3. Test: Expression enabled, Parser enabled, JsonSolve disabled			
+		    //3. Test: Expression enabled, Parser enabled, Json & JsonArray disabled			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); //Ansonsten wird der Wert sofort ausgerechnet 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -1120,14 +1130,31 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
-			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 			
+			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
 			
 			//########################################################################################
 			//4. Test: Expression, Parser, Json UND JSON_ARRAY enabled			
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, false);
+			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
+						
+			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
+	
+			//########################################################################################
+			//5. Test: Expression, Parser, Json UND JSON_ARRAY enabled			
 			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'", btemp);
 			
@@ -1135,11 +1162,10 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY + "'", btemp);
 						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 0ten Position ist der String vor der Map (bzw. ohne Expression angestellt...ALLES, in der 3ten Position ist der String nach der Map.
-			
-	
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
 			
 			//### Nun die Gesamtberechnung durchführen
 			ArrayList<String>ls1 = objExpressionSolver.computeArrayList(sExpression);
