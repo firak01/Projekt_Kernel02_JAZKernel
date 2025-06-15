@@ -16,6 +16,9 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZZZ<T> implements IIniTagCascadedZZZ{
 	private static final long serialVersionUID = 3041123191138631240L;
 
+	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
+	protected String sTagParentName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
+		
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {
 		super();
 		AbstractKernelIniTagNew_();
@@ -25,6 +28,34 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 		return true;
 	}// end function AbstractKernelIniTagNew_
 
+	
+	//### Analog zu AbstractTagBasicZZZ
+	//### aus ITagBasicChildZZZ
+	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.
+	@Override
+	public String getParentName() throws ExceptionZZZ{
+		if(this.sTagParentName==null) {
+			return this.getParentNameDefault();
+		}else {
+			return this.sTagParentName;
+		}
+	}	
+	
+	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	@Override
+	public abstract String getParentNameDefault() throws ExceptionZZZ; 	
+	
+	@Override
+	public void setParentName(String sTagParentName) throws ExceptionZZZ{
+		if(StringZZZ.isEmptyTrimmed(sTagParentName)) {
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagParentName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			throw ez;
+		}
+		this.sTagParentName = sTagParentName;		
+	}
+	
+	
 	//### Aus IResettableValuesZZZ
 	@Override
 	public boolean reset() throws ExceptionZZZ{

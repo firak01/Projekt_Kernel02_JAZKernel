@@ -21,6 +21,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = 6579389159644435205L;
 	public static String sTAG_NAME = "Z:Java";	
+	public static String sTAG_PARENT_NAME = KernelCallIniSolverZZZ.sTAG_NAME;
 	public KernelJavaCallIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelJavaCallIniSolverNew_(null, null);
@@ -104,6 +105,12 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJavaCallIniSolverZZZ.sTAG_NAME;
+	}
+	
+	//### Aus ITagBasicChildZZZ	
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return KernelJavaCallIniSolverZZZ.sTAG_PARENT_NAME;
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++

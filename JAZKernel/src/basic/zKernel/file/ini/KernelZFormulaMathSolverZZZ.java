@@ -101,12 +101,21 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	
 	
 	//###### Getter / Setter
+	
+	
+	//####################### Andere Interfaces
+	
+	//### Aus ITagBasicZZZ
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelZFormulaMathSolverZZZ.sTAG_NAME;
 	}
-
-	//### Andere Interfaces	
+	
+	//### Aus ITagBasicChildZZZ
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return KernelZFormulaIniSolverZZZ.sTAG_NAME;
+	}	
 	
 	//### aus IParseEnabled				
 	@Override 
@@ -425,4 +434,5 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
 }//End class

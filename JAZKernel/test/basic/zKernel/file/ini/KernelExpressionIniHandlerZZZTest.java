@@ -5229,7 +5229,8 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 				boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
 				boolean bUseSolver = objFileIniTest.isSolverEnabledGeneral();
 				
-				//objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				TODOGOON20250614;//irgendwie wird nicht berücksichtigt, dass der Solver nicht verwendet werden soll
+				                 //ohne Solver soll aber das Z-Tag drumherum bleiben.
 				objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 				assertNotNull(objEntry);
 				

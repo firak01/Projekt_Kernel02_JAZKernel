@@ -104,6 +104,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	//######### Interfaces #############################################
 	
+	
+	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
 	@Override 
@@ -471,6 +473,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	@Override
 	public String getNameDefault() {
 		return KernelExpressionIniHandlerZZZ.sTAG_NAME;
+	}
+	
+	//### Aus ITagBasicChildZZZ
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return null;
 	}
 	
 	//### Interface aus IKernelExpressionIniSolver

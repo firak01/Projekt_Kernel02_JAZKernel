@@ -9,6 +9,8 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -40,8 +42,6 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	public final static String sEXPRESSION_CALL01_METHOD_DEFAULT = "getHostName";
 	public final static String sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT + "</Z:Class><Z:Method>" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT + "</Z:Method></Z:Java></Z:Call></Z>";
 	
-	//public final static String sEXPRESSION_ENCRYPTION02_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
-	//public final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	
 	private File objFile;
 	private IKernelZZZ objKernel;
@@ -124,12 +124,12 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 
 		//C) PRE / POST
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.AS_ENTRY);
+		testCompute_JavaCall_(TestSubtype.AS_ENTRY, sExpression, "PRE", "POST");
 		
 		
 		
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.DEFAULT);
+		testCompute_JavaCall_(TestSubtype.DEFAULT, sExpression, "PRE", "POST");
 				
 				
 		//### Vorgezogener letzter Fehlertest: ENDE
@@ -138,25 +138,25 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	
 		//A) Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-		testCompute_JavaCall_(sExpression,"","", TestSubtype.DEFAULT);
+		testCompute_JavaCall_(TestSubtype.DEFAULT,sExpression,"", "");
 		
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
-		testCompute_JavaCall_(sExpression,"","", TestSubtype.AS_ENTRY);
+		testCompute_JavaCall_(TestSubtype.AS_ENTRY,sExpression,"", "");
 		
 		
 		//B) Test ohne notwendige Pfadersetzung
 		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-		testCompute_JavaCall_(sExpression,"","", TestSubtype.DEFAULT);
+		testCompute_JavaCall_(TestSubtype.DEFAULT,sExpression,"", "");
 
 		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-		testCompute_JavaCall_(sExpression,"","", TestSubtype.AS_ENTRY);
+		testCompute_JavaCall_(TestSubtype.AS_ENTRY,sExpression,"", "");
 
 		//C) PRE / POST
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.DEFAULT);
+		testCompute_JavaCall_(TestSubtype.DEFAULT, sExpression, "PRE", "POST");
 				
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
-		testCompute_JavaCall_(sExpression, "PRE", "POST", TestSubtype.AS_ENTRY);
+		testCompute_JavaCall_(TestSubtype.AS_ENTRY, sExpression, "PRE", "POST");
 
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
@@ -167,7 +167,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_JavaCall_(String sExpressionIn, String sPreIn, String sPostIn, TestSubtype enumTestSubtype){
+	private void testCompute_JavaCall_(TestSubtype enumTestSubtype, String sExpressionIn, String sPreIn, String sPostIn){
 		//SIEHE AUCH testCompute_CallWithPrePost
 		boolean btemp; int itemp;
 				
@@ -365,10 +365,12 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			boolean btemp; 
 			
 			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved; 
-			String sValue; 
+			String sValue; Vector3ZZZ<String> vecValue;
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
 
+			String sExpressionSurroundedTemp = null;
+			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
 				
@@ -407,9 +409,75 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		
 			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
 			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {											
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
+				
+				//#######################################
+				//+++ Teilberechnungen durchführen.
+				//    Es werden wg false die Tags nicht entfernt
+				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+//				if(bUseParser && bUseExpressionGeneral) {
+//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
+//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String	
+//				}else {
+//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
+//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
+//				}
+//				sValue = VectorUtilZZZ.implode(vecValue);
+//				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+//				
+//				//+++
+//				sExpressionSurroundedTemp = sExpressionSubstituted;
+//				if(bUseParser && bUseExpressionGeneral) {
+//					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
+//					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+//					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME);
+//					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());								
+//				}else {
+//					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
+//				}
+//				assertTrue(StringZZZ.contains(sExpressionSurroundedTemp,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+//				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+//				
+				
+				
+				//Nutze eine Sammlung von assert Methoden, für .parseFirstVektor() und Werte-Analyse des solver Objekts.
+				btemp = TestUtilAsTestZZZ.assertObjectValue_Solver_OnParseFirstVector(objExpressionSolver, vecValue, objEnumSurrounding, bUseExpressionGeneral, bUseParser, bUseSolver, sExpression, sExpressionSubstituted, sExpressionSolved);
+				assertTrue(btemp);
+				
+				//#####################################
+				//+++ Nun die Gesamtberechnung durchführen				
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				assertEquals(sExpressionSurroundedTemp, sValue);
+							
+				//+++ Der Tag Wert
+				sValue = objExpressionSolver.getValue();
+				if(bUseExpressionGeneral && bUseParser) {
+					sExpressionSurroundedTemp = sExpressionSubstituted;
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ, false);
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME, false);				
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2Compare=" + sExpressionSurroundedTemp);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
+					assertEquals(sExpressionSurroundedTemp, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				}
+				//+++ Der Entry Wert
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);	
+					
+				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
 				String sExpressionSolvedTemp = sExpressionSolved;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
@@ -446,7 +514,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {					
-				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());				
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
 				assertNotNull(objEntry);
 							
 				sValue = objEntry.getValue();
@@ -532,7 +600,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {				
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objExpressionSolver.getValue();
@@ -563,7 +631,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {				
-				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());				
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();

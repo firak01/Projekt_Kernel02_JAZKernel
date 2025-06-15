@@ -120,6 +120,12 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
 	
+	//### Aus ITagBasicChildZZZ
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return null;
+	}
+	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled		
 	@Override 

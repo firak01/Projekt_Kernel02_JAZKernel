@@ -30,7 +30,9 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *
  */
 public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonMapIniSolverZZZ{
+	private static final long serialVersionUID = 1250082037671481847L;
 	public static String sTAG_NAME = "JSON:MAP";
+	public static String sTAG_PARENT_NAME = KernelJsonIniSolverZZZ.sTAG_NAME;
 		
 	public KernelJsonMapIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
@@ -229,6 +231,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
+	}
+	
+	//### Aus ITagBasicChildZZZ
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return KernelJsonMapIniSolverZZZ.sTAG_PARENT_NAME;
 	}
 			
 	//+++++++++++++++++++++++++++++++++++++++++

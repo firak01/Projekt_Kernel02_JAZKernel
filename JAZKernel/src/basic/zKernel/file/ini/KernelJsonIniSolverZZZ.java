@@ -31,6 +31,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ{
 	private static final long serialVersionUID = 6588176234400554782L;
 	public static String sTAG_NAME = "JSON";
+	public static String sTAG_PARENT_NAME = null;
 
 	public KernelJsonIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
@@ -172,6 +173,12 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	@Override
 	public String getNameDefault(){
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
+	}
+	
+	//### Aus ITagBasicChildZZZ
+	@Override
+	public String getParentNameDefault() throws ExceptionZZZ {
+		return KernelJsonIniSolverZZZ.sTAG_PARENT_NAME;
 	}
 	
 	//### aus IParseEnabled		

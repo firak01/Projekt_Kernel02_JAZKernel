@@ -1,5 +1,7 @@
 package basic.zKernel.file.ini;
 
-public interface IIniTagCascadedZZZ {
+import basic.zBasic.util.xml.tagsimple.ITagBasicChildZZZ;
 
+public interface IIniTagCascadedZZZ extends ITagBasicChildZZZ {
+	
 }
