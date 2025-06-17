@@ -2190,10 +2190,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 	
-	public static boolean assertObjectValue_Solver_OnParseFirstVector(ITagBasicChildZZZ objExpressionSolver, Vector3ZZZ<String>vecValue, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, boolean bUseExpressionGeneral, boolean bUseParser, boolean bUseSolver, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn) throws ExceptionZZZ {
+	public static boolean assertObjectValue_Solver_OnParseFirstVector(ITagBasicChildZZZ objExpressionSolver, Vector3ZZZ<String>vecValue, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, boolean bUseExpressionGeneral, boolean bUseParser, boolean bUseSolver, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved;  
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
 			String sValue; String sValueUsed;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
@@ -2206,6 +2206,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
+			sPre = sPreIn;
+			sPost = sPostIn;
 				
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
@@ -2221,7 +2223,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
 			}
 			sValue = VectorUtilZZZ.implode(vecValue);
-			assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+			assertEquals(sPre + sExpressionSubstituted + sPost, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			
 			//+++
 			sExpressionSurroundedTemp = sExpressionSubstituted;
@@ -2230,12 +2232,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getParentName());
-				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());								
+				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());
+				
+				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}else {
-				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
+				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				assertEquals(sPre + sExpressionSurroundedTemp + sPost, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}
-			assertTrue(StringZZZ.contains(sExpressionSurroundedTemp,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
-			assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+			assertTrue(StringZZZ.contains(sValue,sExpressionSurroundedTemp,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
+			
+			
+			//TODOGOON20250615;//Hole den objEntry.getValue() und vergleiche mit dem Tag-Wert-selbst
 			
 			bReturn = true;
 		}//end main:

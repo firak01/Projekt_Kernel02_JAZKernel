@@ -284,7 +284,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				}
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ 2) Ohne Solver-Berechnung	(Ergebnisse muessen so sein wie bei Parse)
+				//+++ 2) Ohne jegliche Solver-Berechnung (Ergebnisse muessen so sein wie bei Parse)
 				//2a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
@@ -360,7 +360,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				}
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ 3) Ohne Call-Berechung
+				//+++ 3) Ohne Call-Solver-Berechnung
 				//3a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
@@ -399,7 +399,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				}
 				
 								
-				//3c) Solve, ohne Call, d.h. ein Parsen findet bzgl. Call-Tag nicht statt ... ohne Entfernen der umgebenden Z-Tags
+				//3c) Solve, ohne Call-Solver-Berechnung, d.h. ein Parsen findet bzgl. Call-Tag nicht statt ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
@@ -466,7 +466,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				}
 
 										
-				//4b) Parse ... ohne Behalten der umgebenden Z-Tags
+				//4b) Parse ... mit Entferenen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
@@ -550,7 +550,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ 5) Mit Call-Berechnung UND JavaCall-Berechnung
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				//5a) Der umgebene Z-Tag soll drin bleiben
+
+				//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
@@ -568,12 +569,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
 					
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 				} else {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				}
 				
-				//5b) Umgebender Z-Tag wird entfernt
+				//5b) Parse ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
@@ -590,12 +591,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);				
 				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved,sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 				} else {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);					
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved,sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);					
 				}
 				
-				//5c)
+				//5c) Solve ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sTagStartZ + sHostName + sTagEndZ + sPost; 
@@ -607,12 +608,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sHostName;	
 				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved,sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 				}else {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved,sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				}
 				
-				//5d)
+				//5d) Solve ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sPre + sHostName + sPost;		
@@ -621,9 +622,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sTagSolved = sHostName;
 				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 				} else {
-					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+					btemp = testCompute_Call_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				}
 								
 			} catch (ExceptionZZZ ez) {
@@ -632,12 +633,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		}
 		
 		
-		private boolean testCompute_Call_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+		private boolean testCompute_Call_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 			boolean bReturn = false;
 			try {
 				boolean btemp; 
 				
-				String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
+				String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
 				String sValue; Vector3ZZZ<String> vecValue;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				IKernelConfigSectionEntryZZZ objEntry=null;
@@ -648,6 +649,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpression = sExpressionIn;
 				sExpressionSubstituted = sExpressionSubstitutedIn;
 				sExpressionSolved = sExpressionSolvedIn;
+				sPre = sPreIn;
+				sPost = sPostIn;
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
@@ -692,7 +695,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 						
 					//Nutze eine Sammlung von assert Methoden, für .parseFirstVektor() und Werte-Analyse des solver Objekts.
-					btemp = TestUtilAsTestZZZ.assertObjectValue_Solver_OnParseFirstVector(objExpressionSolver, vecValue, objEnumSurrounding, bUseExpressionGeneral, bUseParser, bUseSolver, sExpression, sExpressionSubstituted, sExpressionSolved);
+					btemp = TestUtilAsTestZZZ.assertObjectValue_Solver_OnParseFirstVector(objExpressionSolver, vecValue, objEnumSurrounding, bUseExpressionGeneral, bUseParser, bUseSolver, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost);
 					assertTrue(btemp);
 					
 					//#####################################
