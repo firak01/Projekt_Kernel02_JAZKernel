@@ -301,9 +301,23 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			}
 			
+			TODOGOON20250617;//weitere Fälle
+			//2b) Parse ... mit Entfernen der umgebenden Z-Tags
+			//2c) Solve ... ohne Entfernen der umgebenden Z-Tags
+			//2d) Solve ... mit Entfernen der umgebenden Z-Tags
+
+			//4a) Parse ... ohne Entfernen der umgebenden Z-Tags
+			//4b) Parse ... mit Entfernen der umgebenden Z-Tags
+			//4c) Solve ... ohne Entfernen der umgebenden Z-Tags
+			//4d) Solve ... mit Entfernen der umgebenden Z-Tags
+			
+			//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen			
+			//5b) Parse ... mit Entfernen der umgebenden Z-Tags
+			//5c) Solve ... ohne Entfernen der umgebenden Z-Tags
+			//5d) Solve ... mit Entfernen der umgebenden Z-Tags
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ 3. Ohne jegliche JAVA-CALL-SOLVER-Berechnung (Ergebnisse muessen so sein wie bei Parse)
+			//+++ 3. Ohne JAVA-CALL-SOLVER-Berechnung
 			//3a) Parse ... ohne Entfernen der umgebenden Z-Tags
 			sPre = sPreIn;
 			sPost = sPostIn;
@@ -1141,10 +1155,12 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelCallIniSolverZZZ.FLAGZ.USECALL + "'", btemp);
 														
 			//+++ der Gesamtausdruck
-			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus ABER Z:Call-Tag NICHT raus, da der Call Solver nicht als Objekt hier verwendet wird...
+			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus. 
+			//MERKE: Z:Call-Tag raus, da es fuer JavaCallIniSolver dazu eine custom-Methode gibt den "Elterntag/Parenttag" zu entfernen. Auch wenn das nicht das eigentlich verwendete Solver-Objekt ist.
+			//Also nicht: sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>"; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 			sExpressionSubstituted = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>"; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";						
+			sExpressionSolved = sHostName; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";
 			sValue = objExpressionSolver.solve(sExpression);						
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -1298,8 +1314,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sValue = objEntry.getValue();
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
-			//Merke: Da der Call-Solver nicht verwendet wird, sind seine Tags drumherum...
-			sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>";
+			//+++ der Gesamtausdruck
+			//Es sollte nur der Rechnername uebrigbleiben... Z-Tag raus. 
+			//MERKE: Z:Call-Tag raus, da es fuer JavaCallIniSolver dazu eine custom-Methode gibt den "Elterntag/Parenttag" zu entfernen. Auch wenn das nicht das eigentliche Solver-Objekt ist.
+			//Also nicht: sExpressionSolved = "<Z:Call>" + sHostName + "</Z:Call>"; ////Den Rechnernamen dynamisch ermitteln..., z.B.: "HannibalDEV04bVM";
+			sExpressionSolved = sHostName;
 			assertEquals(sExpressionSolved, sValue);
 	
 			//Merke: Da der Call-Solver nicht verwendet wird, kann hier nur false sein...

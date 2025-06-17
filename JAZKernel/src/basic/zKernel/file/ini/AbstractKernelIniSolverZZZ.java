@@ -791,18 +791,24 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnTagParsed = sReturnTag;
 			sReturnTagSolved = sReturnTag;
 			if(vecReturn==null) break main;
-		
-			//Zwischenstand, falls nach dem Parsen beendet ist, Solver also nicht weiter ausgeführt wird
+			
+			//Zwischenstand, falls nach dem Parse beendet ist, also ein Solver nicht weiter ausgeführt wird
+			sReturnLine = VectorUtilZZZ.implode(vecReturn); 
+			sReturnLineParsed = sReturnLine;
+			sReturnLineParsed2compareWithSolved = sReturnLineParsed;
+			
+			
+			//Rufe nun solveParsed() auf...
+			bUseSolver = this.isSolverEnabledGeneral();
+			if(!bUseSolver) break main;
+			
+			//Zwischenstand, falls nach dem Generellen Solver beendet ist, Spezieller Solver also nicht weiter ausgeführt wird
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); 
 			sReturnLineParsed = sReturnLine;
 			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);			
 			if(bRemoveSurroundingSeparators) {
 				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
-			}
-			
-			//Rufe nun solveParsed() auf...
-			bUseSolver = this.isSolverEnabledGeneral();
-			if(!bUseSolver) break main;
+			}	
 			
 			//TODOGOON20250308; //TICKETGOON20250308;;//Generische Problematik, wenn man hier nur auf den eigenen Solver abbprüft, kann man nicht das "Elternflag setzen"
 			
