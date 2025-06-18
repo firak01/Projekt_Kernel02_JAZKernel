@@ -959,7 +959,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(objEntry.isParsed()); //Auch ohne Solver wird geparsed
 				
 				//++++++++++++++++++++++++++++++++
-				assertTrue(objEntry.isPathSubstituteCalled());				
+				assertTrue(objEntry.isPathSubstituteCalled());		
+				//sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
+				//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+				//System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
+				//System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
+				//if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
+
+				System.out.println("sExpression="+sExpression);
+				System.out.println("sExpressionSubstituted="+sExpressionSubstituted);
 				if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 					if(sExpression.equals(sExpressionSubstituted)) { 
 						assertFalse(objEntry.isPathSubstitutedChanged());
@@ -1026,7 +1034,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) { 
 						assertFalse(objEntry.isPathSubstitutedChanged());
 					}else {
-						assertFalse(objEntry.isPathSubstitutedChanged());
+						assertTrue(objEntry.isPathSubstitutedChanged());
 					}
 				}
 				assertFalse(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist				

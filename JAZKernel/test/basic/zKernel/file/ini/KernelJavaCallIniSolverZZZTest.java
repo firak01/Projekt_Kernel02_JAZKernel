@@ -350,6 +350,20 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			}
 			
 			//2d) Solve ... mit Entfernen der umgebenden Z-Tags
+			sPre=sPreIn;
+			sPost=sPostIn;
+			sExpression = sPre + sExpressionIn + sPost;
+			sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);			
+			sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+			//aber weil der generelle Solver deaktivert ist eben nicht: sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+
+			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			}else {
+				btemp = testCompute_JavaCall_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			}
+
 
 			//4a) Parse ... ohne Entfernen der umgebenden Z-Tags
 			//4b) Parse ... mit Entfernen der umgebenden Z-Tags
