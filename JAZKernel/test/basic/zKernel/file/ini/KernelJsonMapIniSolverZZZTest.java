@@ -218,7 +218,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 2. Ohne jegliche Solver-Berechnung
-			//2a)
+			//2a) Parse ... ohne Entfernen der umgebenden Z-Tags
 			sPre="";
 			sPost="";
 			sExpression = sExpressionIn;
@@ -232,7 +232,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			}
 			
 			
-			//2b)
+			//2b) Parse ... mit Entfernen der umgebenden Z-Tags
 			sPre="";
 			sPost="";
 			sExpression = sExpressionIn;

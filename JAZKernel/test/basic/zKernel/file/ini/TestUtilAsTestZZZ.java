@@ -964,7 +964,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					if(sExpression.equals(sExpressionSubstituted)) { 
 						assertFalse(objEntry.isPathSubstitutedChanged());
 					}else {
-						assertFalse(objEntry.isPathSubstitutedChanged());
+						assertTrue(objEntry.isPathSubstitutedChanged());
 					}
 				}
 				assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
@@ -2223,7 +2223,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
 			}
 			sValue = VectorUtilZZZ.implode(vecValue);
-			assertEquals(sPre + sExpressionSubstituted + sPost, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+			assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			
 			//+++
 			sExpressionSurroundedTemp = sExpressionSubstituted;
@@ -2234,10 +2234,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getParentName());
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());
 				
+				//PRE und POST umgebend entfernen!!!
+				sExpressionSurroundedTemp = StringZZZ.trimLeft(sExpressionSurroundedTemp, sPre);
+				sExpressionSurroundedTemp = StringZZZ.trimRight(sExpressionSurroundedTemp, sPost);
+				
 				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}else {
 				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
-				assertEquals(sPre + sExpressionSurroundedTemp + sPost, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
+				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}
 			assertTrue(StringZZZ.contains(sValue,sExpressionSurroundedTemp,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
