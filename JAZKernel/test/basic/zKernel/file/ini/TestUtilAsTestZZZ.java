@@ -453,7 +453,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 					//TODOGOON20250308; //TICKETGOON20250308; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
 					*/
 					assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
-					assertFalse(objEntry.isJavaCall());	
+					assertFalse(objEntry.isJavaCall());	//JavaCall ist "unused" 
 					assertNull(objEntry.getCallingClassname());
 					assertNull(objEntry.getCallingMethodname());
 					break;

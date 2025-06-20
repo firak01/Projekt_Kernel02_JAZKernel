@@ -901,12 +901,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
-				String sExpressionSolvedTemp = sExpressionSolved;
+				String sExpressionTemp = sExpressionSubstituted;
 				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
-					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+					sExpressionTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				}
-				sExpressionSolved = sExpressionSolvedTemp;
-				assertEquals(sExpressionSolved, sValue);
+				sExpressionSubstituted = sExpressionTemp;
+				assertEquals(sExpressionSubstituted, sValue);
 			}
 			
 			
