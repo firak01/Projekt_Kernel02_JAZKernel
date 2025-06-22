@@ -6,6 +6,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public interface IParseUserZZZ extends IKernelParseEnabledZZZ{
 	public boolean isParse(String sExpression) throws ExceptionZZZ;
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpression) throws ExceptionZZZ;
 	
 	public void addHistoryParseCalled() throws ExceptionZZZ;
 	public void addHistoryParseCalled(String sTagName) throws ExceptionZZZ;
@@ -16,8 +17,6 @@ public interface IParseUserZZZ extends IKernelParseEnabledZZZ{
 	public void updateValueParseCalled(boolean bIsSolveCalled) throws ExceptionZZZ;
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ;
 	public void updateValueParseCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ;
-	
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpression) throws ExceptionZZZ;
 	
 	public void updateValueParsed() throws ExceptionZZZ;
 	public void updateValueParsed(boolean bIsSolveCalled) throws ExceptionZZZ;

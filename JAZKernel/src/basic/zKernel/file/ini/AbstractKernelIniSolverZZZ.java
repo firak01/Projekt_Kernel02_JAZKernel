@@ -15,6 +15,7 @@ import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -222,6 +223,42 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	public boolean isSolve(String sExpression) throws ExceptionZZZ {
 		return this.isExpression(sExpression);
 	}
+		
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void updateValueSolveCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ{
+		//VORLAGE ALS TEMPLATE WIE ETWA EINE UEBERSCHEIBENDE METHODE AUSSEHEN KOENNTE
+		//oberste Ebene super.updateValueSolveCustom(objReturnReference, sExpressionIn);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		if(objReturnReferenceIn==null) {
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+		}
+		objEntry = objReturnReference.get();
+		if(objEntry==null) {
+			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+			objEntry = new KernelConfigSectionEntryZZZ<T>();
+			objReturnReference.set(objEntry);
+		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+	
+		//#######################################################
+		
+		//Flags entscheiden ob es weitergeht.
+//		if(this.isSolverEnabledGeneral()) {
+//
+//			//Zentrale Stelle, um den String/Entry als Expression zu kennzeichnen.
+//			//Hier redundant zu parse(), weil z.B. in solve() nur parseFirstVector() aufgerufen wird.
+//			if(XmlUtilZZZ.isExpression(sExpressionIn)){
+//				objEntry.isExpression(true);
+//				this.getEntry().isExpression(true);
+//			}
+//		}
+	}
+
 	
 	//+++++++++++++++
 	@Override 
@@ -251,76 +288,137 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public void updateValueSolveCalled() throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolveCalled(objEntry, true);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSolveCalled(objReturnReference, true);
 	}
 	
 	@Override
 	public void updateValueSolveCalled(boolean bIsSolveCalled) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolveCalled(objEntry, bIsSolveCalled);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSolveCalled(objReturnReference, bIsSolveCalled);
 	}
 		
 	@Override
-	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
-		this.updateValueSolveCalled(objEntry, true);
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolveCalled(objReturnReference, true);
 	}
 	
 	@Override
-	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		objEntry.isSolveCalled(bIsSolveCalled);
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference,  boolean bIsSolveCalled) throws ExceptionZZZ{
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isSolveCalled(bIsSolveCalled);
 		
 		
-		//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
-		this.addHistorySolveCalled(objEntry);
+			//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
+			this.addHistorySolveCalled(objEntry);
+		}//end main:
 	}
 	
 	//+++++++++++++++++++++++++++++++++
 	
+//	@Override
+//	public void updateValueSolved() throws ExceptionZZZ{
+//		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+//		this.updateValueSolved(objEntry, true);
+//	}
+//	
+//	@Override
+//	public void updateValueSolved(boolean bIsSolved) throws ExceptionZZZ{
+//		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+//		this.updateValueSolved(objEntry, bIsSolved);
+//	}
+		
+//	@Override
+//	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
+//		this.updateValueSolved(objEntry, true);
+//	}
+//	
+//	@Override
+//	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolved) throws ExceptionZZZ{
+//		objEntry.isSolved(bIsSolved);
+//	}
+	
+	
 	@Override
-	public void updateValueSolved() throws ExceptionZZZ{
+	public void updateValueSolved() throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolved(objEntry, true);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSolved(objReturnReference, true);
 	}
+	
 	
 	@Override
 	public void updateValueSolved(boolean bIsSolved) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolved(objEntry, bIsSolved);
-	}
 		
-	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
-		this.updateValueSolved(objEntry, true);
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);		
+		this.updateValueSolved(objReturnReference, bIsSolved);
 	}
 	
+	
 	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolved) throws ExceptionZZZ{
-		objEntry.isSolved(bIsSolved);
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueSolved(objReturnReference, true);		
 	}
+
+		
+	@Override
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolved) throws ExceptionZZZ {
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+			
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();							
+			if(this.isSolverEnabledGeneral()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+				objEntry.isSolved(bIsSolved);
+			}
+		}//end main:
+	}
+
 	
 	//+++++++++++++++++++++++++++++++++
 	
 	@Override
 	public void updateValueSolvedChanged() throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolvedChanged(objEntry, true);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSolvedChanged(objReturnReference, true);
 	}
 	
 	@Override
 	public void updateValueSolvedChanged(boolean bIsSolvedChanged) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
-		this.updateValueSolvedChanged(objEntry, bIsSolvedChanged);
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueSolvedChanged(objReturnReference, bIsSolvedChanged);
 	}
 		
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ{
-		this.updateValueSolvedChanged(objEntry, true);
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolvedChanged(objReturnReference, true);
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolvedChanged) throws ExceptionZZZ{
-		//oberste ebene erreicht. Gibt es nicht:   super.updateValueSolvedChanged(bIsSolvedChanged);
-		objEntry.isSolvedChanged(bIsSolvedChanged);
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolvedChanged) throws ExceptionZZZ{		
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isSolvedChanged(bIsSolvedChanged);
+		}//end main:
 	}
 	
 	
@@ -328,6 +426,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
 	@Override
 	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
+	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return this.isSolverEnabledThis();
+	}
 	
 	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
 	@Override 
@@ -757,7 +860,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.setRaw(sExpressionIn);		
 		objEntry.setRaw(sExpressionIn);
 		this.updateValueSolveCalled(); 			//20250311: verwendet eine ueberschreibbare Methode der Solver, dito soll fuer Parser gelten
-		this.updateValueSolveCalled(objEntry);	//20250311: verwendet eine ueberschreibbare Methode der Solver, dito soll fuer Parser gelten
+		this.updateValueSolveCalled(objReturnReference);	//20250311: verwendet eine ueberschreibbare Methode der Solver, dito soll fuer Parser gelten
 		
 		sReturnLine=sExpressionIn;		
 		sReturnTag = this.getValue();
@@ -811,9 +914,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			}	
 			
 			//TODOGOON20250308; //TICKETGOON20250308;;//Generische Problematik, wenn man hier nur auf den eigenen Solver abbprüft, kann man nicht das "Elternflag setzen"
+			this.updateValueSolveCustom(objReturnReference, sExpression);
 			
 			//TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
-			bUseSolverThis = this.isSolverEnabledThis();
+			bUseSolverThis = this.isSolverEnabledCustom();
 			if(!bUseSolverThis) break solverThis;
 			
 			
@@ -851,6 +955,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
 			sReturnTag = this.getValue();		
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -864,8 +971,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
-				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {
-					this.updateValueSolved(objEntry);
+				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
 					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
@@ -874,7 +980,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
 						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
 							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
-							this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.	
+							this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}
 					}
 				}																		
@@ -1122,6 +1228,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 	
 		//#################################
@@ -1134,11 +1243,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			this.updateValueSolved(objEntry);
 			if(sExpressionIn!=null) {												
 				if(!sExpressionIn.equals(sReturn)) {
 					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.									
+					this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);

@@ -637,7 +637,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//Tags entfernen und eigenen Wert setzen
 			vecReturn = this.parsePost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();//Der eigene Wert, ohne drumherum
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);			
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);		
+			
+			this.updateValueParsed();
+			this.updateValueParsed(objReturnReference);			
 		}//end main:
 	
 		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
@@ -1310,10 +1313,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		objReturnReference.set(objEntry);
-		//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
-		if(this.isParserEnabledGeneral()) {
-			this.updateValueParsed(objReturnReference, true);
-		}
+		this.updateValueParsed(objReturnReference, true);
 	}
 
 
@@ -1336,10 +1336,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	@Override
 	public void updateValueParsed(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsParsed) throws ExceptionZZZ {
 		main:{
-			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 			if(!this.isExpressionEnabledGeneral()) break main;
-				
-			//if(this.isParserEnabledThis()) { //Beim Solven gilt auch, das nur das allgemeine Abstellen des Solves den Wert nicht setzt.
+
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();			
 			if(this.isParserEnabledGeneral()) {
 				objEntry.isParsed(bIsParsed);
 			}

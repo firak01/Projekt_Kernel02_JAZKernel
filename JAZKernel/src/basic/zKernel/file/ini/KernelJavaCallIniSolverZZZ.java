@@ -197,11 +197,21 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {		
 		boolean bReturn = false;
 		main:{
-		  bReturn = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
-		  if(!bReturn) break main;
-		  
-		  bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-		  if(!bReturn) break main;		  
+			  bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);	  
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			bReturn = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			if(!bReturn) break main;
+	 
 		}//end main:
 		return bReturn;
 	}
@@ -254,7 +264,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);
 		this.updateValueSolveCalled();//Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
-		this.updateValueSolveCalled(objEntry);
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
 		sReturnTagParsed = sExpressionIn;
@@ -323,7 +333,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			sReturnLine = sReturnTag;
 			
 			this.updateValueSolved();
-			this.updateValueSolved(objEntry);						
+			this.updateValueSolved(objReturnReference);						
 		}//end main:	
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
@@ -340,7 +350,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 				if(sReturnTagSolved!=null) {
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {	
 						this.updateValueSolvedChanged();
-						this.updateValueSolvedChanged(objEntry);					
+						this.updateValueSolvedChanged(objReturnReference);					
 					}
 				}	
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
@@ -406,10 +416,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	
 	//### aus ISolveUserZZZ
 	@Override
-	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isCallSolveCalled(bIsSolveCalled);//der Aufruf findet immer statt, auch ohne gesetztes Flag
 		
 		//Den eigenen Solver
@@ -417,10 +428,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolved(objEntry, bIsSolveCalled);
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
 			objEntry.isCallSolved(bIsSolveCalled);
 		}
@@ -432,10 +444,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveChanged) throws ExceptionZZZ{
-		super.updateValueSolvedChanged(objEntry, bIsSolveChanged);
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveChanged) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objReturnReference, bIsSolveChanged);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
 			objEntry.isCallSolvedChanged(bIsSolveChanged);
 		}
@@ -578,6 +591,9 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			//##############
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 	
 		//#################################
@@ -590,11 +606,10 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			this.updateValueSolved(objEntry);
 			if(sExpressionIn!=null) {												
 				if(!sExpressionIn.equals(sReturn)) {
 					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.									
+					this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);

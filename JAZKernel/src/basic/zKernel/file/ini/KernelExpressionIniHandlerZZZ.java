@@ -301,7 +301,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
-		this.updateValueSolveCalled(objEntry);
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
 		sReturnTagParsed = sExpressionIn;
@@ -445,10 +445,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
 				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
 			}//end if buseencryption						
-			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
 			sReturnLine = sExpressionUsed;	
 			sReturnTagSolved = sReturnLine;
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 						
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -461,7 +462,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(sReturnTagSolved!=null) {				
 				if(!sReturnTagSolved.equals(sReturnTagParsed)) {
 					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry);
+					this.updateValueSolvedChanged(objReturnReference);
 				}
 			}			
 			this.adoptEntryValuesMissing(objEntry);

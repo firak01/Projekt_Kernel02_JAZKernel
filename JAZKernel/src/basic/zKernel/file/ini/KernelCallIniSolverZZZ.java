@@ -157,29 +157,31 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			}
 			
 			//########################
-			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
-			//weil sie ihrerseits mit .solve() ausgeführt werden.
+			//Es gilt: 
+			//Wird der "Untersolver aufgerufen, dann wird auch der "Parent-Tag-Solver" hinsichtlich des Tags geprüft, 
+			//auch wenn das USE-Flag deaktiviert ist
+			//Wird der "Parent-Solver aufgerufen, dann wird das Tag eine deaktivierten "Untersolvers" nicht berücksichtigt.
 				
 			//DARUM:
 			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
-			//Das kann man auch 
+			//Das kann man durch eine Kombination von
 			//a) durch die Flags steuern
 			//b) durch direkten Aufruf der "Untersolver".custom-Methode
-			//c) durch Analyse der Tags
+			//c) durch direkte Analyse der Tags
 		
-//			//a)
-//			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			//a)
+			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 //			//boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 //			if(!bUseJavaCall) break main; // | bUseJsonArray )) break main;
 //								
-//			if(bUseJavaCall) {
+			if(bUseJavaCall) {
 				//b)
 				KernelJavaCallIniSolverZZZ<T> javaCallSolverDummy = new KernelJavaCallIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, javaCallSolverDummy, true);
 					
 				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
 				objJavaCallSolver.updateValueParseCustom(objReturnReference, sExpression);
-//			}
+			}
 		
 			
 //			//c)
@@ -195,37 +197,40 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 
 	//###  aus ISolveUserZZZ
 	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolved(objEntry, bIsSolveCalled);
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
 		//... den es hier nicht gibt. Anders als beim JAVACALL-SOLVER
 		
 		//Den eigenen Solver
 		if(this.isSolverEnabledThis()) {
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 			objEntry.isCallSolved(bIsSolveCalled);
 		}
 	}
 		
 	@Override
-	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
 		//... gibt es hier nicht
 		
 		//Den eigenen Solver
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isCallSolveCalled(bIsSolveCalled);
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
 		//... gibt es hier nicht
 		
 		//Den eigenen Solver
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isCallSolvedChanged(bIsSolveCalled);		
 	}
 	
@@ -487,7 +492,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		objEntry.setRaw(sExpressionIn);		
 		this.updateValueSolveCalled();
-		this.updateValueSolveCalled(objEntry);
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -521,7 +526,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = objReturnReference.get();	
 									
 			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+			this.updateValueSolved(objReturnReference);
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -540,7 +545,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
-						this.updateValueSolvedChanged(objEntry);
+						this.updateValueSolvedChanged(objReturnReference);
 					}
 				}
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
@@ -573,7 +578,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
-		this.updateValueSolveCalled(objEntry);
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schliesslich ist das eine solve ! PARSED ! Methode, also nicht this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -627,7 +632,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				}//end if bUseJavaCall		
 					
 			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
@@ -641,7 +646,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(sReturnTagSolved!=null) {
 				if(!sReturnTagSolved.equals(sReturnTagParsed)) {	
 					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry);
+					this.updateValueSolvedChanged(objReturnReference);
 				}
 			}			
 			this.adoptEntryValuesMissing(objEntry);

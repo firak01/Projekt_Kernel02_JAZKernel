@@ -431,8 +431,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sPost="";
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpression;	
-			//Beim Solven ohne Solver, bleibt alles wie est ist.
+			sExpressionSolved = sExpressionSubstitutedIn;	
+			//Beim Solven ohne Solver, bleibt alles wie es ist, nur substituiert wird
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JavaCall_Call_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
@@ -900,7 +900,11 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				sTag = sTagIn;
 				sTagSolved = sTagSolvedIn;
 				
-				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_UNSOLVED;
+				//Also: Wir testen den "Kind-Solver".
+				//Wenn wir den "Kind-Solver" Testen, dann sind die Flags für den "Eltern-Solver" egal
+				//Demnach nicht folgendes Flagset verwenden IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
+				//sondern hier in testCompute_JavaCall_Call_Unsolved_:
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 

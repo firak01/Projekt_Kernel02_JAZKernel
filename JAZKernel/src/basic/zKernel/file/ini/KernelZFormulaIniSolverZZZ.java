@@ -343,7 +343,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			}//end if bUseFormula		
 						
 			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen		
@@ -360,7 +360,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
-						this.updateValueSolvedChanged(objEntry);
+						this.updateValueSolvedChanged(objReturnReference);
 					}
 				}
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);

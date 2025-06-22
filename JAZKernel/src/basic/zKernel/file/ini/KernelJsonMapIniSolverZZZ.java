@@ -334,10 +334,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				
 	//### aus ISolveUserZZZ
 	@Override
-	public void updateValueSolved(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolved(objEntry, bIsSolveCalled);
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolved(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isJsonSolved(bIsSolveCalled);
 		
 		//Den eigenen Solver
@@ -347,10 +348,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 	
 	@Override
-	public void updateValueSolveCalled(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolveCalled(objEntry, bIsSolveCalled);
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isJsonSolveCalled(bIsSolveCalled);
 		
 		//Den eigenen Solver
@@ -358,10 +360,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	}
 	
 	@Override
-	public void updateValueSolvedChanged(IKernelConfigSectionEntryZZZ objEntry, boolean bIsSolveCalled) throws ExceptionZZZ{
-		super.updateValueSolvedChanged(objEntry, bIsSolveCalled);
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objReturnReference, bIsSolveCalled);
 				
 		//Den "Elternsolver", siehe dazu auch TicketGOON20250308
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 		objEntry.isJsonSolvedChanged(bIsSolveCalled);
 		
 		//Den eigenen Solver
@@ -376,16 +379,28 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
 		boolean bReturn = false;
-		main:{
-		  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-		  if(!bReturn) break main;
-		  
+		main:{  
 		  bReturn = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
-		  if(!bReturn) break main;		  
+		  
 		}//end main:
 		return bReturn;
 	}
 	
+	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			if(!bReturn) break main;
+			
+		}//end main:
+		return bReturn;
+	}
+
 	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sExpression
@@ -436,7 +451,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
-		this.updateValueSolveCalled(objEntry);
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -471,7 +486,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			sReturn = sReturnLine;
 			
 			this.updateValueSolved();
-			this.updateValueSolved(objEntry);
+			this.updateValueSolved(objReturnReference);
 		}//end main:	
 	
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -487,7 +502,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
-						this.updateValueSolvedChanged(objEntry);
+						this.updateValueSolvedChanged(objReturnReference);
 					}
 										
 					if(hmReturn!=null) {						
@@ -672,6 +687,9 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			//##############
 			sReturnTag = (String) vecReturn.get(1);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);
 		}//end main:
 	
 		//#################################
@@ -684,11 +702,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			//NUN DEN INNERHALB DER EXPRESSION BERECHNUNG ERSTELLTEN WERT uebernehmen
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
-			this.updateValueSolved(objEntry);
 			if(sExpressionIn!=null) {												
 				if(!sExpressionIn.equals(sReturn)) {
 					this.updateValueSolvedChanged();
-					this.updateValueSolvedChanged(objEntry); //zur Not nur, weil die Z-Tags entfernt wurden.									
+					this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.									
 				}
 			}			
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);

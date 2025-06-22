@@ -309,8 +309,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sPost="";
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpression;	
-			//Beim Solven ohne Solver, bleibt alles wie est ist.
+			sExpressionSolved = sExpressionSubstitutedIn;	
+			//Beim Solven ohne Solver, bleibt alles wie es ist, nur substituiert wird
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonMap_Json_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
@@ -771,7 +771,14 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			sPre = sPreIn;
 			sPost = sPostIn;
 
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			//Also: Wir testen den "Kind-Solver".
+			//Wenn wir den "Kind-Solver" Testen, dann sind die Flags für den "Eltern-Solver" egal
+			//Demnach nicht folgendes Flagset verwenden: IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
+			//sondern hier in testCompute_JsonMap_Json_unsolved_:			
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONMAP_SOLVED;
+			
+			
+			
 			
 			//##########################################
 			//### Expression unsolved Fall

@@ -1583,6 +1583,17 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 	}
 	
+	@Override
+	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+	}
+
+	
 	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
 	@Override 
 	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
@@ -1599,11 +1610,6 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return bReturn;
 	}
 	
-
-	@Override
-	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
-		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-	}
 	
 	@Override 
 	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {
