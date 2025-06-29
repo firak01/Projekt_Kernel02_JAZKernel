@@ -1022,7 +1022,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
 		Vector3ZZZ<String> vecReturn = vecExpressionIn; //Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;		
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParse = false; boolean bUseParserThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -1064,8 +1064,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
 			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledCustom();
+			if(!bUseParserThis) break main;
 			
 			if(!bKeepSurroundingSeparatorsOnParse) {
 				//Wirf die Surrounding Z-Tags raus (falls vorhanden).

@@ -139,129 +139,133 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	}
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	//### Aus IParseEnabledZZZ	
-	@Override
-	public String parse(String sExpression) throws ExceptionZZZ{
-		return this.parse_(sExpression, true);
-	}
-				
-	@Override
-	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
-	}	
+//	//### Aus IParseEnabledZZZ	
+//	@Override
+//	public String parse(String sExpression) throws ExceptionZZZ{
+//		return this.parse_(sExpression, true);
+//	}
+//				
+//	@Override
+//	public String parse(String sExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+//		return this.parse_(sExpression, bKeepSurroundingSeparatorsOnParse);
+//	}	
+//	
+//	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+//		String sReturnLine = sExpressionIn;
+//		String sReturnTag = null;
+//		main:{
+//			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+//			
+//			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bKeepSurroundingSeparatorsOnParse);
+//			if(vecReturn==null) break main;
+//			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+//			
+//			sReturnTag = (String) vecReturn.get(1);
+//			this.setValue(sReturnTag);
+//							
+//			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
+//			if(vecReturn==null) break main;
+//			sReturnTag = (String) vecReturn.get(1); //den ggfs. leer gewordenen Tag setzen
+//			this.setValue(sReturnTag);
+//				
+//			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
+//			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
+//		}//end main:
+//		return sReturnLine;
+//	}	
 	
-	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		String sReturnLine = sExpressionIn;
-		String sReturnTag = null;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bKeepSurroundingSeparatorsOnParse);
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = (String) vecReturn.get(1);
-			this.setValue(sReturnTag);
-							
-			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = (String) vecReturn.get(1); //den ggfs. leer gewordenen Tag setzen
-			this.setValue(sReturnTag);
-				
-			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
-		}//end main:
-		return sReturnLine;
-	}	
-	
-	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, true, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
-		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, true);
-	}
+//	@Override
+//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+//		return this.parsePost_(vecExpression, true, true);
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression,boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+//		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, true);
+//	}
+//
+//	@Override
+//	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
+//		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
+//	}
+//
+//	
+//	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
+//		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+//		String sReturn = null;
+//		String sReturnTag = null;		
+//		boolean bUseParse = false;
+//		
+//							
+//		main:{			
+//			if(vecExpressionIn==null) break main;
+//						
+//			sReturnTag = (String) vecExpressionIn.get(1);
+//			sReturn = sReturnTag;
+//			this.setValue(sReturnTag);
+//									
+//			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
+//			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
+//			bUseParse = this.isParserEnabledThis();
+//			if(bUseParse) {			
+//				if(!bKeepSurroundingSeparatorsOnParse) {
+//					String sTagStart = "<Z>"; //this.getTagStarting();
+//					String sTagEnd = "</Z>";  //this.getTagClosing();
+//					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
+//	
+//					sReturnTag = (String) vecReturn.get(1);
+//					sReturn = sReturnTag;
+//					this.setValue(sReturnTag);
+//				}	
+//			}else {
+//				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
+//			}
+//			
+//			bUseParse = this.isParserEnabledCustom();
+//			if(bUseParse) {
+//			
+//				//ggfs. weitere Sachen rausrechnen, falls gewuenscht
+//				vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
+//				sReturnTag = (String) vecReturn.get(1);
+//				sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
+//				this.setValue(sReturnTag);				
+//			}
+//		}//end main:
+//				
+//		//#################################
+//		return vecReturn;
+//	}
 
-	@Override
-	public Vector3ZZZ<String> parsePost(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {
-		return this.parsePost_(vecExpression, bKeepSurroundingSeparatorsOnParse, bRemoveOwnTagParts);
-	}
-
-	
-	private Vector3ZZZ<String> parsePost_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bRemoveOwnTagParts) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = vecExpressionIn;
-		String sReturn = null;
-		String sReturnTag = null;		
-		boolean bUseParse = false;
-		
-							
-		main:{			
-			if(vecExpressionIn==null) break main;
-						
-			sReturnTag = (String) vecExpressionIn.get(1);
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);
-									
-			//Als echten Ergebniswert aber die konkreten <Z>-Tags (z.B. eines Solves) ggfs. rausrechnen, falls gewuenscht
-			//Z...-Tags "aus der Mitte entfernen"... Wichtig für das Ergebnis eines Parsens
-			bUseParse = this.isParserEnabledThis();
-			if(bUseParse) {			
-				if(!bKeepSurroundingSeparatorsOnParse) {
-					String sTagStart = "<Z>"; //this.getTagStarting();
-					String sTagEnd = "</Z>";  //this.getTagClosing();
-					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
-	
-					sReturnTag = (String) vecReturn.get(1);
-					sReturn = sReturnTag;
-					this.setValue(sReturnTag);
-				}	
-			}else {
-				//Wenn der Parser herausgenommen ist, seine Tags nicht entfernen.
-			}
-			
-			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
-			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = (String) vecReturn.get(1);
-			sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
-			this.setValue(sReturnTag);
-			
-		}//end main:
-				
-		//#################################
-		return vecReturn;
-	}
-
-	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return vecExpression;
-	}
-
-
-	@Override
-	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
-		return vecExpression;
-	}
+//	@Override
+//	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+//		return vecExpression;
+//	}
+//
+//
+//	@Override
+//	public Vector3ZZZ<String> parsePostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
+//		return vecExpression;
+//	}
 	
 	
-	/**
-	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
-	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
-	 * ist der Ausdruck NACH der ersten Expression.
-	 * 
-	 * @param sExpression
-	 * @throws ExceptionZZZ
-	 */
-	@Override
-	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
-		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
-		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
-			vecReturn = this.parseFirstVectorPost(vecReturn, false, false);
-		}
-		return vecReturn;
-	}
+//	/**
+//	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+//	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+//	 * ist der Ausdruck NACH der ersten Expression.
+//	 * 
+//	 * @param sExpression
+//	 * @throws ExceptionZZZ
+//	 */
+//	@Override
+//	public Vector3ZZZ<String>parseFirstVector(String sExpression) throws ExceptionZZZ{
+//		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+//		main:{
+//			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+//			vecReturn = StringZZZ.vecMidFirst(sExpression, this.getTagPartOpening(), this.getTagPartClosing(), false, false);
+//			vecReturn = this.parseFirstVectorPost(vecReturn, false, false);
+//		}
+//		return vecReturn;
+//	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
@@ -274,44 +278,44 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	
 	
 	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.parseFirstVectorPostCustom_(vecExpression, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
-		return this.parseFirstVectorPostCustom_(vecExpression, bKeepSurroundingSeparatorsOnParse);
-
-	}
-	
-	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = vecExpressionIn;
-		String sReturn = null;
-		String sReturnTag = null;
-				
-		main:{			
-			if(vecExpressionIn==null) break main;
-			
-			//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
-			//bUseExpression = this.isExpressionEnabledAny(); 
-			//if(!bUseExpression) break main;
-							
-			sReturnTag = (String) vecExpressionIn.get(1);
-			sReturn = sReturnTag;
-			if(StringZZZ.isEmpty(sReturnTag)) break main;			
-				
-			
-			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
-			
-			sReturn = sReturnTag;
-			this.setValue(sReturnTag);											
-		}//end main:
-				
-		//################################
-		return vecReturn;
-	}
-	//+++++++++++++++++++++++++++++++++++++++++++++++
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+//		return this.parseFirstVectorPostCustom_(vecExpression, true);
+//	}
+//	
+//	@Override
+//	public Vector3ZZZ<String> parseFirstVectorPostCustom(Vector3ZZZ<String> vecExpression, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
+//		return this.parseFirstVectorPostCustom_(vecExpression, bKeepSurroundingSeparatorsOnParse);
+//
+//	}
+//	
+//	private Vector3ZZZ<String> parseFirstVectorPostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+//		Vector3ZZZ<String> vecReturn = vecExpressionIn;
+//		String sReturn = null;
+//		String sReturnTag = null;
+//				
+//		main:{			
+//			if(vecExpressionIn==null) break main;
+//			
+//			//Das gibt es dann erst in AbstractTagWithExpressionBasicZZZ
+//			//bUseExpression = this.isExpressionEnabledAny(); 
+//			//if(!bUseExpression) break main;
+//							
+//			sReturnTag = (String) vecExpressionIn.get(1);
+//			sReturn = sReturnTag;
+//			if(StringZZZ.isEmpty(sReturnTag)) break main;			
+//				
+//			
+//			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
+//			
+//			sReturn = sReturnTag;
+//			this.setValue(sReturnTag);											
+//		}//end main:
+//				
+//		//################################
+//		return vecReturn;
+//	}
+//	//+++++++++++++++++++++++++++++++++++++++++++++++
 	
 	
 	

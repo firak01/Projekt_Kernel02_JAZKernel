@@ -211,10 +211,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			//!!! Unterschied zum AbstractKernelIniTagSimpleZZ	    
 			String sTagOpening = this.getTagPartOpening();
 			String sTagClosing = this.getTagPartClosing();
-			//20250322; //ich will aber die umgebenden Separatoren erst einmal erhalten. 
-			//            Wenn man sie central haelt, dann gehen sie automatisch beim solven, substitute, etc verloeren
-			//            also nicht: vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);			
-			vecReturn = StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
+			vecReturn = XmlUtilZZZ.parseFirstVectorCascadedTag(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);//StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;		
 			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			

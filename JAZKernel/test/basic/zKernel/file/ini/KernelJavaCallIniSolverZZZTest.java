@@ -431,7 +431,15 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sPost="";
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
-			sExpressionSolved = sExpressionSubstitutedIn;	
+			
+			//Also: Wir verwenden den JavaCall Solver, der ist enabled. Der Call Solver ist disabled... aber das ist dem JavaCall Solver egal (anders als dem darüberliegenden ExpressionSolver).
+			TODOGOON20250629;//Wie macht das JsonArrayIniSolverZZZ????
+			
+			
+			//      ABER: DAS IST DANN DOCH BEIM SOLVEN ANDERS ALS BEIM PARSEN!!!
+			//SONST MUESSTE HIER sHostName als Ergebnis erscheinen.
+			//ALSO: Die umgebenden Tags müssen drin bleiben
+			//sExpressionSolved = sExpressionSubstitutedIn;	
 			//Beim Solven ohne Solver, bleibt alles wie es ist, nur substituiert wird
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JavaCall_Call_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);

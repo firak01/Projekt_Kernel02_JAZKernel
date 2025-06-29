@@ -427,7 +427,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	private Vector3ZZZ<String> parsePostCustom_(Vector3ZZZ<String> vecExpressionIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {		
 		Vector3ZZZ<String> vecReturn = vecExpressionIn; String sReturn;
 		String sExpressionIn = null; 
-		boolean bUseExpression = false; boolean bUseParse = false;
+		boolean bUseExpression = false; boolean bUseParse = false; boolean bUseParserThis = false;
 		
 		main:{			
 			if(vecExpressionIn==null) break main;
@@ -441,8 +441,8 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			bUseParse = this.isParserEnabledThis(); 
-			if(!bUseParse) break main;
+			bUseParserThis = this.isParserEnabledCustom(); 
+			if(!bUseParserThis) break main;
 			
 			
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.

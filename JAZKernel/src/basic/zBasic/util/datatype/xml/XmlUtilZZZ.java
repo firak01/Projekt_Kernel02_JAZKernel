@@ -951,6 +951,27 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		}
 		return vecReturn;
 	}
+	
+	
+	public static Vector3ZZZ<String>parseFirstVectorCascadedTag(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+		main:{
+			boolean bIgnoreCase = true;
+			vecReturn = parseFirstVectorCascadedTag(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
+		}
+		return vecReturn;
+	}
+	
+	public static Vector3ZZZ<String>parseFirstVectorCascadedTag(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
+		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
+		main:{
+			//20250322; //ich will aber die umgebenden Separatoren erst einmal erhalten. 
+			//            Wenn man sie central haelt, dann gehen sie automatisch beim solven, substitute, etc verloeren
+			//            also nicht: vecReturn = StringZZZ.vecMidKeepSeparatorCentral(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);					
+			vecReturn = StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);			
+		}
+		return vecReturn;
+	}
 
 	
 	

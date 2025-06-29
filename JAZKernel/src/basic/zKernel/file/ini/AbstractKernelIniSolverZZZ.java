@@ -311,7 +311,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	@Override
 	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference,  boolean bIsSolveCalled) throws ExceptionZZZ{
 		main:{
-			if(!this.isExpressionEnabledGeneral()) break main;
+			//solve wird aufgerufen... Egal ob Exprssion aktiviert ist oder nicht, also nicht beruecksichtigen:
+			//if(!this.isExpressionEnabledGeneral()) break main;
 
 			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 			objEntry.isSolveCalled(bIsSolveCalled);
