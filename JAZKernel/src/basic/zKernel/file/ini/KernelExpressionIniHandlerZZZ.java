@@ -238,6 +238,11 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 	}
+	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
 		
 	/** Berechne die INI-Werte. 
 	 *  Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.

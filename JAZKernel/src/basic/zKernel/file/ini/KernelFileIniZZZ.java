@@ -1588,26 +1588,10 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 	}
 	
+		
 	@Override
 	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-	}
-
-	
-	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
-	@Override 
-	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			//Merke: Die Abfrage auf isSolverEnabledEveryRelevant() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
-			//       Muss also immer eine extra Abfrage bleiben.
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
-			
-			//Hier kaeme dann das ueberschiebene rein, z.B. "Elternsolver"
-							
-		}//end main:
-		return bReturn;
+		return true;
 	}
 	
 	
@@ -1617,11 +1601,14 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
-			bReturn = this.isSolverEnabledEveryRelevantThis();
+			bReturn = this.isSolverEnabledGeneral();
+			if(!bReturn) break main;	
+			
+			bReturn = this.isSolverEnabledThis();
 			if(!bReturn) break main;
 			
-			bReturn = this.isSolverEnabledGeneral();
-			if(!bReturn) break main;						
+			bReturn = this.isSolverEnabledCustom();
+			if(!bReturn) break main;				
 		}//end main:
 		return bReturn;
 	}
@@ -1634,8 +1621,9 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			//       Muss also immer eine extra Abfrage bleiben.
 			boolean bReturn1 = this.isSolverEnabledThis();						
 			boolean bReturn2 = this.isSolverEnabledGeneral();
+			boolean bReturn3 = this.isSolverEnabledCustom();
 			
-			bReturn = bReturn1 | bReturn2;
+			bReturn = bReturn1 | bReturn2 | bReturn3;
 		}//end main:
 		return bReturn;
 	}

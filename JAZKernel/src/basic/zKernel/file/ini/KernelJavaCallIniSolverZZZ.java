@@ -211,10 +211,11 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			
 			bReturn = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(!bReturn) break main;
-	 
+		
 		}//end main:
 		return bReturn;
 	}
+	
 		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sExpression

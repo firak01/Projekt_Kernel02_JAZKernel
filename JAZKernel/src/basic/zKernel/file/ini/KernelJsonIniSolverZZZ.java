@@ -437,6 +437,12 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return bReturn;
 	}
 	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
+
+	
 	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sLine
@@ -718,5 +724,6 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 
+	
 	
 }//End class

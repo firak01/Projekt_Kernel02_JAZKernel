@@ -1501,7 +1501,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//... das gilt fuer die allgemeinen Testmethoden. 
 			//Aber hier geben wir ja einen expliziten String ohne Substitution vor. 
 			assertFalse(objEntry.isParsedChanged());
-			assertTrue(objEntry.isParsed());
+			assertFalse(objEntry.isParsed());
 			
 			assertFalse(objEntry.isJson());     //beide Flags sind auf "not use"
 			assertFalse(objEntry.isJsonMap());

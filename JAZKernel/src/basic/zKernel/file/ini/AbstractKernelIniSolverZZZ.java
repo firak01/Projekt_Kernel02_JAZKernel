@@ -424,36 +424,19 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	
 	//### Aus ISolveEnabled
-	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
-	@Override
-	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
-	
-	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return this.isSolverEnabledThis();
-	}
-	
-	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
-	@Override 
-	public boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			//Merke: Die Abfrage auf isSolverEnabledEveryRelevant() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
-			//       Muss also immer eine extra Abfrage bleiben.
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
-			
-			//Hier kaeme dann das ueberschiebene rein, z.B. "Elternsolver"
-							
-		}//end main:
-		return bReturn;
-	}
-	
-
 	@Override
 	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 	}
+	
+	//In folgender konkreten Implementierung kann ueber das konkrete Flag des konkreten Solvers, dieser ein-/ausgeschaltet werden.
+	@Override
+	public abstract boolean isSolverEnabledThis() throws ExceptionZZZ;
+	
+	//Merke: Wenn ein "Elternsolver" auch relevant sein soll, dann kann in einer ueberschriebenen Version dieser hier aufgenommen werden.
+	@Override
+	public abstract boolean isSolverEnabledCustom() throws ExceptionZZZ;
+	
 	
 	@Override 
 	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {
@@ -461,11 +444,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
-			bReturn = this.isSolverEnabledEveryRelevantThis();
-			if(!bReturn) break main;
 			
 			bReturn = this.isSolverEnabledGeneral();
-			if(!bReturn) break main;						
+			if(!bReturn) break main;	
+			
+			bReturn = this.isSolverEnabledThis();
+			if(!bReturn) break main;
+			
+			bReturn = this.isSolverEnabledCustom();
+			if(!bReturn) break main;
+			
+							
 		}//end main:
 		return bReturn;
 	}
@@ -478,8 +467,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//       Muss also immer eine extra Abfrage bleiben.
 			boolean bReturn1 = this.isSolverEnabledThis();						
 			boolean bReturn2 = this.isSolverEnabledGeneral();
+			boolean bReturn3 = this.isSolverEnabledCustom();
 			
-			bReturn = bReturn1 | bReturn2;
+			bReturn = bReturn1 | bReturn2 | bReturn3;
 		}//end main:
 		return bReturn;
 	}
@@ -648,7 +638,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			}
 			
 			
-			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
 				
 				
@@ -771,7 +761,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!
 			}
 			
-			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
 							
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
@@ -918,7 +908,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.updateValueSolveCustom(objReturnReference, sExpression);
 			
 			//TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
-			bUseSolverThis = this.isSolverEnabledCustom();
+			bUseSolverThis = this.isSolverEnabledEveryRelevant();
 			if(!bUseSolverThis) break solverThis;
 			
 			

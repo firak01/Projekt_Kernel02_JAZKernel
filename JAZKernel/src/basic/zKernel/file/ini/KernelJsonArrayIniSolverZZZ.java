@@ -354,11 +354,10 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			
 			bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			if(!bReturn) break main;
-			
+		
 		}//end main:
 		return bReturn;
 	}
-
 	
 	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.

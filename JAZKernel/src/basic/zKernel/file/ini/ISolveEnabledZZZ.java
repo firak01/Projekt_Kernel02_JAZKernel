@@ -9,8 +9,7 @@ public interface ISolveEnabledZZZ{
 	boolean isSolverEnabledGeneral() throws ExceptionZZZ;////prueft intern ab, ob das Flag Solver zu nutzen gesetzt ist.
 	boolean isSolverEnabledThis() throws ExceptionZZZ; //prueft intern ab, ob das Flag fuer den konkreten Solver gesetzt ist.
 	boolean isSolverEnabledCustom() throws ExceptionZZZ; //darin können auch die "KindTags" beruecksichtigt werden, also auch deren getFlag(... USE ...) Werte.
-	
-	boolean isSolverEnabledEveryRelevantThis() throws ExceptionZZZ; //Kann auch "Elternsolver" enthalten.	
+		
 	boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ; //prueft intern ab ab solverEnabledGeneral und solverEnabledEveryRelevantThis auf true sind.
 	boolean isSolverEnabledAnyRelevant() throws ExceptionZZZ; //prueft intern ab ab solverEnabledGeneral oder solverEnabledThis auf true sind.	
 }

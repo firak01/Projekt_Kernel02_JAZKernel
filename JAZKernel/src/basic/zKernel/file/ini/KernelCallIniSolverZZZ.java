@@ -454,6 +454,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 		
 	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
+	
+	@Override
 	public String solveParsed(String sExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {		
 		return this.solveParsed_(sExpression, objReturnReference, true);
 	}

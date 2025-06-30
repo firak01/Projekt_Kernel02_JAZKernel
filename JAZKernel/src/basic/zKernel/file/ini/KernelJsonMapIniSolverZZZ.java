@@ -386,7 +386,6 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return bReturn;
 	}
 	
-	
 	@Override
 	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -396,10 +395,25 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			if(!bReturn) break main;
-			
+		
 		}//end main:
 		return bReturn;
 	}
+	
+	
+//	@Override
+//	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+//		boolean bReturn = false;
+//		main:{
+//			bReturn = this.isSolverEnabledThis();
+//			if(!bReturn) break main;
+//			
+//			bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+//	if(!bReturn) break main;
+//			
+//		}//end main:
+//		return bReturn;
+//	}
 
 	
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.

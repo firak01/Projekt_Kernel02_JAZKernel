@@ -134,6 +134,11 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 	}
 	
+	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
+
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sExpression
 	 * @param objEntryReference
@@ -718,7 +723,4 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-	
-	
 }//End class

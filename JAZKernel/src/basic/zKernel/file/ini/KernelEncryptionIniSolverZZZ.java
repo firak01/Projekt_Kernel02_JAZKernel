@@ -184,6 +184,11 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 	
 	@Override
+	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
+	
+	@Override
 	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
 		return this.solvePostCustom_(vecExpression, null, true);
 	}
