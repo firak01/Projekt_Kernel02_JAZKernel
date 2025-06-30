@@ -133,8 +133,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "PRE";
 		sPost = "POST";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.AS_ENTRY, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 		
 		
@@ -144,8 +144,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "PRE";
 		sPost = "POST";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.DEFAULT, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 				
 				
@@ -159,8 +159,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "";
 		sPost = "";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.DEFAULT,sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 		
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; 
@@ -168,8 +168,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "";
 		sPost = "";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.AS_ENTRY,sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 		
 		
@@ -179,8 +179,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "";
 		sPost = "";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.DEFAULT,sExpression,  sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 
 		sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
@@ -188,8 +188,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "";
 		sPost = "";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.AS_ENTRY,sExpression,  sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 
 		//C) PRE / POST
@@ -198,8 +198,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "PRE";
 		sPost = "POST";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.DEFAULT, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 				
 		sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
@@ -207,8 +207,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		sExpressionSolved = sHostName;
 		sPre = "PRE";
 		sPost = "POST";
-		sTag = "";
-		sTagSolved = "";
+		sTag = "<Z:Class>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT+"</Z:Class><Z:Method>"+KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT+"</Z:Method>";		
+		sTagSolved = sTag;
 		testCompute_JavaCall_(TestSubtype.AS_ENTRY, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 
 		} catch (ExceptionZZZ ez) {
@@ -432,14 +432,17 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			
-			//Also: Wir verwenden den JavaCall Solver, der ist enabled. Der Call Solver ist disabled... aber das ist dem JavaCall Solver egal (anders als dem darüberliegenden ExpressionSolver).
-			TODOGOON20250629;//Wie macht das JsonArrayIniSolverZZZ????
-			
-			
-			//      ABER: DAS IST DANN DOCH BEIM SOLVEN ANDERS ALS BEIM PARSEN!!!
+			//ABER: DAS IST DANN DOCH BEIM SOLVEN ANDERS ALS BEIM PARSEN!!!
 			//SONST MUESSTE HIER sHostName als Ergebnis erscheinen.
 			//ALSO: Die umgebenden Tags müssen drin bleiben
-			//sExpressionSolved = sExpressionSubstitutedIn;	
+			sExpressionSolved = sExpressionSubstitutedIn;	
+			
+			sTagSolved = sTagSolvedIn;
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
+			
+			
 			//Beim Solven ohne Solver, bleibt alles wie es ist, nur substituiert wird
 			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JavaCall_Call_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
@@ -912,7 +915,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				//Wenn wir den "Kind-Solver" Testen, dann sind die Flags für den "Eltern-Solver" egal
 				//Demnach nicht folgendes Flagset verwenden IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED;
 				//sondern hier in testCompute_JavaCall_Call_Unsolved_:
-				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JAVACALL_SOLVED;
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.CALL_UNSOLVED_JAVACALL_SOLVED;
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 				btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
@@ -965,8 +968,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 					if(bUseExpressionGeneral && bUseParser) {
 						sExpressionSurroundedTemp = sExpressionSubstituted;
 						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ, false);
-						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonArrayIniSolverZZZ.sTAG_NAME, false);
-						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME, false);				
+						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJavaCallIniSolverZZZ.sTAG_NAME, false);
+						sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelCallIniSolverZZZ.sTAG_NAME, false);				
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2Compare=" + sExpressionSurroundedTemp);
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
 						assertEquals(sExpressionSurroundedTemp, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
