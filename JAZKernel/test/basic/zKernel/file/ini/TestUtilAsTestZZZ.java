@@ -290,7 +290,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -305,7 +305,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -374,7 +374,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		main:{
 			
 			String sExpression2compareWithSolved = null; String sExpression2compareWithSubstituted = null;
-			String sExpressionSubstituted2compare = null;
+			String sExpressionSubstituted2compare = null; String sExpressionSubstituted2compareWithExpression = null;
 			
 			String sExpression = sExpressionIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -400,11 +400,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			assertTrue(objEntry.isPathSubstituted());
 			//+++ kann man hier doch auch eigentlich nicht so abfragen
-			if(sExpression.equals(sExpressionSubstituted)) {						
-				assertFalse(objEntry.isPathSubstitutedChanged());
-			}else {
-				assertTrue(objEntry.isPathSubstitutedChanged());
-			}	
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+				}
+			}
 			//++++++++++++++++++++++++++++++++++++++++++
 			
 			assertTrue(objEntry.isVariableSubstituted());
@@ -531,7 +539,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		main:{
 			
 			String sExpression2compareWithSolved = null; String sExpression2compareWithSubstituted = null;
-			String sExpressionSubstituted2compare = null;
+			String sExpressionSubstituted2compare = null; String sExpressionSubstituted2compareWithExpression = null;
 			
 			String sExpression = sExpressionIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -555,11 +563,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isPathSubstituteCalled());					
-			if(sExpression.equals(sExpressionSubstituted)) {  //+++ kann man hier doch auch eigentlich nicht so abfragen						
-				assertFalse(objEntry.isPathSubstitutedChanged());
-			}else {
-				assertTrue(objEntry.isPathSubstitutedChanged());
-			}					
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+				}
+			}				
 			assertTrue(objEntry.isPathSubstituted());
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -759,7 +775,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
 			sExpressionSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
 			}
@@ -776,7 +792,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
 			sExpressionSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
 			}
@@ -856,7 +872,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -871,7 +887,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -1020,7 +1036,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -1035,7 +1051,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -1266,7 +1282,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 //				//++++++++++++++++++++++ Weil der Tag nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 //				assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 //				sExpression2compareWithSubstituted = sExpression;
-//				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+//				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {) {
 //					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 //				}
 //				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -1281,7 +1297,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 //				//+++++++++++++++++++++++ weil der Tag nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 //				assertTrue(objEntry.isPathSubstituteCalled());
 //				sExpression2compareWithSubstituted = sExpression;
-//				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+//				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {) {
 //					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 //				}
 //				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -1529,16 +1545,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isPathSubstituteCalled());		
-			//sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			//System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-			//System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-			//if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-
-			System.out.println("sExpression="+sExpression);
-			System.out.println("sExpressionSubstituted="+sExpressionSubstituted);
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
 			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				if(sExpression.equals(sExpressionSubstituted)) { 
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
 					assertFalse(objEntry.isPathSubstitutedChanged());
 				}else {
 					assertTrue(objEntry.isPathSubstitutedChanged());
@@ -1623,8 +1637,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//+++++++++++++++++++++++++++++++++++++++
 			assertFalse(objEntry.isPathSubstituteCalled());				
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
 			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				if(sExpression.equals(sExpressionSubstituted)) { 
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
 					assertFalse(objEntry.isPathSubstitutedChanged());
 				}else {
 					assertTrue(objEntry.isPathSubstitutedChanged());
@@ -1709,15 +1729,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//+++++++++++++++++++++++++++++++									
 			assertTrue(objEntry.isPathSubstituteCalled());																
-			sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-			System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-			if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-				assertFalse(objEntry.isPathSubstitutedChanged());
-			}else {
-				assertTrue(objEntry.isPathSubstitutedChanged());
-			}									
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+				}
+			}							
 			assertTrue(objEntry.isPathSubstituted());	
 			
 			//+++++++++++++++++++++++++++++++
@@ -1792,15 +1816,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isPathSubstituteCalled());																
-			sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-			System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-			if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-				assertFalse(objEntry.isPathSubstitutedChanged());
-			}else {
-				assertTrue(objEntry.isPathSubstitutedChanged());
-			}									
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+				}
+			}								
 			assertTrue(objEntry.isPathSubstituted());
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1958,15 +1986,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isPathSubstituteCalled());																
-			sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-			sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-			System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-			System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-			if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-				assertFalse(objEntry.isPathSubstitutedChanged());
-			}else {
-				assertTrue(objEntry.isPathSubstitutedChanged());
-			}														
+			sExpression2compareWithSubstituted = sExpression;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+			}
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted=" + sExpressionSubstituted);					
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+				}
+			}													
 			assertFalse(objEntry.isPathSubstituted());
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -2037,7 +2069,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -2052,7 +2084,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -2065,29 +2097,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 			}
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-			//+++++++++++++++++++++++++
-			//++++++++++++++++++++
-			
-			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-//			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
-//			//da wir das Ergebnis des Parsens nicht haben.
-//			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-//			assertTrue(objEntry.isParsed());
-//			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isPathSubstituteCalled());																				
-//			sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-//			sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-//			System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-//			System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-//			if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-//				assertFalse(objEntry.isPathSubstitutedChanged());
-//			}else {
-//				assertTrue(objEntry.isPathSubstitutedChanged());
-//			}															
-//			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+		
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//+++Variablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isVariableSubstituteCalled());
@@ -2193,7 +2203,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -2208,7 +2218,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -2221,29 +2231,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 			}
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-			//+++++++++++++++++++++++++
-			//++++++++++++++++++++
 			
-			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-//			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
-//			//da wir das Ergebnis des Parsens nicht haben.
-//			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-//			assertTrue(objEntry.isParsed());
-//			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isPathSubstituteCalled());																				
-//			sExpressionSubstituted2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);
-//			sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-//			System.out.println("sExpression2compareWithSubstituted="+sExpression2compareWithSubstituted);
-//			System.out.println("sExpressionSubstituted2compareWithExpression="+sExpressionSubstituted2compareWithExpression);
-//			if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compareWithExpression)) { 
-//				assertFalse(objEntry.isPathSubstitutedChanged());
-//			}else {
-//				assertTrue(objEntry.isPathSubstitutedChanged());
-//			}															
-//			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//+++Variablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isVariableSubstituteCalled());
@@ -2451,7 +2439,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
 			sSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 				sSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sSubstituted2compare, sTagStartZ, sTagEndZ, false);
 			}
@@ -2468,7 +2456,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
 			sSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 				sSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sSubstituted2compare, sTagStartZ, sTagEndZ, false);
 			}
@@ -2482,27 +2470,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 			}
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
-			//++++++++++++++++++++++++
-			//++++++++++++++++++++++++
-			
-			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-//			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
-//			//da wir das Ergebnis des Parsens nicht haben.
-//			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-//			assertTrue(objEntry.isParsed());
-//			
-//			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			assertTrue(objEntry.isPathSubstituteCalled());						
-//			if(objEntry.isPathSubstituted()){ 
-//				if(sExpression.equals(sExpressionSubstituted)) { 
-//					assertFalse(objEntry.isPathSubstitutedChanged());
-//				}else {
-//					assertTrue(objEntry.isPathSubstitutedChanged());
-//				}
-//			}													
-//			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+	
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//+++Varaiablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isVariableSubstituteCalled());
@@ -2612,7 +2580,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubsituted=" + sExpression2compareWithSubstituted);
@@ -2627,7 +2595,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 			}
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted=" + sExpression2compareWithSubstituted);
@@ -3053,7 +3021,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
 			sExpression2compareWithSubstituted = sExpression;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (veraendert)=" + sExpression2compareWithSubstituted);
 				sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
