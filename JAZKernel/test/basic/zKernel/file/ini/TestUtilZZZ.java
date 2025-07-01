@@ -163,8 +163,8 @@ public class TestUtilZZZ {
 				
 				//20230505 Tests fuer die Arbeit mit Werten aus einem JavaCall Aufruf
 				objStreamFile.println("[" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_PATHSECTION + "]");
-				objStreamFile.println(KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY + "=" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_DEFAULT);
-				objStreamFile.println(KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_PATHPROPERTY + "=" + KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_DEFAULT);
+				objStreamFile.println(KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_CLASS_PATHPROPERTY + "=" + KernelJavaCallIniSolverZZZTest.sCALL01_CLASS_DEFAULT);
+				objStreamFile.println(KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_METHOD_PATHPROPERTY + "=" + KernelJavaCallIniSolverZZZTest.sCALL01_METHOD_DEFAULT);
 				
 				objStreamFile.println("[Section for testCallComputed]");
 				objStreamFile.println("WertCalledComputed="+ KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT); //<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>");

@@ -2387,7 +2387,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++++
 			//+++++++++++++++++++++++++
 			assertTrue(objEntry.isCallSolveCalled());
-			assertFalse(objEntry.isCallSolved());//Der Eltern-Solver ist abgestellt
+			assertTrue(objEntry.isCallSolved());
 			//+++++++++++++++++++++++++
 			//+++++++++++++++++++++++++
 			assertTrue(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
