@@ -130,6 +130,9 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag("useexpression", true); //damit wird man das Z-Tag los. 
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+						
 			btemp = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
 			
@@ -156,14 +159,23 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			//+++++++++++++++++++++++++					
 			//### Berechung der Formel			
 			objExpressionSolver.setFlag("usejson", true);
-			objExpressionSolver.setFlag("usejson_array", true);
+			objExpressionSolver.setFlag("usejson_msp", true);
 			
-			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			//a) Default, drinlassen des Z-Tags
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = sExpression;		
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);
+			
+			//b) Zum Entfernen des Z-Tags einen Parameter angeben
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objExpressionSolver.parse(sExpression, false);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			//+++++++++++++++++++++++++++
 			//Berechne nun aus einem ini-File heraus
@@ -209,6 +221,9 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag("useexpression", true); //damit wird man das Z-Tag los. 
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
 			
+			btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+			
 			btemp = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
 			
@@ -236,12 +251,21 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			objExpressionSolver.setFlag("usejson", true);
 			objExpressionSolver.setFlag("usejson_array", true);
 			
+			//a) default bleibt beim Parsen der Z-Tag drin 
 			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
-			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = sExpression;			
 			sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);
+			
+			//b) Will man den Z-Tag entfernt haben, muss man einen Parameter uebergeben
+			sExpression = KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objExpressionSolver.parse(sExpression, false);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			//+++++++++++++++++++++++++++
 			//Berechne nun aus einem ini-File heraus

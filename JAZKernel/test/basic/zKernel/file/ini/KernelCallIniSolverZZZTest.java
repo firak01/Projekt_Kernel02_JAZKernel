@@ -117,7 +117,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		}
 		
 		public void testCompute_Call() {
-			String sExpressionSource=null;
+			String sExpressionSource=null; String sExpressionSubstituted=null;
 //			try {
 			
 			//##################################
@@ -125,8 +125,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 
 			//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
 			//...
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT; 
-			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted,"","", TestSubtype.AS_ENTRY);
 			
 			
 			
@@ -135,27 +136,33 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		
 		
 			//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT; 
-			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "","", TestSubtype.DEFAULT);
 			
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT; 
-			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "","", TestSubtype.AS_ENTRY);
 			
 			
 			//Test ohne notwendige Pfadersetzung, das Flag zur Pfadersetzung ist aber gesetzt
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-			testCompute_Call_(sExpressionSource,"","", TestSubtype.DEFAULT);
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "","", TestSubtype.DEFAULT);
 			
-			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT; 
-			testCompute_Call_(sExpressionSource,"","", TestSubtype.AS_ENTRY);
+			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "","", TestSubtype.AS_ENTRY);
 
 			
 			//++++++++++ PRE / POST
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
-			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.DEFAULT);
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "PRE", "POST", TestSubtype.DEFAULT);
 			
 			sExpressionSource = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
-			testCompute_Call_(sExpressionSource, "PRE", "POST", TestSubtype.AS_ENTRY);
+			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+			testCompute_Call_(sExpressionSource, sExpressionSubstituted, "PRE", "POST", TestSubtype.AS_ENTRY);
 			
 //			} catch (ExceptionZZZ ez) {
 //				fail("Method throws an exception." + ez.getMessageLast());
@@ -168,7 +175,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 		 * 
 		 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 		 */
-		private void testCompute_Call_(String sExpressionIn, String sPreIn, String sPostIn, TestSubtype enumTestSubtype){						
+		private void testCompute_Call_(String sExpressionIn, String sExpressionSubstitutedIn, String sPreIn, String sPostIn, TestSubtype enumTestSubtype){						
 			try {		
 				boolean btemp;
 				String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
@@ -187,7 +194,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ 3) Ohne Call-Berechung
 				//3a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sExpression; //derzeit bedeutet "ohne Call Berechnung" auch "ohne Parsen". Damit wird auch nicht Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost; //"ohne Call Berechnung" bedeutet nicht "ohne Parsen". Damit wird Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
 				sExpressionSolved = sExpression; //derzeit bedeutet "ohne Call Berechnung" auch "ohne Parsen". Damit wird auch nicht Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
@@ -287,8 +294,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ 2) Ohne jegliche Solver-Berechnung (Ergebnisse muessen so sein wie bei Parse)
 				//2a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -304,9 +311,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//2b) Parse ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 				sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
 				
@@ -324,8 +331,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//2c) Solve ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				//Beim Solven ohne Solver, bleibt eh alles wie est ist.
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
@@ -342,8 +349,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//2d) Solve ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
 				//Ohne Solver, bleibt es wie es ist. Zudem: Beim Solven GANZ ohne Solver, werden die äusseren Z-Tags nicht entfernt.
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				
@@ -363,8 +370,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ 3) Ohne Call-Solver-Berechnung
 				//3a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost; //"ohne Call Berechnung" bedeutet nicht "ohne Parsen". Damit wird Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //"ohne Call Berechnung" bedeutet nicht "ohne Parsen". Damit wird Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -380,8 +387,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//3b) Parse ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!				
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				
 				
@@ -401,8 +408,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 								
 				//3c) Solve, ohne Call-Solver-Berechnung, d.h. ein Parsen findet bzgl. Call-Tag nicht statt ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -421,10 +428,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//3d) Solve ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 				//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ, false);//DerGesamtsolver sollte aber ausgefuehrt werden und fuer das Entfernen der Z-Tags sorgen!!!
 				
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);//DerGesamtsolver sollte aber ausgefuehrt werden und fuer das Entfernen der Z-Tags sorgen!!!
 				//CALL ist unsolved .... sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);//DerGesamtsolver sollte aber ausgefuehrt werden und fuer das Entfernen der Z-Tags sorgen!!!
 				
@@ -446,8 +453,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//4a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				//Werdem beim reinen Parsen die umgebenden Tags nicht entfernt, dann bleibt das call-Tag drin. Das wird naemlich auch durch Parsen NICHT "aufgeloest".
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
@@ -468,8 +475,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 										
 				//4b) Parse ... mit Entferenen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Besonderer Test: Entferne beim Parsen die umgebenden Z-Tags
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
@@ -491,8 +498,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			
 				//4c) Solve ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 
 				//Konflikt: 
 				//Normalfall: Aufloesen mit solve -> z:call, z:JavaCall weg, etc.
@@ -520,8 +527,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//4d) Solve ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Und die umgebenden Z-Tags sollen weg.
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
@@ -549,11 +556,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ 5) Mit Call-Berechnung UND JavaCall-Berechnung
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 
 				//5a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				
@@ -576,8 +583,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//5b) Parse ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -598,7 +605,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//5c) Solve ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 				sExpressionSolved = sPre + sTagStartZ + sHostName + sTagEndZ + sPost; 
 				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
 				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
@@ -615,7 +622,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//5d) Solve ... mit Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
-				sExpressionSubstituted = sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
+				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 				sExpressionSolved = sPre + sHostName + sPost;		
 				
 				sTag = sHostName;
