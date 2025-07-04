@@ -619,13 +619,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertFalse(objEntry.isJavaCallSolveCalled());
 			assertTrue(objEntry.isExpression());
 			
-			assertFalse(objEntry.isParsed());
+			assertTrue(objEntry.isParsed());  //auch ohne solver wird geparsed
 			assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
 			
 			assertFalse(objEntry.isDecrypted());
 			assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 			
-			assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+			assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 			//kann ja theoretisch auch ein anderer Call sein... assertTrue(objEntry.isJavaCall());	//Beim Parsen wird das festgestellt
 			assertNull(objEntry.getCallingClassname());
 			assertNull(objEntry.getCallingMethodname());
@@ -2162,7 +2162,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertFalse(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+			assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
 			
 			assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 			assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt

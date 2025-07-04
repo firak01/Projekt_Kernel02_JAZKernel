@@ -1688,8 +1688,17 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
 			
-			XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
-									
+			TODOGOON20250704;//Mache einen Schalter, ob eine Exception geworfen werden soll oder einfach bei break gemacht wird.
+			if(KernelConfigSectionEntryUtilZZZ.FLAGCONTROL.catchException) {
+				try {
+					XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+				}catch(Exception e) {
+					break main;
+				}
+			}else {
+				XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
+			}
+			
 			String sTagPartOpening; String sTagPartClosing;
 			sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
 			sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);

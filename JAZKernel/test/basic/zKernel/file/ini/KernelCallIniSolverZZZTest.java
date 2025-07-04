@@ -195,14 +195,17 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//3a) Parse ... ohne Entfernen der umgebenden Z-Tags
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost; //"ohne Call Berechnung" bedeutet nicht "ohne Parsen". Damit wird Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost;
-				sExpressionSolved = sExpression; //derzeit bedeutet "ohne Call Berechnung" auch "ohne Parsen". Damit wird auch nicht Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
+				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //derzeit bedeutet "ohne Call Berechnung" auch "ohne Parsen". Damit wird auch nicht Substituiert: sPre + sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
-				sTag = null; //sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-//				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-//				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
-//				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                sTagSolved = null;
+				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+				
+				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
+               
 				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
@@ -375,10 +378,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+				
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                				
+             				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 					btemp = testCompute_Call_CallUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 				} else {
@@ -394,11 +400,13 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+								
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
-                
-				
+                				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
 					btemp = testCompute_Call_CallUnsolved_(sExpression,  sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 				} else {
@@ -414,6 +422,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+				
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
@@ -438,6 +448,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags. 
 				//Merke: Diese Werte sind immer ohne die umgebenden Tags. Das wird gemacht durch PARSE. Ein abgestellter SOLVER aendert nichts daran.
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+								
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
@@ -460,7 +473,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);				
 				
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+								
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
@@ -480,9 +495,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				//Besonderer Test: Entferne beim Parsen die umgebenden Z-Tags
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.						
-
 				
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -508,9 +524,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Also: z:Call soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);
-
 				
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -534,10 +551,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//      Weil JavaCall in diesem Test nicht verwendet wird, bleibt dieser drin.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelCallIniSolverZZZ.sTAG_NAME);		
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-				
-				
-				
+												
 				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
@@ -562,9 +579,11 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpression = sPre + sExpressionIn + sPost;
 				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
-				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
-				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+								
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
@@ -587,6 +606,10 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpressionSolved = sPre + sExpressionSubstitutedIn + sPost; //auch ohne Solver werden die Pfade substituiert!!!
 				
 				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				sTag = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
+				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelCallIniSolverZZZ.sTAG_NAME, false);
+												
 				sTagSolved = sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, sTagStartZ, sTagEndZ, false); //von aussen nach innen. So bleiben Z-Tags innen(z.B. um den Pfad herum) erhalten.
 				sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelCallIniSolverZZZ.sTAG_NAME, false);
@@ -610,8 +633,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//Wichtig: z:Call und z:Java sollen aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.
 				//Merke: Das geht aber bei uebergebenen Pfaden nur, wenn sie auch aufgeloest werden und einen sinnvolle Klasse und Methode zurueckkommt.
 				
-				sTag = sHostName;
-				
+				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
+				sTag = sHostName;				
 				sTagSolved = sHostName;	
 				
 				if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
@@ -625,6 +648,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				sExpressionSubstituted = sPre + sExpressionSubstitutedIn + sPost;
 				sExpressionSolved = sPre + sHostName + sPost;		
 				
+				//Der reine Tag, ohne umgebende Z-Tags und Call-Tags
 				sTag = sHostName;
 				sTagSolved = sHostName;
 				
@@ -708,7 +732,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 					//#####################################
 					//+++ Nun die Gesamtberechnung durchführen
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
 					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
@@ -748,7 +772,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ Variante fuer einen AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());				
+					objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
 					assertNotNull(objEntry);
 					sValue = objEntry.getValue();
 					
@@ -847,7 +871,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
 					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
@@ -884,7 +908,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ Variante fuer den AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());				
+					objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
 					assertNotNull(objEntry);					
 					sValue = objEntry.getValue();
 					
