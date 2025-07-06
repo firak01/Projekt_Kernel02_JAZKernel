@@ -2,11 +2,12 @@ package basic.zKernel.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
+import basic.zBasic.ExceptionHandlingMainTypeZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
@@ -1672,24 +1673,47 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	//######################################################
 	//### SURROUNDING
 	//######################################################
-	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf. 
+	//Merke: Die Exception zu werfen ist default
 	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName) throws ExceptionZZZ {
-		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, true);
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, true, ExceptionHandlingMainTypeZZZ.TypeZZZ.THROW);
 	}
 	
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	//Merke: Die Exception zu werfen ist default
 	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut) throws ExceptionZZZ {
-		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, bDirectionFromInToOut);
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, bDirectionFromInToOut, ExceptionHandlingMainTypeZZZ.TypeZZZ.THROW);
+	}
+
+    //++++++++++	
+	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	//Merke: Steuere das Verhalten eine Exception zu verarbeiten
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, IEnumSetMappedZZZ objEnumExceptionHandlingType) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, true, objEnumExceptionHandlingType);
 	}
 	
 	//Merke: Von Innen nach aussen zu entfernen ist Default. Bei verschachtelten Tags loest man auch von innen nach aussen auf.
+	//Merke: Steuere das Verhalten eine Exception zu verarbeiten
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bDirectionFromInToOut, IEnumSetMappedZZZ objEnumExceptionHandlingType) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, true, bDirectionFromInToOut, objEnumExceptionHandlingType);
+	}
+	
+	//++++++++++++
+	//Merke: Steuere Richtung (Innen nach aussen) und Position im String.
+	//Merke: Die Exception zu werfen ist default
 	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bAnyPosition, boolean bDirectionFromInToOut) throws ExceptionZZZ {
+		return getExpressionTagpartsSurroundingRemoved(sExpression, sTagName, bAnyPosition, bDirectionFromInToOut, ExceptionHandlingMainTypeZZZ.TypeZZZ.THROW);
+	}
+		
+	//++++++++++++
+	//Merke: Steuere Richtung (Innen nach aussen) und Position im String.
+	//Merke: Steuere das Verhalten eine Exception zu verarbeiten
+	public static String getExpressionTagpartsSurroundingRemoved(String sExpression, String sTagName, boolean bAnyPosition, boolean bDirectionFromInToOut, IEnumSetMappedZZZ objEnumExceptionHandlingType) throws ExceptionZZZ {
 		String sReturn = sExpression;		
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			
-			TODOGOON20250704;//Mache einen Schalter, ob eine Exception geworfen werden soll oder einfach bei break gemacht wird.
-			if(KernelConfigSectionEntryUtilZZZ.FLAGCONTROL.catchException) {
+						
+			if(objEnumExceptionHandlingType == ExceptionHandlingMainTypeZZZ.TypeZZZ.CATCH_AWAY) {
 				try {
 					XmlUtilZZZ.ensureExpressionTagNameValid(sTagName);
 				}catch(Exception e) {

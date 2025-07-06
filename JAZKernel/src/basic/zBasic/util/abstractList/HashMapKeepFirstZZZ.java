@@ -38,9 +38,6 @@ import basic.zBasic.util.math.MathZZZ;
 public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, IObjectZZZ, IHashMapKeepFirstZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
 	
-	//fuer IObjectZZZ
-	private ExceptionZZZ objException;
-	
 	//fuer IOutputDebugNormedZZZ
 	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	
@@ -82,16 +79,6 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	}
 	
 	//### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-	
 	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {

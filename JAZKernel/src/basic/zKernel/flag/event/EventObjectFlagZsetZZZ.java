@@ -60,18 +60,6 @@ public final class EventObjectFlagZsetZZZ extends EventObject implements IEventO
 		return this.bFlagValue;
 	}
 
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	//### Aus dem Interface Comparable	
 	@Override
 	public int compareTo(IEventObjectFlagZsetZZZ o) {

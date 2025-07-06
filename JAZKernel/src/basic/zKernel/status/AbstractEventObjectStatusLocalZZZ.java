@@ -232,17 +232,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	   
 	   //#################################################################
 	   //### aus IObjectZZZ
-	   @Override
-		public ExceptionZZZ getExceptionObject() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setExceptionObject(ExceptionZZZ objException) {
-			// TODO Auto-generated method stub			
-		}
-		
+	   //Meine Variante Objekte zu clonen
 		@Override
 		public Object clonez() throws ExceptionZZZ {
 			try {

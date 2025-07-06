@@ -7,7 +7,7 @@ import java.util.EnumSet;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedMaintypeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedMaintypeUserZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ.JdbcDriverClassTypeZZZ;
@@ -64,127 +64,127 @@ public class EncodingMappedValueZZZ  implements Serializable{
 			
 //Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 //ALIAS("Beschreibung, wird nicht genutzt....","Abkürzung, also das, was im URL String steht. Meist gefolgt von einem  Doppelpunkt, der hinzugerchnet wird, wenn die Abkürzung nicht leer ist.")
-public enum EncodingTypeZZZ implements IEnumSetMappedMaintypeZZZ, IEnumSetZZZ {//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+public enum EncodingTypeZZZ implements IEnumSetMappedMaintypeUserZZZ, IEnumSetZZZ {//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert, also einen zusätzlichen Type-Anwenden
 	//     Die sAbbr - Werte in untenstehender Enumertion sind z.B. für: ... Charset.forName("UTF8"));
 	UTF8("UTF8","UTF8 encoding",EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()),
 	ASCII("ISO-8859-1","simple ASCII encoding",EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()),
 	LATIN("cp1252","simple LATIN Codepage ASCII encoding",EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
 	
-private String sAbbr, sDescr;
-private int iMaintype;
-
-//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert
-//private EnumSet enumSubtype;
-
-//#############################################
-//#### Konstruktoren
-//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
-//In der Util-Klasse habe ich aber einen Workaround gefunden.
-EncodingTypeZZZ(String sAbbr, String sDescr,int iMaintype) {
-    this.sAbbr = sAbbr;
-    this.sDescr = sDescr;
-    this.iMaintype = iMaintype;
-}
-
-//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert
-//CryptCipherTypeZZZ(String sAbbr, String sDescr,EnumSet enumSubtype) {
-//    this.sAbbr = sAbbr;
-//    this.sDescr = sDescr;
-//    this.enumSubtype = enumSubtype;
-//}
-
-
-
-//the identifierMethod ---> Going in DB
-public String getAbbreviation() {
- return this.sAbbr;
-}
-
-public EnumSet<?>getEnumSetUsed(){
-	return EncodingTypeZZZ.getEnumSet();
-}
-
-/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
-@SuppressWarnings("rawtypes")
-public static <E> EnumSet getEnumSet() {
+	private String sAbbr, sDescr;
+	private int iMaintype;
 	
- //Merke: Das wird anders behandelt als FLAGZ Enumeration.
-	//String sFilterName = "FLAGZ"; /
-	//...
-	//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
+	//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert
+	//private EnumSet enumSubtype;
 	
-	//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-	Class<EncodingTypeZZZ> enumClass = EncodingTypeZZZ.class;
-	EnumSet<EncodingTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
-	
-	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
-	 for(Object obj : objaEnum){
-		//System.out.println(obj + "; "+obj.getClass().getName());
-		set.add((EncodingTypeZZZ) obj);
+	//#############################################
+	//#### Konstruktoren
+	//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
+	//In der Util-Klasse habe ich aber einen Workaround gefunden.
+	EncodingTypeZZZ(String sAbbr, String sDescr,int iMaintype) {
+	    this.sAbbr = sAbbr;
+	    this.sDescr = sDescr;
+	    this.iMaintype = iMaintype;
 	}
-	return set;
 	
-}
-
-//TODO: Mal ausprobieren was das bringt
-//Convert Enumeration to a Set/List
-private static <E extends Enum<E>>EnumSet<E> toEnumSet(Class<E> enumClass,long vector){
-	  EnumSet<E> set=EnumSet.noneOf(enumClass);
-	  long mask=1;
-	  for (  E e : enumClass.getEnumConstants()) {
-	    if ((mask & vector) == mask) {
-	      set.add(e);
-	    }
-	    mask<<=1;
-	  }
-	  return set;
+	//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert
+	//CryptCipherTypeZZZ(String sAbbr, String sDescr,EnumSet enumSubtype) {
+	//    this.sAbbr = sAbbr;
+	//    this.sDescr = sDescr;
+	//    this.enumSubtype = enumSubtype;
+	//}
+	
+	
+	
+	//the identifierMethod ---> Going in DB
+	public String getAbbreviation() {
+	 return this.sAbbr;
 	}
-
-//+++ Das könnte auch in einer Utility-Klasse sein.
-//the valueOfMethod <--- Translating from DB
-public static EncodingTypeZZZ fromAbbreviation(String s) {
-for (EncodingTypeZZZ state : values()) {
-   if (s.equals(state.getAbbreviation()))
-       return state;
-}
-throw new IllegalArgumentException("Not a correct abbreviation: " + s);
-}
-
-//##################################################
-//#### Folgende Methoden bring Enumeration von Hause aus mit. 
-		//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
-@Override
-public String getName() {	
-	return super.name();
-}
-
-@Override
-public String toString() {
-    return this.sAbbr+"#"+this.sDescr;
-}
-
-@Override
-public int getIndex() {
-	return ordinal();
-}
-
-//### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
-@Override
-public int getPosition() {
-	return getIndex()+1; 
-}
-
-@Override
-public String getDescription() {
-	return this.sDescr;
-}
-//+++++++++++++++++++++++++
-
-@Override
-public int getMaintype() {
-	return this.iMaintype;
-}
-}//End internal Class	
+	
+	public EnumSet<?>getEnumSetUsed(){
+		return EncodingTypeZZZ.getEnumSet();
+	}
+	
+	/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
+	@SuppressWarnings("rawtypes")
+	public static <E> EnumSet getEnumSet() {
+		
+	 //Merke: Das wird anders behandelt als FLAGZ Enumeration.
+		//String sFilterName = "FLAGZ"; /
+		//...
+		//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
+		
+		//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
+		Class<EncodingTypeZZZ> enumClass = EncodingTypeZZZ.class;
+		EnumSet<EncodingTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+		
+		 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+		 for(Object obj : objaEnum){
+			//System.out.println(obj + "; "+obj.getClass().getName());
+			set.add((EncodingTypeZZZ) obj);
+		}
+		return set;
+		
+	}
+	
+	//TODO: Mal ausprobieren was das bringt
+	//Convert Enumeration to a Set/List
+	private static <E extends Enum<E>>EnumSet<E> toEnumSet(Class<E> enumClass,long vector){
+		  EnumSet<E> set=EnumSet.noneOf(enumClass);
+		  long mask=1;
+		  for (  E e : enumClass.getEnumConstants()) {
+		    if ((mask & vector) == mask) {
+		      set.add(e);
+		    }
+		    mask<<=1;
+		  }
+		  return set;
+		}
+	
+	//+++ Das könnte auch in einer Utility-Klasse sein.
+	//the valueOfMethod <--- Translating from DB
+	public static EncodingTypeZZZ fromAbbreviation(String s) {
+	for (EncodingTypeZZZ state : values()) {
+	   if (s.equals(state.getAbbreviation()))
+	       return state;
+	}
+	throw new IllegalArgumentException("Not a correct abbreviation: " + s);
+	}
+	
+	//##################################################
+	//#### Folgende Methoden bring Enumeration von Hause aus mit. 
+			//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
+	@Override
+	public String getName() {	
+		return super.name();
+	}
+	
+	@Override
+	public String toString() {
+	    return this.sAbbr+"#"+this.sDescr;
+	}
+	
+	@Override
+	public int getIndex() {
+		return ordinal();
+	}
+	
+	//### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
+	@Override
+	public int getPosition() {
+		return getIndex()+1; 
+	}
+	
+	@Override
+	public String getDescription() {
+		return this.sDescr;
+	}
+	//+++++++++++++++++++++++++
+	
+	@Override
+	public int getMaintype() {
+		return this.iMaintype;
+	}
+	}//End internal Class	
 }//End Class
 

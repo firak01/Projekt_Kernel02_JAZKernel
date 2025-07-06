@@ -10,7 +10,7 @@ import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
-public abstract class AbstractObjectZZZ <T> implements Serializable, Cloneable, IOutputDebugNormedZZZ, IObjectZZZ, ILogZZZ{
+public abstract class AbstractObjectZZZ <T> implements IOutputDebugNormedZZZ, IObjectWithExceptionZZZ, ILogZZZ{
 	private static final long serialVersionUID = 1L;	
 	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	

@@ -2,6 +2,7 @@ package basic.zKernel.file.ini;
 
 import java.util.Vector;
 
+import basic.zBasic.ExceptionHandlingMainTypeZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
@@ -3163,7 +3164,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
-				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getParentName());
+				
+				//Es ist durchaus erlaubt, dass der ParentName = NULL ist. Darum das Default ExceptionHandling hier uebersteuern
+				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getParentName(), ExceptionHandlingMainTypeZZZ.TypeZZZ.CATCH_AWAY);
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());
 				
 				//PRE und POST umgebend entfernen!!!

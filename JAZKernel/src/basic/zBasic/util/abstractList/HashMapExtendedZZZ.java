@@ -29,8 +29,7 @@ import basic.zBasic.util.math.MathZZZ;
  */
 public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapExtendedZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
-	protected volatile ExceptionZZZ objException;
-	
+		
 	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	protected volatile String sDebugEntryDelimiterUsed = null;
 
@@ -45,12 +44,6 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 			
 			hmReturn=new HashMapExtendedZZZ();
 			hmReturn.putAll(hm);
-			
-//			Set setKey = hm.keySet();
-//			Iterator itKey = setKey.iterator();
-//			while(itKey.hasNext());{
-//				hmReturn.putAll(m);
-//			}
 			
 		}//end main:
 		return hmReturn;
@@ -1071,16 +1064,6 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 
 	
 	//#### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-	
 	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {

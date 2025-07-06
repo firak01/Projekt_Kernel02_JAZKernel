@@ -2,15 +2,16 @@ package basic.zBasic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /** This class handles every exception in the Z-Kernel-Framework.
  * TODO Mapping-Methode, in der aus einem ErrorCode der zugeh�rige Fehelrtext geholt wird. Dieser Fehlertext wird dann vor der �bergebenen Meldung gesetzt.
  * @author 0823
  */
-public class ExceptionZZZ extends Exception implements IConstantZZZ{
-
-	 //#################################################################
+public class ExceptionZZZ extends Exception implements  IConstantZZZ, Serializable {
+	private static final long serialVersionUID = -6539082726335203435L;
+	//#################################################################
 	 //private Variablen
 	 String[] saMessage;
 	 String[] saFunction;

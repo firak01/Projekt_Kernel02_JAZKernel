@@ -30,7 +30,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  IConstantZZZ, IObjectZZZ, IArrayListExtendedZZZ{
 	private static final long serialVersionUID = 2859619907770188881L;
-	protected ExceptionZZZ objException;
 	
 	/**
 	 * @param iCapacityInitial
@@ -59,17 +58,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return bReturn;
 	}//end private constructor
 	
-	//#### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException=objException;
-	}
-	
+	//#### aus IObjectZZZ	
 	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {

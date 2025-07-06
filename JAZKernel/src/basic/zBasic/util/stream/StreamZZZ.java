@@ -56,6 +56,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
  * 
  */
 public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
+	private static final long serialVersionUID = -3561557197050804231L;
 	protected ExceptionZZZ objException = null;
 	
 	public enum CharsetUsedZZZ implements IEnumSetMappedZZZ, IEnumSetZZZ{ //Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
@@ -75,10 +76,12 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 
 
 		//the identifierMethod ---> Going in DB
+		@Override
 		public String getAbbreviation() {
 		 return this.abbr;
 		}
 		
+		@Override
 		public EnumSet<?>getEnumSetUsed(){
 			return CharsetUsedZZZ.getEnumSet();
 		}
@@ -338,15 +341,6 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
       }
       
   	//### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-	  return this.objException;
-	}
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-	
 	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {
@@ -359,6 +353,18 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 		}
 	}
 	
+	//### aus ObjectWithExcetionZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+	  return this.objException;
+	}
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException = objException;
+	}
+	
+	
+	//#############
 	//Neue Komfort-Methoden, die es in der Elternklasse nicht gibt
 	public String readLineLast() throws ExceptionZZZ {
 		

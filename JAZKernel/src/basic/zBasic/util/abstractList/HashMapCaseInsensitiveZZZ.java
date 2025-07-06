@@ -36,23 +36,12 @@ Note that CaseInsensitiveMap is not synchronized and is not thread-safe. If you 
  */
 public class HashMapCaseInsensitiveZZZ<T,X> extends CaseInsensitiveMap  implements  IConstantZZZ, IObjectZZZ{
 	private static final long serialVersionUID = 1L;
-	private ExceptionZZZ objException;
-	
+		
 	public HashMapCaseInsensitiveZZZ(){
 		super();
 	}
 	
 	//#### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-
 	//Meine Variante Objekte zu clonen
 	@Override
 	public Object clonez() throws ExceptionZZZ {

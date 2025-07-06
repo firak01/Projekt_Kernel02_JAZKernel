@@ -49,7 +49,6 @@ import basic.zBasic.util.log.LogStringZZZ;
 @SuppressWarnings("rawtypes")
 public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	private static final long serialVersionUID = 1L;
-	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
 	protected int iIndexUsedLast=-1;
 	
@@ -438,17 +437,6 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //	}
 	
 	//### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	} 
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-	
-	
 	//Meine Variante Objekte zu clonen, aber erzeugt nur einen "Shallow Clone".
 	@Override
 	public Object clonez() throws ExceptionZZZ {
