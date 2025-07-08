@@ -36,6 +36,24 @@ public class Vector3ZZZTest  extends TestCase{
     	
     }
     
+    public void testReplace_1_nullable(){
+  		try {
+  			//neue
+      		vec.replace(null);
+      		
+      		assertEquals("", vec.get(0));
+    		assertEquals(null, vec.get(1));
+    		assertEquals("",vec.get(2));
+    		
+    		vec.add("4");
+    		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
+			      		  			
+  		} catch (ExceptionZZZ ez) {
+  			fail("Method throws an exception." + ez.getMessageLast());
+  		} 
+      	
+      }
+    
     public void testReplace_3(){
 		try {
 			//neue
@@ -54,4 +72,28 @@ public class Vector3ZZZTest  extends TestCase{
 		} 
     	
     }
+    
+    public void testReplace_3_nullable(){
+		try {
+			//neue
+    		vec.replace("1",null,"3");
+    		
+    		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
+    		assertEquals("1", vec.get(0));
+    		assertEquals(null, vec.get(1));
+    		assertEquals("3",vec.get(2));
+    		
+    		vec.add("4");
+    		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+    	
+    }
+    
+    
+   
+    
+    
 }

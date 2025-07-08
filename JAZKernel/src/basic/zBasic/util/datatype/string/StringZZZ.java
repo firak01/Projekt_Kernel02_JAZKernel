@@ -2217,6 +2217,11 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	public static boolean isNull(String sString) {
+		if(sString==null) return true;
+		return false;
+	}
+	
 	/**returns true if the string is empty or null.
 	 * FGL: D.h. NULL oder Leerstring 
 	 * 

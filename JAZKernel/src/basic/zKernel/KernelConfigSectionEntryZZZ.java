@@ -505,6 +505,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			this.hasNullValue(false);
 		}else{
 			//WENN NULL als Ergebnis einer Expression/Formel herauskommt, dann IST DAS DER WERT
+			this.getValueVector().add(sValue);
 			if(this.isExpression() || this.isFormula()){
 				this.hasAnyValue(true);
 				this.hasNullValue(true);

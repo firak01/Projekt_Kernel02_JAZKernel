@@ -92,7 +92,7 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar
 	//daher protected. Was nicht im Intface definierbar ist.
 	public void hasAnyValue(boolean bAnyValue) {
-		this.bAnyValue=bAnyValue;
+		if(!this.bAnyValue) this.bAnyValue=bAnyValue;
 	}
 	
 	@Override

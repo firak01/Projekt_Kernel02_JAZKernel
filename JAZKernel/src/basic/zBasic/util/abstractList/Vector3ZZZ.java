@@ -34,10 +34,63 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	@Override
 	public void replace(Object objValue) throws ExceptionZZZ {
 		main:{
+			if(objValue == null) {
+				replace_(null);
+			}else if(objValue instanceof String) {
+				replace_((String) objValue);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}								
+		}//end main:
+	}
+	
+	private void replace_(String sValue) throws ExceptionZZZ{
+		
+		if(this.size()==0) this.add(0, null);
+		
+		if(this.size()>=2) this.removeElementAt(1);		
+		this.add(1, sValue); //nicht by default ersetzen
+		
+		if(this.size()==2) this.add(2, null);
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	
+	@Override
+	public void replace(Object objLeft, Object objMid, Object objRight) throws ExceptionZZZ {
+		main:{			
+			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
+				replace_((String) objLeft, (String) objMid, (String) objRight);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+		}//end main:
+	}
+	
+	private void replace_(String sLeft, String sMid, String sRight) throws ExceptionZZZ{
+		
+		if(this.size()>=1) this.removeElementAt(0);		
+		this.add(0, sLeft);
+				
+		if(this.size()>=2) this.removeElementAt(1);
+		this.add(1, sMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+		
+		if(this.size()>=3) this.removeElementAt(2);								
+		this.add(2, sRight);		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++
+	
+	@Override
+	public void replaceIgnoreNull(Object objValue) throws ExceptionZZZ {
+		main:{
 			if(objValue==null) break main;
 			
 			if(objValue instanceof String) {
-				replace_((String) objValue);
+				replaceByDefault_((String) objValue);
 			}else {
 				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -48,33 +101,63 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	}
 	
 	
-	private void replace_(String sValue) throws ExceptionZZZ{
-		
-		if(this.size()==0) this.add(0, this.getObjectDefaultNew());
-		
-		if(this.size()>=2) this.removeElementAt(1);
-		if(!StringZZZ.isEmpty(sValue)){
-			this.add(1, sValue);
-		}else {
-			this.add(1, this.getObjectDefaultNew());
-		}
-			
-		if(this.size()==2) this.add(2, this.getObjectDefaultNew());
-	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public void replace(Object objValueLeft, Object objValueRight, boolean bReturnSeparators, String sSepMid ) throws ExceptionZZZ {
+	public void replace(Object objLeft, Object objRight, boolean bReturnSeparators, String sSepMid ) throws ExceptionZZZ {
 		main:{
-			if(objValueLeft==null || objValueRight==null) break main;
+			if(objLeft==null || objRight==null) break main;
 			
-			if(objValueLeft instanceof String) {
-				replace_((String) objValueLeft, (String) objValueRight, bReturnSeparators, sSepMid);
+			if(objLeft instanceof String) {
+				replaceWithSeparator_((String) objLeft, (String) objRight, bReturnSeparators, sSepMid);
 			}
 		}//end main:
 	}
 	
-	private void replace_(String sLeft, String sRight, boolean bReturnSeparators, String sSepMid) throws ExceptionZZZ {
+	private void replaceWithSeparator_(String sLeft, String sRight, boolean bReturnSeparators, String sSepMid) throws ExceptionZZZ {
+		ObjectUtilZZZ.ensureTypeEquals(sLeft, sRight); //Merke: ensure... wirft eine Exception
+		
+		//Nun die Werte in den ErgebnisVector zusammenfassen
+		if(bReturnSeparators ==true){
+			if(this.size()>=1) this.removeElementAt(0);
+			if(!StringZZZ.isNull(sLeft)){
+				this.add(0, sLeft);
+			}else {
+				this.add(0, null);
+			}
+			
+			if(this.size()>=2) this.removeElementAt(1);
+			this.add(1, sSepMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+			
+			if(this.size()>=3) this.removeElementAt(2);						
+			if(!StringZZZ.isNull(sRight)){
+				this.add(2, sRight);
+			}else {
+				this.add(2, null);
+			}
+		
+		}else if(bReturnSeparators == false){
+			if(this.size()>=1) this.removeElementAt(0);										
+			if(!StringZZZ.isNull(sLeft)){
+				this.add(0, sLeft);
+			}else {
+				this.add(0, null);
+			}
+			
+			if(this.size()>=2) this.removeElementAt(1);						
+			this.add(1, null);
+			
+			if(this.size()>=3) this.removeElementAt(2);										
+			if(!StringZZZ.isNull(sRight)){
+				this.add(2, sRight);
+			}else {
+				this.add(2, null);
+			}
+		}
+	}
+	
+	
+	private void replaceWithSeparatorByDefault_(String sLeft, String sRight, boolean bReturnSeparators, String sSepMid) throws ExceptionZZZ {
 		ObjectUtilZZZ.ensureTypeEquals(sLeft, sRight); //Merke: ensure... wirft eine Exception
 		
 		//Nun die Werte in den ErgebnisVector zusammenfassen
@@ -83,7 +166,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);
@@ -93,7 +176,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		
 		}else if(bReturnSeparators == false){
@@ -101,53 +184,111 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
-			this.add(1, "");  //Also ein Leerstring
+			this.add(1, this.getObjectDefaultNew()); 
 			
 			if(this.size()>=3) this.removeElementAt(2);										
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		}
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	@Override
-	public void replace(Object objValueLeft, Object objValueMid, Object objValueRight ) throws ExceptionZZZ {
+	public void replaceIgnoreNull(Object objLeft, Object objMid, Object objRight ) throws ExceptionZZZ {
 		main:{
-			if(objValueMid==null) break main;
-			if(objValueLeft==null & objValueRight==null) {
-				this.replace(objValueMid);
+			if(objMid==null) break main;
+			if(objLeft==null & objRight==null) {
+				this.replace(objMid);
 				break main;
 			}
 			
-			if(objValueMid instanceof String) {
-				replace_((String) objValueLeft, (String) objValueMid, (String) objValueRight, false, null, null);
+			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
+				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, false, null, null);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 		}//end main:
 	}
 	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public void replace(Object objValueLeft, Object objValueMid, Object objValueRight, boolean bReturnSeparators, String sSepLeft, String sSepRight ) throws ExceptionZZZ {
-		main:{
-			if(objValueMid==null) break main;
-			if(objValueLeft==null & objValueRight==null) {
-				this.replace(objValueMid);
+	public void replaceByDefault() throws ExceptionZZZ {		
+				replaceByDefault_(null);
+	}
+	
+	@Override
+	public void replaceByDefault(Object objValueMid) throws ExceptionZZZ {		
+				replaceByDefault_(objValueMid);
+	}
+	
+	private void replaceByDefault_(Object objMid) throws ExceptionZZZ{
+		
+		if(this.size()==0) this.add(0, this.getObjectDefaultNew());
+		
+		if(this.size()>=2) this.removeElementAt(1);
+		
+		if(objMid==null || objMid instanceof String) {
+			if(!StringZZZ.isEmpty((String) objMid)){ 
+				this.add(1, (String) objMid);
+			}else {
+				this.add(1, this.getObjectDefaultNew());
+			}
+		}else {
+			ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objMid.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}	
+			
+		if(this.size()==2) this.add(2, this.getObjectDefaultNew()); //wenn Leer by Default ersetzen
+	}
+	
+	@Override
+	public void replaceByDefault(Object objLeft, Object objMid, Object objRight ) throws ExceptionZZZ {
+		main:{			
+			if(objLeft==null & objRight==null) {
+				this.replaceByDefault(objMid);
 				break main;
 			}
 			
-			if(objValueMid instanceof String) {
-				replace_((String) objValueLeft, (String) objValueMid, (String) objValueRight, bReturnSeparators, sSepLeft, sSepRight);
+			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
+				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, false, null, null);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+		}//end main:
+	}
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void replace(Object objLeft, Object objMid, Object objRight, boolean bReturnSeparators, String sSepLeft, String sSepRight ) throws ExceptionZZZ {
+		main:{
+			if(objMid==null) break main;
+			if(objLeft==null & objRight==null) {
+				this.replace(objMid);
+				break main;
+			}
+			
+			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
+				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, bReturnSeparators, sSepLeft, sSepRight);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 		}//end main:
 	}
 	
-	private void replace_(String sLeft, String sMid, String sRight, boolean bReturnSeparators, String sSepLeft, String sSepRight) throws ExceptionZZZ {
+	private void replaceWithSeparatorByDefault_(String sLeft, String sMid, String sRight, boolean bReturnSeparators, String sSepLeft, String sSepRight) throws ExceptionZZZ {
 		
 		ObjectUtilZZZ.ensureTypeEquals(sLeft, sMid); //Merke: ensure... wirft eine Exception
 		ObjectUtilZZZ.ensureTypeEquals(sRight, sMid);
@@ -228,16 +369,16 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	@Override
-	public void replaceKeepSeparatorCentral(Object objValueLeft, Object objValueMid, Object objValueRight, String sSepLeft, String sSepRight) throws ExceptionZZZ {
+	public void replaceKeepSeparatorCentral(Object objLeft, Object objMid, Object objRight, String sSepLeft, String sSepRight) throws ExceptionZZZ {
 		main:{
-			if(objValueMid==null) break main;
-			if(objValueLeft==null & objValueRight==null) {
-				this.replace(objValueMid);
+			if(objMid==null) break main;
+			if(objLeft==null & objRight==null) {
+				this.replace(objMid);
 				break main;
 			}
 			
-			if(objValueMid instanceof String) {
-				replaceKeepSeparatorCentral_((String) objValueLeft, (String) objValueMid, (String) objValueRight, sSepLeft, sSepRight);
+			if(objMid instanceof String) {
+				replaceKeepSeparatorCentral_((String) objLeft, (String) objMid, (String) objRight, sSepLeft, sSepRight);
 			}
 		}//end main:
 	}
@@ -253,7 +394,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 								
 			if(this.size()>=2) this.removeElementAt(1);						
@@ -263,7 +404,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		}else {
 			//sMid ist leer		
@@ -271,7 +412,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, "");
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
@@ -281,7 +422,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isEmpty(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, "");
+				this.add(2, this.getObjectDefaultNew());
 			}
 		} 
 	}

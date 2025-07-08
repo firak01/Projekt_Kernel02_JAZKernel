@@ -171,7 +171,7 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 		return sReturn;			
 	}
 	
-	public static <T> boolean isEmpty(Vector vecIn) throws ExceptionZZZ{
+	public static <T> boolean isEmpty(Vector<T> vecIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(vecIn == null) break main;
@@ -185,7 +185,9 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 				Object obj =(Object)vecIn.elementAt(icount);
 				
 				//FGL 20241227 -Das muss noch getestet werden
-				if(obj.getClass().isArray()) {
+				if(obj==null) {
+					//mache nix...
+				}else if(obj.getClass().isArray()) {
 					btemp = ArrayUtilZZZ.isNullOrEmpty((T[]) obj);
 					if(!btemp) break main;
 					
@@ -193,11 +195,12 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 					if(!btemp) break main;
 				}else {
 					//FGL 20241227 -Das muss ggfs. fuer andere Typen mit ...else if ...erweitert werden
-					if(obj instanceof String) {
+					if(obj==null || obj instanceof String) {
 						btemp = StringZZZ.isEmpty(obj.toString());
 					    if(!btemp) break main;
 					} else {
-						
+						ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + obj.getClass().getName() +"'", iERROR_PARAMETER_VALUE, VectorUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
 					}
 				}
 			}//end for
