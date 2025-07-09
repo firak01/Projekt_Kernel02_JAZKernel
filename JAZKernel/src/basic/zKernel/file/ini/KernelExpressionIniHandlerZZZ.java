@@ -144,6 +144,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
 			if(!this.isParserEnabledCustom()) break main;
+			boolean bUseParser = true;
 			
 			//20250526: Der KernelExpressionIniHandler macht folgendes:
 			//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
@@ -161,7 +162,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
 			if(!(bUseFormula | bUseCall | bUseJavaCall | bUseJson | bUseJsonArray | bUseJsonMap | bUseEncryption )) break main;
 			
-			if(bUseFormula) {				
+			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
+			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!! 
+			if(bUseParser | bUseFormula) {				
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
@@ -171,7 +174,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 				
 									
-			if(bUseCall | bUseJavaCall){
+			if(bUseParser | bUseCall | bUseJavaCall){
 				
 				if(bUseJavaCall) {  //nur einen von beiden ausfuehren
 					KernelJavaCallIniSolverZZZ<T> callSolverDummy = new KernelJavaCallIniSolverZZZ<T>();
@@ -189,15 +192,36 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}
 			
 		
-			if(bUseJson | bUseJsonMap | bUseJsonArray) {
-				KernelJsonIniSolverZZZ<T> jsonSolverDummy = new KernelJsonIniSolverZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+			if(bUseParser | bUseJson | bUseJsonMap | bUseJsonArray) {
 				
-				KernelJsonIniSolverZZZ objJsonSolver = new KernelJsonIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
-				objJsonSolver.updateValueParseCustom(objReturnReference, sExpression);
+				if(bUseJsonMap | bUseJsonArray) { 
+					if(bUseJsonMap) {
+						KernelJsonMapIniSolverZZZ<T> jsonSolverDummy = new KernelJsonMapIniSolverZZZ<T>();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+									
+						KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+						objJsonMapSolver.updateValueParseCustom(objReturnReference, sExpression);		
+					}
+					
+					if(bUseJsonArray) {
+						KernelJsonArrayIniSolverZZZ<T> jsonSolverDummy = new KernelJsonArrayIniSolverZZZ<T>();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+									
+						KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+						objJsonArraySolver.updateValueParseCustom(objReturnReference, sExpression);
+					}
+					
+				}else {
+					KernelJsonIniSolverZZZ<T> jsonSolverDummy = new KernelJsonIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, jsonSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+				
+					KernelJsonIniSolverZZZ objJsonSolver = new KernelJsonIniSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed);
+					objJsonSolver.updateValueParseCustom(objReturnReference, sExpression);
+				}
+				
 			}								
 									
-			if(bUseEncryption) {
+			if(bUseParser | bUseEncryption) {
 				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
 				

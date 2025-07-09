@@ -3427,6 +3427,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			sExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT; //sExpression = "<Z><Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call></Z>";
 			sExpressionSubstituted = sExpression;              
 			sExpressionSolved = sExpressionSubstituted;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ); //unparsed ja, unsolved nein... also Z-Tag drumherum entfernen
 			btemp = testCompute_CallJavaEntry_Detail_SolverUnparsed_(sExpression, sExpressionSubstituted, sExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.AS_ENTRY);			
 			
 			//3)
@@ -3769,7 +3770,7 @@ boolean testCompute_JsonMap_JsonMapUnsolved_(String sExpressionIn, String sExpre
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
 			
-			boolean bUseExpressionGeneral = objExpressionHandler.isExpressionEnabledGeneral();
+			boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
 			
 			objEntry = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled");
 			assertNotNull(objEntry);

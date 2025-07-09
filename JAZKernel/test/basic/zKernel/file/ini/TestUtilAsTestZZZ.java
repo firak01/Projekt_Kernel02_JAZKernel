@@ -769,6 +769,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
 		
+			
+			boolean bJsonSolverCalledPrevious = false;
+			
 			//######## TEST-TEIL ###########################
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
@@ -822,9 +825,46 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isJson()); //bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 			//Zwar gilt: Bei diesem Flagset wird json zwar nicht aufgeloest, aber geparsed trotzdem
 			//ABER:      Auf einzelne Werte kann nicht geprueft werden, da das Flagset sowohl für Map als auch Array verwendet wird
-			//assertTrue(objEntry.isJsonMap());
-			//assertTrue(objEntry.isJsonArray()); 
-							
+			
+			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+			bJsonSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJsonIniSolverZZZ.sTAG_NAME);
+			if(bJsonSolverCalledPrevious) {
+				System.out.println(("Vorher wurde Json-Solver aufgerufen. Also JsonMap/JsonArray-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isJsonMapSolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
+				assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
+			}else {
+				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+				if(bAsEntry) {
+					System.out.println(("Aufruf als Entry. Also kann JsonMap/JsonArray-Solver nicht direkt aufgerufen worden sein."));
+					assertFalse(objEntry.isJsonMapSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+					assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				}else {
+					System.out.println(("Vorher wurde Json-Solver NOCH NICHT aufgerufen. Also JsonMap/JsonArray-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+					assertTrue(objEntry.isJsonArraySolveCalled());  //aber wenn der JavaArraySolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....					
+				}
+			}			
+			assertFalse(objEntry.isJsonSolved());
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
+			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
+			assertFalse(objEntry.isJsonMap());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
+			
+			assertFalse(objEntry.isJsonMapSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
+			assertFalse(objEntry.isJsonMapSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
+				
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
+			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
+			assertFalse(objEntry.isJsonArray());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
+			
+			assertFalse(objEntry.isJsonArraySolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
+			assertFalse(objEntry.isJsonArraySolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
+		
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1450,7 +1490,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		
 			//######## TEST-TEIL ###########################
 			//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
-			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!									
+			assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung, bzw. hier ohne Parser-Nutzung auch kein Expression Eintrag!!!									
 			
 			//+++++++++++++++++++++++++++++++++++++++
 			//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
@@ -1480,8 +1520,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++
 			//Keine Solver Ergebnisse
 			assertTrue(objEntry.isSolveCalled());
-			assertFalse(objEntry.isSolved()); //sollte ohne SOLVE abgebrochen worden sein
-			assertFalse(objEntry.isSolvedChanged());//schliesslich wird hier nix gesolved()!!!
+			assertTrue(objEntry.isSolved()); //hier wird nicht geparsed, aber gesolved. Darum wird SOLVE nicht abgebrochen.
+			assertFalse(objEntry.isSolvedChanged()); //Kann man eigentlich hier nicht abfragen....
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -1629,7 +1669,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		
 			//######## TEST-TEIL ###########################
 			//wie unsolved, aber hier gibt es auch keine Parser - Ergebnisse
-			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
+			assertFalse(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 								
 			//+++++++++++++++++++++++++++++++++++++++
 			//Keine Parser Ergebnisse (Abfrage der asserts in umgekehrter Reihenfolge ihres moeglichen Wertesetzens im Code)
@@ -2140,7 +2180,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Generische Problematik. Stichwort "Elterntag" TODOGOON20250308; TICKET20250308; Diese Testutility wird auch von KernelJavaCallIniSolverZZZTest aufgerufen.
 
 			//DEFAULT: Wenn der Solver generel ausgestellt wird, dann wird nix dahinter aufgerufen.
-			//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserenabledThis.      
+			//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserEnabledThis.      
 			assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 			
 			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
@@ -2163,7 +2203,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird das festgestellt
+			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
+			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
+			assertFalse(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
 			
 			assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 			assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt

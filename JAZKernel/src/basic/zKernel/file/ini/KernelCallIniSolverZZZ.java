@@ -53,7 +53,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ<T> objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
+		super(objKernel, saFlag);
 		KernelCallIniSolverNew_(objFileIni, null);
 	}
 	
