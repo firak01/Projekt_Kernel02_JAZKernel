@@ -213,7 +213,10 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			String sTagClosing = this.getTagPartClosing();
 			vecReturn = XmlUtilZZZ.parseFirstVectorCascadedTag(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);//StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
 			if (vecReturn==null)break main;		
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			//Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			//Also werden nur Werte in den jeweiligen Tags substituiert durch ihren konkreten Solver!!!
+			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; 
 			
 			//+++++++++++++++++++++++++
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"

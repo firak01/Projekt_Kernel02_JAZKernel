@@ -267,10 +267,11 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				String sExpression = sExpressionIn;
 				Vector3ZZZ<String> vecExpression=null;				
 				
-				//links vom Operator				
+				//links vom Operator	
 				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue01.isExpression(sExpression)){
-					vecExpression = objValue01.parseFirstVector(sExpression);						
+					//false bedeutet, dass der umgebende Tag entfernt werden soll. Das ist wichtig, um den nächsten Wert zu finden.
+					vecExpression = objValue01.parseFirstVector(sExpression, false);						
 				}
 				this.setOperand01(objValue01.getValue());
 				sExpression = VectorUtilZZZ.implode(vecExpression);
@@ -279,7 +280,8 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				//rechts vom Operator
 				ZTagFormulaMath_ValueZZZ objValue02 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue02.isExpression(sExpression)){
-					vecExpression = objValue02.parseFirstVector(sExpression);						
+					//false bedeutet, dass der umgebende Tag entfernt werden soll. Das ist wichtig, um den nächsten Wert zu finden.
+					vecExpression = objValue02.parseFirstVector(sExpression, false);						
 				}	
 				this.setOperand02(objValue02.getValue());
 				sExpression = VectorUtilZZZ.implode(vecExpression);

@@ -759,6 +759,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				String sTagEndZ = "</Z>";
 				
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, true, false); //also AN JDEDER POSITION (d.h. nicht nur am Anfang) von aussen nach innen!!!
+				sReturnLine = VectorUtilZZZ.implode(vecExpressionIn);
 			}
 			
 			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
@@ -773,14 +774,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				}else {
 					//sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionIn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
-				}
-				
-				//+++ Aufruf einer Methode, die vom konkreten Solver ueberschrieben werden kann.
-				//sReturnLine = this.solvePostCustom(sReturnLine, objReturnReference, bRemoveSurroundingSeparators);
-				
-//				vecReturn = this.solvePostCustom(vecReturn, objReturnReference, bRemoveSurroundingSeparators);
-//				sReturnTag = this.getValue();
-//				objEntry = objReturnReference.get();				
+					sReturnLine = VectorUtilZZZ.implode(vecExpressionIn);
+				}								
 			}
 		}//end main:
 		
