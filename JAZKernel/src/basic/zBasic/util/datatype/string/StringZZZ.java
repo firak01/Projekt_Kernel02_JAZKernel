@@ -966,18 +966,27 @@ public class StringZZZ implements IConstantZZZ{
 	
 	/* Unter Java String gibt es nur startsWith.*/
 	public static boolean endsWith(String sString, String sMatch){
+		return StringZZZ.endsWith(sString, sMatch, true);
+	}
+	
+	/* Unter Java String gibt es nur startsWith.*/
+	public static boolean endsWith(String sString, String sMatch, boolean bExactMatch){
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(StringZZZ.isEmpty(sMatch)) break main;
 									
-			
-			int iMatchLength=sMatch.length();			
-			if(sString.length() < iMatchLength) break main;
-			
-			String sSub = sString.substring(sString.length() - iMatchLength, sString.length());
-			if(sSub.equals(sMatch)){
-				bReturn = true;
+			if(bExactMatch) {
+				int iMatchLength=sMatch.length();			
+				if(sString.length() < iMatchLength) break main;
+				
+				String sSub = sString.substring(sString.length() - iMatchLength, sString.length());
+				if(sSub.equals(sMatch)){
+					bReturn = true;
+					break main;
+				}
+			}else {
+				bReturn = StringZZZ.endsWithIgnoreCase(sString, sMatch);
 				break main;
 			}
 			
@@ -1821,8 +1830,8 @@ public class StringZZZ implements IConstantZZZ{
 			String sRight = sRemainingTagged;
 			
 			if(!bReturnSeparators) {
-				sLeft = StringZZZ.stripRight(sLeft,  sSepLeft);
-				sRight = StringZZZ.stripLeft(sRight, sSepRight);							
+				sLeft = StringZZZ.stripRight(sLeft,  sSepLeft, false);
+				sRight = StringZZZ.stripLeft(sRight, sSepRight, false);							
 			}
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
@@ -4252,6 +4261,16 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @return
 	 */
 	public static String stripLeft(String sString, String sStringToBeStripped){
+		return StringZZZ.stripLeft(sString, sStringToBeStripped, true);
+	}
+	
+	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimLeft(...)
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripLeft(String sString, String sStringToBeStripped, boolean bExactMatch){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -4259,7 +4278,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			
 			boolean bGoon = false;			
 			while(!bGoon){
-				if(sReturn.startsWith(sStringToBeStripped) && sReturn.length()>=2){
+				if(StringZZZ.startsWith(sReturn, sStringToBeStripped, bExactMatch) && sReturn.length()>=2){
 					sReturn = StringZZZ.rightback(sReturn, sStringToBeStripped.length());
 				}else{
 					bGoon = true;
@@ -4336,6 +4355,17 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
 	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripRight(String sString, String sStringToBeStripped, boolean bExactMatch){
+		return StringZZZ.stripRight(sString, sStringToBeStripped, -1, bExactMatch);
+	}
+	
+	
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 *   
 	 *  Beachte hier dien Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
 	 *   
@@ -4344,6 +4374,19 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @return
 	 */
 	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn){
+		return StringZZZ.stripRight(sString, sStringToBeStripped, -1, true);
+	}
+	
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 *   
+	 *  Beachte hier dien Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
+	 *   
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn, boolean bExactMatch){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -4355,7 +4398,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 				//nimm alle
 				boolean bGoon = false;
 				while(!bGoon){
-					if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+					//if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+					if(StringZZZ.endsWith(sReturn, sStringToBeStripped, bExactMatch) && sReturn.length()>=2){
 						sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
 					}else{
 						bGoon = true;
@@ -4367,7 +4411,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 				boolean bGoon = false;
 				while(!bGoon){
 					iCount++;
-					if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+					if(StringZZZ.endsWith(sReturn, sStringToBeStripped, bExactMatch) && sReturn.length()>=2){
 						sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
 					}else{
 						bGoon = true;
