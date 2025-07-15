@@ -299,7 +299,9 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturnTag = this.getOperand01() + this.getOperator() + this.getOperand02();
-				vecReturn.replace(sReturnTag);
+				vecReturn.replace(0, "");
+				vecReturn.replace(1, sReturnTag);
+				vecReturn.replace(2, "");
 				sReturn = VectorUtilZZZ.implode(vecReturn);
 			}//end main:
 			return sReturn;

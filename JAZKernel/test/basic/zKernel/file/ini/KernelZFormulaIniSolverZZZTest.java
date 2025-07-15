@@ -1250,11 +1250,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.FORMULA_MATH_SOLVED;
 			
 			//##########################################
 			//### Expression solved Fall
-			//+++ Wert noch nicht ausrechnen: A			
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.FORMULA_MATH_SOLVED;
+			
 			btemp = objFormulaSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
