@@ -112,7 +112,18 @@ public class StringZZZTest extends TestCase{
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
-		 stemp =StringZZZ.leftKeep("das ist ein Test", " ");
+		 stemp =StringZZZ.leftKeep(sDummy2, " ");
+		 assertEquals("das ", stemp);
+		 
+		 //###################
+		 //Teste auf String, ab einer bestimmten Position VON links
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 5);
+		 assertEquals("das ist ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 4);
+		 assertEquals("das ist ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 3);
 		 assertEquals("das ", stemp);
 		 
 		 
@@ -125,8 +136,23 @@ public class StringZZZTest extends TestCase{
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
-		 stemp =StringZZZ.rightKeep("das ist ein Test", " ");
+		 stemp =StringZZZ.rightKeep(sDummy2, " ");
 		 assertEquals(" Test", stemp);
+		 
+		 //###################
+		 //Teste auf String, ab einer bestimmten Position VON rechts
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 6);
+		 assertEquals(" ein Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 5);
+		 assertEquals(" ein Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 4);
+		 assertEquals(" Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 3);
+		 assertEquals(" Test", stemp);
+		 
 		 
 		 //System.out.println(stemp);
 	}
@@ -1193,14 +1219,14 @@ public void testVecMidFirst(){
 			//### Letzter fehlgeschlagener Test ENDE
 			//##################################################
 	
+	
+			//###############################################################
+			//1. Zum Verdeutlichen des Unterschieds 
 			//Teststring Siehe INI_PATH...
 			sExpression = "PRE<Z>[Section A]Testentry1</Z>POST";
 			sExpressionSolved = "[Section A]Testentry1";
 			sExpressionSolvedTagKept = "<Z>[Section A]Testentry1</Z>";
 			
-	
-			//###############################################################
-			//1. Zum Verdeutlichen des Unterschieds 
 			vec = StringZZZ.vecMidFirst(sExpression, ">", "<", false);
 			
 			sProof = VectorUtilZZZ.implode(vec);
@@ -1219,6 +1245,7 @@ public void testVecMidFirst(){
 			
 			//#########################################################
 			//2a. Der eigentliche Test DIESER Funktion +++++++++++++++++++++
+			sExpression = "PRE<Z>[Section A]Testentry1</Z>POST";
 			vec = StringZZZ.vecMidFirstKeep(sExpression, ">", "<", false); 
 			assertEquals(vec.size(), 3);
 					
@@ -1239,6 +1266,7 @@ public void testVecMidFirst(){
 			
 			//#########################################################
 			//2b. Der eigentliche Test DIESER Funktion +++++++++++++++++++++ 
+			sExpression = "PRE<Z>[Section A]Testentry1</Z>POST";
 			vec = StringZZZ.vecMidFirstKeep(sExpression, "<Z>", "</Z>", false); 
 			assertEquals(vec.size(), 3);
 					
@@ -1257,8 +1285,20 @@ public void testVecMidFirst(){
 			assertEquals("</Z>POST", sFormula2);
 			
 			
+			//##############################################################
+			//### Praktische Anwendung
+			//##############################################################
+			sExpression = "<Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>{[Section for testComputeMathArguments FLOAT]WertB_float}</Z:val></Z:math></Z:formula>";
+			vec = StringZZZ.vecMidFirstKeep(sExpression, "<Z:vAl>", "</z:VAL>", false, 42);
+			assertEquals(vec.size(), 3);
+			
+			assertEquals(vec.get(0), "<Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>");
+			assertEquals(vec.get(1), "{[Section for testComputeMathArguments FLOAT]WertB_float}");
+			assertEquals(vec.get(2), "</Z:val></Z:math></Z:formula>");
+			
 			//####################################################
 			//3. Zum Verdeutlichen des Unterschieds
+			sExpression = "PRE<Z>[Section A]Testentry1</Z>POST";
 			vec = StringZZZ.vecMidKeepSeparatorCentral(sExpression, "<Z>", "</Z>", false); //wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
@@ -1283,6 +1323,7 @@ public void testVecMidFirst(){
 			//############################################################			
 			//++++++++++++++++++++++++++++++++++++++++++++++++
 			//1. Test wenn die Tags nicht enthalten sind
+			sExpression = "PRE<Z>[Section A]Testentry1</Z>POST";
 			vec = StringZZZ.vecMidFirst(sExpression, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 			assertEquals(vec.size(), 3);
 			
@@ -1294,6 +1335,9 @@ public void testVecMidFirst(){
 			
 			sFormula2 = (String) vec.get(2);
 			assertEquals("", sFormula2);
+			
+			
+			
 								
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());

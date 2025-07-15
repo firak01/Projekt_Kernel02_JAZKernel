@@ -1282,20 +1282,38 @@ public class StringZZZ implements IConstantZZZ{
 	//############################################
 	
 	public static String leftKeep(String sString, String sToFind){
-		return StringZZZ.leftKeep(sString, sToFind, true);
+		return StringZZZ.leftKeep(sString, sToFind, true, -1);
+	}
+	
+	public static String leftKeep(String sString, String sToFind, int iIndexStartingPositionFromLeft){
+		return StringZZZ.leftKeep(sString, sToFind, true, iIndexStartingPositionFromLeft);
 	}
 	
 	public static String leftKeep(String sString, String sToFind, boolean bExactMatch){
+		return StringZZZ.leftKeep(sString, sToFind, bExactMatch, -1);
+	}
+	
+	public static String leftKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromLeft){
 		String sReturn=sString;
 		main:{
 			if (StringZZZ.isEmpty(sString)) break main;
 			sReturn = "";
 			
+			int iIndexFromLeft;
+			if(iIndexStartingPositionFromLeft==-1) {
+				iIndexFromLeft = 0;
+			}else {
+				iIndexFromLeft = iIndexStartingPositionFromLeft-sToFind.length();
+				if(iIndexFromLeft<=-1) {
+					iIndexFromLeft=0;
+				}
+			}
+			
 			int iIndex;
 			if(bExactMatch){
-				iIndex = sString.indexOf(sToFind);				
+				iIndex = sString.indexOf(sToFind, iIndexFromLeft);				
 			}else {
-				iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.							
+				iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase(), iIndexFromLeft); //Hier wird ignoreCase realisiert.							
 			}
 			
 			if(iIndex<= -1) break main;
@@ -1318,8 +1336,24 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String rightKeep(String sString, String sToFind){
-		return StringZZZ.rightKeep(sString, sToFind, true);
+		return StringZZZ.rightKeep(sString, sToFind, true, 0);
 	}
+	
+	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
+	 * Returns the empty String if sToFind is empty
+	 * 
+	 * Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von rechts nach dem Suchstring gesucht.
+	* Lindhauer; 16.05.2006 08:11:18
+	 * @param sString
+	 * @param sToFind
+	 * @return String
+	 */
+	public static String rightKeep(String sString, String sToFind, int iIndexStartingFromRight){
+		return StringZZZ.rightKeep(sString, sToFind, true, iIndexStartingFromRight);
+	}
+	
+	
 	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
@@ -1330,7 +1364,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param bExactMatch
 	 * @return String
 	 */
-	public static String rightKeep(String sString, String sToFind, boolean bExactMatch){
+	public static String rightKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingFromRight){
 		String sReturn=sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1338,17 +1372,20 @@ public class StringZZZ implements IConstantZZZ{
 			sReturn = "";
 			if(StringZZZ.isEmpty(sToFind)) break main;	
 			
+			int iIndexStarting = sString.length() - iIndexStartingFromRight - 1;
+			if(iIndexStarting<0) {
+				iIndexStarting=0;
+			}
 		
 			int iIndex;
-			if(bExactMatch){
-				
-				iIndex = sString.lastIndexOf(sToFind);				
+			if(bExactMatch){			
+				iIndex = sString.lastIndexOf(sToFind, iIndexStarting);				
 			}else {
 
 				String sStringLCase = sString.toLowerCase();
 				String sToFindLCase = sToFind.toLowerCase();
 				
-				iIndex = sStringLCase.lastIndexOf(sToFindLCase);
+				iIndex = sStringLCase.lastIndexOf(sToFindLCase, iIndexStarting);
 			}
 			if(iIndex<= -1) break main;
 			
@@ -1953,6 +1990,20 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
 	public static Vector3ZZZ<String>vecMidFirstKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch) throws ExceptionZZZ{
+		return StringZZZ.vecMidFirstKeep(sStringToParse, sSepLeft, sSepRight, bExactMatch, 0);
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sSepLeft
+	* @param sSepRight
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector3ZZZ<String>vecMidFirstKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch, int iIndexStartingFromLeft) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
@@ -1965,7 +2016,7 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch);
+			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch, iIndexStartingFromLeft);
 			if(StringZZZ.isEmpty(sLeft)){
 				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {
 					vecReturn.replace(0, sStringToParse);//Wenn der Tag selbst nicht vorhanden ist, dann den ganzen String in 0 zurueckgeben.

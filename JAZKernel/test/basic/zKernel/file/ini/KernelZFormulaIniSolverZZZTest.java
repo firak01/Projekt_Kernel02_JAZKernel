@@ -109,17 +109,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute(){
+		boolean btemp;
+		String sValue=null;
+		String sSection=null; String sProperty=null;
+		String sExpression1In=null; String sExpression1SolvedIn=null; String sExpression2In=null; String sExpression2SolvedIn=null;
+		String sExpression; String sExpressionSolved=null;
+	
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
 		try {
-			boolean btemp;
-			String sValue;
-			String sSection; String sProperty;
-			String sExpression1In; String sExpression1SolvedIn; String sExpression2In; String sExpression2SolvedIn;
-			String sExpression; String sExpressionSolved;
 			
 				
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			
+			btemp = testCompute_GetPropertyWithFormulaMathByPath_();
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -143,10 +147,13 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			btemp = testCompute_2ndSolverUsesGetPropertyResult_();
 			
+			
+		
+			
 			//+++++++++++++++++++++++++++++++++++++++		
 			//###########################################################################						
 			//+++++++++++++++++++++++++++++++++++++++
-			
+		
 			//################################################
 			//### mit Solver, direkt
 			sExpression1In = "Der dynamische Wert1 ist '<Z>{[Section A]Testentry1}</Z>'. FGL rulez.";
@@ -155,8 +162,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			sExpression2In = "Der dynamische Wert2 ist '<Z>{[Section B]Testentry2}</Z>'. FGL rulez.";
 			sExpression2SolvedIn = "Der dynamische Wert2 ist '<Z>Testvalue2 local to be found</Z>'. FGL rulez.";
 			 
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";
+		
 							
 			//Wenn man die Expression_PATH-Behandlung ausstellt, dann werden auch beim "Solven" keine Pfade ersetzt
 			//Die Z-Tags verschwinden trotzdem.
@@ -190,6 +196,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSolvedTemp;
 			assertEquals(sExpressionSolved, sValue);
 			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+		
+		
+		try {
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Anstellen der PathSubstitution, die Z-Tags verschwinden.
 			//ABER: Das reicht nicht, da die Substitution nur die Tags des Solvers betrifft!!!
@@ -215,8 +227,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			sValue = objFormulaSolver.solve(sExpression);
 			assertEquals(sExpressionSolved, sValue);
-
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 			
+		
+		try {
 			//########################################################################################
 			//### BEIM 2ten SUCHEN (wohlgemerkt, gleicher JUnit-Test und gleich Testobjekte) 
 			//### MUSS MAN EIN NEUES ERGEBNIS BEKOMMEN
@@ -2829,20 +2845,20 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private boolean testCompute_GetPropertyWithFormulaMathByPath_() {
 		boolean bReturn = false;
 		String sExpressionIn; String sExpressionSolvedIn;
+				
 		main:{
+			boolean btemp; 
+			
+			String sValue=null; String sSection=null; String sProperty=null;
+			String sExpression=null; String sExpressionSolved=null; String sTag=null; String sTagSolved=null;			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=null;
+			IKernelConfigSectionEntryZZZ objEntry=null; IKernelConfigSectionEntryZZZ objEntryUsed=null;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			
 			try {
-				boolean btemp; 
-				
-				String sValue; String sSection; String sProperty;
-				String sExpression; String sExpressionSolved; String sTag; String sTagSolved;			
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-				IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
-				
-				String sTagStartZ = "<Z>";
-				String sTagEndZ = "</Z>";	
-				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
-				
-				
+																
 				//####################################################################################
 				//### Formel zur Berechnung mit FLOAT Werten
 				//####################################################################################
@@ -2853,7 +2869,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ KEINE Expression oder Formel verwenden dann ist die Aufloesung egal
 				sExpressionSolved = sExpressionIn;
-				
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
+								
 				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false);
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 			
@@ -2874,7 +2891,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 											
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+	
+			try {	
 				//+++ Expression oder Formel verwenden,
 				//   Keine Pfad-Substitution
 				//   Keine Aufloesung 
@@ -2895,7 +2916,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				 			
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+	
+			try {	
 				
 				//+++ Expression oder Formel verwenden UND Aufloesung verwenden, ABER noch keine Aufloesung des Pfades, dann wird mit parse() lediglich der Z-Tag entfernt und der unaufgeloeste Pfadausdruck steht dort.
 				//    Die Formel soll noch nicht ausgerechnet werden.
@@ -2914,7 +2939,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 								
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+	
+			try {	
 				
 				//+++ Expression oder Formel verwenden UND Aufloesung verwenden UND Aufloesung des Pfades, dann wird mit parse() lediglich der Z-Tag entfernt und der aufgeloeste Pfadausdruck steht dort.
 				//    Die Formel soll noch nicht ausgerechnet werden.
@@ -2927,7 +2956,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 												
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpressionSolved, sValue);
-								
+			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+	
+			try {					
 				
 				//+++ ausrechnen
 				//    aber immer noch nicht die Formel
@@ -2943,8 +2977,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpressionSolved, sValue);
-				
-				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+	
+			try {	
 				//+++ Formel ausrechnen
 				sExpressionSolved = "Der dynamische Wert ist '20.0'. FGL rulez.";;
 				
@@ -2955,12 +2992,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpressionSolved, "20.0"));							
 				assertEquals(sExpressionSolved, sValue);
 				
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	
 				
 				//###############################################################################
 				//### Formeln ueber Pfadaufloesung holen
 				//###############################################################################
-
+			try {
 				sExpressionIn = "<Z>{[Section for testComputeMath]Formula1}</Z>";//String sExpressionSource="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
 				sSection = "Section for testComputePathWithMath";
 				sProperty = "Formula1";
@@ -2988,7 +3029,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertEquals(sExpression, sValue);
 				
-				//+++ Expression oder Formel verwenden, aber keine Aufloesung (auch nicht des Pfades) verwenden, dann wird mit parse() lediglich der Z-Tag entfernt.
+				//+++ Expression oder Formel verwenden
+				//    aber keine Pfad-Substitution
+				//    und keine Aufloesung verwenden, daher bleibt Z-Tag drin
+				sExpressionSolved = "<Z>{[Section for testComputeMath]Formula1}</Z>";
+				
 				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION,true);
 				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 							
@@ -3001,13 +3046,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
 				assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 												
-				sExpression = "[Section for testComputeMath]Formula1";
+				
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
-				assertEquals(sExpression, sValue);
+				assertEquals(sExpressionSolved, sValue);
 				
 				
-				//+++ Expression oder Formel verwenden UND Aufloesung verwenden, ABER noch keine Aufloesung des Pfades, dann wird mit parse() lediglich der Z-Tag entfernt und der unaufgeloeste Pfadausdruck steht dort.
-				//    Die Formel soll noch nicht ausgerechnet werden.
+				//+++ Expression oder Formel verwenden UND Aufloesung verwenden, 
+				//     ABER noch keine Substitution des Pfades
+				//     Die Formel soll noch nicht ausgerechnet werden.
+				sExpressionSolved = "{[Section for testComputeMath]Formula1}";
+				
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false); //Jetzt nicht mehr egal, da der Solver ausgefuehrt wird.
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
 			
@@ -3019,21 +3067,28 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 								
 				//... dito zu vorherigem lauf.
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
-				assertEquals(sExpression, sValue);
+				assertEquals(sExpressionSolved, sValue);
 				
 				
 				//+++ Expression oder Formel verwenden UND Aufloesung verwenden UND Aufloesung des Pfades, dann wird mit parse() lediglich der Z-Tag entfernt und der aufgeloeste Pfadausdruck steht dort.
 				//    Die Formel soll noch nicht ausgerechnet werden.
+				sExpressionSolved = "Der dynamische Wert ist '<Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, "<Z:formula>", "</Z:formula>", false);
+				
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
-								
-				sExpression = "Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez.";				
+															
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
-				assertEquals(sExpression, sValue);
+				assertEquals(sExpressionSolved, sValue);
 								
 				
 				//+++ ausrechnen
-				//    aber immer noch nicht die Formel
+				//    aber immer noch nicht die Formel-MATH
+				sExpressionSolved = "Der dynamische Wert ist '<Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula>'. FGL rulez.";
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, "<Z:formula>", "</Z:formula>", false);
+								
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true); //Jetzt nicht mehr egal, da der Solver ausgefuehrt wird.
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
 				
@@ -3042,17 +3097,18 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//... dito zu vorherigem lauf.
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
-				assertEquals(sExpression, sValue);
+				assertEquals(sExpressionSolved, sValue);
 				
 				
 				//+++ Formel ausrechnen
+				sExpressionSolved = "Der dynamische Wert ist '6'. FGL rulez.";;
+				
 				btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true);
 				assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
-				
-				sExpression = "Der dynamische Wert ist '6'. FGL rulez.";;
+								
 				sValue = objFileIniTest.getPropertyValue(sSection, sProperty).getValue();
 				assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sValue, "6"));							
-				assertEquals(sExpression, sValue);
+				assertEquals(sExpressionSolved, sValue);
 				
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());

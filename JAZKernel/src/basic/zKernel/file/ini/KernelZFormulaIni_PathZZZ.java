@@ -198,14 +198,25 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			
 			//Die PATH Anweisung soll zwischen jedem Tag liegen koennen oder auch einfach so darstehen
 			String sTagXPathStarting = this.getTagPartOpening();
+			int iTagXPathStartingIndex = sExpression.indexOf(sTagXPathStarting)-1;
+			
 			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
 			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
 		
 			String sTagValueTotal=null;
 			if(StringZZZ.isEmpty(sSepLeft)){
 				sTagValueTotal = (String) vecReturn.get(0);
-			}else {
+				bCascadedExpressionFound = false;
+			}else { 
+				/*DAS IST FALSCH, er holt sonst nach der ersten erfolgreichen Ersetzung wieder den gleichen, z.B.:  Z:VAL 
+				   <Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>{[Section for testComputeMathArguments FLOAT]WertB_float}</Z:val></Z:math></Z:formula> */
+				/*
 				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
+				sTagValueTotal = (String) vecReturn.get(1);
+				bCascadedExpressionFound = true;
+				*/
+				
+				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false, iTagXPathStartingIndex);
 				sTagValueTotal = (String) vecReturn.get(1);
 				bCascadedExpressionFound = true;
 			}
@@ -243,16 +254,22 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sTagValue = (String) vecTagValueTotal.get(1);
 			String sSection = StringZZZ.midLeftRightback(sTagValue, this.getTagPartOpening(), this.getSectionClosing());
 			String sProperty = StringZZZ.midLeftRightback(sTagValue, this.getSectionClosing(), this.getTagPartClosing());
+			
+			//Wenn keine Section oder keine Property gefunden wurde, nicht danach suchen. Das wuerde berechtigterweise eine Exception werfen.
+			if(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty)) {
+				sReturnSubstituted = sTagValueTotal; //also unveraendert lassen.
+				
+			}else {			
+				//Zu einfach, was tun wenn kein Wert gefunden wird... einfach so belassen			
+				IKernelConfigSectionEntryZZZ objEntrySearch = objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null);
+				if(objEntrySearch.hasAnyValue()) {
+					sReturnSubstituted = objEntrySearch.getValue();
+					vecTagValueTotal.replace(sReturnSubstituted);
+				}else {
+					sReturnSubstituted = sTagValueTotal; //also unveraendert lassen.
+				}
+			}
 									
-			//Zu einfach, was tun wenn kein Wert gefunden wird... einfach so belassen
-			//sReturnTag =  objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
-			IKernelConfigSectionEntryZZZ objEntrySearch = objFileIniUsed.getPropertyValueSystemNrSearched(sSection, sProperty, null);
-			if(objEntrySearch.hasAnyValue()) {
-				sReturnSubstituted = objEntrySearch.getValue();
-			}else {
-				sReturnSubstituted = sTagValue; //also unveraendert lassen.
-			}			
-			vecTagValueTotal.replace(sReturnSubstituted);						
 			sReturnTag = VectorUtilZZZ.implode(vecTagValueTotal);
 			this.setValue(sReturnTag);	
 			if(bCascadedExpressionFound) {
