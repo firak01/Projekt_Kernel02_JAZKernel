@@ -374,15 +374,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceFormula = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceFormula.set(objEntry);
 				sExpressionUsed = objFormulaSolver.solve(sExpressionUsed, objReturnReferenceFormula, false); //behalte die Z-Tags, fuer ggfs. andere Abarbeitungsschritte
-				objEntry = objReturnReferenceFormula.get();
-				if(objEntry.isExpression()){
-					this.getEntry().isExpression(true);
-					if(objEntry.isFormulaSolved()){	
-						this.getEntry().isFormulaSolved(true);
-						objEntry.setValueFormulaSolvedAndConverted(objEntry.getValue());						
-						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
-					}
-				}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
+				objEntry = objReturnReferenceFormula.get();				
 			}//end bUseFormula
 				
 									
@@ -397,16 +389,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objReturnReferenceSolverCall.set(objEntry);
 				
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
-				objEntry = objReturnReferenceSolverCall.get();
-				if(bAnyCall) {						
-					this.getEntry().isCallSolved(true);
-					objEntry.isCallSolved(true);
-					
-					String sValueCallSolved = objEntry.getValue(); //Zur Verarbeitung weitergeben
-					this.getEntry().setValueCallSolved(sValueCallSolved);										
-					objEntry.setValueCallSolved(sValueCallSolved);
-					sExpressionUsed = sValueCallSolved;
-				}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
+				objEntry = objReturnReferenceSolverCall.get();				
 			}//end if busecall
 											
 				

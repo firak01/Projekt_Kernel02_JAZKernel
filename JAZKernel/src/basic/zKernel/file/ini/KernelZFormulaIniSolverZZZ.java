@@ -209,14 +209,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			//Aufloesen des Formula Tags (z.B. auch Math-Tags)
 			sReturnLine = this.solveParsed_Formula_(sExpression, objReturnReference, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
-			objEntry = objReturnReference.get();	
-			
-			
-			//BESONDERHEIT				
-			if(!sExpression.equals(sReturnLine)) {
-				objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
-				objEntry.setValueAsExpression(sReturnLine);
-			}																
+			objEntry = objReturnReference.get();															
 		}//end main
 	
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -375,13 +368,6 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}	
 		return sReturn;	
 	}
-	
-	//############
-	//Neu: Mache daraus 
-	
-	
-	
-	//############
 	
 	//### aus IParseEnabled		
 	@Override 
@@ -642,6 +628,77 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 //		}			
 //		return vecReturn;
 //	}
+	
+	//+++ Folgende Methoden koennen ueberschrieben werden um fuer den konkreten Solver eine Loesung einzubauen.
+	//### aus ISolveZZZ
+
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, null, true);
+	}
+
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
+	//!!! hier wuerde dann etwas konkretes stehen.
+	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
+		String sReturn = null;
+		String sReturnTag = null; String sReturnLine = null;
+		String sExpressionIn=null;
+		boolean bUseExpression = false;
+			
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+			objReturnReference.set(objEntry);
+		}	
+					
+		main:{	
+			if(vecExpressionIn==null) break main;
+			
+			//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
+			//!!! hier wuerde dann etwas konkretes stehen.
+			
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+						
+			//BESONDERHEIT	
+			sReturnTag = (String) vecReturn.get(1);
+			sReturnLine = sExpressionIn;
+					
+			objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
+			objEntry.setValueAsExpression(sReturnLine);			
+		}//end main:
+		
+		if(objEntry!=null) {				
+			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		}		
+		return vecReturn;
+	}		
+	
+	
+	
 
 	//########################################################
 	//### FLAG Handling
