@@ -159,8 +159,17 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	
 	public String getValueFormulaSolvedAndConverted();
 	abstract void setValueFormulaSolvedAndConverted(String sValueFormulaSolvedAndConverted);
+	
+	public VectorDifferenceZZZ<String> getLineFormulaSolvedAndConvertedVector();
+	public void setLineFormulaSolvedAndConvertedVector(VectorDifferenceZZZ<String> vecValueSolvedAndConverted);
+		
+	public String getLineFormulaSolvedAndConverted();
+	abstract void setLineFormulaSolvedAndConverted(String sLineFormulaSolvedAndConverted);
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ;
 		
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -486,7 +486,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag=null; String sTagSolved=null; String sPre; String sPost;
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
@@ -634,7 +634,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -651,7 +651,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag=null; String sTagSolved=null; String sPre; String sPost;
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null; 
@@ -779,7 +779,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -798,7 +798,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag=null; String sTagSolved=null; String sPre; String sPost;
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null; 
@@ -931,7 +931,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 							
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 
 			bReturn = true;
@@ -951,7 +951,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag=null; String sTagSolved=null; String sPre; String sPost;
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
@@ -1099,7 +1099,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 
 		} catch (ExceptionZZZ ez) {
@@ -1117,7 +1117,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost;
+			String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag=null; String sTagSolved=null; String sPre; String sPost;
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
@@ -1273,7 +1273,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 
 		} catch (ExceptionZZZ ez) {

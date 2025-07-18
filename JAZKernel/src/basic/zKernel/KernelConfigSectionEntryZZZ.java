@@ -57,7 +57,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bCrypt = false;
 	
 	protected VectorDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
-
+	protected VectorDifferenceZZZ<String> vecLineFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
 	
 	protected boolean bParseCalled = false;
 	protected boolean bParsed = false;
@@ -610,6 +610,27 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.getValueFormulaSolvedAndConvertedVector().add(sValueSolvedAndConverted);
 	}
 	
+	@Override 
+	public VectorDifferenceZZZ<String> getLineFormulaSolvedAndConvertedVector(){
+		return this.vecLineFormulaSolvedAndConverted;
+	}
+	
+	@Override
+	public void setLineFormulaSolvedAndConvertedVector(VectorDifferenceZZZ<String> vecLineSolvedAndConverted) {
+		this.vecLineFormulaSolvedAndConverted = vecLineSolvedAndConverted;
+	}
+	
+	@Override 
+	public String getLineFormulaSolvedAndConverted() {
+		return this.getLineFormulaSolvedAndConvertedVector().getEntryHigh();
+	}
+	
+	@Override
+	public void setLineFormulaSolvedAndConverted(String sLineSolvedAndConverted) {
+		this.getLineFormulaSolvedAndConvertedVector().add(sLineSolvedAndConverted);
+	}
+	
+	//#################################################
 	@Override
 	public String getValueFormulaSolvedAndConvertedAsExpression() throws ExceptionZZZ {
 		String sValue = this.getValueFormulaSolvedAndConverted();

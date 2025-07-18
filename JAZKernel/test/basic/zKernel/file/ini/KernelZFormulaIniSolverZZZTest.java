@@ -860,7 +860,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry( objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry( objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -980,7 +980,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -1113,7 +1113,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted,sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -1221,7 +1221,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -1351,7 +1351,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			assertTrue(btemp);
 			
 			bReturn = true;
@@ -1748,8 +1748,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					sExpressionSubstituted = sExpressionSubstitutedIn;
 					sExpressionSolved = sExpressionSolvedIn;
 					sTag = sTagIn;
-					sExpressionSolved = sExpressionSolvedIn;
-					
+					sTagSolved = sTagSolvedIn;
+										
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";	
 					IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
@@ -1831,7 +1831,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				assertTrue(btemp);
 				
 			} catch (ExceptionZZZ ez) {
@@ -1966,7 +1966,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				assertTrue(btemp);
 				
 			} catch (ExceptionZZZ ez) {
@@ -2093,7 +2093,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 
 				//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
 				//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
-				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved);
+				btemp = TestUtilAsTestZZZ.assertFileIniEntry(objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 				assertTrue(btemp);
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
