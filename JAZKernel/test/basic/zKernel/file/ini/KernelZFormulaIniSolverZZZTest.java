@@ -559,21 +559,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		main:{
 			try {
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
+			
 				
-				
-				//TODOGOON20250212;
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				//+++ Mit FORMULA MATH-Berechnung
-				
-				//d)
-				sExpressionSolved = sExpressionSolvedIn;
-				sTagSolved = sTagSolvedIn;
-
-				//Ersetze in dem Ausdruck eine Z-Tag mit der reinen Aufloesung
-				stemp = ExpressionIniUtilZZZ.makeAsExpression(sTagSolved, sTagStartZ, sTagEndZ); //Z-Tags bleiben drin
-				sExpressionSolved = StringZZZ.replace(sExpressionSolved, stemp, sTagSolved); 
-				
-				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);		
 				//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 				
 				//###########################
@@ -583,6 +570,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne jegliche Expression-Berechnung
 				//a)	
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;
 				sTag=null;//es findet kein Parsen statt
 				sTagSolved = null; //es findet kein Parsen statt
@@ -590,18 +578,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;
 				sTag=null;//es findet kein Parsen statt
 				sTagSolved = null; //es findet kein Parsen statt
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
-				//c)			
+				//c)	
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn; 
 				sTag=null;//es findet kein Parsen statt
 				sTagSolved = null; //es findet kein Parsen statt
 				btemp = testCompute_FORMULA_MATH_1Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
 				//d)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;
 				sTag=null;//es findet kein Parsen statt
 				sTagSolved = null; //es findet kein Parsen statt
@@ -609,9 +600,10 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
-				//+++ Ohne jegliche FORMULA_MATH Solver-Berechnung, 
-				//a) //Z:Formula Tag muss drin bleiben, im Gesamtstring!!!
-				sExpressionSolved = sExpressionIn;	
+				//+++ Ohne jegliche Solver-Berechnung, 
+				//a) //Z-Tag und Z:Formula Tag muss drin bleiben, im Gesamtstring!!!
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;	
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTag;
@@ -619,7 +611,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 			
 				//b)
-				sExpressionSolved = sExpressionIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
@@ -628,15 +621,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//c)
 				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionIn; 
+				sExpressionSolved = sExpressionSubstitutedIn; 
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_MATH_2SolverUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 					
-				//d)				
-				sExpressionSolved = sExpressionIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+				//d)			
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTag;
@@ -646,14 +640,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne FORMULA-Berechung
 				//a)
-				sExpressionSolved = sExpressionIn;
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTag;
 				btemp = testCompute_FORMULA_MATH_3FormulaUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
-				sExpressionSolved = sExpressionIn;				
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;				
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
 				sTag = sTagIn;
@@ -662,7 +658,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_3FormulaUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 		
 				//c)
-				sExpressionSolved = sExpressionIn;
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;
 				//Beim Solven ohne Solver, bleibt alles wie est ist.
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
@@ -670,7 +667,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_3FormulaUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 				//d)
-				sExpressionSolved = sExpressionIn;
+				sExpression = sExpressionIn;
+				sExpressionSubstituted = sExpressionSubstitutedIn;
+				sExpressionSolved = sExpressionSubstitutedIn;
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
 				sTag = sTagIn;
@@ -681,6 +680,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Ohne FORMULA_MATH-Berechung
 				//a)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
@@ -688,6 +688,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_4FormulaMathUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//b)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn; 
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//Beim Solven ohne den passenden Unter-Solver, bleibt nur der Tag diese Solvers drin.
@@ -697,6 +698,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_4FormulaMathUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 				
 				//c)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				//Beim Solven ohne den passenden Unter-Solver, bleibt nur der Tag diese Solvers drin.
@@ -706,6 +708,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_4FormulaMathUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 				//d)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionIn;	
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
@@ -719,7 +722,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//+++ Mit FORMULA MATH-Berechnung
 				//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-				sExpressionSolved = sExpressionIn;
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn;
 //				sExpressionSolved = objFormulaSolver.makeAsExpression(sExpressionSolved);
 //				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);
 //				sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "Z");
@@ -731,8 +735,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 		
 		
-				//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird NICHT das Formula-Math-Tag entfernt. 					
-				sExpressionSolved = sExpressionIn; //Beim Parsen wird der Wert nicht berechnet.
+				//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird NICHT das Formula-Math-Tag entfernt.
+				sExpression = sExpressionIn;
+				sExpressionSolved = sExpressionSubstitutedIn; //Beim Parsen wird der Wert nicht berechnet.
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagIn, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
@@ -741,18 +746,20 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 				
 				//c) Aufloesen, aber den Z-Tag drinbehalten.
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				sTag = sTagIn;
 				sTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTag, KernelZFormulaIniSolverZZZ.sTAG_NAME, false);//aber Z_FORMULA wird entfernt fuer den Tag-Wert an sich
 				sTagSolved = sTagSolvedIn;
 				sTagSolved = ExpressionIniUtilZZZ.makeAsExpression(sTagSolved, sTagStartZ, sTagEndZ); //Z-Tags bleiben drin				
 				btemp = testCompute_FORMULA_MATH_5Solved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
 				
 				//d)
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				sTagSolved = sTagSolvedIn;
 
+				//Ersetze in dem Ausdruck eine Z-Tag mit der reinen Aufloesung
 				stemp = ExpressionIniUtilZZZ.makeAsExpression(sTagSolved, sTagStartZ, sTagEndZ); //Z-Tags bleiben drin
 				sExpressionSolved = StringZZZ.replace(sExpressionSolved, stemp, sTagSolved); //Ersetze in dem Ausdruck eine Z-Tag mit der reinen Aufloesung
 				
@@ -1009,7 +1016,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.FORMULA_UNSOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION nicht verarbeiten - FORMULA_MATH 
