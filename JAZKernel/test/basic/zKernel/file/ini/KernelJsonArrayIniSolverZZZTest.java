@@ -818,7 +818,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//Wenn wir den "Kind-Solver" Testen, dann sind die Flags für den "Eltern-Solver" egal
 			//Demnach nicht folgendes Flagset verwenden IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
 			//sondern hier in testCompute_JsonArray_JsonUnsolved_:			
-			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSONARRAY_SOLVED;
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.JSON_UNSOLVED;
 			
 			//##########################################
 			//### Expression unsolved Fall

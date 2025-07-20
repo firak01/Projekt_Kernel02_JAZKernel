@@ -339,7 +339,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 				case sFLAGSET_MATH_UNSOLVED: //Z:Formula wird ja gesolved					
 					bReturn = assertFileIniEntry_parse_FLAGSET_FORMULA_MATH_UNSOLVED_(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);									
 					break;
-			
+				case sFLAGSET_MATH_SOLVED:
+					bReturn = assertFileIniEntry_parse_FLAGSET_FORMULA_MATH_SOLVED_(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+					break; 
 				case sFLAGSET_CALL_UNSOLVED:			
 					bReturn = assertFileIniEntry_parse_FLAGSET_CALL_UNSOLVED_(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);					
 					break;
@@ -799,27 +801,23 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isPathSubstituted());
 			
 			//++++++++++++++++++++++
+			assertTrue(objEntry.isVariableSubstituteCalled());
+				//+++ Werte kann man hier doch auch eigentlich nicht so abfragen					
+			assertTrue(objEntry.isVariableSubstituted());
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//++++++++++++++++++++++
 			assertTrue(objEntry.isSubstituteCalled());
 			assertIsSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isSubstituted());
 			
 			//++++++++++++++++++++++
-			assertFalse(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-			assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert
-			assertTrue(objEntry.isSolved()); //auch ohne Math wird SOLVE ja gemacht
+			assertFalse(objEntry.isSolveCalled()); //hier nur der PARSE Fall
+			assertFalse(objEntry.isSolvedChanged());
+			assertFalse(objEntry.isSolved());
 			
-			
-			if(sExpression.equals(sExpressionSubstituted)) {						
-				assertFalse(objEntry.isPathSubstituted());
-			}else {
-				assertFalse(objEntry.isPathSubstituted());
-			}
-			
-			//+++ kann man hier doch auch eigentlich nicht so abfragen					
-			assertFalse(objEntry.isVariableSubstituted());
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 													
-									
+			//++++++++++++++++++++++						
 			assertFalse(objEntry.isDecrypted());
 			assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 			
@@ -2701,40 +2699,25 @@ public class TestUtilAsTestZZZ extends TestCase{
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		
-			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
-			//... es gibt noch keinen Status zu ...ParseCalled()...
-			bJsonSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJsonIniSolverZZZ.sTAG_NAME);
-			bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
-			if(bExpressionHandlerCalledPrevious) {
-				System.out.println(("Vorher wurde Expression-Handler aufgerufen. Also JsonMap/JsonArray-Solver nicht direkt aufgerufen."));
-				assertFalse(objEntry.isJsonMapSolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
-				assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
-			}else if(bJsonSolverCalledPrevious) {
-				System.out.println(("Vorher wurde Json-Solver aufgerufen. Also JsonMap/JsonArray-Solver nicht direkt aufgerufen."));
-				assertFalse(objEntry.isJsonMapSolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
-				assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
-			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
-				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also kann JsonMap/JsonArray-Solver nicht direkt aufgerufen worden sein."));
-					assertFalse(objEntry.isJsonMapSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
-					assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
-				}else {
-					System.out.println(("Vorher wurde Json-Solver NOCH NICHT aufgerufen. Also JsonMap/JsonArray-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					assertTrue(objEntry.isJsonArraySolveCalled());  //aber wenn der JavaArraySolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....					
-				}
-			}								
-			assertTrue(objEntry.isJson()); 		
+			//+++++++++++++++++++++++++++++++
+			//### JSON
+			assertTrue(objEntry.isJson()); 	//Das kommt aus dem PARSEN
+			assertTrue(objEntry.isJsonSolveCalled()); //aufgerufen wird der jsonSolve ja.
+			assertFalse(objEntry.isJsonSolvedChanged()); 
+			assertTrue(objEntry.isJsonSolved()); //aufgerufen wird der jsonSolve ja.
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++			
+			//ohne JSON Aufloesung			
+			assertFalse(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+			assertFalse(objEntry.isJsonArraySolveCalled());  //aber wenn der JavaArraySolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//assertFalse(objEntry.isJsonMap());
-			//assertFalse(objEntry.isJsonArray());
-							
+			assertFalse(objEntry.isJsonMap());
+			assertFalse(objEntry.isJsonArray());
+			
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
