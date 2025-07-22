@@ -209,6 +209,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static boolean assertIsSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
+			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
 						
@@ -216,40 +217,364 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sTagEndZ = "</Z>";	
 			
 			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
-				//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
-				//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-				//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
-			}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
-				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+			String sExpression2compare = sExpression;
+			if(objEntry.isParsedChanged()) {
+				//ziehe substituted heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+				}
+				
+				
+				if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+						assertFalse(objEntry.isSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isSolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+						assertFalse(objEntry.isSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isSolvedChanged());
+						bReturn = true;					
+					}
+				}
+				
 			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
+					sExpression2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
+				if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
+						assertFalse(objEntry.isSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isSolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+						assertFalse(objEntry.isSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isSolvedChanged());
+						bReturn = true;					
+					}
+				}
 			}
 			
-			if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
-					assertFalse(objEntry.isSolvedChanged());
-					bReturn = false;
+			
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	public static boolean assertIsJsonSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			if(objEntry.isParsedChanged()) {
+				//ziehe substituted heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
 				}else {
-					assertTrue(objEntry.isSolvedChanged());
-					bReturn = true;
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
 				}
-			}else {
-				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
-					assertFalse(objEntry.isSolvedChanged());
-					bReturn = false;
+				
+				
+				if(objEntry.isJsonSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+						assertFalse(objEntry.isJsonSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonSolvedChanged());
+						bReturn = true;
+					}
 				}else {
-					assertTrue(objEntry.isSolvedChanged());
-					bReturn = true;					
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+						assertFalse(objEntry.isJsonSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonSolvedChanged());
+						bReturn = true;					
+					}
+				}
+				
+			}else {
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
+				if(objEntry.isJsonSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
+						assertFalse(objEntry.isJsonSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonSolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+						assertFalse(objEntry.isJsonSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonSolvedChanged());
+						bReturn = true;					
+					}
 				}
 			}
+			
+			
+		}//end main;
+		return bReturn;
+	}
+	
+	public static boolean assertIsJsonArraySolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			if(objEntry.isParsedChanged()) {
+				//ziehe substituted heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonArraySolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonArraySolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+				}
+				
+				
+				if(objEntry.isJsonArraySolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+						assertFalse(objEntry.isJsonArraySolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonArraySolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+						assertFalse(objEntry.isJsonArraySolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonArraySolvedChanged());
+						bReturn = true;					
+					}
+				}
+				
+			}else {
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonArraySolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonArraySolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
+				if(objEntry.isJsonArraySolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
+						assertFalse(objEntry.isJsonArraySolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonArraySolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+						assertFalse(objEntry.isJsonArraySolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonArraySolvedChanged());
+						bReturn = true;					
+					}
+				}
+			}
+			
+			
+		}//end main;
+		return bReturn;
+	}
+	
+	public static boolean assertIsJsonMapSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			if(objEntry.isParsedChanged()) {
+				//ziehe substituted heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonMapSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonMapSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+				}
+				
+				
+				if(objEntry.isJsonMapSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+						assertFalse(objEntry.isJsonMapSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonMapSolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+						assertFalse(objEntry.isJsonMapSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonMapSolvedChanged());
+						bReturn = true;					
+					}
+				}
+				
+			}else {
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonMapSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonMapSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
+				if(objEntry.isJsonMapSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
+						assertFalse(objEntry.isJsonMapSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonMapSolvedChanged());
+						bReturn = true;
+					}
+				}else {
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+						assertFalse(objEntry.isJsonMapSolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonMapSolvedChanged());
+						bReturn = true;					
+					}
+				}
+			}
+			
+			
 		}//end main;
 		return bReturn;
 	}
@@ -1208,18 +1533,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//###########################			
 			assertTrue(objEntry.isParseCalled());
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isParsed()); 
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//++++++++++++++++++++++++
 			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++						
 
-			assertTrue(objEntry.isSubstituteCalled()); 
-			assertIsSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isSubstituteCalled()); 			
 			assertTrue(objEntry.isSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++
 			//##############################################
 
@@ -2758,7 +3083,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sSubstituted2compare=null;
 				
 			
-			boolean bJsonSolverCalledPrevious = false; boolean bExpressionHandlerCalledPrevious = false;
+			boolean bJsonSolverCalledPrevious = false; boolean bExpressionHandlerCalledPrevious = false; boolean bJsonArraySolverCalledPrevious = false;
 		
 		
 			//######## TEST-TEIL ###########################
@@ -2766,13 +3091,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
 								
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+
 			//++++++++++++++++++++++++
 			//++++++++++++++++++++++++
 			
@@ -2781,9 +3108,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 		
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
-			assertFalse(objEntry.isSolvedChanged()); 
+			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
 			assertTrue(objEntry.isSolved());
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); 
+
 			//+++++++++++++++++++++++++
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -2797,19 +3125,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//### JSON
 			assertTrue(objEntry.isJson()); 	//Das kommt aus dem PARSEN
 			assertTrue(objEntry.isJsonSolveCalled()); //aufgerufen wird der jsonSolve ja.
-			assertFalse(objEntry.isJsonSolvedChanged()); 
 			assertTrue(objEntry.isJsonSolved()); //aufgerufen wird der jsonSolve ja.
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++			
-			//ohne JSON Aufloesung			
-			assertFalse(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-			assertFalse(objEntry.isJsonArraySolveCalled());  //aber wenn der JavaArraySolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertFalse(objEntry.isJsonMap());
-			assertFalse(objEntry.isJsonArray());
+			assertIsJsonSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); 
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2857,7 +3174,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpression2compareWithSubstituted=null; String sExpression2compareWithSolved = null;
 			String sSubstituted2compare=null;
 				
-			boolean bCallSolverCalledPrevious=false;
+			boolean bCallSolverCalledPrevious=false; boolean bJsonArraySolverCalledPrevious = false; boolean bExpressionHandlerCalledPrevious = false;
 		
 		
 			//######## TEST-TEIL ###########################
@@ -2883,8 +3200,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isSolved());
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
 			//+++++++++++++++++++++++++
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -2900,6 +3218,35 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isJson());
 			assertFalse(objEntry.isJsonMap());
 			assertTrue(objEntry.isJsonArray());
+			
+			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
+			bJsonArraySolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJsonIniSolverZZZ.sTAG_NAME);
+			bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
+			if(bExpressionHandlerCalledPrevious) {
+				System.out.println(("Vorher wurde Expression-Handler aufgerufen. Also JsonArray-Solver nicht direkt aufgerufen."));				
+				assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
+				assertFalse(objEntry.isJsonArraySolved());
+			}else if(bJsonArraySolverCalledPrevious) {
+				System.out.println(("Vorher wurde JsonArray-Solver aufgerufen. Also JsonArray-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom Json-Handler vermieden, da durch Flag deaktiviert.
+				assertFalse(objEntry.isJsonArraySolved());
+			}else {
+				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+				if(bAsEntry) {
+					System.out.println(("Aufruf als Entry. Also kann JsonArray-Solver nicht direkt aufgerufen worden sein."));
+					assertTrue(objEntry.isJsonArraySolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+					assertTrue(objEntry.isJsonArraySolved());
+				}else {					
+					System.out.println(("Vorher wurde Json-Solver NOCH NICHT aufgerufen. Also JsonArray-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isJsonArraySolveCalled());  //aber wenn der JavaArraySolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+					assertTrue(objEntry.isJsonArraySolved());
+						//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
+					
+				}
+			} 
+			assertIsJsonArraySolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
+			
 							
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -2951,23 +3298,23 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....			
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
-			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituteCalled());			
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++
 			//++++++++++++++++++++++++
 			
 			assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
-			assertFalse(objEntry.isSolvedChanged()); 
-			assertTrue(objEntry.isSolved());     //Solve wird sogar abgeschlossen, nur JSON_ARRAY bleibt unaufgeloest. 
+			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
+			assertTrue(objEntry.isSolved());     //Solve wird sogar abgeschlossen, nur JSON_ARRAY bleibt unaufgeloest.
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//+++++++++++++++++++++++++
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -3073,6 +3420,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isJsonMap());
 			assertFalse(objEntry.isJsonArray());
 			
+			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
+			assertFalse(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....			
+			assertFalse(objEntry.isJsonMapSolved());
+			assertIsJsonMapSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
+
+			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
@@ -3127,22 +3481,23 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);						
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);						
+
 			//++++++++++++++++++++++++
 			//++++++++++++++++++++++++
 			
 			assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...					
-			assertFalse(objEntry.isSolvedChanged()); 
+			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
 			assertTrue(objEntry.isSolved());     //solve selbst wurde ja ausgefuehrt. 
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//+++++++++++++++++++++++++
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
