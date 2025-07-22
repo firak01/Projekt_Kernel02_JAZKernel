@@ -192,6 +192,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 					assertTrue(objEntry.isSubstitutedChanged());
 					bReturn = true;
 				}
+			}else {
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+					assertFalse(objEntry.isSubstitutedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isSubstitutedChanged());
+					bReturn = true;					
+				}
 			}
 		}//end main;
 		return bReturn;
@@ -232,6 +240,62 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}else {
 					assertTrue(objEntry.isSolvedChanged());
 					bReturn = true;
+				}
+			}else {
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+					assertFalse(objEntry.isSolvedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isSolvedChanged());
+					bReturn = true;					
+				}
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	public static boolean assertIsCallSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isCallSolved()) {
+				//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+				//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+			}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+			}
+			
+			if(objEntry.isCallSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+					assertFalse(objEntry.isCallSolvedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isCallSolvedChanged());
+					bReturn = true;
+				}
+			}else {
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+					assertFalse(objEntry.isCallSolvedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isCallSolvedChanged());
+					bReturn = true;					
 				}
 			}
 		}//end main;
@@ -2294,10 +2358,40 @@ public class TestUtilAsTestZZZ extends TestCase{
 																//+++ kann man hier doch auch eigentlich nicht so abfragen														
 			assertTrue(objEntry.isVariableSubstituted());
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+			bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
+			if(!bCallSolverCalledPrevious) {
+				System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				assertFalse(objEntry.isCallSolved());
+			}else {
+				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+				if(bAsEntry) {
+					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
+					assertTrue(objEntry.isCallSolveCalled()); 
+					assertFalse(objEntry.isCallSolved()); //Der Aufruf wird vom CALL-Handler abgebrochen, da durch Flag deaktiviert.
+				}else {
+					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+					assertTrue(objEntry.isCallSolved());
+				}
+			}
+			 			
+			//assertTrue(objEntry.isCallSolveCalled()); //Aufgerufen wurde der solveCall ja...
+			assertIsCallSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
+			//assertTrue(objEntry.isCallSolved());
+			
+			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
 			assertTrue(objEntry.isSolved());
+			
+			//assertFalse(objEntry.isSolvedChanged()); //Es darf aber keine Aenderung geben, da  nicht aufgeloest	
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
+			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
