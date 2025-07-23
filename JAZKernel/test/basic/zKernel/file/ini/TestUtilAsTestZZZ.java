@@ -249,7 +249,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 							bReturn = true;
 						}
 					}else {
-						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
 							assertFalse(objEntry.isSolvedChanged());
 							bReturn = false;
 						}else {
@@ -281,22 +281,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				
 				if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
-						assertFalse(objEntry.isSolvedChanged());
-						bReturn = false;
+					if(objEntry.isSubstitutedChanged()){ 
+						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+							assertFalse(objEntry.isSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isSolvedChanged());
+							bReturn = true;
+						}
 					}else {
-						assertTrue(objEntry.isSolvedChanged());
-						bReturn = true;
+						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+							assertFalse(objEntry.isSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isSolvedChanged());
+							bReturn = true;					
+						}
 					}
 				}else {
-					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
-						assertFalse(objEntry.isSolvedChanged());
-						bReturn = false;
-					}else {
-						assertTrue(objEntry.isSolvedChanged());
-						bReturn = true;					
-					}
-				}
+					assertFalse(objEntry.isSolvedChanged());
+					bReturn = false;
+				}								
 			}
 			
 			
@@ -2674,19 +2679,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isParseCalled()); //Auch wenn nicht gesolved wird, dann ist doch geparsed worden....
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
 			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 		
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//+++Variablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isVariableSubstituteCalled());
-																//+++ kann man hier doch auch eigentlich nicht so abfragen														
+			assertTrue(objEntry.isVariableSubstituteCalled());																
 			assertTrue(objEntry.isVariableSubstituted());
+				//+++ kann man hier doch auch eigentlich nicht so abfragen
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2701,24 +2706,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 				if(bAsEntry) {
 					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
 					assertTrue(objEntry.isCallSolveCalled()); 
-					assertFalse(objEntry.isCallSolved()); //Der Aufruf wird vom CALL-Handler abgebrochen, da durch Flag deaktiviert.
+					assertFalse(objEntry.isCallSolved()); //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
 				}else {
 					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
 					assertTrue(objEntry.isCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					assertTrue(objEntry.isCallSolved());
+					assertFalse(objEntry.isCallSolved());      //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
 				}
-			}
-			 			
-			//assertTrue(objEntry.isCallSolveCalled()); //Aufgerufen wurde der solveCall ja...
+			}			 			
 			assertIsCallSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
-			//assertTrue(objEntry.isCallSolved());
-			
-			
+						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-			assertTrue(objEntry.isSolved());
-			
-			//assertFalse(objEntry.isSolvedChanged()); //Es darf aber keine Aenderung geben, da  nicht aufgeloest	
+			assertTrue(objEntry.isSolved());			
 			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			
