@@ -343,7 +343,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		
 		//Den eigenen Solver
 		if(this.isSolverEnabledThis()) {
-			objEntry.isJsonArraySolved(bIsSolveCalled);
+			objEntry.isJsonMapSolved(bIsSolveCalled);
 		}
 	}
 	

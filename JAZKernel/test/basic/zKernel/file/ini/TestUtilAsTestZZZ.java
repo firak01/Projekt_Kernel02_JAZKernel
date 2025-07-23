@@ -220,7 +220,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpression2compareWithExpression =sExpressionSolved;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
 			String sExpression2compare = sExpression;
-			if(objEntry.isParsedChanged()) {
+			if(objEntry.isSubstitutedChanged()){ //.isParsedChanged()) {
 				//ziehe substituted heran
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
 					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
@@ -239,22 +239,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				
 				
-				if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
-						assertFalse(objEntry.isSolvedChanged());
-						bReturn = false;
+				if(objEntry.isSolved()) {
+					if(objEntry.isSubstitutedChanged()){ 
+						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+							assertFalse(objEntry.isSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isSolvedChanged());
+							bReturn = true;
+						}
 					}else {
-						assertTrue(objEntry.isSolvedChanged());
-						bReturn = true;
+						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
+							assertFalse(objEntry.isSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isSolvedChanged());
+							bReturn = true;					
+						}
 					}
 				}else {
-					if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) {
-						assertFalse(objEntry.isSolvedChanged());
-						bReturn = false;
-					}else {
-						assertTrue(objEntry.isSolvedChanged());
-						bReturn = true;					
-					}
+					assertFalse(objEntry.isSolvedChanged());
+					bReturn = false;
 				}
 				
 			}else {
@@ -2325,21 +2330,21 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....			
 			assertTrue(objEntry.isParsed()); 
+			//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 			//+++++++++++++++++++++++++++++++				
 			
 			//+++++++++++++++++++++++++++++++									
 			assertTrue(objEntry.isPathSubstituteCalled());																			
+			assertTrue(objEntry.isPathSubstituted());
 			//da ggfs. durch das Solven der Wert veraendert wurde kann das hier nicht abgefragt werden:
 			//assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
-			assertTrue(objEntry.isPathSubstituted());
 			
 			//+++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled());
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);	
-			assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
+			assertTrue(objEntry.isSolveCalled());			
+			assertTrue(objEntry.isSolved()); //auch ohne SOLVE_MATH wird SOLVE ausgefuehrt
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++				
 			//++++++++++++++++++++++									
 			
@@ -2800,25 +2805,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....			
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 			//+++++++++++++++++++++++ ++++++++++++++++++++++ Weil nicht gesolved wurde, kann auf das Parse Ergebnis zugegriffen werden
-			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituteCalled());			
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//+++Variablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isVariableSubstituteCalled());
-																//+++ kann man hier doch auch eigentlich nicht so abfragen														
+			assertTrue(objEntry.isVariableSubstituteCalled());														
 			assertTrue(objEntry.isVariableSubstituted());
+			//+++ Werte kann man hier doch auch eigentlich nicht so abfragen
+			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
+			assertTrue(objEntry.isSolved());     //unsolved - Flagset
 			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
-			assertTrue(objEntry.isSolved());
+			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -2901,25 +2908,25 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//+++++++++++++++++++++
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....		
+			assertTrue(objEntry.isParsed()); 
 			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
 			//da wir das Ergebnis des Parsens nicht haben.
 			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-			assertTrue(objEntry.isParsed()); 
 			
 			//+++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituteCalled());			
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++
 			//++++++++++++++++++++++++
 			
 			assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...			
 			assertTrue(objEntry.isSolved());
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3421,8 +3428,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertFalse(objEntry.isJsonArray());
 			
 			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
-			assertFalse(objEntry.isJsonMapSolveCalled());  //aber wenn der JavaMapSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....			
-			assertFalse(objEntry.isJsonMapSolved());
+			assertTrue(objEntry.isJsonMapSolveCalled());			
+			assertTrue(objEntry.isJsonMapSolved());
 			assertIsJsonMapSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 
