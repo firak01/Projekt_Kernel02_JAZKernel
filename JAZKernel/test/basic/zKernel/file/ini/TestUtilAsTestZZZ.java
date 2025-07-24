@@ -88,11 +88,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
 			
-			String sExpression2compareWithSubstituted=sExpressionSolved;
-			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpression2compareWithSubstituted=sExpression;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
-			String sExpression2compare = sExpression;
-			if(objEntry.isSubstitutedChanged()) {
+			
+			//Bei ...IsSolvedChanged wuerde man solved-Ergebnis vergleichen
+			//String sExpression2compareWithExpression =sExpressionSolved;
+			//String sExpression2compare = sExpression;
+			//if(objEntry.isSubstitutedChanged()) {
+			
+			
+			if(objEntry.isParsed()) {
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isParsed()) {
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
@@ -118,31 +123,37 @@ public class TestUtilAsTestZZZ extends TestCase{
 					}
 				}
 			}else {
-				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isParsed()) {
-					sExpression2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
-					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, veraendert)=" + sExpression2compareWithExpression);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, veraendert)=" + sExpression2compare);
-				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
-					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
-					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
-				}else {
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
-				}
-				
-				if(objEntry.isParsed()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
-						assertFalse(objEntry.isParsedChanged());
-						bReturn = false;
-					}else {
-						assertTrue(objEntry.isParsedChanged());
-						bReturn = true;
-					}
-				}
+				assertFalse(objEntry.isParsedChanged());
+				bReturn = false;				
 			}
+			
+			//Bei ...IsSolvedChanged zu verwendender else-Teil			
+//			}else {
+//				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isParsed()) {
+//					sExpression2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+//					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, veraendert)=" + sExpression2compareWithExpression);
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, veraendert)=" + sExpression2compare);
+//				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isParsed()) {
+//					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+//					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+//				}else {
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+//				}
+//				
+//				if(objEntry.isParsed()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+//					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
+//						assertFalse(objEntry.isParsedChanged());
+//						bReturn = false;
+//					}else {
+//						assertTrue(objEntry.isParsedChanged());
+//						bReturn = true;
+//					}
+//				}
+//			}
 		}//end main;
 		return bReturn;
 	}
