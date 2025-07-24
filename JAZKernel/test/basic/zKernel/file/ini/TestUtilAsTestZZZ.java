@@ -2515,28 +2515,28 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			assertTrue(objEntry.isParsed());
 			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
 			//da wir das Ergebnis des Parsens nicht haben.
 			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-			assertTrue(objEntry.isParsed());
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());																
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);								
+			assertTrue(objEntry.isPathSubstituteCalled());																										
 			assertTrue(objEntry.isPathSubstituted());
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			
 			//+++Variablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isVariableSubstituteCalled());
-					//+++ kann man hier doch auch eigentlich nicht so abfragen														
+			assertTrue(objEntry.isVariableSubstituteCalled());													
 			assertTrue(objEntry.isVariableSubstituted());
+					//+++ Werte kann man hier doch auch eigentlich nicht so abfragen
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...												
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
 			assertTrue(objEntry.isSolved());
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2582,29 +2582,29 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....			
+			assertTrue(objEntry.isParsed());
 			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
 			//da wir das Ergebnis des Parsens nicht haben.
 			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-			assertTrue(objEntry.isParsed());
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());																
-			assertFalse(objEntry.isPathSubstitutedChanged());									
+			assertTrue(objEntry.isPathSubstituteCalled());																									
 			assertFalse(objEntry.isPathSubstituted());
+			assertFalse(objEntry.isPathSubstitutedChanged());
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			
 			//+++Varaiablen Substitution waere an +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isVariableSubstituteCalled());
-			      //+++ kann man hier doch auch eigentlich nicht so abfragen														
+			assertTrue(objEntry.isVariableSubstituteCalled());														
 			assertTrue(objEntry.isVariableSubstituted());
+		      //+++ Werte kann man hier doch auch eigentlich nicht so abfragen
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...								
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);					
+			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...							
 			assertTrue(objEntry.isSolved());
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
