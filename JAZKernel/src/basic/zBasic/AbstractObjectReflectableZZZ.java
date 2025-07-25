@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractObjectReflectableZZZ <T> extends AbstractObjectZZZ implements IObjectReflectableZZZ{
+public abstract class AbstractObjectReflectableZZZ <T> extends AbstractObjectWithExceptionZZZ implements IObjectReflectableZZZ{
 	protected String sClassMethodCalling=null;		
 	protected HashMap<String,String> hmClassMethodCalling = new HashMap<String,String>();
 	

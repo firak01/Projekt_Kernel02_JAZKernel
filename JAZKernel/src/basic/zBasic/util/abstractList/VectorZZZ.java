@@ -67,6 +67,7 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		for (int i=0; i<initVector.size(); i++)
 			this.addElement(initVector.elementAt(i));
 	}
+	
 
 	//### Ueberschriebene Originalmethoden, um noch weitere Funktionen zu bieten
 	@SuppressWarnings("unchecked")

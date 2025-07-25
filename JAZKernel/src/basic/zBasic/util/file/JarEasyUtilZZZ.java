@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -29,7 +29,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * @author Fritz Lindhauer, 19.10.2020, 08:10:14
  * 
  */
-public class JarEasyUtilZZZ extends AbstractObjectZZZ implements IJarEasyConstantsZZZ{
+public class JarEasyUtilZZZ extends AbstractObjectWithExceptionZZZ implements IJarEasyConstantsZZZ{
 	
 	
 	//Ich lasse mal untenstehend da, aus Dokumentationsgründen.

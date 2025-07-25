@@ -1,6 +1,7 @@
 package basic.zBasic.util.abstractList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -36,10 +37,12 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		main:{
 			if(objValue == null) {
 				replace_(null);
+			}else if(objValue instanceof NullObjectZZZ) {
+				replace_(null);
 			}else if(objValue instanceof String) {
-				replace_((String) objValue);
+				replace_((String) objValue);			
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}								
 		}//end main:
@@ -47,12 +50,16 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	
 	private void replace_(String sValue) throws ExceptionZZZ{
 		
-		if(this.size()==0) this.add(0, null);
+		if(this.size()==0) this.add(0, new NullObjectZZZ());
 		
-		if(this.size()>=2) this.removeElementAt(1);		
-		this.add(1, sValue); //nicht by default ersetzen
+		if(this.size()>=2) this.removeElementAt(1);
+		if(sValue==null) {
+			this.add(1, new NullObjectZZZ());
+		}else {
+			this.add(1, sValue); //nicht by default ersetzen
+		}
 		
-		if(this.size()==2) this.add(2, null);
+		if(this.size()==2) this.add(2, new NullObjectZZZ());
 	}
 	
 	
@@ -63,8 +70,10 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		main:{			
 			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
 				replace_((String) objLeft, (String) objMid, (String) objRight);
+			}else if((objLeft instanceof NullObjectZZZ) && (objMid instanceof NullObjectZZZ) && (objRight instanceof NullObjectZZZ)) {
+				replace_(null, null, null);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}	
 		}//end main:
@@ -72,14 +81,28 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	
 	private void replace_(String sLeft, String sMid, String sRight) throws ExceptionZZZ{
 		
-		if(this.size()>=1) this.removeElementAt(0);		
-		this.add(0, sLeft);
-				
-		if(this.size()>=2) this.removeElementAt(1);
-		this.add(1, sMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+		if(this.size()>=1) this.removeElementAt(0);	
+		if(sLeft==null){
+			this.add(0, new NullObjectZZZ());
+		}else {
+			this.add(0, sLeft);
+		}
 		
-		if(this.size()>=3) this.removeElementAt(2);								
-		this.add(2, sRight);		
+		if(this.size()>=2) this.removeElementAt(1);
+		if(sMid==null) {
+			this.add(1, new NullObjectZZZ());
+		}else {
+			this.add(1, sMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+		}
+		
+		
+		
+		if(this.size()>=3) this.removeElementAt(2);	
+		if(sRight==null) {
+			this.add(2, new NullObjectZZZ());
+		}else {
+			this.add(2, sRight);
+		}
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++
@@ -88,11 +111,12 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 	public void replaceIgnoreNull(Object objValue) throws ExceptionZZZ {
 		main:{
 			if(objValue==null) break main;
+			if (objValue instanceof NullObjectZZZ) break main;
 			
 			if(objValue instanceof String) {
 				replaceByDefault_((String) objValue);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 				
@@ -163,38 +187,42 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		//Nun die Werte in den ErgebnisVector zusammenfassen
 		if(bReturnSeparators ==true){
 			if(this.size()>=1) this.removeElementAt(0);
-			if(!StringZZZ.isEmpty(sLeft)){
-				this.add(0, sLeft);
-			}else {
+			if(StringZZZ.isEmpty(sLeft)){
 				this.add(0, this.getObjectDefaultNew());
+			}else {
+				this.add(0, sLeft);
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);
-			this.add(1, sSepMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+			if(sSepMid==null) {
+				this.add(1, this.getObjectDefaultNew());
+			}else {
+				this.add(1, sSepMid); //zentral wichtig: In der Mitte immer das "Extrakt". HIER ABER LEER, bzw. nur Separator
+			}
 			
 			if(this.size()>=3) this.removeElementAt(2);						
-			if(!StringZZZ.isEmpty(sRight)){
-				this.add(2, sRight);
+			if(StringZZZ.isEmpty(sRight)){
+				this.add(2, this.getObjectDefaultNew());				
 			}else {
-				this.add(2, this.getObjectDefaultNew());
+				this.add(2, sRight);
 			}
 		
 		}else if(bReturnSeparators == false){
 			if(this.size()>=1) this.removeElementAt(0);										
-			if(!StringZZZ.isEmpty(sLeft)){
-				this.add(0, sLeft);
+			if(StringZZZ.isEmpty(sLeft)){
+				this.add(0, this.getObjectDefaultNew());				
 			}else {
-				this.add(0, this.getObjectDefaultNew());
+				this.add(0, sLeft);
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, this.getObjectDefaultNew()); 
 			
 			if(this.size()>=3) this.removeElementAt(2);										
-			if(!StringZZZ.isEmpty(sRight)){
-				this.add(2, sRight);
+			if(StringZZZ.isEmpty(sRight)){
+				this.add(2, this.getObjectDefaultNew());				
 			}else {
-				this.add(2, this.getObjectDefaultNew());
+				this.add(2, sRight);
 			}
 		}
 	}
@@ -210,10 +238,16 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 				break main;
 			}
 			
+			if(objLeft instanceof NullObjectZZZ & objRight instanceof NullObjectZZZ) {
+				this.replace(objMid);
+				break main;
+			}
+			
+			
 			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
 				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, false, null, null);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 		}//end main:
@@ -238,13 +272,15 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		if(this.size()>=2) this.removeElementAt(1);
 		
 		if(objMid==null || objMid instanceof String) {
-			if(!StringZZZ.isEmpty((String) objMid)){ 
-				this.add(1, (String) objMid);
-			}else {
+			if(StringZZZ.isEmpty((String) objMid)){ 
 				this.add(1, this.getObjectDefaultNew());
+			}else {
+				this.add(1, (String) objMid);				
 			}
+		}else if(objMid instanceof NullObjectZZZ) {
+			this.add(1, this.getObjectDefaultNew());
 		}else {
-			ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objMid.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objMid.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}	
 			
@@ -261,8 +297,10 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			
 			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
 				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, false, null, null);
+			} else if((objLeft instanceof NullObjectZZZ) && (objMid instanceof NullObjectZZZ) && (objRight instanceof NullObjectZZZ)) {
+				replaceWithSeparatorByDefault_(null, null, null, false, null, null);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}	
 		}//end main:
@@ -278,11 +316,17 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 				this.replace(objMid);
 				break main;
 			}
-			
-			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
+			if(objMid instanceof NullObjectZZZ) break main;
+			if(objLeft instanceof NullObjectZZZ & objRight instanceof NullObjectZZZ) {
+				this.replace(objMid);
+				break main;
+			}
+			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {				
 				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, bReturnSeparators, sSepLeft, sSepRight);
+			}else if((objLeft instanceof NullObjectZZZ) && (objMid instanceof NullObjectZZZ) && (objRight instanceof NullObjectZZZ)) {
+				replaceWithSeparatorByDefault_(null, null, null, bReturnSeparators, sSepLeft, sSepRight);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 		}//end main:
@@ -391,38 +435,38 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 		//Nun die Werte in den ErgebnisVector zusammenfassen
 		if(!StringZZZ.isEmpty(sMid)){
 			if(this.size()>=1) this.removeElementAt(0);
-			if(!StringZZZ.isEmpty(sLeft)){
-				this.add(0, sLeft);
+			if(StringZZZ.isEmpty(sLeft)){
+				this.add(0, this.getObjectDefaultNew());				
 			}else {
-				this.add(0, this.getObjectDefaultNew());
+				this.add(0, sLeft);
 			}
 								
 			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, sSepLeft + sMid + sSepRight);//zentral wichtig: In der Mitte immer das "Extrakt".
 			
 			if(this.size()>=3) this.removeElementAt(2);											
-			if(!StringZZZ.isEmpty(sRight)){
-				this.add(2, sRight);
-			}else {
+			if(StringZZZ.isEmpty(sRight)){
 				this.add(2, this.getObjectDefaultNew());
+			}else {
+				this.add(2, sRight);				
 			}
 		}else {
 			//sMid ist leer		
 			if(this.size()>=1) this.removeElementAt(0);						
-			if(!StringZZZ.isEmpty(sLeft)){
-				this.add(0, sLeft);
+			if(StringZZZ.isEmpty(sLeft)){
+				this.add(0, this.getObjectDefaultNew());				
 			}else {
-				this.add(0, this.getObjectDefaultNew());
+				this.add(0, sLeft);
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
 			this.add(1, this.getObjectDefaultNew());
 			
 			if(this.size()>=3) this.removeElementAt(2);						
-			if(!StringZZZ.isEmpty(sRight)){
-				this.add(2, sRight);
-			}else {
+			if(StringZZZ.isEmpty(sRight)){
 				this.add(2, this.getObjectDefaultNew());
+			}else {
+				this.add(2, sRight);				
 			}
 		} 
 	}

@@ -4,7 +4,7 @@ package basic.zKernel.status;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
@@ -20,7 +20,7 @@ import basic.zBasic.util.log.LogStringZZZ;
  * @author lindhaueradmin
  *
  */
-public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractObjectZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
+public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractObjectWithExceptionZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	
 	//Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden

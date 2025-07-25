@@ -212,12 +212,12 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				   <Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>{[Section for testComputeMathArguments FLOAT]WertB_float}</Z:val></Z:math></Z:formula> */
 				/*
 				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false);
-				sTagValueTotal = (String) vecReturn.get(1);
+				sTagValueTotal = vecReturn.get(1).toString();
 				bCascadedExpressionFound = true;
 				*/
 				
 				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false, iTagXPathStartingIndex);
-				sTagValueTotal = (String) vecReturn.get(1);
+				sTagValueTotal = vecReturn.get(1).toString();
 				bCascadedExpressionFound = true;
 			}
 			

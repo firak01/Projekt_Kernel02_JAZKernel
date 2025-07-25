@@ -5,11 +5,11 @@ import java.io.FilenameFilter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterSuffixZZZ extends AbstractObjectZZZ implements IFilenamePartFilterZZZ  {
+public class FilenamePartFilterSuffixZZZ extends AbstractObjectWithExceptionZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileSuffix;
 	
 	public FilenamePartFilterSuffixZZZ() {

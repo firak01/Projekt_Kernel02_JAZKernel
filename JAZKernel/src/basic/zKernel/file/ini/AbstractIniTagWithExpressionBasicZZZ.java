@@ -188,9 +188,9 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			
 			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);
 			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			String sReturnTag = (String) vecReturn.get(1);
+			String sReturnTag = vecReturn.get(1).toString();
 			this.setValue(sReturnTag);
 				
 			String sReturnLine = VectorUtilZZZ.implode(vecReturn);			
@@ -211,7 +211,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				listasReturnParsed.add(sValue);
 				listasValueParsed.add(sValue);
 			}
-			listasReturnParsed.add((String) vecReturn.get(2));
+			listasReturnParsed.add(vecReturn.get(2).toString());
 			
 			this.setValue(listasValueParsed);
 			saReturn = listasReturnParsed.toStringArray();				

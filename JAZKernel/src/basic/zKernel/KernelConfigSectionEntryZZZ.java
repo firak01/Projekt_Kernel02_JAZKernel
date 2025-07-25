@@ -267,6 +267,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return true;
 	}
 	
+	@Override
+	public boolean resetValues(Object objDefault) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 	//############################
 	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException, ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
@@ -1702,4 +1709,5 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 				this.getPropertiesSearchedHashMap().putAsLast(sProperty, bExists);
 			}
 		}
+
 }

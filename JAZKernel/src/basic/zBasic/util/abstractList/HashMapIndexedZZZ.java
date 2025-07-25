@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
@@ -17,7 +17,7 @@ import basic.zBasic.ReflectCodeZZZ;
  */
 
 //Merke: Wenn man hier <Integr,V> schreibt, defniert man sich sein eigenes Integer und nutzt nicht mehr die Java-Integer Klasse....
-public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implements Iterable<V>,Serializable{	
+public class HashMapIndexedZZZ<K,V>  extends AbstractObjectWithExceptionZZZ<Object> implements Iterable<V>,Serializable{	
 	private static final long serialVersionUID = 8726987571013127695L;
 	private HashMap<Integer,V> hmIndexed=null;
 	private VectorZZZ<Integer> vecIndex=null;	

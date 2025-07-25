@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 
-public class HashtableZZZ extends AbstractObjectZZZ{
+public class HashtableZZZ extends AbstractObjectWithExceptionZZZ{
 
 	public static HashMap<String,String> toHashMap_IntegerObject(HashtableIndexedZZZ<Integer,Object> htIndexed){
 		HashMap<String,String>hmReturn=null;

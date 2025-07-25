@@ -5,13 +5,13 @@ import java.io.IOException;
 
 import basic.javagently.Stream;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.KernelLogZZZ;
 
-public class FileTextWriterZZZ extends AbstractObjectZZZ{
+public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";
 	private IStreamZZZ objStream = null;
 	private String sFileName = null;

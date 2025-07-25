@@ -590,7 +590,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 			}	
 						
 			//##############
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
 			this.updateValueSolved();

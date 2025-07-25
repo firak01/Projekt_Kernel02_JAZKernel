@@ -1402,8 +1402,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 				assertNotNull(vecReturn);				
 				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+				assertFalse(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+				assertFalse(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 											
 				sValue = VectorUtilZZZ.implode(vecReturn);				
 				assertEquals(sExpressionSolved, sValue);
@@ -1429,8 +1429,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 				assertNotNull(vecReturn);
 				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-				assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+				assertFalse(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+				assertFalse(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 				sValue = VectorUtilZZZ.implode(vecReturn);
 				assertEquals(sExpressionSolved, sValue);

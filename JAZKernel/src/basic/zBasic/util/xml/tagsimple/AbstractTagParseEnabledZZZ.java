@@ -118,15 +118,15 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			
 			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = (String) vecReturn.get(1); //uebernimm also das 1. Element
+			sReturnTag = vecReturn.get(1).toString(); //uebernimm also das 1. Element
 			this.setValue(sReturnTag);
 			
 			
 			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
 			if(vecReturn==null) break main;
-			sReturnTag = (String) vecReturn.get(1); //uebernimm also das nun ggfs. auch leere 1. Element
+			sReturnTag = vecReturn.get(1).toString(); //uebernimm also das nun ggfs. auch leere 1. Element
 			this.setValue(sReturnTag);
 			
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
@@ -175,7 +175,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
 	
-					sReturnTag = (String) vecReturn.get(1);
+					sReturnTag = vecReturn.get(1).toString();
 					sReturn = sReturnTag;
 					this.setValue(sReturnTag);
 				}	
@@ -188,7 +188,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			
 				//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 				vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-				sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = vecReturn.get(1).toString();
 				sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
 				this.setValue(sReturnTag);				
 			}
@@ -249,7 +249,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse);
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			String sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
 			this.setValue(sTag);
@@ -301,7 +301,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
 	
-					sReturnTag = (String) vecReturn.get(1);
+					sReturnTag = vecReturn.get(1).toString();
 					sReturn = sReturnTag;
 					this.setValue(sReturnTag);
 				}	
@@ -313,7 +313,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			bUseParse = this.isParserEnabledCustom();
 			if(bUseParse) {
 				vecReturn = this.parseFirstVectorPostCustom(vecExpressionIn, bKeepSurroundingSeparatorsOnParse);
-				sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = vecReturn.get(1).toString();
 				this.setValue(sReturnTag);	
 			}
 		}//end main:

@@ -8,7 +8,7 @@ import com.google.gson.JsonParser;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -20,7 +20,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 24.03.2021, 09:04:48
  * 
  */
-public class JsonArrayZZZ<T> extends AbstractObjectZZZ  implements Iterable<T>{
+public class JsonArrayZZZ<T> extends AbstractObjectWithExceptionZZZ  implements Iterable<T>{
 	private JsonArray objJsonArray = null;
 	
 	//Für die Collection-Behandlung: //Merke: Analog zur implemtation in HashMapIndexedZZZ

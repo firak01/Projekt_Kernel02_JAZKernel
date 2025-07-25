@@ -146,13 +146,13 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-		//B) Test (01) mit Z-Tag AUSSEN drumherum. Erst jetzt ist es eine Expression und wird ersetzt
-		sExpression = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT01 + sTagEndZ;
-		sExpressionSubstituted = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED01 + sTagEndZ;
-		sExpressionSolved = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED01 + sTagEndZ;
-		testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
-		
-				
+			//B) Test (01) mit Z-Tag AUSSEN drumherum. Erst jetzt ist es eine Expression und wird ersetzt
+			sExpression = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT01 + sTagEndZ;
+			sExpressionSubstituted = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED01 + sTagEndZ;
+			sExpressionSolved = sTagStartZ + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED01 + sTagEndZ;
+			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			
+					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 		
             //################################################################

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
@@ -23,7 +23,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
+public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectWithExceptionZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	private IEventObjectFlagZsetZZZ eventPrevious=null;
 	

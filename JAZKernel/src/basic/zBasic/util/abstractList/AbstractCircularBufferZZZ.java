@@ -1,7 +1,7 @@
 package basic.zBasic.util.abstractList;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 
 /**Implentation eines Ringspeichers.
  *  
@@ -11,7 +11,7 @@ import basic.zBasic.AbstractObjectZZZ;
  * https://www.baeldung.com/java-ring-buffer
  * https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/circularbuffer/CircularBuffer.java
  */
-public abstract class AbstractCircularBufferZZZ<E>  extends AbstractObjectZZZ {
+public abstract class AbstractCircularBufferZZZ<E>  extends AbstractObjectWithExceptionZZZ {
 	private static final int DEFAULT_CAPACITY = 9;
 
     private final int capacity;

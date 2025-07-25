@@ -13,7 +13,7 @@ import java.util.jar.JarFile;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -27,7 +27,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 23.12.2020, 09:35:08
  * 
  */
-public class ResourceEasyZZZ extends AbstractObjectZZZ implements IResourceHandlingObjectZZZ{
+public class ResourceEasyZZZ extends AbstractObjectWithExceptionZZZ implements IResourceHandlingObjectZZZ{
 	private ResourceEasyZZZ(){
 		//Zum Verstecken des Konstruktors
 	}

@@ -329,9 +329,9 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objReturnReferenceParse.set(objEntry);
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = (String)vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
 			sReturnLine = sReturnLineParsed;
 			sReturn = sReturnLine;
@@ -347,7 +347,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			//3. Versuch als Einzelwert
 			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)){
-				if(vecReturn!=null) sReturnTag = (String) vecReturn.get(1);
+				if(vecReturn!=null) sReturnTag = vecReturn.get(1).toString();
 				sExpression = sReturnTag;
 				if(StringZZZ.isEmpty(sExpression)) break main;
 				

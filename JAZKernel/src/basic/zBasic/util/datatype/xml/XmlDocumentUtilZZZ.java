@@ -13,7 +13,7 @@ import org.jdom.output.XMLOutputter;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

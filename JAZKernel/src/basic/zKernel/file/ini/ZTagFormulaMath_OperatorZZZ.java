@@ -191,12 +191,12 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 //			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 //			
 //			vecReturn = this.parseFirstVector(sLineWithExpression);			
-//			sReturnTag = (String) vecReturn.get(1);		
+//			sReturnTag = vecReturn.get(1).toString();		
 //									
 //			if(!StringZZZ.isEmpty(sReturnTag)){															
 //				this.setOperator(sReturnTag);
 //				//Nein, das ist nicht korrekt  String sValue01 = (String)vecReturn.get(0);
-//				//Nein, das ist nicht korrekt  String sValue02 = (String)vecReturn.get(2);
+//				//Nein, das ist nicht korrekt  String sValue02 = vecReturn.get(2).toString();
 //				
 //				//links vom Operator
 //				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
@@ -288,7 +288,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				
 				//Der Operator selbst.
 				Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);			
-				sReturnTag = (String) vecReturn.get(1);	
+				sReturnTag = vecReturn.get(1).toString();	
 				this.setValue(sReturnTag);
 				this.setOperator(sReturnTag);				
 				

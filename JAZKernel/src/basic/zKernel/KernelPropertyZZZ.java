@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /**This class is used for reading/writing from/to 1 one or more .property-file(s).

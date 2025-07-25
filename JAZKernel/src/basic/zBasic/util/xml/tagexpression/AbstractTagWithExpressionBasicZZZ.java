@@ -57,8 +57,15 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	public boolean resetValues() throws ExceptionZZZ{
 		super.resetValues();
 		this.bAnyValueInObjectWithExpression=false;
+		this.bNullValueInObjectWithExpression=false;		
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues(Object objDefault) throws ExceptionZZZ {
+		super.resetValues(objDefault);
+		this.bAnyValueInObjectWithExpression=false;
 		this.bNullValueInObjectWithExpression=false;
-		if(this.vecValue!=null) this.vecValue.clear();
 		return true;
 	}
 
@@ -315,9 +322,9 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			String sExpression = sExpressionIn;
 			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			this.setValue(sReturnTag);
 			
 			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
@@ -376,7 +383,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 				String sTagStartZ = "<Z>"; //this.getTagStarting();
 				String sTagEndZ = "</Z>";  //this.getTagClosing();
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);  //also von innen nach aussen					
-				sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = vecReturn.get(1).toString();
 
 			}	
 			
@@ -401,7 +408,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			
 			//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 			vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			sReturn = sReturnTag;
 			this.setValue(sReturnTag);
 			
@@ -571,11 +578,11 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			String sReturn = null; String sReturnTag = null;
 			main:{
 				
-				sReturnTag = (String) vecReturn.get(1);		
+				sReturnTag = vecReturn.get(1).toString();		
 				this.setValue(sReturnTag);	
 				
 				vecReturn = this.parseFirstVectorPostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-				sReturnTag = (String) vecReturn.get(1);
+				sReturnTag = vecReturn.get(1).toString();
 				this.setValue(sReturnTag);
 			}//end main
 			return vecReturn;

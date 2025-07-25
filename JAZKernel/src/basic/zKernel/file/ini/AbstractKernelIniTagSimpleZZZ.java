@@ -181,6 +181,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		return true;
 	}
 	
+	@Override
+	public boolean resetValues(Object objDefault) throws ExceptionZZZ {
+		super.resetValues(objDefault);
+		this.resetEntry();
+		return true;
+	}
+	
 	
 	//### aus IKernelUserZZZ
 	@Override
@@ -629,9 +636,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			this.setValue(sReturnTag);
 			
 			//Tags entfernen und eigenen Wert setzen
@@ -738,11 +745,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//!!! Unterschied zum AbstractKernelIniTagCascadedZZZ
 			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
 			if(vecReturn==null) break main;	
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
 			
 			//+++++++++++++++++++++++++
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			String sValueToSubstitute = (String) vecReturn.get(1);  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+			String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
@@ -758,7 +765,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}			
 			//+++++++++++++++++++++++++
 			
-			sReturnTag = (String)vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			this.setValue(sReturnTag);			
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
@@ -978,7 +985,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
 			
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);			
 		}//end main:
 				
@@ -1558,9 +1565,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 							
-			sReturnTag = (String) vecReturn.get(1);							
+			sReturnTag = vecReturn.get(1).toString();							
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 					
 			//Rufe nun substituteParsed() auf...	

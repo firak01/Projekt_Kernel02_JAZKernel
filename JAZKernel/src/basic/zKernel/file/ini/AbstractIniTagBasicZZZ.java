@@ -108,7 +108,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 			
 			Vector<String> vecReturn = this.parseFirstVector(sExpression);
 			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 		
 			String sParsed = vecReturn.get(1);
 			this.setValue(sParsed);
@@ -158,14 +158,14 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 //			
 //			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpressionIn, bKeepSurroundingSeparatorsOnParse);
 //			if(vecReturn==null) break main;
-//			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+//			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 //			
-//			sReturnTag = (String) vecReturn.get(1);
+//			sReturnTag = vecReturn.get(1).toString();
 //			this.setValue(sReturnTag);
 //							
 //			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
 //			if(vecReturn==null) break main;
-//			sReturnTag = (String) vecReturn.get(1); //den ggfs. leer gewordenen Tag setzen
+//			sReturnTag = vecReturn.get(1).toString(); //den ggfs. leer gewordenen Tag setzen
 //			this.setValue(sReturnTag);
 //				
 //			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
@@ -213,7 +213,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 //					String sTagEnd = "</Z>";  //this.getTagClosing();
 //					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
 //	
-//					sReturnTag = (String) vecReturn.get(1);
+//					sReturnTag = vecReturn.get(1).toString();
 //					sReturn = sReturnTag;
 //					this.setValue(sReturnTag);
 //				}	
@@ -226,7 +226,7 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 //			
 //				//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 //				vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-//				sReturnTag = (String) vecReturn.get(1);
+//				sReturnTag = vecReturn.get(1).toString();
 //				sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
 //				this.setValue(sReturnTag);				
 //			}

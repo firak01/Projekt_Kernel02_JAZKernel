@@ -12,10 +12,10 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class SetUtilZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
+public class SetUtilZZZ extends AbstractObjectWithExceptionZZZ implements ICollectionConstantZZZ{
 	private static final long serialVersionUID = 4127464724750442138L;
 
 	

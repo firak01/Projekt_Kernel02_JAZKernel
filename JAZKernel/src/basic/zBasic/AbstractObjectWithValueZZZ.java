@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T> implements IValueUserZZZ{
+public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectWithExceptionZZZ<T> implements IValueUserZZZ{
 	private static final long serialVersionUID = -2430016737090603862L;
 
 	protected String sValue = null;

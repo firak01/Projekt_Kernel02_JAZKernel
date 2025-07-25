@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -29,7 +29,7 @@ import basic.zBasic.util.math.MathZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 //Generisch ist nicht sinnvoll, bei den statischen Methoden  public class StringArrayZZZ<T> implements IConstantZZZ{
-public class StringArrayZZZ extends AbstractObjectZZZ{
+public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 	private String[] saIntern;
 	private boolean bIsString = false;
 

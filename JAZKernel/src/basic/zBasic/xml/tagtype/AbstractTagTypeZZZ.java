@@ -1,11 +1,11 @@
 package basic.zBasic.xml.tagtype;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
-public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements ITagTypeZZZ{
+public abstract class AbstractTagTypeZZZ extends AbstractObjectWithExceptionZZZ implements ITagTypeZZZ{
 	protected String sTagName="";
 	
 	public AbstractTagTypeZZZ() throws ExceptionZZZ{

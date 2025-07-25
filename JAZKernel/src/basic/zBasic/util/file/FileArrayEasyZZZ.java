@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IPath;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -51,7 +51,7 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
  * @author lindhaueradmin
  *
  */
-public class FileArrayEasyZZZ extends AbstractObjectZZZ{
+public class FileArrayEasyZZZ extends AbstractObjectWithExceptionZZZ{
 	
 private FileArrayEasyZZZ(){
 	//Zum Verstecken des Konstruktors

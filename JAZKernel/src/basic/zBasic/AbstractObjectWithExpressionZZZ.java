@@ -60,6 +60,26 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		return true;
 	}
 	
+	@Override
+	public boolean resetValues(Object objDefaultIn) throws ExceptionZZZ {
+		//super.resetValues(objDefault);  //Ist oberste Ebene, gibt es hier nicht.
+		
+		Object objDefault=null;
+		if(objDefaultIn==null) {
+			objDefault = new NullObjectZZZ();
+		}else {
+			objDefault = objDefaultIn;			
+		}
+		
+		if(this.vecRaw!=null) {
+			for(int i=0; i<=vecRaw.size()-1;i++) {							
+				this.vecRaw.replace(i, objDefault);			
+			}	
+			return true;
+		}			
+		return false;
+	}
+	
 	//### Aus IObjectWithExpression
 	@Override
 	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{

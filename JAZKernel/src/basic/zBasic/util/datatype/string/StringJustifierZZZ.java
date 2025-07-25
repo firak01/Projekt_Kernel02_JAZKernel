@@ -1,10 +1,10 @@
 package basic.zBasic.util.datatype.string;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJustifierZZZ {
+public class StringJustifierZZZ extends AbstractObjectWithExceptionZZZ implements IStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
 	
 	//Zum Buendig machen

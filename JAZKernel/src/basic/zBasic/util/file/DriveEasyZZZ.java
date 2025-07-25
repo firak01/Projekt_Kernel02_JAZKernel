@@ -7,7 +7,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author lindhaueradmin
  *
  */
-public class DriveEasyZZZ extends AbstractObjectZZZ{
+public class DriveEasyZZZ extends AbstractObjectWithExceptionZZZ{
 	private DriveEasyZZZ(){
 //		Zum Verstecken des Konstruktors
 	}

@@ -1,7 +1,7 @@
 package basic.zBasic.util.file;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 
 /** Utility Klasse um mit UTF Dateien (hautpsächlich UTF-8) zu arbeiten.
  *  
@@ -9,7 +9,7 @@ import basic.zBasic.AbstractObjectZZZ;
  * @author Fritz Lindhauer, 16.03.2020, 12:37:57
  * 
  */
-public class UtfEasyZZZ  extends AbstractObjectZZZ{
+public class UtfEasyZZZ  extends AbstractObjectWithExceptionZZZ{
 	public static final String UTF8_BOM = "\uFEFF";
 	
 	

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IVectorLimitedZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
@@ -43,49 +44,56 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	}
 
 	//### Aus IResettableValuesWithDefault
-		@Override
-		public boolean reset() throws ExceptionZZZ{
-			//super.reset();//gibt es nicht, da oberste Ebene.
-			this.resetValues();
-			return true;
+	@Override
+	public boolean reset() throws ExceptionZZZ{
+		//super.reset();//gibt es nicht, da oberste Ebene.
+		this.resetValues();
+		return true;
+	}
+	
+	@Override
+	public boolean resetValues() throws ExceptionZZZ{
+		return this.resetValues(null);
+	}
+	
+	@Override
+	public boolean resetValues(Object objDefaultIn) throws ExceptionZZZ {
+		Object objDefault = null;
+		if(objDefaultIn==null) {
+			objDefault = new NullObjectZZZ();
+		}else {
+			objDefault = objDefaultIn;
 		}
 		
-		@Override
-		public boolean resetValues() throws ExceptionZZZ{
-			for(int i=0; i<=this.getSizeMax()-1;i++) {
-				Object objDefault = this.getObjectDefaultNew();
-				if(this.getEntry(i)!=null) {				
-					this.replace(i, objDefault);
-				}else {
-					this.add(i, objDefault);
-				}
-			}	
-			return true;
-		}
+		for(int i=0; i<=this.getSizeMax()-1;i++) {
+			if(this.getEntry(i)!=null) {
+				this.replace(i, objDefault);
+			}else {
+				this.add(i, objDefault);
+			}
+		}	
+		return true;
+	}
 		
-		@Override
-		public boolean reset(Object objDefault) throws ExceptionZZZ{
-			//super.reset(objDefault);//gibt es nicht, da oberste Ebene
-			this.resetValues(objDefault);
-			return true;
-		}
-		
-		@Override
-		public boolean resetValues(Object objDefault) throws ExceptionZZZ{
-			for(int i=0; i<=this.getSizeMax()-1;i++) {
-				if(this.getEntry(i)!=null) {
-					this.replace(i, objDefault);
-				}else {
-					this.add(i, objDefault);
-				}
-			}	
-			return true;
-		}
+	@Override
+	public boolean resetValuesWithDefault() throws ExceptionZZZ {
+		Object objDefault = this.getObjectDefaultNew();
+		return this.resetValues(objDefault);
+	}
+	
+	@Override
+	public boolean resetWithDefault(Object objDefault) throws ExceptionZZZ{
+		//super.reset(objDefault);//gibt es nicht, da oberste Ebene
+		this.resetValues(objDefault);
+		return true;
+	}
+	
+	
 	
 	//## aus IVectorLimitedZZZ
 	@Override 
 	public Object getObjectDefaultNew() throws ExceptionZZZ {
-		return new String("");
+		return new NullObjectZZZ();
 	}
 	
 	@Override 
@@ -260,6 +268,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 			}
 		}
 	}
+
 	
 	
 	//### Aus IVectorZZZ (muss ueberschrieben werden, um die Anzahl 3 zu garantieren)

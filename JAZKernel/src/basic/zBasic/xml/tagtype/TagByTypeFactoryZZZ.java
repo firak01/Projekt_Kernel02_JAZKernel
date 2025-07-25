@@ -2,7 +2,7 @@ package basic.zBasic.xml.tagtype;
 
 import java.util.EnumSet;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
@@ -12,7 +12,7 @@ import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class TagByTypeFactoryZZZ extends AbstractObjectZZZ{
+public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	private static final long serialVersionUID = -8672998939542120263L;
 
 

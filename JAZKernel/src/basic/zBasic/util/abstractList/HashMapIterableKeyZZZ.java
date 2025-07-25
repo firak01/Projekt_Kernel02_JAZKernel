@@ -7,11 +7,11 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements ICollectionConstantZZZ, Iterable<T>{
+public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ implements ICollectionConstantZZZ, Iterable<T>{
 	private HashMap<T,X> hmOriginal=null;
 	private HashMapIndexedZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
 	

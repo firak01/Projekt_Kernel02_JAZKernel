@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -16,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author Lindhauer
  *
  */
-public class HashtableSortedZZZ<T,X>  extends AbstractObjectZZZ{
+public class HashtableSortedZZZ<T,X>  extends AbstractObjectWithExceptionZZZ{
 	//TODO Einen eigenen Comparator im Konstruktor hinzufügbar machen.
 	
 	private Hashtable objHt;

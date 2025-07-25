@@ -553,7 +553,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 //			objEntry.setRaw(sExpressionIn);
 //			
 //			vecReturn = StringZZZ.vecMidFirst(sExpressionUsed, this.getTagStarting(), this.getTagClosing(), true, false);			
-//			sExpressionUsed = (String) vecReturn.get(1);
+//			sExpressionUsed = vecReturn.get(1).toString();
 //			sReturn = sExpressionUsed;
 //			objEntry.setValueAsExpression(sReturn); //nicht noch andere Z-Tags rumsetzen
 //			
@@ -618,7 +618,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 //			KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 //		}
 //
-//		this.setValue((String) vecReturn.get(1));
+//		this.setValue(vecReturn.get(1).toString());
 //		if(objEntry!=null) {
 //			objEntry.setValue(sReturn);	
 //			if(sExpressionIn!=null) {
@@ -684,7 +684,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 						
 			//BESONDERHEIT	
-			sReturnTag = (String) vecReturn.get(1);
+			sReturnTag = vecReturn.get(1).toString();
 			sReturnLine = sExpressionIn;
 					
 			objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					

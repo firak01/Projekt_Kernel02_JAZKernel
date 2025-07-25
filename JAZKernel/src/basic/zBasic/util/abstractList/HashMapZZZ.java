@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 
-public class HashMapZZZ<T,X> extends AbstractObjectZZZ<T> {
+public class HashMapZZZ<T,X> extends AbstractObjectWithExceptionZZZ<T> {
 	
 	/**
 	 * 

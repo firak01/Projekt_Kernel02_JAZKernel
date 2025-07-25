@@ -2501,7 +2501,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
 			
-			String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
+			String sLineFormulaSolvedAndConverted=null; String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
 			String sExpressionSubstituted2compareWithSolved=null; String sExpressionSubstituted2compareWithExpression = null; 
 			String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
 			String sExpression2compareWithSubstituted=null; String sExpression2compareWithSolved = null;
@@ -2541,10 +2541,18 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
+			sLineFormulaSolvedAndConverted = objEntry.getLineFormulaSolvedAndConverted();			
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
-			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
-					
-			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();
+			
+			assertEquals(sExpressionSolved, sLineFormulaSolvedAndConverted);
+			assertTrue(objEntry.isFormulaSolved());
+			if(objEntry.isFormulaSolved()){
+				
+			}
+			
+			
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist													
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++

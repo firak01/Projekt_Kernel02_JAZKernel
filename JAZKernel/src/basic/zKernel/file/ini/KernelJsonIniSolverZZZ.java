@@ -389,9 +389,9 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //			vecReturn = super.parseFirstVector(sExpressionIn, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 //			objEntry = objReturnReferenceParse.get();
 //			if(vecReturn!=null) break main;
-//			if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+//			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 //			
-//			sReturnTag = (String) vecReturn.get(1);			
+//			sReturnTag = vecReturn.get(1).toString();			
 //			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 //		}//end main:
 //		

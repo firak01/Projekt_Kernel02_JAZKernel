@@ -38,7 +38,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -55,7 +55,7 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
  * @author lindhaueradmin
  *
  */
-public class FileEasyZZZ extends AbstractObjectZZZ implements IFileEasyConstantsZZZ{
+public class FileEasyZZZ extends AbstractObjectWithExceptionZZZ implements IFileEasyConstantsZZZ{
 	private FileEasyZZZ(){
 		//Zum Verstecken des Konstruktors, sind halt nur static MEthoden
 	}

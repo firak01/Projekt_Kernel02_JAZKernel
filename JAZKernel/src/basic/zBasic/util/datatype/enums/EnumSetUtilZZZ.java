@@ -9,7 +9,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
@@ -21,7 +21,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.config.IEnumSetKernelConfigDefaultEntryZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public class EnumSetUtilZZZ extends AbstractObjectZZZ{
+public class EnumSetUtilZZZ extends AbstractObjectWithExceptionZZZ{
 	protected EnumSet<?> enumSetCurrent=null;
 	protected IEnumSetFactoryZZZ objEnumSetFactory=null;
 	

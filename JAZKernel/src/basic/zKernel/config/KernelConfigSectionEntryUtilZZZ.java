@@ -467,9 +467,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				//Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
 				Vector3ZZZ<String>vecReturn = ex.parseFirstVector(sExpression);
 				if(vecReturn==null) break main;
-				if(StringZZZ.isEmpty((String)vecReturn.get(1))) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 
-				String sValue = (String) vecReturn.get(1);
+				String sValue = vecReturn.get(1).toString();
 				if(!StringZZZ.equals(sValue,sExpression)){
 					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
 					objEntry = objReturnReferenceIn.get();										
@@ -1255,7 +1255,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Dogwatch-Klauseln
 		    //A) Der Container Tag muss in der Mitte stehen
-			String sCONTAINER = (String) vecReturn.get(1);
+			String sCONTAINER = vecReturn.get(1).toString();
 			if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
 				ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1269,7 +1269,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Nun müssen aus dem PRE bzw. POST Teil die umgebendenden TagParts rausgenommen werden.
 			String sPRE = (String) vecReturn.get(0);				
-			String sPOST = (String) vecReturn.get(2);
+			String sPOST = vecReturn.get(2).toString();
 			
 			//B) Watchdog clausel fuer die gleiche GESAMT Anzahl von Tags in sPRE, sPOST!!!
 			//   PROBLEMATISCH FUER INNEN NACH AUSSEN
@@ -1380,7 +1380,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Dogwatch-Klauseln
 		    //A) Der Container Tag muss in der Mitte stehen
-//				String sCONTAINER = (String) vecReturn.get(1);
+//				String sCONTAINER = vecReturn.get(1).toString();
 //				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
 //					ExceptionZZZ ez = new ExceptionZZZ("Expected a starting container tag at mid-position of the vector3 '" + sTagPartContainerOpening +"'", iERROR_PARAMETER_VALUE, KernelConfigSectionEntryUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //					throw ez;
@@ -1393,7 +1393,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sPRE = (String) vecReturn.get(0);				
-			String sPOST = (String) vecReturn.get(2);
+			String sPOST = vecReturn.get(2).toString();
 							
 			//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
 			int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
@@ -1522,7 +1522,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Dogwatch-Klauseln
 		    //A) Der Container Tag muss in der Mitte stehen
-//				String sCONTAINER = (String) vecReturn.get(1);
+//				String sCONTAINER = vecReturn.get(1).toString();
 			
 //				//Hier keinen Fehler werfen, da ggfs. auch Strings ohne Tag drum verarbeitet werden.
 //				if(!StringZZZ.startsWith(sCONTAINER, sTagPartContainerOpening)){
@@ -1539,7 +1539,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 							
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sPRE = (String) vecReturn.get(0);				
-			String sPOST = (String) vecReturn.get(2);
+			String sPOST = vecReturn.get(2).toString();
 			
 			//B) Watchdog clausel fuer die gleiche Gesamtanzahl von Tags in sPRE plus sPOST!!!
 			int iCountOPENING_TOTAL = XmlUtilZZZ.countTagPart(sPRE, sTagPartOpening, false);
@@ -1832,8 +1832,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sBefore = (String) vecReturn.get(0);
-			String sValue = (String) vecReturn.get(1);
-			String sRest = (String) vecReturn.get(2);
+			String sValue = vecReturn.get(1).toString();
+			String sRest = vecReturn.get(2).toString();
 			
 			//Merke 20241010: Stand jetzt ist es so, dass flogendes nur beim Loeschen der Tags von innen nach aussen notwendig ist
 			//nicht aber beim Loeschen der Tags von aussen nach innen:			
@@ -1958,9 +1958,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//ggfs. aus dem Mittleren Teil auch entfernen
 			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
 			Vector3ZZZ<String> vecMid = StringZZZ.vecMid(sValue, sTagPartOpening, sTagPartClosing, false);
-			sBefore=(String) vecMid.get(0);
-			sValue = (String) vecMid.get(1);
-			sRest = (String) vecMid.get(2);
+			sBefore=vecMid.get(0).toString();
+			sValue = vecMid.get(1).toString();
+			sRest = vecMid.get(2).toString();
 
 			sValue = sBefore + sValue + sRest;
 			
@@ -1985,8 +1985,8 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 			String sBefore = (String) vecReturn.get(0);
-			String sValue = (String) vecReturn.get(1);
-			String sRest = (String) vecReturn.get(2);
+			String sValue = vecReturn.get(1).toString();
+			String sRest = vecReturn.get(2).toString();
 			
 			String sBeforeOld = sBefore;
 			String sValueOld = sValue;

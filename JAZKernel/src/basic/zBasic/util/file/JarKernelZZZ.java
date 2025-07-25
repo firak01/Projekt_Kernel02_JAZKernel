@@ -5,11 +5,11 @@ import java.util.jar.JarFile;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class JarKernelZZZ extends AbstractObjectZZZ implements IJarEasyConstantsZZZ{
+public class JarKernelZZZ extends AbstractObjectWithExceptionZZZ implements IJarEasyConstantsZZZ{
 	
 	private JarKernelZZZ() {
 		//Zum Verstecken des Konstruktors

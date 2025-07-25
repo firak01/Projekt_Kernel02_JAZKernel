@@ -4,14 +4,15 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ObjectUtilZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class VectorUtilZZZ extends AbstractObjectZZZ {
+public class VectorUtilZZZ extends AbstractObjectWithExceptionZZZ {
 	public static Vector unique(Vector vec) throws ExceptionZZZ{
 		Vector objReturn = new Vector();
 		main:{
@@ -187,21 +188,32 @@ public class VectorUtilZZZ extends AbstractObjectZZZ {
 				//FGL 20241227 -Das muss noch getestet werden
 				if(obj==null) {
 					//mache nix...
+				}else if(obj instanceof NullObjectZZZ) {
+					//mache nix...
+				}else if(obj instanceof String) {
+				    btemp = StringZZZ.isEmpty(obj.toString());
+				    if(!btemp) break main;
 				}else if(obj.getClass().isArray()) {
 					btemp = ArrayUtilZZZ.isNullOrEmpty((T[]) obj);
 					if(!btemp) break main;
 					
 					btemp = ArrayUtilZZZ.isEmpty((T[]) obj);
 					if(!btemp) break main;
-				}else {
+					
+
 					//FGL 20241227 -Das muss ggfs. fuer andere Typen mit ...else if ...erweitert werden
 					if(obj==null || obj instanceof String) {
 						btemp = StringZZZ.isEmpty(obj.toString());
-					    if(!btemp) break main;
+					    if(!btemp) {
+					    	bReturn = false;
+					    	break main;	
+					    }
+					} else if(obj instanceof NullObjectZZZ) {
+						//mache nix
 					} else {
-						ExceptionZZZ ez = new ExceptionZZZ("Objekt with this type not handled yet: '" + obj.getClass().getName() +"'", iERROR_PARAMETER_VALUE, VectorUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + obj.getClass().getName() +"'", iERROR_PARAMETER_VALUE, VectorUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
-					}
+					}					
 				}
 			}//end for
 			

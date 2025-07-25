@@ -5,11 +5,11 @@ import java.io.FilenameFilter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterMiddleZZZ extends AbstractObjectZZZ implements IFilenamePartFilterZZZ  {
+public class FilenamePartFilterMiddleZZZ extends AbstractObjectWithExceptionZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileMiddle;
 	
 	public FilenamePartFilterMiddleZZZ() {

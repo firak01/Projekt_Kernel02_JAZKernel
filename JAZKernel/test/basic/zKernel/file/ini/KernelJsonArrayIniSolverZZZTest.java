@@ -1314,8 +1314,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 			//### VORGEZOGENER FEHLERTEST ENDE
 			
@@ -1336,8 +1336,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//### Teilberechnungen durchführen
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 			
 			//########################################################################################
@@ -1356,8 +1356,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
 			//########################################################################################
 		    //3. Test: Expression enabled, Parser enabled, Json & JsonArray disabled			
@@ -1375,8 +1375,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 			
 			//########################################################################################
@@ -1389,8 +1389,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 	
 			//########################################################################################
@@ -1403,8 +1403,8 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 						
 			vecReturn = objExpressionSolver.parseFirstVector(sExpression);
 			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertFalse(StringZZZ.isEmpty((String) vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1).toString())); //in der 1ten Position ist der Tag
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String		
 
 			
 			//### Nun die Gesamtberechnung durchführen

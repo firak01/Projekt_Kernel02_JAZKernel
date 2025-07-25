@@ -2,7 +2,7 @@ package basic.zBasic;
 
 import basic.zKernel.KernelLogZZZ;
 
-public class ObjectZZZ extends AbstractObjectZZZ{
+public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 	
 	//#####################
 	//### 20240520:
