@@ -1547,6 +1547,8 @@ public class StringZZZ implements IConstantZZZ{
 	public static String valueOf(Object obj) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
+			if(obj==null) break main;
+			
 			if(obj instanceof NullObjectZZZ) {
 				sReturn = ((NullObjectZZZ) obj).valueOf();
 			}else {
@@ -2732,6 +2734,8 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		public static String toString(Object obj) throws ExceptionZZZ{
 			String sReturn = null;
 			main:{
+				if(obj==null) break main;
+				
 				if(obj instanceof NullObjectZZZ) {
 					sReturn = obj.toString();
 				}else {

@@ -1831,9 +1831,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 
 			
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			String sBefore = (String) vecReturn.get(0);
-			String sValue = vecReturn.get(1).toString();
-			String sRest = vecReturn.get(2).toString();
+			String sBefore = VectorUtilZZZ.getElementAsValueOf(vecReturn, 0); //(String) vecReturn.get(0);
+			String sValue = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);  //vecReturn.get(1).toString();
+			String sRest = VectorUtilZZZ.getElementAsValueOf(vecReturn, 2);   //vecReturn.get(2).toString();
 			
 			//Merke 20241010: Stand jetzt ist es so, dass flogendes nur beim Loeschen der Tags von innen nach aussen notwendig ist
 			//nicht aber beim Loeschen der Tags von aussen nach innen:			

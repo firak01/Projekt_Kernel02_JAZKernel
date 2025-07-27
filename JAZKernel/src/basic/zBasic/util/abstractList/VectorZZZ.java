@@ -260,7 +260,7 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	}
 	
 		
-	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintr�ge rechts von dem Suchstring zur�ck. 
+	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintraege rechts von dem Suchstring zur�ck. 
 	 *   Dabei wird von links gesucht.
 	 *   
 	* @param string
@@ -514,102 +514,102 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 	}	
 	
 	//### aus ILogZZZ	
-		@Override
-		public void logLineDate(String sLog) throws ExceptionZZZ {
-			ObjectZZZ.logLineDate(this, sLog);
-		}
-		
-		//++++++++++++++++++++++++++++++++++++++++++++++++
-		@Override
-		public synchronized void logProtocolString(String[] saLog) throws ExceptionZZZ{
-			this.logProtocolString(this, saLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocolString(String sLog) throws ExceptionZZZ{
-			this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
-			main:{
-				if(ArrayUtilZZZ.isNull(saLog)) break main;
-				
-				if(obj==null) {
-					for(String sLog : saLog) {
-						this.logProtocolString(sLog);
-					}
-				}else {
-					for(String sLog : saLog) {
-						this.logProtocolString(obj, sLog);
-					}	
-				}
-				
-			}//end main:
-		}
-		
-		@Override
-		public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
-			String sLogUsed;
+	@Override
+	public void logLineDate(String sLog) throws ExceptionZZZ {
+		ObjectZZZ.logLineDate(this, sLog);
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public synchronized void logProtocolString(String[] saLog) throws ExceptionZZZ{
+		this.logProtocolString(this, saLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocolString(String sLog) throws ExceptionZZZ{
+		this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
+		main:{
+			if(ArrayUtilZZZ.isNull(saLog)) break main;
+			
 			if(obj==null) {
-				sLogUsed = LogStringZZZ.getInstance().compute(sLog);			
+				for(String sLog : saLog) {
+					this.logProtocolString(sLog);
+				}
 			}else {
-				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);			
+				for(String sLog : saLog) {
+					this.logProtocolString(obj, sLog);
+				}	
 			}
-			System.out.println(sLogUsed);
+			
+		}//end main:
+	}
+	
+	@Override
+	public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
+		String sLogUsed;
+		if(obj==null) {
+			sLogUsed = LogStringZZZ.getInstance().compute(sLog);			
+		}else {
+			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);			
 		}
+		System.out.println(sLogUsed);
+	}
 
-		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		@Override
-		public synchronized void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-			this.logProtocolString(this, saLog, ienumaMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			this.logProtocolString(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-			main:{
-				if(ArrayUtilZZZ.isNull(saLog)) break main;
-				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
-					this.logProtocolString(saLog);
-					break main;
-				}
-				
-				int iIndex=0;
-				if(obj==null) {			
-					for(String sLog : saLog) {
-						if(ienumaMappedLogString.length>iIndex) {
-							this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
-							iIndex++;
-						}else {
-							this.logProtocolString(saLog);
-						}
-					}
-				}else {
-					for(String sLog : saLog) {
-						if(ienumaMappedLogString.length>iIndex) {
-							this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
-							iIndex++;
-						}else {
-							this.logProtocolString(saLog);
-						}
-					}			
-				}
-			}//end main:
-		}
-		
-		@Override
-		public synchronized void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			String sLogUsed;
-			if(obj==null) {
-				sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
-			}else {
-				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public synchronized void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		this.logProtocolString(this, saLog, ienumaMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		this.logProtocolString(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		main:{
+			if(ArrayUtilZZZ.isNull(saLog)) break main;
+			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+				this.logProtocolString(saLog);
+				break main;
 			}
-			System.out.println(sLogUsed);
+			
+			int iIndex=0;
+			if(obj==null) {			
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
+				}
+			}else {
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
+				}			
+			}
+		}//end main:
+	}
+	
+	@Override
+	public synchronized void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		String sLogUsed;
+		if(obj==null) {
+			sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+		}else {
+			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
 		}
+		System.out.println(sLogUsed);
+	}
 }

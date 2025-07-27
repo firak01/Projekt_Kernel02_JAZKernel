@@ -39,11 +39,12 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 				replace_(null);
 			}else if(objValue instanceof NullObjectZZZ) {
 				replace_(null);
-			}else if(objValue instanceof String) {
+			}else if(objValue instanceof String ) {
 				replace_((String) objValue);			
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+				//ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				//throw ez;
+				replace_(objValue.toString());
 			}								
 		}//end main:
 	}
@@ -73,8 +74,9 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			}else if((objLeft instanceof NullObjectZZZ) && (objMid instanceof NullObjectZZZ) && (objRight instanceof NullObjectZZZ)) {
 				replace_(null, null, null);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+				//ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				//throw ez;
+				replace_(objLeft.toString(), objMid.toString(), objRight.toString());
 			}	
 		}//end main:
 	}
@@ -116,8 +118,9 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(objValue instanceof String) {
 				replaceByDefault_((String) objValue);
 			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+				//ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objValue.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				//throw ez;
+				replaceByDefault_(objValue.toString());
 			}
 				
 				
@@ -134,6 +137,8 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			
 			if(objLeft instanceof String) {
 				replaceWithSeparator_((String) objLeft, (String) objRight, bReturnSeparators, sSepMid);
+			}else {
+				replaceWithSeparator_(objLeft.toString(), objRight.toString(), bReturnSeparators, sSepMid);
 			}
 		}//end main:
 	}
@@ -246,9 +251,10 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			
 			if((objLeft==null | objLeft instanceof String) && (objMid==null || objMid instanceof String) && (objRight==null || objRight instanceof String)) {
 				replaceWithSeparatorByDefault_((String) objLeft, (String) objMid, (String) objRight, false, null, null);
-			}else {
-				ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+			}else {				
+				//ExceptionZZZ ez = new ExceptionZZZ("Object with this type not handled yet: '" + objLeft.getClass().getName() +"','" + objMid.getClass().getName() +"','" + objRight.getClass().getName() +"'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				//throw ez;
+				replaceWithSeparatorByDefault_(objLeft.toString(), objMid.toString(), objRight.toString(), false, null, null);
 			}
 		}//end main:
 	}
@@ -423,6 +429,8 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			
 			if(objMid instanceof String) {
 				replaceKeepSeparatorCentral_((String) objLeft, (String) objMid, (String) objRight, sSepLeft, sSepRight);
+			}else {
+				replaceKeepSeparatorCentral_(objLeft.toString(), objMid.toString(), objRight.toString(), sSepLeft, sSepRight);
 			}
 		}//end main:
 	}

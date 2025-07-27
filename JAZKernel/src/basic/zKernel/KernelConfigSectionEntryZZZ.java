@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
@@ -498,11 +499,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(this.hasNullValue()){
 			return null;		
 		}else if (!this.hasAnyValue()){
-			if(this.hasAnySectionExists()) {
-				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
-			}else {
-				return null; //wenn die Section nicht existiert, dann auch kein Wert.
-			}
+			//if(this.hasAnySectionExists()) {
+//			if(this.hasAnyValue()) {
+//				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
+//			}else {
+//				return null; //wenn die Section nicht existiert, dann auch kein Wert.
+//			}
+			return null;
 		}else {
 			return this.getValueVector().getEntryHigh();
 		}
@@ -517,12 +520,11 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		}else{
 			//WENN NULL als Ergebnis einer Expression/Formel herauskommt, dann IST DAS DER WERT
 			this.getValueVector().add(sValue);
+			this.hasNullValue(true);
 			if(this.isExpression() || this.isFormula()){
-				this.hasAnyValue(true);
-				this.hasNullValue(true);
+				this.hasAnyValue(true);				
 			}else{
 				this.hasAnyValue(false);
-				this.hasNullValue(false);
 			}
 		}
 	}
