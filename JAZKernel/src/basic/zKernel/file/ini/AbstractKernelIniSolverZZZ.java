@@ -938,6 +938,8 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
 				
+			TODOGOON20250726; //HIer wird getValue wieder nicht NULL!!!
+			
 			//Nun als Zeilenwert das ...post durchfuehren
 			vecReturn = this.solvePost(vecReturn, objReturnReferencePost, bRemoveSurroundingSeparators);
 			sReturnLine = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
