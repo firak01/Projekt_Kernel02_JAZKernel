@@ -853,7 +853,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.setRaw(sExpressionIn);
 			objEntry.setRaw(sExpressionIn);			
 			sReturnLine = sExpressionIn;
-			sReturnTag = (String) vecExpressionIn.get(1);//hier nicht: this.getValue(); weil der ja erst ggfs. hier geholt wird.
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecExpressionIn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.//hier nicht: this.getValue(); weil der ja erst ggfs. hier geholt wird.
 			sReturn = sReturnLine;
 			
 			bUseParser = this.isParserEnabledGeneral();
@@ -1841,7 +1841,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 					if(vecExpressionTemp==null) break;
 					if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.	
 					
-					sExpressionTemp = (String) vecExpressionTemp.get(1);
+					//sExpressionTemp = (String) vecExpressionTemp.get(1);
+					sExpressionTemp = VectorUtilZZZ.getElementAsValueOf(vecExpressionTemp, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 					if(sExpression.equals(sExpressionTemp)) {
 						break;
 					}else{
@@ -1890,7 +1891,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						//Merke: Es ist nicht nur ein simpleTag, dann kann man auch eine objReturnReference uebergeben.
 						Vector3ZZZ<String> vecExpressionTemp = objFormulaIniPath.parseFirstVector(sExpression, objReturnReference, false); //20250205: Die Aufloesung der PATH-Anweisung darf jetzt den Z-Tag nicht entfernen. Das macht dann später der SOLVER.
 						if(vecExpressionTemp==null) break;
-						if(StringZZZ.isEmpty((String)vecExpressionTemp.get(1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+						if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecExpressionTemp, 1))) break; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 						
 						sExpressionTemp = VectorUtilZZZ.implode(vecExpressionTemp);	
 						if(sExpression.equals(sExpressionTemp)) {

@@ -949,7 +949,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 			
 			//Nun als Tag Value die Solve Loesung einsetzen nach dem ... post
-			sReturnTag = this.getValue();		
+			sReturnTag = this.getValue();	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);

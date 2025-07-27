@@ -205,7 +205,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		
 			String sTagValueTotal=null;
 			if(StringZZZ.isEmpty(sSepLeft)){
-				sTagValueTotal = (String) vecReturn.get(0);
+				sTagValueTotal = VectorUtilZZZ.getElementAsValueOf(vecReturn, 0);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 				bCascadedExpressionFound = false;
 			}else { 
 				/*DAS IST FALSCH, er holt sonst nach der ersten erfolgreichen Ersetzung wieder den gleichen, z.B.:  Z:VAL 
@@ -217,7 +217,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 				*/
 				
 				vecReturn = StringZZZ.vecMidFirstKeep(sExpression, sSepLeft, sSepRight, false, iTagXPathStartingIndex);
-				sTagValueTotal = vecReturn.get(1).toString();
+				sTagValueTotal = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 				bCascadedExpressionFound = true;
 			}
 			
@@ -251,7 +251,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			//                Damit wird eine Section aus abcsection!01 geholt. 
 			Vector3ZZZ<String> vecTagValueTotal = StringZZZ.vecMidFirstKeepSeparatorCentral(sTagValueTotal, this.getTagPartOpening(), this.getTagPartClosing(), false);
 			
-			String sTagValue = (String) vecTagValueTotal.get(1);
+			String sTagValue = VectorUtilZZZ.getElementAsValueOf(vecTagValueTotal, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.//(String) vecTagValueTotal.get(1);
 			String sSection = StringZZZ.midLeftRightback(sTagValue, this.getTagPartOpening(), this.getSectionClosing());
 			String sProperty = StringZZZ.midLeftRightback(sTagValue, this.getSectionClosing(), this.getTagPartClosing());
 			
