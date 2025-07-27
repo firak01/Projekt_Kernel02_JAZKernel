@@ -84,12 +84,12 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 			
 			vecReturn = this.parseFirstVectorPost(vecReturn);
 			if(vecReturn==null) break main;
-			sReturnTag = vecReturn.get(1).toString(); //nun ist der Tag ggfs. leer
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss

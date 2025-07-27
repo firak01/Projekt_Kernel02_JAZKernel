@@ -288,7 +288,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				
 				//Der Operator selbst.
 				Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);			
-				sReturnTag = vecReturn.get(1).toString();	
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.	
 				this.setValue(sReturnTag);
 				this.setOperator(sReturnTag);				
 				

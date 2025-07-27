@@ -15,12 +15,11 @@ public class NullObjectZZZ extends AbstractObjectZZZ{
 	public NullObjectZZZ() {
 	}
 	
-
 	@Override
 	public String toString(){
 		return new String("");
 	}
-	
+
 	public String valueOf() {
 		return null;
 	}

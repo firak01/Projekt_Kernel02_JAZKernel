@@ -32,6 +32,7 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_COLOR_BURNPeer;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
@@ -1535,6 +1536,30 @@ public class StringZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
+	
+	/** Ergänzt die String.valueOf(obj) Methode um sicheres Typecasting 
+	 *  und die Betrachtung von speziellen Klassen.
+	 * @param obj
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.07.2025, 09:08:02
+	 */
+	public static String valueOf(Object obj) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(obj instanceof NullObjectZZZ) {
+				sReturn = ((NullObjectZZZ) obj).valueOf();
+			}else {
+				try {
+					sReturn = String.valueOf(obj);
+				}catch (ClassCastException e) {
+					//e.printStackTrace();
+				}											
+			}				
+		}//end main
+		return sReturn;		
+	}
+	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
 	* @param sStringToParse
@@ -2691,6 +2716,33 @@ null will return false. An empty CharSequence (length()=0) will return false.
 				sReturn = sString.substring(0, 1).toUpperCase() +  sString.substring(1).toLowerCase();
 			}
 		    return sReturn;
+		}
+		
+		/** Das Problem ist, das es ggfs. eine TypeCastException gibt.
+		 *  Z.B. bei (String)vector.get(0) wird wohl der Typ des Vektor - Element VOR dem greifen der object.toString Methode abgefragt.
+		 *
+		 *  Diese Methode soll das sicherere machen, indem ein instanceOf vorgeschaltet wird.
+		 *  
+		 *  
+		 * @param obj
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 27.07.2025, 08:23:40
+		 */
+		public static String toString(Object obj) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(obj instanceof NullObjectZZZ) {
+					sReturn = obj.toString();
+				}else {
+					try {
+						sReturn = obj.toString();
+					}catch (ClassCastException e) {
+						//e.printStackTrace();
+					}											
+				}				
+			}//end main
+			return sReturn;
 		}
 		
 		public static String toShorten(String sString, int iShortenMethodType, int iOffset) throws ExceptionZZZ{

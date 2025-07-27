@@ -49,6 +49,14 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectWithEx
 		return true;
 	}
 	
+	@Override
+	public boolean resetValues(Object objDefault) throws ExceptionZZZ {
+		//super.resetValues(objDefault);//gibt es nicht, da oberste Ebene
+		this.resetValues();
+		this.sValue = objDefault.toString();
+		return true;
+	}
+	
 	//### Aus IValueUserZZZ
 	@Override
 	public String getValue() throws ExceptionZZZ {

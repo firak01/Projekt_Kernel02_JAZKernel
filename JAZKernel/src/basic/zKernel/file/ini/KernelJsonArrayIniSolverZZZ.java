@@ -151,7 +151,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			if(vecReturn==null) break main;
 			
 			//Sehr flexibel gehalten... Wenn auf 0: Dann waren die Tags nicht (mehr) drumherum
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			if(StringZZZ.isEmpty(sReturnTag)){
 				sReturnTag = (String)vecReturn.get(0);								
 			}
@@ -558,7 +558,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 			}	
 						
 			//##############
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
 			this.updateValueSolved();

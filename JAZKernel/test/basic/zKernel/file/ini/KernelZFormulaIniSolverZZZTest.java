@@ -1295,7 +1295,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				sValue = VectorUtilZZZ.implode(vecValue);
 //				assertEquals(sExpression, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 //				
-//				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+//				sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 //				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
 				//+++ Teilberechnungen durchführen, aber es wird nur geparsed... kein solve. 
@@ -1308,7 +1308,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);
 				assertEquals(sExpressionSolved, sValue); 
 				
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 				
 				//+++ Nun die Gesamtberechnung durchführen, aber es wird nur geparsed... nicht aufgeloest.

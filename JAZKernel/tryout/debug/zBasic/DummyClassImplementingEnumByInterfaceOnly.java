@@ -25,18 +25,21 @@ public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelPro
 		return false;
 	}
 	
+	@Override
+	public boolean resetValues(Object objDefault) throws ExceptionZZZ {		
+		return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see basic.zKernel.component.AbstractKernelProgramZZZ#getModuleName()
 	 */
 	@Override
-	public String getModuleName() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public String getModuleName() throws ExceptionZZZ {		
 		return null;
 	}
 
 	@Override
-	public String getProgramAlias() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public String getProgramAlias() throws ExceptionZZZ {		
 		return null;
 	}
 }

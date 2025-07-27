@@ -539,17 +539,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				//    Es werden wg false die Tags nicht entfernt
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 //				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+vecValue.get(0).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+vecValue.get(1).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+vecValue.get(2).toString();+"'");
 //				if(bUseParser && bUseExpressionGeneral) {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String	
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String	
 //				}else {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String					
 //				}
 //				sValue = VectorUtilZZZ.implode(vecValue);
 //				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -557,12 +557,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 //				//+++
 //				sExpressionSurroundedTemp = sExpressionSubstituted;
 //				if(bUseParser && bUseExpressionGeneral) {
-//					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
+//					sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());								
 //				}else {
-//					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
+//					sValue = vecValue.get(0).toString();;//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
 //				}
 //				assertTrue(StringZZZ.contains(sExpressionSurroundedTemp,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 //				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -1003,17 +1003,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				//    Es werden wg false die Tags nicht entfernt
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 //				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+vecValue.get(0).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+vecValue.get(1).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+vecValue.get(2).toString();+"'");
 //				if(bUseParser && bUseExpressionGeneral) {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String	
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String	
 //				}else {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String					
 //				}
 //				sValue = VectorUtilZZZ.implode(vecValue);
 //				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -1021,12 +1021,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 //				//+++
 //				sExpressionSurroundedTemp = sExpressionSubstituted;
 //				if(bUseParser && bUseExpressionGeneral) {
-//					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
+//					sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());								
 //				}else {
-//					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
+//					sValue = vecValue.get(0).toString();;//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
 //				}
 //				assertTrue(StringZZZ.contains(sExpressionSurroundedTemp,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 //				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -1173,17 +1173,17 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				//    Es werden wg false die Tags nicht entfernt
 				vecValue = objExpressionSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
 //				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+vecValue.get(0).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+vecValue.get(1).toString();+"'");
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+vecValue.get(2).toString();+"'");
 //				if(bUseParser && bUseExpressionGeneral) {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String	
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String	
 //				}else {
-//					assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-//					assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
+//					assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString();)); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(1).toString();)); //in der 1ten Position ist der Tag
+//					assertTrue(StringZZZ.isEmpty(vecValue.get(2).toString();)); //in der 2ten Position ist der Tag nach dem gesuchten String					
 //				}
 //				sValue = VectorUtilZZZ.implode(vecValue);
 //				assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -1191,12 +1191,12 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 //				//+++
 //				sExpressionSurroundedTemp = sExpressionSubstituted;
 //				if(bUseParser && bUseExpressionGeneral) {
-//					sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
+//					sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.				
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelJsonIniSolverZZZ.sTAG_NAME);
 //					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, objExpressionSolver.getName());								
 //				}else {
-//					sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
+//					sValue = vecValue.get(0).toString();;//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist										
 //				}
 //				assertTrue(StringZZZ.contains(sExpressionSurroundedTemp,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 //				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.

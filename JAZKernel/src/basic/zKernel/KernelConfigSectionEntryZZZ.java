@@ -48,14 +48,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bPropertyExists = false;
 	protected boolean bAnyPropertyExists = false;
 	protected boolean bExpression = false;
-	
-	protected boolean bFormula = false;
-	protected boolean bFormulaSolved = false;
-	
-	protected boolean bFormulaMath = false;
-	
-	protected boolean bCrypt = false;
-	
+
 	protected VectorDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
 	protected VectorDifferenceZZZ<String> vecLineFormulaSolvedAndConverted = new VectorDifferenceZZZ<String>();
 	
@@ -79,7 +72,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	protected boolean bSolved = false;
 	protected boolean bSolvedChanged = false;
 	
+	protected boolean bFormula = false;
+	protected boolean bFormulaSolveCalled = false;
+	protected boolean bFormulaSolved = false;
+	protected boolean bFormulaSolvedChanged = false;
+	
+	protected boolean bFormulaMath = false;
 	protected boolean bFormulaMathSolved = false;
+	
+	
+	
+	protected boolean bCrypt = false;
+	
 	
 	protected boolean bConversion = false;
 	protected boolean bConverted = false;
@@ -879,6 +883,15 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(!this.bFormula) this.bFormula = bIsFormula;
 	}
 	
+	@Override
+	public boolean isFormulaSolveCalled() {
+		return this.bFormulaSolveCalled;
+	}
+	
+	@Override
+	public void isFormulaSolveCalled(boolean bIsFormulaSolveCalled) {
+		if(!this.bFormulaSolveCalled) this.bFormulaSolveCalled = bIsFormulaSolveCalled;
+	}
 	
 	@Override
 	public boolean isFormulaSolved() {
@@ -890,8 +903,17 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(!this.bFormulaSolved) this.bFormulaSolved = bIsFormulaSolved;
 	}
 	
+	@Override
+	public boolean isFormulaSolvedChanged() {
+		return this.bFormulaSolvedChanged;
+	}
+
+	@Override
+	public void isFormulaSolvedChanged(boolean bIsFormulaSolvedChanged) {
+		if(!this.bFormulaSolvedChanged) this.bFormulaSolvedChanged = bIsFormulaSolvedChanged;
+	}
 	
-	
+	//++++++++++++++++++++++++++++++
 	@Override
 	public boolean isFormulaMath() {
 		return this.bFormulaMath;

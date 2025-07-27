@@ -684,7 +684,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 						
 			//BESONDERHEIT	
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			sReturnLine = sExpressionIn;
 					
 			objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
@@ -780,4 +780,55 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	public boolean proofFlagSetBefore(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+	
+	
+	
+	//### aus ISolveUserZZZ
+	@Override
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsFormulaSolveCalled) throws ExceptionZZZ{
+		super.updateValueSolveCalled(objReturnReference, bIsFormulaSolveCalled);
+		
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308		
+		//objEntry.isFormulaSolveCalled(bIsFormulaSolveCalled);//der Aufruf findet immer statt, auch ohne gesetztes Flag
+		
+		//Den eigenen Solver
+		objEntry.isFormulaSolveCalled(bIsFormulaSolveCalled);
+	}
+	
+	@Override
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsFormulaSolved) throws ExceptionZZZ{
+		super.updateValueSolved(objReturnReference, bIsFormulaSolved);
+		
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308		
+//		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+//			objEntry.isCallSolved(bIsSolveCalled);
+//		}
+		
+		//Den eigenen Solver
+		if(this.isSolverEnabledThis()) {
+			objEntry.isFormulaSolved(bIsFormulaSolved);
+		}
+	}
+	
+	@Override
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsFormulaSolvedChanged) throws ExceptionZZZ{
+		super.updateValueSolvedChanged(objReturnReference, bIsFormulaSolvedChanged);
+				
+		IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+		
+		//Den "Elternsolver", siehe dazu auch TicketGOON20250308		
+//		if(this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)){
+//			objEntry.isCallSolvedChanged(bIsSolveChanged);
+//		}
+		
+		//Den eigenen Solver
+		if(this.isSolverEnabledThis()) {
+			objEntry.isFormulaSolvedChanged(bIsFormulaSolvedChanged);
+		}
+	}
+
 }//End class

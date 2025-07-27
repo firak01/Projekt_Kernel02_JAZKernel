@@ -221,4 +221,67 @@ public class VectorUtilZZZ extends AbstractObjectWithExceptionZZZ {
 		}//end main:
 		return bReturn;		
 	}
+	
+	
+	/** Hintergrund ist die TypeCastException wenn man mit dem NullObjectZZZ arbeitet
+	 *  Z.B.
+	 *  
+	 *  Vector<String> vecValue;
+	 *  vecValue = objExpressionSolver.parseFirstVector(sExpression);
+			assertFalse(StringZZZ.isEmpty((vecValue.get(0).toString()))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			
+			//Aber wenn im Index 1 ein NullObjectZZZ ist, funktioniert dessen .toString() - Methode erst "zu spät".
+			try {
+			String obj1 = vecValue.get(1);
+			}catch (ClassCastException e) {
+				e.printStackTrace();
+			}
+			
+			//Das gibt eine TypeCastException, 
+			String obj1 = vecValue.get(1);
+			String s1 = obj1.toString();
+			assertTrue(StringZZZ.isEmpty(s1)); //in der 1ten Position ist der Tag
+			String s2 = vecValue.get(2).toString();
+			assertTrue(StringZZZ.isEmpty(s2)); //in der 2ten Position ist der Tag nach dem gesuchten String		
+
+	 * @param vecIn
+	 * @param iIndex
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.07.2025, 07:48:55
+	 */
+	public static <T> String getElementAsString(Vector<T> vecIn,int iIndex) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(vecIn == null) break main;
+			
+			if(vecIn.size() >= iIndex + 1) {
+				Object obj = vecIn.get(iIndex);
+				sReturn = StringZZZ.toString(obj);	
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	/** Der Unterschied zu getElementToString() ist , das hier ggfs. valueOf() aufgerufen wird.
+	 *  Und das ist ggfs. NULL		
+	 * @param vecIn
+	 * @param iIndex
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.07.2025, 07:48:55
+	 */
+	public static <T> String getElementAsValueOf(Vector<T> vecIn,int iIndex) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(vecIn == null) break main;
+			
+			if(vecIn.size() >= iIndex + 1) {
+				Object obj = vecIn.get(iIndex);
+				sReturn = StringZZZ.valueOf(obj);
+			}
+		}//end main:
+		return sReturn;
+	}
 }//end class

@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
@@ -1188,13 +1189,10 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//### Teilberechnungen durchführen
 			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			vecValue = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
-
-			
-			
-			
+			assertFalse(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecValue, 0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecValue, 1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecValue, 2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+	
 			//### Nun die Gesamtberechnung durchführen
 			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			hm = objExpressionSolver.computeHashMapFromJson(sExpression);
@@ -1296,9 +1294,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//######################################################
 			//### 1.1. Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.parseFirstVector(sExpression);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertFalse(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//zu 1.1. Entry auswerten
@@ -1482,12 +1480,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag '"+ IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +" sollte zur Verfügung stehen.", btemp);
 									
 			vecReturn = objExpressionSolver.parseFirstVector(sExpressionSource);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(1))); //in der 1ten Position ist der Tag
-			assertTrue(StringZZZ.isEmpty(vecReturn.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
+			assertFalse(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 1))); //in der 1ten Position ist der Tag
+			assertTrue(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsString(vecReturn, 2))); //in der 2ten Position ist der Tag nach dem gesuchten String		
 			
 			//ohne gueltigen Json-String wird keine HashMap erzeugt.
-			sLineWithJson = vecReturn.get(1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
+			sLineWithJson = VectorUtilZZZ.getElementAsString(vecReturn, 1); //Leerstring ist kein gültiger JSON String, darum kommt nix raus.
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\nsLineWithJson=" + sLineWithJson);
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
 			assertNotNull(hm);

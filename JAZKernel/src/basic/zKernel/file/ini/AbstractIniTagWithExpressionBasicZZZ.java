@@ -190,7 +190,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			if(vecReturn==null)break main;
 			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			String sReturnTag = vecReturn.get(1).toString();
+			String sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 				
 			String sReturnLine = VectorUtilZZZ.implode(vecReturn);			

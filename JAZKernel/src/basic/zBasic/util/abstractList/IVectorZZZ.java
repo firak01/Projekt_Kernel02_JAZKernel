@@ -18,6 +18,8 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	public T getEntryHigh();
 	
 	public T getEntry(int iIndex);
+	public String getElementAsString(int iIndex) throws ExceptionZZZ;
+	public String getElementAsValueOf(int iIndex) throws ExceptionZZZ;
 	
 	public int getIndexHigh();
 	public int getIndexNext();

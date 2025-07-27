@@ -638,7 +638,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 			
 			//Tags entfernen und eigenen Wert setzen
@@ -765,7 +765,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			}			
 			//+++++++++++++++++++++++++
 			
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);			
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
@@ -985,7 +985,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				
 			//.... hier könnte dann ein echter custom Code in einer Klasse stehen.
 			
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);			
 		}//end main:
 				
@@ -1567,7 +1567,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 							
-			sReturnTag = vecReturn.get(1).toString();							
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.							
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 					
 			//Rufe nun substituteParsed() auf...	

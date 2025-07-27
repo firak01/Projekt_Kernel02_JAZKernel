@@ -78,6 +78,133 @@ public class TestUtilAsTestZZZ extends TestCase{
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 	
+	
+	public static boolean assertIsFormulaSolved(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			boolean bSolveTested = objEnumSurrounding ==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE || objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP;
+			boolean bParseTested = objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE || objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP;
+			if(bSolveTested && objEntry.isSolved()) {
+				assertTrue(objEntry.isFormulaSolveCalled());
+				assertTrue(objEntry.isFormulaSolved());
+				bReturn = true;
+			}else if( bParseTested && objEntry.isParsed()) {
+				assertFalse(objEntry.isFormulaSolveCalled());
+				assertFalse(objEntry.isFormulaSolved());
+			}else {
+				assertFalse(objEntry.isFormulaSolveCalled());
+				assertFalse(objEntry.isFormulaSolved());
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	
+	public static boolean assertIsFormulaSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			if(objEntry.isSubstitutedChanged()){ //.isParsedChanged()) {
+				//ziehe substituted heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+					//#Bei normalem .solve() gilt: Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//Aber hier wird ein "Untersolver" getestet. Also normieren.
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolveFormula, normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolveFormula, normiert)=" + sExpressionSubstituted2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParseFormula, normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParseFormula normiert)=" + sExpressionSubstituted2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (on...Formula unveraendert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (on...Formula unveraendert)=" + sExpressionSubstituted2compare);
+				}
+				
+				
+				if(objEntry.isFormulaSolved()) {
+					if(objEntry.isSubstitutedChanged()){ 
+						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+							assertFalse(objEntry.isFormulaSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isFormulaSolvedChanged());
+							bReturn = true;
+						}
+					}else {
+						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+							assertFalse(objEntry.isFormulaSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isFormulaSolvedChanged());
+							bReturn = true;					
+						}
+					}
+				}else {
+					assertFalse(objEntry.isFormulaSolvedChanged());
+					bReturn = false;
+				}
+				
+			}else {
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
+					sExpression2compareWithExpression = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpression2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
+				if(objEntry.isFormulaSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+					if(objEntry.isSubstitutedChanged()){ 
+						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+							assertFalse(objEntry.isFormulaSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isFormulaSolvedChanged());
+							bReturn = true;
+						}
+					}else {
+						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+							assertFalse(objEntry.isFormulaSolvedChanged());
+							bReturn = false;
+						}else {
+							assertTrue(objEntry.isFormulaSolvedChanged());
+							bReturn = true;					
+						}
+					}
+				}else {
+					assertFalse(objEntry.isFormulaSolvedChanged());
+					bReturn = false;
+				}								
+			}						
+		}//end main;
+		return bReturn;
+}
+	
+	
+	
 	public static boolean assertIsParsedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -264,16 +391,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 			if(objEntry.isSubstitutedChanged()){ //.isParsedChanged()) {
 				//ziehe substituted heran
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isSolved()) {
-					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//# Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//Beim Testen von Untersolvern müsste normiert werden.
 					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht normiert)=" + sExpressionSubstituted2compare);
 				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isSolved()) {
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse, normiert)=" + sExpressionSubstituted2compare);									
 				}else {
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
@@ -554,16 +682,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 			if(objEntry.isSubstitutedChanged()) { //objEntry.isParsedChanged()) {
 				//ziehe substituted heran
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonMapSolved()) {
-					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
-					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithSubstituted);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, Besonderheit nicht veraendert)=" + sExpressionSubstituted2compare);
+					//# Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//Beim Testen von Untersolvern müsste normiert werden.
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, normiert) =" + sExpressionSubstituted2compare);
 				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonMapSolved()) {
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
 					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, normiert)=" + sExpression2compareWithSubstituted);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse, normiert)=" + sExpressionSubstituted2compare);									
 				}else {
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
@@ -591,16 +720,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 			}else {
 				//ziehe expression heran
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonMapSolved()) {
-					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
-					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+					//#Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//Beim Testen von Untersolvern müsste normiert werden.
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, normiert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, normiert)=" + sExpression2compare);
 				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonMapSolved()) {
 					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
 					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, normiert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse, normiert)=" + sExpression2compare);									
 				}else {
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
@@ -2444,24 +2574,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....			
 			assertTrue(objEntry.isParsed()); 
+			//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 			//+++++++++++++++++++++++++++++++				
 			
 			//+++++++++++++++++++++++++++++++									
 			assertTrue(objEntry.isPathSubstituteCalled());																
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted());	
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//+++++++++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled());
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
 			assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
 			//++++++++++++++++++++++				
 			//++++++++++++++++++++++									
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			assertTrue(objEntry.isFormulaSolveCalled());
+			assertIsFormulaSolved(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsFormulaSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 //			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
 //			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
@@ -2540,18 +2673,15 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			assertTrue(objEntry.isFormulaSolveCalled()); //Aufgerufen wurde der solveCall ja...
+			assertIsFormulaSolved(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsFormulaSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			sLineFormulaSolvedAndConverted = objEntry.getLineFormulaSolvedAndConverted();			
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();
-			
+		
 			assertEquals(sExpressionSolved, sLineFormulaSolvedAndConverted);
-			assertTrue(objEntry.isFormulaSolved());
-			if(objEntry.isFormulaSolved()){
-				
-			}
-			
-			
 			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist													
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
@@ -3646,17 +3776,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 			sPost = sPostIn;
 				
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sExpressionSolved='"+sExpressionSolved+"'");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+(String) vecValue.get(0)+"'");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+(String) vecValue.get(1)+"'");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+(String) vecValue.get(2)+"'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 0='"+vecValue.get(0).toString()+"'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 1='"+vecValue.get(1).toString()+"'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "sValue @ 2='"+vecValue.get(2).toString()+"'");
 			if(bUseParser && bUseExpressionGeneral) {
-				assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-				assertFalse(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-				assertFalse(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String	
+				assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString())); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+				assertFalse(StringZZZ.isEmpty(vecValue.get(1).toString())); //in der 1ten Position ist der Tag
+				assertFalse(StringZZZ.isEmpty(vecValue.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String	
 			}else {
-				assertFalse(StringZZZ.isEmpty((String) vecValue.get(0))); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
-				assertTrue(StringZZZ.isEmpty((String) vecValue.get(1))); //in der 1ten Position ist der Tag
-				assertTrue(StringZZZ.isEmpty((String) vecValue.get(2))); //in der 2ten Position ist der Tag nach dem gesuchten String					
+				assertFalse(StringZZZ.isEmpty(vecValue.get(0).toString())); //in der 0ten Position ist der Tag vor dem gesuchten String ODER wenn nicht geparst wurde ODER wenn der Tag nicht enthalten ist.
+				assertTrue(StringZZZ.isEmpty(vecValue.get(1).toString())); //in der 1ten Position ist der Tag
+				assertTrue(StringZZZ.isEmpty(vecValue.get(2).toString())); //in der 2ten Position ist der Tag nach dem gesuchten String					
 			}
 			sValue = VectorUtilZZZ.implode(vecValue);
 			assertEquals(sExpressionSubstituted, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
@@ -3664,7 +3794,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++
 			sExpressionSurroundedTemp = sExpressionSubstituted;
 			if(bUseParser && bUseExpressionGeneral) {		
-				sValue = (String) vecValue.get(1);//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+				sValue = vecValue.get(1).toString();;//in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
 				
 				sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				
@@ -3678,7 +3808,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				
 				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}else {
-				sValue = (String) vecValue.get(0);//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
+				sValue = vecValue.get(0).toString();;//in der 0ten Position ist der String, entweder wenn der Tag nicht enthalten ist ODER der Parser (ggfs. entsprechend dem Solver) abgestellt ist
 				assertEquals(sExpressionSurroundedTemp, sValue); //dann sollen auch die Z-Tags drumherum nicht entfernt werden.
 			}
 			assertTrue(StringZZZ.contains(sValue,sExpressionSurroundedTemp,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.

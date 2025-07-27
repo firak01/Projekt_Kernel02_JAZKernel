@@ -216,12 +216,13 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			
 			//Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			//Also werden nur Werte in den jeweiligen Tags substituiert durch ihren konkreten Solver!!!
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; 
+			if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecReturn, 1))) break main; 
 			
 			//+++++++++++++++++++++++++
 			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
-								    					
+			//String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+			String sValueToSubstitute = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1); //Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.	
+			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSubstitute.set(objEntry);
 			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
@@ -236,7 +237,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			}			
 			//+++++++++++++++++++++++++
 			
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//vecReturn.get(1).toString();
 			this.setValue(sReturnTag);
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);

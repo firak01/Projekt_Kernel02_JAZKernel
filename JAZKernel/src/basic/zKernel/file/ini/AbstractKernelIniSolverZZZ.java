@@ -876,9 +876,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null)break main;			
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break solverThis; //Dann ist der Tag nicht enthalten oder "Solver fuer den Tag" deaktiviert
+			if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecReturn, 1))) break solverThis; //Dann ist der Tag nicht enthalten oder "Solver fuer den Tag" deaktiviert
 						
-			sReturnTag = vecReturn.get(1).toString();
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			sReturnTagParsed = sReturnTag;
 			sReturnTagSolved = sReturnTag;
 			this.setValue(sReturnTag);
@@ -1154,7 +1154,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 				
 		//#################################		
-		sReturnTag = vecReturn.get(1).toString();
+		sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1); //damit bekommt man vom NullObjectZZZ nicht nur den Leerstring, sonder auch NULL zurück.
 		sReturnLine = VectorUtilZZZ.implode(vecReturn);
 						
 		if(objEntry!=null) {

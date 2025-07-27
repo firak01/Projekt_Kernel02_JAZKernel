@@ -454,7 +454,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					this.getEntry().setValueEncrypted(sExpression);	//Zwischenstand festhalten
 					String sRemaining2 = objValue.parse(sExpression);//wichtig: Erst parsen, bevor man den Wert holen kann.
 					sCode = objValue.getValue();
-//							String sDebug = (String) vecValue.get(1);
+//							String sDebug = vecValue.get(1).toString();;
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
 				}

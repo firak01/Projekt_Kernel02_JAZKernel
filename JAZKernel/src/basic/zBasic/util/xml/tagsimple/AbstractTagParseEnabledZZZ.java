@@ -120,13 +120,13 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			if(vecReturn==null) break main;
 			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			sReturnTag = vecReturn.get(1).toString(); //uebernimm also das 1. Element
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 			
 			
 			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
 			if(vecReturn==null) break main;
-			sReturnTag = vecReturn.get(1).toString(); //uebernimm also das nun ggfs. auch leere 1. Element
+			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);
 			
 			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
@@ -175,7 +175,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
 	
-					sReturnTag = vecReturn.get(1).toString();
+					sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 					sReturn = sReturnTag;
 					this.setValue(sReturnTag);
 				}	
@@ -188,7 +188,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			
 				//ggfs. weitere Sachen rausrechnen, falls gewuenscht
 				vecReturn = this.parsePostCustom(vecReturn, bKeepSurroundingSeparatorsOnParse);
-				sReturnTag = vecReturn.get(1).toString();
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 				sReturn = sReturnTag; //muesste ja eigentlich sReturnLine sein, und ein implode des Vektors.
 				this.setValue(sReturnTag);				
 			}
@@ -301,7 +301,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 					String sTagEnd = "</Z>";  //this.getTagClosing();
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also an jeder Position (d.h. nicht nur am Anfang), also von innen nach aussen
 	
-					sReturnTag = vecReturn.get(1).toString();
+					sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 					sReturn = sReturnTag;
 					this.setValue(sReturnTag);
 				}	
@@ -313,7 +313,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			bUseParse = this.isParserEnabledCustom();
 			if(bUseParse) {
 				vecReturn = this.parseFirstVectorPostCustom(vecExpressionIn, bKeepSurroundingSeparatorsOnParse);
-				sReturnTag = vecReturn.get(1).toString();
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 				this.setValue(sReturnTag);	
 			}
 		}//end main:

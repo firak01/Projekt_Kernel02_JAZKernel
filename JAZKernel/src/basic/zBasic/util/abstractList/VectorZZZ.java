@@ -199,6 +199,24 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		}
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getElementAsString(int iIndex) throws ExceptionZZZ {
+		//Das ist nicht so trivial, weil TypeCasting nicht immer klappt.
+		return VectorUtilZZZ.getElementAsString(this, iIndex);
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getElementAsValueOf(int iIndex) throws ExceptionZZZ {
+		//Das ist nicht so trivial, weil TypeCasting nicht immer klappt.
+		return VectorUtilZZZ.getElementAsValueOf(this, iIndex);
+	}
+
+
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getEntryLast() {
@@ -241,7 +259,7 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		}
 	}
 	
-	
+		
 	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintr�ge rechts von dem Suchstring zur�ck. 
 	 *   Dabei wird von links gesucht.
 	 *   

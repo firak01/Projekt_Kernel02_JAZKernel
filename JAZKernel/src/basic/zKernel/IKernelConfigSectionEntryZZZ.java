@@ -141,17 +141,27 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public String getValueAsConversion();
 	public void setValueAsConversion(String sValueConverted);
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//#############################################
 	//Formula
 	public boolean isFormula();
 	abstract void isFormula(boolean bIsFormula);
+	
+	public boolean isFormulaSolveCalled();
+	abstract void isFormulaSolveCalled(boolean bIsFormulaSolveCalled);
+	
 	public boolean isFormulaSolved();
 	abstract void isFormulaSolved(boolean bIsFormulaSolved);
 	
+	public boolean isFormulaSolvedChanged();
+	abstract void isFormulaSolvedChanged(boolean bIsFormulaSolvedChanged);
 	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isFormulaMath();
 	abstract void isFormulaMath(boolean bIsFormuaMath);
-	
+
+	public boolean isFormulaMathSolved();
+	abstract void isFormulaMathSolved(boolean bIsFormulaMathSolved);
 	
 	
 	public VectorDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
@@ -173,8 +183,6 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public boolean isFormulaMathSolved();
-	abstract void isFormulaMathSolved(boolean bIsFormulaMathSolved);
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++

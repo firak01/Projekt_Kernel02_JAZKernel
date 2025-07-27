@@ -66,6 +66,10 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	public abstract boolean resetValues() throws ExceptionZZZ;
 	
 	
+	@Override
+	public abstract boolean resetValues(Object objDefault) throws ExceptionZZZ;
+
+	
 	//### Aus IKernelProgramZZZ
 	@Override
 	public String getProgramName(){
