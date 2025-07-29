@@ -99,6 +99,13 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
+	//### STATIC METHODS
+	//Fuer den statischen Zugriff, als Alternative zu der Variante bei einem initialisierten Object obj.makeAsExpression(String sValue)....
+	public static String makeAsExpressionDefault(String sValue) throws ExceptionZZZ {
+		return ExpressionIniUtilZZZ.makeAsExpression(sValue, KernelExpressionIniHandlerZZZ.sTAG_NAME);
+	}
+	
+	
 	//### GETTER / SETTER
 	
 	

@@ -169,6 +169,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 			//C) Test (02) mit Z-Tag unmittelbar um den PATH herum. Jetzt ist es eine Expression und wird ersetzt
+TODOGOON20250729;// objEntry.getLineFormulaSolvedAndConverted(); ist nicht die ganze Zeile. Da müsste der Wert noch rein.			
+
 			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
 			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
 			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;

@@ -2681,10 +2681,19 @@ public class TestUtilAsTestZZZ extends TestCase{
 			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
 			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();
 		
-			assertEquals(sExpressionSolved, sLineFormulaSolvedAndConverted);
-			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist													
+			
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
 			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
 
+			
+			
+			if(objEnumSurrounding.isSurroundingValueToKeep_OnSolve()) {
+				String sLineFormulaSolvedAndConvertedAsExpression = KernelExpressionIniHandlerZZZ.makeAsExpressionDefault(sLineFormulaSolvedAndConverted);
+				assertEquals(sExpressionSolved, sLineFormulaSolvedAndConvertedAsExpression);
+			}else {
+				assertEquals(sExpressionSolved, sLineFormulaSolvedAndConverted);
+			}
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 			
