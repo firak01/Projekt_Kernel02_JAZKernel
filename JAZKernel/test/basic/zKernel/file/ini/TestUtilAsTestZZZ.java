@@ -2688,7 +2688,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			
 			if(objEnumSurrounding.isSurroundingValueToKeep_OnSolve()) {
-				String sLineFormulaSolvedAndConvertedAsExpression = KernelExpressionIniHandlerZZZ.makeAsExpressionDefault(sLineFormulaSolvedAndConverted);
+				//Nein, einfach einen Z-Tag darumzumachen ist nicht richtig, wenn z.B. PRE und POST Strings vorhanden sind
+				//String sLineFormulaSolvedAndConvertedAsExpression = KernelExpressionIniHandlerZZZ.makeAsExpressionDefault(sLineFormulaSolvedAndConverted);
+				String sLineFormulaSolvedAndConvertedAsExpression = sLineFormulaSolvedAndConverted;
 				assertEquals(sExpressionSolved, sLineFormulaSolvedAndConvertedAsExpression);
 			}else {
 				assertEquals(sExpressionSolved, sLineFormulaSolvedAndConverted);

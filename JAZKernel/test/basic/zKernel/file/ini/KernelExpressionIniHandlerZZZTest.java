@@ -169,7 +169,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			testCompute_PATH_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 			//C) Test (02) mit Z-Tag unmittelbar um den PATH herum. Jetzt ist es eine Expression und wird ersetzt
-TODOGOON20250729;// objEntry.getLineFormulaSolvedAndConverted(); ist nicht die ganze Zeile. Da müsste der Wert noch rein.			
+//TODOGOON20250729;// objEntry.getLineFormulaSolvedAndConverted(); ist nicht die ganze Zeile. Da müsste der Wert noch rein.			
 
 			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
 			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
@@ -930,8 +930,13 @@ TODOGOON20250729;// objEntry.getLineFormulaSolvedAndConverted(); ist nicht die g
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 
-		//B) Tests mit MATH-Expression (die Testwerte sind in der Funktion) //TODO: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
-		testCompute_MATH02_withoutOperator(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			//B) Tests mit MATH-Expression (die Testwerte sind in der Funktion) //TODO: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
+			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;	
+			
+			TODOGOON20250729;//mache sTag und sTagSolved als Konstanten und uebergib sie hier....
+			testCompute_MATH02_withoutOperator(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 		
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 		
@@ -943,10 +948,16 @@ TODOGOON20250729;// objEntry.getLineFormulaSolvedAndConverted(); ist nicht die g
 			testCompute_MATH01_(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 			//B) Tests mit MATH-Expression, aber ohne Operator (die Testwerte sind in der Funktion, Uebergabeparameter sind momentan noch dummy) //TODOGOON 20250407: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
+			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;	
 			testCompute_MATH02_withoutOperator(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 			
 			//C) Tests mit MATH-Expression, mit Operator (die Testwerte sind in der Funktion, Uebergabeparameter sind momentan noch dummy) //TODOGOON 20250407: Testwerte aus der Funktion herausholen und auch als Konstante in der MATH-Testklasse hinterlegen.
+			sExpression = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02;
+			sExpressionSubstituted = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SUBSTITUTED02;
+			sExpressionSolved = KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_SOLVED02;	
 			testCompute_MATH02_withOperator(sExpression,sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 			
 			

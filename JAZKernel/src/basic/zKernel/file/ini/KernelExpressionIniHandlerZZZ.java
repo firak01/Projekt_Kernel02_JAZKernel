@@ -264,6 +264,91 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		}//end main:
 	}
 	
+	//### aus ISolveZZZ
+	//+++++++++++++++++++++++++++++++++++++++++++++
+		//+++ Folgende Methoden koennen ueberschrieben werden um fuer den konkreten Solver eine Loesung einzubauen.
+		//### aus ISolveZZZ
+		@Override
+		public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+			return this.solvePostCustom_(vecExpression, null, true);
+		}
+
+		@Override
+		public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators)throws ExceptionZZZ {
+			return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+		}
+		
+		@Override
+		public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+			return this.solvePostCustom_(vecExpression, objReturnReference, true);
+		}
+		
+		@Override
+		public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+			return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+		}
+		
+		//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
+		//!!! hier wuerde dann etwas konkretes stehen.
+		private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+			Vector3ZZZ<String> vecReturn = vecExpressionIn;		
+			String sReturn = null;
+			String sReturnTag = null; String sReturnLine = null;
+			String sExpressionIn=null;
+			boolean bUseExpression = false;
+				
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+			if(objReturnReferenceIn==null) {				
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+			}else {
+				objReturnReference = objReturnReferenceIn;
+				objEntry = objReturnReference.get();
+			}
+			if(objEntry==null) {
+				//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+				objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+				objReturnReference.set(objEntry);
+			}	
+				
+		
+			main:{	
+				if(vecExpressionIn==null) break main;
+					
+				//!!! nur eine Blaupause, die vom konkreten Solver ueberschrieben werden kann.
+				//!!! hier wuerde dann etwas konkretes stehen.
+				
+//				sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+
+//				sReturnTag = vecReturn.get(1).toString();
+//				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+							
+				//BESONDERHEIT				
+//				if(!sExpressionIn.equals(sReturnLine)) {
+//					objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
+//					objEntry.setValueAsExpression(sReturnLine);
+//				}
+				
+				//Besonderheit:
+				//Wurde in der Gesamtexpression-Behandlung ein Formula-Handler aufgerufen, 
+				//dann muss die Gesamtzeile "LineFormulaSolvedAndConverted" aktualisiert werden.				
+				if(objEntry.isFormulaSolved()) {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Uebernim den Gesamtstring in den Vector zur formulaSolvedAndConverted.");
+					sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+					String sLineFormulaSolvedAndConverted = sExpressionIn;
+					objEntry.setLineFormulaSolvedAndConverted(sLineFormulaSolvedAndConverted);
+				}
+				
+				
+				
+			}//end main:
+			
+			if(objEntry!=null) {				
+				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			}		
+			return vecReturn;
+		}		
+	
 	//### aus  ISolveEnabledZZZ
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
