@@ -1956,15 +1956,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					}//end if bRemoveAnyPosition	
 			
 			//ggfs. aus dem Mittleren Teil auch entfernen
-			//Merke, hier zu beachten: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
+			//Merke: Der Tag faengt quasi mitten im String an, darum nicht mit startWith.. endsWith..
+			//Merke: Nun wird mit NullObjectZZZ gearbeitet. Aber ein toString() ignoriert null und liefert "" zurueck.
 			Vector3ZZZ<String> vecMid = StringZZZ.vecMid(sValue, sTagPartOpening, sTagPartClosing, false);
-			sBefore=vecMid.get(0).toString();
-			sValue = vecMid.get(1).toString();
-			sRest = vecMid.get(2).toString();
-
-			sValue = sBefore + sValue + sRest;
-			
-			
+			sBefore= VectorUtilZZZ.getElementAsValueOf(vecMid, 0); //vecMid.get(0).toString();
+			sValue = VectorUtilZZZ.getElementAsValueOf(vecMid, 1); //vecMid.get(1).toString();
+			sRest =  VectorUtilZZZ.getElementAsValueOf(vecMid, 2); //vecMid.get(2).toString();
+			//sValue = sBefore + sValue + sRest;
+			//Im Gesamtstring NULL rausfiltern
+			sValue = StringZZZ.joinAllDefaultValueIgnoreNull(null, sBefore, sValue, sRest);
 			vecReturn.replace(sValue);
 			
 		}//end main

@@ -2632,6 +2632,86 @@ null will return false. An empty CharSequence (length()=0) will return false.
     	return sReturn;
 	}
 	
+	 
+	 /* Wird null nicht ignoriert, dann wird das "Replacement" verwendet.
+	  * Wird null ignoriert, dann wird das "Replacement" verwendet, wenn alle Strings NULL sind.
+	  */
+	 public static String joinAll(boolean bSkipNull, String sReplacementOnNull, String... sStrings) throws ExceptionZZZ {
+	        StringBuilder builder = new StringBuilder();        
+	        if(bSkipNull) {
+	        	boolean bAnyValue=false;
+	        	for (String sString : sStrings) {
+	        		if(sString!=null) { 
+	        			bAnyValue=true;
+	        			builder.append(sString);
+	        		}
+	        	}
+	        	if(bAnyValue) {
+	        		return builder.toString();
+	        	}else {
+	        		return sReplacementOnNull;
+	        	}
+	        }else {
+	        	for (String sString : sStrings) {
+	        		if(sString!=null) {
+	        			builder.append(sString);
+	        		}else {
+	        			builder.append(sReplacementOnNull);
+	        		}
+	        	}
+	        	return builder.toString();
+	        }	        
+	    }
+	
+	
+	 
+	 /*Java 1.7. Funktionalität
+	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
+	 */
+	public static String joinAll(String... sStrings) throws ExceptionZZZ {
+        return StringZZZ.joinAll(false, sStrings);
+	}
+	
+	/*Java 1.7. Funktionalität
+	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
+	 * NULL Werte werden ignoriert
+	 */
+	 public static String joinAllIgnoreNull(String... sStrings) throws ExceptionZZZ {
+	        return StringZZZ.joinAll(true, sStrings);
+	 }
+	 
+	 /*Java 1.7. Funktionalität
+	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
+	 * Aber es ist anders als sonst im ZKernel ueblich notwendig, das der Zusaetzliche Parameter vorne steht.
+	 * 
+	 * Merke: Wird NULL ignoriert und alle String sind null, dann kommt der Leerstring zurück.
+	 */
+	 public static String joinAll(boolean bSkipNull, String... sStrings)  throws ExceptionZZZ{
+       return StringZZZ.joinAll(bSkipNull, "", sStrings);
+    }
+	 
+	 /*Java 1.7. Funktionalität
+	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
+	 * Aber es ist anders als sonst im ZKernel ueblich notwendig, das der Zusaetzliche Parameter vorne steht.
+	 * 
+	 * Merke: Es NULL ignoriert. Sind alle String null, dann kommt der Defultwert zurück.
+	 */
+	 public static String joinAllDefaultValueIgnoreNull(String sDefault, String... sStrings) throws ExceptionZZZ {
+		 return StringZZZ.joinAll(true, sDefault, sStrings);
+	 }
+	 
+	 /*Java 1.7. Funktionalität
+	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
+	 * Aber es ist anders als sonst im ZKernel ueblich notwendig, das der Zusaetzliche Parameter vorne steht.
+	 * 
+	 * Merke: Es NULL mit dem uebergebenen Wert ersetzt.
+	 */
+	 public static String joinAllReplaceNullWith(String sReplacement, String... sStrings)  throws ExceptionZZZ{
+	        return StringZZZ.joinAll(false, sReplacement, sStrings);
+	 }
+
+	
+	
 	/** The first letter of the string will become a capital letter. E.g. "abcd" => "Abcd"
 	 * Uses Jakarta commons.lang.
 	* @param sString

@@ -58,7 +58,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			for(String sKey:hmFlag.keySet()){
 				String stemp = sKey;
 				boolean btemp = this.setFlag(sKey, hmFlag.get(sKey));
-				if(btemp==false){
+				if(btemp==false){					
 					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
 				}

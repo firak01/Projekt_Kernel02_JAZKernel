@@ -723,7 +723,7 @@ output:
 			}//end for
 		}
 		
-//		immer separat die letzen Position einf�gen
+//		immer separat die letzen Position einfuegen
 		if(bInserted == false){
 			objReturn[iSize-1] = sString;
 		}else{
