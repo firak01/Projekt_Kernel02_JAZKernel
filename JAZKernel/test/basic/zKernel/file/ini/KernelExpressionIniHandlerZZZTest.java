@@ -1105,7 +1105,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			sTag = sTagIn;
-			sTagSolved = sTagSolvedIn;
+			sTagSolved = sTagSolvedIn; TODOGOON20250802;//Z-Tags werden entfernt, obwohl sie eigentlich drin bleiben sollen!!!
 			btemp = testCompute_MATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 	
 			//b) ohne Z-Tags
