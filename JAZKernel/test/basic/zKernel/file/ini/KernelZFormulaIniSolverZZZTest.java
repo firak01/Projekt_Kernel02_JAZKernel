@@ -32,11 +32,22 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelZFormulaIniSolverZZZTest extends TestCase {
-	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT = "<Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula>";
-	protected final static String sEXPRESSION_FORMULA_MATH_SOURCE01 = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT +"</Z>'. FGL rulez.";
+	//Es fehlen noch SECTION und PROPERTY, wie hier:
+	//protected final static String sEXPRESSION_Expression01_PATHSECTION = "Section A";
+	//protected final static String sEXPRESSION_Expression01_PATHPROPERTY = "Testentry1";
+	protected final static String sEXPRESSION_FORMULA_MATH01_CONTENT = "<Z:formula><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z:formula>";
+	protected final static String sEXPRESSION_FORMULA_MATH01_CONTENT_SOLVED = "6";
+	protected final static String sEXPRESSION_FORMULA_MATH01 = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_CONTENT +"</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_FORMULA_MATH01_SUBSTITUTED = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_CONTENT +"</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_FORMULA_MATH01_SOLVED = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_CONTENT_SOLVED +"</Z>'. FGL rulez.";	
 	
-	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT = "6";
-	protected final static String sEXPRESSION_FORMULA_MATH_SOLVED01 = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT +"</Z>'. FGL rulez.";	
+	protected final static String sEXPRESSION_FORMULA_MATH02_CONTENT = "<Z:formula><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z:formula>";
+	protected final static String sEXPRESSION_FORMULA_MATH02_CONTENT_SOLVED = "23";
+	protected final static String sEXPRESSION_FORMULA_MATH02 = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH02_CONTENT +"</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_FORMULA_MATH02_SUBSTITUTED = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH02_CONTENT +"</Z>'. FGL rulez.";
+	protected final static String sEXPRESSION_FORMULA_MATH02_SOLVED = "Der dynamische Wert ist '<Z>"+ KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH02_CONTENT_SOLVED +"</Z>'. FGL rulez.";	
+	
+	
 	
 	private File objFile;
 	private FileIniZZZ objFileIniInit;
@@ -526,11 +537,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	public void testCompute_FORMULA_MATH(){
 		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sTag; String sTagSolved;
 //		try {			
-			sExpression = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01;	
-			sExpressionSubstituted = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01;
-			sExpressionSolved = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01;
-			sTag = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOURCE01_CONTENT;
-			sTagSolved = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH_SOLVED01_CONTENT;
+			sExpression = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01;	
+			sExpressionSubstituted = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01;
+			sExpressionSolved = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_SOLVED;
+			sTag = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_CONTENT;
+			sTagSolved = KernelZFormulaIniSolverZZZTest.sEXPRESSION_FORMULA_MATH01_CONTENT_SOLVED;
 			testCompute_FORMULA_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());

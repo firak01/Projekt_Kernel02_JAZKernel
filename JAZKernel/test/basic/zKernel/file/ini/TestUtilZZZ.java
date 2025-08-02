@@ -72,8 +72,8 @@ public class TestUtilZZZ {
 				objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>{[Section B]Testentry2}</Z>'. FGL rulez.");
 				objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z>{[Section C]Testentry3}</Z>'. FGL rulez.");
 						
-				objStreamFile.println("Formula01_01=" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT01);
-				objStreamFile.println("Formula01_02=" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01_DEFAULT02);
+				objStreamFile.println("Formula01_01=" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01A);
+				objStreamFile.println("Formula01_02=" + KernelExpressionIniHandlerZZZTest.sEXPRESSION_Expression01B);
 				
 				objStreamFile.println("[Section for testComputeMathArguments]");
 				objStreamFile.println("WertA=4");
