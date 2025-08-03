@@ -2,6 +2,7 @@ package basic.zKernel.file.ini;
 
 import java.util.EnumSet;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
@@ -130,30 +131,41 @@ public String getSurroundingValueUsedTestMessage() {
 //	this.sTestCaseMessage = sTestCaseMessage;
 //}
 
-//@Override
-private boolean getSurroundingValueUsedForMethod() {
-	return this.bSurroundingValueUsedForMethod; //Aber, das ist fuer´s Behalten oder Entfernen des Z-Tags nicht ausschlaggebend. Dies ist nur der Wert.
+@Override
+public boolean getSurroundingValueUsedForMethod() throws ExceptionZZZ {
+	//Parse und Solve haben unterschiedlich "gepolte" boolean Parameter, quasi was default ist.
+	if(this==EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE) {
+		return false; //
+	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP) {
+		return true;
+	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+		return true;
+	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+		return false;
+	}else {
+		ExceptionZZZ ez = new ExceptionZZZ("Type not handled yet '" + this.getAbbreviation());
+		throw ez;
+	}
 }
 
 @Override
-public boolean isSurroundingValueToRemove_OnParse() {
-	return !this.getSurroundingValueUsedForMethod();
+public boolean isSurroundingValueToRemove_OnParse() throws ExceptionZZZ {
+	return (this==EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE);
 }
 
 @Override
-public boolean isSurroundingValueToKeep_OnParse() {
-	return this.getSurroundingValueUsedForMethod();
+public boolean isSurroundingValueToKeep_OnParse() throws ExceptionZZZ {
+	return (this==EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP);
 }
 
 @Override
-public boolean isSurroundingValueToRemove_OnSolve() {
-	return this.getSurroundingValueUsedForMethod();
+public boolean isSurroundingValueToRemove_OnSolve() throws ExceptionZZZ {
+	return (this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE);
 }
 
-
 @Override
-public boolean isSurroundingValueToKeep_OnSolve() {
-	return !this.getSurroundingValueUsedForMethod();
+public boolean isSurroundingValueToKeep_OnSolve() throws ExceptionZZZ {
+	return (this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP);
 }
 
 

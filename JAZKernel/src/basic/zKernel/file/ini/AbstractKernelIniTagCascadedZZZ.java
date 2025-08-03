@@ -239,7 +239,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 			
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//vecReturn.get(1).toString();
 			this.setValue(sReturnTag);
-			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
+			
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
 			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 

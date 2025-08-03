@@ -834,7 +834,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {	
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
@@ -853,7 +853,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -864,14 +864,14 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -940,7 +940,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 //				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
@@ -958,7 +958,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objFormulaSolver.getValue();
@@ -972,7 +972,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {			
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 				
 				sValue = objFormulaSolver.getValue();
@@ -985,7 +985,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 				
 				sValue = objFormulaSolver.getValue();
@@ -1062,7 +1062,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, objFormulaSolver.getName(), false);												
 				sTagSolved = sTagSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 			
 				sValue = objFormulaSolver.getValue();
@@ -1098,7 +1098,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -1110,7 +1110,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
@@ -1121,7 +1121,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
@@ -1193,7 +1193,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {				
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 			 
 				sValue = objFormulaSolver.getValue();
@@ -1207,7 +1207,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -1218,7 +1218,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 
 				sValue = objEntry.getValue();
@@ -1228,7 +1228,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 
 				sValue = objEntry.getValue();
@@ -1310,7 +1310,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 //				assertTrue(StringZZZ.contains(sExpressionSolved,sValue,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.
 			
 				//+++ Teilberechnungen durchführen, aber es wird nur geparsed... kein solve. 
-				vecValue = objFormulaSolver.parseFirstVector(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());					
+				vecValue = objFormulaSolver.parseFirstVector(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());					
 				sValue = VectorUtilZZZ.implode(vecValue);
 				assertTrue(StringZZZ.contains(sValue,sTag,false)); //da der Wert selbst nicht als Argument in der Methode uebergeben wurde, koennen wir nur auf Existenz im Gesamtergebnis pruefen.				
 
@@ -1324,7 +1324,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ Nun die Gesamtberechnung durchführen, aber es wird nur geparsed... nicht aufgeloest.
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
+				sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 					
 				sValue = objFormulaSolver.getValue();
@@ -1339,7 +1339,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
 				//TODOGOON20240114;//Beim solven muss der Wert ohne umgebenden z:formula-Tag zugewiesen werden.
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				sValue = objFormulaSolver.getValue(); //Der geparste Wert des Tags selbst enthaelt keine umgebenden Tags. Also wieder den Tag rausrechnen.
@@ -1355,14 +1355,14 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {			
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToKeep_OnParse());				
+				objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntry);				
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				objEntry = objFormulaSolver.solveAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+				objEntry = objFormulaSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);				
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -1798,7 +1798,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
-					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 																				
 					//Hier erwarte ich einen NULL Wert, da ohne Expressionbehandlung auch nicht geparsed wird.
@@ -1812,7 +1812,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {					
-					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 
 					//Hier erwarte ich einen NULL Wert, das ohne Expression auch nicht geparsed wird.
@@ -1827,7 +1827,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ Variante fuer den AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
@@ -1838,7 +1838,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);	
 					
 					sValue = objEntry.getValue();
@@ -1911,7 +1911,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 							
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
-					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 					
 					 
@@ -1933,7 +1933,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {					
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 
 					//Ausser wenn die Expression gar nicht behandelt wird. Dann ist das die ganze Zeile
@@ -1950,7 +1950,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ Variante fuer den AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {					
-					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
@@ -1967,7 +1967,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {					
-					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
@@ -2044,7 +2044,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 																												
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade! D.h. auch der z:Formula Tag bleibt drin!!!
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
-					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objFormulaSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 					
 					//Ausser wenn die Expression gar nicht behandelt wird. Dann ist das die ganze Zeile
@@ -2061,7 +2061,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 					
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {					
-					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					sValue = objFormulaSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertEquals(sExpressionSolved, sValue);
 
 					//Ausser wenn die Expression gar nicht behandelt wird. Dann ist das die ganze Zeile
@@ -2078,7 +2078,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ Variante fuer den AsEntry-Test
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {					
-					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					objEntry = objFormulaSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
@@ -2094,7 +2094,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 				
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					objEntry = objFormulaSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					assertNotNull(objEntry);
 					
 					sValue = objEntry.getValue();
