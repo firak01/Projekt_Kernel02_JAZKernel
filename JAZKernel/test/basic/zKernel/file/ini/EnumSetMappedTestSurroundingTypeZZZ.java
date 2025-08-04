@@ -140,7 +140,7 @@ public boolean getSurroundingValueUsedForMethod() throws ExceptionZZZ {
 		return true;
 	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
 		return true;
-	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE) {
+	}else if(this==EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP) {
 		return false;
 	}else {
 		ExceptionZZZ ez = new ExceptionZZZ("Type not handled yet '" + this.getAbbreviation());

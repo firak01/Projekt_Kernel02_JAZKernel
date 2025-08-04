@@ -1132,16 +1132,18 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 //			sExpressionFormulaMathSolved = sExpressionFormulaMathSubstituted;
 //			//sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);
 //			
-//			//...nur MATH-Solver wird nicht aufgeloest... Formula-Solver schon
-//			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
-			
+//			
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);			
-			sExpressionSolved = sExpressionSolvedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = sExpressionSubstitutedIn;
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			//...nur MATH-Solver wird nicht aufgeloest... Formula-Solver schon
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
+			
 			sTag = sTagIn;
-			sTagSolved = sTagSolvedIn;
+			sTagSolved = sTagIn;
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
 			btemp = testCompute_MATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
 	
 			//d) ohne Z-Tags
@@ -1152,15 +1154,22 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 //			sExpressionFormulaMathSolved = sExpressionFormulaMathSubstituted;
 //			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, sTagStartZ, sTagEndZ);
 //			
+			
+			
+
 //			//...Ohne Formula-Tags
 //			sExpressionFormulaMathSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionFormulaMathSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);			
-			sExpressionSolved = sExpressionSolvedIn;
+			sExpressionSolved = sExpressionSubstitutedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			//...nur MATH-Solver wird nicht aufgeloest... Formula-Solver schon
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);			
 			sTag = sTagIn;
-			sTagSolved = sTagSolvedIn;
+			sTagSolved = sTagIn;
+			//...nur MATH-Solver wird nicht aufgeloest... Formula-Solver schon
+			sTagSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sTagSolved, KernelZFormulaIniSolverZZZ.sTAG_NAME);						
 			btemp = testCompute_MATH_unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//##########################################################
@@ -1176,7 +1185,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			//sExpressionSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted, sTagStartZ, sTagEndZ);			
 			sExpressionSolved = sExpressionSolvedIn;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sTag = sTagIn;
 			sTagSolved = sTagSolvedIn;
 			btemp = testCompute_MATH_(sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);

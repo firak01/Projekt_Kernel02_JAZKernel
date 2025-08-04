@@ -35,8 +35,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static final String sFLAGSET_FORMULA_UNSOLVED="fuso";
 	public static final String sFLAGSET_FORMULA_SOLVED="fso";
 	
-	public static final String sFLAGSET_MATH_UNSOLVED="muso";
-	public static final String sFLAGSET_MATH_SOLVED="mso";
+	public static final String sFLAGSET_MATH_UNSOLVED="fmuso";
+	public static final String sFLAGSET_MATH_SOLVED="fmso";
 	
 	public static final String sFLAGSET_SOLVED="so";
 	public static final String sFLAGSET_PATH_UNSUBSTITUTED="pusu";
@@ -1305,29 +1305,30 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//+++++++++++++++++++++++++++
 			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....					
-			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isParsed());
+			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
 			
 			//++++++++++++++++++++++++++++		
 			assertTrue(objEntry.isPathSubstituteCalled());
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted());
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//++++++++++++++++++++++
 			
-			assertTrue(objEntry.isVariableSubstituteCalled());
-    			//+++ Auf wertaenderung kann man hier doch auch eigentlich nicht so abfragen					
+			assertTrue(objEntry.isVariableSubstituteCalled());					
 			assertTrue(objEntry.isVariableSubstituted());
+				//+++ Auf wertaenderung kann man hier doch auch eigentlich nicht so abfragen
 			
 			//++++++++++++++++++++++
 			assertTrue(objEntry.isSubstituteCalled());
-			assertIsSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isSubstituted());
+			assertIsSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 						
 			//++++++++++++++++++++++++++++
-			assertFalse(objEntry.isSolveCalled()); //nur mit parse wird hier nix geaendert
-			assertFalse(objEntry.isSolvedChanged()); 
+			assertFalse(objEntry.isSolveCalled()); //nur mit parse wird hier nix geaendert 
 			assertFalse(objEntry.isSolved());
+			assertFalse(objEntry.isSolvedChanged());
 
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++																				
 			assertFalse(objEntry.isDecrypted());
