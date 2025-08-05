@@ -873,9 +873,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsContainerSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ, false, false, sTagContainerStart, sTagContainerEnd); //also von aussen nach innen!!!
 				sReturnLine = VectorUtilZZZ.implode(vecReturn);	
 										
-				//Beachte; Beim Parsen bleibt der Tag-Wert in der Zeile erhalten. Der Wert in dem Tag ist mit .getValue() abrufbar.
-				//         Damit kann nach dem Parsen weitergearbeitet werde, z.B. mit einem Solver.									
-				//KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);  //also von innen nach aussen				
+//				//PROBLEM BEI {[...]...} also den PATH - Tags, da sie unterschiedlich im Aufbau sind.
+//				if(!(sTagStartZ.equals(sTagContainerStart) & sTagEndZ.equals(sTagContainerEnd))) {
+//					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecReturn, sTagContainerStart, sTagContainerEnd);  //also von innen nach aussen
+//				}
 			}
 								
 			//+++ Der Wert des Tags selbst (nicht der Zeile(!)) ++++++++++++++++++++++++++++++++++++
@@ -1085,18 +1086,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//+++ Der Wert des Tags			
 			//Merke: Diesen Wert nicht in den Vektor zurueckscheiben. Das wuerde die Zeile verfaelschen.			
 			//    Also: Den Wert des Tags setzen. Das ist der Wert aus vec(1), und dann den Tag-Namen darum entfernt.				
-			if(bRemoveOwnTagParts) {
-										
+			if(bRemoveOwnTagParts) {										
 				String sTagStart = this.getTagPartOpening();
 				String sTagEnd = this.getTagPartClosing();								
-					
-//				//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erlegigt wurde
-//				//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.
-//				String sTagStartZ = "<Z>";
-//				String sTagEndZ = "</Z>";					
+//					
+//				//Entferne auch nur die eigenen Tags, wenn das nicht schon durch bRemoveSurroundigSeperators erledigt wurde
+//				//bzw. bei Gleichnamigkeit ueberhaupt entfernt werden darf.			
 //				if(!(sTagStartZ.equals(sTagStart) & sTagEndZ.equals(sTagEnd))) {
-				sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
-				this.setValue(sReturnTag);		
+					sReturnTag = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnTag, sTagStart, sTagEnd, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					this.setValue(sReturnTag);		
 //				}					
 			}
 			

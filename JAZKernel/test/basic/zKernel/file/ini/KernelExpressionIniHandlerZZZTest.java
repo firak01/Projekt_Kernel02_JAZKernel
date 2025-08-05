@@ -1015,7 +1015,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//###################################
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Kein Math-Ausdruck drin, trotzdem den Pfad ausrechen
+			//+++ Kein Math-Ausdruck drin, trotzdem den Pfad ausrechnen
 			//a) parse
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -1479,7 +1479,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade (substituiert)
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)){		
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnParse());
+					sValue = objExpressionHandler.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
 					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
@@ -1496,7 +1496,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 					objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-					sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToRemove_OnSolve());
+					sValue = objExpressionHandler.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 					
 					String sExpressionSurroundedTemp = sExpressionSolved;
 					if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
@@ -1518,6 +1518,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 				
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
 		}//end main:

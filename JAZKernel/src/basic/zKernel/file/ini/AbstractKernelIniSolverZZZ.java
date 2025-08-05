@@ -905,6 +905,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnLineParsed = sReturnLine;
 			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);			
 			if(bRemoveSurroundingSeparators) {
+				
+				
+				
 				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
 			}	
 			
