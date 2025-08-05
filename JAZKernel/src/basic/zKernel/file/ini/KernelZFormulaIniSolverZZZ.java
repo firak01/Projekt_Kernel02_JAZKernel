@@ -683,11 +683,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 						
-			//BESONDERHEIT	
+			//BESONDERHEIT, die nur zieht, wenn ein Formel-Tag vorhanden war.	
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			sReturnLine = sExpressionIn;
-					
+								
 			objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
+			
+			//DER GESAMTAUSDRUCK MUSS ABER REIN
 			objEntry.setLineFormulaSolvedAndConverted(sReturnLine);			
 		}//end main:
 		

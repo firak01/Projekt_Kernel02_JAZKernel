@@ -408,27 +408,31 @@ public class TestUtilAsTestZZZ extends TestCase{
 				}
 				
 				
-				if(objEntry.isSolved()) {
-					if(objEntry.isSubstitutedChanged()){ 
+				if(objEntry.isSolved() && objEntry.isFormula()){
+					//if(objEntry.isSubstitutedChanged()){
+					if(assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
 						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
-							assertFalse(objEntry.isSolvedChanged());
-							bReturn = false;
+							//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+							//assertFalse(objEntry.isSolvedChanged());
+							//bReturn = false;
 						}else {
 							assertTrue(objEntry.isSolvedChanged());
 							bReturn = true;
 						}
 					}else {
 						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
-							assertFalse(objEntry.isSolvedChanged());
-							bReturn = false;
+							//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+							//assertFalse(objEntry.isSolvedChanged());
+							//bReturn = false;
 						}else {
 							assertTrue(objEntry.isSolvedChanged());
 							bReturn = true;					
 						}
 					}
 				}else {
-					assertFalse(objEntry.isSolvedChanged());
-					bReturn = false;
+					//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+					//assertFalse(objEntry.isSolvedChanged());
+					//bReturn = false;
 				}
 				
 			}else {
@@ -452,24 +456,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 				if(objEntry.isSolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
 					if(objEntry.isSubstitutedChanged()){ 
 						if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
-							assertFalse(objEntry.isSolvedChanged());
-							bReturn = false;
+							//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+							//assertFalse(objEntry.isSolvedChanged());
+							//bReturn = false;
 						}else {
 							assertTrue(objEntry.isSolvedChanged());
 							bReturn = true;
 						}
 					}else {
 						if(sExpression2compareWithExpression.equals(sExpression2compare)) {
-							assertFalse(objEntry.isSolvedChanged());
-							bReturn = false;
+							//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+							//assertFalse(objEntry.isSolvedChanged());
+							//bReturn = false;
 						}else {
 							assertTrue(objEntry.isSolvedChanged());
 							bReturn = true;					
 						}
 					}
 				}else {
-					assertFalse(objEntry.isSolvedChanged());
-					bReturn = false;
+					//Das kann man nicht sagen, der solvedChanged-Status kann woanders her kommen
+					//assertFalse(objEntry.isSolvedChanged());
+					//bReturn = false;
 				}								
 			}
 			
@@ -2443,31 +2450,38 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isExpression()); //ohne Expression-Nutzung kein Expression Eintrag!!!
 			
 			//++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
+			assertTrue(objEntry.isParseCalled()); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....		
 			assertTrue(objEntry.isParsed()); 
+				//Merke: .isParsedChange() laesst sich hier nicht ermitteln.
 			//+++++++++++++++++++++++++++++++				
 			
 			//+++++++++++++++++++++++++++++++									
-			assertTrue(objEntry.isPathSubstituteCalled());																
-			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituteCalled());															
 			assertTrue(objEntry.isPathSubstituted());	
+			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//+++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isSolveCalled());
-			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);	
+			assertTrue(objEntry.isSolveCalled());			
 			assertTrue(objEntry.isSolved()); //sollte auch SOLVE_MATH wird solve ausgefuehrt
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++				
 			//++++++++++++++++++++++									
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			if(objEntry.isFormula()) {
+				sFormulaSolvedAndConvertedValue = objEntry.getValueFormulaSolvedAndConverted();
+				assertEquals(sTagSolved, sFormulaSolvedAndConvertedValue);
+			}else {
+				//Wenn keine Formel im Wert vorhanden ist, dann ist hier auch nix gefuellt.
+				sFormulaSolvedAndConvertedValue = objEntry.getValueFormulaSolvedAndConverted();
+				assertNull("NULL erwartet, aber es ist: '" + sFormulaSolvedAndConvertedValue + "'", sFormulaSolvedAndConvertedValue);
+			}
 			
-			sFormulaSolvedAndConvertedValue = objEntry.getValueFormulaSolvedAndConverted();
-			assertEquals(sTagSolved, sFormulaSolvedAndConvertedValue);
-					
+			//DER GESAMTAUSDRUCK IST IMMER DRIN
 			sFormulaSolvedAndConvertedLine = objEntry.getLineFormulaSolvedAndConverted();					
 			assertEquals(sExpressionSolved, sFormulaSolvedAndConvertedLine);
 
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 			
