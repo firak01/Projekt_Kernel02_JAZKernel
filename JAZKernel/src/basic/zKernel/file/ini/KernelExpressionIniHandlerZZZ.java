@@ -357,7 +357,19 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	
 	@Override
 	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return true;
+		boolean bReturn = false;
+		main:{
+			
+			//Frage hier die Flags ab, s. solveParsed_ 
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+		
+			bReturn = true;
+		}//end main:		
+		return bReturn;
 	}
 		
 	/** Berechne die INI-Werte. 
@@ -449,13 +461,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//###################################
 			
 			//Löse die anderen Solver auf.
-			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
-			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
-			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
-			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
-
+//			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+//			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+//			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+//			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+//			TODOGOON20250806;//Mach hieraus eine Methode ...AnyExpressionSolverRelevant.... oder so.
+//			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
+			if(!this.isSolverEnabledAnyRelevant())break main;
+			
 			String sExpressionUsed = sExpression;
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			if(bUseFormula) {				
 				//Hier KernelZFormulIniSolverZZZ verwenden
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
@@ -469,7 +484,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objEntry = objReturnReferenceFormula.get();				
 			}//end bUseFormula
 				
-									
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);				
 			if(bUseCall){
 				//Hier KernelCallIniSolverZZZ verwenden
 				KernelCallIniSolverZZZ<T> callDummy = new KernelCallIniSolverZZZ<T>();
@@ -484,7 +499,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objEntry = objReturnReferenceSolverCall.get();				
 			}//end if busecall
 											
-				
+			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			if(bUseJson) {
 				//Hier KernelJsonInisolverZZZ verwenden 
 				KernelJsonIniSolverZZZ<T> exDummy03 = new KernelJsonIniSolverZZZ<T>();
@@ -502,7 +517,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.					
 				sExpressionUsed = KernelConfigSectionEntryUtilZZZ.getJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objReturnReferenceSolverJson, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 				objEntry = objReturnReferenceSolverJson.get();
-				if(objEntry.isExpression()) {
+				if(objEntry.isExpression()) { //TODOGOON20250806; //nach objEntry sollte das folgende nicht mehr notwendig sein!!!!
 					this.getEntry().isExpression(true);
 					if(objEntry.isJson()) {
 						this.getEntry().isJson(true);
@@ -525,7 +540,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
 				}
 			}//end if busejson									
-									
+			
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
 				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);

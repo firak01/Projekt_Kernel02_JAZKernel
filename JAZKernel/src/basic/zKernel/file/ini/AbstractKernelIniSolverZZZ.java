@@ -478,7 +478,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			boolean bReturn2 = this.isSolverEnabledGeneral();
 			boolean bReturn3 = this.isSolverEnabledCustom();
 			
-			bReturn = bReturn1 | bReturn2 | bReturn3;
+			bReturn = bReturn1 & bReturn2 & bReturn3;
 		}//end main:
 		return bReturn;
 	}

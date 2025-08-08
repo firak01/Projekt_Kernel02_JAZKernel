@@ -485,10 +485,43 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 	
-	
-	public static boolean assertIsJsonSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+	public static boolean assertIsJsonSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{			
+		
+		main:{
+			
+			boolean btemp = objSolver.isSolverEnabledAnyRelevant(); 
+			if(!btemp)break main;
+			
+			assertTrue(objEntry.isJsonSolveCalled()); //aufgerufen wird der jsonSolve ja.
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;					
+	}
+	
+	public static boolean assertIsJsonSolved(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		
+		main:{
+			
+			boolean btemp = assertIsJsonSolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); 
+			if(!btemp)break main;
+			
+			assertTrue(objEntry.isJsonSolved()); //aufgerufen wird der jsonSolve ja.
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;					
+	}
+	
+	public static boolean assertIsJsonSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			
+			boolean btemp = assertIsJsonSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			if(!btemp) break main;
+			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -500,6 +533,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpression2compareWithExpression =sExpressionSolved;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
 			String sExpression2compare = sExpression;
+			
+			
 			if(objEntry.isSubstitutedChanged()) { //;objEntry.isParsedChanged()) {
 				//ziehe substituted heran
 				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonSolved()) {
@@ -816,7 +851,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 	}
 	
 	
-	public static boolean assertFileIniEntry(IEnumSetMappedTestFlagsetZZZ objEnumFlagset, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn) throws ExceptionZZZ{
+	public static boolean assertFileIniEntry(ISolveEnabledZZZ objSolver, IEnumSetMappedTestFlagsetZZZ objEnumFlagset, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			boolean bIsExpressionValidForTest=false;
@@ -854,7 +889,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			case sCASE_SOLVE:{
 				bIsExpressionValidForTest = TestUtilAsTestZZZ.isExpressionValidForFlagset_solve(objEnumFlagset, sExpressionIn);
 				if(bIsExpressionValidForTest) {
-					assertFileIniEntry_solve(objEnumSurrounding, objEnumFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, sTagIn, sTagSolvedIn, bAsEntry);
+					assertFileIniEntry_solve(objSolver, objEnumSurrounding, objEnumFlagset,objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, sTagIn, sTagSolvedIn, bAsEntry);
 				}
 				break;
 			}
@@ -2013,7 +2048,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 25.05.2025, 06:58:22
 	 */
-	public static boolean assertFileIniEntry_solve(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+	public static boolean assertFileIniEntry_solve(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestFlagsetZZZ objEnumTestFlagset,IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sExpression = sExpressionIn;
@@ -2093,7 +2128,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 				break;
 				
 			case sFLAGSET_JSON_UNSOLVED:
-				bReturn = assertFileIniEntry_solve_FLAGSET_JSON_UNSOLVED_(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				bReturn = assertFileIniEntry_solve_FLAGSET_JSON_UNSOLVED_(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				break;			
 				
 			case sFLAGSET_JSONARRAY_SOLVED:
@@ -3277,7 +3312,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 	
-	private static boolean assertFileIniEntry_solve_FLAGSET_JSON_UNSOLVED_(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+	private static boolean assertFileIniEntry_solve_FLAGSET_JSON_UNSOLVED_(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sExpression = sExpressionIn;
@@ -3334,10 +3369,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 			//+++++++++++++++++++++++++++++++
 			//### JSON
-			assertTrue(objEntry.isJson()); 	//Das kommt aus dem PARSEN
-			assertTrue(objEntry.isJsonSolveCalled()); //aufgerufen wird der jsonSolve ja.
-			assertTrue(objEntry.isJsonSolved()); //aufgerufen wird der jsonSolve ja.
-			assertIsJsonSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); 
+			assertTrue(objEntry.isJson()); 	//Das kommt aus dem PARSEN					
+			assertIsJsonSolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
+			assertIsJsonSolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); 
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
