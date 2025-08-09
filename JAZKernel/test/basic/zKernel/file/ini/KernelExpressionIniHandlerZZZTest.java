@@ -3961,13 +3961,14 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 			
 			boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
 			
+			//Wert mit dem Entry-Wert aus Methode vergleichen
 			objEntry = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled");
 			assertNotNull(objEntry);
 			sValue = objEntry.getValue();
 			assertEquals(sExpressionSolved,sValue);
 			sValueFromFunction = sValue;
 			
-			//Wert mit Entry-Wert vergleichen
+			//Wert mit Entry-Wert aus dem Objekt vergleichen
 			objEntry = objFileIniTest.getEntry();
 			assertNotNull(objEntry);
 			sValue = objEntry.getValue();
