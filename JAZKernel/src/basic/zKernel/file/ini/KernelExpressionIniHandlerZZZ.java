@@ -460,19 +460,22 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//### Besonderheiten dieses Solvers
 			//###################################
 			
+			//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
+			//       Durch den boolschen Rückgabwert geben sie an, ob in "DIESEM LAUF" etwas ersetzt wurde.
+			//       Das ist unabhaengig vom objEntry.
+			//       IDEE: Wenn etwas z.B. Verschluesselt war, dann kann in einem 2. Lauf darin ggfs. JSON als entschlüsselter Wert gefunden werden.
+			//             Nun wuerde im 2. Lauf JSON verarbeitet, etc. 
+			boolean bAnyFormula=false;
+			boolean bAnyCall=false;
+			boolean bAnyJson=false;
+			boolean bAnyEncryption=false;
+			
 			//Löse die anderen Solver auf.
-//			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
-//			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
-//			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-//			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-//			TODOGOON20250806;//Mach hieraus eine Methode ...AnyExpressionSolverRelevant.... oder so.
-//			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
 			if(!this.isSolverEnabledAnyRelevant())break main;
 			
 			String sExpressionUsed = sExpression;
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			if(bUseFormula) {				
-				//Hier KernelZFormulIniSolverZZZ verwenden
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
@@ -480,41 +483,42 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				KernelZFormulaIniSolverZZZ<T> objFormulaSolver = new KernelZFormulaIniSolverZZZ<T>(this.getKernelObject(), this.getFileConfigKernelIni(), hmVariable, saFlagZpassed);
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceFormula = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceFormula.set(objEntry);
+				
+				//TODOGOON20250809;//Rueckgabewert muss boolean sein!!!!
 				sExpressionUsed = objFormulaSolver.solve(sExpressionUsed, objReturnReferenceFormula, false); //behalte die Z-Tags, fuer ggfs. andere Abarbeitungsschritte
 				objEntry = objReturnReferenceFormula.get();				
 			}//end bUseFormula
 				
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);				
 			if(bUseCall){
-				//Hier KernelCallIniSolverZZZ verwenden
 				KernelCallIniSolverZZZ<T> callDummy = new KernelCallIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
-				
-				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+								
 				boolean bForFurtherProcessing = false; 
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSolverCall.set(objEntry);
 				
-				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
-				objEntry = objReturnReferenceSolverCall.get();				
+				bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
+				objEntry = objReturnReferenceSolverCall.get();	
+				
+				//TODOGOON20250809; Hier objentry.getLineCallSolved(); 
+				String sLineDecalled = objEntry.getValueCallSolved();//Wert zur weiteren Verarbeitung weitergeben						
+				sExpressionUsed = sLineDecalled; 
+				
 			}//end if busecall
 											
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			if(bUseJson) {
-				//Hier KernelJsonInisolverZZZ verwenden 
 				KernelJsonIniSolverZZZ<T> exDummy03 = new KernelJsonIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
 				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverJson = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSolverJson.set(objEntry);
-				
-				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+								
 				ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 				ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
 				
-				//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
-				//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
-				//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.					
+				//TODOGOON20250809;//Rueckgabewert muss boolean sein UND die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!
 				sExpressionUsed = KernelConfigSectionEntryUtilZZZ.getJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objReturnReferenceSolverJson, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 				objEntry = objReturnReferenceSolverJson.get();
 				if(objEntry.isExpression()) { //TODOGOON20250806; //nach objEntry sollte das folgende nicht mehr notwendig sein!!!!
@@ -545,13 +549,14 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(bUseEncryption) {
 				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
-				
-				//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+								
 				boolean bForFurtherProcessing = false;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceEncryption.set(objEntry);
-				boolean bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
+				bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
 				objEntry = objReturnReferenceEncryption.get();
+				
+				//TODOGOON20250809;//Die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!
 				if(bAnyEncryption) {
 					
 					objEntry.isRawEncrypted(true);
@@ -567,6 +572,12 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			}//end if buseencryption						
 			sReturnLine = sExpressionUsed;	
 			sReturnTagSolved = sReturnLine;
+			
+			//TODOGOON20250809;//Idee: wenn eine der statischen Methoden - die den Solver aufruft - als boolschen Wert true zurueckliefert
+			                   //      Dann müssen alle anderen Solver erneut aufgerufen werden, da ggfs. deren Werte sich nun aendern.
+			                   //      z.B. vorher war etwas verschluesselt.
+			                   //      Also die Schleife nur verlassen, wenn alle als Bool-Wert false zurückliefern.
+			
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);
