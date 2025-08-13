@@ -447,12 +447,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			objEntry.setRaw(sExpression);
 			objReturnReference.set(objEntry);
 						
-			boolean bAnyCall = false;
+			//boolean bAnyCall = false;
 			
 			String sExpressionOld = "";
 			KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
 			while(objDummy.isSolve(sExpression) && !sExpressionOld.equals(sExpression)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
-				bAnyCall = true;
+				bReturn = true;
 									
 				IKernelZZZ objKernel = null;
 				if(objFileIni!=null) {
@@ -483,14 +483,15 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				sExpression=sValue;//Sonst Endlosschleife.					
 			}//end while
 
-			if(bAnyCall){
-				objEntry.isCall(true);
-				bReturn = true;
-			}		
-			if(!sExpressionIn.equalsIgnoreCase(sExpression)) {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Abschliessend) Value durch CallIniSolverZZZ verändert von '" + sExpressionIn + "' nach '" + sExpression +"'");
-				objEntry.isSolveCalled(true);
-			}
+			//20250813: Überflüssig
+//			if(bAnyCall){
+//				objEntry.isCall(true);
+//				bReturn = true;
+//			}		
+//			if(!sExpressionIn.equalsIgnoreCase(sExpression)) {
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Abschliessend) Value durch CallIniSolverZZZ verändert von '" + sExpressionIn + "' nach '" + sExpression +"'");
+//				objEntry.isSolveCalled(true);
+//			}
 					
 			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
 		 }//end main:

@@ -325,8 +325,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 
 			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
 			objEntry.isSolveCalled(bIsSolveCalled);
-		
-		
+				
 			//Die "echte" Feststellung welcher Tag aufgerufen wird. Ggfs. kann man daraus die Reihenfolge ablesen.
 			this.addHistorySolveCalled(objEntry);
 		}//end main:
@@ -460,16 +459,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bReturn = this.isSolverEnabledGeneral();
 			if(!bReturn) break main;	
 			
-			bReturn = this.isSolverEnabledThis();
+			bReturn = this.isSolverEnabledThis() || this.isSolverEnabledAnyParentCustom() || this.isSolverEnabledAnyChildCustom() ;
 			if(!bReturn) break main;
 			
-			bReturn = this.isSolverEnabledAnyParentCustom();
-			if(!bReturn) break main;
 						
-			bReturn = this.isSolverEnabledAnyChildCustom();
-			if(!bReturn) break main;
-			
-							
 		}//end main:
 		return bReturn;
 	}
@@ -480,6 +473,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
+			
+			//Merke: Die Abfrage .isSolverEnabledGeneral() ... nicht hierein, das ist eher algemein
+			//       und hat nichst mit dem konkreten Solver zu tun.
 			bReturn = this.isSolverEnabledThis();
 			if(bReturn) break main;
 						

@@ -268,7 +268,9 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);			
-		objEntry.isSolveCalled(true);
+		//objEntry.isSolveCalled(true);
+		this.updateValueSolveCalled();//Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
+		this.updateValueSolveCalled(objReturnReference);
 		sReturnTag = this.getValue();
 		sReturnLine = sExpressionIn;
 		
@@ -277,7 +279,10 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			//Aufloesen des Math-Tags
 			sReturnLine = this.solveParsed_Math_(sExpressionIn, objReturnReference, bRemoveSurroundingSeparators);
 			sReturnTag = this.getValue();
-			objEntry = objReturnReference.get();								
+			objEntry = objReturnReference.get();	
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);	
 		}//end main
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -319,7 +324,9 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
+		//objEntry.isSolveCalled(true);
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objReturnReference);	
 		sReturnTag = this.getValue();
 		sReturnLine = sExpressionIn;
 		
@@ -361,19 +368,13 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 					sRemainingOld = sRemaining;
 				}
 				sReturnTag = sRemainingOld;							
-			}//end if operator.isExpression(...)						
+			}//end if operator.isExpression(...)
+			
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);	
 		}//end main:
 
-		//Das sollte in solve passieren...
-		//Als echten Ergebniswert aber die <Z:math>-Tags rausrechnen
-//		if(bRemoveSurroundingSeparators) {
-//			String sTagStart = this.getTagStarting();
-//			String sTagEnd = this.getTagClosing();
-//			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sReturn, sTagStart, sTagEnd);												
-//			sReturnTag = sValue;
-//			sReturn = sReturnTag;
-//		}			
-		
+					
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
 		this.setValue(sReturnTag);	
 		sReturnLine = sReturnTag;
