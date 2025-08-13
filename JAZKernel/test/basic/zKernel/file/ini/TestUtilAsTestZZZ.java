@@ -103,7 +103,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 	
 	public static boolean assertIsFormulaSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{			
+		main:{					
+			if(!objEntry.isFormula()) break main;
+			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -487,7 +489,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 	
 	public static boolean assertIsJavaCallSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{			
+		main:{		
+			if(!objEntry.isJavaCall()) break main;
+			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -629,6 +633,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static boolean assertIsJsonSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			if(!objEntry.isJson()) break main;
 			
 			boolean btemp = assertIsJsonSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			if(!btemp) break main;
@@ -727,7 +732,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 	
 	public static boolean assertIsJsonArraySolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{			
+		main:{	
+			if(!objEntry.isJsonArray()) break main;
+			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -820,7 +827,9 @@ public class TestUtilAsTestZZZ extends TestCase{
 	
 	public static boolean assertIsJsonMapSolvedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{			
+		main:{	
+			if(!objEntry.isJsonMap()) break main;
+			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
@@ -2484,7 +2493,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Keine Solver Ergebnisse
 			assertTrue(objEntry.isSolveCalled());
 			assertTrue(objEntry.isSolved()); //hier wird nicht geparsed, aber gesolved. Darum wird SOLVE nicht abgebrochen.
-			assertFalse(objEntry.isSolvedChanged()); //Kann man eigentlich hier nicht abfragen....
+			assertIsSolvedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -3227,7 +3236,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
 			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
-			assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
+			assertFalse(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
 			
 			assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 			assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt

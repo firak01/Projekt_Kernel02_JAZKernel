@@ -160,6 +160,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//Alternativ ohne ein Dummy - Objekt direkt die Tags parsen.
 			
 			//##########################.
+			if (!this.isSolverEnabledAnyRelevant()) break main;
+			
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
@@ -168,6 +170,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);				
 			if(!(bUseFormula | bUseCall | bUseJavaCall | bUseJson | bUseJsonArray | bUseJsonMap | bUseEncryption )) break main;
+			
 			
 			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
 			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!! 
@@ -356,18 +359,48 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	}
 	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		boolean bReturn = false;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
 		main:{
 			
 			//Frage hier die Flags ab, s. solveParsed_ 
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
+			if(bUseFormula) break main;
+			
+			
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			if(bUseCall) break main;
+			
+			
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			if(bUseJson) break main;
+			
+			
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-			if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
-		
-			bReturn = true;
+			if(bUseEncryption ) break main;
+					
+			bReturn = false;
+		}//end main:		
+		return bReturn;
+	}
+
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
+		main:{
+			
+			//Frage hier die Flags ab, s. solveParsed_ 
+			boolean bUseJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bUseJavaCall) break main;
+			
+			boolean bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+			if(bUseJsonMap) break main;
+					
+			boolean bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+			if(bUseJsonArray) break main;
+					
+			bReturn = false;
 		}//end main:		
 		return bReturn;
 	}
@@ -465,10 +498,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//       Das ist unabhaengig vom objEntry.
 			//       IDEE: Wenn etwas z.B. Verschluesselt war, dann kann in einem 2. Lauf darin ggfs. JSON als entschlüsselter Wert gefunden werden.
 			//             Nun wuerde im 2. Lauf JSON verarbeitet, etc. 
-			boolean bAnyFormula=false;
-			boolean bAnyCall=false;
-			boolean bAnyJson=false;
-			boolean bAnyEncryption=false;
+
 			
 			//Löse die anderen Solver auf.
 			if(!this.isSolverEnabledAnyRelevant())break main;
@@ -498,7 +528,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSolverCall.set(objEntry);
 				
-				bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
+				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();	
 				
 				//TODOGOON20250809; Hier objentry.getLineCallSolved(); 
@@ -553,7 +583,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				boolean bForFurtherProcessing = false;
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceEncryption.set(objEntry);
-				bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
+				boolean bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
 				objEntry = objReturnReferenceEncryption.get();
 				
 				//TODOGOON20250809;//Die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!

@@ -122,10 +122,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	 //return true; 
 		  
 	  boolean bReturn = false;
-		main:{
-//					  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-//					  if(!bReturn) break main;
-		  
+		main:{		  
 		  bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 		  if(!bReturn) break main;		  
 		}//end main:
@@ -137,7 +134,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 		//Ziel ist, dass Solver, die Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
-			boolean bEnabledThis = this.isParserEnabledThis();
+			boolean bEnabledThis = this.isParserEnabledThis();			
 			boolean bEnabledCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 					
 			bReturn = bEnabledCall || bEnabledThis;
@@ -203,17 +200,20 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		boolean bReturn = false;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
 		main:{
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
-			
 			bReturn = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
-			if(!bReturn) break main;
-		
+			if(bReturn) break main;
+			
+			bReturn = false;
 		}//end main:
 		return bReturn;
+	}
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		return false;
 	}
 	
 		

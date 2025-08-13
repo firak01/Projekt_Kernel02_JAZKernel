@@ -184,8 +184,13 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return true;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		return false;
+	}
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		return false;
 	}
 	
 	@Override

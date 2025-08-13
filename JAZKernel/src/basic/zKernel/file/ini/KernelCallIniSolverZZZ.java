@@ -452,10 +452,22 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
 		return this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 	}
-		
+	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return true;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		return false;
+	}
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
+		main:{
+			bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bReturn) break main;
+			
+			bReturn = false;
+		}//end main:
+		return bReturn;
 	}
 	
 	@Override
@@ -511,13 +523,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 						
 			String sExpression = sExpressionIn;
 			
-//			bUseSolver = this.isSolverEnabledGeneral();
-//			if(!bUseSolver) break main;
-//			
-//			bUseSolverThis = this.isSolverEnabledThis(); 		
-//			if(!bUseSolverThis) break main;
-			
-			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolver = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
 			//##################################
@@ -563,9 +569,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	private String solveParsed_JavaCall_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ{		
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
-		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
-		boolean bUseCall = false; boolean bUseCallJava = false;
-		
+		boolean bUseExpression = false; boolean bUseCall = false; boolean bUseCallJava = false;
+				
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -628,6 +633,22 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
 					sReturnTag = objJavaCallSolver.getValue();
 					sReturnTagSolved = sReturnTag;
+					
+					//FESTHALTEN, DASS DER JAVACALL-SOLVER GEWIRKT HAT
+					if(objEntry!=null) {		
+						//TODOGOON20250813 
+						//objEntry.setLineJavaCallSolved(sReturnLineSolved);
+						//objEntry.setValueJavaCallSolved(sReturnTagSolved);						
+						if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
+						if(sReturnTagSolved!=null) {
+							if(!sReturnTagSolved.equals(sReturnTagParsed)) {	
+								objJavaCallSolver.updateValueSolvedChanged();
+								objJavaCallSolver.updateValueSolvedChanged(objReturnReference);
+							}
+						}
+					}
+					
+					
 //				}else {
 //					//Also: CALL-Tag soll aufgeloest werden, JAVA-CALL aber nicht. 
 //					//Dann muss/darf nur der CALL-Tag entfernt werden. Eine weitere Aufloesung passiert ja nicht.
@@ -644,7 +665,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		sReturn = sReturnLine;
 		this.setValue(sReturnTag);
 		if(objEntry!=null) {		
-			if(bUseSolver & bUseSolverThis) objEntry.setValueCallSolved(sReturnLine);
+			if(bUseCall){
+				//TODOGOON20250813
+				//objEntry.setLineCallSolved(sReturnLineSolved);
+				objEntry.setValueCallSolved(sReturnTagSolved);
+			}
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);

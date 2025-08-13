@@ -1587,10 +1587,14 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean isSolverEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 	}
-	
-		
+			
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		return true;
+	}
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
 		return true;
 	}
 	
@@ -1607,7 +1611,10 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			bReturn = this.isSolverEnabledThis();
 			if(!bReturn) break main;
 			
-			bReturn = this.isSolverEnabledCustom();
+			bReturn = this.isSolverEnabledAnyParentCustom();
+			if(!bReturn) break main;
+			
+			bReturn = this.isSolverEnabledAnyChildCustom();
 			if(!bReturn) break main;				
 		}//end main:
 		return bReturn;
@@ -1621,7 +1628,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			//       Muss also immer eine extra Abfrage bleiben.
 			boolean bReturn1 = this.isSolverEnabledThis();						
 			boolean bReturn2 = this.isSolverEnabledGeneral();
-			boolean bReturn3 = this.isSolverEnabledCustom();
+			boolean bReturn3 = this.isSolverEnabledAnyChildCustom();
 			
 			bReturn = bReturn1 | bReturn2 | bReturn3;
 		}//end main:

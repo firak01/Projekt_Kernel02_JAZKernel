@@ -16,7 +16,7 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelZFormulaMathZZZ{
 	private static final long serialVersionUID = -6400035649490240580L;
 	public static String sTAG_NAME = "Z:math";
 	
@@ -196,7 +196,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	}
 	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			//Hier der "Elternsolver"
@@ -205,6 +205,11 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 		}
 	
 		return bReturn;
+	}
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		return false;
 	}
 
 	//### aus IConvertableZZZ

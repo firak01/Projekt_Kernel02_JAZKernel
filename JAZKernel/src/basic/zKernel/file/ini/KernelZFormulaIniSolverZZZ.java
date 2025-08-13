@@ -135,8 +135,22 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		return true;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		return false;
+	}
+
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
+		main:{
+			bReturn = this.getFlag(IKernelZFormulaMathZZZ.FLAGZ.USEFORMULA_MATH);
+			if(bReturn) break main;
+			
+			bReturn = true;
+		}//end main;
+		
+		return bReturn;
 	}
 
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.

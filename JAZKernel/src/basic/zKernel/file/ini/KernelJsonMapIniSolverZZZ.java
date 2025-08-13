@@ -386,18 +386,23 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return bReturn;
 	}
 	
+	
 	@Override
-	public boolean isSolverEnabledCustom() throws ExceptionZZZ {
-		boolean bReturn = false;
+	public boolean isSolverEnabledAnyParentCustom() throws ExceptionZZZ {
+		boolean bReturn = true;
 		main:{
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
-			
 			bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-			if(!bReturn) break main;
+			if(bReturn) break main;
 		
+			bReturn = false;
 		}//end main:
 		return bReturn;
+	}
+	
+	
+	@Override
+	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
+		return false;
 	}
 	
 	
