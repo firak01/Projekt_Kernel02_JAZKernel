@@ -490,6 +490,17 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		return bReturn;
 	}
 	
+	@Override 
+	public boolean isSolverEnabledByFlagZ(Enum objEnum) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(objEnum==null) break main;
+			
+			bReturn = this.getFlag(objEnum.name());
+		}//end main:
+		return bReturn;
+	}
+	
 	
 	//#### aus ISOlveZZZZ
 	@Override

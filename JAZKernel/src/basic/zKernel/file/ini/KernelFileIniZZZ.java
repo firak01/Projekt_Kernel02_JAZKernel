@@ -1597,7 +1597,17 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
 		return true;
 	}
-	
+		
+	@Override 
+	public boolean isSolverEnabledByFlagZ(Enum objEnum) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(objEnum==null) break main;
+			
+			bReturn = this.getFlag(objEnum.name());
+		}//end main:
+		return bReturn;
+	}
 	
 	@Override 
 	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {

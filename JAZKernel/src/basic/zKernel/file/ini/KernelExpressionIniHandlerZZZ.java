@@ -536,7 +536,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				sExpressionUsed = sLineDecalled; 
 				
 			}//end if busecall
-											
+			
+			//20250814: Problem - Hier wird nur auf das Flag abgeprüft.
+			//          im KernelJsonIniSolverZZZ ist unter dem Test aber USE_JSONMAP aktiviert. 
+			//          D.h. der KernelJsonIniSolver würde die Auflösung machen (weil er zwar nicht aber das Kind aktivert ist)            
 			boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 			if(bUseJson) {
 				KernelJsonIniSolverZZZ<T> exDummy03 = new KernelJsonIniSolverZZZ<T>();

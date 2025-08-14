@@ -605,7 +605,11 @@ public class TestUtilAsTestZZZ extends TestCase{
 		
 		main:{
 			
-			boolean btemp = objSolver.isSolverEnabledAnyRelevant(); 
+			//Das loest das Problem, das der ExpressionHandler ein deaktivierten Solver nicht ausfuehrt.
+			//Der Solver selbst wird aber auch ausgefuehrt, wenn er deaktiv ist, aber ein "CHILD"-Solver nicht.
+			//Also USJSON ist Deaktiv USEJSPN_MAP waere aktiv.
+			boolean btemp = objSolver.isSolverEnabledByFlagZ(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+			//boolean btemp = objSolver.isSolverEnabledAnyRelevant(); //das ist fuer den ExpressionHandler keine Loesung, weil ja durchaus ein anderer Solver als JSON aktivert sein kann.
 			if(!btemp)break main;
 			
 			assertTrue(objEntry.isJsonSolveCalled()); //aufgerufen wird der jsonSolve ja.
