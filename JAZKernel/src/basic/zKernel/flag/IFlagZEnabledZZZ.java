@@ -57,4 +57,7 @@ public interface IFlagZEnabledZZZ{
 	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;
 	public String[] getFlagZ_passable(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
 	
+	//20250816: Damit können Flags von einem Objekt zu einem anderen "vererbt bzw. uebergeben" werden.
+	//          Nicht relevante Flags wie "INIT", "DEBUG" werden dabei ignoriert.
+	public abstract int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ;
 }

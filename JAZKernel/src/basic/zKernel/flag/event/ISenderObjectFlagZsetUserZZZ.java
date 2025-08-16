@@ -1,6 +1,7 @@
 package basic.zKernel.flag.event;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Interface muss von den Objekten implementiert werden, die den Event-Broker verwenden wollen, um einen Event abzufeuern.
  *  Der Event-Broker verwaltet, dann die Objekte die auf den abgefeuerten Event hoeren.
@@ -11,11 +12,13 @@ import basic.zBasic.ExceptionZZZ;
  *  
  *  
  *  Merke1: Die Objekte, die lediglich auf den Event "hoeren" brauchen dieses Interface nicht !!!
- *  Merke2: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; ) 
+ *  Merke2: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )
+ *  
+ *  Merke3: Damit ggfs. mit "adopt" schon bestehende Werte übernommen werden können, müssen die FlagMethoden auch vorhanden sein, darum extends IFlagZEnabledZZZ
  * @author lindhaueradmin
  *
  */
-public interface ISenderObjectFlagZsetUserZZZ {
+public interface ISenderObjectFlagZsetUserZZZ extends IFlagZEnabledZZZ{
 	public abstract ISenderObjectFlagZsetZZZ getSenderFlagUsed() throws ExceptionZZZ;
 	public abstract void setSenderFlagUsed(ISenderObjectFlagZsetZZZ objEventSender);
 }

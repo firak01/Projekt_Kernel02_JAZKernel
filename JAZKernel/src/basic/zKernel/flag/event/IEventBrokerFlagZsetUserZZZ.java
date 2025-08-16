@@ -19,6 +19,10 @@ public interface IEventBrokerFlagZsetUserZZZ extends ISenderObjectFlagZsetUserZZ
 	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
 	public void unregisterForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
 	
+	
+	//20250816 Besonderheit: Registriere das Objekt UND übernimm die bestehenden Flag-Werte. Darum nutzt ISenderObjectFlagZsetUserZZZ auch IFlagEnabledZZZ 
+	public void registerForFlagEventAdopted(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
+	
 	//20230730 Besonderheit: Setze ein Flag per beliebiges Enum. Damit wird das Enum an den Event weitergegeben und es können noch weitere Informationen des Enum ubergeben werden.
 	public abstract boolean getFlag(Enum enumFlag) throws ExceptionZZZ;
 	public abstract boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -18,6 +19,7 @@ import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 
 public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExceptionZZZ<Object> implements IFlagZEnabledZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalEnabledZZZ{
 	private static final long serialVersionUID = 1L;
@@ -415,6 +417,21 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		}//end main:
 		return saReturn;
 	}
+	
+	@Override
+	public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ{
+		int iReturn = 0;		
+		main:{
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ, bValueToSearchFor);
+			if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+			
+			for(String sFlag: saFlagZpassed) {
+				boolean btemp = this.setFlag(sFlag, bValueToSearchFor);
+				if(btemp) iReturn++;
+			}
+		}//end main:
+		return iReturn;
+	}
 		
 		
 	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
@@ -693,6 +710,28 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	@Override
 	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {		
 		this.getSenderFlagUsed().addListenerObjectFlagZset(objEventListener);
+	}
+	
+	
+	@Override 
+	public void registerForFlagEventAdopted(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {
+		main:{
+			if(objEventListener==null)break main;
+			if(objEventListener.getFlag("INIT")) break main; 
+			
+			this.registerForFlagEvent(objEventListener);
+		
+			//Übernimm nun die schon gesetzten FLAG Werte
+			//1. die Flags ermitteln
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objEventListener, true);
+			if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+		
+			//2. die Flags setzen
+			for(String sFlag : saFlagZpassed) {
+				objEventListener.setFlag(sFlag, true);
+			}
+			objEventListener.adoptFlagZrelevantFrom(this, true);		
+		}//end main
 	}
 	
 	@Override

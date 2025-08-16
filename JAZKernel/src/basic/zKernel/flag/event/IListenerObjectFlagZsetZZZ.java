@@ -3,9 +3,10 @@ package basic.zKernel.flag.event;
 import java.util.EventListener;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ.FLAGZ;
 
-public interface IListenerObjectFlagZsetZZZ extends EventListener{
+public interface IListenerObjectFlagZsetZZZ extends EventListener, IFlagZEnabledZZZ{
 	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ;
 
 	//#############################################################
