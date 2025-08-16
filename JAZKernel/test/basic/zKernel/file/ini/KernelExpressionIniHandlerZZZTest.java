@@ -64,6 +64,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//#### Das konkrete TestObject
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			//Merke: 20250816 - Jetzt wird das KernelIniFile-Objekt mit .registerForFlagEvents mit den Flags des Solver verknuepft.
+			                 // Darum duerfen jetzt nicht erst einmal alle Flags gesetzt werden, sonst sind ggfs. zuviele gesetzt.
+			/*
 			String[] saFlagFileIni= {
 							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
 							IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name(),
@@ -78,7 +81,9 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 							IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()
 							}; //Merke: In static Utility-Methoden ist auch wichtig, was im Ini-File für Flags angestellt sind.
 			                   //       und nicht nur die Flags vom ExpressionIniHandler
-			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni);
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, saFlagFileIni); 
+			 */
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile);
 			
 			String[] saFlag = {""}; //Merke: Die Flags des Testobjekts selbst werden in den einzelnen Tests explizit gesetzt.
 			objExpressionHandler = new KernelExpressionIniHandlerZZZ(objKernel, objFileIniTest, saFlag);

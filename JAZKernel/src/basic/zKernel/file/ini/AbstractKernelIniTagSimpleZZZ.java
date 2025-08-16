@@ -132,6 +132,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			
 			this.objKernel = objKernelUsed;
 			this.objLog = objKernelUsed.getLogObject();
+			
+			//Damit erst wird sichergestellt, dass die Flag-Aenderungen auf das Ini-File-Objekt uebertragen werden.
+			this.registerForFlagEvent(objKernelUsed.getFileConfigKernelIni());
 									
 			//++++++++++++++++++++++++++++++
 			//HIER geht es darum ggfs. die Flags zu übernehmen, die irgendwo gesetzt werden sollen und aus dem Kommandozeilenargument -z stammen.

@@ -75,6 +75,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFile = TestUtilZZZ.createKernelFileUsed();
 
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
+			//Merke: 20250816 - Jetzt wird das KernelIniFile-Objekt mit .registerForFlagEvents mit den Flags des Solver verknuepft.
+            // Darum duerfen jetzt nicht erst einmal alle Flags gesetzt werden, sonst sind ggfs. zuviele gesetzt.
+			/*
 			String[] saFlagFileIni= {
 							IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name(),
 							IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name(),
@@ -93,7 +96,13 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
 			hmVariable.put("myTestVariableString", "mySolvedTestVariableString");
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable,  saFlagFileIni);			 											
-
+			*/
+			
+			//Für die Variablenersetzung wichtig: Eine HashMap mit den Variablen in der Ini-Datei.
+			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
+			hmVariable.put("myTestVariableString", "mySolvedTestVariableString");			
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, hmVariable);
+			
 			//Wichtig: Wenn hier der Solver definiert ist, muessen bei jedem Parsen/Solven die Internen Werte neu gesetzt werden. Sonst wird ein zweiter Aufruf verfälscht.
 			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
 		} catch (ExceptionZZZ ez) {

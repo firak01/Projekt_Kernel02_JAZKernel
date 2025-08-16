@@ -133,6 +133,11 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		KernelFileIniNew_(objFile,null, null, null, saFlagControl);
 	}
 	
+	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		super(objKernel);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, sDirectory, sFilename, null, null);
+	}
+	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl);

@@ -47,6 +47,10 @@ public class FileIniZZZ<T> extends KernelFileIniZZZ<T>{
 	public FileIniZZZ(IKernelZZZ objKernel, File objFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objFile, saFlagControl);
 	}
+
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String, String> hmVariable) throws ExceptionZZZ {
+		super(objKernel, objFile, hmVariable);
+	}
 	
 	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String, String> hmVariable, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objFile, hmVariable, saFlagControl);
