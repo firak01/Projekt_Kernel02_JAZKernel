@@ -504,6 +504,34 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			if(!this.isSolverEnabledAnyRelevant())break main;
 			
 			String sExpressionUsed = sExpression;
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+			if(bUseEncryption) {
+				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
+								
+				boolean bForFurtherProcessing = false;//Auf ExpressionHandler-Ebene entferne die Z-Tags der einzelnen Solver
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceEncryption.set(objEntry);
+				boolean bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
+				objEntry = objReturnReferenceEncryption.get();
+				
+				//TODOGOON20250809;//Die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!
+				if(bAnyEncryption) {
+					
+					objEntry.isRawEncrypted(true);
+					String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+					if(!sExpressionUsed.equals(sLineDecrypted)) {													
+						objEntry.isDecrypted(true);
+						objEntry.setRawDecrypted(sLineDecrypted);
+						objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Verschluesselung enthalten
+					
+					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
+			}//end if buseencryption	
+			
+			
+			
 			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);
 			if(bUseFormula) {				
 				KernelZFormulaIniSolverZZZ<T> formulaSolverDummy = new KernelZFormulaIniSolverZZZ<T>();
@@ -515,7 +543,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				objReturnReferenceFormula.set(objEntry);
 				
 				//TODOGOON20250809;//Rueckgabewert muss boolean sein!!!!
-				sExpressionUsed = objFormulaSolver.solve(sExpressionUsed, objReturnReferenceFormula, false); //behalte die Z-Tags, fuer ggfs. andere Abarbeitungsschritte
+				sExpressionUsed = objFormulaSolver.solve(sExpressionUsed, objReturnReferenceFormula, true); //Auf ExpressionHandler-Ebene entferne die Z-Tags der einzelnen Solver
 				objEntry = objReturnReferenceFormula.get();				
 			}//end bUseFormula
 				
@@ -524,7 +552,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				KernelCallIniSolverZZZ<T> callDummy = new KernelCallIniSolverZZZ<T>();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
 								
-				boolean bForFurtherProcessing = false; 
+				boolean bForFurtherProcessing = false; //Auf ExpressionHandler-Ebene entferne die Z-Tags der einzelnen Solver
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolverCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSolverCall.set(objEntry);
 				
@@ -550,59 +578,35 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 								
 				ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 				ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
-				
-				//TODOGOON20250809;//Rueckgabewert muss boolean sein UND die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!
-				sExpressionUsed = KernelConfigSectionEntryUtilZZZ.getJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, saFlagZpassed, objReturnReferenceSolverJson, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
-				objEntry = objReturnReferenceSolverJson.get();
-				if(objEntry.isExpression()) { //TODOGOON20250806; //nach objEntry sollte das folgende nicht mehr notwendig sein!!!!
-					this.getEntry().isExpression(true);
-					if(objEntry.isJson()) {
-						this.getEntry().isJson(true);
-						if(objEntry.isJsonArray()) {
-							this.getEntry().isJsonArray(true);								
-							this.setValue(objalsReturnValueJsonSolved.getArrayList());
-							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
-							//der wird automatisch beim Setzen der ArrayList mitgesetzt.
-							//this.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));						
-						}
-						
-						if(objEntry.isJsonMap()) {	
-							this.getEntry().isJsonMap(true);
-							this.setValue(objhmReturnValueJsonSolved.get());	
-							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
-							//der wird automatisch beim Setzen der HashMap mitgesetzt. 
-							//this.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
-						}
-						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
-					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
-				}
-			}//end if busejson									
-			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-			if(bUseEncryption) {
-				KernelEncryptionIniSolverZZZ<T> encryptionDummy = new KernelEncryptionIniSolverZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
 								
-				boolean bForFurtherProcessing = false;
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceEncryption = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objReturnReferenceEncryption.set(objEntry);
-				boolean bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getEncryptionSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReferenceEncryption);
-				objEntry = objReturnReferenceEncryption.get();
-				
-				//TODOGOON20250809;//Die entry-Werte sollen durch den Solver in der statischen Methode gesetzt werden!!!!
-				if(bAnyEncryption) {
-					
-					objEntry.isRawEncrypted(true);
-					String sLineDecrypted = objEntry.getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-					if(!sExpressionUsed.equals(sLineDecrypted)) {													
-						objEntry.isDecrypted(true);
-						objEntry.setRawDecrypted(sLineDecrypted);
-						objEntry.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
-					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Verschluesselung enthalten
-					
-					sExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
-				}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Encryption enthalten
-			}//end if buseencryption						
+				boolean bForFurtherProcessing = false; //Auf ExpressionHandler-Ebene entferne die Z-Tags der einzelnen Solver
+				boolean bAnyJson = KernelConfigSectionEntryUtilZZZ.getJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverJson, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+				objEntry = objReturnReferenceSolverJson.get();
+//TODOGOON20250818: Das sollte vorher schon erledigt sein.
+//				if(objEntry.isExpression()) { //TODOGOON20250806; //nach objEntry sollte das folgende nicht mehr notwendig sein!!!!
+//					this.getEntry().isExpression(true);
+//					if(objEntry.isJson()) {
+//						this.getEntry().isJson(true);
+//						if(objEntry.isJsonArray()) {
+//							this.getEntry().isJsonArray(true);								
+//							this.setValue(objalsReturnValueJsonSolved.getArrayList());
+//							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
+//							//der wird automatisch beim Setzen der ArrayList mitgesetzt.
+//							//this.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));						
+//						}
+//						
+//						if(objEntry.isJsonMap()) {	
+//							this.getEntry().isJsonMap(true);
+//							this.setValue(objhmReturnValueJsonSolved.get());	
+//							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
+//							//der wird automatisch beim Setzen der HashMap mitgesetzt. 
+//							//this.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
+//						}
+						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
+//					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
+//				}
+			}//end if busejson									
+								
 			sReturnLine = sExpressionUsed;	
 			sReturnTagSolved = sReturnLine;
 			
