@@ -23,10 +23,12 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.ExpressionIniUtilZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
+import basic.zKernel.file.ini.KernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
@@ -642,14 +644,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 					String sTagStartZ = "<Z>";
 					String sTagEndZ = "</Z>";
 				
-					
-					//Einschraenkung auch auf das was im Ini-File moeglich ist.
-			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
-					if(bUseJsonArray) {
-											
-						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
-						boolean bAnyJsonArray = KernelConfigSectionEntryUtilZZZ.getJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objalsReturnValueJsonSolved);			
-						if(bAnyJsonArray) {				
+					boolean bUseJsonFlagged = objFileIni.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+					if(bUseJsonFlagged) {
+						boolean bAnyJson = KernelConfigSectionEntryUtilZZZ.getJsonSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objalsReturnValueJsonSolved);			
+						if(bAnyJson) {				
 //							objEntry.isJson(true);
 //							objEntry.isJsonArray(true);
 //							ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
@@ -657,25 +655,47 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 //						
 							sReturnLine = objEntry.getValue();
 //							break main;
-						}					
-					}
-			 		
-			 		boolean bUseJsonMap = objFileIni.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
-					if(bUseJsonMap) {				
-					
-						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
-						boolean bAnyJsonMap = KernelConfigSectionEntryUtilZZZ.getJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objhmReturnValueJsonSolved);			
-						if(bAnyJsonMap) {						
-//							objEntry.isJson(true);
-//							objEntry.isJsonMap(true);
-//							HashMap<String,String> hm = objhmReturnValueJsonSolved.get();
-//							objEntry.setValue(hm); //Dabei wird auch der String-Wert gesetzt
+						}						
+					}else {
+						
+						//Einschraenkung auch auf das was im Ini-File moeglich ist.
+				 		boolean bUseJsonArrayFlagged = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+						if(bUseJsonArrayFlagged) {
+												
+							//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
+							boolean bAnyJsonArray = KernelConfigSectionEntryUtilZZZ.getJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objalsReturnValueJsonSolved);			
+							if(bAnyJsonArray) {				
+//								objEntry.isJson(true);
+//								objEntry.isJsonArray(true);
+//								ArrayList<String> listas = objalsReturnValueJsonSolved.getArrayList();
+//								objEntry.setValue(listas); //Dabei wird auch der String-Wert gesetzt
 //							
-							sReturnLine = objEntry.getValue();
-//							break main;
+								sReturnLine = objEntry.getValue();
+//								break main;
+							}					
 						}
-					} 
+				 		
+				 		boolean bUseJsonMapFlagged = objFileIni.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+						if(bUseJsonMapFlagged) {				
+						
+							//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
+							boolean bAnyJsonMap = KernelConfigSectionEntryUtilZZZ.getJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objReturnReferenceIn, objhmReturnValueJsonSolved);			
+							if(bAnyJsonMap) {						
+//								objEntry.isJson(true);
+//								objEntry.isJsonMap(true);
+//								HashMap<String,String> hm = objhmReturnValueJsonSolved.get();
+//								objEntry.setValue(hm); //Dabei wird auch der String-Wert gesetzt
+//								
+								sReturnLine = objEntry.getValue();
+//								break main;
+							}
+						} 
+
+					}
 					
+					
+					
+//								
 					//+++++++++++++++++++++++++++++++++++++++++
 					if(!bForFurtherProcessing) { //umgebendes Z-Tag entfernen					
 						sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ);
@@ -687,6 +707,81 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		 return bReturn;
 	 }
 	
+	 
+	 /*
+		 * @param objFileIni
+		 * @param sRaw
+		 * @param bUseJson	 
+		 * @param saFlagZpassed
+		 * @param objsReturnJson
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 11.07.2021
+		 */
+		public static boolean getJsonSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved) throws ExceptionZZZ{
+			boolean bReturn = false;
+			main:{
+				if(bUseJson){
+					if(objFileIni==null){
+						String stemp = "'IniFile'";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigSectionEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = null;
+					IKernelConfigSectionEntryZZZ objEntry = null;
+					if(objReturnReferenceIn==null) {
+						objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					}else {
+						objReturnReference = objReturnReferenceIn;
+					}
+					
+					objEntry = objReturnReference.get();
+					if(objEntry==null) {					
+						objEntry = new KernelConfigSectionEntryZZZ();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+						objReturnReference.set(objEntry);
+					}else {					
+					}
+									
+					
+					boolean bAnyJson = false;									
+					if(KernelConfigSectionEntryUtilZZZ.isExpression(sRaw,KernelJsonIniSolverZZZ.sTAG_NAME)){
+						
+						//Ohne diese "minimal notwendigen "Flags macht diese utility - Methode keinen Sinn.
+						//Dann noch die übergebenen Flags hinzunehmen.
+						//String[]saFlagZ = {IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name() , IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()};
+						//saFlagZ =StringArrayZZZ.appendMissing(saFlagZ, saFlagZpassed, null);
+							
+						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonArray passen.
+						//      Darum neu definieren
+						KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
+						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+					
+						//Einschraenkung auch auf die uebergebenen Flags
+						String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
+											
+						KernelJsonIniSolverZZZ ex = new KernelJsonIniSolverZZZ(objFileIni, saFlag);
+						//20250412; das scheint zu klappen alstemp = ex.computeArrayList(sRaw);
+						//aber eigentlich muss es sein
+						ex.solve(sRaw,objReturnReference);
+						bAnyJson = true;						
+					}
+
+					if(bAnyJson){					
+						objEntry.isJson(true);						
+						bReturn = true;
+					}												
+				}else{
+					//Fall: Keine Formel soll interpretiert werden.
+					//unverändert
+				}		
+			}//end main:
+			return bReturn;
+		}
+
+	 
+	 
 	 /*
 	 * @param objFileIni
 	 * @param sRaw
