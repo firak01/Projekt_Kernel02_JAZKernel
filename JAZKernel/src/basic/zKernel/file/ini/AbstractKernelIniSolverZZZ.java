@@ -779,7 +779,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				sReturnLine = VectorUtilZZZ.implode(vecExpressionIn);
 			}
 			
-			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
 							
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)

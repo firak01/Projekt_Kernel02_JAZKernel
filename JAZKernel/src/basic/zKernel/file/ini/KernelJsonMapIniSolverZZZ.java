@@ -156,8 +156,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 					sReturn = sValueMath;					
 				}	
 				
-			}
+			}			
 						
+			
+			
 			//Merke: Die Reihenfolge der MapEintraege nicht berücksichtigen		
 			HashMap hmFromJson = JsonUtilZZZ.toHashMap(sReturn);
 			if(hmFromJson==null) break main; //dadurch ist hmReturn nie NULL !!!
@@ -334,6 +336,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 				
 	//### aus ISolveUserZZZ
 	@Override
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolved(objReturnReference,true);
+	}
+	
+	
+	@Override
 	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
 		super.updateValueSolved(objReturnReference, bIsSolveCalled);
 				
@@ -346,6 +354,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			objEntry.isJsonMapSolved(bIsSolveCalled);
 		}
 	}
+
+	
+	@Override
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolveCalled(objReturnReference, true);
+	}
 	
 	@Override
 	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
@@ -357,6 +371,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		
 		//Den eigenen Solver
 		objEntry.isJsonMapSolveCalled(bIsSolveCalled);
+	}
+	
+	@Override
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolvedChanged(objReturnReference, true);
 	}
 	
 	@Override
@@ -451,7 +470,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
 		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
 		HashMap<String,String> hmReturn = null;		
-		boolean bUseExpression = false; boolean bUseSolver = false; //boolean bUseSolverThis = false;
+		boolean bUseExpression = false; boolean bUseSolverThis = false; //boolean bUseSolverThis = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -484,8 +503,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			String sExpression = sExpressionIn;
 			
-			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
+			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolverThis) break main;
 						
 			//##################################
 			//### Besonderheiten dieses Solvers
@@ -503,7 +522,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			sReturnTagSolved = sReturnTag;
 			sReturnLine = sReturnTag;
 			sReturn = sReturnLine;
-			
+						
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);
 		}//end main:	
@@ -517,7 +536,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			
-			if(bUseExpression && bUseSolver) {
+			if(bUseExpression && bUseSolverThis) {
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
@@ -651,7 +670,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		String sReturn = null;
 		String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn=null;
-		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false;
+		boolean bUseExpression = false; boolean bUseSolverThis = false; //boolean bUseSolver = false;
 			
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -676,11 +695,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
-			
-			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolverThis) break main;
+			
+//			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+//			if(!bUseSolverThis) break main;
 				
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			this.setRaw(sExpressionIn);
@@ -691,7 +710,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			//Es muss nicht nur der eigene Tag und der Z-Tag entfernt werden,
 			//sondern auch der JSON-Tag, quasi als "Elterntag" auch entfernen.			
-			if(bUseExpression & bUseSolver & bUseSolverThis){
+			if(bUseExpression & bUseSolverThis){
 				String sTagStart = this.getTagPartOpening();
 				String sTagEnd = this.getTagPartClosing();
 				if(sTagStart.equalsIgnoreCase("<Z>")) {

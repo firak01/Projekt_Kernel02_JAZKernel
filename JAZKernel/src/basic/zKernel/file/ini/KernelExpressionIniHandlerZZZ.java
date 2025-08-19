@@ -485,7 +485,8 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
 			
-			bUseSolverThis = this.isSolverEnabledThis(); 		
+			//Löse den eigenen und anderen Solver auf.
+			bUseSolverThis = this.isSolverEnabledAnyRelevant(); 		
 			if(!bUseSolverThis) break main;			
 			
 			
@@ -498,10 +499,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			//       Das ist unabhaengig vom objEntry.
 			//       IDEE: Wenn etwas z.B. Verschluesselt war, dann kann in einem 2. Lauf darin ggfs. JSON als entschlüsselter Wert gefunden werden.
 			//             Nun wuerde im 2. Lauf JSON verarbeitet, etc. 
-
-			
-			//Löse die anderen Solver auf.
-			if(!this.isSolverEnabledAnyRelevant())break main;
 			
 			String sExpressionUsed = sExpression;
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
@@ -564,6 +561,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				sExpressionUsed = sLineDecalled; 
 				
 			}//end if busecall
+			
+			
+			
 			
 			//20250814: Problem - Hier wird nur auf das Flag abgeprüft.
 			//          im KernelJsonIniSolverZZZ ist unter dem Test aber USE_JSONMAP aktiviert. 

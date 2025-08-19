@@ -756,10 +756,11 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonArray passen.
 						//      Darum neu definieren
 						KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
-						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+						String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);
+						//String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
 					
 						//Einschraenkung auch auf die uebergebenen Flags
-						String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
+						//String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
 											
 						KernelJsonIniSolverZZZ ex = new KernelJsonIniSolverZZZ(objFileIni, saFlag);
 						//20250412; das scheint zu klappen alstemp = ex.computeArrayList(sRaw);

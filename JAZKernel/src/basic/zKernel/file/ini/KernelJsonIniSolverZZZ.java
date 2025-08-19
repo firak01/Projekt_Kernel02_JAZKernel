@@ -130,26 +130,26 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)==false) break main; 			
-			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
+			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main; 			
+			if(!this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)) break main;				
 		
 			//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.			
 			FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 				
 			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
-			objJsonMapSolver.setFlag(saFlag,true);
-			hmReturn=objJsonMapSolver.computeHashMapFromJson(sExpression);			
-			}				
+			objJsonMapSolver.setFlag(saFlag,true);	
+			String sLineWithExpression = objJsonMapSolver.solve(sExpression);
+			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);							
 		}//end main:
 		this.setValue(hmReturn);
 		return hmReturn;
 	}
 	
-	public ArrayList<String> computeArrayList(String sLineWithExpression) throws ExceptionZZZ{
+	public ArrayList<String> computeArrayList(String sExpression) throws ExceptionZZZ{
 		ArrayList<String>alsReturn=new ArrayList<String>();				
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(StringZZZ.isEmpty(sExpression)) break main;
 			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main; 			
 			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;				
 		
@@ -159,8 +159,8 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonArraySolver, true);
 			objJsonArraySolver.setFlag(saFlag,true);
-			alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);															
-							
+			String sLineWithExpression = objJsonArraySolver.solve(sExpression);
+			alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);																					
 		}//end main:
 		this.setValue(alsReturn);
 		return alsReturn;
@@ -493,7 +493,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		HashMap<String,String> hmReturn = null;
 		
 		boolean bUseExpression = false; 
-		boolean bUseSolver = false;
+		boolean bUseSolverThis = false;
 		boolean bUseJsonArray = false; boolean bUseJsonMap = false;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -520,8 +520,12 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 						
-			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
+			//bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			//if(!bUseSolver) break main;
+			
+			
+			bUseSolverThis = this.isSolverEnabledAnyRelevant();
+			if(!bUseSolverThis) break main;
 						
 			bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 			if(bUseJsonArray) {

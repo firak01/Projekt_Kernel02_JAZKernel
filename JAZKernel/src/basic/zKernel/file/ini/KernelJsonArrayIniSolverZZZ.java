@@ -293,6 +293,11 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 
 	//### aus ISolveUserZZZ
 	@Override
+	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolved(objReturnReference, true);		
+	}
+	
+	@Override
 	public void updateValueSolved(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
 		super.updateValueSolved(objReturnReference, bIsSolveCalled);
 				
@@ -307,6 +312,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	@Override
+	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolveCalled(objReturnReference);
+	}
+	
+	
+	@Override
 	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
 		super.updateValueSolveCalled(objReturnReference, bIsSolveCalled);
 				
@@ -317,6 +328,12 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 		//Den eigenen Solver
 		objEntry.isJsonArraySolveCalled(bIsSolveCalled);
 	}
+	
+	@Override
+	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueSolvedChanged(objReturnReference, true);
+	}
+	
 	
 	@Override
 	public void updateValueSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsSolveCalled) throws ExceptionZZZ{
