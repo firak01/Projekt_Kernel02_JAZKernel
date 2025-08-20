@@ -790,8 +790,6 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
 			String sExpression2compare = sExpression;
 			
-			if(!objEntry.isJsonArray()) break main;			
-			
 			if(objEntry.isJsonArraySolveCalled()) {
 				assertTrue(objEntry.isJsonArraySolved());
 				bReturn = true;				
@@ -894,6 +892,74 @@ public class TestUtilAsTestZZZ extends TestCase{
 		}//end main;
 		return bReturn;
 	}
+	
+	public static boolean assertIsJsonMapSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			if(!objEntry.isJsonMap()) break main;
+			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			
+			boolean bJsonSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJsonIniSolverZZZ.sTAG_NAME);
+			boolean bJsonMapSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJsonMapIniSolverZZZ.sTAG_NAME);
+			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
+			
+			if(bJsonMapSolverCalledPrevious) {
+				assertTrue(objEntry.isJsonMapSolveCalled());				
+			}else {
+				if(bExpressionHandlerCalledPrevious) {
+					
+				}
+				assertFalse(objEntry.isJsonMapSolveCalled());
+				break main;
+			}
+			
+			
+			bReturn = true;
+		}//end main;
+		return bReturn;
+	}
+	
+	public static boolean assertIsJsonMapSolved(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			if(!objEntry.isJsonMap()) break main;
+			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+							
+			if(objEntry.isJsonMapSolveCalled()) {
+				assertTrue(objEntry.isJsonMapSolved());
+				bReturn = true;				
+			}else {
+				assertFalse(objEntry.isJsonMapSolved());
+				bReturn = false;
+			}
+												
+		}//end main;
+		return bReturn;
+	}
+	
+	
 	
 	public static boolean assertIsJsonMapSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -3971,14 +4037,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertTrue(objEntry.isJsonMap());
 			assertFalse(objEntry.isJsonArray());
 			
-			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen
-			assertTrue(objEntry.isJsonMapSolveCalled());			
-			assertTrue(objEntry.isJsonMapSolved());
+			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen						
+			assertIsJsonMapSolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
+			assertIsJsonMapSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsJsonMapSolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 
-			
-			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -162,7 +162,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			String sLineWithExpression = objJsonArraySolver.solve(sExpression);
 			alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);																					
 		}//end main:
-		this.setValue(alsReturn);
+		this.setValue(alsReturn);		
 		return alsReturn;
 	}
 	
@@ -486,16 +486,21 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sExpression = sExpressionIn;
-		String sReturn = sExpression;
-		String sReturnTag = null;
-		ArrayList<String> alsReturn = null;
-		HashMap<String,String> hmReturn = null;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
+		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		
-		boolean bUseExpression = false; 
-		boolean bUseSolverThis = false;
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		boolean bUseJsonArray = false; boolean bUseJsonMap = false;
 		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";	
+
+				
+		ArrayList<String> alsReturn = null;
+		HashMap<String,String> hmReturn = null;
+								
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -510,62 +515,92 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
-		
+		objEntry.setRaw(sExpressionIn);		
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objReturnReference);
+		sReturnLine = sExpressionIn;
+		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
+		sReturn = sReturnLine;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 						
-			//bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			//if(!bUseSolver) break main;
-			
-			
 			bUseSolverThis = this.isSolverEnabledAnyRelevant();
 			if(!bUseSolverThis) break main;
-						
+			
+			String sExpression = sExpressionIn;
+			
+			//##################################
+			//### Besonderheiten dieses Solvers
+			//###################################		
+			
+			//nach dem ...post noch den Wert fuer spaeter sichern
+			//sReturnLineSolved2compareWithParsed = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
+			//sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
+			sReturnLineSolved2compareWithParsed = sExpression; 
+			sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
+		
+			
+			//Aufloesen des JSON-ARRAY-Tags
 			bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 			if(bUseJsonArray) {
 			
 				alsReturn = this.computeArrayList(sExpression);
 				if(alsReturn!=null) {
 					sReturnTag = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
+					this.setValue(sReturnTag);
+					sReturnLine = sReturnTag;
 					sReturn = sReturnTag;
 				}	
 			}
 			
+			//Aufloesen des JSON-MAP-Tags
 			bUseJsonMap = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 			if(bUseJsonMap) {
 			
 				hmReturn = this.computeHashMap(sExpression);
 				if(!hmReturn.isEmpty()) {
 					sReturnTag = hmReturn.toString();
+					this.setValue(sReturnTag);
+					sReturnLine = sReturnTag;
 					sReturn = sReturnTag;
 				}	
-			}
-			
+			}			
+								
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);	
 		}//end main:	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
-		if(sReturnTag!=null) this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert	
-		if(objEntry!=null) {		
-			objEntry.setValue(sReturn);
-			if(alsReturn!=null) {
-				objEntry.isArrayValue(true);
-				objEntry.isJsonArray(true);
-				objEntry.setValue(alsReturn);
+		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert
+		sReturn = sReturnLine;
+		
+		if(objEntry!=null) {
+			objEntry.setValue(sReturnLine);
+			objEntry.setValueFromTag(sReturnTag);			
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			
+			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
+			if(bUseExpression) {			
+				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
+					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
+						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+						System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
+						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
+						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
+							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+							this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						}
+					}
+				}																		
+				this.adoptEntryValuesMissing(objEntry);
 			}
-			if(hmReturn!=null) {
-				objEntry.setValue(hmReturn);
-				objEntry.isJsonMap(true);
-				objEntry.setValue(hmReturn);
-			}
-							
-			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			this.adoptEntryValuesMissing(objEntry);			
 		}
 		return sReturn;				
 	}

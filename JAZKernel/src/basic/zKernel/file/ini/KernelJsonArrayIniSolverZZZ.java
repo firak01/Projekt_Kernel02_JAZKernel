@@ -483,7 +483,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 					}
 				}
 				
-				if(alsReturn!=null) { 
+				if(alsReturn!=null) {					
 					objEntry.isJsonArray(true);//Sollte das nicht im PARSE gesetzt werden?
 					objEntry.setValue(alsReturn);//da das eine Wertzuweisung ist, die auf dem SOLVEN baisert, wird dasnicht beim PARSEN erledigt
 				}else {

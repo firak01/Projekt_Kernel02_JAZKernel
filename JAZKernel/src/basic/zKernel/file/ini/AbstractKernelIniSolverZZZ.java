@@ -1146,11 +1146,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 						
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
-			
-			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 						
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
+			
+			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 										
 			//Wenn der generelle Solver ausgeführt wird
 			vecReturn = this.solveParsedWrapup(vecReturn, objReturnReferenceIn, bRemoveSurroundingSeparators);

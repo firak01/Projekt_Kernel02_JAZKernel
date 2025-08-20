@@ -825,7 +825,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override 
 	public void isArrayValue(boolean bIsArrayValue) {
-		this.bArrayValue = bIsArrayValue;
+		if(!this.bArrayValue) this.bArrayValue = bIsArrayValue;
 	}
 	
 	
@@ -836,7 +836,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	@Override 
 	public void isMapValue(boolean bIsMapValue) {
-		this.bMapValue = bIsMapValue;
+		if(!this.bMapValue) this.bMapValue = bIsMapValue;
 	}
 
 	//##############################################
@@ -1136,7 +1136,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonSolveCalled(boolean bIsJsonSolveCalled) {
-		this.bJsonSolveCalled = bIsJsonSolveCalled;
+		if(!this.bJsonSolveCalled) this.bJsonSolveCalled = bIsJsonSolveCalled;
 	}
 
 	@Override
@@ -1146,7 +1146,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonSolved(boolean bIsJsonSolved) {
-		this.bJsonSolved = bIsJsonSolved;
+		if(!this.bJsonSolved) this.bJsonSolved = bIsJsonSolved;
 	}
 
 	@Override
@@ -1156,7 +1156,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonSolvedChanged(boolean bIsJsonSolvedChanged) {
-		this.bJsonSolvedChanged = bIsJsonSolvedChanged;
+		if(!this.bJsonSolvedChanged) this.bJsonSolvedChanged = bIsJsonSolvedChanged;
 	}
 
 	//+++++++++++++++++++++++++++++++++++
@@ -1168,6 +1168,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isJsonArray(boolean bIsJsonArray){
 		if(!this.bJsonArray) this.bJsonArray = bIsJsonArray;
+		this.isArrayValue(bIsJsonArray);
 	}
 	
 	@Override
@@ -1177,7 +1178,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonArraySolveCalled(boolean bIsJsonArraySolveCalled) {
-		this.bJsonArraySolveCalled = bIsJsonArraySolveCalled;
+		if(!this.bJsonArraySolveCalled) this.bJsonArraySolveCalled = bIsJsonArraySolveCalled;
 	}
 
 	@Override
@@ -1187,7 +1188,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonArraySolved(boolean bIsJsonArraySolved) {
-		this.bJsonArraySolved = bIsJsonArraySolved;
+		if(!this.bJsonArraySolved) this.bJsonArraySolved = bIsJsonArraySolved;
 	}
 
 	@Override
@@ -1197,7 +1198,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonArraySolvedChanged(boolean bIsJsonArraySolvedChanged) {
-		this.bJsonArraySolvedChanged = bIsJsonArraySolvedChanged;
+		if(!this.bJsonArraySolvedChanged) this.bJsonArraySolvedChanged = bIsJsonArraySolvedChanged;
 	}
 	
 	//++++++++++++++++++++
@@ -1209,6 +1210,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void isJsonMap(boolean bIsJsonMap){
 		if(!this.bJsonMap) this.bJsonMap = bIsJsonMap;
+		this.isMapValue(bIsJsonMap);
 	}
 	
 	
@@ -1219,7 +1221,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonMapSolveCalled(boolean bIsJsonMapSolveCalled) {
-		this.bJsonMapSolveCalled = bIsJsonMapSolveCalled;
+		if(!this.bJsonMapSolveCalled) this.bJsonMapSolveCalled = bIsJsonMapSolveCalled;
 	}
 
 	@Override
@@ -1229,7 +1231,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonMapSolved(boolean bIsJsonMapSolved) {
-		this.bJsonMapSolved = bIsJsonMapSolved;
+		if(!this.bJsonMapSolved) this.bJsonMapSolved = bIsJsonMapSolved;
 	}
 
 	@Override
@@ -1239,7 +1241,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonMapSolvedChanged(boolean bIsJsonMapSolvedChanged) {
-		this.bJsonMapSolvedChanged = bIsJsonMapSolvedChanged;
+		if(this.bJsonMapSolvedChanged) this.bJsonMapSolvedChanged = bIsJsonMapSolvedChanged;
 	}
 
 	

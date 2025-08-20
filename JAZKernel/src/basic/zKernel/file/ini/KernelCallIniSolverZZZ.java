@@ -521,11 +521,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 						
-			String sExpression = sExpressionIn;
-			
 			bUseSolver = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
 			
+			String sExpression = sExpressionIn;
+						
 			//##################################
 			//### Besonderheiten dieses Solvers
 			//###################################		
