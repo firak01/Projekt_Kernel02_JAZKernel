@@ -856,24 +856,25 @@ public class TestUtilAsTestZZZ extends TestCase{
 					}
 				}
 				
-			}else {								
+			}else {	
+				//ziehe expression heran
+				if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonArraySolved()) {
+					//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
+					//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+					//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
+				}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonArraySolved()) {
+					sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
+					sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
+				}else {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
+				}
+				
 				if(objEntry.isJsonArraySolved()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-					//ziehe expression heran
-					if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isJsonArraySolved()) {
-						//Weil das Entfernen des Z-Tags durch das Solven als "Wertaenderung" gilt. Darf hier nicht diese Normierung stattfinden.
-						//sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-						//sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onSolve, Besonderheit nicht veraendert)=" + sExpression2compareWithExpression);
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onSolve, Besonderheit nicht veraendert)=" + sExpression2compare);
-					}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isJsonArraySolved()) {
-						sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithExpression, sTagStartZ, sTagEndZ, false);
-						sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compare, sTagStartZ, sTagEndZ, false);
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (onParse, veraendert)=" + sExpression2compareWithExpression);
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (onParse veraendert)=" + sExpression2compare);									
-					}else {
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithExpression (unveraendert)=" + sExpression2compareWithExpression);
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compare (unveraendert)=" + sExpression2compare);
-					}
 														
 					if(sExpression2compareWithExpression.equals(sExpression2compare)) { 
 						assertFalse(objEntry.isJsonArraySolvedChanged());
@@ -882,9 +883,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 						assertTrue(objEntry.isJsonArraySolvedChanged());
 						bReturn = true;
 					}
-				}else {
-					assertFalse(objEntry.isJsonArraySolvedChanged());
-					bReturn = false;				
+				}else {					
+					if(sExpression2compareWithExpression.equals(sExpression2compare)) {
+						assertFalse(objEntry.isJsonArraySolvedChanged());
+						bReturn = false;
+					}else {
+						assertTrue(objEntry.isJsonArraySolvedChanged());
+						bReturn = true;					
+					}
 				}
 			}
 			

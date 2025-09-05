@@ -313,7 +313,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	
 	@Override
 	public void updateValueSolveCalled(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
-		this.updateValueSolveCalled(objReturnReference);
+		this.updateValueSolveCalled(objReturnReference,true);
 	}
 	
 	
