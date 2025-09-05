@@ -979,7 +979,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
-				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
+				if(bUseSolverThis) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
 					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 

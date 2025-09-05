@@ -28,7 +28,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ{
+public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonMapIniSolveUserZZZ,  IKernelJsonArrayIniSolverZZZ, IKernelJsonArrayIniSolveUserZZZ{
 	private static final long serialVersionUID = 6588176234400554782L;
 	public static String sTAG_NAME = "JSON";
 	public static String sTAG_PARENT_NAME = null;
@@ -421,6 +421,8 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 //	}
 
 	
+	
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus ISolveEnabledZZZ
 	//Merke: Mit folgender Methode wird über das konkrete Flag dieser Solver ein-/ausgeschaltet. 
@@ -518,6 +520,9 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.setRaw(sExpressionIn);		
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
+		sReturnLineParsed2compareWithSolved = sExpressionIn;
+		
+		
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -541,9 +546,6 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//nach dem ...post noch den Wert fuer spaeter sichern
 			//sReturnLineSolved2compareWithParsed = VectorUtilZZZ.implode(vecReturn); //WEIL Intern mit einem String gearbeitet wird soll an dieser Stelle in vecReturn(1) eh der ganze String stehen!!!
 			//sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
-			sReturnLineSolved2compareWithParsed = sExpression; 
-			sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
-		
 			
 			//Aufloesen des JSON-ARRAY-Tags
 			bUseJsonArray = this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
@@ -555,6 +557,25 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					this.setValue(sReturnTag);
 					sReturnLine = sReturnTag;
 					sReturn = sReturnTag;
+					
+					//nach dem ...post noch den Wert fuer spaeter sichern
+					sReturnLineParsed2compareWithSolved = sExpressionIn;
+					sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed2compareWithSolved, sTagStartZ, sTagEndZ);					
+					sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed2compareWithSolved, KernelJsonArrayIniSolverZZZ.sTAG_NAME);
+					
+					sReturnLineSolved2compareWithParsed = sReturnLine;
+					sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
+					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
+						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+						System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
+						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
+						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
+							this.updateValueJsonArraySolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+							this.updateValueJsonArraySolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						}
+					}
 				}	
 			}
 			
@@ -568,11 +589,35 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					this.setValue(sReturnTag);
 					sReturnLine = sReturnTag;
 					sReturn = sReturnTag;
-				}	
-			}			
+					
+					//nach dem ...post noch den Wert fuer spaeter sichern
+					sReturnLineParsed2compareWithSolved = sExpressionIn;
+					sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed2compareWithSolved, sTagStartZ, sTagEndZ);					
+					sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed2compareWithSolved, KernelJsonMapIniSolverZZZ.sTAG_NAME);
+					
+					sReturnLineSolved2compareWithParsed = sReturnLine;
+					sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);																							
+					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
+						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+						System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
+						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
+						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
+							this.updateValueJsonMapSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+							this.updateValueJsonMapSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
+						}
+					}																	
+				}										
+			}	
+						
 								
 			this.updateValueSolved();
-			this.updateValueSolved(objReturnReference);	
+			this.updateValueSolved(objReturnReference);		
+			
+			//nach dem ...post noch den Wert fuer spaeter sichern
+			sReturnLineSolved2compareWithParsed = sReturnLine;
+			sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
 		}//end main:	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -586,7 +631,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression) {			
-				if(bUseSolver) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
+				if(bUseSolverThis) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
 					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
@@ -606,6 +651,75 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 	
+	//### aus IKernelJsonArrayIniSolveUserZZZ
+	@Override
+	public void updateValueJsonArraySolvedChanged() throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueJsonArraySolvedChanged(objReturnReference, true);
+	}
+	
+	@Override
+	public void updateValueJsonArraySolvedChanged(boolean bIsJsonArraySolvedChanged) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueJsonArraySolvedChanged(objReturnReference, bIsJsonArraySolvedChanged);
+	}
+		
+	@Override
+	public void updateValueJsonArraySolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueJsonArraySolvedChanged(objReturnReference, true);
+	}
+	
+	@Override
+	public void updateValueJsonArraySolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsJsonArraySolvedChanged) throws ExceptionZZZ{		
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isJsonArraySolvedChanged(bIsJsonArraySolvedChanged);
+		}//end main:
+	}
+
+	
+	
+	//### aus IKernelJsonMapIniSolverUserZZZ
+	@Override
+	public void updateValueJsonMapSolvedChanged() throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueJsonMapSolvedChanged(objReturnReference, true);
+	}
+	
+	@Override
+	public void updateValueJsonMapSolvedChanged(boolean bIsJsonMapSolvedChanged) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueJsonMapSolvedChanged(objReturnReference, bIsJsonMapSolvedChanged);
+	}
+		
+	@Override
+	public void updateValueJsonMapSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		this.updateValueJsonMapSolvedChanged(objReturnReference, true);
+	}
+	
+	@Override
+	public void updateValueJsonMapSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, boolean bIsJsonMapSolvedChanged) throws ExceptionZZZ{		
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isJsonMapSolvedChanged(bIsJsonMapSolvedChanged);
+		}//end main:
+	}
 
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

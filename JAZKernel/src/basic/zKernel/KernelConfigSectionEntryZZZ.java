@@ -1241,7 +1241,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 	@Override
 	public void isJsonMapSolvedChanged(boolean bIsJsonMapSolvedChanged) {
-		if(this.bJsonMapSolvedChanged) this.bJsonMapSolvedChanged = bIsJsonMapSolvedChanged;
+		if(!this.bJsonMapSolvedChanged) this.bJsonMapSolvedChanged = bIsJsonMapSolvedChanged;		
 	}
 
 	
