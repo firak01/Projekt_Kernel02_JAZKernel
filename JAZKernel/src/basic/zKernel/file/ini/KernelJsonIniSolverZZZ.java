@@ -552,7 +552,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(bUseJsonArray) {
 			
 				alsReturn = this.computeArrayList(sExpression);
-				if(alsReturn!=null) {
+				if(alsReturn!=null) {					
 					sReturnTag = alsReturn.toString(); //ArrayListExtendedZZZ.computeDebugString(alsReturn);
 					this.setValue(sReturnTag);
 					sReturnLine = sReturnTag;
@@ -624,7 +624,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		this.setValue(sReturnTag);	//Der Handler bekommt die ganze Zeile als Wert
 		sReturn = sReturnLine;
 		
-		if(objEntry!=null) {
+		if(objEntry!=null) {			
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);			
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
@@ -643,6 +643,16 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 							this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
 						}
 					}
+					
+					if(alsReturn!=null) {
+						objEntry.setValue(alsReturn);
+						objEntry.isJsonArray(true);
+					}
+					
+					if(hmReturn!=null) {
+						objEntry.setValue(hmReturn);
+						objEntry.isJsonMap(true);
+					}										
 				}																		
 				this.adoptEntryValuesMissing(objEntry);
 			}
