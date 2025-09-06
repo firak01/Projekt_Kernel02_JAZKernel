@@ -487,6 +487,57 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 	
+	
+	//#############################################
+	public static boolean assertIsJavaCallSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			//if(!objEntry.isJavaCall()) break main;
+			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			
+			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
+			
+		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
+			boolean bJavaCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJavaCallIniSolverZZZ.sTAG_NAME);
+			if(!bJavaCallSolverCalledPrevious) {
+				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isJavaCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				//assertFalse(objEntry.isCallSolved());
+				bReturn = false;
+			}else {
+				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+				if(bAsEntry) {
+					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
+					assertTrue(objEntry.isJavaCallSolveCalled());
+					bReturn = true;
+					
+					assertFalse(objEntry.isCallSolved()); //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
+				}else {
+					//System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isJavaCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+					bReturn = true;
+					
+					assertFalse(objEntry.isCallSolved());      //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
+				}
+			}			 
+			
+			
+		}//end main;
+		return bReturn;
+	}
+	
 	public static boolean assertIsJavaCallSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{		
@@ -758,17 +809,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
 			
 			if(bJsonArraySolverCalledPrevious) {
-				assertTrue(objEntry.isJsonArraySolveCalled());				
+				assertTrue(objEntry.isJsonArraySolveCalled());		
+				bReturn = true;
 			}else {
 				if(bExpressionHandlerCalledPrevious) {
 					
 				}
 				assertFalse(objEntry.isJsonArraySolveCalled());
-				break main;
+				bReturn = false;
 			}
-			
-			
-			bReturn = true;
+		
 		}//end main;
 		return bReturn;
 	}
@@ -921,17 +971,17 @@ public class TestUtilAsTestZZZ extends TestCase{
 			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
 			
 			if(bJsonMapSolverCalledPrevious) {
-				assertTrue(objEntry.isJsonMapSolveCalled());				
+				assertTrue(objEntry.isJsonMapSolveCalled());
+				bReturn = true;
+				
 			}else {
 				if(bExpressionHandlerCalledPrevious) {
 					
 				}
 				assertFalse(objEntry.isJsonMapSolveCalled());
-				break main;
+				bReturn = false;
 			}
 			
-			
-			bReturn = true;
 		}//end main;
 		return bReturn;
 	}
@@ -1063,6 +1113,57 @@ public class TestUtilAsTestZZZ extends TestCase{
 		}//end main;
 		return bReturn;
 	}
+	
+	//###########################################
+	public static boolean assertIsCallSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			//if(!objEntry.isCall()) break main;
+			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+			
+			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
+						
+		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
+			if(!bCallSolverCalledPrevious) {
+				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				bReturn = false;
+				
+				assertFalse(objEntry.isCallSolved());
+			}else {
+				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+				if(bAsEntry) {
+					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
+					assertTrue(objEntry.isCallSolveCalled());
+					bReturn = true;
+					
+					assertFalse(objEntry.isCallSolved()); //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
+				}else {
+					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
+					assertTrue(objEntry.isCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
+					bReturn = true;
+					
+					assertFalse(objEntry.isCallSolved());      //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
+				}
+			}			 
+			
+			
+		}//end main;
+		return bReturn;
+	}
+	
 	
 	public static boolean assertIsCallSolvedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		/*
@@ -3308,24 +3409,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
-			bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
-			if(!bCallSolverCalledPrevious) {
-				System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
-				assertFalse(objEntry.isCallSolveCalled()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
-				assertFalse(objEntry.isCallSolved());
-			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
-				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
-					assertTrue(objEntry.isCallSolveCalled()); 
-					assertFalse(objEntry.isCallSolved()); //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
-				}else {
-					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					assertFalse(objEntry.isCallSolved());      //isCallSolved wird nur gesetzt, wenn nicht für den Call-Solver generell deaktiviert.
-				}
-			}			 			
+			assertIsJavaCallSolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsCallSolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsCallSolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);		
 						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3354,7 +3439,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 			//DEFAULT: Wenn der Solver generel ausgestellt wird, dann wird nix dahinter aufgerufen.
 			//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserEnabledThis.      
-			assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
+			assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
 			
 			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
 			bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
