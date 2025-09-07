@@ -1607,35 +1607,29 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean isSolverEnabledAnyChildCustom() throws ExceptionZZZ {
 		return true;
 	}
-		
-	@Override 
-	public boolean isSolverEnabledByFlagZ(Enum objEnum) throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			if(objEnum==null) break main;
 			
-			bReturn = this.getFlag(objEnum.name());
-		}//end main:
-		return bReturn;
-	}
-	
 	@Override 
 	public boolean isSolverEnabledEveryRelevant() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
+			
 			bReturn = this.isSolverEnabledGeneral();
 			if(!bReturn) break main;	
 			
-			bReturn = this.isSolverEnabledThis();
-			if(!bReturn) break main;
+			//Auf File-Ebene wird nicht wie auf Solver Ebene differenziert.
+			//Die Methode .getParentName() gibt es gar nicht.
 			
-			bReturn = this.isSolverEnabledAnyParentCustom();
-			if(!bReturn) break main;
-			
-			bReturn = this.isSolverEnabledAnyChildCustom();
-			if(!bReturn) break main;				
+			//"Elterntags" werden anders behandelt als "Kindtags"
+//			if(StringZZZ.isEmpty(this.getParentName())){
+//				bReturn = this.isSolverEnabledThis();
+//				if(!bReturn) break main;
+//			}else {
+				bReturn = this.isSolverEnabledThis() && (this.isSolverEnabledAnyParentCustom() || this.isSolverEnabledAnyChildCustom()) ;
+				if(!bReturn) break main;
+//			}
+						
 		}//end main:
 		return bReturn;
 	}
@@ -1655,7 +1649,16 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		return bReturn;
 	}
 
-		
+	@Override 
+	public boolean isSolverEnabledByFlagZ(Enum objEnum) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(objEnum==null) break main;
+			
+			bReturn = this.getFlag(objEnum.name());
+		}//end main:
+		return bReturn;
+	}	
 		
 	
 	//######################################

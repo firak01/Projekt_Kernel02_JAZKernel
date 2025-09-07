@@ -501,7 +501,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolverThis) break main;
 			
 			String sExpression = sExpressionIn;
@@ -671,7 +671,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		String sReturn = null;
 		String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn=null;
-		boolean bUseExpression = false; boolean bUseSolverThis = false; //boolean bUseSolver = false;
+		boolean bUseExpression = false; boolean bUseSolver = false; boolean bUseSolverThis = false; //boolean bUseSolver = false;
 			
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
@@ -696,11 +696,13 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
-			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolverThis) break main;
 			
-//			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
-//			if(!bUseSolverThis) break main;
+			
+			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolver) break main;
+			
+			bUseSolverThis = this.isSolverEnabledThis(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			if(!bUseSolverThis) break main;
 				
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			this.setRaw(sExpressionIn);
@@ -711,7 +713,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			
 			//Es muss nicht nur der eigene Tag und der Z-Tag entfernt werden,
 			//sondern auch der JSON-Tag, quasi als "Elterntag" auch entfernen.			
-			if(bUseExpression & bUseSolverThis){
+			if(bUseExpression & bUseSolver & bUseSolverThis){
 				String sTagStart = this.getTagPartOpening();
 				String sTagEnd = this.getTagPartClosing();
 				if(sTagStart.equalsIgnoreCase("<Z>")) {

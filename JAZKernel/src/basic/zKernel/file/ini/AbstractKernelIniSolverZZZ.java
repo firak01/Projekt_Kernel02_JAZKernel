@@ -459,9 +459,14 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			bReturn = this.isSolverEnabledGeneral();
 			if(!bReturn) break main;	
 			
-			bReturn = this.isSolverEnabledThis() || this.isSolverEnabledAnyParentCustom() || this.isSolverEnabledAnyChildCustom() ;
-			if(!bReturn) break main;
-			
+			//"Elterntags" werden anders behandelt als "Kindtags"
+			if(StringZZZ.isEmpty(this.getParentName())){
+				bReturn = this.isSolverEnabledThis();
+				if(!bReturn) break main;
+			}else {
+				bReturn = this.isSolverEnabledThis() && (this.isSolverEnabledAnyParentCustom() || this.isSolverEnabledAnyChildCustom()) ;
+				if(!bReturn) break main;
+			}
 						
 		}//end main:
 		return bReturn;
@@ -469,23 +474,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	
 	@Override 
 	public boolean isSolverEnabledAnyRelevant() throws ExceptionZZZ {
-		boolean bReturn = true;
+		boolean bReturn = false;
 		main:{
 			//Merke: Die Abfrage auf isExpressionEnabledGeneral() ... nicht hierein, damit wird ggf. noch eine Feinsteuerung auf Entfernen des reinen Z-Tags gesteuert.
 			//       Muss also immer eine extra Abfrage bleiben.
+			boolean bReturn1 = this.isSolverEnabledThis();						
+			boolean bReturn2 = this.isSolverEnabledGeneral();
+			boolean bReturn3 = this.isSolverEnabledAnyChildCustom();
 			
-			//Merke: Die Abfrage .isSolverEnabledGeneral() ... nicht hierein, das ist eher algemein
-			//       und hat nichst mit dem konkreten Solver zu tun.
-			bReturn = this.isSolverEnabledThis();
-			if(bReturn) break main;
-						
-			bReturn = this.isSolverEnabledAnyParentCustom();
-			if(bReturn) break main;
-						
-			bReturn = this.isSolverEnabledAnyChildCustom();
-			if(bReturn) break main;
-			
-			bReturn = false;
+			bReturn = bReturn1 | bReturn2 | bReturn3;
 		}//end main:
 		return bReturn;
 	}
@@ -779,7 +776,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				sReturnLine = VectorUtilZZZ.implode(vecExpressionIn);
 			}
 			
-			bUseSolverThis = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);		
 			if(!bUseSolverThis) break main;
 							
 			//Als echten Ergebniswert aber die <Z: ... konkreten Solver Tags rausrechnen (!!! unabhaengig von bRemoveSurroundingSeperators)
