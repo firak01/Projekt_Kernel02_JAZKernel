@@ -3439,7 +3439,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 
 			//DEFAULT: Wenn der Solver generel ausgestellt wird, dann wird nix dahinter aufgerufen.
 			//ABER:    Call und JavaCallSolver ueberschreiben die Methode isParserEnabledThis.      
-			assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+			assertTrue(objEntry.isCall());		//Beim Parsen wird das festgestellt
 			
 			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
 			bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
@@ -3463,7 +3463,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
 			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
-			assertFalse(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
+			//Hier kann man isJavaCall() auch nur abfrage, weil es noch keinen anderen "CallTyp" gibt.
+			assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht. 			
 			
 			assertFalse(objEntry.isJavaCallSolveCalled()); //OHNE Call-Solver Aufruf, keinen JavaCallSolver aufruf.
 			assertFalse(objEntry.isJavaCallSolved());      //Der konkrete JAVACALL-Solver ist duch Flags deaktiviert, er wird zwar aufgerufen, aber nicht ausgefuehrt
