@@ -19,7 +19,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.file.ini.KernelCallIniSolverZZZTest.TestSubtype;
+import basic.zKernel.file.ini.TestUtilZZZ.TestSubtype;
 import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
@@ -128,7 +128,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			alsExpressionSolved = new ArrayList<String>();
 			alsExpressionSolved.add("TESTWERT2DO2JSON01");
 			alsExpressionSolved.add("TESTWERT2DO2JSON02");
-			testCompute_JsonArray_(TestSubtype.DEFAULT, sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved);
+			testCompute_JsonArray_(TestUtilZZZ.TestSubtype.DEFAULT, sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved);
 			
 			
 			
@@ -138,7 +138,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			alsExpressionSolved = new ArrayList<String>();
 			alsExpressionSolved.add("TESTWERT2DO2JSON01");
 			alsExpressionSolved.add("TESTWERT2DO2JSON02");
-			testCompute_JsonArray_(TestSubtype.AS_ENTRY, sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved);
+			testCompute_JsonArray_(TestUtilZZZ.TestSubtype.AS_ENTRY, sExpression, sExpressionSubstituted, sExpressionSolved, alsExpressionSolved);
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
@@ -149,7 +149,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_JsonArray_(TestSubtype enumTestSubtype, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn) {
+	private void testCompute_JsonArray_(TestUtilZZZ.TestSubtype enumTestSubtype, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, ArrayList<String>alsExpressionSolvedIn) {
 		String sExpression; String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sExpressionSolvedTemp;  ArrayList<String>alsExpressionSolved;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		IKernelConfigSectionEntryZZZ objEntry=null;
@@ -186,7 +186,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression; //nur parse, darum solve=substituted,    und nicht  sExpressionSolvedIn;//alsExpressionSolved.toString();
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved,  EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved,  EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -199,7 +199,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -212,7 +212,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
@@ -225,7 +225,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpression;
 			sExpressionSolved = sExpression;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -240,7 +240,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -255,7 +255,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -268,7 +268,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstituted;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -282,7 +282,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstituted;	//Beim Parsen werden, wenn wie hier gewuenscht immer der Z-Tag entfernt.
 			//Beim Solven ohne Solver bleiben immer die Z-Tags drin. sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -298,7 +298,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstitutedIn;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -313,7 +313,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstitutedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -327,7 +327,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstitutedIn;
 			alsExpressionSolved = alsExpressionSolvedIn;
 			//Beim Solven ohne Solver, bleibt alles wie es ist, nur substituiert wird
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -343,7 +343,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstitutedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -358,7 +358,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstitutedIn;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -374,7 +374,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstitutedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -387,7 +387,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionSubstitutedIn;
 			sExpressionSolved = sExpressionSubstitutedIn;
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);	
@@ -403,7 +403,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSubstitutedIn; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArrayUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -424,7 +424,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//false: d.h. Z-Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);			
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -442,7 +442,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved, "JSON");
 			//true: d.h. keine Z-Tags  sExpressionSolved = ExpressionIniUtilZZZ.makeAsExpression(sExpressionSolved);					
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved,  sPre, sPost,alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
@@ -458,7 +458,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			//Den Tag des konketen Solver nicht aufnehmen.... sExpressionSolvedTemp = objExpressionSolver.makeAsExpression(sExpressionSolvedTemp);//den Tag des konkreten Solvers drumpacken.			
 			//Der Z-Tag bleibt drumherum.
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -474,7 +474,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			sExpressionSolved = sExpressionSolvedIn;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			alsExpressionSolved = alsExpressionSolvedIn;
-			if(enumTestSubtype != null && enumTestSubtype == TestSubtype.AS_ENTRY) {
+			if(enumTestSubtype != null && enumTestSubtype == TestUtilZZZ.TestSubtype.AS_ENTRY) {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			}else {
 				btemp = testCompute_JsonArray_JsonArraySolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, alsExpressionSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);

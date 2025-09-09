@@ -691,7 +691,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	}
 	
 	private Vector3ZZZ<String> parseFirstVector_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
-		String sReturn = null; String sReturnSubstituted = null; String sReturnTag = null; String sReturnLine = null;
+		String sReturn = null; String sReturnSubstituted = null; String sReturnTag = null; String sReturnLine = null; String sReturnLineParsed = null;
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
@@ -734,6 +734,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
 			
+			//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
 			this.updateValueParseCustom(objReturnReference, sExpression);
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
@@ -772,8 +773,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 			this.setValue(sReturnTag);			
 			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-						
+			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
+			sReturnLine = sReturnLineParsed;			
+			sReturn = sReturnLine;
+			
 			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
 			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
@@ -781,6 +784,10 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
 			sReturnTag = this.getValue();
 			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			//###############
+			//### Andere Solver parsen noch unterelemente. Im Abstract Solver reicht es nun.
+			//###############
 			
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);

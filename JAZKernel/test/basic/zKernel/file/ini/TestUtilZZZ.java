@@ -19,6 +19,12 @@ import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class TestUtilZZZ {
+	public enum TestSubtype{
+			DEFAULT,
+			AS_ENTRY
+	}
+
+
 	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
 	public final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelExpressionIniHandlerZZZTest.ini");
 	

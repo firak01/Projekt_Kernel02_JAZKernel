@@ -22,7 +22,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
+public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelCallIniSolverZZZ, IKernelCallIniParseUserZZZ, IKernelCallIniSolveUserZZZ, IKernelJavaCallIniSolverZZZ{
 	private static final long serialVersionUID = -8017698515311079738L;
 	public static String sTAG_NAME = "Z:Call";
 	public static String sTAG_PARENT_NAME = null;
@@ -194,6 +194,40 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 		}//end main:
 	}
+	
+	//### aus IKernelCallIniParseUserZZZ
+	@Override
+	public void updateValueCallParsedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueCallParsedChanged(objReturnReference,true);
+	}
+
+	@Override
+	public void updateValueCallParsedChanged(boolean bIsCallParsedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueCallParsedChanged(objReturnReference,bIsCallParsedChanged);
+	}
+
+	@Override
+	public void updateValueCallParsedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueCallParsedChanged(objReturnReference, true);
+	}
+
+	@Override
+	public void updateValueCallParsedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference,boolean bIsCallParsedChanged) throws ExceptionZZZ {
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+	
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isCallParsedChanged(bIsCallParsedChanged);
+		}//end main:
+	}
 
 	//###  aus ISolveUserZZZ
 	@Override
@@ -234,6 +268,41 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		objEntry.isCallSolvedChanged(bIsSolveCalled);		
 	}
 	
+	//+++++++++++++++++++
+	//### aus IKernelCallIniSolveUserZZZ
+	@Override
+	public void updateValueCallSolvedChanged() throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueCallSolvedChanged(objReturnReference,true);
+	}
+
+	@Override
+	public void updateValueCallSolvedChanged(boolean bIsCallSolvedChanged) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objEntry = this.getEntry();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		objReturnReference.set(objEntry);
+		this.updateValueCallSolvedChanged(objReturnReference,bIsCallSolvedChanged);
+	}
+
+	@Override
+	public void updateValueCallSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		this.updateValueCallSolvedChanged(objReturnReference, true);
+	}
+
+	@Override
+	public void updateValueCallSolvedChanged(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference,boolean bIsCallSolvedChanged) throws ExceptionZZZ {
+		main:{
+			if(!this.isExpressionEnabledGeneral()) break main;
+	
+			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
+			objEntry.isCallSolvedChanged(bIsCallSolvedChanged);
+		}//end main:
+	}
+	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//### aus IParseEnabled			
 	@Override 
@@ -246,10 +315,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		//Ziel ist, dass Solver, die Kinder-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
 		main:{
-			boolean bEnabledThis = this.isParserEnabledThis();
-			//boolean bEnabledJavaCall = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-					
-			bReturn = bEnabledThis;// && bEnabledJavaCall;
+			boolean bEnabledThis = this.isParserEnabledThis();				
+			bReturn = bEnabledThis;
 		}
 		return bReturn;
 	}
@@ -313,29 +380,44 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 				
-			//Direkte nachdem feststeht, dass Expression behandelt werden die Tags analysieren!!!
-			this.updateValueParseCustom(objReturnReference, sExpression);
-			
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
-						
+				
+			//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
+			this.updateValueParseCustom(objReturnReference, sExpression);
+			
+			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
+			
+			//###########################################
+			//### 
+			//###########################################
+						
+			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse);
+			if(vecReturn==null) break main;
+			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			
+			//++++++++++++++++++++++
+			//+++ reicht wenn substitute in der Super-Klasse gemacht wurde.
+			//++++++++++++++++++++++
 			
 			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			//Im Aufruf der Eltern-Methode findet ggfs. auch eine Aufloesung von Pfaden und eine Ersetzung von Variablen statt.
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceParse.set(objEntry);
-			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
-			objEntry = objReturnReferenceParse.get();
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+			this.setValue(sReturnTag);
+			vecReturn.replace(sReturnTag);
 			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
 			sReturnLine = sReturnLineParsed;
 			sReturn = sReturnLine;
 			
+			//################
+			//Abweichung vom AbstractSolver. Hier werden die einzelnen "Call-Elemente" auch schon geparsed
+			//################
 			//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
 			bUseSolver = this.isSolverEnabledGeneral();//getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolver) break main;
@@ -403,7 +485,8 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					//     nur .isJavaCall() wird vorher gesetzt.
 					if(sReturnLineParsedCallInner!=null) {
 						if(sReturnLineParsed.equals(sReturnLineParsedCallInner)) {
-							objEntry.isCallParsedChanged(true);
+							this.updateValueCallParsedChanged();
+							this.updateValueCallParsedChanged(objReturnReference);
 						}
 					}																								
 				}
@@ -771,8 +854,4 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-
-	
-
-
 }

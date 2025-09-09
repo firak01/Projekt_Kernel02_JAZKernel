@@ -5,6 +5,9 @@ import java.io.File;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
+import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -143,11 +146,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	 */
 	private void testCompute_Encryption_(String sExpressionSourceIn){
 		
-		boolean btemp; int itemp;
+boolean btemp; int itemp;
 		
 		String sSection; String sProperty;
-		String sExpressionSource; 
+		String sExpression; String sExpressionSubstituted; 
 		String sExpressionSolved; String sExpressionSolvedTagless;
+		String sPre; String sPost; String sTag; String sTagSolved;
 		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
 	
 		String sValue;
@@ -158,16 +162,6 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 					
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST START
 			
-			//!!!!!!!!!!! BERECHTIGTES PROBLEM Z-Tag aussen sollte nicht mehr da sein...
-			
-			//+++ Mit Encryption-Berechnung
-						
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
-			//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.   //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-
 			
 			//+++++++ VORGEZOGENER LETZTER FEHLERTEST ENDE
 			
@@ -179,108 +173,114 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//#########################
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne jegliche Expression-Berechnung
-			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			//+++ 1) Ohne jegliche Expression-Berechnung
+			//1a)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			//1b)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 			
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			//1c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression; 			
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
-			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			//1d)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne Solver-Berechung
-			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			//+++ 2) Ohne Solver-Berechung
+			//2a)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//2b)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//2c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne Solver, bleibt alles wie est ist.
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
-			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//2d)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne Encryption-Solver-Berechung
-			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			//+++ 3) Ohne Encryption-Solver-Berechung
+			//3a)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 
+			//3b)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//3c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			//Beim Solven ohne encryption, bleibt alles an Tags drin.
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
-			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;	
+			//3d)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;	
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Mit Encryption-Berechnung
-			//a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-			sExpressionSource = sExpressionSourceIn;
+			//+++ 4) Mit Encryption-Berechnung
+			//4a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = sExpressionSourceIn; 
 			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
-			//b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
+			//4b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;			
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
+			//4c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSubstituted = sExpressionSourceIn;
 			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
+			sPre="";
+			sPost="";
+			sTag="TODO ALS KONSTANTE";
+			sTagSolved="TODO ALS KONSTANTE";
 			//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.   //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
-			
-			//d)
-			sExpressionSource = sExpressionSourceIn;
+			//String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+
+			//4d)
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -645,26 +645,32 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encryption_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; String sExpressionSolved; String sValue; String sValueUsed;				
+			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
+			String sValue; Vector3ZZZ<String> vecValue;				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
 			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			sPre = sPreIn;
+			sPost = sPostIn;
+			sTag = sTagIn;
+			sTagSolved = sTagSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.ENCRYPTION_SOLVED;
 			
 			//####################################################################################
 			//### EXPRESSION .solve
 			//####################################################################################
-			
-			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSolvedIn;
 			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
@@ -686,11 +692,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 				
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;				
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {							
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				//Der Wert des Tags unterscheidet sich vom Wert der gesamt geparsten Zeile
@@ -728,11 +731,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {				
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -747,7 +747,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				
 				assertTrue(objEntry.isParseCalled());
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntry.isParsedChanged());
 				}else {
 					assertFalse(objEntry.isParsedChanged());						
@@ -767,17 +767,15 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
 			//+++ Variante fuer den AsEntry-Test
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {				
+				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntryUsed);
 												
 				sValue = objExpressionSolver.getValue();				
 				assertEquals(sExpressionSolved, sValue);
 
 				assertTrue(objEntryUsed.isParseCalled());
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}else {
 					assertFalse(objEntryUsed.isParsedChanged());						
@@ -798,10 +796,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);				
+				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntryUsed);
 				
 				//Der Wert des Tags unterscheidet sich vom Wert der gesamt geparsten Zeile
@@ -809,7 +804,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertEquals(sExpressionSolved, sValue);
 				
 				assertTrue(objEntryUsed.isParseCalled());				
-				if(bRemoveSurroundingSeparatorsOnSolve) {
+				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntryUsed.isParsedChanged());
 				}else {
 					assertFalse(objEntryUsed.isParsedChanged());						
@@ -828,6 +823,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertNull(objEntryUsed.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objExpressionSolver, objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			assertTrue(btemp);
+			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -1023,8 +1024,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		boolean btemp; int itemp;
 		
 		String sSection; String sProperty;
-		String sExpressionSource; 
+		String sExpression; String sExpressionSubstituted; 
 		String sExpressionSolved; String sExpressionSolvedTagless;
+		String sPre; String sPost; String sTag; String sTagSolved;
 		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
 	
 		String sValue;
@@ -1039,11 +1041,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//+++ Mit Encryption-Berechnung
 			
 			//c)
-			sExpressionSource = sExpressionSourceIn;
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
 			
@@ -1056,113 +1058,113 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//#########################
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne jegliche Expression-Berechnung
-			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			//+++ 1) Ohne jegliche Expression-Berechnung
+			//1a)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			//1b)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			//1c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
-			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;			
-			btemp = testCompute_Encryption_Unexpressed_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			//1d)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;			
+			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Ohne Solver-Berechung		
-			//a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			//+++ 2) Ohne Solver-Berechung		
+			//2a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//2b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 
-			//c)  Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;						
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			//2c)  Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;						
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
-			//d) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
+			//2d) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
-			btemp = testCompute_Encryption_Unsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 
 			
 			
-			//+++ Ohne Encryption-Berechung
-			//a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			//+++ 3) Ohne Encryption-Berechung
+			//3a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 
+			//3b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);			
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			//3c)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
-			//d)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource; 
+			//3d)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);			
-			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-			//+++ Mit Encryption-Berechnung
-			//a)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
+			//+++ 4) Mit Encryption-Berechnung
+			//4a)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 		
-			//b)
-			sExpressionSource = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSource;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
+			//4b)
+			sExpression = sExpressionSourceIn;
+			sExpressionSolved = sExpression;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
-			//c)
-			sExpressionSource = sExpressionSourceIn;
+			//4c)
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, false, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
-			//d)
-			sExpressionSource = sExpressionSourceIn;
+			//4d)
+			sExpression = sExpressionSourceIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);			
-			btemp = testCompute_Encryption_(sExpressionSource, sExpressionSolved, true, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
