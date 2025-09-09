@@ -486,12 +486,12 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
+			String sExpression = sExpressionIn;
+			
 			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolverThis) break main;
 			
-			String sExpression = sExpressionIn;
-			
-						
+												
 			//##################################
 			//### Besonderheiten dieses Solvers
 			//###################################		

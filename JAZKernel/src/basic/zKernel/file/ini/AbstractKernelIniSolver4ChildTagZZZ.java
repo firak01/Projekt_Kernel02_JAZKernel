@@ -33,7 +33,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @param <T>
  */
 public abstract class AbstractKernelIniSolver4ChildTagZZZ<T> extends AbstractKernelIniSolverZZZ<T>{
-	
+	private static final long serialVersionUID = -2863273133743963380L;
+
 	public AbstractKernelIniSolver4ChildTagZZZ() throws ExceptionZZZ{
 		super("init");
 	}
