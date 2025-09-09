@@ -499,7 +499,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	}
 	
 	
-	//#### aus ISOlveZZZZ
+	//#### aus ISolveZZZZ
 	@Override
 	public boolean isSolveRelevant(String sExpression) throws ExceptionZZZ {
 		return this.isSolve(sExpression);
