@@ -117,10 +117,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolver4Chil
 	//### aus IParseEnabled		
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-	 //Ziel ist es das Parsen vom Solven zu entkoppelt.
-	 //Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
-	 //return true; 
-		  
+	 //Ziel ist es das Parsen vom Solven zu entkoppelt.		  
 	  boolean bReturn = false;
 		main:{		  
 		  bReturn = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
@@ -165,8 +162,13 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolver4Chil
 			String sExpression = sExpressionIn;
 		
 			//#####################################################################
+			//Flags entscheiden, ob es weiter geht
 			super.updateValueParseCustom(objReturnReference, sExpressionIn);
-						
+				
+			if(!this.isExpressionEnabledGeneral()) break main;
+			if(!this.isParserEnabledGeneral()) break main;
+			if(!this.isParserEnabledCustom()) break main;
+			
 			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
 			//weil sie ihrerseits mit .solve() ausgeführt werden.
 			

@@ -247,13 +247,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
 	  //Ziel ist es das Parsen vom Solven zu entkoppelt.
 	  //Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
-	  //return true; 
-		  
 	  boolean bReturn = false;
 		main:{
-//			  bReturn = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-//			  if(!bReturn) break main;
-		  
 		  bReturn = this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 		  if(!bReturn) break main;		  
 		}//end main:
@@ -308,6 +303,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			String sExpression = sExpressionIn;
 		
 			//#####################################################################
+			//Flags entscheiden, ob es weiter geht
 			super.updateValueParseCustom(objReturnReference, sExpressionIn);
 						
 			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden

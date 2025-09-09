@@ -26,6 +26,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelEncryptionIniSolverZZZ{
 	private static final long serialVersionUID = 5426925764480431586L;
 	public static String sTAG_NAME = "Z:Encrypted";	
+	public static String sTAG_PARENT_NAME = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelEncryptionIniSolverNew_(null, null);
@@ -123,60 +124,60 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	//### Aus ITagBasicChildZZZ
 	@Override
 	public String getParentNameDefault() throws ExceptionZZZ {
-		return null;
+		return KernelEncryptionIniSolverZZZ.sTAG_PARENT_NAME;
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
-	//### aus IParseEnabled		
-	@Override 
-	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
-	}
-		
+	//### aus IParseEnabled				
 	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.
 		boolean bReturn = false;
-		main:{
-			//boolean bEnabledJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
-			boolean bEnabledThis = this.isParserEnabledThis();
-					
-			bReturn = bEnabledThis;// && bEnabledJson ;
+		main:{		
+			boolean bEnabledThis = this.isParserEnabledThis();					
+			bReturn = bEnabledThis;
 		}
 		return bReturn; 	
 	}
 	
 	//### aus IParseUserZZZ
 	@Override
-	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference, String sExpressionIn) throws ExceptionZZZ {
-		super.updateValueParseCustom(objReturnReference, sExpressionIn);
+	public void updateValueParseCustom(ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, String sExpressionIn) throws ExceptionZZZ {
+		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			objEntry = objReturnReference.get();
+			if(objEntry==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objEntry = new KernelConfigSectionEntryZZZ<T>();
+				objReturnReference.set(objEntry);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
 		
-		if(this.isParserEnabledThis()) {
-			IKernelConfigSectionEntryZZZ objEntry = objReturnReference.get();
-			
-			//Nun, ggfs. wird .solve() nicht aufgerufen, in dem alle Tags richtig geparsed werden
-			//weil sie ihrerseits mit .solve() ausgeführt werden.
-			
-			//DARUM:
-			//Hier die moeglichen enthaltenden Tags alle Pruefen..., siehe auch KernelExpressionIniHandlerZZZ
-			
-			//TODOGOON20250308; //TICKETGOON20250308;; //Analog zu dem PARENT - Tagnamen muesste es auch eine Loesung für die CHILD - Tagnamen geben
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
 		
-//			if(XmlUtilZZZ.containsTagName(sExpressionIn, KernelJsonIniSolverZZZ.sTAG_NAME, false)) {
-//				objEntry.isJson(true);
-//				this.getEntry().isJson(true);
-//			}
+			//#####################################################################
+			//Flags entscheiden, ob es weiter geht
+			super.updateValueParseCustom(objReturnReference, sExpressionIn);
 			
-						
+			if(!this.isExpressionEnabledGeneral()) break main;
+			if(!this.isParserEnabledGeneral()) break main;
+			if(!this.isParserEnabledCustom()) break main;
+			
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isEncrypted(true);
 				this.getEntry().isEncrypted(true);
 			}
-		}
+		}//end main:
 	}
 
-	
-	//Analog zu KernelJavaCallIniSolverZZZ, KernelJavaCallIniSolverZZZ, KernelJsonMapInisolver, KernelZFormulaMathSolver aufbauen... Der code ist im Parser
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//### aus ISolveEnabled
 	@Override
 	public boolean isSolverEnabledThis() throws ExceptionZZZ {
@@ -193,111 +194,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return false;
 	}
 	
-	@Override
-	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
-		return this.solvePostCustom_(vecExpression, null, true);
-	}
 	
-	@Override
-	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
-	}
-	
-	//### aus IKernelEntryReferenceSolveUserZZZ
-	@Override
-	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
-		return this.solvePostCustom_(vecExpression, objReturnReference, true);
-	}
-	
-	@Override
-	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
-	}
-	
-	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
-		String sReturn = null;
-		String sReturnTag = null; String sReturnLine;
-		String sExpressionIn=null; String sExpression;	
-		boolean bUseExpression  = false;
-		
-		String sTagStartZ = "<Z>";
-		String sTagEndZ = "</Z>";
-		
-		IKernelConfigSectionEntryZZZ objEntry = null;
-		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
-		if(objReturnReferenceIn==null) {				
-			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
-		}else {
-			objReturnReference = objReturnReferenceIn;
-			objEntry = objReturnReference.get();
-		}
-		if(objEntry==null) {
-			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
-			objReturnReference.set(objEntry);
-		}	
-		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		//20250312 objEntry.isParseCalled(true);
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
-		sReturnLine = sExpressionIn;
-		
-		main:{	
-			bUseExpression = this.isExpressionEnabledGeneral();
-			if(!bUseExpression) break main;
-					
-			if(vecExpressionIn==null) break main;
-			vecReturn=vecExpressionIn;	
-							
-			sReturnTag = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			
-			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
-			if(StringZZZ.isEmpty(sReturnTag)){
-				
-				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
-				if(objValue.isExpression(sReturnTag)){	
-					objEntry.isEncrypted(true);
-					objEntry.setValueEncrypted(sReturnLine);//Zwischenstand festhalten
-					sReturnTag = objValue.parse(sReturnTag);															
-				}																							
-			}					
-		}//end main:
-	
-			
-		//#################################
-		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
-		if(sReturnTag!=null) this.setValue(sReturnTag);
-		sReturn = sReturnLine;
-		
-		if(objEntry!=null) {
-			objEntry.setValue(sReturn);
-			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression) {
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
-				if(sExpressionIn!=null) {							 							
-					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
-					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
-					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
-						this.updateValueParsedChanged();
-						this.updateValueParsedChanged(objReturnReference);
-					}
-				}			
-				
-				this.adoptEntryValuesMissing(objEntry);
-			}
-		}
-		return vecReturn;
-	}
-	
-	
-	//### Aus ISolveEnabled		
 	/**Methode ueberschreibt die Aufloesung von Pfaden und Ini-Variablen.
 	 * @param sExpression
 	 * @param objEntryReference
@@ -506,6 +403,114 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return sReturn;				
 	}
 	
+	//#########
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, null, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePostCustom_(vecExpression, null, bRemoveSurroundingSeparators);
+	}
+	
+	//### aus IKernelEntryReferenceSolveUserZZZ
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		return this.solvePostCustom_(vecExpression, objReturnReference, true);
+	}
+	
+	@Override
+	public Vector3ZZZ<String> solvePostCustom(Vector3ZZZ<String> vecExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		return this.solvePostCustom_(vecExpression, objReturnReference, bRemoveSurroundingSeparators);
+	}
+	
+	private Vector3ZZZ<String> solvePostCustom_(Vector3ZZZ<String> vecExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
+		Vector3ZZZ<String> vecReturn = vecExpressionIn;		
+		String sReturn = null;
+		String sReturnTag = null; String sReturnLine;
+		String sExpressionIn=null; String sExpression;	
+		boolean bUseExpression  = false;
+		
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
+		if(objReturnReferenceIn==null) {				
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();								
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReference.get();
+		}
+		if(objEntry==null) {
+			//ZWAR: Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"      =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ<T>();   //nicht den eigenen Tag uebergeben, das ist der Entry der ganzen Zeile!
+			objReturnReference.set(objEntry);
+		}	
+		sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
+		this.setRaw(sExpressionIn);
+		objEntry.setRaw(sExpressionIn);	
+		//20250312 objEntry.isParseCalled(true);
+		this.updateValueParseCalled();
+		this.updateValueParseCalled(objReturnReference);
+		sReturnLine = sExpressionIn;
+		
+		main:{	
+			bUseExpression = this.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+					
+			if(vecExpressionIn==null) break main;
+			vecReturn=vecExpressionIn;	
+							
+			sReturnTag = (String) vecExpressionIn.get(1);//VectorUtilZZZ.implode(vecExpressionIn);
+			sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			
+			//Folgender speziellen code soll auch ohne vorherige Aufloesung etwas setzen, naemlich den Code selbst.
+			if(StringZZZ.isEmpty(sReturnTag)){
+				
+				//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+				//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
+				KernelEncryption_CodeZZZ<T> objValue = new KernelEncryption_CodeZZZ<T>();
+				if(objValue.isExpression(sReturnTag)){	
+					objEntry.isEncrypted(true);
+					objEntry.setValueEncrypted(sReturnLine);//Zwischenstand festhalten
+					sReturnTag = objValue.parse(sReturnTag);															
+				}																							
+			}					
+		}//end main:
+	
+			
+		//#################################
+		//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+		if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag);
+		if(sReturnTag!=null) this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
+		if(objEntry!=null) {
+			objEntry.setValue(sReturn);
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(bUseExpression) {
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
+				if(sExpressionIn!=null) {							 							
+					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objReturnReference);
+					}
+				}			
+				
+				this.adoptEntryValuesMissing(objEntry);
+			}
+		}
+		return vecReturn;
+	}
+	
+	
+	//### Aus ISolveEnabled		
+	
+	
 	
 
 	//### Aus Interface IParseEnabledZZZ		
@@ -527,30 +532,6 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 	
 	
-
-	//### aus IExpressionUserZZZ
-//	@Override
-//	public String parseAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-//		String sReturn = sLineWithExpression;
-//		main:{	
-//			
-//			//Ergaenzen der Elternmethode um das Nachsehen in einem Flag
-//			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-//			if(bUseEncryption) {
-//				sReturn = super.parseAsExpression(sLineWithExpression);
-//			}else {
-//				sReturn = sLineWithExpression;
-//			}									
-//		}//end main:
-//		return sReturn;
-//	}
-	
-	//### aus IConvertableZZZ
-	@Override
-	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
-		return false;
-	}
-	
 	//### Aus IKernelIniSolver
 	/* (non-Javadoc)
 	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsEntry(java.lang.String)
@@ -571,8 +552,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return objReturn;
 	}
 	
-	//###### Getter / Setter
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isConvertRelevant(String sToProof) throws ExceptionZZZ {		
+		return false;
+	}
+		
 	//##########################
 	//### FLAG Handling
 	
