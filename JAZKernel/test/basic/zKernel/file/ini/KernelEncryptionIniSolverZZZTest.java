@@ -144,9 +144,8 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_Encryption_(String sExpressionSourceIn){
-		
-boolean btemp; int itemp;
+	private void testCompute_Encryption_(String sExpressionIn){
+		boolean btemp; int itemp;
 		
 		String sSection; String sProperty;
 		String sExpression; String sExpressionSubstituted; 
@@ -175,49 +174,89 @@ boolean btemp; int itemp;
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 1) Ohne jegliche Expression-Berechnung
 			//1a)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//1b)
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression;			
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression;	
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//1c)
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression; 			
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression; 	
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 				
 			//1d)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 2) Ohne Solver-Berechung
 			//2a)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//2b)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne Solver, bleibt sogar das Encryption-Tag drin, auch wenn sonst die Tags entfernt werden.
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//2c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			//Beim Solven ohne Solver, bleibt alles wie est ist.
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
 			//2d)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne Solver, werden nur die äusseren Z-Tags ggfs. entfernt.
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -225,26 +264,46 @@ boolean btemp; int itemp;
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 3) Ohne Encryption-Solver-Berechung
 			//3a)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//3b)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression; 
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//3c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			//Beim Solven ohne encryption, bleibt alles an Tags drin.
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
 			//3d)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;	
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
@@ -253,21 +312,36 @@ boolean btemp; int itemp;
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 4) Mit Encryption-Berechnung
 			//4a) nur parsen bringt keinen Unterschied, wenn die Tags drinbleiben sollen
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpressionSourceIn; 
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression; 
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
 			//4b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression;			
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//4c)
-			sExpression = sExpressionSourceIn;
-			sExpressionSubstituted = sExpressionSourceIn;
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSubstituted = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
 			sPre="";
 			sPost="";
@@ -275,12 +349,17 @@ boolean btemp; int itemp;
 			sTagSolved="TODO ALS KONSTANTE";
 			//Wichtig: z:Encrypted soll aus dem Ergebnis weg sein, wg. Aufloesen!!! Auch wenn die umgebenden Z-Tags drin bleiben.   //"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
 			//String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 
 			//4d)
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";			
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
+			sExpression = sExpressionIn;		
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = "abcde";//"<Z><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z>";
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 							
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -289,23 +368,35 @@ boolean btemp; int itemp;
 	
 	
 	
-	private boolean testCompute_Encryption_Unexpressed_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_Unexpressed_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; 
-			String sExpressionSolved; String sValue; String sValueUsed;
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
+			String sValue; Vector3ZZZ<String> vecValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry = null;
 			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			sPre = sPreIn;
+			sPost = sPostIn;
+			sTag = sTagIn;
+			sTagSolved = sTagSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNEXPRESSED;
 			
 			//####################################################################################
 			//### EXPRESSION - NICHT EXPRESSION BEHANDLUNG .solve
 			//####################################################################################
 			
 			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung						
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = sExpressionSolvedIn;
 			
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, false); 
@@ -328,10 +419,10 @@ boolean btemp; int itemp;
 		
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade substituiert.
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -364,10 +455,10 @@ boolean btemp; int itemp;
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -394,65 +485,68 @@ boolean btemp; int itemp;
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression,  objEnumSurrounding.getSurroundingValueUsedForMethod());				
+				assertNotNull(objEntry);
 							
-				assertTrue(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 				
-				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
-				sValueUsed = objEntryUsed.getValue();
-				assertEquals(sExpressionSolved, sValueUsed);
+				sValue = objEntry.getValue();
+				assertEquals(sExpressionSolved, sValue);
 				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 									
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
-				objEntryUsed = objSectionEntryReference.get();
-				assertNotNull(objEntryUsed);
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
 				
-				assertFalse(objEntryUsed.isParseCalled()); //Der Parse-Schritt wurde NICHT gemacht.
-				assertFalse(objEntryUsed.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+				assertFalse(objEntry.isParseCalled()); //Der Parse-Schritt wurde NICHT gemacht.
+				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
-				assertFalse(objEntryUsed.isPathSubstituted());
-				assertFalse(objEntryUsed.isVariableSubstituted());
+				assertFalse(objEntry.isPathSubstituted());
+				assertFalse(objEntry.isVariableSubstituted());
 
-				assertTrue(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
-			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objExpressionSolver, objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -461,19 +555,29 @@ boolean btemp; int itemp;
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encryption_Unsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparators, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_Unsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
-			String sExpression; 
-			String sExpressionSolved; String sValue; String sValueUsed;				
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
+			String sValue; Vector3ZZZ<String> vecValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry = null;
 			
 			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-						
+			String sTagEndZ = "</Z>";
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			sPre = sPreIn;
+			sPost = sPostIn;
+			sTag = sTagIn;
+			sTagSolved = sTagSolvedIn;
+				
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
+			
 			//####################################################################################
 			//### EXPRESSION - CALL NICHT .solve
 			//####################################################################################
@@ -500,10 +604,10 @@ boolean btemp; int itemp;
 						
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;		
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
@@ -541,10 +645,10 @@ boolean btemp; int itemp;
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -574,42 +678,42 @@ boolean btemp; int itemp;
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparators);
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression,  objEnumSurrounding.getSurroundingValueUsedForMethod());
+				assertNotNull(objEntry);
 				
-				sValue = objEntryUsed.getValue();
+				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled());
+				assertTrue(objEntry.isParseCalled());
 				
 				sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
-					assertFalse(objEntryUsed.isParsedChanged());						
+					assertFalse(objEntry.isParsedChanged());						
 				}else {
-					assertTrue(objEntryUsed.isParsedChanged());
+					assertTrue(objEntry.isParsedChanged());
 				}
 				
-				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 																
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
+				sExpression = sExpressionIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, bRemoveSurroundingSeparators);
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
@@ -636,7 +740,11 @@ boolean btemp; int itemp;
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objExpressionSolver, objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -645,15 +753,15 @@ boolean btemp; int itemp;
 		return bReturn;
 	}
 	
-	private boolean testCompute_Encryption_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_EncryptionSolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
 		try {
 			boolean btemp; 
 			
 			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
 			String sValue; Vector3ZZZ<String> vecValue;				
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry = null;
 			
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
@@ -768,59 +876,59 @@ boolean btemp; int itemp;
 		
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {				
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
-				assertNotNull(objEntryUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
+				assertNotNull(objEntry);
 												
 				sValue = objExpressionSolver.getValue();				
 				assertEquals(sExpressionSolved, sValue);
 
-				assertTrue(objEntryUsed.isParseCalled());
+				assertTrue(objEntry.isParseCalled());
 				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
-					assertTrue(objEntryUsed.isParsedChanged());
+					assertTrue(objEntry.isParsedChanged());
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged());						
+					assertFalse(objEntry.isParsedChanged());						
 				}
 				
-				assertFalse(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 			
 			
-				assertFalse(objEntryUsed.isDecrypted()); //Ist kein solve-Schritt involviert.
-				assertNull(objEntryUsed.getValueDecrypted());  				
+				assertFalse(objEntry.isDecrypted()); //Ist kein solve-Schritt involviert.
+				assertNull(objEntry.getValueDecrypted());  				
 				
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				objEntryUsed = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());				
-				assertNotNull(objEntryUsed);
+				objEntry= objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());				
+				assertNotNull(objEntry);
 				
 				//Der Wert des Tags unterscheidet sich vom Wert der gesamt geparsten Zeile
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled());				
+				assertTrue(objEntry.isParseCalled());				
 				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
-					assertTrue(objEntryUsed.isParsedChanged());
+					assertTrue(objEntry.isParsedChanged());
 				}else {
-					assertFalse(objEntryUsed.isParsedChanged());						
+					assertFalse(objEntry.isParsedChanged());						
 				}
 				
-				assertTrue(objEntryUsed.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertTrue(objEntryUsed.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				assertTrue(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 			
 			
-				assertTrue(objEntryUsed.isDecrypted()); //Ist ja ein solve-Schritt involviert und es wurde aufgeloest.
-				assertNotNull(objEntryUsed.getValueDecrypted());  				
+				assertTrue(objEntry.isDecrypted()); //Ist ja ein solve-Schritt involviert und es wurde aufgeloest.
+				assertNotNull(objEntry.getValueDecrypted());  				
 				
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
@@ -842,18 +950,32 @@ boolean btemp; int itemp;
 	
 	
 	
-	private boolean testCompute_Encryption_EncryptionUnsolved_(String sExpressionSourceIn, String sExpressionSolvedIn, boolean bRemoveSurroundingSeparatorsOnSolve, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
+	private boolean testCompute_Encryption_EncryptionUnsolved_(String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sPreIn, String sPostIn, String sTagIn, String sTagSolvedIn, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase) {
 		boolean bReturn = false;
-		
 		try {
 			boolean btemp; 
 			
-			String sExpression; 
-			String sExpressionSolved; String sValue; String sValueUsed;			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;
-			IKernelConfigSectionEntryZZZ objEntry; IKernelConfigSectionEntryZZZ objEntryUsed;  
-					
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+			String sExpression;  String sExpressionSubstituted; String sExpressionSolved; String sPre; String sPost; String sTag; String sTagSolved;
+			String sValue; Vector3ZZZ<String> vecValue;				
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";
+			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionSubstitutedIn;
+			sExpressionSolved = sExpressionSolvedIn;
+			sPre = sPreIn;
+			sPost = sPostIn;
+			sTag = sTagIn;
+			sTagSolved = sTagSolvedIn;
+			
+			IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.ENCRYPTION_UNSOLVED;
+			
+			//####################################################################################
+			//### EXPRESSION .solve
+			//####################################################################################
 			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.		
 			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
@@ -875,11 +997,8 @@ boolean btemp; int itemp;
 		
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
-			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;		
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
+				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 				
 				objEntry = objSectionEntryReference.get();
@@ -920,10 +1039,7 @@ boolean btemp; int itemp;
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, bRemoveSurroundingSeparatorsOnSolve);
+				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
@@ -954,32 +1070,36 @@ boolean btemp; int itemp;
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionSourceIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objEntryUsed = objExpressionSolver.parseAsEntry(sExpression, bRemoveSurroundingSeparatorsOnSolve);				
-				assertNotNull(objEntryUsed);
-				sValueUsed = objEntryUsed.getValue();
-				assertEquals(sExpressionSolved, sValueUsed);
+				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
+				assertNotNull(objEntry);
+				sValue = objEntry.getValue();
+				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntryUsed.isParseCalled());
+				assertTrue(objEntry.isParseCalled());
 				if(sExpression.equals(sExpressionSolved)) {
-					assertFalse(objEntryUsed.isParsedChanged());						
+					assertFalse(objEntry.isParsedChanged());						
 				}else {
-					assertTrue(objEntryUsed.isParsedChanged());
+					assertTrue(objEntry.isParsedChanged());
 				}
 				
-				assertFalse(objEntryUsed.isSolveCalled());
-				assertFalse(objEntryUsed.isSolvedChanged());
+				assertFalse(objEntry.isSolveCalled());
+				assertFalse(objEntry.isSolvedChanged());
 				
-				assertFalse(objEntryUsed.isDecrypted());
-				assertNull(objEntryUsed.getValueDecrypted()); 				
+				assertFalse(objEntry.isDecrypted());
+				assertNull(objEntry.getValueDecrypted()); 				
 				
-				assertFalse(objEntryUsed.isCall());
-				assertFalse(objEntryUsed.isJavaCall());
-				assertNull(objEntryUsed.getCallingClassname());
-				assertNull(objEntryUsed.getCallingMethodname());
+				assertFalse(objEntry.isCall());
+				assertFalse(objEntry.isJavaCall());
+				assertNull(objEntry.getCallingClassname());
+				assertNull(objEntry.getCallingMethodname());
 			}
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//Nutze eine Sammlung von assert Methoden, die ein objEntry als input hat.
+			//und in der die verschiedenen stati für den unexpressed, unsubstituted, substituted, unsolved, etc Fall stehen.
+			btemp = TestUtilAsTestZZZ.assertFileIniEntry(objExpressionSolver, objEnumFlagset, objEnumSurrounding, objEnumTestCase, objEntry, sExpression, sExpressionSubstituted, sExpressionSolved, sTag, sTagSolved);
+			assertTrue(btemp);
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
@@ -1019,16 +1139,16 @@ boolean btemp; int itemp;
 	 * 
 	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
 	 */
-	private void testCompute_EncryptionAsEntry_(String sExpressionSourceIn){
-		
+	private void testCompute_EncryptionAsEntry_(String sExpressionIn){
 		boolean btemp; int itemp;
 		
 		String sSection; String sProperty;
 		String sExpression; String sExpressionSubstituted; 
 		String sExpressionSolved; String sExpressionSolvedTagless;
 		String sPre; String sPost; String sTag; String sTagSolved;
-		IKernelConfigSectionEntryZZZ objEntry; ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference;
-	
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+		IKernelConfigSectionEntryZZZ objEntry = null;
+			
 		String sValue;
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";	
@@ -1041,11 +1161,16 @@ boolean btemp; int itemp;
 			//+++ Mit Encryption-Berechnung
 			
 			//c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
 			
@@ -1060,77 +1185,136 @@ boolean btemp; int itemp;
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 1) Ohne jegliche Expression-Berechnung
 			//1a)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//1b)
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression;			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//1c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
 			//1d)
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression;			
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unexpressed_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ 2) Ohne Solver-Berechung		
 			//2a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//2b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 
 			//2c)  Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpression = sExpressionSourceIn;
-			sExpressionSolved = sExpression;						
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
+			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			//2d) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_Unsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 
 			
 			
 			//+++ 3) Ohne Encryption-Berechung
 			//3a) Wenn die Tags drinbleiben sollen ist es egal, ob der Solver an oder aus ist.
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//3b) Ist der Solver aus, dann bleiben beim Parsen die Tags des Solver drin, obwohl Tags entfernt werden sollen.
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);			
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//3c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			//3d)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);			
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			
@@ -1139,32 +1323,52 @@ boolean btemp; int itemp;
 			
 			//+++ 4) Mit Encryption-Berechnung
 			//4a)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 		
 			//4b)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY);
 			
 			//4c)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 			//4d)
-			sExpression = sExpressionSourceIn;
+			sExpression = sExpressionIn;
+			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = "<Z><Z:Encrypted>abcde</Z:Encrypted></Z>";//Der Wert des Tags selbst unterscheidet sich vom Wert der gesamt geparsten Zeile und hat nie umgebende Tags des solvers selbst drumherum
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);			
-			btemp = testCompute_Encryption_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
+			sPre = "";
+			sPost = "";
+			sTag = "MUSS AUS KONSTANTE KOMMEN";
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
+			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

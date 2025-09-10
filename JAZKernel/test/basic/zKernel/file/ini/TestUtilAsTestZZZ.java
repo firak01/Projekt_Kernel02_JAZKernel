@@ -66,6 +66,10 @@ public class TestUtilAsTestZZZ extends TestCase{
 	public static final String sFLAGSET_JSONMAP_SOLVED="jms";
 	public static final String sFLAGSET_JSONMAP_UNSOLVED="jmus";
 	
+	
+	public static final String sFLAGSET_ENCRYPTION_SOLVED="encs";
+	public static final String sFLAGSET_ENCRYPTION_UNSOLVED="encus";
+	
 	public static final String sCASE_PARSE="p";
 	public static final String sCASE_SOLVE="s";
 	public static final String sCASE_PARSE_AS_ENTRY="pae";

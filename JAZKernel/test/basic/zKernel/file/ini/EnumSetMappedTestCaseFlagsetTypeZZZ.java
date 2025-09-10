@@ -47,6 +47,8 @@ public enum EnumSetMappedTestCaseFlagsetTypeZZZ implements IEnumSetMappedTestFla
 	JSONMAP_SOLVED("jsonmap_solved",TestUtilAsTestZZZ.sFLAGSET_JSONMAP_SOLVED,"Flagset Variante: 'JsonArray solved'"),
 	JSONMAP_UNSOLVED("jsonmap_unsolved",TestUtilAsTestZZZ.sFLAGSET_JSONMAP_UNSOLVED,"Flagset Variante: 'JsonArray unsolved'"),
 	
+	ENCRYPTION_SOLVED("encryption_solved",TestUtilAsTestZZZ.sFLAGSET_ENCRYPTION_SOLVED,"Flagset Variante: 'Encryption solved'"),
+	ENCRYPTION_UNSOLVED("encryption_unsolved",TestUtilAsTestZZZ.sFLAGSET_ENCRYPTION_UNSOLVED,"Flagset Variante: 'Encryption unsolved'"),
 	
 	;
 	
