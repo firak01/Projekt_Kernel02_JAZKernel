@@ -902,9 +902,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			String sValue; String sValueUsed; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null;
-			
-			String sExpressionSurroundedTemp=null;
-			
+						
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";		
 			
@@ -958,7 +956,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 				//#####################################
 				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
-				sExpressionSurroundedTemp = sExpressionSubstituted;
+				
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
 				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
@@ -984,7 +983,14 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
+				
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
+				
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
@@ -996,21 +1002,30 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntry);
-
 				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);				
-
+				
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
+				assertEquals(sExpressionSubstituted, sValue);
+							
 			}
 			
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
 				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
-				assertNotNull(objEntry);
-				
+				assertNotNull(objEntry);				
 				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);				
-
+				
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 			}
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 			

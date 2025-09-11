@@ -85,7 +85,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	//private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
 	//private String sValueRaw=null;
 	
-	private boolean bSkipCache=false;
+	//private boolean bSkipCache=false;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super("init");//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht

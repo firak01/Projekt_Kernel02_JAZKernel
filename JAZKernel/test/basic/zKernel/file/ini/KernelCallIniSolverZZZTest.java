@@ -1141,7 +1141,6 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 				if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {						
 					sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
-					assertEquals(sExpressionSolved, sValue);
 					
 					String sExpressionSurroundedTemp = sExpressionSubstituted;
 					if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {

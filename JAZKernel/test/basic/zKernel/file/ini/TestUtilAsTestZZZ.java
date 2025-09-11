@@ -210,6 +210,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 }
 	
 	
+	public static boolean assertIsParseCalled(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			
+			assertTrue(objEntry.isParseCalled());
+			bReturn = true;
+			
+		}//end main;
+		return bReturn;
+	}
+	
 	
 	public static boolean assertIsParsedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -291,6 +312,26 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 		
+	public static boolean assertIsPathSubstituteCalled(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			
+			assertTrue(objEntry.isPathSubstituteCalled());
+			bReturn = true;
+			
+		}//end main;
+		return bReturn;
+	}
 	
 	public static boolean assertIsPathSubstitutedChanged(IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -1654,13 +1695,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertFalse(objEntry.isSolvedChanged()); //nur mit parse wird hier nix geaendert						
 			assertFalse(objEntry.isSolved()); //hier ist der Parse Fall
 			
-			//###########################			
-			assertTrue(objEntry.isParseCalled());
+			//###########################						
+			assertIsParseCalled(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsParsedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isParsed()); 
 			
-			//++++++++++++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());
+			//++++++++++++++++++++++++++++++++			
+			assertIsPathSubstituteCalled(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsPathSubstitutedChanged(objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
 			//++++++++++++++++++++++++						

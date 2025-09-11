@@ -601,18 +601,30 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true); //sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "'", btemp);
 			
-						
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
+									
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;		
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
-				assertEquals(sExpressionSolved, sValue);
+				
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
+				assertEquals(sExpressionSubstituted, sValue);
+									
+				objEntry = objSectionEntryReference.get();
+				assertNotNull(objEntry);
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
 				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);								
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);								
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
@@ -645,14 +657,21 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference,  objEnumSurrounding.getSurroundingValueUsedForMethod());
+			
+				String sExpressionSurroundedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSurroundedTemp;
 				assertEquals(sExpressionSolved, sValue);
 
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
+				
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
 				assertTrue(objEntry.isParseCalled());
 				
@@ -678,14 +697,21 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.parseAsEntry(sExpression,  objEnumSurrounding.getSurroundingValueUsedForMethod());
 				assertNotNull(objEntry);
-				
 				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);
+				
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionSurroundedTemp;
+				assertEquals(sExpressionSubstituted, sValue);
+				
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
 				
 				assertTrue(objEntry.isParseCalled());
 				
@@ -710,14 +736,19 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
-				sExpression = sExpressionIn;
-				sExpressionSolved = sExpressionSolvedIn;
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.solveAsEntry(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
-				assertNotNull(objEntry);
-				
+				assertNotNull(objEntry);				
 				sValue = objEntry.getValue();
+				
+				String sExpressionSurroundedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSurroundedTemp;
 				assertEquals(sExpressionSolved, sValue);
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
 				assertTrue(objEntry.isParseCalled());
 				
