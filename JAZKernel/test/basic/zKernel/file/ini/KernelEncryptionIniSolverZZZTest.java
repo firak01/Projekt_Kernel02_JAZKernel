@@ -445,9 +445,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+
+//Nachtestutil verschieben
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -475,9 +478,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+
+//Nach TestUtil verschieben
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -490,15 +496,25 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objEntry = objExpressionSolver.parseAsEntry(sExpression,  objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntry);
-							
-				assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
 				
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());
+//				Nach TestutilVerschieben
+				//assertTrue(objEntry.isParseCalled()); //Der Parse-Schritt wurde gemacht.
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				//assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+								
+				//assertFalse(objEntry.isPathSubstituted());
+//				assertIsPathSubstituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				//assertFalse(objEntry.isVariableSubstituted());
+//				assertIsVariableSubstituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				
+				//assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert"
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
@@ -506,8 +522,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 									
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
@@ -523,21 +542,35 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				
-				assertFalse(objEntry.isParseCalled()); //Der Parse-Schritt wurde NICHT gemacht.
-				assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
-				
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());
 
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+//NAch TestUtil verschieben
+				//assertFalse(objEntry.isParseCalled()); //Der Parse-Schritt wurde NICHT gemacht.
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isParsedChanged()); //es wird ja nix gemacht, also immer "unveraendert"
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);)
+				
+				//assertFalse(objEntry.isPathSubstituted());
+//				assertIsPathSubstituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isVariableSubstituted());
+//				assertIsVariableSubstituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+
+				//assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert"
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
@@ -618,10 +651,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 									
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
-				
-				//+++++++++++++++++++++++++++++++++++++++++++++++++++
-				//TODOGOON ab hier in testutil packen.....
-				
+								
 				sExpressionSolved = sExpressionSolvedIn; //der Wert des Tags selbst unterscheidet sich immer vom Wert der Zeile
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);								
@@ -632,24 +662,37 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 
-				assertTrue(objEntry.isParseCalled());
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
-				sExpressionSolved = sExpressionSolvedIn;
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				
+				/*sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 				
+				//assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);)
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -673,23 +716,31 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++
 				//TODOGOON ab hier in testutil packen.....
 				
-				assertTrue(objEntry.isParseCalled());
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				sExpressionSolved = sExpressionSolvedIn;
+				/*sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
+				//assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+
+				//assertFalse(objEntry.isSolvedChanged()); //Ohne Expression Behandlung wird auch nichts geaendert.
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+					
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -713,23 +764,32 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				//TODOGOON ab hier in testutil packen.....
 				
 				
-				assertTrue(objEntry.isParseCalled());
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				sExpressionSolved = sExpressionSolvedIn;
+				/*sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-																
+				//assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);	
+				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
@@ -750,23 +810,29 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++
 				//TODOGOON ab hier in testutil packen.....
 				
-				assertTrue(objEntry.isParseCalled());
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				sExpressionSolved = sExpressionSolvedIn;
+				/*sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 								
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+				//assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
 				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
 								
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -845,25 +911,38 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 
-				sExpressionSolved = sExpressionSolvedIn;
-				assertTrue(objEntry.isParseCalled());
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
 				sExpressionSolved = sExpressionSolvedIn;
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				/*sExpressionSolved = sExpressionSolvedIn;
 				if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				//assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert"
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -884,22 +963,34 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sValue = objExpressionSolver.getValue();					
 				assertEquals(sExpressionSolved, sValue);
 				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
 				
-				assertTrue(objEntry.isParseCalled());
-				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				/*if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntry.isParsedChanged());
 				}else {
 					assertFalse(objEntry.isParsedChanged());						
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertTrue(objEntry.isSolvedChanged());  
+				//assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertTrue(objEntry.isSolvedChanged());
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
 				assertTrue(objEntry.isDecrypted());
 				assertNotNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht. 
 								
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertISCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -913,22 +1004,35 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sValue = objExpressionSolver.getValue();				
 				assertEquals(sExpressionSolved, sValue);
 
-				assertTrue(objEntry.isParseCalled());
-				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+						
+				/*if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntry.isParsedChanged());
 				}else {
 					assertFalse(objEntry.isParsedChanged());						
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+				//assertFalse(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert"
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			
 				assertFalse(objEntry.isDecrypted()); //Ist kein solve-Schritt involviert.
 				assertNull(objEntry.getValueDecrypted());  				
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
@@ -942,22 +1046,34 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sValue = objExpressionSolver.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntry.isParseCalled());				
-				if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				/*if(objEnumSurrounding.getSurroundingValueUsedForMethod()) {
 					assertTrue(objEntry.isParsedChanged());
 				}else {
 					assertFalse(objEntry.isParsedChanged());						
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
-				assertTrue(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
-			
+				//assertTrue(objEntry.isSolveCalled()); //Der Solve-Schritt wurde gemacht.
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertTrue(objEntry.isSolvedChanged()); //es wird ja nix gemacht, also "unveraendert" 
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 				assertTrue(objEntry.isDecrypted()); //Ist ja ein solve-Schritt involviert und es wurde aufgeloest.
 				assertNotNull(objEntry.getValueDecrypted());  				
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
@@ -1049,20 +1165,32 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 //				}else {
 //					assertFalse(objEntry.isParsed());
 //				}
-				assertTrue(objEntry.isParseCalled());
-				if(sExpression.equals(sExpressionSolved)) {
+				
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+	
+				/*if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+				//assertFalse(objEntry.isSolveCalled()); //Der konkrete Solver ist nicht involviert
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isDecrypted());
+				assertFalse(objEntry.isDecrypted());				
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -1076,24 +1204,39 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
-				assertTrue(objEntry.isParseCalled()); //Der parse Schritt wird ausgefuehrt.				
-				if(sExpression.equals(sExpressionSolved)) {
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
+				//assertTrue(objEntry.isParseCalled()); //Der parse Schritt wird ausgefuehrt.
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+						
+				/*if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
 				
-				assertFalse(objEntry.isPathSubstituted());
-				assertFalse(objEntry.isVariableSubstituted());
-								
-				assertTrue(objEntry.isSolveCalled()); //der solve Schritt wird ausgefuehrt
-				assertFalse(objEntry.isSolvedChanged()); //der Solver ist ja abgestellt
+				//assertFalse(objEntry.isPathSubstituted());
+				assertIsPathSubsituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isVariableSubstituted());
+//				assertIsVariableSubstituted(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);	
+				
+				//assertTrue(objEntry.isSolveCalled()); //der solve Schritt wird ausgefuehrt
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged()); //der Solver ist ja abgestellt
+//				assertIsSolvedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
 				assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 			}
@@ -1106,21 +1249,35 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				sValue = objEntry.getValue();
 				assertEquals(sExpressionSolved, sValue);
 				
-				assertTrue(objEntry.isParseCalled());
-				if(sExpression.equals(sExpressionSolved)) {
+
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				//TODOGOON ab hier in testutil packen.....
+				
+				//assertTrue(objEntry.isParseCalled());
+//				assertIsParseCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				/*if(sExpression.equals(sExpressionSolved)) {
 					assertFalse(objEntry.isParsedChanged());						
 				}else {
 					assertTrue(objEntry.isParsedChanged());
-				}
+				}*/
+//				assertIsParsedChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
-				assertFalse(objEntry.isSolveCalled());
-				assertFalse(objEntry.isSolvedChanged());
+				//assertFalse(objEntry.isSolveCalled());
+//				assertIsSolveCalled(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isSolvedChanged());
+//				assertIsSolveChanged(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				
 				assertFalse(objEntry.isDecrypted());
 				assertNull(objEntry.getValueDecrypted()); 				
 				
-				assertFalse(objEntry.isCall());
-				assertFalse(objEntry.isJavaCall());
+				//assertFalse(objEntry.isCall());
+//				assertIsCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
+				//assertFalse(objEntry.isJavaCall());
+//				assertIsJavaCall(objExpressionSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+				
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
 			}
