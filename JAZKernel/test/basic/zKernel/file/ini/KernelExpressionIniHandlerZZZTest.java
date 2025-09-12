@@ -3970,8 +3970,6 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 			assertTrue("Flag nicht vorhanden '" + IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA + "'", btemp);
 		
 			
-			boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
-			
 			//Wert mit dem Entry-Wert aus Methode vergleichen
 			objEntry = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled");
 			assertNotNull(objEntry);

@@ -531,15 +531,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
 			
-			//Direkte nachdem feststeht, dass Expression behandelt werden die Tags analysieren!!!
-			this.updateValueParseCustom(objReturnReference, sExpression);
-			
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
-						
+
+			//Direkte nachdem feststeht, dass Expression und Parser behandelt werden die Tags analysieren!!!
+			this.updateValueParseCustom(objReturnReference, sExpression);
+
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
+			
 			
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 			//Merke: in Elternklassen gibt es diese Methode nur ohne Reference, da ohne KernelEbene das Objekt nicht vorhanden ist.
@@ -741,6 +742,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
 						
+			
+														
 			//###########################################
 			//### 
 			//###########################################

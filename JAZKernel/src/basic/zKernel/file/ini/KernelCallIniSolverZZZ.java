@@ -144,13 +144,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			String sExpression = sExpressionIn;
 		
 			//#####################################################################
-			//Flags entscheiden, ob es weiter geht
-			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
-					
+			//Flags entscheiden, ob es weiter geht					
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
+			
+			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen			
 			if(!this.isParserEnabledCustom()) break main;
-				
+			
+						
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isCall(true);
 				this.getEntry().isCall(true);
@@ -382,14 +383,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				
 			bUseParser = this.isParserEnabledGeneral();
 			if(!bUseParser) break main;
-				
+			
 			//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
 			this.updateValueParseCustom(objReturnReference, sExpression);
-			
 			
 			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
 			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
 			if(!bUseParserThis) break main;
+			
 			
 			//###########################################
 			//### 

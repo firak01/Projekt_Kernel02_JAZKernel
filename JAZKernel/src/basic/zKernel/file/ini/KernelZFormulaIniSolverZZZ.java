@@ -427,13 +427,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		String sExpression = sExpressionIn;
 	
 		//#####################################################################
-		//Flags entscheiden, ob es weiter geht
-		super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
-				
+		//Flags entscheiden, ob es weiter geht			
 		if(!this.isExpressionEnabledGeneral()) break main;
 		if(!this.isParserEnabledGeneral()) break main;
-		if(!this.isParserEnabledCustom()) break main;
 		
+		super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen		
+		if(!this.isParserEnabledCustom()) break main;
+						
 		if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 			objEntry.isFormula(true);
 			this.getEntry().isFormula(true);

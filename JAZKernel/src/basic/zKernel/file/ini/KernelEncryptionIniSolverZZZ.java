@@ -163,13 +163,13 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 			String sExpression = sExpressionIn;
 		
 			//#####################################################################
-			//Flags entscheiden, ob es weiter geht
-			super.updateValueParseCustom(objReturnReference, sExpressionIn);
-			
+			//Flags entscheiden, ob es weiter geht			
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
-			if(!this.isParserEnabledCustom()) break main;
 			
+			super.updateValueParseCustom(objReturnReference, sExpressionIn);
+			if(!this.isParserEnabledCustom()) break main;
+											
 			if(XmlUtilZZZ.containsTagName(sExpressionIn, this.getName(), false)){
 				objEntry.isEncrypted(true);
 				this.getEntry().isEncrypted(true);

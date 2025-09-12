@@ -145,13 +145,15 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			String sExpression = sExpressionIn;
 		
 			//#####################################################################
-			//Flags entscheiden, ob es weiter geht
-			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen
-					
+			//Flags entscheiden, ob es weiter geht					
 			if(!this.isExpressionEnabledGeneral()) break main;
 			if(!this.isParserEnabledGeneral()) break main;
+			
+			super.updateValueParseCustom(objReturnReference, sExpression); //isExpression setzen			
 			if(!this.isParserEnabledCustom()) break main;
 			boolean bUseParser = true;
+			
+			
 			
 			//20250526: Der KernelExpressionIniHandler macht folgendes:
 			//          Beim SOLVEN wird jeder einzelne Solver aufgerufen, und darin wird auch jeder sein "parse" aufrufen.
