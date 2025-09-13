@@ -131,15 +131,17 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";	
 		
-		try {						
-			btemp = objExpressionSolver.setFlag("useexpression", true); //damit wird man das Z-Tag los. 
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
-			
+		try {				
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Anwenden der ersten Formel, ohne JSON-Berechnung	
+			btemp = objExpressionSolver.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Das Flag '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "' sollte zur Verfügung stehen.", btemp);
+						
 			btemp = objExpressionSolver.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);			
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
 						
-			btemp = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "' sollte zur Verfügung stehen.", btemp);
 			
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
 			sExpressionSolved = sExpression;
@@ -148,23 +150,15 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);//unveraendert wg. useexpresseion = false,  usejson = false
 			
-		
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//Anwenden der ersten Formel, ohne JSON-Berechnung	
-			//Berechne nun aus einem ini-File heraus
-			btemp = objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
-			
-			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
-			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			sValue = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();			
-			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++					
 			//### Berechung der Formel			
-			objExpressionSolver.setFlag("usejson", true);
-			objExpressionSolver.setFlag("usejson_msp", true);
+			btemp = objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); 
+			assertTrue("Das Flag '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "' sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); 
+			assertTrue("Das Flag '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "' sollte zur Verfügung stehen.", btemp);
+			
 			
 			//a) Default, drinlassen des Z-Tags
 			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
@@ -181,20 +175,40 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertNotNull(sValue);
 			assertEquals(sExpressionSolved, sValue);
 			
-			
-			//+++++++++++++++++++++++++++
+			//################################################################
 			//Berechne nun aus einem ini-File heraus
-			btemp = objFileIniTest.setFlag("useexpression", true);
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", btemp);
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Anwenden der ersten Formel, ohne JSON-Berechnung		
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Das Flag '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "' sollte zur Verfügung stehen.", btemp);
 			
 			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+						
+			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "' sollte zur Verfügung stehen.", btemp);
 			
+			sExpression = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT;
+			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sValue = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();			
+			assertEquals(sExpressionSolved, sValue);
 			
-			btemp = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", btemp);
-			btemp = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", btemp);
+			//+++++++++++++++++++++++++++
+			//Anwenden der ersten Formel, mit JSON-Berechnung		
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Das Flag '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "' sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+						
+			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Das Flag '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "' sollte zur Verfügung stehen.", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true); 
+			assertTrue("Das Flag '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "' sollte zur Verfügung stehen.", btemp);
+			
 			
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			assertNotNull(objEntry);
