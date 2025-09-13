@@ -408,9 +408,13 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
-		ArrayList<String> alsReturn = null;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
+		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
+		
+		ArrayList<String> alsReturn = null;
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -430,6 +434,8 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
+		
+		sReturnLineParsed2compareWithSolved = sExpressionIn;
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -443,11 +449,11 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 						
 			String sExpression = sExpressionIn;
 			
-			bUseSolver = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolverThis) break main;
 						
 			//##################################
-			//### Besonderheiten dieses Solvers
+			//### START: Besonderheiten dieses Solvers
 			//###################################		
 			
 			//Berechnen der ArrayList aus einem vermeintlichen JSON-Ausdruck
@@ -460,7 +466,11 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 			sReturnTagSolved = sReturnTag;
 			sReturnLine = sReturnTag;
 			sReturn = sReturnLine;
-						
+				
+			//##################################
+			//### ENDE: Besonderheiten dieses Solvers
+			//###################################	
+			
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);
 		}//end main:	
@@ -474,7 +484,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			
-			if(bUseExpression && bUseSolver) {
+			if(bUseExpression && bUseSolverThis) {
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();

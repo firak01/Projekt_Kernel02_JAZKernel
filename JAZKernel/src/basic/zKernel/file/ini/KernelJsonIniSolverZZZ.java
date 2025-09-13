@@ -367,17 +367,14 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
 		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
 		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();	
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
-		boolean bUseJsonArray = false; boolean bUseJsonMap = false;
 		
-		String sTagStartZ = "<Z>";
-		String sTagEndZ = "</Z>";	
-
-				
+		boolean bUseJsonArray = false; boolean bUseJsonMap = false;							
 		ArrayList<String> alsReturn = null;
 		HashMap<String,String> hmReturn = null;
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
 								
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -391,14 +388,15 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
-			objReturnReference.set(objEntry);
+			objReturnReference.set(objEntry);			
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);		
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
-		sReturnLineParsed2compareWithSolved = sExpressionIn;
 		
 		
+		sReturnLineParsed2compareWithSolved = sExpressionIn;				
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -409,14 +407,14 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
-						
-			bUseSolverThis = this.isSolverEnabledAnyRelevant();
-			if(!bUseSolverThis) break main;
 			
 			String sExpression = sExpressionIn;
-			
+						
+			bUseSolverThis = this.isSolverEnabledEveryRelevant();
+			if(!bUseSolverThis) break main;
+
 			//##################################
-			//### Besonderheiten dieses Solvers
+			//### START: Besonderheiten dieses Solvers
 			//###################################		
 			
 			//nach dem ...post noch den Wert fuer spaeter sichern
@@ -486,14 +484,17 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					}																	
 				}										
 			}	
-						
-								
-			this.updateValueSolved();
-			this.updateValueSolved(objReturnReference);		
 			
 			//nach dem ...post noch den Wert fuer spaeter sichern
-			sReturnLineSolved2compareWithParsed = sReturnLine;
-			sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
+			//sReturnLineSolved2compareWithParsed = sReturnLine;
+			//sReturnLineSolved2compareWithParsed = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineSolved2compareWithParsed, sTagStartZ, sTagEndZ);
+						
+			//##################################
+			//### ENDE: Besonderheiten dieses Solvers
+			//###################################	
+						
+			this.updateValueSolved();
+			this.updateValueSolved(objReturnReference);								
 		}//end main:	
 		
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen
@@ -506,33 +507,38 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
-			if(bUseExpression) {			
-				if(bUseSolverThis) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
-					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
-						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
-						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
-						System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
-						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
-						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
-							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
-							this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
-						}
+			if(bUseExpression && bUseSolverThis) {	
+				if(sReturnTagSolved!=null) {				
+					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
+						this.updateValueSolvedChanged();
+						this.updateValueSolvedChanged(objReturnReference);
 					}
-					
-					if(alsReturn!=null) {
-						objEntry.setValue(alsReturn);
-						objEntry.isJsonArray(true);
-					}
-					
-					if(hmReturn!=null) {
-						objEntry.setValue(hmReturn);
-						objEntry.isJsonMap(true);
-					}										
-				}																		
-				this.adoptEntryValuesMissing(objEntry);
-			}
-		}
+				}
+				
+//				if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
+//					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+//					//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+//					//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+//					System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
+//					System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
+//					if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
+//						this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+//						this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
+//					}
+//				}
+				
+				if(alsReturn!=null) {
+					objEntry.setValue(alsReturn);
+					objEntry.isJsonArray(true);
+				}
+				
+				if(hmReturn!=null) {
+					objEntry.setValue(hmReturn);
+					objEntry.isJsonMap(true);
+				}										
+			}																		
+			this.adoptEntryValuesMissing(objEntry);
+		}	
 		return sReturn;				
 	}
 

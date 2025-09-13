@@ -453,9 +453,14 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 	}
 	
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators) throws ExceptionZZZ {		
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
+		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
+		
 		HashMap<String,String> hmReturn = null;		
-		boolean bUseExpression = false; boolean bUseSolverThis = false; //boolean bUseSolverThis = false;
+		
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
@@ -475,6 +480,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 		objEntry.setRaw(sExpressionIn);	
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
+		
+		sReturnLineParsed2compareWithSolved = sExpressionIn;
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
@@ -491,9 +498,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
 			if(!bUseSolverThis) break main;
 			
-												
 			//##################################
-			//### Besonderheiten dieses Solvers
+			//### START: Besonderheiten dieses Solvers
 			//###################################		
 			
 			//Berechnen der HashMap aus einem vermeintlichen JSON-Ausdruck
@@ -508,7 +514,11 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			sReturnTagSolved = sReturnTag;
 			sReturnLine = sReturnTag;
 			sReturn = sReturnLine;
-						
+			
+			//##################################
+			//### ENDE: Besonderheiten dieses Solvers
+			//###################################	
+			
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);
 		}//end main:	

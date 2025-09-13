@@ -573,9 +573,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
 	private String solveParsed_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bRemoveSurroundingSeparators)	throws ExceptionZZZ {
-		String sReturn = null; String sReturnLine = null; String sReturnTag = null; String sReturnTagParsed = null; String sReturnTagSolved = null; 
-		boolean bUseExpression = false; boolean bUseSolver = false; //boolean bUseSolverThis = false;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;	
+		String sReturnTag2Solve = null; String sReturnTagParsed = null; String sReturnTagSolved = null;	
+		String sReturnLineParsed = null; String sReturnLineSolved = null; String sReturnLineSolved2compareWithParsed = null; String sReturnLineParsed2compareWithSolved = null;	
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 			
+		
+		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		if(objReturnReferenceIn==null) {
@@ -590,27 +595,33 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+		this.setRaw(sExpressionIn);
 		objEntry.setRaw(sExpressionIn);		
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
+		
+		
+		sReturnLineParsed2compareWithSolved = sExpressionIn;				
 		sReturnLine = sExpressionIn;
 		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
 		sReturnTagParsed = sReturnTag;
 		sReturnTagSolved = sReturnTag;
 		sReturn = sReturnLine;
 		main:{			
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 									
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
-						
-			bUseSolver = this.isSolverEnabledAnyRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
 			
 			String sExpression = sExpressionIn;
 						
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolverThis) break main;
+			
+			
+						
 			//##################################
-			//### Besonderheiten dieses Solvers
+			//### START: Besonderheiten dieses Solvers
 			//###################################		
 			
 			//Aufloesen des CALL-Tags
@@ -618,7 +629,11 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			sReturnTag = this.getValue();
 			sReturnTagSolved = sReturnTag;
 			objEntry = objReturnReference.get();	
-									
+					
+			//##################################
+			//### ENDE: Besonderheiten dieses Solvers
+			//###################################	
+						
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);
 		}//end main
@@ -634,14 +649,14 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		
-			//if(bUseExpression && bUseSolver && bUseSolverThis) {
-			if(bUseExpression && bUseSolver) {
+			if(bUseExpression && bUseSolverThis) {
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objReturnReference);
 					}
 				}
+				
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
 			}
 			

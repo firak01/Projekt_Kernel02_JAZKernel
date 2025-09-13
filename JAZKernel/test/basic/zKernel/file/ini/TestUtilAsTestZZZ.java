@@ -558,6 +558,25 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Beim Parsen wird das festgestellt
 			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
 			boolean bJavaCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJavaCallIniSolverZZZ.sTAG_NAME);
+			
+			
+			TODOGOON20250913;//Löse das von allem.
+			//Also: ein isJavaCall muss vorliegen, wenn 
+			//Parser an
+			//und der Tag Call:Java im String ist....
+				
+			
+			boolean bIsCallSolved = assertIsCallSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			
+
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
+			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
+			//Hier kann man isJavaCall() auch nur abfrage, weil es noch keinen anderen "CallTyp" gibt.
+			//assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht.
+			
+			
 			if(!bJavaCallSolverCalledPrevious) {
 				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
 				assertFalse(objEntry.isJavaCall()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
@@ -1279,6 +1298,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Beim Parsen wird das festgestellt
 			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
 			boolean bJavaCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJavaCallIniSolverZZZ.sTAG_NAME);
+			
+			TODOGOON20250913;//Löse das von allem.
+			//Also: ein isJavaCall muss vorliegen, wenn 
+			//Parser an
+			//und der Tag Call im String ist....
+			
 			if(!bCallSolverCalledPrevious) {
 				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
 				assertFalse(objEntry.isCall()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
@@ -1330,21 +1355,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 				bReturn = false;
 		
 			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
 				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
 					assertTrue(objEntry.isCallSolveCalled());
-					bReturn = true;
-										
+					bReturn = true;					
 				}else {
-					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isCallSolveCalled());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					bReturn = true;
-										
+					assertFalse(objEntry.isCallSolveCalled());
+					bReturn = false;
 				}
-			}			 
-			
-			
+			}			 						
 		}//end main;
 		return bReturn;
 	}
@@ -1377,17 +1395,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 				bReturn = false;
 				
 			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
-				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
+				if(objSolver.isSolverEnabledByFlagZ(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) {
 					assertTrue(objEntry.isCallSolved());
-					bReturn = true;
-										
+					bReturn = true;					
 				}else {
-					System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isCallSolved());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					bReturn = true;
-										
+					assertFalse(objEntry.isCallSolved());
+					bReturn = false;
 				}
 			}			 
 			

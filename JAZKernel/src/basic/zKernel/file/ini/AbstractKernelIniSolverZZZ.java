@@ -910,19 +910,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			sReturnLineParsed = sReturnLine;
 			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);			
 			if(bRemoveSurroundingSeparators) {
-				
-				
-				
 				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);
 			}	
 			
 			//TODOGOON20250308; //TICKETGOON20250308;;//Generische Problematik, wenn man hier nur auf den eigenen Solver abbprüft, kann man nicht das "Elternflag setzen"
-			this.updateValueSolveCustom(objReturnReference, sExpression);
+			this.updateValueSolveCustom(objReturnReference, sReturnTagParsed);
 			
 			//TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
 			bUseSolverThis = this.isSolverEnabledAnyRelevant();
 			if(!bUseSolverThis) break solverThis;
-			
 			
 			
 			//###########################
@@ -975,22 +971,20 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			
 			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
-			if(bUseExpression) {			
-				if(bUseSolverThis) { //die Z-Tags werden durch den allgemeinen Solver entfernt, darum ist hier der konkrete Solver nicht wichtig, also kein:  && bUseSolverThis) {					
-					if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
-						//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
-						//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
-						//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
-						System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
-						System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
-						if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
-							this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
-							this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
-						}
+			if(bUseExpression && bUseSolverThis) {												
+				if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
+					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
+					//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
+					//aber nur den geparsten Tag zu verwenden ist zuwenig... z.B. wenn ein ganzer Tag wg. der Flags nicht gesolved wird (z.B. Fall: Call ja, Java nein): if(!sReturnTagSolved.equals(sReturnTagParsed)) {
+					System.out.println("sReturnLineParsed2compareWithSolved='"+sReturnLineParsed2compareWithSolved+"'");
+					System.out.println("sReturnLineSolved2compareWithParsed='"+sReturnLineSolved2compareWithParsed+"'");
+					if(!sReturnLineSolved2compareWithParsed.equals(sReturnLineParsed2compareWithSolved)) {
+						this.updateValueSolvedChanged(); //zur Not nur, weil die Z-Tags entfernt wurden.
+						this.updateValueSolvedChanged(objReturnReference); //zur Not nur, weil die Z-Tags entfernt wurden.	
 					}
-				}																		
-				this.adoptEntryValuesMissing(objEntry);
-			}
+				}
+			}																		
+			this.adoptEntryValuesMissing(objEntry);			
 		}
 		return sReturn;	
 	}
