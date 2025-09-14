@@ -1454,8 +1454,22 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
 	}
-
 	
+	//### aus IParseEntabledZZZ
+	@Override
+	public boolean isParserEnabledGeneral() throws ExceptionZZZ{
+		return this.getFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER);
+	}
+	
+	@Override
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return this.isParserEnabledGeneral();
+	}
+
+	@Override
+	public boolean isParserEnabledCustom() throws ExceptionZZZ {
+		return true;
+	}
 	
 	//### aus IKernelConfigSectionEntryUserZZZ
 	@Override

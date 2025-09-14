@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IExpressionEnabledZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -80,7 +81,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
+public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IExpressionEnabledZZZ, IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
 	private static final long serialVersionUID = 699752030418877631L;
 
 	private FileFilterModuleZZZ objFileFilterModule=null;

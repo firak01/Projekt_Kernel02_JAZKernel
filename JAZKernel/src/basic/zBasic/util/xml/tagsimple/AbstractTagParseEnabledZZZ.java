@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
@@ -64,6 +65,13 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	
 		
 	//######## Getter / Setter ##################
+	
+	//### Aus IExpressionEnabled
+	@Override
+	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
+		return true; 	
+	}
+	
 	
 	//### Aus IParseEnabledZZZ
 	@Override 

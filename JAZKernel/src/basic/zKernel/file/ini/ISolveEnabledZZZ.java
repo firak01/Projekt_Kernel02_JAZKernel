@@ -3,9 +3,11 @@ package basic.zKernel.file.ini;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface ISolveEnabledZZZ{
+public interface ISolveEnabledZZZ extends IParseEnabledZZZ, IFlagZEnabledZZZ{
 	boolean isSolverEnabledGeneral() throws ExceptionZZZ;////prueft intern ab, ob das Flag Solver zu nutzen gesetzt ist.
 	boolean isSolverEnabledThis() throws ExceptionZZZ; //prueft intern ab, ob das Flag fuer den konkreten Solver gesetzt ist.
 	boolean isSolverEnabledByFlagZ(Enum objFlagZ) throws ExceptionZZZ; //prueft intern ein Flag ab.

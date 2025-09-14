@@ -536,70 +536,44 @@ public class TestUtilAsTestZZZ extends TestCase{
 	//#############################################
 	public static boolean assertIsJavaCall(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{	
-			//TODOGOON20250912 //mach korrekt..
-			//if(!objEntry.isJavaCall()) break main;
-			
+		main:{			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
-						
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
-			
-			String sExpression2compareWithSubstituted=sExpressionSolved;
-			String sExpression2compareWithExpression =sExpressionSolved;
-			String sExpressionSubstituted2compare = sExpressionSubstituted;
-			String sExpression2compare = sExpression;
-			
-			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
-			
-		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
-			//Beim Parsen wird das festgestellt
-			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
-			boolean bJavaCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJavaCallIniSolverZZZ.sTAG_NAME);
-			
-			
-			TODOGOON20250913;//Löse das von allem.
-			//Also: ein isJavaCall muss vorliegen, wenn 
-			//Parser an
-			//und der Tag Call:Java im String ist....
-				
-			
-			boolean bIsCallSolved = assertIsCallSolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
-			
-
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//Merke: Auch wenn die Solver wg. des USE... Flags nicht laufen werden, so wird das Parsen immer gemacht
-			//       !!! Aber nur bis zur naechsten "Parent-Tag-Grenze". D.h. isJson wird gesetzt werden auch ohne aktives Json. isJsonMap allerdings nicht!!!!
-			//Hier kann man isJavaCall() auch nur abfrage, weil es noch keinen anderen "CallTyp" gibt.
-			//assertTrue(objEntry.isJavaCall());            ///Beim Parsen wird halt nur isCall festgestellt. Auch wenn useCall = false ist. Den "KindParser"/ "KindSolver" nutzt man dann nicht.
-			
-			
-			if(!bJavaCallSolverCalledPrevious) {
-				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
-				assertFalse(objEntry.isJavaCall()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
-				bReturn = false;
-				
-			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
-				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
-					assertTrue(objEntry.isJavaCall());
-					bReturn = true;
-
-				}else {
-					//System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isJavaCall());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					bReturn = true;										
-				}
-			}			 
-			
-			
-		}//end main;
-		return bReturn;
 		
+			//Löse das von allen Prozessschritten/Aufrufen. Die Aufrufe werden vermieden wenn ein entsprechendes Flag fehlt.
+			//Also: ein is..."TAG" muss vorliegen, wenn logisch gilt: Parser an und der TAG ist im String.	
+			boolean bUseExpression = objSolver.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+				
+			boolean bUseParser = objSolver.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+			
+			boolean bUseParserThis = objSolver.isParserEnabledCustom();
+			if(!bUseParserThis) break main;
+
+			//Wenn asEntry geparst wurde, dann zieht die Programmierung des ExpressionHandlers und wie sich die Flags dort auswirken.
+			if(bAsEntry) {
+				boolean bUseCall = objSolver.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+				boolean bUseJavaCall = objSolver.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name());
+				if(!(bUseCall || bUseJavaCall)) {
+					assertFalse(objEntry.isJavaCall()); 
+					bReturn = false;
+					break main;
+				}
+			}
+				
+			//Ansonsten richtet es sich danach, ob der Tag darin steht.			
+			if(XmlUtilZZZ.containsTagName(sExpression, KernelJavaCallIniSolverZZZ.sTAG_NAME, false)) {
+				assertTrue(objEntry.isJavaCall());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isJavaCall()); 
+				bReturn = false;
+			}
+						
+		}//end main;
+		return bReturn;	
 	}
 	
 	
@@ -1276,57 +1250,44 @@ public class TestUtilAsTestZZZ extends TestCase{
 	//###########################################
 	public static boolean assertIsCall(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{	
-			//TODOGOON20250912 //mach korrekt..
-			//if(!objEntry.isJavaCall()) break main;
-			
+		main:{			
 			String sExpression = sExpressionIn;
 			String sExpressionSolved = sExpressionSolvedIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
-						
-			String sTagStartZ = "<Z>";
-			String sTagEndZ = "</Z>";	
 			
-			String sExpression2compareWithSubstituted=sExpressionSolved;
-			String sExpression2compareWithExpression =sExpressionSolved;
-			String sExpressionSubstituted2compare = sExpressionSubstituted;
-			String sExpression2compare = sExpression;
-			
-			boolean bExpressionHandlerCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelExpressionIniHandlerZZZ.sTAG_NAME);
-			
-		 	//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
-			//Beim Parsen wird das festgestellt
-			boolean bCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelCallIniSolverZZZ.sTAG_NAME);
-			boolean bJavaCallSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelJavaCallIniSolverZZZ.sTAG_NAME);
-			
-			TODOGOON20250913;//Löse das von allem.
-			//Also: ein isJavaCall muss vorliegen, wenn 
-			//Parser an
-			//und der Tag Call im String ist....
-			
-			if(!bCallSolverCalledPrevious) {
-				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
-				assertFalse(objEntry.isCall()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
-				bReturn = false;
+			//Löse das von allen Prozessschritten/Aufrufen. Die Aufrufe werden vermieden wenn ein entsprechendes Flag fehlt.
+			//Also: ein is..."TAG" muss vorliegen, wenn logisch gilt: Parser an und der TAG ist im String.				
+			boolean bUseExpression = objSolver.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
 				
-			}else {
-				//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
-				if(bAsEntry) {
-					System.out.println(("Aufruf als Entry. Also wurde Call-Solver aufgerufen, aber nicht direkt."));
-					assertTrue(objEntry.isCall());
-					bReturn = true;
+			boolean bUseParser = objSolver.isParserEnabledGeneral();
+			if(!bUseParser) break main;
 
-				}else {
-					//System.out.println(("Vorher wurde Call-Solver aufgerufen (nicht als Entry). Also Call-Solver direkt aufgerufen."));
-					assertTrue(objEntry.isCall());  //aber wenn der JavaCallSolver direkt aufgerufen wurde. Wird der Aufruf nicht vermieden....
-					bReturn = true;										
+			boolean bUseParserThis = objSolver.isParserEnabledCustom();
+			if(!bUseParserThis) break main;
+			
+			//Wenn asEntry geparst wurde, dann zieht die Programmierung des ExpressionHandlers und wie sich die Flags dort auswirken.
+			if(bAsEntry) {
+				boolean bUseCall = objSolver.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+				boolean bUseJavaCall = objSolver.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name());
+				if(!(bUseCall || bUseJavaCall)) {
+					assertFalse(objEntry.isCall()); 
+					bReturn = false;
+					break main;
 				}
-			}			 
-			
-			
+			}
+				
+			//Ansonsten richtet es sich danach, ob der Tag darin steht.
+			if(XmlUtilZZZ.containsTagName(sExpression, KernelCallIniSolverZZZ.sTAG_NAME, false)) {
+				assertTrue(objEntry.isCall());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isCall()); 
+				bReturn = false;
+			}
+				
 		}//end main;
-		return bReturn;
-		
+		return bReturn;		
 	}
 	public static boolean assertIsCallSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -1355,12 +1316,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 				bReturn = false;
 		
 			}else {
+				//Egal ob als Entry-Aufruf oder nicht: Wenn der Solve Aufruf in der History protokolliert ist, ist der Wert entsprechend gesetzt.
 				if(bAsEntry) {
 					assertTrue(objEntry.isCallSolveCalled());
 					bReturn = true;					
 				}else {
-					assertFalse(objEntry.isCallSolveCalled());
-					bReturn = false;
+					assertTrue(objEntry.isCallSolveCalled());
+					bReturn = true;
 				}
 			}			 						
 		}//end main;

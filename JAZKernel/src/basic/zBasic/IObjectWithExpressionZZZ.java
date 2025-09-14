@@ -11,6 +11,4 @@ public interface IObjectWithExpressionZZZ{
 	public boolean[] setFlag(IObjectWithExpressionZZZ.FLAGZ[] objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public abstract boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
-	
-	boolean isExpressionEnabledGeneral() throws ExceptionZZZ;
 }

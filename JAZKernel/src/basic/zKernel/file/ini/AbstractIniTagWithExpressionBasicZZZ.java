@@ -221,6 +221,11 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	
 	//### aus IParseEnabledZZZ
+	//### Aus IExpressionEnabled
+		@Override
+		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
+			return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
+		}
 
 	
 	//### aus IIniStructurePositionUserZZZ

@@ -26,6 +26,7 @@ import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ.FLAGZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -487,6 +488,25 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				saReturn = listasTemp.toArray(new String[listasTemp.size()]);
 			}//end main:
 			return saReturn;
+		}
+		
+		
+		/* (non-Javadoc)
+		 * @see basic.zKernel.flag.IFlagZEnabledZZZ#adoptFlagZrelevantFrom(basic.zKernel.flag.IFlagZEnabledZZZ, boolean)
+		 */
+		@Override
+		public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ{
+			int iReturn = 0;		
+			main:{
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ, bValueToSearchFor);
+				if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+				
+				for(String sFlag: saFlagZpassed) {
+					boolean btemp = this.setFlag(sFlag, bValueToSearchFor);
+					if(btemp) iReturn++;
+				}
+			}//end main:
+			return iReturn;
 		}
 		
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

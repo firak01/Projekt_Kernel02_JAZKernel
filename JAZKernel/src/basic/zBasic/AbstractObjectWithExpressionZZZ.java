@@ -9,7 +9,7 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
 //Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
-public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithExpressionZZZ, IResettableValuesZZZ{
+public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithExpressionZZZ, IExpressionEnabledZZZ, IResettableValuesZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 		
 	//IValueSolvedUserZZZ
@@ -80,7 +80,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		return false;
 	}
 	
-	//### Aus IObjectWithExpression
+	//### Aus IExpressionEnabled
 	@Override
 	public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
 		return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	

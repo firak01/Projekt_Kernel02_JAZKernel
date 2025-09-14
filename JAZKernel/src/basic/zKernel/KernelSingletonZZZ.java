@@ -136,7 +136,7 @@ public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 			return bReturn;
 		}
 
-		//### Aus IObjectWithExpression
+		//### Aus IExpressionEnabledZZZ
 		@Override
 		public boolean isExpressionEnabledGeneral() throws ExceptionZZZ{
 			return this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 	
