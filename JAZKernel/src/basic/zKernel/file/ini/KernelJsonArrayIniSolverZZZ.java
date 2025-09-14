@@ -498,7 +498,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 				}else {
 					objEntry.isJsonArray(false);
 				}
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}			
 			this.adoptEntryValuesMissing(objEntry);										
 		}

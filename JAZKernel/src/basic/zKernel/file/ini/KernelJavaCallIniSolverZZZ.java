@@ -356,7 +356,7 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolver4Chil
 						this.updateValueSolvedChanged(objReturnReference);					
 					}
 				}	
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}
 			this.adoptEntryValuesMissing(objEntry);			
 		}		

@@ -546,7 +546,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 						objEntry.isJsonMap(false);
 					}
 				}
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}
 			this.adoptEntryValuesMissing(objEntry);			
 		}

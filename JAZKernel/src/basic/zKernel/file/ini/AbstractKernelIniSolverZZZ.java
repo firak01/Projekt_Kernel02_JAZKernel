@@ -970,7 +970,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objEntry.setValueFromTag(sReturnTag);			
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			
-			if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturnLine);
+			if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturnLine);
 			if(bUseExpression && bUseSolverThis) {												
 				if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.

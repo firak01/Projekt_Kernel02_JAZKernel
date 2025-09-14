@@ -375,7 +375,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 						this.updateValueSolvedChanged(objReturnReference);
 					}
 				}
-				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}			
 				
 			this.adoptEntryValuesMissing(objEntry);						
