@@ -1206,8 +1206,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		String sReturn = null;
 		String sReturnTag = null; String sReturnLine = null;
 		String sExpressionIn=null;
-		boolean bUseExpression = false;
+		boolean bUseExpression = false; boolean bUseSolverThis = false;
 			
+		String sTagStartZ = "<Z>";
+		String sTagEndZ = "</Z>";
+		
 		IKernelConfigSectionEntryZZZ objEntry = null;
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;
 		if(objReturnReferenceIn==null) {				
@@ -1243,7 +1246,21 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		}//end main:
 		
 		if(objEntry!=null) {				
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+			objEntry.setValue(sReturn);
+			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
+			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
+				if(sExpressionIn!=null) {							 							
+					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
+					if(!sExpression2Compare.equals(sReturnLine2Compare)) {
+						this.updateValueParsedChanged();
+						this.updateValueParsedChanged(objReturnReference);
+					}
+				}			
+				
+				this.adoptEntryValuesMissing(objEntry);
+			}
 		}		
 		return vecReturn;
 	}		

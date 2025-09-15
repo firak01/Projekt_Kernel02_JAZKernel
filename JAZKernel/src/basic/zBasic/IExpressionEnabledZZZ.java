@@ -1,5 +1,7 @@
 package basic.zBasic;
 
-public interface IExpressionEnabledZZZ {
+import basic.zKernel.flag.IFlagZEnabledZZZ;
+
+public interface IExpressionEnabledZZZ{
 	boolean isExpressionEnabledGeneral() throws ExceptionZZZ;
 }

@@ -270,7 +270,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			//ohne Solver bleibt auch immer der Z-Tag drin.  sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 
 			sPre = "";
 			sPost = "";
@@ -325,11 +325,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;	
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
-			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";			
 			//Beim Solven ohne encryption muss dieser encryption - Tag drinbleiben
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 			
@@ -351,23 +351,23 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
 			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
 			//4c)
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSubstituted = sExpression;
+			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ;
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
 			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
-			sExpressionSolved = sTagStartZ + "abcde" + sTagEndZ; 
 			sPre="";
 			sPost="";
 			sTag="TODO ALS KONSTANTE";

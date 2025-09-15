@@ -462,7 +462,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		String sReturn = null;
 		String sReturnTag = null; String sReturnLine;
 		String sExpressionIn=null; String sExpression;	
-		boolean bUseExpression  = false;
+		boolean bUseExpression  = false; boolean bUseSolverThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -491,6 +491,9 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		main:{	
 			bUseExpression = this.isExpressionEnabledGeneral();
 			if(!bUseExpression) break main;
+			
+			bUseSolverThis = this.isSolverEnabledEveryRelevant(); //this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+			if(!bUseSolverThis) break main;
 					
 			if(vecExpressionIn==null) break main;
 			vecReturn=vecExpressionIn;	
@@ -522,8 +525,8 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		if(objEntry!=null) {
 			objEntry.setValue(sReturn);
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			if(bUseExpression) {
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
+			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten
 				if(sExpressionIn!=null) {							 							
 					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
 					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
