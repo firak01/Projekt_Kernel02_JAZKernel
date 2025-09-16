@@ -9,8 +9,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -117,30 +119,60 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	}
 
 	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ {
-		String sReturnLine = sExpressionIn;	
-		String sReturnTag = null;
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
+		//############
+		//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+		//         Ziel ist, das nach einem erfolgreichen Parsen/Solven das Flag deaktiviert werden kann UND danach bei einem neuen Parsen/Solven die Werte null sind.
+		this.resetValues();			
+		//#######
+				
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			//hier kein updateValueParseCalled()
+						
+			parse:{
+				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
+				String sExpression = sExpressionIn;
 			
-			String sExpression = sExpressionIn;
+				//hier kein setRaw
+				
+				sReturnTag = this.getValue();
+				sReturnLine = sExpressionIn;
+				sReturn = sReturnLine;				
+				vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+				
+				vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
+				if(vecReturn==null) break main;
+		
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
 			
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
 			
 			
-			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
-			if(vecReturn==null) break main;
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
+				vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
+				if(vecReturn==null) break main;
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
 			
-			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
-			sReturnLine = VectorUtilZZZ.implode(vecReturn); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.								
+				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
+				sReturnLine = VectorUtilZZZ.implode(vecReturn); //gib den gesamtstring mit einer ggfs. erfolgten Uebearbeitung zurueck.
+			}//end parse
+		
+			//hier kein .updateValueParsed()
 		}//end main: 
-		return sReturnLine;
+		
+		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+		
+		//hier kein objEntry-Handling
+		
+		return sReturn;
 	}
 	
 	
@@ -253,22 +285,28 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	private Vector3ZZZ<String>parseFirstVector_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 
-		main:{			
-			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
-			vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse);
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			String sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
-			this.setValue(sTag);
-						
-			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
-			vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse);	
-			if(vecReturn==null) break main;
-			
-			sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
-			this.setValue(sTag);
-		}
+		main:{	
+			parse:{
+				//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
+				vecReturn = XmlUtilZZZ.parseFirstVector(sExpressionIn, this.getTagPartOpening(), this.getTagPartClosing(), bKeepSurroundingSeparatorsOnParse);
+				if(vecReturn==null) break main;
+				
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+					
+				
+				String sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
+				this.setValue(sTag);
+							
+				//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
+				vecReturn = this.parseFirstVectorPost(vecReturn, bKeepSurroundingSeparatorsOnParse);	
+				if(vecReturn==null) break main;
+				
+				sTag = vecReturn.getEntry(1);//uebernimm also das nun ggfs. auch leere 1. Element
+				this.setValue(sTag);
+			}//end parse:
+		}//end main:
 		return vecReturn;
 	}
 	

@@ -606,51 +606,46 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 		}
 
-		//das ist zwar dann auch in .parseFirstVector() aber die Genauigkeit fordert es an dieser Stelle.
-		this.updateValueParseCalled();
-		this.updateValueParseCalled(objReturnReference);
-		
 		main:{
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			String sExpression = sExpressionIn;
+			//das ist zwar dann auch in .parseFirstVector() aber die Genauigkeit fordert es an dieser Stelle.
+			this.updateValueParseCalled();
+			this.updateValueParseCalled(objReturnReference);
 			
-			this.setRaw(sExpressionIn);		
-			objEntry.setRaw(sExpressionIn);
-
-			sReturnTag = this.getValue();
-			sReturnLine = sExpressionIn;
-			vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
-			sReturn = sReturnLine;
-					
-			//auch das waere doppelt
-			//bUseExpression = this.isExpressionEnabledGeneral();
-			//if(!bUseExpression) break main;
-			
-			//das waere dann doppelt und sogar zeitteuer.... this.updateValueParseCustom(objReturnReference, sExpression);
-			
-			//nachfolgendes wird schon in parseFirstVector gemacht.
-			//Darf jett nicht gemacht werden, da man dann ggfs. zu frueh abbricht.
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			//bUseParse = this.isParserEnabledThis();
-			//if(!bUseParse) break main;
-			
-			
-			//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParse.set(objEntry);										
-			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
-			objEntry = objReturnReferenceParse.get();
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
-			
-			//Tags entfernen und eigenen Wert setzen
-			vecReturn = this.parsePost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = this.getValue();//Der eigene Wert, ohne drumherum
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);		
-			
+			parse:{
+				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+				String sExpression = sExpressionIn;
+				
+				this.setRaw(sExpressionIn);		
+				objEntry.setRaw(sExpressionIn);
+	
+				sReturnTag = this.getValue();
+				sReturnLine = sExpressionIn;
+				sReturn = sReturnLine;
+				vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+				
+						
+				//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
+				//sowie die ganzen Flags hinsichtlich "is...Enabled" ausgewertet.
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceParse.set(objEntry);										
+				vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
+				objEntry = objReturnReferenceParse.get();
+				if(vecReturn==null) break main;
+				
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+				
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
+				
+				//Tags entfernen und eigenen Wert setzen
+				vecReturn = this.parsePost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt. //sReturnTag = this.getValue();//Der eigene Wert, ohne drumherum
+				
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);		
+			}//end parse:
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);			
 		}//end main:
@@ -753,45 +748,49 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//!!! Unterschied zum AbstractKernelIniTagCascadedZZZ
 			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
 			if(vecReturn==null) break main;	
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.			
 			
-			//+++++++++++++++++++++++++
-			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+			parse:{
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
 			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSubstitute.set(objEntry);
-			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
-			objEntry = objReturnReferenceSubstitute.get();						
-			vecReturn.replace(1,sReturnSubstituted);
-			
-			//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
-			//und ggfs. wieder (neu gefundene) Value-Eintraege setzen
-			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
-			if(objEntry.isSubstitutedChanged()) {				
-				this.updateValueParseCustom(objReturnReference, sReturnLine);			
-			}			
-			//+++++++++++++++++++++++++
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);			
-			vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
-			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
-			sReturnLine = sReturnLineParsed;			
-			sReturn = sReturnLine;
-			
-			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
-			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParserSuper.set(objEntry);
-			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = this.getValue();
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			
-			//###############
-			//### Andere Solver parsen noch unterelemente. Im Abstract Solver reicht es nun.
-			//###############
-			
+				//+++++++++++++++++++++++++
+				//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
+				String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceSubstitute.set(objEntry);
+				sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
+				objEntry = objReturnReferenceSubstitute.get();						
+				vecReturn.replace(1,sReturnSubstituted);
+				
+				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
+				//und ggfs. wieder (neu gefundene) Value-Eintraege setzen
+				sReturnLine  = VectorUtilZZZ.implode(vecReturn);
+				if(objEntry.isSubstitutedChanged()) {				
+					this.updateValueParseCustom(objReturnReference, sReturnLine);			
+				}			
+				//+++++++++++++++++++++++++
+				
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);			
+				vecReturn.replace(sReturnTag); //da noch weiter verarbeitet werden muss.
+				sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
+				sReturnLine = sReturnLineParsed;			
+				sReturn = sReturnLine;
+				
+				//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+				//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceParserSuper.set(objEntry);
+				vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReferenceParserSuper, bKeepSurroundingSeparatorsOnParse);
+				sReturnTag = this.getValue();
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+				
+				//###############
+				//### Andere Solver parsen noch unterelemente. Im Abstract Solver reicht es nun.
+				//###############
+			}//end parse:			
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);
 		}//end main:		
@@ -1577,20 +1576,25 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			objEntry = objReturnReferenceParse.get();
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-							
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.							
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-					
-			//Rufe nun substituteParsed() auf...	
-			if(!this.isSubstituteEnabledThis()) break main;
 			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSolve.set(objEntry);
-			
-			sReturnLine = this.substituteParsed(sReturnLine, objReturnReferenceSolve, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = this.getValue();
-			objEntry = objReturnReferenceSolve.get();										
+			parse:{
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+								
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.							
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+						
+				//Rufe nun substituteParsed() auf...	
+				if(!this.isSubstituteEnabledThis()) break main;
+				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceSolve.set(objEntry);
+				
+				sReturnLine = this.substituteParsed(sReturnLine, objReturnReferenceSolve, bKeepSurroundingSeparatorsOnParse);
+				sReturnTag = this.getValue();
+				objEntry = objReturnReferenceSolve.get();	
+			}//end parse:
 		}//end main:
 				
 		//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen

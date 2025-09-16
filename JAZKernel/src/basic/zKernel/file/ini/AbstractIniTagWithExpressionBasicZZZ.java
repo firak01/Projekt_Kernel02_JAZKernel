@@ -171,9 +171,12 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	@Override
 	public String[] parseAsArray(String sExpressionIn, String sDelimiterIn) throws ExceptionZZZ{
-		String[] saReturn = null; 
-		main:{
+		String[] saReturn = null; String sReturn = null; String sReturnTag = null; String sReturnLine = null;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
+		main:{			
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
 			
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
@@ -183,39 +186,62 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
-			
-			String sExpression = sExpressionIn;
-			
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression);
+		
+			sReturnTag = this.getValue();
+			sReturnLine = sExpressionIn;
+			sReturn = sReturnLine;
+			vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+								
+			vecReturn = this.parseFirstVector(sExpression);
 			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			String sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
+			parse:{
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+							
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
 				
-			String sReturnLine = VectorUtilZZZ.implode(vecReturn);			
-			String[] saExpression = StringZZZ.explode(sReturnLine, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
-			this.setValue(listasValue);		
+				//Tags entfernen und eigenen Wert setzen
+				vecReturn = this.parseFirstVectorPost(vecReturn);
+				if(vecReturn==null) break main;
+				
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
+				
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+				
+				//+++ ARRAY BEHANDLUNG
+				String[] saExpression = StringZZZ.explode(sReturnLine, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+				ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
+				this.setValue(listasValue);		
 			
-			//Fasse nun zusammen.
-			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
-			listasReturnParsed.add((String) vecReturn.get(0));
+				//Fasse nun zusammen.
+				ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
+				listasReturnParsed.add((String) vecReturn.get(0));
 			
-			//Fuer den Wert lediglich
-			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
+				//Fuer den Wert lediglich
+				ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
 			
-			String sValue = null;			
-			for(String sExpressionTemp : saExpression) {
-				sValue = this.parse(sExpressionTemp);
-				listasReturnParsed.add(sValue);
-				listasValueParsed.add(sValue);
-			}
-			listasReturnParsed.add(vecReturn.get(2).toString());
-			
-			this.setValue(listasValueParsed);
-			saReturn = listasReturnParsed.toStringArray();				
+				String sValue = null;			
+				for(String sExpressionTemp : saExpression) {
+					sValue = this.parse(sExpressionTemp);
+					listasReturnParsed.add(sValue);
+					listasValueParsed.add(sValue);
+				}
+				listasReturnParsed.add(vecReturn.get(2).toString());
+				
+				this.setValue(listasValueParsed);
+				saReturn = listasReturnParsed.toStringArray();	
+			}//end parse
 		}//end main:
+		
+		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
+		this.setValue(sReturnTag);
+				
 		return saReturn;
 	}
 	

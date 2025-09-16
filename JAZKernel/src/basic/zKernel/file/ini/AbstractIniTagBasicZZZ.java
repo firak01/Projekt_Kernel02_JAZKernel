@@ -97,43 +97,48 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
 			
-			String sDelimiter;
-			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
-//					ExceptionZZZ ez = new ExceptionZZZ("Delimiter for Array Values", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;
-			}else {
-				sDelimiter = sDelimiterIn;
-			}
+			parse:{
+				String sDelimiter;
+				if(StringZZZ.isEmpty(sDelimiterIn)) {
+					sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
+	//					ExceptionZZZ ez = new ExceptionZZZ("Delimiter for Array Values", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+	//					throw ez;
+				}else {
+					sDelimiter = sDelimiterIn;
+				}
+				
+				Vector<String> vecReturn = this.parseFirstVector(sExpression);
+				if(vecReturn==null)break main;
+				
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
 			
-			Vector<String> vecReturn = this.parseFirstVector(sExpression);
-			if(vecReturn==null)break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-		
-			String sParsed = vecReturn.get(1);
-			this.setValue(sParsed);
-			
-			String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
-			this.setValue(listasValue);		
-			
-			//Fasse nun zusammen.
-			ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
-			listasReturnParsed.add(vecReturn.get(0));
-			
-			//Fuer den Wert lediglich
-			ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
-			
-			String sValue = null;			
-			for(String sExpressionTemp : saExpression) {
-				sValue = this.parse(sExpressionTemp);
-				listasReturnParsed.add(sValue);
-				listasValueParsed.add(sValue);
-			}
-			listasReturnParsed.add(vecReturn.get(2));
-			
-			this.setValue(listasValueParsed);
-			saReturn = listasReturnParsed.toStringArray();				
+				String sParsed = vecReturn.get(1);
+				this.setValue(sParsed);
+				
+				String[] saExpression = StringZZZ.explode(sParsed, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+				ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
+				this.setValue(listasValue);		
+				
+				//Fasse nun zusammen.
+				ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
+				listasReturnParsed.add(vecReturn.get(0));
+				
+				//Fuer den Wert lediglich
+				ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
+				
+				String sValue = null;			
+				for(String sExpressionTemp : saExpression) {
+					sValue = this.parse(sExpressionTemp);
+					listasReturnParsed.add(sValue);
+					listasValueParsed.add(sValue);
+				}
+				listasReturnParsed.add(vecReturn.get(2));
+				
+				this.setValue(listasValueParsed);
+				saReturn = listasReturnParsed.toStringArray();	
+			}//end parse:
 		}//end main:
 		return saReturn;
 	}

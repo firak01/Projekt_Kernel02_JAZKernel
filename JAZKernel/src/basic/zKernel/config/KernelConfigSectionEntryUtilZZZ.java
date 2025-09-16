@@ -411,7 +411,30 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 	 * 
 	 */
 	public static boolean getCallSolved(FileIniZZZ objFileIni, String sExpressionIn, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn) throws ExceptionZZZ{
-		 boolean bReturn = false;
+		boolean bReturn = false;
+		 
+		IKernelConfigSectionEntryZZZ objEntry = null;
+		IKernelConfigSectionEntryZZZ objReturn = objEntry; //new KernelConfigSectionEntryZZZ<T>(this);
+					
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
+		if(objReturnReferenceIn==null) {
+			//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
+			objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
+			                                                                                    //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ();
+		}else {
+			objReturnReference = objReturnReferenceIn;
+			objEntry = objReturnReferenceIn.get();
+		}
+		
+		if(objEntry==null) {
+			//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			//objEntry = this.getEntry();
+			//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
+			objEntry = new KernelConfigSectionEntryZZZ();
+		}	
+		 
 		 main:{			 			 								
 	 		if(!bUseCall)break main;
 	 		
@@ -422,80 +445,55 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				throw ez;
 			}
 
-	 		IKernelConfigSectionEntryZZZ objEntry = null;
-			IKernelConfigSectionEntryZZZ objReturn = objEntry; //new KernelConfigSectionEntryZZZ<T>(this);
+	 		
 						
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			String sExpression = sExpressionIn;
-			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference = null;			
-			if(objReturnReferenceIn==null) {
-				//Das Ziel ist es moeglichst viel Informationen aus dem entry "zu retten"
-				objReturnReference = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); //this.getEntryNew(); es gingen alle Informationen verloren				
-				                                                                                    //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objEntry = new KernelConfigSectionEntryZZZ();
-			}else {
-				objReturnReference = objReturnReferenceIn;
-				objEntry = objReturnReferenceIn.get();
-			}
-			
-			if(objEntry==null) {
-				//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-				//objEntry = this.getEntry();
-				//static Methode, darum geht nicht  objEntry = new KernelConfigSectionEntryZZZ<T>(this); // =  this.parseAsEntryNew(sExpression);  //nein, dann gehen alle Informationen verloren   objReturn = this.parseAsEntryNew(sExpression);
-				objEntry = new KernelConfigSectionEntryZZZ();
-			}	
-			objEntry.setRaw(sExpression);
-			objReturnReference.set(objEntry);
-						
-			//boolean bAnyCall = false;
-			
-			String sExpressionOld = "";
-			KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
-			while(objDummy.isSolve(sExpression) && !sExpressionOld.equals(sExpression)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
-				bReturn = true;
-									
-				IKernelZZZ objKernel = null;
-				if(objFileIni!=null) {
-					objKernel = objFileIni.getKernelObject();
-				}
-				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
-				ex.setEntry(objEntry);
+			parse:{
+				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+				String sExpression = sExpressionIn;
 				
-				//TODOGOON20250409: Loesungsansatz... wenn man will, das in objEntry entsprechende Statuswerte gesetzt werden, dann muss man auch mit dem Objekt der Klasse selbst arbeiten 
-				//                  und nicht mit dem static Aufruf einer Hilfsmethode. 
-				//                  Kein Wunder das in der Analyse durch die JUnit-Tests bei CallIniSolver die Z-Tags fehlen.
-				//Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
-				Vector3ZZZ<String>vecReturn = ex.parseFirstVector(sExpression);
-				if(vecReturn==null) break main;
-				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-
-				String sValue = vecReturn.get(1).toString();
-				if(!StringZZZ.equals(sValue,sExpression)){
-					sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
-					objEntry = objReturnReferenceIn.get();										
-					//Merke: Hier nicht anschliessend solveParsedWrapup(sExpression) aufrufen. Das "Aufraeumen" der aufrufenden Methode ueberlassen. Sie will ja ggfs. noch andere Solver aufrufen.
-					
-					if(!StringZZZ.equals(sValue,sExpression)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sExpression + "' nach '" + sValue +"'");
+				objEntry.setRaw(sExpression);
+				objReturnReference.set(objEntry);
+											
+				String sExpressionOld = "";
+				KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
+				while(objDummy.isSolve(sExpression) && !sExpressionOld.equals(sExpression)){//Schrittweise die Formel auflösen UND Verhindern von Endlosschleife.			
+					bReturn = true;
+										
+					IKernelZZZ objKernel = null;
+					if(objFileIni!=null) {
+						objKernel = objFileIni.getKernelObject();
 					}
-				}
-				sExpressionOld = sExpression;
-				sExpression=sValue;//Sonst Endlosschleife.					
-			}//end while
-
-			//20250813: Überflüssig
-//			if(bAnyCall){
-//				objEntry.isCall(true);
-//				bReturn = true;
-//			}		
-//			if(!sExpressionIn.equalsIgnoreCase(sExpression)) {
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Abschliessend) Value durch CallIniSolverZZZ verändert von '" + sExpressionIn + "' nach '" + sExpression +"'");
-//				objEntry.isSolveCalled(true);
-//			}
+					KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
+					ex.setEntry(objEntry);
 					
-			if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+					//TODOGOON20250409: Loesungsansatz... wenn man will, das in objEntry entsprechende Statuswerte gesetzt werden, dann muss man auch mit dem Objekt der Klasse selbst arbeiten 
+					//                  und nicht mit dem static Aufruf einer Hilfsmethode. 
+					//                  Kein Wunder das in der Analyse durch die JUnit-Tests bei CallIniSolver die Z-Tags fehlen.
+					//Vector<String>vecReturn=XmlUtilZZZ.parseFirstVector(sExpression, ex.getTagPartOpening(), ex.getTagPartClosing(), !bForFurtherProcessing);
+					Vector3ZZZ<String>vecReturn = ex.parseFirstVector(sExpression);
+					if(vecReturn==null) break main;
+					
+					
+					//Pruefe ob der Tag enthalten ist:
+					//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+					if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+	
+					String sValue = vecReturn.get(1).toString();
+					if(!StringZZZ.equals(sValue,sExpression)){
+						sExpression = ex.solveParsed(sValue, objReturnReferenceIn, !bForFurtherProcessing);					
+						objEntry = objReturnReferenceIn.get();										
+						//Merke: Hier nicht anschliessend solveParsedWrapup(sExpression) aufrufen. Das "Aufraeumen" der aufrufenden Methode ueberlassen. Sie will ja ggfs. noch andere Solver aufrufen.
+						
+						if(!StringZZZ.equals(sValue,sExpression)){
+							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch CallIniSolverZZZ verändert von '" + sExpression + "' nach '" + sValue +"'");
+						}
+					}
+					sExpressionOld = sExpression;
+					sExpression=sValue;//Sonst Endlosschleife.					
+				}//end while
+										
+				if(objReturnReferenceIn!=null) objReturnReferenceIn.set(objEntry);
+		 	}//end parse:
 		 }//end main:
 		 return bReturn;
 	 }

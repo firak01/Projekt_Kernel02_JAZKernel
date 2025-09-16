@@ -7,6 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -72,29 +73,57 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZ
 	//### Aus Interface IKernelExpressionIniZZZ		
 	@Override
 	public String parse(String sExpressionIn) throws ExceptionZZZ{
-		String sReturnLine = sExpressionIn;
-		String sReturnTag = null;
-		main:{
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-					
-			//Bei CASCADED Tags alle Untertags holen.
-			//TODOGOON: Das muesste bei cascaded aber eigentlich AllVector sein.
-			//Vector<String>vecAll = this.parseAllVector(sExpression);
-			Vector3ZZZ<String>vecReturn = this.parseFirstVector(sExpressionIn);
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
-			
-			vecReturn = this.parseFirstVectorPost(vecReturn);
-			if(vecReturn==null) break main;
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);			
+		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
+		
+		//############
+		//Wichtig: Bei jedem neuen Parsen (bzw. vor dem Solven(), nicht parse/solveFirstVector!) die internen Werte zuruecksetzen, sonst wird alles verfaelscht.
+		//         Ziel ist, das nach einem erfolgreichen Parsen/Solven das Flag deaktiviert werden kann UND danach bei einem neuen Parsen/Solven die Werte null sind.
+		this.resetValues();			
+		//#######
+		
+		//Kein Kernel => kein objEntry Handling
+		
+		main:{							
+			parse:{
+				if(StringZZZ.isEmpty(sExpressionIn)) break main;
+				String sExpression = sExpressionIn;
+				
+				sReturnTag = this.getValue();
+				sReturnLine = sExpressionIn;
+				sReturn = sReturnLine;
+				vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+				
+				//Bei CASCADED Tags alle Untertags holen.
+				//TODOGOON: Das muesste bei cascaded aber eigentlich AllVector sein.
+				//Vector<String>vecAll = this.parseAllVector(sExpression);
+				vecReturn = this.parseFirstVector(sExpressionIn);
+				if(vecReturn==null) break main;
+				
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+								
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
+				
+				//Tags entfernen und eigenen Wert setzen
+				vecReturn = this.parseFirstVectorPost(vecReturn);
+				if(vecReturn==null) break main;
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);		
+			} //end parse:
 		}//end main:
-		return sReturnLine;
+		
+		//Auf PARSE-Ebene... Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
+		//if(vecReturn!=null && sReturnTag!=null) vecReturn.replace(sReturnTag); //BEIM PARSEN DEN TAG-WERT NICHT IN VEC(1) UEBERNEHMEN
+		this.setValue(sReturnTag);
+		sReturn = sReturnLine;
+				
+		
+		
+		return sReturn;
 	}
 }// End class

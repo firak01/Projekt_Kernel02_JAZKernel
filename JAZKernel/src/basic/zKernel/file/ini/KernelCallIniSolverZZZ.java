@@ -402,72 +402,76 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objReturnReferenceParse.set(objEntry);			
 			vecReturn = super.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
 			
-			//++++++++++++++++++++++
-			//+++ reicht wenn substitute in der Super-Klasse gemacht wurde.
-			//++++++++++++++++++++++
-		
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
-			vecReturn.replace(sReturnTag);
-			sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
-			sReturnLine = sReturnLineParsed;
-			sReturn = sReturnLine;
+			parse:{
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
 			
-			//################
-			//Abweichung vom AbstractSolver. Hier werden die einzelnen "Call-Elemente" auch schon geparsed
-			//################
-			//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
-			bUseSolver = this.isSolverEnabledGeneral();//getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
-			if(!bUseSolver) break main;
-						
-			bUseSolverThis = this.isSolverEnabledThis();		
-			if(!bUseSolverThis) break main;
+				//++++++++++++++++++++++
+				//+++ reicht wenn substitute in der Super-Klasse gemacht wurde.
+				//++++++++++++++++++++++
 			
-			//1.+ 2. Kein Versuch als HashMap oder ArrayList
-			
-			//3. Versuch als Einzelwert
-			if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)){
-				if(vecReturn!=null) sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-				sExpression = sReturnTag;
-				if(StringZZZ.isEmpty(sExpression)) break main;
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
+				vecReturn.replace(sReturnTag);
+				sReturnLineParsed = VectorUtilZZZ.implode(vecReturn);
+				sReturnLine = sReturnLineParsed;
+				sReturn = sReturnLine;
 				
-				//WICHTIG: DIE FLAGS VERERBEN !!!
-				KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
+				//################
+				//Abweichung vom AbstractSolver. Hier werden die einzelnen "Call-Elemente" auch schon geparsed
+				//################
+				//Das weitere Verarbeiten haengt aber davon ab, ob der Solver angestellt ist.
+				bUseSolver = this.isSolverEnabledGeneral();//getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER);
+				if(!bUseSolver) break main;
+							
+				bUseSolverThis = this.isSolverEnabledThis();		
+				if(!bUseSolverThis) break main;
 				
-				//FileIniZZZ objFileIni = this.getFileIni();
-				IKernelZZZ objKernel = this.getKernelObject();
+				//1.+ 2. Kein Versuch als HashMap oder ArrayList
 				
-				//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
-				KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
-				
-				//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-				objReturnReferenceJavaCall.set(objEntry);
-				sReturnLineParsedCallInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bKeepSurroundingSeparatorsOnParse);
-				objEntry = objReturnReferenceJavaCall.get();
-				
-				//20250304: Beim Parsen ist dient das Parsen des inneren Tag dazu hier ggf. noch Entry-Werte z.B. isPath() oder so, zu setzten.
-				//          Falsch ist es aber den Wert des inneren Tags als eigenen Tag-Wert zu uebernehmen.
-				//sReturnTag = objJavaCallSolver.getValue();
-				//this.setValue(sReturnTag);
-																			
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen				
-				sReturnTag = sReturnLineParsedCallInner;
-								
-				//20250304: Den Returnwert des geparsten inneren Strings übernehmen. Der könnte geaendert worden sein.
-				vecReturn.replace(sReturnLineParsedCallInner);//NUR BEIM SOLVEN DEN WERT IN VEC(1) UEBERNEHMEN				
-				sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			}else {
-				//Der JAVA-CALL Tag wird nicht verwendet. Aber der CALL-TAG schon.
-				//Aber die umgebenden Tags sollen drinbleiben, darum hier nicht nacharbeiten.
-				
-				//Der Reine CALL-Tag Wert
-				sReturnTag = this.getValue();
-			}
-			
+				//3. Versuch als Einzelwert
+				if(this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)){
+					if(vecReturn!=null) sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+					sExpression = sReturnTag;
+					if(StringZZZ.isEmpty(sExpression)) break main;
+					
+					//WICHTIG: DIE FLAGS VERERBEN !!!
+					KernelJavaCallIniSolverZZZ<T> init4FlagLookup = new KernelJavaCallIniSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, init4FlagLookup, true);
+					
+					//FileIniZZZ objFileIni = this.getFileIni();
+					IKernelZZZ objKernel = this.getKernelObject();
+					
+					//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
+					KernelJavaCallIniSolverZZZ<T> objJavaCallSolver = new KernelJavaCallIniSolverZZZ<T>(objKernel, saFlagZpassed);
+					
+					//Merke: sReturn hat dann wg. parse noch Werte drum herum. Darum den Wert es Tags holen.
+					ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReferenceJavaCall = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+					objReturnReferenceJavaCall.set(objEntry);
+					sReturnLineParsedCallInner=objJavaCallSolver.parse(sExpression, objReturnReferenceJavaCall, bKeepSurroundingSeparatorsOnParse);
+					objEntry = objReturnReferenceJavaCall.get();
+					
+					//20250304: Beim Parsen ist dient das Parsen des inneren Tag dazu hier ggf. noch Entry-Werte z.B. isPath() oder so, zu setzten.
+					//          Falsch ist es aber den Wert des inneren Tags als eigenen Tag-Wert zu uebernehmen.
+					//sReturnTag = objJavaCallSolver.getValue();
+					//this.setValue(sReturnTag);
+																				
+					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT uebernehmen				
+					sReturnTag = sReturnLineParsedCallInner;
+									
+					//20250304: Den Returnwert des geparsten inneren Strings übernehmen. Der könnte geaendert worden sein.
+					vecReturn.replace(sReturnLineParsedCallInner);//NUR BEIM SOLVEN DEN WERT IN VEC(1) UEBERNEHMEN				
+					sReturnLine = VectorUtilZZZ.implode(vecReturn);
+				}else {
+					//Der JAVA-CALL Tag wird nicht verwendet. Aber der CALL-TAG schon.
+					//Aber die umgebenden Tags sollen drinbleiben, darum hier nicht nacharbeiten.
+					
+					//Der Reine CALL-Tag Wert
+					sReturnTag = this.getValue();
+				}
+			}//end parse:
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);
 		}//end main:

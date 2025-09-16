@@ -1469,7 +1469,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
 			sPre = "";
 			sPost = "";
@@ -1517,7 +1517,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression; 
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";

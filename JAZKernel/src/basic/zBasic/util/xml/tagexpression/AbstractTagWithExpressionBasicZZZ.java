@@ -308,29 +308,38 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	private String parse_(String sExpressionIn, boolean bKeepSurroundingSeparatorsOnParse, boolean bIgnoreCase) throws ExceptionZZZ{
 		String sReturnLine = sExpressionIn;
 		String sReturnTag = "";
-		main:{			
-			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-			
-			boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
-			if(!bUseExpression) break main;
-							
-			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
-			boolean bUseParse = this.isParserEnabledThis();
-			if(!bUseParse) break main;
-			
-			//Bei einfachen Tags den Ersten Vektor holen
-			String sExpression = sExpressionIn;
-			Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
-			if(vecReturn==null) break main;
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			this.setValue(sReturnTag);
-			
-			vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
-			
-			//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);									
+		main:{	
+			//... hier kein updateValueParseCalled()
+		
+			parse:{
+				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+				
+				boolean bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
+				if(!bUseExpression) break main;
+								
+				//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben
+				boolean bUseParse = this.isParserEnabledThis();
+				if(!bUseParse) break main;
+				
+				//Bei einfachen Tags den Ersten Vektor holen
+				String sExpression = sExpressionIn;
+				Vector3ZZZ<String> vecReturn = this.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);
+				if(vecReturn==null) break main;
+				
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+				
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+				this.setValue(sReturnTag);
+				
+				vecReturn = this.parsePost(vecReturn, bKeepSurroundingSeparatorsOnParse);
+				
+				//Der zurueckgegebene Wert unterscheidet sich vom Wert des Tags selber.
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+			}//end parse:
+		
+			//hier kein updateValueParsed()
 		}//end main:
 		return sReturnLine;
 	}	

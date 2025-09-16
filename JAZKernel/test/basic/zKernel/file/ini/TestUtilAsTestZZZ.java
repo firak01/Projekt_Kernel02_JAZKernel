@@ -619,6 +619,92 @@ public class TestUtilAsTestZZZ extends TestCase{
 	}
 	
 	
+	public static boolean assertIsEncrypted(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+		
+			//Löse das von allen Prozessschritten/Aufrufen. Die Aufrufe werden vermieden wenn ein entsprechendes Flag fehlt.
+			//Also: ein is..."TAG" muss vorliegen, wenn logisch gilt: Parser an und der TAG ist im String.	
+			boolean bUseExpression = objSolver.isExpressionEnabledGeneral();
+			if(!bUseExpression) break main;
+				
+			boolean bUseParser = objSolver.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+			
+			boolean bUseParserThis = objSolver.isParserEnabledCustom();
+			if(!bUseParserThis) break main;
+
+			//Wenn asEntry geparst wurde, dann zieht die Programmierung des ExpressionHandlers und wie sich die Flags dort auswirken.
+			if(bAsEntry) {
+				boolean bUseEncryption = objSolver.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+				if(!(bUseEncryption)) {
+					assertFalse(objEntry.isEncrypted()); 
+					bReturn = false;
+					break main;
+				}
+			}
+				
+			//Ansonsten richtet es sich danach, ob der Tag darin steht.			
+			if(XmlUtilZZZ.containsTagName(sExpression, KernelEncryptionIniSolverZZZ.sTAG_NAME, false)) {
+				assertTrue(objEntry.isEncrypted());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isEncrypted()); 
+				bReturn = false;
+			}
+						
+		}//end main;
+		return bReturn;	
+	}
+	
+	public static boolean assertIsDecrypted(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{		
+		boolean bReturn = false;
+		main:{			
+			String sExpression = sExpressionIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpressionSolved;
+			String sExpression2compareWithExpression =sExpressionSolved;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			String sExpression2compare = sExpression;
+										
+			//Hier differenzieren, ob der Aufruf direkt erfolgte oder schon der Solver des "Elterntags" aufgerufen worden ist......
+			boolean bEncryptionSolverCalledPrevious = VectorUtilZZZ.containsString((Vector) objEntry.getHistorySolveCalledVector(), KernelEncryptionIniSolverZZZ.sTAG_NAME);			
+			if(!bEncryptionSolverCalledPrevious) {
+				//System.out.println(("Vorher wurde Call-Solver nicht aufgerufen. Also Call-Solver nicht direkt aufgerufen."));
+				assertFalse(objEntry.isDecrypted()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+				bReturn = false;
+			}else {
+				if(!objEntry.isEncrypted()) {
+					assertFalse(objEntry.isDecrypted()); //Der Aufruf wird vom CALL-Handler vermieden, da durch Flag deaktiviert.
+					bReturn = false;					
+				}else {
+				
+					//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
+					if(bAsEntry) {
+						System.out.println(("Aufruf als Entry. Also wurde Encryption-Solver aufgerufen, aber nicht direkt."));					
+						assertTrue(objEntry.isDecrypted());
+						bReturn = true;
+						
+					}else {				
+						assertTrue(objEntry.isDecrypted()); 
+						bReturn = true;									
+					}
+				}
+			}		
+			
+		}//end main;
+		return bReturn;
+	}
+	
+	
 	//#############################################
 	public static boolean assertIsJavaCall(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -1508,6 +1594,7 @@ public class TestUtilAsTestZZZ extends TestCase{
 		}//end main;
 		return bReturn;		
 	}
+	
 	public static boolean assertIsCallSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{	
@@ -1751,6 +1838,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 	}
 	
 	
+	
+	//############################################################################
 	public static boolean assertFileIniEntry(ISolveEnabledZZZ objSolver, IEnumSetMappedTestFlagsetZZZ objEnumFlagset, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IEnumSetMappedTestCaseZZZ objEnumTestCase, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, String sTagIn, String sTagSolvedIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -1834,6 +1923,14 @@ public class TestUtilAsTestZZZ extends TestCase{
 										
 				case sFLAGSET_PATH_SUBSTITUTED:
 					bReturn = assertFileIniEntry_parse_FLAGSET_PATH_SUBSTITUTED_(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);					
+					break;
+					
+				case sFLAGSET_ENCRYPTION_UNSOLVED:
+					bReturn = assertFileIniEntry_parse_FLAGSET_ENCRYPTION_UNSOLVED_(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+					break;
+					
+				case sFLAGSET_ENCRYPTION_SOLVED:
+					bReturn = assertFileIniEntry_parse_FLAGSET_ENCRYPTION_SOLVED_(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 					break;
 					
 				case sFLAGSET_UNSOLVED:		
@@ -2500,6 +2597,202 @@ public class TestUtilAsTestZZZ extends TestCase{
 			bReturn = true;
 		}//end main:
 		return bReturn;
+	}
+	
+	
+	private static boolean assertFileIniEntry_parse_FLAGSET_ENCRYPTION_UNSOLVED_(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
+			String sExpressionSubstituted2compareWithSolved=null; String sExpressionSubstituted2compareWithExpression = null; 
+			String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
+			String sExpression2compareWithSubstituted=null; String sExpression2compareWithSolved = null;
+			String sSubstituted2compare=null;
+				
+			boolean bCallSolverCalledPrevious=false; boolean bJsonArraySolverCalledPrevious = false; boolean bExpressionHandlerCalledPrevious = false;
+		
+		
+			//######## TEST-TEIL ###########################					
+			assertIsParseCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			assertTrue(objEntry.isParsed());
+			
+			assertFalse(objEntry.isSolveCalled());
+			assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+			assertIsSolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
+
+			assertTrue(objEntry.isExpression());
+			
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isPathSubstituteCalled());
+			assertIsPathSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituted());
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isVariableSubstituteCalled());
+				//+++ Werte kann man hier doch auch eigentlich nicht so abfragen					
+			assertTrue(objEntry.isVariableSubstituted());
+			//++++++++++++++++++++++
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isSubstituteCalled());
+			assertIsSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isSubstituted());
+			//+++++++++++++++++++++++
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+					
+			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen	
+			assertIsJson(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonMap(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArray(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+										
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			assertFalse(objEntry.isCallSolveCalled());
+			assertFalse(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
+			//+++++++++++++++++++++++++
+			//+++++++++++++++++++++++++
+			assertFalse(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+			assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+			//+++++++++++++++++++++++++
+			
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
+			assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+			assertFalse(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+
+			//TODOGOON20250915; //HIER DIE ASSERTS AUS DER AUFRUFENDEN METHODE ÜBERNEHMEN
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind			
+			boolean bDecrypted = assertIsDecrypted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			if(bDecrypted) {
+				assertNotNull(objEntry.getValueDecrypted());
+			}else {
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+
+	
+	private static boolean assertFileIniEntry_parse_FLAGSET_ENCRYPTION_SOLVED_(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+			
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sFormulaSolvedAndConverted=null; String sFormulaSolvedAndConvertedAsExpression=null;
+			String sExpressionSubstituted2compareWithSolved=null; String sExpressionSubstituted2compareWithExpression = null; 
+			String sExpressionParsed2compareWithSubstituted=null; String sExpressionSolved2compareWithSubstituted=null;
+			String sExpression2compareWithSubstituted=null; String sExpression2compareWithSolved = null;
+			String sSubstituted2compare=null;
+				
+			boolean bCallSolverCalledPrevious=false; boolean bJsonArraySolverCalledPrevious = false; boolean bExpressionHandlerCalledPrevious = false;
+		
+		
+			//######## TEST-TEIL ###########################					
+			assertIsParseCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			assertTrue(objEntry.isParsed());
+			
+			assertFalse(objEntry.isSolveCalled());
+			assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
+			assertIsSolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
+
+			assertTrue(objEntry.isExpression());
+			
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isPathSubstituteCalled());
+			assertIsPathSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isPathSubstituted());
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isVariableSubstituteCalled());
+				//+++ Werte kann man hier doch auch eigentlich nicht so abfragen					
+			assertTrue(objEntry.isVariableSubstituted());
+			//++++++++++++++++++++++
+			
+			//++++++++++++++++++++++
+			assertTrue(objEntry.isSubstituteCalled());
+			assertIsSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertTrue(objEntry.isSubstituted());
+			//+++++++++++++++++++++++
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			sFormulaSolvedAndConverted = objEntry.getValueFormulaSolvedAndConverted();
+			assertNull("NULL erwartet. Wert ist aber '" + sFormulaSolvedAndConverted + "'", sFormulaSolvedAndConverted); //Da keine Formel enthalten ist
+					
+			sFormulaSolvedAndConvertedAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();					
+			assertEquals(XmlUtilZZZ.computeTagNull(), sFormulaSolvedAndConvertedAsExpression);//Da keine Formel enthalten ist.
+
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen	
+			assertIsJson(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonMap(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArray(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			assertIsJsonArraySolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+										
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. keine Variablen in der Expression sind.
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			assertFalse(objEntry.isCallSolveCalled());
+			assertFalse(objEntry.isCallSolved());//Der konkrete Solver ist nicht involviert
+			//+++++++++++++++++++++++++
+			//+++++++++++++++++++++++++
+			assertFalse(objEntry.isJavaCallSolveCalled()); //trotz JAVACALL-Unsolved Flag wird der JAVACALL-Solver durchaus aufgerufen
+			assertFalse(objEntry.isJavaCallSolved());//Der konkrete Solver ist nicht involviert
+			//+++++++++++++++++++++++++
+			
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. KEINE CALL-Werte in der Expression sind
+			assertFalse(objEntry.isCall());		//Beim Parsen wird das festgestellt
+			assertFalse(objEntry.isJavaCall()); 	//Beim Parsen wird das festgestellt
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingClassname() + "'", objEntry.getCallingClassname());
+			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
+
+			//TODOGOON20250915; //HIER DIE ASSERTS AUS DER AUFRUFENDEN METHODE ÜBERNEHMEN
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind			
+			boolean bDecrypted = assertIsDecrypted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			if(bDecrypted) {
+				assertNotNull(objEntry.getValueDecrypted());
+			}else {
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;		
 	}
 	
 	private static boolean assertFileIniEntry_parse_FLAGSET_JSON_UNSOLVED_(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
@@ -3588,10 +3881,13 @@ public class TestUtilAsTestZZZ extends TestCase{
 			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getCallingMethodname() + "'", objEntry.getCallingMethodname());
 
 			//TODOGOON20250915; //HIER DIE ASSERTS AUS DER AUFRUFENDEN METHODE ÜBERNEHMEN
-			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
-			assertFalse(objEntry.isDecrypted());
-			assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-			
+			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind			
+			boolean bDecrypted = assertIsDecrypted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			if(bDecrypted) {
+				assertNotNull(objEntry.getValueDecrypted());
+			}else {
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+			}
 			
 			bReturn = true;
 		}//end main:
@@ -3685,9 +3981,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			//TODOGOON20250915; //HIER DIE ASSERTS AUS DER AUFRUFENDEN METHODE ÜBERNEHMEN
 			//+++ Auf Werte kann man hier eigentlich nicht so abfragen, weil ggfs. doch CRYPTED Werte in der Expression sind
-			assertFalse(objEntry.isDecrypted());
-			assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
-			
+			boolean bDecrypted = assertIsDecrypted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			if(bDecrypted) {
+				assertNotNull(objEntry.getValueDecrypted());
+			}else {
+				assertNull(objEntry.getValueDecrypted()); //Merke: sValue kann unterschiedlich zu dem decrypted Wert sein. Wenn etwas drumherum steht.
+			}
 			
 			bReturn = true;
 		}//end main:

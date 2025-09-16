@@ -182,49 +182,54 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			Vector<String> vecReturn = this.parseFirstVector(sExpressionIn);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			if(vecReturn==null) break main;		
-			if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break main; //Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+			if(vecReturn==null) break main;	
 			
-			//Beschränke das Ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)){				
-				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objMathSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
-								
-				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed); 
-													
-				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
-				String sExpression = sReturn;
-				String sExpressionOld = sExpression;
-				while(objMathSolver.isExpression(sExpression)){
-					String sValueMath = objMathSolver.solve(sExpression);
-					if(sExpression.equals(sValueMath)) break; //Sicherheitsmassnahme gegen Endlosschleife
-					sExpression = sValueMath;						
-				}					
-				if(!sExpressionOld.equals(sExpression)) {
-					//TODO GOON;//20241009: Eigentlich muss hier noch objReference uebergeben werden und dort objEntry raus geholt werden...
-					objEntryInner.isFormulaMathSolved(true);
-					objEntryInner.setValueFormulaSolvedAndConverted(sExpression);
-				}
-				sReturnTag=sExpression;
+			parse:{
+				//Pruefe ob der Tag enthalten ist:
+				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
+				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;
+			
+				//Beschränke das Ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
 				sReturnLine = VectorUtilZZZ.implode(vecReturn);
-				sReturn = sReturnLine;
-			}
-			
-			//ANSCHLIESSEND die HashMap erstellen
-			if(!JsonUtilZZZ.isJsonValid(sReturnTag)) break main;
-			
-			//Ziel: Die Reihenfolge berücksichtige		
-			hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturnTag);
-			this.setValue(hmReturn);
-			this.setValue(sReturnTag);
-			//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;
-			//this.setValue(hmReturn.toString());
-			//this.setValueJson(sReturn);
-			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
+				if(this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH)){				
+					//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+					KernelZFormulaMathSolverZZZ<T> objMathSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objMathSolverDummy, true); //this.getFlagZ_passable(true, exDummy);					
+									
+					KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(this.getKernelObject(), this.getFileConfigKernelIni(), saFlagZpassed); 
+														
+					//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+					//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
+					String sExpression = sReturn;
+					String sExpressionOld = sExpression;
+					while(objMathSolver.isExpression(sExpression)){
+						String sValueMath = objMathSolver.solve(sExpression);
+						if(sExpression.equals(sValueMath)) break; //Sicherheitsmassnahme gegen Endlosschleife
+						sExpression = sValueMath;						
+					}					
+					if(!sExpressionOld.equals(sExpression)) {
+						//TODO GOON;//20241009: Eigentlich muss hier noch objReference uebergeben werden und dort objEntry raus geholt werden...
+						objEntryInner.isFormulaMathSolved(true);
+						objEntryInner.setValueFormulaSolvedAndConverted(sExpression);
+					}
+					sReturnTag=sExpression;
+					sReturnLine = VectorUtilZZZ.implode(vecReturn);
+					sReturn = sReturnLine;
+				}
+				
+				//ANSCHLIESSEND die HashMap erstellen
+				if(!JsonUtilZZZ.isJsonValid(sReturnTag)) break main;
+				
+				//Ziel: Die Reihenfolge berücksichtige		
+				hmReturn = (LinkedHashMap<String, String>) JsonUtilZZZ.toLinkedHashMap(sReturnTag);
+				this.setValue(hmReturn);
+				this.setValue(sReturnTag);
+				//oder einen extra Json Value Wert einfuehren? TODOGOON 20241009;
+				//this.setValue(hmReturn.toString());
+				//this.setValueJson(sReturn);
+				//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
+			}//end parse:
 		}//end main:
 		return hmReturn;
 	}
