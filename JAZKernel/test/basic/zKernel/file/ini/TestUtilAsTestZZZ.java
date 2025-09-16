@@ -245,16 +245,16 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
 			
 			if(objEntry.isParseCalled()){
-				if(objSolver.isParserEnabledThis()) {
+				if(objSolver.isParserEnabledCustom() && objSolver.isParserEnabledThis()) {
 					assertTrue(objEntry.isParsed());
 					bReturn = true;
 				}else {
 					assertFalse(objEntry.isParsed());
-					bReturn = true;
+					bReturn = false;
 				}
 			}else {
 				assertFalse(objEntry.isParsed());
-				bReturn = true;
+				bReturn = false;
 			}
 					
 		}//end main;
@@ -341,7 +341,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 		return bReturn;
 	}
 		
-	public static boolean assertIsPathSubstituteCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+	//##########################################
+	public static boolean assertIsSubstituteCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sExpression = sExpressionIn;
@@ -354,54 +355,42 @@ public class TestUtilAsTestZZZ extends TestCase{
 			String sExpression2compareWithSubstituted=sExpression;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
 			
-			
-			assertTrue(objEntry.isPathSubstituteCalled());
-			bReturn = true;
-			
+			if(assertIsParsed(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isSubstituteCalled());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isSubstituteCalled());
+				bReturn = false;
+			}
 		}//end main;
 		return bReturn;
 	}
 	
-	public static boolean assertIsPathSubstitutedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+	
+	public static boolean assertIsSubstituted(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sExpression = sExpressionIn;
 			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
 						
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";	
 			
 			String sExpression2compareWithSubstituted=sExpression;
 			String sExpressionSubstituted2compare = sExpressionSubstituted;
-			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isPathSubstituted()) {
-				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, veraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, veraendert)=" + sExpressionSubstituted2compare);
-			}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isPathSubstituted()) {
-				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
-				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
-			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
-			}
 			
-			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
-				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
-					assertFalse(objEntry.isPathSubstitutedChanged());
-					bReturn = false;
-				}else {
-					assertTrue(objEntry.isPathSubstitutedChanged());
-					bReturn = true;
-				}
+			if(assertIsSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isSubstituteCalled());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isSubstituteCalled());
+				bReturn = false;
 			}
 		}//end main;
 		return bReturn;
 	}
-	
-	
+		
 	public static boolean assertIsSubstitutedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -448,8 +437,192 @@ public class TestUtilAsTestZZZ extends TestCase{
 		}//end main;
 		return bReturn;
 	}
+		
+	//#############################################################
+	public static boolean assertIsPathSubstituteCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			if(assertIsSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isPathSubstituteCalled());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isPathSubstituteCalled());
+				bReturn = false;
+			}
+		}//end main;
+		return bReturn;
+	}
 	
 	
+	public static boolean assertIsPathSubstituted(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			if(assertIsPathSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isPathSubstituted());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isPathSubstituted());
+				bReturn = false;
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	public static boolean assertIsPathSubstitutedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isPathSubstituted()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, veraendert)=" + sExpressionSubstituted2compare);
+			}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isPathSubstituted()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+			}
+			
+			if(objEntry.isPathSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+					assertFalse(objEntry.isPathSubstitutedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isPathSubstitutedChanged());
+					bReturn = true;
+				}
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	//##########################################
+	public static boolean assertIsVariableSubstituteCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			if(assertIsSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isVariableSubstituteCalled());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isVariableSubstituteCalled());
+				bReturn = false;
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	public static boolean assertIsVariableSubstituted(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+			String sExpressionSolved = sExpressionSolvedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			
+			if(assertIsSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry)) {
+				assertTrue(objEntry.isVariableSubstituted());
+				bReturn = true;
+			}else {
+				assertFalse(objEntry.isVariableSubstituted());
+				bReturn = false;
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	public static boolean assertIsVariableSubstitutedChanged(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String sExpression = sExpressionIn;
+			String sExpressionSubstituted = sExpressionSubstitutedIn;
+						
+			String sTagStartZ = "<Z>";
+			String sTagEndZ = "</Z>";	
+			
+			String sExpression2compareWithSubstituted=sExpression;
+			String sExpressionSubstituted2compare = sExpressionSubstituted;
+			if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.SOLVE_REMOVE && objEntry.isPathSubstituted()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onSolve, veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onSolve, veraendert)=" + sExpressionSubstituted2compare);
+			}else if(objEnumSurrounding == EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE && objEntry.isPathSubstituted()) {
+				sExpression2compareWithSubstituted = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpression2compareWithSubstituted, sTagStartZ, sTagEndZ, false);
+				sExpressionSubstituted2compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSubstituted2compare, sTagStartZ, sTagEndZ, false);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (onParse, veraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (onParse veraendert)=" + sExpressionSubstituted2compare);									
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpression2compareWithSubstituted (unveraendert)=" + sExpression2compareWithSubstituted);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2compare (unveraendert)=" + sExpressionSubstituted2compare);
+			}
+			
+			if(objEntry.isSubstituted()){ //Kann hier eigentlich nicht getestet werden. Ggfs. wird eine Expression ohne INI-PATH uebergeben
+				if(sExpression2compareWithSubstituted.equals(sExpressionSubstituted2compare)) { 
+					assertFalse(objEntry.isVariableSubstitutedChanged());
+					bReturn = false;
+				}else {
+					assertTrue(objEntry.isVariableSubstitutedChanged());
+					bReturn = true;
+				}
+			}
+		}//end main;
+		return bReturn;
+	}
+	
+	
+	
+	
+	
+	//#################################################
 	public static boolean assertIsSolveCalled(ISolveEnabledZZZ objSolver, IEnumSetMappedTestSurroundingZZZ objEnumSurrounding, IKernelConfigSectionEntryZZZ objEntry, String sExpressionIn, String sExpressionSubstitutedIn, String sExpressionSolvedIn, boolean bAsEntry) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
@@ -2621,7 +2794,8 @@ public class TestUtilAsTestZZZ extends TestCase{
 		
 			//######## TEST-TEIL ###########################					
 			assertIsParseCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
-			assertTrue(objEntry.isParsed());
+			//assertTrue(objEntry.isParsed());
+			assertIsParsed(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
 			assertFalse(objEntry.isSolveCalled());
 			assertFalse(objEntry.isSolved()); //Der konkrete Solver ist nicht involviert
@@ -2631,20 +2805,28 @@ public class TestUtilAsTestZZZ extends TestCase{
 			
 			
 			//++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());
+			//assertTrue(objEntry.isPathSubstituteCalled());
+			assertIsPathSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsPathSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
-			assertTrue(objEntry.isPathSubstituted());
+			//assertTrue(objEntry.isPathSubstituted());
+			assertIsPathSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			
-			//++++++++++++++++++++++
-			assertTrue(objEntry.isVariableSubstituteCalled());
+			
+			//++++++++++++++++++++++			
+			//assertTrue(objEntry.isVariableSubstituteCalled());
+			assertIsVariableSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 				//+++ Werte kann man hier doch auch eigentlich nicht so abfragen					
-			assertTrue(objEntry.isVariableSubstituted());
+			//assertTrue(objEntry.isVariableSubstituted());
+			assertIsVariableSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			//++++++++++++++++++++++
 			
 			//++++++++++++++++++++++
-			assertTrue(objEntry.isSubstituteCalled());
+			//assertTrue(objEntry.isSubstituteCalled());
+			assertIsSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			//assertTrue(objEntry.isSubstituted());
+			assertIsSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsSubstitutedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
-			assertTrue(objEntry.isSubstituted());
+			
 			//+++++++++++++++++++++++
 			
 			
@@ -3826,18 +4008,27 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
 			//da wir das Ergebnis des Parsens nicht haben.
 			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-			assertTrue(objEntry.isParsed()); 
+			//assertTrue(objEntry.isParsed());
+			assertIsParsed(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			
 			
 			//+++++++++++++++++++++++
-			assertTrue(objEntry.isPathSubstituteCalled());
+			//assertTrue(objEntry.isPathSubstituteCalled());
+			assertIsPathSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
 			//da wir das Ergebnis des Parsens nicht haben.
 			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
-			assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			//assertTrue(objEntry.isPathSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob ein INI-PATH Ausdruck darin ist
+			assertIsPathSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			//++++++++++++++++++++++++
 			//++++++++++++++++++++++++
-			
-			assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+
+			assertIsVariableSubstituteCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
+			//Beim Solven kann nicht auf die Änderung vom Parsen geprüft werden, 
+			//da wir das Ergebnis des Parsens nicht haben.
+			//Merke: .isParsedChanged() laesst sich hier nicht ermitteln.
+			//assertTrue(objEntry.isVariableSubstituted()); //falls das entsprechende Flag gesetzt ist, unabhaengig davon, ob eine INI-Variable darin ist
+			assertIsVariableSubstituted(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry); //Auch wenn die Expression nicht verarbeitet wird, dann ist doch geparsed worden....
 			//++++++++++++++++++++++++				
 			//++++++++++++++++++++++++
 			assertTrue(objEntry.isSolveCalled()); //Aufgerufen wurde der solveCall ja...
@@ -3856,9 +4047,12 @@ public class TestUtilAsTestZZZ extends TestCase{
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 			//+++ Auf Werte kann man auf JSON-Ebene, die ggfs. auch fuer andere Eingabestrings verwendet wird, nicht abfragen	
-			assertTrue(objEntry.isJson());
-			assertFalse(objEntry.isJsonMap());
-			assertTrue(objEntry.isJsonArray());
+			//assertTrue(objEntry.isJson());
+			assertIsJson(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);			
+			//assertFalse(objEntry.isJsonMap());
+			assertIsJsonMap(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
+			//assertTrue(objEntry.isJsonArray());
+			assertIsJsonArray(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsJsonArraySolveCalled(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsJsonArraySolved(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);
 			assertIsJsonArraySolvedChanged(objSolver, objEnumSurrounding, objEntry, sExpressionIn, sExpressionSubstitutedIn, sExpressionSolvedIn, bAsEntry);

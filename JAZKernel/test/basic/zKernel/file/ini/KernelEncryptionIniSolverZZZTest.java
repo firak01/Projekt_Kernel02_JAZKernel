@@ -301,12 +301,13 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//3b)
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
-			sExpressionSolved = sExpression; 
+			sExpressionSolved = sExpression;
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
 			sTagSolved = "MUSS AUS KONSTANTE KOMMEN";
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+		
 			//Beim Parsen ohne encryption, muss doch dieser encryption - Tag drinbleiben. Hier werden also nur die aeussern Z-Tags entfernt.
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_REMOVE, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 			
@@ -321,11 +322,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//Beim Solven ohne encryption, bleibt alles an Tags drin.
 			btemp = testCompute_Encryption_EncryptionUnsolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.SOLVE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.SOLVE);
 		
-			//3d)
+			//3d) Aber generell wird der Solver ausgefuehrt
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;	
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
@@ -347,12 +349,12 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//false: d.h. Tags sollen drin bleiben sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			btemp = testCompute_Encryption_EncryptionSolved_(sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved, EnumSetMappedTestSurroundingTypeZZZ.PARSE_KEEP, EnumSetMappedTestCaseSolverTypeZZZ.PARSE);
 
-			//4b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann wird auch das Encryption-Tag entfernt. Das wird naemlich auch durch Parsen "aufgeloest". Das eigentliche Aufloesen findet aber nicht statt.
+			//4b) Werdem beim reinen Parsen die umgebenden Tags entfernt, dann bleibt trotzem das encryption Tag drin. Das eigentliche Aufloesen findet aber nicht statt.
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
 			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
-			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
+			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, objExpressionSolver.getName(), false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";

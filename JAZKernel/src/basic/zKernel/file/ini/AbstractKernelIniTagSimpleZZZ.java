@@ -576,8 +576,8 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 	
 	private String parse_(String sExpressionIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceIn, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ {
 		String sReturn = null; String sReturnTag = null; String sReturnLine = null;
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
-		boolean bUseExpression = false; boolean bUseParse = false;
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();		
+		boolean bUseExpression = false; boolean bUseParser = false; boolean bUseParserThis = false;
 		
 		String sTagStartZ = "<Z>";
 		String sTagEndZ = "</Z>";
@@ -623,6 +623,19 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 				sReturn = sReturnLine;
 				vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
 				
+				
+				bUseExpression = this.isExpressionEnabledGeneral(); 
+				if(!bUseExpression) break main;		
+						
+				bUseParser = this.isParserEnabledGeneral();
+				if(!bUseParser) break main;
+				
+				//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
+				this.updateValueParseCustom(objReturnReference, sExpression);
+				
+				//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
+				bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
+				if(!bUseParserThis) break main;
 						
 				//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 				//sowie die ganzen Flags hinsichtlich "is...Enabled" ausgewertet.
@@ -659,7 +672,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry.setValue(sReturnLine);
 			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null) objReturnReference.set(objEntry);
-			if(bUseExpression  || bUseParse) {								
+			if(bUseExpression  || bUseParser) {								
 				if(sExpressionIn!=null) {
 					String sExpression2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionIn, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
 					String sReturnLine2Compare = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStartZ, sTagEndZ, true, false); //also an jeder Position (d.h. nicht nur am Anfang) ,also von aussen nach innen!!!
