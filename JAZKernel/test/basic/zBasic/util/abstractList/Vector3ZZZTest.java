@@ -23,9 +23,9 @@ public class Vector3ZZZTest  extends TestCase{
     		vec.replace("neu");
     		
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
-    		assertEquals("", vec.get(0));
-    		assertEquals("neu", vec.get(1));
-    		assertEquals("",vec.get(2));
+    		assertEquals(null, vec.getValueOrString(0));
+    		assertEquals("neu", vec.getValueOrString(1));
+    		assertEquals(null,vec.getValueOrString(2));
     		
     		vec.add("4");
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
@@ -41,9 +41,9 @@ public class Vector3ZZZTest  extends TestCase{
   			//neue
       		vec.replace(null);
       		
-      		assertEquals("", vec.get(0));
-    		assertEquals(null, vec.get(1));
-    		assertEquals("",vec.get(2));
+      		assertEquals(null, vec.getValueOrString(0));
+    		assertEquals(null, vec.getValueOrString(1));
+    		assertEquals(null, vec.getValueOrString(2));
     		
     		vec.add("4");
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
@@ -60,9 +60,9 @@ public class Vector3ZZZTest  extends TestCase{
     		vec.replace("1","neu","3");
     		
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
-    		assertEquals("1", vec.get(0));
-    		assertEquals("neu", vec.get(1));
-    		assertEquals("3",vec.get(2));
+    		assertEquals("1", vec.getValueOrString(0));
+    		assertEquals("neu", vec.getValueOrString(1));
+    		assertEquals("3",vec.getValueOrString(2));
     		
     		vec.add("4");
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
@@ -79,9 +79,9 @@ public class Vector3ZZZTest  extends TestCase{
     		vec.replace("1",null,"3");
     		
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
-    		assertEquals("1", vec.get(0));
-    		assertEquals(null, vec.get(1));
-    		assertEquals("3",vec.get(2));
+    		assertEquals("1", vec.getValueOrString(0));
+    		assertEquals(null, vec.getValueOrString(1));
+    		assertEquals("3",vec.getValueOrString(2));
     		
     		vec.add("4");
     		assertEquals(3,vec.size()); //Dieser Vektor soll immer 3 Elemente haben
