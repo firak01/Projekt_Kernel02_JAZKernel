@@ -485,6 +485,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			
 			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
@@ -498,7 +499,6 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 				}else {
 					objEntry.isJsonArray(false);
 				}
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}			
 			this.adoptEntryValuesMissing(objEntry);										
 		}

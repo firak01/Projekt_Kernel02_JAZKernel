@@ -43,6 +43,9 @@ public interface IVectorZZZ<T> extends IOutputDebugNormedZZZ, IConstantZZZ, ICol
 	
 	public Object replace(int iIndex, Object obj) throws ExceptionZZZ;
 	
+	//Loesung fuer mein NullObjectZZZ als Alternative zum "falschen" get(i).toString(); oder zum einfachen getElementAsValueOf(i);
+	public Object getValueOrString(int iIndex) throws ExceptionZZZ;
+	
 	//eigentlich aus Vector
 	public boolean isEmpty();
 	public Object get(int iIndex);

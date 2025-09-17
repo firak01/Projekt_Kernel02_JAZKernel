@@ -654,14 +654,13 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 		
 			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objReturnReference);
 					}
-				}
-				
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
+				}								
 			}
 			
 			this.adoptEntryValuesMissing(objEntry);	

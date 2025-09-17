@@ -812,9 +812,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			String sValue; Vector3ZZZ<String> vecValue;		
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry=null; 
-			
-			String sExpressionSurroundedTemp = null;
-			
+						
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			
@@ -871,7 +869,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 				//#####################################
 				//+++ Nun die Gesamtberechnung durchführen				
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.isSurroundingValueToKeep_OnParse());
-				sExpressionSurroundedTemp = sExpressionSubstituted;
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
 				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
 					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
@@ -888,6 +886,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
 					assertEquals(sExpressionSurroundedTemp, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
 				}
+				
 				//+++ Der Entry Wert
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);					

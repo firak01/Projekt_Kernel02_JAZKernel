@@ -34,9 +34,11 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IOutputDebugNormedZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 
@@ -214,8 +216,18 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 		//Das ist nicht so trivial, weil TypeCasting nicht immer klappt.
 		return VectorUtilZZZ.getElementAsValueOf(this, iIndex);
 	}
-
-
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getValueOrString(int iIndex) throws ExceptionZZZ {		
+		Object obj = this.get(iIndex);
+		if(obj instanceof NullObjectZZZ) {
+			return ((NullObjectZZZ) obj).valueOf();
+		}else {
+			return obj.toString();
+		}				
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

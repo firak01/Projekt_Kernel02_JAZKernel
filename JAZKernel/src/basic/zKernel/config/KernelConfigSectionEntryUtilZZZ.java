@@ -2093,9 +2093,10 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 				
 			//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-			String sBefore = (String) vecReturn.get(0);
-			String sValue = vecReturn.get(1).toString();
-			String sRest = vecReturn.get(2).toString();
+			//Das Problem ist, das ein NullObjectZZZ bei toString() den Leerstring zurueckgibt. In diesem Fall soll aber null nicht durch einen Leerstring ersetzt werden. 
+			String sBefore = vecReturn.getValueOrString(0);   
+			String sValue = vecReturn.getValueOrString(1);  
+			String sRest = vecReturn.getValueOrString(2);
 			
 			String sBeforeOld = sBefore;
 			String sValueOld = sValue;

@@ -611,39 +611,40 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			this.updateValueParseCalled();
 			this.updateValueParseCalled(objReturnReference);
 			
+			
+			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
+			String sExpression = sExpressionIn;
+			
+			this.setRaw(sExpressionIn);		
+			objEntry.setRaw(sExpressionIn);
+
+			sReturnTag = this.getValue();
+			sReturnLine = sExpressionIn;
+			sReturn = sReturnLine;
+			vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
+			
+			
+			bUseExpression = this.isExpressionEnabledGeneral(); 
+			if(!bUseExpression) break main;		
+					
+			bUseParser = this.isParserEnabledGeneral();
+			if(!bUseParser) break main;
+			
+			//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
+			this.updateValueParseCustom(objReturnReference, sExpression);
+			
+			//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
+			bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
+			if(!bUseParserThis) break main;
+			
 			parse:{
-				if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
-				String sExpression = sExpressionIn;
-				
-				this.setRaw(sExpressionIn);		
-				objEntry.setRaw(sExpressionIn);
-	
-				sReturnTag = this.getValue();
-				sReturnLine = sExpressionIn;
-				sReturn = sReturnLine;
-				vecReturn.set(0, sExpressionIn);//nur bei in dieser Methode neu erstellten Vector.
-				
-				
-				bUseExpression = this.isExpressionEnabledGeneral(); 
-				if(!bUseExpression) break main;		
-						
-				bUseParser = this.isParserEnabledGeneral();
-				if(!bUseParser) break main;
-				
-				//Direkte nachdem feststeht, dass Expression und Paser behandelt werden die Tags analysieren!!!
-				this.updateValueParseCustom(objReturnReference, sExpression);
-				
-				//Falls man diesen Tag aus dem Parsen (des Gesamtstrings) rausnimmt, muessen die umgebenden Tags drin bleiben			
-				bUseParserThis = this.isParserEnabledCustom(); //this.isParserEnabledThis();
-				if(!bUseParserThis) break main;
-						
 				//Den ersten Vektor bearbeiten. Darin wird auch die Kernel Ini-Pfad/-Variablenersetzung gemacht
 				//sowie die ganzen Flags hinsichtlich "is...Enabled" ausgewertet.
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParse = new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceParse.set(objEntry);										
 				vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse, bKeepSurroundingSeparatorsOnParse);
 				objEntry = objReturnReferenceParse.get();
-				if(vecReturn==null) break main;
+				if(vecReturn==null) break parse;
 				
 				//Pruefe ob der Tag enthalten ist:
 				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
@@ -756,13 +757,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			//### 
 			//###########################################
 			
-			//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
-		    //Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
-			//!!! Unterschied zum AbstractKernelIniTagCascadedZZZ
-			vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
-			if(vecReturn==null) break main;	
-			
 			parse:{
+				//Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
+			    //Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
+				//!!! Unterschied zum AbstractKernelIniTagCascadedZZZ
+				vecReturn = super.parseFirstVector(sExpression, bKeepSurroundingSeparatorsOnParse); //Merke: Auf der hoeheren Hierarchieben gibt es kein objEntry....
+				if(vecReturn==null) break main;	
+							
 				//Pruefe ob der Tag enthalten ist:
 				//Wenn der Tag nicht enthalten ist darf(!) nicht weitergearbeitet werden. Trotzdem sicherstellen, das isParsed()=true wird.
 				if(StringZZZ.isEmpty(vecReturn.get(1).toString())) break parse;

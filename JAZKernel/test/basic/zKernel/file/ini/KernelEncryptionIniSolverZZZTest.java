@@ -4,6 +4,7 @@ import java.io.File;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
@@ -302,7 +303,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			sExpression = sExpressionIn;		
 			sExpressionSubstituted = sExpressionIn;
 			sExpressionSolved = sExpression;
-			//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
+			sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ, false);
 			sPre = "";
 			sPost = "";
 			sTag = "MUSS AUS KONSTANTE KOMMEN";
@@ -1127,7 +1128,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			String sValue; Vector3ZZZ<String> vecValue;				
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			IKernelConfigSectionEntryZZZ objEntry = null;
-			
+						
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			
@@ -1163,12 +1164,32 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, false);
 			assertTrue("Flag nicht vorhanden '" + IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION + "'", btemp);
 		
+			boolean bUseExpressionGeneral = objExpressionSolver.isExpressionEnabledGeneral();
+			boolean bUseSolver = objExpressionSolver.isSolverEnabledGeneral();
+			boolean bUseParser = objExpressionSolver.isParserEnabledGeneral() && objExpressionSolver.isParserEnabledCustom(); //objExpressionSolver.isParserEnabledThis();
+			
 			
 			//+++ ... parse ist nicht solve... also wird hier nichts aufgeloest, aussser die Pfade
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE)) {					
 				sValue = objExpressionSolver.parse(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
-				assertEquals(sExpressionSolved, sValue);
+				String sExpressionSurroundedTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseParser && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
+				}
+				assertEquals(sExpressionSurroundedTemp, sValue);
 				
+				//+++ Der Tag Wert
+				sValue = objExpressionSolver.getValue();
+				if(bUseExpressionGeneral && bUseParser) {
+					sExpressionSurroundedTemp = sExpressionSubstituted;
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ, false);
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, KernelEncryptionIniSolverZZZ.sTAG_NAME, false);			
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sExpressionSubstituted2Compare=" + sExpressionSurroundedTemp);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sValue=" + sValue);
+					assertEquals(sExpressionSurroundedTemp, sValue); //Beim parse fist Vector wird nie der Z-Tag drum herum entfernt. Das ist Aufgabe von parse().
+				}
+				
+				//+++ Der Entry Wert
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
@@ -1220,8 +1241,13 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE)) {
 				sValue = objExpressionSolver.solve(sExpression, objSectionEntryReference, objEnumSurrounding.getSurroundingValueUsedForMethod());
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
 				assertEquals(sExpressionSolved, sValue);
-
+				
 				objEntry = objSectionEntryReference.get();
 				assertNotNull(objEntry);
 				
@@ -1267,8 +1293,14 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntry);
+				
 				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);
+				String sExpressionTemp = sExpressionSubstituted;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSubstituted = sExpressionTemp;
+				assertEquals(sExpressionSubstituted, sValue);
 				
 
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1301,6 +1333,21 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 				
 				assertNull(objEntry.getCallingClassname());
 				assertNull(objEntry.getCallingMethodname());
+			}
+			
+			
+			//+++ ... solve verhält sich NICHT wie parse(), bei solve wird aufgeloest...
+			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.SOLVE_AS_ENTRY)) {
+				objEntry = objExpressionSolver.solveAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());
+				assertNotNull(objEntry);
+				
+				sValue = objEntry.getValue();
+				String sExpressionSolvedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver && objEnumSurrounding.isSurroundingValueToRemove_OnSolve()) {
+					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				}
+				sExpressionSolved = sExpressionSolvedTemp;
+				assertEquals(sExpressionSolved, sValue);
 			}
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -127,8 +127,14 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 		return KernelEncryptionIniSolverZZZ.sTAG_PARENT_NAME;
 	}
 	
-	//+++++++++++++++++++++++++++++++++++++++++
-	//### aus IParseEnabled				
+	//+++++++++++++++++++++++++++++++++++++++++	
+	//### aus IParseEnabled		
+	@Override 
+	public boolean isParserEnabledThis() throws ExceptionZZZ {
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+	}
+	
+	
 	@Override 
 	public boolean isParserEnabledCustom() throws ExceptionZZZ {
 		//Ziel ist, dass Solver, die Kinder/Eltern-Tags haben auch deren Flags abrufen koennen.

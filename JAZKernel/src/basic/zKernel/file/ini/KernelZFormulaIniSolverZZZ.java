@@ -369,13 +369,13 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 						
 			if(bUseExpression && bUseSolver && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objReturnReference);
 					}
-				}
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
+				}				
 			}			
 				
 			this.adoptEntryValuesMissing(objEntry);						
@@ -386,7 +386,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	//### aus IParseEnabled		
 	@Override 
 	public boolean isParserEnabledThis() throws ExceptionZZZ {
-		return true; //Somit ist das Parsen vom Solven entkoppelt. Das wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
+		return true; //Somit ist das Parsen vom Solven entkoppelt. Letzteres wäre default in der abstracten Elternklasse, s. Solver:  return this.isSolverEnabledThis();
 	}
 	
 	@Override

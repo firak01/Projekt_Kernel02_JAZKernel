@@ -18,6 +18,7 @@ import basic.zBasic.ReflectCodeZZZ;
  *   a) addAll führt immer ein Replace aus, beginnend von dem gewuenschten Index.
  *   b) man definiert den Vector-Inhalt quasi wie einen CicularBuffer. D.h. wird der hoechste erlaubte Indexwert erreicht faengt man wieder mit Index 0 an.
  *   
+ *  - Merke: Der Defaultwert ist das NullObjectZZZ.
  * @param <T> 
  * 
  * @author Fritz Lindhauer, 10.10.2024, 12:15:24
@@ -37,7 +38,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	public VectorLimitedZZZ(int iSizeMax, Vector3ZZZ<String> vecInitial) throws ExceptionZZZ{
 		super();
 		this.setSizeMax(iSizeMax);
-		this.resetValues(new String(""));
+		this.resetValues(null);
 		
 		for (int i=0; i<this.getSizeMax(); i++)
 			this.replace(i, vecInitial.elementAt(i));

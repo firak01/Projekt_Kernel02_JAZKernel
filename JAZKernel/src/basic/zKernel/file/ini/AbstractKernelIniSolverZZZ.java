@@ -917,7 +917,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			this.updateValueSolveCustom(objReturnReference, sReturnTagParsed);
 			
 			//TODOGOON20250328;//Der Gesamtsolver wird aber ausgeführt. D.h. dafuer muss das solvePOST auch ausgefuehrt werden!!!  Sprich Z-Tag raus
-			bUseSolverThis = this.isSolverEnabledAnyRelevant();
+			bUseSolverThis = this.isSolverEnabledEveryRelevant();
 			if(!bUseSolverThis) break solverThis;
 			
 			
@@ -967,11 +967,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		if(objEntry!=null) {
 			objEntry.setValue(sReturnLine);
-			objEntry.setValueFromTag(sReturnTag);			
+			//objEntry.setValueFromTag(sReturnTag);			
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
-			
-			if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturnLine);
-			if(bUseExpression && bUseSolverThis) {												
+						
+			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturnLine);
 				if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.
 					//Daher absichtlich nicht sExpressionIn und sReturn verwenden. Darin sind ggfs. Aenderungen durch das Parsen enthalten. 
@@ -1247,6 +1247,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 		if(objEntry!=null) {				
 			objEntry.setValue(sReturn);
+			objEntry.setValueFromTag(sReturnTag);
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 			if(bUseExpression && bUseSolverThis) {
 				if(objEntry.isEncrypted()) objEntry.setValueDecrypted(sReturn);//Zwischenstand festhalten

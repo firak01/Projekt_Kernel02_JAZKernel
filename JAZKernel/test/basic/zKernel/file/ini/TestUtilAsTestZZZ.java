@@ -860,15 +860,32 @@ public class TestUtilAsTestZZZ extends TestCase{
 					bReturn = false;					
 				}else {
 				
+					//Löse das von allen Prozessschritten/Aufrufen. Die Aufrufe werden vermieden wenn ein entsprechendes Flag fehlt.
+					//Also: ein is..."TAG" muss vorliegen, wenn logisch gilt: Parser an und der TAG ist im String.	
+					boolean bUseExpression = objSolver.isExpressionEnabledGeneral();					
+					boolean bUseSolver = objSolver.isSolverEnabledGeneral();					
+					boolean bUseSolverThis = objSolver.isSolverEnabledEveryRelevant();
+					
+					
 					//ABER: Bei einem "entry"-Aufruf wird auch der JavaCall-Solver nicht direkt aufgerufen.
 					if(bAsEntry) {
-						System.out.println(("Aufruf als Entry. Also wurde Encryption-Solver aufgerufen, aber nicht direkt."));					
-						assertTrue(objEntry.isDecrypted());
-						bReturn = true;
-						
-					}else {				
-						assertTrue(objEntry.isDecrypted()); 
-						bReturn = true;									
+						System.out.println(("Aufruf als Entry. Also wurde Encryption-Solver aufgerufen, aber nicht direkt."));
+					
+						if(bUseExpression && bUseSolver && bUseSolverThis) {											
+							assertTrue(objEntry.isDecrypted());
+							bReturn = true;
+						} else {
+							assertFalse(objEntry.isDecrypted());
+							bReturn = false;
+						}
+					}else {
+						if(bUseExpression && bUseSolver && bUseSolverThis) {											
+							assertTrue(objEntry.isDecrypted());
+							bReturn = true;
+						}else {
+							assertFalse(objEntry.isDecrypted());
+							bReturn = false;
+						}								
 					}
 				}
 			}		

@@ -538,6 +538,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			if(objReturnReferenceIn!=null)objReturnReferenceIn.set(objEntry);
 			
 			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
@@ -551,7 +552,6 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 						objEntry.isJsonMap(false);
 					}
 				}
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturn);
 			}
 			this.adoptEntryValuesMissing(objEntry);			
 		}

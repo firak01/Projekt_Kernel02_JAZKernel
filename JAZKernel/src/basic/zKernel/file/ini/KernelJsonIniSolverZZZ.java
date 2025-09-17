@@ -506,14 +506,15 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry.setValueFromTag(sReturnTag);			
 			if(objReturnReference!=null)objReturnReference.set(objEntry);//Wichtig: Reference nach aussen zurueckgeben.
 						
-			if(bUseExpression && bUseSolverThis) {	
+			if(bUseExpression && bUseSolverThis) {
+				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturnLine);
 				if(sReturnTagSolved!=null) {				
 					if(!sReturnTagSolved.equals(sReturnTagParsed)) {				
 						this.updateValueSolvedChanged();
 						this.updateValueSolvedChanged(objReturnReference);
 					}
 				}
-				if(objEntry.isEncrypted() && bUseSolverThis) objEntry.setValueDecrypted(sReturnLine);
+				
 				
 //				if(sReturnLineSolved2compareWithParsed!=null) { //if(sReturnTagSolved!=null) {
 //					//Ziel ist es zu ermitteln, ob durch das Solven selbst ein Aenderung passierte.

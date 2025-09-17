@@ -206,51 +206,51 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		    //###########################################
 			//### 
 			//###########################################
-
-		    //Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
-		    //Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
-			//!!! Unterschied zum AbstractKernelIniTagSimpleZZ	    
-			String sTagOpening = this.getTagPartOpening();
-			String sTagClosing = this.getTagPartClosing();
-			vecReturn = XmlUtilZZZ.parseFirstVectorCascadedTag(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);//StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
-			if (vecReturn==null)break main;		
-			
-			//Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
-			//Also werden nur Werte in den jeweiligen Tags substituiert durch ihren konkreten Solver!!!
-			if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecReturn, 1))) break main; 
-			
-			//+++++++++++++++++++++++++
-			//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
-			//String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
-			String sValueToSubstitute = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1); //Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.	
-			
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceSubstitute.set(objEntry);
-			sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
-			objEntry = objReturnReferenceSubstitute.get();						
-			vecReturn.replace(1,sReturnSubstituted);
-			
-			//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
-			//und ggfs. wieder (neu gefundene) Value-Eintraege setzen
-			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
-			if(objEntry.isSubstitutedChanged()) {				
-				this.updateValueParseCustom(objReturnReference, sReturnLine);			
-			}			
-			//+++++++++++++++++++++++++
-			
-			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//vecReturn.get(1).toString();
-			this.setValue(sReturnTag);
-			
-			sReturnLine = VectorUtilZZZ.implode(vecReturn);
-			
-			//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
-			//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReferenceParserSuper.set(objEntry);
-			vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
-			sReturnTag = this.getValue();
-			sReturnLine  = VectorUtilZZZ.implode(vecReturn);
-			
+		    parse:{
+			    //Zerlegen des Z-Tags, d.h. Teil vorher, Teil dahinter.
+			    //Wichtig hier die Z-Tags in der MITTE des Vector3 drin lassen, nur dann funktioniert die RegEx-Expression für Pfadangabe.
+				//!!! Unterschied zum AbstractKernelIniTagSimpleZZ	    
+				String sTagOpening = this.getTagPartOpening();
+				String sTagClosing = this.getTagPartClosing();
+				vecReturn = XmlUtilZZZ.parseFirstVectorCascadedTag(sExpression, sTagOpening, sTagClosing, bKeepSurroundingSeparatorsOnParse, bIgnoreCase);//StringZZZ.vecMidKeepSeparator(sExpression, sTagOpening, sTagClosing, !bIgnoreCase);
+				if (vecReturn==null)break parse;		
+				
+				//Dann ist der Tag nicht enthalten und es darf(!) nicht weitergearbeitet werden.
+				//Also werden nur Werte in den jeweiligen Tags substituiert durch ihren konkreten Solver!!!
+				if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecReturn, 1))) break parse; 
+				
+				//+++++++++++++++++++++++++
+				//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
+				//String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
+				String sValueToSubstitute = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1); //Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.	
+				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceSubstitute.set(objEntry);
+				sReturnSubstituted = this.substituteParsed(sValueToSubstitute, objReturnReferenceSubstitute, bKeepSurroundingSeparatorsOnParse);				
+				objEntry = objReturnReferenceSubstitute.get();						
+				vecReturn.replace(1,sReturnSubstituted);
+				
+				//Falls Substitution durchgeführt wurde noch einmal den String durchsuchen, nach Tags.
+				//und ggfs. wieder (neu gefundene) Value-Eintraege setzen
+				sReturnLine  = VectorUtilZZZ.implode(vecReturn);
+				if(objEntry.isSubstitutedChanged()) {				
+					this.updateValueParseCustom(objReturnReference, sReturnLine);			
+				}			
+				//+++++++++++++++++++++++++
+				
+				sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//vecReturn.get(1).toString();
+				this.setValue(sReturnTag);
+				
+				sReturnLine = VectorUtilZZZ.implode(vecReturn);
+				
+				//+++ Der endgueltige Wert der Zeile und eigenen Wert setzen 
+				//Als echten Ergebniswert aber die <Z>-Tags und den eigenen Tag rausrechnen, falls gewuenscht
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceParserSuper= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReferenceParserSuper.set(objEntry);
+				vecReturn = this.parseFirstVectorPost(vecReturn, objReturnReference, bKeepSurroundingSeparatorsOnParse);
+				sReturnTag = this.getValue();
+				sReturnLine  = VectorUtilZZZ.implode(vecReturn);
+		    }//end parse:
 			this.updateValueParsed();
 			this.updateValueParsed(objReturnReference);			
 		}//end main:			
