@@ -4593,24 +4593,24 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 			
 			
 				//################################################################
-				//### Varianten ENCRRYPTION per Section/Property in Ini-File aufloesen
+				//### Varianten ENCRYPTION per Section/Property in Ini-File aufloesen
 				//#################################################################
 				
-				//a)
+				//a) ohne solver wird der Z-Tag nicht entfernt... 
 				sSection = "Section for testEncrypted";
 				sProperty = "WertAforDecrypt";			
 				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
-				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				//sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				btemp = testCompute_Encrypted_IniUsed_Unsolved_(sSection, sProperty, sExpressionSolved);
 				
-				//b)
+				//b) mit solver wird der Z-Tag nicht entfernt... auch wenn die encryption nicht aufgeloest wird
 				sSection = "Section for testEncrypted";
 				sProperty = "WertAforDecrypt";			
 				sExpressionSolved = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 				sExpressionSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
 				btemp = testCompute_Encrypted_IniUsed_EncryptionUnsolved_(sSection, sProperty, sExpressionSolved);
 					
-				//c)
+				//c) und nun alles aufloesen
 				sSection = "Section for testEncrypted";
 				sProperty = "WertAforDecrypt";
 				sExpressionSolved = "abcde";		
@@ -4640,8 +4640,11 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 				sProperty = sPropertyIn;
 				sExpressionSolved = sExpressionSolvedIn;
 				
-				//... OHNE Solver
+				IEnumSetMappedTestFlagsetZZZ objEnumFlagset = EnumSetMappedTestCaseFlagsetTypeZZZ.UNSOLVED;
 				
+				//#######################################
+				//... OHNE Solver
+				//#######################################
 				
 				btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 				assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
@@ -4705,9 +4708,9 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 		
 		main:{
 			try {
-				String sSection; String sProperty; String sExpressionSolved; String sValue;
 				boolean btemp; String stemp;
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference;			
+				String sSection; String sProperty; String sExpressionSolved; String sValue;				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();			
 
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";	
@@ -4751,7 +4754,7 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 				boolean bUseExpressionGeneral = objFileIniTest.isExpressionEnabledGeneral();
 				boolean bUseSolver = objFileIniTest.isSolverEnabledGeneral();
 				
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				
 				
 				IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 				assertNotNull(objEntry);
@@ -4837,12 +4840,13 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 				
 				IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue(sSection, sProperty);
 				assertNotNull(objEntry);
-				sValue = objEntry.getValue();				
-				String sExpressionSolvedTemp = sExpressionSolved;
-				if(bUseExpressionGeneral && bUseSolver){
-					sExpressionSolvedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSolved, sTagStartZ, sTagEndZ);
+				sValue = objEntry.getValue();
+				
+				String sExpressionSurroundedTemp = sExpressionSolved;
+				if(bUseExpressionGeneral && bUseSolver) { // && objEnumSurrounding.isSurroundingValueToRemove_OnParse()) {
+					sExpressionSurroundedTemp = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sExpressionSurroundedTemp, sTagStartZ, sTagEndZ);
 				}
-				sExpressionSolved = sExpressionSolvedTemp;
+				sExpressionSolved = sExpressionSurroundedTemp;
 				assertEquals(sExpressionSolved, sValue);
 				
 				assertFalse(objEntry.isJson());
