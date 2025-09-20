@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.machine.PlatformUtilsZZZ;
@@ -127,8 +128,7 @@ public class JarEasyHelperZZZ {
 		main:{
 		if(url==null)break main;
 	    String path = url;
-	    String sLog = ReflectCodeZZZ.getPositionCurrent()+": D0) url= '"+url.toString()+"'";
-		System.out.println(sLog);
+	    ObjectZZZ.logLineWithDate("(D0) url= '"+url.toString()+"'");
 	    if (path.startsWith("jar:")) {
 	        // remove "jar:" prefix and "!/" suffix
 	        final int index = path.indexOf("!/");
