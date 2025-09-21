@@ -287,7 +287,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    System.out.println(sLog);
 		    
 			File objFileCreated=null;
-			String sPath = "template/template_server_starter.txt";
+			String sPath = "src/resourceZZZ/template/template_server_starter.txt";
 			//DAS WIRD DIREKT IM TEMP VERZEICHNIS ALS TEMP DATEI ERSTELLT ..... String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_DIRECTORY_DUMMY";
 			
 			if(!JarEasyUtilZZZ.isInJarStatic())	{
@@ -321,6 +321,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
@@ -421,7 +422,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				//         Merke: Das ist schwieriger, da hier zuerst erkannt werden muss, dass es sich um eine Datei und nicht um ein Verzeichnis handelt!
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL BA ##########.";
 			    System.out.println(sLog);
-				sPath = "template/template_server_TCP_443.ovpn";
+				sPath = "src/resourceZZZ/template/template_server_TCP_443.ovpn";
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_FILE_TO_TEMP";
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
