@@ -751,7 +751,33 @@ output:
 			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
 		}//End main:
 		return saReturn;
-	}		
+	}	
+	
+	
+	public static String[] intersectOrNotNull(String[] saString01, String[] saString02) throws ExceptionZZZ{
+		String[]saReturn = null;
+		main:{
+			if(saString01==null && saString02==null)break main;
+			if(saString01==null) {
+				if(saString02.length==0) break main;
+				
+				saReturn = saString02;
+				break main;
+			}
+			
+			
+			if(saString02==null) {
+				if(saString01.length==0) break main;
+				
+				saReturn = saString01;
+				break main;
+			}
+			
+			
+			saReturn = StringArrayZZZ.intersect(saString01, saString02);
+		}//End main:
+		return saReturn;
+	}	
 	
 	/**returns true if the string is empty or null.
 	 * FGL: D.h. NULL oder Leerstring 

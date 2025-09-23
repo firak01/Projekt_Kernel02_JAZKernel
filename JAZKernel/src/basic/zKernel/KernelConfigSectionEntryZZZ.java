@@ -1396,19 +1396,19 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	
 	
-	//Aus Interface IObjectCachableZZZ
+	//### aus Interface IObjectCachableZZZ
 	@Override
-	public boolean isCacheSkipped() {
+	public boolean isCacheSkipped() throws ExceptionZZZ {
 		return this.bSkipCache;
 	}
 
 	@Override
-	public void isCacheSkipped(boolean bSkip) {
+	public void isCacheSkipped(boolean bSkip) throws ExceptionZZZ {
 		if(!this.bSkipCache) this.bSkipCache = bSkip;
 	}
 
 	@Override
-	public String getValueForFilter() {
+	public String getValueForFilter() throws ExceptionZZZ {
 		if(this.isFormula()){
 			return this.getRaw();
 		}else{
@@ -1417,7 +1417,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	@Override
-	public boolean wasValueComputed() {
+	public boolean wasValueComputed() throws ExceptionZZZ {
 		if(this.isFormula()){
 			return true;
 		}else{

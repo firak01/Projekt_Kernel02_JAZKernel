@@ -59,7 +59,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 31.08.2024, 08:07:50
  * 
  */
-public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IKernelExpressionIniHandlerUserZZZ, IKernelConfigSectionEntryUserZZZ, IValueVariableUserZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniParserZZZ, IKernelZFormulaIni_PathZZZ, ISolveEnabledZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{//, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IKernelExpressionIniHandlerUserZZZ, IKernelConfigSectionEntryUserZZZ, IValueVariableUserZZZ, IListenerObjectFlagZsetZZZ, IIniTagWithConversionZZZ, IObjectWithExpressionZZZ, IKernelExpressionIniParserZZZ, IKernelZFormulaIni_PathZZZ, ISolveEnabledZZZ, IKernelExpressionIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don't create a file in the constructor
@@ -85,7 +85,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	//private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
 	//private String sValueRaw=null;
 	
-	//private boolean bSkipCache=false;
+	//Aus ICachableObjectZZZ
+	private boolean bSkipCache=false;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super("init");//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
@@ -1673,6 +1674,36 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 		}//end main:
 		return bReturn;
 	}	
+	
+	
+	//########################################
+	//### aus ICachableObjectZZZ
+	//########################################
+	//Merke: KernelFileIniZZZ ist Cachable, damit z.B. Moduldateien behandelt werden können. u.a. verwendet in objKernel.searchModuleFileByModuleWithProgramSection(...)
+	@Override
+	public boolean isCacheSkipped() throws ExceptionZZZ {
+		return this.bSkipCache;
+	}
+
+	@Override
+	public void isCacheSkipped(boolean bSkip) throws ExceptionZZZ {
+		if(!this.bSkipCache) this.bSkipCache = bSkip;
+	}
+
+	@Override
+	public String getValueForFilter() throws ExceptionZZZ {
+		//Bei KernelConfigSectionEntry ist es einfach der RAW String.
+		//Hier setze ich den Dateinamen.
+		//this.getFileIniObject().getFileName();
+		return null;
+	}
+
+	@Override
+	public boolean wasValueComputed() throws ExceptionZZZ {
+		//Bei KernelConfigSectionEntry ist es einfach, dann ist das Objekt berechnet, wenn es eine Formel hat. 
+		//Hier setzte ich einen statischen Wert.
+		return false; 
+	}
 		
 	
 	//######################################

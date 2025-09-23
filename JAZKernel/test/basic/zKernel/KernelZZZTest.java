@@ -19,10 +19,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniParserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_VariableZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -1542,8 +1545,22 @@ public void testGetModuleAliasAll(){
 		try {
 			boolean bFlagExists = objKernelFGL.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
 			assertTrue("Flag wurde erwartet: '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
+			
+			bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", bFlagExists);
+
+			bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", bFlagExists);
+		
+			bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE, true);			
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", bFlagExists);
+			
+			bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", bFlagExists);
+						
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'",bFlagExists);
+			
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
 			

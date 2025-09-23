@@ -17,7 +17,7 @@ public interface IKernelCacheZZZ {
 	//Darum wird für die Ausdrücke, die diese Variablen enthalten, der Cache "geskipped".
 	//Aufgerufen wird diese Methode beim Setzen einer KernelFileIniZZZ-Variablen.
 	public int isCacheSkippedContainingVariable(boolean bValue, String sVariableName) throws ExceptionZZZ;
-	public ArrayList<ICachableObjectZZZ>getCacheEntriesWithPropertiesByRegEx(String sRegEx);//Durchsuche alle CacheObjekte und prüfe, ob der a) "RAW"-Eintrag b) der Eintrag selbst dem Regex-Ausdruck entspricht.
+	public ArrayList<ICachableObjectZZZ>getCacheEntriesWithPropertiesByRegEx(String sRegEx) throws ExceptionZZZ;//Durchsuche alle CacheObjekte und prüfe, ob der a) "RAW"-Eintrag b) der Eintrag selbst dem Regex-Ausdruck entspricht.
 	
 	//Damit bestimmte Objekte herausgefiltert werden können
 	public ICacheFilterZZZ getFilterObject(String sRexex); //ICacheFilterZZZ objFilter); //Der eigentliche Filterprozess beginnt dann in dem Filterobjekt, z.B. per Regex

@@ -909,7 +909,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
 			
 				//Einschraenkung auch auf die uebergebenen Flags
-				String[] saFlag = StringArrayZZZ.intersect(saFlagZpassed03, saFlagZpassed);
+				String[] saFlag = StringArrayZZZ.intersectOrNotNull(saFlagZpassed03, saFlagZpassed);
 								
 				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlag);
 				//DAS KLAPPT 20250412  hmtemp = ex.computeLinkedHashMap(sRaw); //TODO GOON 20241009; //Eigentlich muss noch eine Reference fuer objEntry uebergeben werden.
@@ -1073,7 +1073,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			if(XmlUtilZZZ.ensureTagPartClosing(sTagPartContainerClosing));
 			
 			//Den Container Tag parsen aus dem String
-			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, false);//Also MIT CONTAINER Tags holen, ohne Exactmatch
+			Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidCascaded(sExpression, sTagPartContainerOpening, sTagPartContainerClosing, true, false);//Also MIT CONTAINER Tags holen, ohne Exactmatch
 			//Vector3ZZZ<String>vecExpression	= StringZZZ.vecMidFirstKeepSeparatorCentral(sValueExpression, sTagContainerStart, sTagContainerEnd, false); //Also MIT CONTAINER Tags holen -im mittleren Teil des Vectors -, ohne Exactmatch
 			if(vecExpression==null) break main;
 

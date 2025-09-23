@@ -104,7 +104,7 @@ Please note that it will not match “java” word in first example i.e. “Toda
 	}
 
 	@Override
-	public ArrayList<ICachableObjectZZZ> getCacheEntriesWithPropertiesByRegEx(String sRegEx) {
+	public ArrayList<ICachableObjectZZZ> getCacheEntriesWithPropertiesByRegEx(String sRegEx) throws ExceptionZZZ {
 		ArrayList<ICachableObjectZZZ>listaObjectReturn = new ArrayList<ICachableObjectZZZ>();
 		main:{
 			HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
@@ -134,7 +134,7 @@ Please note that it will not match “java” word in first example i.e. “Toda
 			private Pattern pattern = Pattern.compile(sRegEx, Pattern.CASE_INSENSITIVE); //es muss der Ausdruck z.B. z:Var nicht casesensitive in der ini stehen!
 			
 			@Override
-			public boolean accept(ICachableObjectZZZ objCachable) {
+			public boolean accept(ICachableObjectZZZ objCachable) throws ExceptionZZZ {
 				boolean bReturn = false;
 				main:{
 					if(objCachable==null) break main;

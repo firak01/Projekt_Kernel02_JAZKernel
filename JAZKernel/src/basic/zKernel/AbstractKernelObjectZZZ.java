@@ -54,6 +54,7 @@ import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniParserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelJavaCallIniSolverZZZ;
@@ -62,6 +63,7 @@ import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_VariableZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -81,7 +83,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IExpressionEnabledZZZ, IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
+public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IExpressionEnabledZZZ,IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
 	private static final long serialVersionUID = 699752030418877631L;
 
 	private FileFilterModuleZZZ objFileFilterModule=null;
@@ -5321,7 +5323,7 @@ MeinTestParameter=blablaErgebnis
 			objReturn.isJson(true);
 			objReturn.isJsonMap(true);
 			objReturn.setValue(hmReturn);
-		}
+		}//end main:
 		return hmReturn;
 	}
 	
@@ -7515,6 +7517,44 @@ MeinTestParameter=blablaErgebnis
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
+	//aus IKernelZFormulaIni_VariableZZZ
+	@Override
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) {
+		return this.getFlag(objEnum_IKernelZFormulaIni_VariableZZZ.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelExpressionIniParserZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnum_IKernelExpressionIniParserZZZ.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelExpressionIniParserZZZ.FLAGZ[] objaEnum_IKernelExpressionIniParserZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelExpressionIniParserZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelExpressionIniParserZZZ.length];
+				int iCounter=-1;
+				for(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelExpressionIniParserZZZ:objaEnum_IKernelExpressionIniParserZZZ) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnum_IKernelExpressionIniParserZZZ, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
@@ -7859,4 +7899,43 @@ MeinTestParameter=blablaErgebnis
 			public boolean proofFlagSetBefore(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagSetBefore(objEnumFlag.name());
 			}
+			
+			//aus IKernelZFormulaIni_VariableZZZ
+			@Override
+			public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) {
+				return this.getFlag(objEnum_IKernelZFormulaIni_VariableZZZ.name());
+			}
+			
+			@Override
+			public boolean setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				return this.setFlag(objEnum_IKernelZFormulaIni_VariableZZZ.name(), bFlagValue);
+			}
+			
+			@Override
+			public boolean[] setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ[] objaEnum_IKernelZFormulaIni_VariableZZZ, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIni_VariableZZZ)) {
+						baReturn = new boolean[objaEnum_IKernelZFormulaIni_VariableZZZ.length];
+						int iCounter=-1;
+						for(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ:objaEnum_IKernelZFormulaIni_VariableZZZ) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIni_VariableZZZ, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+			
+			@Override
+			public boolean proofFlagExists(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
+			}
+			
+			@Override
+			public boolean proofFlagSetBefore(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+			}
+			
 }//end class

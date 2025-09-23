@@ -11,6 +11,7 @@ import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniParserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelJavaCallIniSolverZZZ;
@@ -18,12 +19,13 @@ import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIni_VariableZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IObjectWithExpressionZZZ, IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZEnabledZZZ, IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
+public interface IKernelZZZ extends IObjectWithExpressionZZZ, IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZEnabledZZZ, IKernelExpressionIniParserZZZ,IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_VariableZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonArrayIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		DUMMY; //die sollte in IFormula.... stehen USEFORMULA, USEFORMULA_MATH;
