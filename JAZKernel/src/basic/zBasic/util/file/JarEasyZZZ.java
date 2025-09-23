@@ -717,7 +717,7 @@ File[] objaReturn = null;
 	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
 	*  NOT a file peristed in the temp - Directory !!!
 	*  
-	* Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelgt, sondern kommen in den Dateinamen
+	* Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelegt, sondern kommen in den Dateinamen
 	* Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
 	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
 	*  @return A file object to the extracted file
@@ -725,6 +725,80 @@ File[] objaReturn = null;
 	* @author Fritz Lindhauer, 25.11.2020, 08:38:17
 	**/
 	private static File extractFileFromJarAsTemp_(JarFile objJarFile, String sFilePath) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{
+			//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
+			if(StringZZZ.isEmpty(sFilePath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			try {
+				
+				if(JarEasyUtilZZZ.isInJarStatic()) {
+					objReturn = JarEasyZZZ.extractFileFromJarThisAsTemp_(objJarFile, sFilePath);	
+					//oder vielleicht besser?    objReturn = JarEasyInCurrentJarZZZ.extractFileAsTemp(sFilePath);
+				}else {
+					try {
+						JarEntry entry = objJarFile.getJarEntry(sFilePath);
+				        if (entry == null) {
+				            throw new IOException("Eintrag '" + sFilePath + "' wurde in der Jar-Datei nicht gefunden.");
+				        }
+				
+				        // InputStream aus der Jar-Datei öffnen
+				        InputStream is = objJarFile.getInputStream(entry);
+				        if (is == null) {
+				            throw new IOException("Konnte InputStream für '" + sFilePath + "' nicht öffnen.");
+				        }
+				
+				        // Temporäre Datei mit gleichem Namen anlegen
+				        objReturn = FileEasyZZZ.createTempFile(sFilePath);
+				
+				        FileOutputStream fos = null;
+				        try {
+				            fos = new FileOutputStream(objReturn);
+				            byte[] buffer = new byte[4096];
+				            int bytesRead;
+				            while ((bytesRead = is.read(buffer)) != -1) {
+				                fos.write(buffer, 0, bytesRead);
+				            }
+				        } finally {
+				            if (fos != null) {
+				                try { fos.close(); } catch (IOException ignore) {}
+				            }
+				            try { is.close(); } catch (IOException ignore) {}
+				        }
+				        
+			        
+						}catch(IOException ioe) {
+							ExceptionZZZ ez  = new ExceptionZZZ("An error happened. IOException: " + ioe.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
+					}//end if
+				}catch (Exception e){
+			    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened. Exception: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+			    }	
+			}//end main:
+			return objReturn;
+		}
+	
+		
+	/**
+	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
+	*  NOT a file peristed in the temp - Directory !!!
+	*  
+	* Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelegt, sondern kommen in den Dateinamen
+	* Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
+	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
+	*  @return A file object to the extracted file
+	* @throws ExceptionZZZ
+	* @author Fritz Lindhauer, 25.11.2020, 08:38:17
+	**/
+	private static File extractFileFromJarThisAsTemp_(JarFile objJarFile, String sFilePath) throws ExceptionZZZ {
+		//IDEE: Innerhalb der gleichen Jar - Datei dies über den Classpath und ClassLoader machen.
+		
+		
 			File objReturn=null;
 			main:{
 				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
@@ -744,7 +818,7 @@ File[] objaReturn = null;
 			        String sLog = ReflectCodeZZZ.getPositionCurrent()+": (G) Trying to create InputStream for : '" + sFilePathInJar + "'";
 					System.out.println(sLog);
 					
-			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePathInJar);
+			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream("/" + sFilePathInJar);
 			//While the input stream has bytes
 			        while ((i = classIS.read(byteArray)) > 0) 
 			        {
@@ -764,10 +838,8 @@ File[] objaReturn = null;
 					throw ez;
 			    }	    
 				}//end main:
-				return objReturn;
+				return objReturn;				
 		}
-	
-		
 	
 	
 			

@@ -11,7 +11,7 @@ import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.data.DataFieldZZZ;
 import basic.zBasic.util.data.DataStoreZZZ;
 
-public class DataStoreZZZTest  extends TestCase{
+public class DataStoreZZZTest extends TestCase{
     private DataStoreZZZ objStoreTest = null;
 	
     protected void setUp(){
@@ -67,7 +67,7 @@ public void testFieldSetGet(){
 		String stemp3 = objStoreTest.getValueString("Alias2", 0); //!!! DAS WURDE ALS INTEGER WEGGESPEICHERT, WIR HOLEN ES ABER ALS STRING ZUR�CK
 		assertEquals("43", stemp3);
 					
-		//nun mehrere Werte einf�gen
+		//nun mehrere Werte einfuegen
 		objStoreTest.appendValue("Alias1", "Das ist ein Test 2");
 		String stemp4 = objStoreTest.getValueString("Alias1", 1);
 		assertEquals("Das ist ein Test 2", stemp4);
@@ -81,20 +81,29 @@ public void testFieldSetGet(){
 		
 		objStoreTest.appendValue("Alias3", "");
 		stemp = objStoreTest.getValueString("Alias3", 0);
-		assertNull("LEERSTRING erwartet. Wert ist aber '" + stemp + "'", stemp);
+		assertNotNull("NOT NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
+		assertEquals("", stemp);
+		
+		objStoreTest.appendValue("Alias3", null);
+		stemp = objStoreTest.getValueString("Alias3", 0);
+		assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
+		
 		
 		//2. Datumswert setzen
 		String sDateIn = "10.5.2006";
 		objStoreTest.appendValue("Alias3", sDateIn);
 			
 		//... als String auslesen
-		String sDateOut = objStoreTest.getValueString("Alias3", 1);
+		String sDateOut = objStoreTest.getValueString("Alias3", 0);
 		assertEquals("10.05.2006", sDateOut);
 		
-		//nun ein Datum weiteres einf�gen
+		//nun ein Datum weiteres einfuegen
 		objStoreTest.replaceValue("Alias3", "6.12.2006");
 		String stemp5 = objStoreTest.getValueString("Alias3", 0);
-		assertEquals("06.12.2006", stemp5);                                    //!!! Konveriterung in das passende Format !!!
+		assertEquals("06.12.2006", stemp5);  				
+		//!!! Konveriterung in das passende Format !!!
+		
+		
 		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
@@ -134,7 +143,7 @@ public void testFieldSetGet(){
 			stemp = objStoreTest.getValueString("Alias1", 1);
 			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 			
-			//Die alten Werte des anderen Alias d�rfen nicht ver�ndert sein
+			//Die alten Werte des anderen Alias duerfen nicht veraendert sein
 			stemp = objStoreTest.getValueString("Alias2", 0);
 			assertEquals("Das muss stehenbleiben 1", stemp);
 			
@@ -274,13 +283,13 @@ public void testFieldSetGet(){
 			assertEquals(1, alsKey.size());
 			alsKey.clear();
 			
-//			Das Hinzuf�gen eines zweiten Werts unter den gleichen Alias darf die ArrayList nicht ver�ndern
+//			Das Hinzufuegen eines zweiten Werts unter den gleichen Alias darf die ArrayList nicht veraendern
 			objStoreTest.appendValue("Alias1", "Das ist ein zweiter Test"); 
 			alsKey = objStoreTest.getValueKeyStringAlll();
 			assertEquals(1, alsKey.size());
 			alsKey.clear();
 			
-			//Das Hinzuf�gen eines Wertes unter einen anderen Alias ergibt ein weiteres Element in der ArrayList, der Datentyp ist dabei unnerheblich
+			//Das Hinzufuegen eines Wertes unter einen anderen Alias ergibt ein weiteres Element in der ArrayList, der Datentyp ist dabei unnerheblich
 			Integer intTemp = new Integer(43);
 			objStoreTest.appendValue("Alias2", intTemp);
 			alsKey = objStoreTest.getValueKeyStringAlll();
@@ -294,7 +303,7 @@ public void testFieldSetGet(){
 	}
 	
 	public void myPostInsert(){
-		System.out.println("Methode wurde im testValuePostStoreRead() ausgef�hrt");
+		System.out.println("Methode wurde im testValuePostStoreRead() ausgefuehrt");
 	}
 	public void testValuePostStoreRead(){
 		try{
