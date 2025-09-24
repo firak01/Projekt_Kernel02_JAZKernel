@@ -966,13 +966,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals("", sFormula);
 				
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula);
 				
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals("", sFormula);
 				
 		
@@ -985,13 +985,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<nixda>", "</nixda>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals(sTest, sFormula);
 		
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals("", sFormula);
 		
 		//##################################################
@@ -999,13 +999,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals("", sFormula);
 				
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula);
 				
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals("", sFormula);
 		
 		//######################################
@@ -1014,13 +1014,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals("Anfang", sFormula);
 		
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("das ist der <Z>[Section a]Number</Z> Test", sFormula);
 		
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals("Ende", sFormula);
 		
 		//##################################################
@@ -1030,13 +1030,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("[Section a]Number", sFormula);
 		
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals(" Test", sFormula);
 		
 		//###################################################
@@ -1046,18 +1046,18 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = (String) vecSolved.get(0);
+		sFormula = vecSolved.get(0).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = (String) vecSolved.get(1);
+		sFormula = vecSolved.get(1).toString();
 		assertEquals("[Section a]Number", sFormula);
 		
-		sFormula = (String) vecSolved.get(2);
+		sFormula = vecSolved.get(2).toString();
 		assertEquals("", sFormula);
 		
 	}catch(ExceptionZZZ ez){
 		fail("Method throws an exception." + ez.getMessageLast());
-	}
+	}	
 }
 
 public void testVecMidFirst(){
