@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_COLOR_BURNPeer;
+//import com.sun.scenario.effect.impl.sw.sse.SSEBlend_COLOR_BURNPeer;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;

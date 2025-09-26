@@ -4,11 +4,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 /**https://stackoverflow.com/questions/3522454/how-to-implement-a-tree-data-structure-in-java
  *  
- * 
+ * ABER: Java 1.8 notewendig für
+ * import java.util.stream.Collectors;
  * 
  */
 public class FileTree implements Tree<File> {
