@@ -4,6 +4,10 @@
   <artifactId>JAZKernel</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <description>Verwendung des Kernels (ini-Konfiguration, etc. - Einbindung von Bibliotheken)</description>
+   <properties>
+     <maven.compiler.source>1.7</maven.compiler.source>
+     <maven.compiler.target>1.7</maven.compiler.target>
+   </properties>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
