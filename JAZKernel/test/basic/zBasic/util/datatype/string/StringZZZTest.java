@@ -117,14 +117,45 @@ public class StringZZZTest extends TestCase{
 		 
 		 //###################
 		 //Teste auf String, ab einer bestimmten Position VON links
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 5);
-		 assertEquals("das ist ", stemp);
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 0);
+		 assertEquals("das ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 1);
+		 assertEquals("das ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 2);
+		 assertEquals("das ", stemp);
+		
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 3);
+		 assertEquals("das ", stemp);
 		 
 		 stemp=StringZZZ.leftKeep(sDummy2, " ", 4);
 		 assertEquals("das ist ", stemp);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 3);
-		 assertEquals("das ", stemp);
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 5);
+		 assertEquals("das ist ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 6);
+		 assertEquals("das ist ", stemp);
+		 
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 7);
+		 assertEquals("das ist ", stemp);
+		
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 8);
+		 assertEquals("das ist ein ", stemp);
+		
+		 stemp=StringZZZ.leftKeep(sDummy2, " ", 9);
+		 assertEquals("das ist ein ", stemp);
+		 
+		 
+		
+		 
+		
+		 
+		 
+		 
+		 
+		
 		 
 		 
 		 //System.out.println(stemp);
@@ -966,13 +997,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("", sFormula);
 				
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula);
 				
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("", sFormula);
 				
 		
@@ -985,13 +1016,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<nixda>", "</nixda>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals(sTest, sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("", sFormula);
 		
 		//##################################################
@@ -999,13 +1030,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("", sFormula);
 				
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("<Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call>", sFormula);
 				
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("", sFormula);
 		
 		//######################################
@@ -1014,13 +1045,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("Anfang", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("das ist der <Z>[Section a]Number</Z> Test", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("Ende", sFormula);
 		
 		//##################################################
@@ -1030,13 +1061,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("[Section a]Number", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals(" Test", sFormula);
 		
 		//###################################################
@@ -1046,13 +1077,13 @@ public void testVecMidCascaded(){
 		vecSolved = StringZZZ.vecMidCascaded(sTest, "<Z>", "</Z>", false, false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("[Section a]Number", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("", sFormula);
 		
 	}catch(ExceptionZZZ ez){
@@ -1081,13 +1112,13 @@ public void testVecMidFirst(){
 		assertEquals(1,StringZZZ.count(sProof, "]"));
 		
 
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("ArgumentSection for testCallComputed", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula);
 
 		
@@ -1104,13 +1135,13 @@ public void testVecMidFirst(){
 		vecSolved = StringZZZ.vecMidFirst(sExpression, "<nixda>", "</nixda>", false);//wichtig: Diese Seperatoren-Tags sollen nicht zurueckkommen!!!
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals(sExpression, sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("", sFormula);
 
 
@@ -1129,13 +1160,13 @@ public void testVecMidFirst(){
 		assertEquals(1,StringZZZ.count(sProof, "]"));
 		
 
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("ArgumentSection for testCallComputed", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula);
 
 		//+++++++++++++++++++++++++++++
@@ -1151,13 +1182,13 @@ public void testVecMidFirst(){
 		assertEquals(2,StringZZZ.count(sProof, "]"));
 		
 
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>[", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("ArgumentSection for testCallComputed", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula);
 		
 		
@@ -1171,13 +1202,13 @@ public void testVecMidFirst(){
 		vecSolved = StringZZZ.vecMidFirst(sExpression, "<Z:BLA>", "</Z:BLA>", false);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("<Z>", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("[Section A]Testentry1", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("<Z:BLA>[Section B]Testentry2</Z:BLA></Z>", sFormula);
 		
 		//++++++++++++++++++++++++++++++++++++++++++
@@ -1187,13 +1218,13 @@ public void testVecMidFirst(){
 		vecSolved = StringZZZ.vecMidFirst(sExpression, "<Z:BLA>", "</Z:BLA>", true);
 		assertEquals(vecSolved.size(), 3);
 		
-		sFormula = vecSolved.get(0).toString();
+		sFormula = ((Object)vecSolved.get(0)).toString();
 		assertEquals("<Z><Z:BLA>", sFormula);
 		
-		sFormula = vecSolved.get(1).toString();
+		sFormula = ((Object)vecSolved.get(1)).toString();
 		assertEquals("[Section A]Testentry1", sFormula);
 		
-		sFormula = vecSolved.get(2).toString();
+		sFormula = ((Object)vecSolved.get(2)).toString();
 		assertEquals("</Z:BLA><Z:BLA>[Section B]Testentry2</Z:BLA></Z>", sFormula);
 				
 		
@@ -2587,7 +2618,7 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg); 
 			
-			sReplaceOrig = "Odyssee";  //Das y wird als Ausnahme im Regul�ren Ausdruck ber�cksichtig, daher keine Umwandlung
+			sReplaceOrig = "Odyssee";  //Das y wird als Ausnahme im Regulären Ausdruck berücksichtig, daher keine Umwandlung
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg); 
 			
@@ -2597,11 +2628,11 @@ public void testVecMidFirst(){
 			
 			
 			//D) Ue  //Intern wird hier das ganze Wort betrachtet
-			sReplaceOrig = "lquelle"; //Darf nicht verändert werden
+			sReplaceOrig = "lquelle"; //Darf nicht veraendert werden
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg); 
 			
-			sReplaceOrig = "ilquelle"; //Darf nicht ver�ndert werden
+			sReplaceOrig = "ilquelle"; //Darf nicht veraendert werden
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg); 
 			
@@ -2614,35 +2645,44 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
+			sReplaceOrig = "Queen"; //Merke: Das Q ist auch als Ausnahme im intern verwendeten RegEx-Ausdruck definiert (s. Quelle")
+			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+						
+			
+			
+			//#### Ue am Anfang
+			sReplaceOrig = "Ueber"; //Darf nicht veraendert werden
+			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+			assertEquals("Über", sErg); 
+			
+			
 			//##### Kombinationen
 			sReplaceOrig="Muessen";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("Müßen", sErg); 
+			assertEquals("Müssen", sErg); 
 			
 			sReplaceOrig = "MMuessen";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("MMüßen", sErg); 
+			assertEquals("MMüssen", sErg); 
 			
 			sReplaceOrig = "groesste";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals("größte", sErg); 
 			
-			//###### Wortl�nge
-			sReplaceOrig = "Suez";  //es werden nur Worte >= 5 Buchstaben ersetzt
+			//###### Wortlaenge
+			sReplaceOrig = "EU";  //es werden nur Worte >= 3 Buchstaben ersetzt. Also Abkuerzungen ausschliessen
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
+			
 			//##### Keine Ersetzung bei 3 oder mehr aufeinanderfolgenden Vokalen
-			sReplaceOrig = "treuer";   // 3 und mehr aufeinanderfolgende Vokale  werden mit RegEx gepr�ft
+			sReplaceOrig = "treuer";   // 3 und mehr aufeinanderfolgende Vokale  werden mit RegEx geprueft
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
 			sReplaceOrig = "nachbauen";
-			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals(sReplaceOrig, sErg);
-			
-			
-			sReplaceOrig = "Queen"; //Merke: Das Q ist auch als Ausnahme im intern verwendeten RegEx-Ausdruck definiert (s. Quelle")
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
@@ -2651,6 +2691,15 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
+			
+			//###### Umlautkontext beruecksichtigen, heuristischer Ansatz fuer Eigennamen
+			sReplaceOrig = "Suez";
+			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			sReplaceOrig = "Goethe";
+			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
 			
 			}catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
