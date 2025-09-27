@@ -2491,7 +2491,7 @@ public void testVecMidFirst(){
 			btemp = StringZZZ.matchesPattern(sString, sPattern, -1);
 			assertFalse(btemp);
 			
-			sString = "1234567890ABCDEF"; //Anderer/Falscher Wert am Ende und String l�nger als Pattern String 2
+			sString = "1234567890ABCDEF"; //Anderer/Falscher Wert am Ende und String laenger als Pattern String 2
 			btemp = StringZZZ.matchesPattern(sString, sPattern, -1);
 			assertFalse(btemp);
 			
@@ -2583,11 +2583,44 @@ public void testVecMidFirst(){
 			btemp = StringZZZ.matchesPattern(sString, sPattern, 1);
 			assertFalse(btemp);
 			
+				
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testReplace() {
+//		try{
+			String sReplaceOrig=""; String sReplaced=""; String sErg = "";
 			
-	}catch(ExceptionZZZ ez){
-		fail("Method throws an exception." + ez.getMessageLast());
+			//++++ Ersetzungen testen	
+			sReplaceOrig = "aaabbbcccdddeeefffeeedddcccbbbaaa";
+			sReplaced    = "aaabbbcccZZZeeefffeeeZZZcccbbbaaa";
+			sErg = StringZZZ.replace(sReplaceOrig,"ddd","ZZZ");
+			assertEquals(sReplaced, sErg); 
+			
+					
+//			}catch(ExceptionZZZ ez){
+//				fail("Method throws an exception." + ez.getMessageLast());
+//			}
 	}
+	
+	public void testReplaceFirst() {
+//		try{
+			String sReplaceOrig=""; String sReplaced=""; String sErg = "";
+			
+			//++++ Ersetzungen testen	
+			sReplaceOrig = "aaabbbcccdddeeefffeeedddcccbbbaaa";
+			sReplaced    = "aaabbbcccZZZeeefffeeedddcccbbbaaa";
+			sErg = StringZZZ.replaceFirst(sReplaceOrig,"ddd","ZZZ");
+			assertEquals(sReplaced, sErg); 
+			
+					
+//			}catch(ExceptionZZZ ez){
+//				fail("Method throws an exception." + ez.getMessageLast());
+//			}
 	}
+	
 	
 	public void testReplaceCharacterGerman(){
 		try{
@@ -2699,6 +2732,123 @@ public void testVecMidFirst(){
 			
 			sReplaceOrig = "Goethe";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			}catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		}
+	
+	public void testReplaceOneCharacterGerman(){
+		try{
+			String sReplaceOrig="";
+			String sErg = "";
+			
+			//++++ Ersetzungen testen
+			//A) Ae	++++++++++++++++++++++++++++++++		
+			sReplaceOrig = "Maenner";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("Männer", sErg); 
+			
+			//B) Oe ++++++++++++++++++++++++++++++++
+			sReplaceOrig = "Moerser";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("Mörser", sErg); 
+			
+			sReplaceOrig = "Oelde";  //intern wird nur eld analysiert (erster und letzter Buchstabe wird nicht betrachtet).
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			//C) Ss
+			sReplaceOrig = "Waffenss";  //Dabei wird intern nur affens ber�cksichtig, daher keine Umwandlung !!!
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			sReplaceOrig = "Asseln";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			sReplaceOrig = "Odyssee";  //Das y wird als Ausnahme im Regulären Ausdruck berücksichtig, daher keine Umwandlung
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			sReplaceOrig =  "OdXssee";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("OdXßee", sErg);
+			
+			
+			//D) Ue  //Intern wird hier das ganze Wort betrachtet
+			sReplaceOrig = "lquelle"; //Darf nicht veraendert werden
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			sReplaceOrig = "ilquelle"; //Darf nicht veraendert werden
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg); 
+			
+			sReplaceOrig = "Quelle"; //Das Q ist als Ausnahme im intern verwendeten RegEx-Ausdruck definiert
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			//Qualle darf garnicht davon betroffen sein
+			sReplaceOrig = "Qualle"; //Das Q ist als Ausnahme im intern verwendeten RegEx-Ausdruck definiert
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			sReplaceOrig = "Queen"; //Merke: Das Q ist auch als Ausnahme im intern verwendeten RegEx-Ausdruck definiert (s. Quelle")
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+						
+			
+			
+			//#### Ue am Anfang
+			sReplaceOrig = "Ueber"; //Darf nicht veraendert werden
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("Über", sErg); 
+			
+			
+			//##### Kombinationen
+			sReplaceOrig="Muessen";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("Müssen", sErg); 
+			
+			sReplaceOrig = "MMuessen";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("MMüssen", sErg); 
+			
+			sReplaceOrig = "groesste";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals("grösste", sErg); //!!! hier kommt es darauf an was zuerst ersetzt wird oe vor ss
+			
+			//###### Wortlaenge
+			sReplaceOrig = "EU";  //es werden nur Worte >= 3 Buchstaben ersetzt. Also Abkuerzungen ausschliessen
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			
+			//##### Keine Ersetzung bei 3 oder mehr aufeinanderfolgenden Vokalen
+			sReplaceOrig = "treuer";   // 3 und mehr aufeinanderfolgende Vokale  werden mit RegEx geprueft
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			sReplaceOrig = "nachbauen";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			//und nun mehr als 3
+			sReplaceOrig = "Schueeeeebe"; //Merke: Das Q ist auch als Ausnahme im intern verwendeten RegEx-Ausdruck definiert (s. Quelle")
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			
+			//###### Umlautkontext beruecksichtigen, heuristischer Ansatz fuer Eigennamen
+			sReplaceOrig = "Suez";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
+			assertEquals(sReplaceOrig, sErg);
+			
+			sReplaceOrig = "Goethe";
+			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
 			
 			}catch(ExceptionZZZ ez){

@@ -37,6 +37,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
@@ -44,6 +45,8 @@ import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
  
 /**
@@ -193,20 +196,46 @@ public class StringZZZ implements IConstantZZZ{
 	 * Merke: Erst ab JDK 1.5  gibt es eine String.replace(...) Methode, die dasselbe leistet.
 	   */
 	  public static String replace(String textStr, String oldStr, String newStr) {
-		  StringBuffer buffer = new StringBuffer();
-		  int textLength = textStr.length();
+		  StringBuffer buffer = new StringBuffer();		 
 		  int repLength = oldStr.length();
 		  int startIndex = 0;
 		  int index = textStr.indexOf(oldStr);
+		  int textLength = textStr.length();
 		  while((index >= 0) && (index < textLength)) {
 			  //Text ohne den zu ersetzenden String an buffer anhaengen
 			  buffer.append(textStr.substring(startIndex, index));
-			  //neuen substring anh�ngen
+			  //neuen substring anhaengen
 			  buffer.append(newStr);
 			  startIndex = index + repLength;
 			  index = textStr.indexOf(oldStr, startIndex);
 		  }
-		  //letzten Teil des Textes anh�ngen
+		  //letzten Teil des Textes anhaengen
+		  buffer.append(textStr.substring(startIndex, textStr.length()));
+		  return buffer.toString();
+	  }
+	  
+	  
+	 /**Diese Methode ersetzt in einem String nur den ersten Teilstring durch einen neuen Teilstring.
+	 * Angelehnt an Buch: "Das Java Codebook",  
+	 * Merke: Erst ab JDK 1.5  gibt es eine String.replace(...) Methode, die dasselbe leistet.
+	 * 
+	 * Meine Erweiterung: Es wird nur der erste gefundene String ersetzt 
+	 */
+	  public static String replaceFirst(String textStr, String oldStr, String newStr) {
+		  StringBuffer buffer = new StringBuffer();		  
+		  int repLength = oldStr.length();
+		  int startIndex = 0;
+		  int index = textStr.indexOf(oldStr);
+		  //int textLength = textStr.length();
+		  //while((index >= 0) && (index < textLength)) {
+			  //Text ohne den zu ersetzenden String an buffer anhaengen
+			  buffer.append(textStr.substring(startIndex, index));
+			  //neuen substring anhaengen
+			  buffer.append(newStr);
+			  startIndex = index + repLength;
+			  index = textStr.indexOf(oldStr, startIndex);
+		  //}
+		  //letzten Teil des Textes anhaengen
 		  buffer.append(textStr.substring(startIndex, textStr.length()));
 		  return buffer.toString();
 	  }
@@ -3374,9 +3403,439 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 24.09.2008 09:19:44
 	 */
 	public static String replaceCharacterGerman(String sString2Parse)throws ExceptionZZZ{
+		
+		TODOGOON20250927; //Mache dies als mehrmaligen Aufruf von replaceOneCharacterGerman(sString2Parse, objReturnReference);
+		 //und wenn objReturnReference=true ist, halt noch einmal probieren. Solange bis nix ersetzt wurde.
+		
 		String sReturn = "";
 		main:{
 			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind So bleibt z.B. Suez bestehne
+			if(sString2Parse.length() <= 3){
+				sReturn = sString2Parse;
+				break main;
+			}
+						
+			//leider ist es mir nicht gelungen das alles auf einen Streich zu definieren und zu ersetzen        org.apache.regexp.RE objRe = new org.apache.regexp.RE("[(oe)]|[(ae)]|[(ue)]|[(ss)]");
+			//Daher werden mehrere Objekte definiert.
+			//Am Schluss der Funktion erfolgt dann die Ersetzung der Buchstabenkombination in den dt. Umlaut fuer jedes der Objekte.
+			
+		
+			//TODOGOON20250927 Parameter, ob dieser Umlautkontext für Eigennamen berücksichtigt werden soll
+						//###### Umlautkontext beruecksichtigen, heuristischer Ansatz fuer Eigennamen Goethe, Suez
+			/*
+			(?<![qQ])ue(?![aeiouAEIOU])
+ae(?![aeiouAEIOU])
+oe(?![aeiouAEIOU])
+			 */
+			
+			
+						
+			
+			
+			//als Beispiel für einen sinnvollen Parameter			objRe1.setMatchFlags(org.apache.regexp.RE.MATCH_CASEINDEPENDENT); 			
+			// stemp = objRe.subst(stemp, "[ö]|[ä]|[ü]|[ß]");//objRe.subst("[(oe)][(ae)][(ue)][(ss)]","[ö][ä][ü][ß]"); oder ähnlich.
+			//als ein Beispiel für ne statische Methode: String stemp2 =org.apache.regexp.RE.simplePatternToFullRegularExpression("oe");
+			//Merke: Als Beispiel für die Prüfung: 					//boolean bMatch = objRe.match(stemp);					   			   
+			org.apache.regexp.RE objReOe = new org.apache.regexp.RE("(oe)");			
+			org.apache.regexp.RE objReAe = new org.apache.regexp.RE("(ae)");
+			
+			//einen RegEx-Ansatz für die Ersetzung von ue → ü, aber nur in Fällen, wo es sich tatsächlich um ein Umlaut-ue handelt – nicht, wenn es Teil einer echten Buchstabenfolge wie in Quelle ist.
+            //Das Problem: Im Deutschen ist ue nicht immer gleich ü. Klassisch wird ue nur als Ersatz für ü verwendet, wenn kein q davorsteht (weil nach q immer ein „qu-“ Laut kommt, nie ein Umlaut).
+			//Also funktioniert die einfache Loesung nicht: org.apache.regexp.RE objReUe1 = new org.apache.regexp.RE("(ue)");
+			//Zudem noch Wortanfang und in der Mitte unterschiedlich behandeln			
+			// Kleinbuchstaben: ue → ü, aber nicht nach q
+			org.apache.regexp.RE objReUe_klein = new org.apache.regexp.RE("([^qQ])ue");
+			
+			// Großbuchstaben: Ue → Ü, aber nicht nach Q
+			org.apache.regexp.RE objReUe_gross = new org.apache.regexp.RE("([^qQ])Ue");
+			
+						
+			//Direkt am Anfang:
+			org.apache.regexp.RE objReUe_amAnfangGross = new org.apache.regexp.RE("^Ue");
+			org.apache.regexp.RE objReUe_amAnfangKlein = new org.apache.regexp.RE("^ue");
+			
+			//Grossschreibung
+			org.apache.regexp.RE objReUe_Grossschreibung = new org.apache.regexp.RE("![Q]UE");
+			
+				
+			//Problem: Beim Replacen wird hier auch der erste Buchstabe mit umgewandelt.
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9]){1}(ss)|^(ss)");   //wie. z.B. in Odyssee, hier nicht umwandeln. Das würde Asseln umwandlen, weil ss am Anfang stehen dürfte.
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9öÖüÜäÄ]){1}(ss)");   //nicht ß selber und kein y 																																	//wie. z.B. in Odyssee, hier nicht umwandeln.
+                                                                                                         //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
+			org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([b-dB-Df-hF-Hj-nJ-Np-tP-Tv-xzV-XZ0-9öÖüÜäÄ]){1}(ss)");  //nicht ß selber und kein y (wg. Odyssee) 
+													//wie. z.B. in Odyssee, hier nicht umwandeln.
+			//auch kein Vokal vor dem ss (a, e, i, o, u) führt zum Umwandlen.
+			//wie z.B. in Ereignisse, Essen, Kassel
+
+			//ss am anfang wird nicht umgewandelt, da links und rechts ein Buchstabe abgeschnitten wird
+			//Asseln wird nicht umgewandelt, da beim betrachteten String sseln vorne ein Buchstabe fehlt.
+            //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
+		
+			
+			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treür" werden. 
+						
+			String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
+			boolean bTest = objReVowel.match(sReplace);
+			if(bTest==true){
+				sReturn = sString2Parse;
+				break main;
+			}
+			
+			
+		
+		
+		if(!sReplace.equals("")){//Merke: Ist ein Wort z.B. nur ein Buchstabe, so würde er verdoppelt beim Zusammenbauen
+			sReplace = objReOe.subst(sReplace, "ö");
+			sReplace = objReAe.subst(sReplace, "ä");
+
+			//sReplace = objRe4.subst(sReplace, "ß"); /Ersetzt auch den zusaetzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
+			boolean bMatch = objReSs.match(sReplace);
+			if(bMatch==true){
+				sReplace = StringZZZ.replace(sReplace, "ss", "ß");
+			}   
+		
+//			2b) Wieder zusammenbauen
+			sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);
+		}//end if sReplace!=""
+		
+		
+		if(sReturn.length()>=4) {//20250927 jetzt habe ich auch eine Lösung für Ue am Anfang, darum nicht mehr: && !StringZZZ.isCapitalized(sReturn)){
+			boolean bMatch;
+			
+			bMatch = objReUe_klein.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replace(sReturn, "ue", "ü");
+			}
+			
+			bMatch = objReUe_gross.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replace(sReturn, "Ue", "Ü");
+			}
+			
+			bMatch = objReUe_amAnfangGross.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replaceLeft(sReturn, "Ue", "Ü");
+			}
+			
+			bMatch = objReUe_amAnfangKlein.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replaceLeft(sReturn, "ue", "ü");
+			}
+			
+			
+			bMatch = objReUe_Grossschreibung.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replace(sReturn, "UE", "Ü");
+			}
+		}
+		
+		
+		}///end main
+		return sReturn;
+	}
+	
+	
+	/** Ersetze ae, ue, ss, oe in dem übergebenen String.
+	 *    Dabei wird versucht besonderheiten zu Berücksichtigen:
+	 *    - Ersetzt werden nur Worte >= 4 Buchstaben (so bleibt z.B. Suez bestehen).
+	 *    
+	 *    ae) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *    
+	 *    oe) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *          So bleibt Oelde bestehen.
+	 *          
+	 *    ss) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *    	    So bleibt WaffenSS bestehen. (mir fiel kein anderes Wort ein, sorry).
+	 *    
+	 *    ue) Es wird das ganze Wort betrachtet.
+	 *         
+	 *          
+	 *     Tip: Aufgrund der vielen Ausnahmen sollte man vorher prüfen, ob es nicht schon einen Umlaut gibt:
+	 *     org.apache.regexp.RE objReUmlaut = new org.apache.regexp.RE("[ÖöÜüÄäß]");
+			boolean bHasUmlaut = objReUmlaut.match(sAllRaw);
+	 *          
+	* @param sString2Parse
+	* @return
+	* @throws ExceptionZZZ
+	* 
+	* lindhauer; 24.09.2008 09:19:44
+	 */
+	public static String replaceOneCharacterGerman(String sString2Parse)throws ExceptionZZZ{
+		String sReturn = "";
+		main:{
+			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, null);
+		}///end main
+		return sReturn;
+	}
+	
+	
+	/** Ersetze ae, ue, ss, oe in dem übergebenen String.
+	 *    Dabei wird versucht besonderheiten zu Berücksichtigen:
+	 *    - Ersetzt werden nur Worte >= 4 Buchstaben (so bleibt z.B. Suez bestehen).
+	 *    
+	 *    ae) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *    
+	 *    oe) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *          So bleibt Oelde bestehen.
+	 *          
+	 *    ss) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
+	 *    	    So bleibt WaffenSS bestehen. (mir fiel kein anderes Wort ein, sorry).
+	 *    
+	 *    ue) Es wird das ganze Wort betrachtet.
+	 *         
+	 *          
+	 *     Tip: Aufgrund der vielen Ausnahmen sollte man vorher prüfen, ob es nicht schon einen Umlaut gibt:
+	 *     org.apache.regexp.RE objReUmlaut = new org.apache.regexp.RE("[ÖöÜüÄäß]");
+			boolean bHasUmlaut = objReUmlaut.match(sAllRaw);
+	 *          
+	* @param sString2Parse
+	* @return
+	* @throws ExceptionZZZ
+	* 
+	* lindhauer; 24.09.2008 09:19:44
+	 */
+	public static String replaceOneCharacterGerman(String sString2Parse, ReferenceZZZ<Boolean>objReturn)throws ExceptionZZZ{
+		String sReturn = "";
+		main:{
+			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, objReturn);		
+		}///end main
+		return sReturn;
+	}
+	
+	private static String replaceOneCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturnReferenceIn)throws ExceptionZZZ{
+		//TODOGOON20250927 Parameter, ob dieser Umlautkontext für Eigennamen berücksichtigt werden soll
+		String sReturn = sString2Parse;
+		main:{
+			ReferenceZZZ<Boolean> objReturnReference= null;		
+			IKernelConfigSectionEntryZZZ objEntry = null;
+			if(objReturnReferenceIn==null) {
+				objReturnReference = new ReferenceZZZ<Boolean>();
+			}else {
+				objReturnReference = objReturnReferenceIn;
+			}
+			Boolean objReturn = objReturnReference.get();
+			if(objReturn==null) {
+				//Nein, das holt auch ein neues inneres Objekt und die teilen sich dann die Referenz... objEntry = this.getEntryNew(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 //Wichtig: Als oberste Methode immer ein neues Entry-Objekt holen. Dann stellt man sicher, das nicht mit Werten der vorherigen Suche gearbeitet wird.
+				objReturn = null;
+				objReturnReference.set(objReturn);
+			}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
+			
+			//####################################################################################			
+			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind.
+			//So bleiben Abkuerzungen bestehen. Z.B. EU
+			if(sString2Parse.length() <= 3){
+				sReturn = sString2Parse;
+				break main;
+			}
+				
+			
+			//######################################
+			//### RegEx Definitons-Block
+			//######################################
+			//leider ist es mir nicht gelungen das alles auf einen Streich zu definieren und zu ersetzen        org.apache.regexp.RE objRe = new org.apache.regexp.RE("[(oe)]|[(ae)]|[(ue)]|[(ss)]");
+			//Daher werden mehrere Objekte definiert.
+			//Am Schluss der Funktion erfolgt im Umsetzungsblock dann die Ersetzung der Buchstabenkombination in den dt. Umlaut fuer jedes der Objekte.
+
+			//Merke: Wenn org.apache.regexp.RE verwendet wird fehlt Lookbehind
+			//       Lösungsvorschlag: Ersetze dies durch "Capture Group Workaraound"
+			//                         Z.B. Statt (?<!q)ue kannst du schreiben: ([^qQ])ue
+
+			//Merke: Wenn org.apache.regexp.RE verwendet ist Lookahead erlaubt.
+			//       Z.B. ue([^aeiouAEIOU])
+			//       Darum funktioniert die unten beschriebene Loesung fuer den Umlautkontext.
+			//       
+		
+		  //###### Merke: Heuristischer Ansatz fuer Eigennamen Goethe, Suez
+		  //              Lösung Umlautkontext beruecksichtigen, durch Lookbehind ([^aeiouAEIOU])
+	      //			  z.B. ae([^aeiouAEIOU])
+		  //				   oe([^aeiouAEIOU])
+				
+		
+		  //###### Merke: TODO eine Liste an Eigennamen pflegen, die nicht bearbeitet werden duerfen.
+					
+		
+		
+			//als Beispiel für einen sinnvollen Parameter			objRe1.setMatchFlags(org.apache.regexp.RE.MATCH_CASEINDEPENDENT); 			
+			// stemp = objRe.subst(stemp, "[ö]|[ä]|[ü]|[ß]");//objRe.subst("[(oe)][(ae)][(ue)][(ss)]","[ö][ä][ü][ß]"); oder ähnlich.
+			//als ein Beispiel für ne statische Methode: String stemp2 =org.apache.regexp.RE.simplePatternToFullRegularExpression("oe");
+			//Merke: Als Beispiel für die Prüfung: 					//boolean bMatch = objRe.match(stemp);					   			   
+			org.apache.regexp.RE objReOe = new org.apache.regexp.RE("oe([^aeiouAEIOU])?"); //(^t) dann klappt Moerser nicht. verhindert die Umsetzung bei Goethe.			
+			org.apache.regexp.RE objReOe_kleinEigennamenKorrektur = new org.apache.regexp.RE("ö(th)"); //Soll z.B. Göthe wieder in Goethe korregieren.
+			org.apache.regexp.RE objReAe = new org.apache.regexp.RE("ae([^aeiouAEIOU])");
+			
+			//einen RegEx-Ansatz für die Ersetzung von ue → ü, aber nur in Fällen, wo es sich tatsächlich um ein Umlaut-ue handelt – nicht, wenn es Teil einer echten Buchstabenfolge wie in Quelle ist.
+	        //Das Problem: Im Deutschen ist ue nicht immer gleich ü. Klassisch wird ue nur als Ersatz für ü verwendet, wenn kein q davorsteht (weil nach q immer ein „qu-“ Laut kommt, nie ein Umlaut).
+			//Also funktioniert die einfache Loesung nicht: org.apache.regexp.RE objReUe1 = new org.apache.regexp.RE("(ue)");
+			// * Zudem noch Wortanfang und in der Mitte unterschiedlich behandeln			
+			// * Kleinbuchstaben: ue → ü, aber nicht nach q
+			// * Ergänzung der heuristischen Lösung um (^z). 
+			//   Das ist ein Weg um "Suez" (also Eigenname des Suez Kanals) nicht in "Süz" umzuwandeln.
+			
+			
+			org.apache.regexp.RE objReUe_klein = new org.apache.regexp.RE("([^qQ])ue([^aeiouAEIOU])?");//(^z)"); //mit dem "Eigennamencheck" matcht das sonst nicht beim Wort "muessen"
+			org.apache.regexp.RE objReUe_kleinEigennamenKorretur = new org.apache.regexp.RE("ü(z)");
+			
+			// Großbuchstaben: Ue → Ü, aber nicht nach Q
+			org.apache.regexp.RE objReUe_gross = new org.apache.regexp.RE("([^qQ])Ue([^aeiouAEIOU])");
+			
+						
+			//Direkt am Anfang:
+			org.apache.regexp.RE objReUe_amAnfangGross = new org.apache.regexp.RE("^Ue([^aeiouAEIOU])");
+			org.apache.regexp.RE objReUe_amAnfangKlein = new org.apache.regexp.RE("^ue([^aeiouAEIOU])");
+			
+			//Grossschreibung
+			org.apache.regexp.RE objReUe_Grossschreibung = new org.apache.regexp.RE("![Q]UE([^aeiouAEIOU])");
+			
+				
+			//Problem: Beim Replacen wird hier auch der erste Buchstabe mit umgewandelt.
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9]){1}(ss)|^(ss)");   //wie. z.B. in Odyssee, hier nicht umwandeln. Das würde Asseln umwandlen, weil ss am Anfang stehen dürfte.
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9öÖüÜäÄ]){1}(ss)");   //nicht ß selber und kein y 																																	//wie. z.B. in Odyssee, hier nicht umwandeln.
+	                                                                                                     //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
+			//* ss am anfang wird nicht umgewandelt, da links und rechts ein Buchstabe abgeschnitten wird
+			//  Asseln wird nicht umgewandelt, da beim betrachteten String sseln vorne ein Buchstabe fehlt.
+	        //* (nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
+			//  wie. z.B. in Odyssee, hier nicht umwandeln.
+			//* auch kein Vokal vor dem ss (a, e, i, o, u) führt zum Umwandlen.
+			//  wie z.B. in Ereignisse, Essen, Kassel
+	
+			org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([b-dB-Df-hF-Hj-nJ-Np-tP-Tv-xzV-XZ0-9öÖüÜäÄ]){1}(ss)");  //nicht ß selber und kein y (wg. Odyssee) 
+													
+					
+			//es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treür" werden.
+			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}"); 
+			
+			
+			//##################################################################
+			//### Ersetzungsblock
+			//##################################################################
+			String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
+			boolean bTest = objReVowel.match(sReplace);
+			if(bTest==true){
+				//Merke: Da hier der nur 1. Buchstabe ersetzt wird, anschliessend sofort: break main;
+				sReturn = sString2Parse;
+				break main;
+			}
+				
+				
+			if(!sReplace.equals("")){//Merke: Ist ein Wort z.B. nur ein Buchstabe, so würde er verdoppelt beim Zusammenbauen
+				boolean bMatch; boolean bMatch1; boolean bMatch2; String sReturnBackup=null; 
+				
+				//sReplace = objReOe.subst(sReplace, "ö");
+				sReturnBackup = sReturn;
+				bMatch1 = objReOe.match(sReplace);
+				if(bMatch1) {
+					sReplace = StringZZZ.replaceFirst(sReplace, "oe", "ö");
+					
+					//2b) Wieder zusammenbauen
+					sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);					
+				}
+				
+				//aber: In einem 2. Schritt pruefen, ob nicht Goethe in Göthe umgewandelt wurde.
+				//      Wenn das fälschlicherweise passiert ist, wieder korregieren.
+				bMatch2 = objReOe_kleinEigennamenKorrektur.match(sReturn);
+				if(bMatch2) {
+					sReturn = sReturnBackup;
+				}
+				if(bMatch1 & !bMatch2) {
+					objReturn = true;
+					break main;
+				}
+				
+				
+				//sReplace = objReAe.subst(sReplace, "ä");
+				bMatch = objReAe.match(sReplace);
+				if(bMatch) {
+					sReplace = StringZZZ.replaceFirst(sReplace, "ae", "ä");
+					
+					//2b) Wieder zusammenbauen
+					sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);
+					objReturn = true;
+					break main;
+				}
+				
+									
+				bMatch = objReSs.match(sReplace);
+				if(bMatch){
+					sReplace = StringZZZ.replaceFirst(sReplace, "ss", "ß");
+					
+					//2b) Wieder zusammenbauen
+					sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);
+					objReturn = true;
+					break main;
+				}   
+			}//end if sReplace!=""
+			
+			
+			if(sReturn.length()>=4) {//20250927 jetzt habe ich auch eine Lösung für Ue am Anfang, darum nicht mehr: && !StringZZZ.isCapitalized(sReturn)){
+				boolean bMatch; boolean bMatch1; boolean bMatch2; String sReturnBackup=null;
+				
+				
+				//Zweistufige korrektur notwendig
+				sReturnBackup = sReturn;
+				bMatch1 = objReUe_klein.match(sReturn);				
+				if(bMatch1){
+					sReturn = StringZZZ.replaceFirst(sReturn, "ue", "ü");					
+				}
+				
+				//aber: In einem 2. Schritt pruefen, ob nicht Suez in Süz umgewandelt wurde.
+				//      Wenn das fälschlicherweise passiert ist, wieder korregieren.
+				bMatch2 = objReUe_kleinEigennamenKorretur.match(sReturn);
+				if(bMatch2) {
+					sReturn = sReturnBackup;
+				}
+				if(bMatch1 & !bMatch2) {
+					objReturn = true;
+					break main;
+				}
+				
+				bMatch = objReUe_gross.match(sReturn);
+				if(bMatch){
+					sReturn = StringZZZ.replaceFirst(sReturn, "Ue", "Ü");
+					objReturn = true;
+					break main;
+				}
+				
+				bMatch = objReUe_Grossschreibung.match(sReturn);
+				if(bMatch){
+					sReturn = StringZZZ.replaceFirst(sReturn, "UE", "Ü");
+					objReturn = true;
+					break main;
+				}
+				
+				bMatch = objReUe_amAnfangGross.match(sReturn);
+				if(bMatch){
+					sReturn = StringZZZ.replaceLeft(sReturn, "Ue", "Ü");
+					objReturn = true;
+					break main;
+				}
+				
+				bMatch = objReUe_amAnfangKlein.match(sReturn);
+				if(bMatch){
+					sReturn = StringZZZ.replaceLeft(sReturn, "ue", "ü");
+					objReturn = true;
+					break main;
+				}												
+			}
+			
+			objReturn = false;					
+		}///end main		
+		return sReturn;
+	}
+	
+	
+	/** BACKUP bis replaceFirstCharacterGerman_ läuft
+	 * @param sString2Parse
+	 * @param objReturn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.09.2025, 16:11:37
+	 */
+	private static String replaceCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturn)throws ExceptionZZZ{
+		String sReturn = "";
+		main:{
+			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind.
+			//So bleiben Abkuerzungen bestehen. Z.B. EU
 			if(sString2Parse.length() <= 3){
 				sReturn = sString2Parse;
 				break main;
