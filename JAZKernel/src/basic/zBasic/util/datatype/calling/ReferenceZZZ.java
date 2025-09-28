@@ -16,9 +16,13 @@ package basic.zBasic.util.datatype.calling;
  *       
  */
 public class ReferenceZZZ<T> {
-    private T referent=null;
+    private T referent;
 
-    public ReferenceZZZ() {    	
+    public ReferenceZZZ() {
+    	//unter Java 1.7. ist es nicht möglich einen echten generischen Wert vom Typ T zu erzeugen,
+    	//weil durch Type Erasure zur Laufzeit der konkrete Typ von T nicht mehr bekannt ist.
+    	//referent = new T();  // Compilerfehler: "Cannot instantiate type T"
+    	referent = null; 
     }
     
     public ReferenceZZZ(T initialValue) {

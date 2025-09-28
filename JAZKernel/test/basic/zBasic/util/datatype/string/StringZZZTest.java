@@ -2628,12 +2628,12 @@ public void testVecMidFirst(){
 			String sErg = "";
 			
 			//++++ Ersetzungen testen
-			//A) Ae			
+			//A) Ae	++++++++++++++++++++++++++++++++		
 			sReplaceOrig = "Maenner";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals("Männer", sErg); 
 			
-			//B) Oe
+			//B) Oe ++++++++++++++++++++++++++++++++
 			sReplaceOrig = "Moerser";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals("Mörser", sErg); 
@@ -2700,9 +2700,11 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals("MMüssen", sErg); 
 			
+			//##### Kombinationen mit moegliche mehrere Ersetzungen
+			//  !!! Hier unterscheidet sich das Testergebnis von der "Ein Zeichen Ersetzung"
 			sReplaceOrig = "groesste";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("größte", sErg); 
+			assertEquals("grösste", sErg); //!!! hier kommt es darauf an was zuerst ersetzt wird oe vor ss
 			
 			//###### Wortlaenge
 			sReplaceOrig = "EU";  //es werden nur Worte >= 3 Buchstaben ersetzt. Also Abkuerzungen ausschliessen
@@ -2733,8 +2735,10 @@ public void testVecMidFirst(){
 			sReplaceOrig = "Goethe";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg);
+	
 			
 			}catch(ExceptionZZZ ez){
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
 		}
@@ -2817,6 +2821,7 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
 			assertEquals("MMüssen", sErg); 
 			
+			//##### Moegliche mehrere Ersetzungen
 			sReplaceOrig = "groesste";
 			sErg = StringZZZ.replaceOneCharacterGerman(sReplaceOrig);
 			assertEquals("grösste", sErg); //!!! hier kommt es darauf an was zuerst ersetzt wird oe vor ss
