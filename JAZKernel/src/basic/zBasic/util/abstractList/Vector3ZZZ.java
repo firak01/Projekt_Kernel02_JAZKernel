@@ -152,7 +152,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isNull(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, null);
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);
@@ -162,7 +162,7 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isNull(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, null);
+				this.add(2, this.getObjectDefaultNew());
 			}
 		
 		}else if(bReturnSeparators == false){
@@ -170,17 +170,17 @@ public class Vector3ZZZ<T> extends VectorLimitedZZZ<T> implements IVector3ZZZ<T>
 			if(!StringZZZ.isNull(sLeft)){
 				this.add(0, sLeft);
 			}else {
-				this.add(0, null);
+				this.add(0, this.getObjectDefaultNew());
 			}
 			
 			if(this.size()>=2) this.removeElementAt(1);						
-			this.add(1, null);
+			this.add(1, this.getObjectDefaultNew());
 			
 			if(this.size()>=3) this.removeElementAt(2);										
 			if(!StringZZZ.isNull(sRight)){
 				this.add(2, sRight);
 			}else {
-				this.add(2, null);
+				this.add(2, this.getObjectDefaultNew());
 			}
 		}
 	}

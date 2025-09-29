@@ -817,31 +817,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	//+++++++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++++++
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public static Vector3ZZZ<String> computeExpressionFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();		
-		main:{
-			if(objTagType==null) break main;
-			
-			if(StringZZZ.contains(sExpression, objTagType.getTagPartEmpty())) {
-				vecReturn = StringZZZ.vecSplitFirst(sExpression, objTagType.getTagPartEmpty(), false,true);				
-				
-			}else {
-				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartOpening(), objTagType.getTagPartClosing(), false,true);
-				
-			}
-		}
-		return vecReturn;
-	}
 	
+	//#############################
+	//#############################
 	public static boolean isExpression(String sExpression) throws ExceptionZZZ{
 		boolean bReturn = true;
 		main:{
@@ -941,6 +919,32 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			if(bSurroundedLeft && bSurroundedRight) bReturn = true;
 		}//end main:
 		return bReturn;
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public static Vector3ZZZ<String> parseFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
+		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();		
+		main:{
+			if(objTagType==null) break main;
+			
+			if(StringZZZ.contains(sExpression, objTagType.getTagPartEmpty())) {
+				vecReturn = StringZZZ.vecSplitFirst(sExpression, objTagType.getTagPartEmpty(), false,true);				
+				
+			}else {
+				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartOpening(), objTagType.getTagPartClosing(), false,true);
+				
+			}
+		}
+		return vecReturn;
 	}
 	
 	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{

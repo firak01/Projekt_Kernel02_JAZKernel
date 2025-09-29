@@ -313,12 +313,12 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 		
 		//B01) Teste mal welche FlagZ es gemeinsam gibt.
 		String[] saTestB01 = objFileIniInit.getFlagZ_passable(objSolverInit);
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie 3 FlagZ (oder mehr) als Gemeinsamkeit erwartet: INIT, DEBUG, USEFORMULA, USEFORMULA_MATH, ... .",saTestB01.length>=4);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie 3 FlagZ (oder mehr) als Gemeinsamkeit erwartet: INIT, DEBUG, USEFORMULA, USEFORMULA_MATH, ... .",saTestB01.length>=9);
 		
 		//B02) Teste welche von den gemeinsamen FlagZ hier True gesetzt sind.
 		//objFileInit.getFlagZ_passable(true, sTargetClassnameForThePass);
 		String[] saTestB02 = objFileIniInit.getFlagZ_passable(true, objSolverInit);
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT SECHS FLAGS WENIGER für 'true' erwartet.",saTestB02.length==saTestB01.length-6);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT SIEBEN FLAGS WENIGER für 'true' erwartet.",saTestB02.length==saTestB01.length-7);
 		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());

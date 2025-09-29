@@ -123,7 +123,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			//##################################
 			//### Vorgezogener letzter Fehlertest: START
 
-			//Teste die Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
+			//Teste die (mehrfache) Pfadersetzung, die nicht nur im KernelExpresssionIniHandlerZZZ funktionieren soll.
 			//...
 			sExpression = KernelCallIniSolverZZZTest.sEXPRESSION_JAVACALL01_DEFAULT;
 			sExpressionSubstituted = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_SUBSTITUTED_DEFAULT;

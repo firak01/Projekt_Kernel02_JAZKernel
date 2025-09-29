@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
@@ -464,7 +465,7 @@ public class XmlUtilZZZTest extends TestCase{
 		}
 	 }
 	 
-	 public void testComputeExpressionFirstVector(){
+	 public void testParseFirstVector_ByObjTagType(){
 		 try{
 			 ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
 			 
@@ -472,23 +473,45 @@ public class XmlUtilZZZTest extends TestCase{
 		    String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
 		    System.out.println("Zeile1: " + sTestXml);
 		    
-		    Vector<String> vec01 = XmlUtilZZZ.computeExpressionFirstVector(sTestXml, objTagType);		    
+		    Vector<String> vec01 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
 		    assertNotNull(vec01);
 		    assertTrue(vec01.size()==3);
-		    assertTrue(vec01.get(0).equals("aBc"));
-		    assertTrue(vec01.get(1).equals(sTest));
-		    assertTrue(vec01.get(2).equals("xYz"));
+		    assertTrue(((Object)vec01.get(0)).toString().equals("aBc"));
+		    assertTrue(((Object)vec01.get(1)).toString().equals(sTest));
+		    assertTrue(((Object)vec01.get(2)).toString().equals("xYz"));
 		    
 		    //B) Empty Tag
 		    sTestXml = "aBc" + objTagType.getTagPartEmpty() +"xYz";
 		    System.out.println("Zeile1: " + sTestXml);
 		    
-		    Vector<String> vec02 = XmlUtilZZZ.computeExpressionFirstVector(sTestXml, objTagType);		    
+		    Vector<String> vec02 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
 		    assertNotNull(vec02);
 		    assertTrue(vec02.size()==3);
-		    assertTrue(vec02.get(0).equals("aBc"));
-		    assertTrue(vec02.get(1).equals(""));
-		    assertTrue(vec02.get(2).equals("xYz"));
+		    assertTrue(((Object)vec02.get(0)).toString().equals("aBc"));
+		    
+		    assertNotNull((Object)vec02.get(1));                      //empty Tag wird zu NullObjectZZZ
+		    assertTrue(((Object)vec02.get(1)).toString().equals("")); //NullObjectZZZ .toString()==""
+		    assertNull(((NullObjectZZZ)((Object)vec02.get(1))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
+		    
+		    assertTrue(((Object)vec02.get(2)).toString().equals("xYz"));
+		    
+		    //C) Nicht vorhandener Tag
+		    sTestXml = "aBcxYz";
+		    System.out.println("Zeile1: " + sTestXml);
+		    
+		    Vector<String> vec03 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
+		    assertNotNull(vec03);
+		    assertTrue(vec03.size()==3);
+		    assertTrue(((Object)vec03.get(0)).toString().equals("aBcxYz"));
+		    
+		    assertNotNull((Object)vec03.get(1));                      //empty Tag wird zu NullObjectZZZ
+		    assertTrue(((Object)vec03.get(1)).toString().equals("")); //NullObjectZZZ .toString()==""
+		    assertNull(((NullObjectZZZ)((Object)vec03.get(1))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
+		    
+		    assertNotNull((Object)vec03.get(2));                      //empty Tag wird zu NullObjectZZZ
+		    assertTrue(((Object)vec03.get(2)).toString().equals("")); //NullObjectZZZ .toString()==""
+		    assertNull(((NullObjectZZZ)((Object)vec03.get(2))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
+		    
 		    
 		 }catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
