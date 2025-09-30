@@ -1327,7 +1327,7 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn=sString;
 		main:{
 			if (StringZZZ.isEmpty(sString)) break main;
-			sReturn = "";
+			sReturn = ""; //Wenn also der String nicht vorhandn ist, Leerstring zurückgeben.
 			
 			int iIndexFromLeft;
 			if(iIndexStartingPositionFromLeft==-1) {
@@ -2056,7 +2056,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMidFirstKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch, int iIndexStartingFromLeft) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMidFirstKeep(String sStringToParse, String sSepLeft, String sSepRight, boolean bExactMatch, int iIndexStartingFromLeftIn) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
@@ -2069,6 +2069,8 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
+			int iIndexStartingFromLeft = iIndexStartingFromLeftIn - sSepLeft.length();
+			if(iIndexStartingFromLeft<=-1) iIndexStartingFromLeft = 0; //Zur Sicherheit.
 			String sLeft = StringZZZ.leftKeep(sStringToParse, sSepLeft, bExactMatch, iIndexStartingFromLeft);
 			if(StringZZZ.isEmpty(sLeft)){
 				if(!StringZZZ.startsWith(sStringToParse, sSepLeft)) {

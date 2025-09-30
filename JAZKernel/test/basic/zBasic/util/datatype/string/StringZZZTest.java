@@ -107,47 +107,59 @@ public class StringZZZTest extends TestCase{
 	//#############################################################
 	
 	public void testLeftKeep() {
-		String stemp;
+		String sValue;
 		
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
-		 stemp =StringZZZ.leftKeep(sDummy2, " ");
-		 assertEquals("das ", stemp);
+		 sValue =StringZZZ.leftKeep(sDummy2, " ");
+		 assertEquals("das ", sValue);
 		 
 		 //###################
 		 //Teste auf String, ab einer bestimmten Position VON links
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 0);
-		 assertEquals("das ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 0);
+		 assertEquals("das ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 1);
-		 assertEquals("das ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 1);
+		 assertEquals("das ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 2);
-		 assertEquals("das ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 2);
+		 assertEquals("das ", sValue);
 		
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 3);
-		 assertEquals("das ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 3);
+		 assertEquals("das ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 4);
-		 assertEquals("das ist ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 4);
+		 assertEquals("das ist ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 5);
-		 assertEquals("das ist ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 5);
+		 assertEquals("das ist ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 6);
-		 assertEquals("das ist ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 6);
+		 assertEquals("das ist ", sValue);
 		 
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 7);
-		 assertEquals("das ist ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 7);
+		 assertEquals("das ist ", sValue);
 		
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 8);
-		 assertEquals("das ist ein ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 8);
+		 assertEquals("das ist ein ", sValue);
 		
-		 stemp=StringZZZ.leftKeep(sDummy2, " ", 9);
-		 assertEquals("das ist ein ", stemp);
+		 sValue=StringZZZ.leftKeep(sDummy2, " ", 9);
+		 assertEquals("das ist ein ", sValue);
 		 
+		 //################################################
+		 //1a. Fall aus der Praxis
+		 String sDummy3 = "<Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>";
+		 String sSepLeft = "<Z:Class>";
+		 int iIndexStartingFromLeft = 16;
+		 boolean bExactMatch = false;
+		 sValue=StringZZZ.leftKeep(sDummy3, sSepLeft, bExactMatch, iIndexStartingFromLeft);
+		 assertEquals("",sValue);
 		 
+		 //1b. Also muss iIndexStartingFromLeft fuer die Ruckgabe des ersten Tags weniger sein
+		 iIndexStartingFromLeft = 16-sSepLeft.length();
+		 sValue=StringZZZ.leftKeep(sDummy3, sSepLeft, bExactMatch, iIndexStartingFromLeft);
+		 assertEquals("<Z:Java><Z:Class>",sValue);
 		
 		 
 		
@@ -1317,7 +1329,7 @@ public void testVecMidFirst(){
 			
 			
 			//##############################################################
-			//### Praktische Anwendung
+			//### 1. Praktische Anwendung
 			//##############################################################
 			sExpression = "<Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>{[Section for testComputeMathArguments FLOAT]WertB_float}</Z:val></Z:math></Z:formula>";
 			vec = StringZZZ.vecMidFirstKeep(sExpression, "<Z:vAl>", "</z:VAL>", false, 42);
@@ -1326,6 +1338,18 @@ public void testVecMidFirst(){
 			assertEquals(((Object)vec.get(0)).toString(), "<Z:formula><z:Math><Z:VAL>4.0</Z:val><Z:oP>*</Z:op><Z:val>");
 			assertEquals(((Object)vec.get(1)).toString(), "{[Section for testComputeMathArguments FLOAT]WertB_float}");
 			assertEquals(((Object)vec.get(2)).toString(), "</Z:val></Z:math></Z:formula>");
+			
+			//##############################################################
+			//### 2. Praktische Anwendung
+			//##############################################################
+			sExpression = "<Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>";
+			vec = StringZZZ.vecMidFirstKeep(sExpression, "<Z:class>", "</z:Class>", false, 16);
+			assertEquals(vec.size(), 3);
+			
+			assertEquals(((Object)vec.get(0)).toString(), "<Z:Java><Z:Class>");
+			assertEquals(((Object)vec.get(1)).toString(), "{[ArgumentSection for testCallComputed]JavaClass}");
+			assertEquals(((Object)vec.get(2)).toString(), "</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>");
+			
 			
 			//####################################################
 			//3. Zum Verdeutlichen des Unterschieds
