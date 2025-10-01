@@ -3,6 +3,8 @@ package basic.zBasic.util.abstractList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
@@ -122,7 +124,68 @@ public class HashMapUtilZZZ {
 		}//end main
 		return sReturn;
 	}
+	//############################################################################
 	
+	public static String computeImplodeString(HashMap hmImplode) throws ExceptionZZZ{
+		return HashMapUtilZZZ.computeImplodeString(hmImplode, null, null);
+	}
+	
+	public static String computeImplodeString(HashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ{
+		return HashMapUtilZZZ.computeImplodeString(hmImplode, sEntryDelimiterIn, null);
+	}
+	
+	public static String computeImplodeString(HashMap hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn)  throws ExceptionZZZ{
+		
+		String sKeyDelimiter;
+		if(sKeyDelimiterIn==null){
+			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+		}else {
+			sKeyDelimiter = sKeyDelimiterIn;
+		}
+		
+		String sEntryDelimiter; 
+		if(sEntryDelimiterIn==null){
+			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = sEntryDelimiterIn;
+		}
+		
+	    String sReturn = null;
+		main:{		
+			if(hmImplode.size()==0) break main;
+			
+			todogoon20251001;
+			
+			 // Durchläuft alle Schlüssel-Wert-Paare
+			/*
+	        for (Map.Entry entry : hmImplode.entrySet()) {
+	            String schluessel = entry.getKey();
+	            Integer wert = entry.getValue();
+	            System.out.println("Schlüssel: " + schluessel + ", Wert: " + wert);
+	        }
+	        */
+		/*	
+			Set setKey = hmImplode.keySet();
+			Iterator it = setKey.iterator();
+			while(it.hasNext()){
+				java.util.Map.Entry entry = (Entry) it.next();
+				Object obj = entry.getKey();
+				Object objValue = entry.getValue(); //hmImplode.get(obj);
+				if(StringZZZ.isEmpty(sReturn)) {
+					sReturn = obj.toString() + sKeyDelimiter + objValue.toString();
+				}else {
+					sReturn = sEntryDelimiter + obj.toString() + sKeyDelimiter + objValue.toString();
+				}
+			}//end while itInner.hasnext()
+		*/
+		}//end main
+
+		return sReturn;
+		
+	}
+	
+	
+	//#############################################################################
 	public static String computeAsHashMapEntry(String sKey, String sValue) {
 		String sReturn = null;
 		main:{

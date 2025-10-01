@@ -6,5 +6,5 @@ public interface IOutputDebugNormedWithKeyZZZ extends IOutputDebugNormedZZZ{
 	public String getDebugKeyDelimiter();
 	public void setDebugKeyDelimiter(String sKeyDelimiter);
 	
-	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ;
+	public String computeDebugString(String sEntryDelimiter,String sKeyDelimiter) throws ExceptionZZZ;
 }

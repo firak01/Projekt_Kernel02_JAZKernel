@@ -470,10 +470,10 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 	@Override
 	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
 		String sKeyDelimiter = this.getDebugKeyDelimiter();
-		return this.computeDebugString(sKeyDelimiter, sEntryDelimiter);
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
 	}
 	
-	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
+	public String computeDebugString(String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
 			

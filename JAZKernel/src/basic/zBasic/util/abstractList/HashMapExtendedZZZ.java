@@ -33,6 +33,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	protected volatile String sDebugEntryDelimiterUsed = null;
 
+	protected volatile String sImplodeKeyDelimiterUsed = null; //zum Formatieren einer Implode Ausgabe
+	protected volatile String sImplodeEntryDelimiterUsed = null;
 	
 	public HashMapExtendedZZZ(){
 	}
@@ -848,6 +850,38 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
 	}
 	
+	//### aus IHashMapExtendedZZZ
+	@Override
+	public String getImplodeEntryDelimiter() throws ExceptionZZZ{
+		String sEntryDelimiter;			
+		if(this.sImplodeEntryDelimiterUsed==null){
+			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setImplodeEntryDelimiter(String sEntryDelimiter) throws ExceptionZZZ {
+		this.sImplodeEntryDelimiterUsed = sEntryDelimiter;
+	}
+	
+	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
+		String sKeyDelimiter;
+		if(this.sImplodeKeyDelimiterUsed==null){
+			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+		}else{
+			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+	
+	@Override
+	public void setImplodeKeyDelimiter(String sImplodeDelimiter) throws ExceptionZZZ {
+		this.sImplodeKeyDelimiterUsed = sImplodeDelimiter;
+	}
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
 	* @return
@@ -876,11 +910,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	 */
 	@Override
 	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
-		return this.computeDebugString((String)null, sEntryDelimiter);
+		return this.computeDebugString(sEntryDelimiter, (String)null);
 	}
 	
-	
-	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
+	@Override
+	public String computeDebugString(String sEntryDelimiterIn, String sKeyDelimiterIn){
 		String sReturn = new String("");
 		main:{
 			String sKeyDelimiter;
@@ -931,8 +965,74 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		return HashMapUtilZZZ.computeDebugString(hmDebug, sKeyDelimiter, sEntryDelimiter);
 	}
 	
+	//#######################################################################
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
+	* @return
+	* 
+	* lindhauer; 08.08.2011 10:39:40
+	 */
+	/* (non-Javadoc)
+	 * @see basic.zBasic.IOutputImplodeNormedZZZ#computeImplodeString()
+	 */
+	@Override
+	public String computeImplodeString() throws ExceptionZZZ {
+		return this.computeImplodeString((String)null, (String)null);		
+	}
 	
 
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
+	 *  Merke: Beim Arbeiten mit der Scanner-Klasse um z.B. Eingaben entgegenzunehmen, sollte man 
+	 *         dies verwenden, sonst wird nach jedem Wort ein Zeilenumbruch (Sprich eine neue Eingabe gemacht).
+	 * @param sKeyDelimiterIn
+	 * @param sEntryDelimiterIn
+	 * @return
+	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
+	 */
+	/* (non-Javadoc)
+	 * @see basic.zBasic.IOutputImplodeNormedZZZ#computeImplodeString(java.lang.String)
+	 */
+	@Override
+	public String computeImplodeString(String sEntryDelimiter) throws ExceptionZZZ {
+		return this.computeImplodeString(sEntryDelimiter, (String)null);
+	}
+	
+	@Override
+	public String computeImplodeString(String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ{
+		String sReturn = new String("");
+		main:{
+			String sKeyDelimiter;
+			if(sKeyDelimiterIn==null){
+				sKeyDelimiter = this.getImplodeKeyDelimiter();
+			}else {
+				sKeyDelimiter = sKeyDelimiterIn;
+			}
+			
+			String sEntryDelimiter; 
+			if(sEntryDelimiterIn==null){
+				sEntryDelimiter = this.getImplodeEntryDelimiter();
+			}else {
+				sEntryDelimiter = sEntryDelimiterIn;
+			}
+			
+			sReturn = HashMapUtilZZZ.computeImplodeString(this, sEntryDelimiter, sKeyDelimiter);
+			
+		}//end main
+		return sReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static String computeImplodeString(HashMap hmImplode) throws ExceptionZZZ{
+		return HashMapUtilZZZ.computeImplodeString(hmImplode, null, null);
+	}
+	
+	public static String computeImplodeString(HashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ{
+		return HashMapUtilZZZ.computeImplodeString(hmImplode, sEntryDelimiterIn, null);
+	}
+	
+	public static String computeImplodeString(HashMap hmImplode, String sKeyDelimiterIn, String sEntryDelimiterIn)  throws ExceptionZZZ{
+		return HashMapUtilZZZ.computeImplodeString(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+	}
 	//#######################################################################
 	
 	
@@ -1031,35 +1131,42 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	}
 
 	
-	/** TODO Idee aus der HashMap mal eben Schnell einen einzeiligen String machen zu k�nnen.
-	 * TODO GOON
+	//### asus IHashMapExtendedZZZ
+	
+	/**Idee aus der HashMap mal eben Schnell einen einzeiligen String machen zu k�nnen.
 	* @param sDelimSet
 	* @param sDelimValue
 	* @return
-	* 
-	* lindhauer; 19.09.2012 15:53:00
-	 */
-	public String toStringImplode(String sDelimSet, String sDelimValue){
+	*/
+	
+	@Override
+	public String toStringImplode() throws ExceptionZZZ{
+		return this.toStringImplode(null, null);		
+	}
+	
+	@Override
+	public String toStringImplode(String sDelimEntryIn, String sDelimKeyIn) throws ExceptionZZZ{
 		/*
-		 * String sDebug = new String("");
-		debug:{
-		if(hmDebug==null)break debug;
-		if(hmDebug.size()==0) break debug;
-				
-		String sDelimValue = "~";
-		String sDelimSet = "#";
-						
-		Set setKey = hmDebug.keySet();
-		Iterator it = setKey.iterator();
-		while(it.hasNext()){
-			Object obj = it.next();										
-			Object objValue = hmDebug.get(obj);
-			sDebug = sDelimSet + obj.toString() + sDelimValue + objValue.toString();
-		}//end while itInner.hasnext()
-		}//end debug
-		
+Java. Es geht darum das java.util.HashMap früher mit der Methode .toString() einen String zurückgegeben hat in der Form: 
+{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}
+
+Also hier 2 Elemente der HashMap mit Kommat getrennt und jedes Element hat links von einem Gleichheitszeiten den Key und rechts vom Gleichheitszeichen den Value.
+
+Aber jetzt bekomme ich bei HashMap mit der Methode .toString() nur noch folgendes zurück:
+{java.lang.Object@690ca790=java.lang.Object@73785e0f, java.lang.Object@3dcd14d1=java.lang.Object@63676602}
+
+Die Key und Value Bestandteile der HashMap sind keine Strings mehr.
+
+Ist das ein Problem der Java Version? Wenn ja seit wann? Was kann ich tun, um das frühere Verhalten wiederherzustellen?
+		*/
+		/*
+		 Java 1.7.
+Ich habe eine java.util.HashMap mit 2 Elementen. Jedes Element hat als Schlüssel einen String und als Wert ebenfalls einen String.
+Die Objektvariable der HashMap nennen wir mal objHm.
+Was für einen Wert bekomme ich als Ergebnis, wenn ich objHm.toString() ausgebe?
 		 */
-		return "";
+		
+		return this.computeImplodeString(sDelimEntryIn, sDelimKeyIn);
 	}
 
 	

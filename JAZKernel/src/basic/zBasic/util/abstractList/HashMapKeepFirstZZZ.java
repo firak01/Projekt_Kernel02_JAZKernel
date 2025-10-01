@@ -169,11 +169,11 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	@Override
 	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
 		String sKeyDelimiter = this.getDebugKeyDelimiter();
-		return this.computeDebugString(sKeyDelimiter, sEntryDelimiter);
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
 	}
 	
 	@Override
-	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
+	public String computeDebugString(String sEntryDelimiter,String sKeyDelimiter) throws ExceptionZZZ{
 		return this.computeDebugString();
 	}
 	

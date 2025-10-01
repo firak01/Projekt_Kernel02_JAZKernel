@@ -165,7 +165,7 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 		return HashMapUtilZZZ.debugString(this, null, sEntryDelimiter);
 	}
 	
-	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
+	public String computeDebugString(String sEntryDelimiter,String sKeyDelimiter) throws ExceptionZZZ{
 		return HashMapMultiZZZ.debugString(this, sKeyDelimiter, sEntryDelimiter);	
 	}
 	

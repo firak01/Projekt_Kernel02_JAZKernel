@@ -512,7 +512,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			hmReturn = this.computeHashMapFromJson(sExpression);
 			if(hmReturn!=null) {
 				//sExpressionUsed = HashMapExtendedZZZ.computeDebugString(hmReturn);
-				sExpressionUsed = hmReturn.toString();
+				//sExpressionUsed = hmReturn.toString();
+				sExpressionUsed = HashMapExtendedZZZ.computeImplodeString(hmReturn);
 			}
 			
 			sReturnTag = sExpressionUsed;
