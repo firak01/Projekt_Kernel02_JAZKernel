@@ -45,7 +45,7 @@ public class HashMapUtilZZZ {
 	* lindhauer; 08.08.2011 10:39:40
 	 */				
 	@SuppressWarnings("rawtypes")
-	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ {
+	public static String computeDebugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ {
 	    String sReturn = "";
 	    main: {
 	        // HashMapOuter durchgehen
@@ -62,6 +62,64 @@ public class HashMapUtilZZZ {
 	        String sKeyDelimiter;
 	        if (sKeyDelimiterIn == null) {
 	            sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+	        } else {
+	            sKeyDelimiter = sKeyDelimiterIn;
+	        }
+
+	        Set entrySetOuter = hmDebug.entrySet();
+	        Iterator itOuter = entrySetOuter.iterator();
+	        while (itOuter.hasNext()) {
+	            if (!StringZZZ.isEmpty(sReturn)) {
+	                sReturn = sReturn + sEntryDelimiter;
+	            }
+
+	            Map.Entry entryOuter = (Map.Entry) itOuter.next();
+	            Object objOuterKey = entryOuter.getKey();
+	            Object objOuterValue = entryOuter.getValue();
+
+	            String sKeyOuter = String.valueOf(objOuterKey);
+	            HashMap hmInner = (HashMap) objOuterValue;
+
+	            // 20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
+	            String stemp = HashMapExtendedZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
+	            if (stemp != null) {
+	                String[] saValue = StringZZZ.explode(stemp, sEntryDelimiter);
+	                String[] saValueWithKey = StringArrayZZZ.plusString(saValue, sKeyOuter + sKeyDelimiter, "BEFORE");
+	                sReturn = sReturn + StringArrayZZZ.implode(saValueWithKey, sEntryDelimiter);
+	            } else {
+	                sReturn = sReturn + sKeyOuter;
+	            }
+	        } // end while itOuter.hasNext()
+	    } // end main
+	    return sReturn;
+	}
+	
+	
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
+	 * @param <T>
+	 * @param <X>
+	* @return
+	* 
+	* lindhauer; 08.08.2011 10:39:40
+	 */				
+	@SuppressWarnings("rawtypes")
+	public static String computeImplodeString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ {
+	    String sReturn = "";
+	    main: {
+	        // HashMapOuter durchgehen
+	        if (hmDebug == null) break main;
+	        if (hmDebug.size() == 0) break main;
+
+	        String sEntryDelimiter;
+	        if (sEntryDelimiterIn == null) {
+	            sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+	        } else {
+	            sEntryDelimiter = sEntryDelimiterIn;
+	        }
+
+	        String sKeyDelimiter;
+	        if (sKeyDelimiterIn == null) {
+	            sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
 	        } else {
 	            sKeyDelimiter = sKeyDelimiterIn;
 	        }

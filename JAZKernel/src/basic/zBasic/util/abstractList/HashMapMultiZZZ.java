@@ -63,10 +63,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	protected volatile HashMapExtendedZZZ<String,Object> hmOuter=new HashMapExtendedZZZ<String,Object>();
-	
-	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
-	protected volatile String sDebugEntryDelimiterUsed = null;
 
+	//fuer IOutputDebugNormedZZZ
+	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
+	
+	//fuer IOutputDebugNormedWithKeyZZZ
+	protected volatile String sDebugKeyDelimiterUsed = null; 
+
+	//fuer IHashMapExtendedZZZ
+	protected volatile String sImplodeEntryDelimiterUsed = null;
+	protected volatile String sImplodeKeyDelimiterUsed = null;
 	
 	public HashMapMultiZZZ(){		
 	}
@@ -157,12 +163,12 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	 */
 	@Override
 	public String computeDebugString() throws ExceptionZZZ{
-		return HashMapUtilZZZ.debugString(this, null, null);
+		return HashMapUtilZZZ.computeDebugString(this, null, null);
 	}
 	
 	@Override
 	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
-		return HashMapUtilZZZ.debugString(this, null, sEntryDelimiter);
+		return HashMapUtilZZZ.computeDebugString(this, null, sEntryDelimiter);
 	}
 	
 	public String computeDebugString(String sEntryDelimiter,String sKeyDelimiter) throws ExceptionZZZ{
@@ -170,11 +176,11 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	}
 	
 	public static String debugString(HashMapMultiZZZ hmDebug) throws ExceptionZZZ{
-		return HashMapUtilZZZ.debugString(hmDebug, null, null);
+		return HashMapUtilZZZ.computeDebugString(hmDebug, null, null);
 	}
 	
 	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
-		return HashMapUtilZZZ.debugString(hmDebug, sKeyDelimiterIn, sEntryDelimiterIn);
+		return HashMapUtilZZZ.computeDebugString(hmDebug, sKeyDelimiterIn, sEntryDelimiterIn);
 	}
 	
 	@Override
@@ -467,5 +473,64 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 		return hmReturn;
 	}
 
-	
+	//### aus IHashMapExtendedZZZ
+	@Override
+	public void setImplodeEntryDelimiter(String sEntryDelimiter) throws ExceptionZZZ {
+		this.sImplodeEntryDelimiterUsed = sEntryDelimiter;
+	}
+
+	@Override
+	public String getImplodeEntryDelimiter() throws ExceptionZZZ {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+
+	@Override
+	public void setImplodeKeyDelimiter(String sKeyDelimiter) throws ExceptionZZZ {
+		this.sImplodeKeyDelimiterUsed = sKeyDelimiter;
+	}
+
+	@Override
+	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
+		String sKeyDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+		}else {
+			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+
+	@Override
+	public String computeImplodeString() throws ExceptionZZZ {
+		String sKeyDelimiter = this.getImplodeKeyDelimiter();
+		String sEntryDelimiter = this.getImplodeEntryDelimiter();
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String computeImplodeString(String sEntryDelimiter) throws ExceptionZZZ {
+		String sKeyDelimiter = this.getDebugKeyDelimiter();
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String computeImplodeString(String sEntryDelimiter, String sKeyDelimiter) throws ExceptionZZZ {
+		return HashMapUtilZZZ.computeImplodeString(this, sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String toStringImplode() throws ExceptionZZZ {
+		return this.toStringImplode(null, null);
+	}
+
+	@Override
+	public String toStringImplode(String sEntryDelimiter, String sKeyDelimiter) throws ExceptionZZZ {
+		return this.computeImplodeString(sEntryDelimiter, sKeyDelimiter);
+	}	
 }

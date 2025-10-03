@@ -1147,26 +1147,6 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	
 	@Override
 	public String toStringImplode(String sDelimEntryIn, String sDelimKeyIn) throws ExceptionZZZ{
-		/*
-Java. Es geht darum das java.util.HashMap früher mit der Methode .toString() einen String zurückgegeben hat in der Form: 
-{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}
-
-Also hier 2 Elemente der HashMap mit Kommat getrennt und jedes Element hat links von einem Gleichheitszeiten den Key und rechts vom Gleichheitszeichen den Value.
-
-Aber jetzt bekomme ich bei HashMap mit der Methode .toString() nur noch folgendes zurück:
-{java.lang.Object@690ca790=java.lang.Object@73785e0f, java.lang.Object@3dcd14d1=java.lang.Object@63676602}
-
-Die Key und Value Bestandteile der HashMap sind keine Strings mehr.
-
-Ist das ein Problem der Java Version? Wenn ja seit wann? Was kann ich tun, um das frühere Verhalten wiederherzustellen?
-		*/
-		/*
-		 Java 1.7.
-Ich habe eine java.util.HashMap mit 2 Elementen. Jedes Element hat als Schlüssel einen String und als Wert ebenfalls einen String.
-Die Objektvariable der HashMap nennen wir mal objHm.
-Was für einen Wert bekomme ich als Ergebnis, wenn ich objHm.toString() ausgebe?
-		 */
-		
 		return this.computeImplodeString(sDelimEntryIn, sDelimKeyIn);
 	}
 

@@ -44,6 +44,10 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	//fuer IOutputDebugNormedWithKeyZZZ
 	protected volatile String sDebugKeyDelimiterUsed = null; 
 	
+	//fuer IHashMapExtendedZZZ
+	protected volatile String sImplodeEntryDelimiterUsed = null;
+	protected volatile String sImplodeKeyDelimiterUsed = null;
+	
 	public HashMapKeepFirstZZZ(){
 	}
 	
@@ -174,7 +178,7 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	
 	@Override
 	public String computeDebugString(String sEntryDelimiter,String sKeyDelimiter) throws ExceptionZZZ{
-		return this.computeDebugString();
+		return HashMapUtilZZZ.computeDebugString(this, sEntryDelimiter, sKeyDelimiter);
 	}
 	
 	public String getDebugKeyDelimiter() {
@@ -190,5 +194,71 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	@Override
 	public void setDebugKeyDelimiter(String sKeyDelimiter) {
 		this.sDebugKeyDelimiterUsed = sKeyDelimiter;
+	}
+
+	
+	//### aus IHashMapExtendedZZZ
+	
+	//##################################
+	//### IMPLODE
+	//##################################
+	@Override
+	public void setImplodeEntryDelimiter(String sEntryDelimiter) throws ExceptionZZZ {
+		this.sImplodeEntryDelimiterUsed = sEntryDelimiter;
+	}
+
+	@Override
+	public String getImplodeEntryDelimiter() throws ExceptionZZZ {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+
+	@Override
+	public void setImplodeKeyDelimiter(String sKeyDelimiter) throws ExceptionZZZ {
+		this.sImplodeKeyDelimiterUsed = sKeyDelimiter;
+	}
+
+	@Override
+	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
+		String sKeyDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+		}else {
+			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+
+	@Override
+	public String computeImplodeString() throws ExceptionZZZ {
+		String sKeyDelimiter = this.getImplodeKeyDelimiter();
+		String sEntryDelimiter = this.getImplodeEntryDelimiter();
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String computeImplodeString(String sEntryDelimiter) throws ExceptionZZZ {
+		String sKeyDelimiter = this.getDebugKeyDelimiter();
+		return this.computeDebugString(sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String computeImplodeString(String sEntryDelimiter, String sKeyDelimiter) throws ExceptionZZZ {
+		return HashMapUtilZZZ.computeImplodeString(this, sEntryDelimiter, sKeyDelimiter);
+	}
+
+	@Override
+	public String toStringImplode() throws ExceptionZZZ {
+		return this.toStringImplode(null, null);
+	}
+
+	@Override
+	public String toStringImplode(String sEntryDelimiter, String sKeyDelimiter) throws ExceptionZZZ {
+		return this.computeImplodeString(sEntryDelimiter, sKeyDelimiter);
 	}	
 }

@@ -21,5 +21,5 @@ public interface IHashMapExtendedZZZ extends IOutputDebugNormedWithKeyZZZ, ICons
 	public String computeImplodeString(String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ;
 	
 	public String toStringImplode() throws ExceptionZZZ;
-	public String toStringImplode(String sEntryDelimiter, String sKeyDelimeter) throws ExceptionZZZ;
+	public String toStringImplode(String sEntryDelimiter, String sKeyDelimiter) throws ExceptionZZZ;
 }
