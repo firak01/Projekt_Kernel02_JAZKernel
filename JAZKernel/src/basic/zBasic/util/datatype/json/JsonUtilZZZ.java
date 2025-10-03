@@ -20,6 +20,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -255,6 +256,7 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 		return objReturn;
 	}
 	
+	//#####################################################
 	/** Liefert generisch aus dem JSON String eine HashMap zurück.
 	 *  
 	 * Beispiel für TypeToken Erstellung: 
@@ -279,13 +281,37 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 			if(!JsonUtilZZZ.isJsonObject(sJson)) {
 				break main;
 			}
-			
-			//Das berücksichtigt nicht die Reihenfolge!!
-			TypeToken<HashMap<?,?>> typeToken = new TypeToken<HashMap<?,?>>(){};
 									
 			Gson gson=new GsonBuilder().create();
+			
+			//+++ Das berücksichtigt nicht die Reihenfolge, Reihenfolge wird mit LinkedHashMap berücksichtigt!!
+			//Problem: Wenn man nicht den genauen Typ defniniert kommt so:
+			//TypeToken<HashMap<?,?>> typeToken = new TypeToken<HashMap<?,?>>(){};
+			//nur das raus: java.lang.Object@bb471
+			//also:
+			//TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
+			//Type type = typeToken.getType();
+			
+			/* Aber das ist auch noch nicht die ganze Lösung:
+			...ein kleiner, aber entscheidender Unterschied in Java Generics und im Umgang mit TypeToken von Gson.
+
+			Hier erzeugst du kein anonymes Objekt, sondern nur ein TypeToken<HashMap<String,String>>.
+			Wegen Type Erasure in Java verschwindet die Info über <String, String> zur Laufzeit.
+
+			getType() liefert deshalb nur den raw type HashMap, also ohne konkrete Typinformation.
+			Gson sieht nur: "Das ist eine HashMap<?,?>" und wandelt deine JSON-Werte in seine Standard-Repräsentationen (LinkedTreeMap, Double, etc.).
+
+			Ergebnis: Die Einträge sind keine Strings, sondern oft LinkedTreeMap oder Object.
+
+			------
+		   Kurz gesagt:
+		   Mit anonymer Klasse (new TypeToken<...>(){}) → die Typen bleiben erhalten.
+		   Ohne anonyme Klasse (new TypeToken<...>()) → durch Type Erasure verlierst du die Typinformationen.
+		   */
+			
+			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>() {};
 			Type type = typeToken.getType();
-			hmReturn = gson.fromJson(sJson, type);		
+			hmReturn = gson.fromJson(sJson, type);	
 		}//end main:
 		return hmReturn;
 	}
@@ -301,14 +327,16 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				break main;
 			}
 	
-			TypeToken<LinkedHashMap<?,?>> typeToken = new TypeToken<LinkedHashMap<?,?>>(){};
-			Type type = typeToken.getType();
-			
 			Gson gson=new GsonBuilder().create();
-			hmReturn = gson.fromJson(sJson, type);		
+			
+			//Merke: Die LinkedHashMap soll die Reihenfolge sicherstellen
+			TypeToken<LinkedHashMap<String,String>> typeToken = new TypeToken<LinkedHashMap<String,String>>(){};
+			Type type = typeToken.getType();					
+			hmReturn = gson.fromJson(sJson, type);	
 		}//end main:
 		return hmReturn;
 	}
+	//#######################################################
 	
 	//Benötigt JavaEE 1.7
 //	public static ArrayList<String> toArrayList(javax.json.JsonArray jsonObject){

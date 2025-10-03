@@ -941,7 +941,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		
 			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
 			vecReturn.replace(sReturnTag);
-				
+			this.setValue(sReturnTag);
 			//TODOGOON20250726; //HIer wird getValue wieder nicht NULL!!!
 			
 			//Nun als Zeilenwert das ...post durchfuehren

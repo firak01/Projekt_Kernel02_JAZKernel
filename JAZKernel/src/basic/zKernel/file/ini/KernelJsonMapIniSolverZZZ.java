@@ -157,11 +157,70 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 				}	
 				
 			}			
-						
 			
 			
-			//Merke: Die Reihenfolge der MapEintraege nicht berücksichtigen		
+			//Merke: Die Reihenfolge der Map-Eintraege nicht beruecksichtigen		
 			HashMap hmFromJson = JsonUtilZZZ.toHashMap(sReturn);
+			
+			//Merke: Das beruecksichtigt die Reihenfolge der Map-Eintraege.
+			//HashMap hmFromJson = JsonUtilZZZ.toLinkedHashMap(sReturn);
+			if(hmFromJson==null) break main; //dadurch ist hmReturn nie NULL !!!
+			
+			hmReturn = hmFromJson;
+			
+			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
+		}//end main:
+		return hmReturn;
+	}
+	
+	public LinkedHashMap<String,String> computeLinkedHashMapFromJson(String sLineWithJson) throws ExceptionZZZ{
+		LinkedHashMap hmReturn = new LinkedHashMap<String,String>();
+		String sReturn = sLineWithJson;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithJson)) break main;
+			
+			//Keine weiteren Flags verwenden, ggfs. nur noch Formeln aufloesen....
+			
+			boolean bUseFormula = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA);		
+			boolean bUseFormulaMath = this.getFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH);				
+			if(bUseFormula && bUseFormulaMath){		
+				//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+				//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+				//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+												
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelZFormulaMathSolverZZZ<T> formulaSolverDummy = new KernelZFormulaMathSolverZZZ<T>();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaSolverDummy, true);
+				
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(objKernel, saFlagZpassed);
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?				
+				boolean bAnyFormula = false;
+				String sRaw = sReturn;
+				String sRawOld = sRaw;
+				while(objMathSolver.isExpression(sRaw)){
+					bAnyFormula = true;
+						
+					String sValueMath = objMathSolver.solve(sReturn);										
+					if(!StringZZZ.equals(sRaw, sValueMath)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + sValueMath +"'");
+					}else {
+						break;
+					}
+					sRaw = sReturn;
+					if(sRawOld.equals(sRaw)) break; //Sonst Endlosschleife.
+					sRawOld = sRaw;
+					sReturn = sValueMath;					
+				}	
+				
+			}			
+						
+			//Merke: Die Reihenfolge der Map-Eintraege nicht beruecksichtigen		
+			//HashMap hmFromJson = JsonUtilZZZ.toHashMap(sReturn);
+			
+			//Merke: Das beruecksichtigt die Reihenfolge der Map-Eintraege.
+			LinkedHashMap hmFromJson = JsonUtilZZZ.toLinkedHashMap(sReturn);
 			if(hmFromJson==null) break main; //dadurch ist hmReturn nie NULL !!!
 			
 			hmReturn = hmFromJson;
@@ -464,7 +523,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();
 		boolean bUseExpression = false;	boolean bUseSolver = false; boolean bUseSolverThis = false;
 		
-		HashMap<String,String> hmReturn = null;		
+		LinkedHashMap<String,String> hmReturn = null;		
 		
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= null;		
@@ -509,7 +568,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			
 			//Berechnen der HashMap aus einem vermeintlichen JSON-Ausdruck
 			String sExpressionUsed = sExpression;
-			hmReturn = this.computeHashMapFromJson(sExpression);
+			hmReturn = this.computeLinkedHashMapFromJson(sExpression); //Merke: Die LinkedHashMap ist sortiert
 			if(hmReturn!=null) {
 				//sExpressionUsed = HashMapExtendedZZZ.computeDebugString(hmReturn);
 				//sExpressionUsed = hmReturn.toString();

@@ -887,12 +887,13 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
+	 * @throws ExceptionZZZ 
 	 */
 	/* (non-Javadoc)
 	 * @see basic.zBasic.IOutputDebugNormedZZZ#computeDebugString()
 	 */
 	@Override
-	public String computeDebugString(){
+	public String computeDebugString() throws ExceptionZZZ{
 		return this.computeDebugString((String)null, (String)null);		
 	}
 	
@@ -914,7 +915,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	}
 	
 	@Override
-	public String computeDebugString(String sEntryDelimiterIn, String sKeyDelimiterIn){
+	public String computeDebugString(String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
 			String sKeyDelimiter;
@@ -938,15 +939,15 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String computeDebugString(HashMap hmDebug){
+	public static String computeDebugString(HashMap hmDebug) throws ExceptionZZZ{
 		return HashMapUtilZZZ.computeDebugString(hmDebug, null, null);
 	}
 	
-	public static String computeDebugString(HashMap hmDebug, String sEntryDelimiterIn){
+	public static String computeDebugString(HashMap hmDebug, String sEntryDelimiterIn) throws ExceptionZZZ{
 		return HashMapUtilZZZ.computeDebugString(hmDebug, null, sEntryDelimiterIn);
 	}
 	
-	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
 		
 		String sKeyDelimiter;
 		if(sKeyDelimiterIn==null){

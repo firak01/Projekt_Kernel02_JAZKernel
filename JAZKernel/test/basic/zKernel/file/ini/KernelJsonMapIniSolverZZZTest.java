@@ -27,11 +27,12 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import junit.framework.TestCase;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
-	//Problem dabei: Die Reihenfolge der Einträge in der HashMap ist nicht fest vorgegeben.
-	protected final static String sEXPRESSION_JSONMAP01_CONTENT_SOLVED = "{UIText02=TESTWERT2DO2JSON02, UIText01=TESTWERT2DO2JSON01}";
+	//Problem dabei: Die Reihenfolge der Einträge in der HashMap ist nicht fest vorgegeben. Darum LinkedHashMap fuer die Strings verwenden
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT_SOLVED = "UIText01=TESTWERT1DO2JSON01, UIText02=TESTWERT1DO2JSON02";
 	protected final static String sEXPRESSION_JSONMAP01_SOLVED = "<Z>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED + "</Z>";
-	protected final static String sEXPRESSION_JSONMAP01_CONTENT = "{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}";
-	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT +"</JSON:MAP></JSON></Z>";
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT = "\"UIText01\":\"TESTWERT1DO2JSON01\",\"UIText02\":\"TESTWERT1DO2JSON02\"";
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT_JSON = "{\"UIText01\":\"TESTWERT1DO2JSON01\",\"UIText02\":\"TESTWERT1DO2JSON02\"}";
+	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_JSON +"</JSON:MAP></JSON></Z>";
 	
 	
 	private File objFile;
@@ -1149,12 +1150,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			//+++ Variante fuer den AsEntry-Test
 			if(objEnumTestCase.equals(EnumSetMappedTestCaseSolverTypeZZZ.PARSE_AS_ENTRY)) {
-				objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+
 				objEntry = objExpressionSolver.parseAsEntry(sExpression, objEnumSurrounding.getSurroundingValueUsedForMethod());				
 				assertNotNull(objEntry);
 				
 				sValue = objEntry.getValue();
-				assertEquals(sExpressionSolved, sValue);
+				assertEquals(sExpressionSubstituted, sValue);
 			}
 			
 			
@@ -1241,7 +1242,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			btemp = objExpressionSolver.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);//Sollte dann egal sein
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'", btemp);
 		
-			sExpression = sEXPRESSION_JSONMAP01_CONTENT;
+			sExpression = sEXPRESSION_JSONMAP01_CONTENT_JSON;
 			hm = objExpressionSolver.computeHashMapFromJson(sExpression);
 			assertNotNull(hm);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm.size()==2);
@@ -1452,7 +1453,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 					
 			//###############################################################
 			//C) Einfacher Test: Den JSON-Map source String direkt uebernehmen.
-			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sExpressionSource = KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_JSON;
 			sExpression = sExpressionSource;
 			sLineWithJson = sExpression;
 			hm = objExpressionSolver.computeHashMapFromJson(sLineWithJson);
