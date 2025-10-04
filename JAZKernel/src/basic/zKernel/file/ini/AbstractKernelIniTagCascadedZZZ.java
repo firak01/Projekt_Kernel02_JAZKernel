@@ -223,6 +223,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 				//20241023 Erweiterungsarbeiten, Ini-Pfade und Variablen "substituieren"
 				//String sValueToSubstitute = vecReturn.get(1).toString();  //Merke: Das ist dann der Wert es Tags, wenn der Parser nicht aktiviert ist. Wenn der Tag nicht im String ist, ist das korrekterweise auch ein Leerstring.
 				String sValueToSubstitute = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1); //Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.	
+				this.setValue(sValueToSubstitute);
 				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSubstitute= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReferenceSubstitute.set(objEntry);

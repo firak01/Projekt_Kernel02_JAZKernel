@@ -218,7 +218,12 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			HashMap<String,String> hm = objEntry.getValueHashMap();
 			assertNotNull(hm);
 			String sValue01 = hm.get("UIText01");
-			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));												
+			assertNotNull(sValue01);
+			assertEquals("TESTWERT1DO2JSON01", sValue01);												
+			
+			String sValue02 = hm.get("UIText02");
+			assertNotNull(sValue02);
+			assertEquals("TESTWERT1DO2JSON02", sValue02);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

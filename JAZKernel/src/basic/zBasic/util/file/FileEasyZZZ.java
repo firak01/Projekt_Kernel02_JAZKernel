@@ -1893,9 +1893,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 				
 		
-		ObjectZZZ.logLineWithDate( "wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'" );
-		ObjectZZZ.logLineWithDate( "wird NICHT benutzt sRoot='"+ sRoot + "'" );
-		ObjectZZZ.logLineWithDate( "wird benutzt! sFilePath as total='"+ sFilePath+"'" ); 
+		//ObjectZZZ.logLineWithDate( "wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'" );
+		//ObjectZZZ.logLineWithDate( "wird NICHT benutzt sRoot='"+ sRoot + "'" );
+		//ObjectZZZ.logLineWithDate( "wird benutzt! sFilePath as total='"+ sFilePath+"'" ); 
 		
 		if(StringZZZ.isEmpty(sFileName)){
 			//An empty string or NULL is allowed for Filename	

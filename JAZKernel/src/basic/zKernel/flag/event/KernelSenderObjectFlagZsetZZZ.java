@@ -74,15 +74,15 @@ public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectWithExceptionZZ
 				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);
 				if(l instanceof IListenerObjectFlagZsetZZZ) {
 					IEventObjectFlagZsetZZZ eventUsed = (IEventObjectFlagZsetZZZ) event;
-					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() +") called: listener.flagChanged(event) # " + i + ". IListenerObjectFlagZsetZZZ ("+l.getClass().getName()+")";
-					this.logProtocolString(sLog);
+					//sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() +") called: listener.flagChanged(event) # " + i + ". IListenerObjectFlagZsetZZZ ("+l.getClass().getName()+")";
+					//this.logProtocolString(sLog);
 					IListenerObjectFlagZsetZZZ lused = (IListenerObjectFlagZsetZZZ) l;
 					
 					try {
 						boolean bFlagChanged = lused.flagChanged(eventUsed);
 						if(bFlagChanged) {
-							sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() + ") # " + i + ". IListenerObjectFlagZsetZZZ " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt.";
-							this.logProtocolString(sLog);
+							//sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() + ") # " + i + ". IListenerObjectFlagZsetZZZ " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt.";
+							//this.logProtocolString(sLog);
 						}
 					} catch (ExceptionZZZ ez) {
 						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.

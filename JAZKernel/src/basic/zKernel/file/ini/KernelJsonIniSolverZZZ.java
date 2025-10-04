@@ -139,7 +139,8 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
 			objJsonMapSolver.setFlag(saFlag,true);	
-			String sLineWithExpression = objJsonMapSolver.solve(sExpression);
+			String sLineSolved = objJsonMapSolver.solve(sExpression); //ABER: Das ist ein String ohne die wichtigen { }. Ohne geschweifte Klammern keine JSON-Map!!! 
+			String sLineWithExpression = objJsonMapSolver.getValue();
 			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);							
 		}//end main:
 		this.setValue(hmReturn);

@@ -174,7 +174,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 	}
 	
 	public LinkedHashMap<String,String> computeLinkedHashMapFromJson(String sLineWithJson) throws ExceptionZZZ{
-		LinkedHashMap hmReturn = new LinkedHashMap<String,String>();
+		LinkedHashMap hmReturn = new LinkedHashMap<String,String>();//dadurch ist hmReturn nie NULL !!!
 		String sReturn = sLineWithJson;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithJson)) break main;
@@ -221,7 +221,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			
 			//Merke: Das beruecksichtigt die Reihenfolge der Map-Eintraege.
 			LinkedHashMap hmFromJson = JsonUtilZZZ.toLinkedHashMap(sReturn);
-			if(hmFromJson==null) break main; //dadurch ist hmReturn nie NULL !!!
+			if(hmFromJson==null) break main;
 			
 			hmReturn = hmFromJson;
 			

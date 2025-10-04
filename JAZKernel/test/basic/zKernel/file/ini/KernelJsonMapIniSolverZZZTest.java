@@ -29,9 +29,10 @@ import junit.framework.TestCase;
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
 	//Problem dabei: Die Reihenfolge der Einträge in der HashMap ist nicht fest vorgegeben. Darum LinkedHashMap fuer die Strings verwenden
 	protected final static String sEXPRESSION_JSONMAP01_CONTENT_SOLVED = "UIText01=TESTWERT1DO2JSON01, UIText02=TESTWERT1DO2JSON02";
+	//NEIN, JsonSolved ist immer ein String ohne die Json-Tags.      protected final static String sEXPRESSION_JSONMAP01_CONTENT_SOLVED_JSON = "{" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED + "}";
 	protected final static String sEXPRESSION_JSONMAP01_SOLVED = "<Z>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_SOLVED + "</Z>";
 	protected final static String sEXPRESSION_JSONMAP01_CONTENT = "\"UIText01\":\"TESTWERT1DO2JSON01\",\"UIText02\":\"TESTWERT1DO2JSON02\"";
-	protected final static String sEXPRESSION_JSONMAP01_CONTENT_JSON = "{\"UIText01\":\"TESTWERT1DO2JSON01\",\"UIText02\":\"TESTWERT1DO2JSON02\"}";
+	protected final static String sEXPRESSION_JSONMAP01_CONTENT_JSON = "{" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT + "}";
 	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>" + KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_JSON +"</JSON:MAP></JSON></Z>";
 	
 	

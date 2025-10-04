@@ -910,7 +910,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			//b) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE="abcd<Z><JSON><JSON:MAP>";
-			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_JSON;
 			sPOST="</JSON:MAP></JSON></Z>xyz";
 			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.replace(0, sPRE);
@@ -939,7 +939,7 @@ public class KernelConfigSectionEntryUtilZZZTest extends TestCase{
 			
 			//b) ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sPRE="abcd<Z><JSON><JSON:MAP>";
-			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT;
+			sMID=KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_CONTENT_JSON;
 			sPOST="</JSON:MAP></JSON></Z>xyz";
 			vecExpressionSource = new Vector3ZZZ<String>();
 			vecExpressionSource.replace(0, sPRE);
