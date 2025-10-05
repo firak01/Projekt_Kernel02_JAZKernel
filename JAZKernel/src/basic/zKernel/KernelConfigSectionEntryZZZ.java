@@ -499,13 +499,13 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		if(this.hasNullValue()){
 			return null;		
 		}else if (!this.hasAnyValue()){
-			//if(this.hasAnySectionExists()) {
-//			if(this.hasAnyValue()) {
-//				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
-//			}else {
-//				return null; //wenn die Section nicht existiert, dann auch kein Wert.
-//			}
-			return null;
+			//wg. folgender Testzeile in FileIniZZZTest.testGetProperty()
+			//assertNotNull("Wenn es die Section gibt, den Wert aber nicht, dann soll der Rueckgabewert aber NICHT NULL sein", objEntry.getValue());
+			if(this.hasAnySectionExists()) {				
+				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!								
+			}else {
+				return null; //wenn die Section nicht existiert, dann auch kein Wert.
+			}			
 		}else {
 			return this.getValueVector().getEntryHigh();
 		}

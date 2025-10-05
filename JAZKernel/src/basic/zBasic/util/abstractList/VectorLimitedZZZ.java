@@ -61,7 +61,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	public boolean resetValues(Object objDefaultIn) throws ExceptionZZZ {
 		Object objDefault = null;
 		if(objDefaultIn==null) {
-			objDefault = new NullObjectZZZ();
+			objDefault = this.getObjectDefaultNew();
 		}else {
 			objDefault = objDefaultIn;
 		}
@@ -141,11 +141,17 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	
 		
 	@Override
-	public Object replace(int iIndex, Object obj) throws ExceptionZZZ{
+	public Object replace(int iIndex, Object objIn) throws ExceptionZZZ{
 		Object objReturn = null;
 		this.ensureValidIndex(iIndex);
 		
-		super.replace(iIndex, obj);
+		Object obj;
+		if(objIn==null) {
+			obj = this.getObjectDefaultNew();
+		}else {
+			obj = objIn;
+		}
+		objReturn = super.replace(iIndex, obj);
 		
 		return objReturn;		
 	}
@@ -153,9 +159,16 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	//### ueberschriebene Vector Originale
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addElement(Object obj) {
+	public void addElement(Object objIn) {
 		try {
 			this.ensureValidSize(this.sizeNext());
+			
+			Object obj;
+			if(objIn==null) {
+				obj = this.getObjectDefaultNew();
+			}else {
+				obj = objIn;
+			}
 			super.addElement(obj);
 		}catch(ExceptionZZZ ez) {
 			try {
@@ -168,11 +181,17 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean add(Object obj) {
+	public boolean add(Object objIn) {
 		boolean bReturn = false;
 		try {
 			this.ensureValidSize(this.sizeNext());
 			
+			Object obj;
+			if(objIn==null) {
+				obj = this.getObjectDefaultNew();
+			}else {
+				obj = objIn;
+			}
 			bReturn = super.add(obj);		
 			this.iIndexUsedLast = this.size()-1;
 			
@@ -188,10 +207,16 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void add(int iIndex, Object obj) {
+	public void add(int iIndex, Object objIn) {
 		try {
 			this.ensureValidSize(this.sizeNext());
 			
+			Object obj;
+			if(objIn==null) {
+				obj = this.getObjectDefaultNew();
+			}else {
+				obj = objIn;
+			}
 			super.add(iIndex, obj);
 			this.iIndexUsedLast = iIndex;
 			
@@ -253,11 +278,17 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void insertElementAt(Object obj, int iIndex) {
+	public void insertElementAt(Object objIn, int iIndex) {
 		
 		try {
 			this.ensureValidSize(iIndex);
 			
+			Object obj;
+			if(objIn==null) {
+				obj = this.getObjectDefaultNew();
+			}else {
+				obj = objIn;
+			}
 			super.insertElementAt(obj, iIndex);
 			this.iIndexUsedLast = iIndex;
 			

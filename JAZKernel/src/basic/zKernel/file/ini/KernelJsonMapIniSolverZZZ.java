@@ -605,9 +605,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 						this.updateValueSolvedChanged(objReturnReference);
 					}
 										
-					if(hmReturn!=null) {						
+					if(hmReturn!=null) {
 						objEntry.isJsonMap(true);//Sollte das nicht im PARSE gesetzt werden?
-						objEntry.setValue(hmReturn); //Merke: Das wird nicht im PARSE gesetzt, da wir ja es hier mit einem SOLVE Wert zu tun haben 
+						objEntry.setValue(hmReturn); //Merke: Das wird nicht im PARSE gesetzt, da wir ja es hier mit einem SOLVE Wert zu tun haben
+						this.setValue(hmReturn);
 					}else{
 						objEntry.isJsonMap(false);
 					}

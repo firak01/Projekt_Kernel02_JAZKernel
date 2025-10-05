@@ -927,7 +927,9 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
 			sReturnTagSolved = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
-			sReturnLineSolved = objEntry.getValue(); //Die Aufloesung der Zeile innerhalb des Tags.
+			//unnoetig doppelt
+			//vecReturn.replace(1, sReturnTagSolved);
+			//sReturnLineSolved = VectorUtilZZZ.implode(vecReturn);
 			objEntry = objReturnReferenceSolve.get();								
 			//##########################
 			
@@ -939,10 +941,10 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferencePost= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferencePost.set(objEntry);
 		
-			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post			
-			vecReturn.replace(sReturnTag);
+			//Nun als Tag Value die Solve Loesung einsetzen vor dem ... post. Merke: Das Post entfernt dann umliegende Tags.			
+			vecReturn.replace(1,sReturnTag);
 			this.setValue(sReturnTag);
-			//TODOGOON20250726; //HIer wird getValue wieder nicht NULL!!!
+
 			
 			//Nun als Zeilenwert das ...post durchfuehren
 			vecReturn = this.solvePost(vecReturn, objReturnReferencePost, bRemoveSurroundingSeparators);

@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -141,7 +142,8 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objJsonMapSolver.setFlag(saFlag,true);	
 			String sLineSolved = objJsonMapSolver.solve(sExpression); //ABER: Das ist ein String ohne die wichtigen { }. Ohne geschweifte Klammern keine JSON-Map!!! 
 			String sLineWithExpression = objJsonMapSolver.getValue();
-			hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);							
+			hmReturn=objJsonMapSolver.getValueHashMap();
+			//hmReturn=objJsonMapSolver.computeHashMapFromJson(sLineWithExpression);							
 		}//end main:
 		this.setValue(hmReturn);
 		return hmReturn;
@@ -460,7 +462,8 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 				hmReturn = this.computeHashMap(sExpression);
 				if(!hmReturn.isEmpty()) {
-					sReturnTag = hmReturn.toString();
+					//Das baut wieder Klammern drum... sReturnTag = hmReturn.toString();
+					sReturnTag = HashMapUtilZZZ.computeImplodeString(hmReturn);
 					this.setValue(sReturnTag);
 					sReturnLine = sReturnTag;
 					sReturn = sReturnTag;
