@@ -193,4 +193,111 @@ public class TestUtilZZZ {
 		}//end main:
 		return objReturn;
 	}
+	
+	
+	public static File createKernelFileUsed_FileIniZZZTest() throws ExceptionZZZ {
+		File objReturn = null;
+		
+		main:{
+			try {
+			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt. 
+			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
+			//Merke: Damit die Datei nicht im Code-Repository landet, wird sie explizit immer auf der lokalen Festplatte erzeugt.
+			//       ALSO NICHT im Eclipse Workspace
+			
+			String sFileDirectoryUsed = FileIniZZZTest.strFILE_DIRECTORY_DEFAULT;
+			if(!FileEasyZZZ.exists(sFileDirectoryUsed)){
+				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryUsed);
+			}
+			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, FileIniZZZTest.strFILE_NAME_DEFAULT );				
+//			if(sFilePathTotal==null){
+//				//Eclipse Workspace
+//				File f = new File("");
+//			    String sPathEclipse = f.getAbsolutePath();
+//			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+//			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+//			}
+			
+			IStreamZZZ objStreamFile = null;
+			try{
+				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+			} catch (FileNotFoundException e) {
+				sFileDirectoryUsed = "c:\\temp";
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, FileIniZZZTest.strFILE_NAME_DEFAULT );
+				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
+			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
+			objStreamFile.println("#This is another commentline");
+			objStreamFile.println("[Section A]");
+			objStreamFile.println("Testentry1=Testvalue1");			
+			objStreamFile.println("TestentryToBeDeleted=will be deleted by testStringPropertyDelete()");
+			
+			objStreamFile.println("[Section for testGetPropertyAll]");
+			objStreamFile.println("Property1=");
+			objStreamFile.println("Property2=");
+			objStreamFile.println("Property3=");
+			objStreamFile.println("Property4=");
+			objStreamFile.println("Property5=");
+			
+			objStreamFile.println("[Section for testGetValueAll]");
+			objStreamFile.println("PropertyA=" + FileIniZZZTest.saValueTestGetAll[0]);
+			objStreamFile.println("PropertyB=" + FileIniZZZTest.saValueTestGetAll[1]);
+			objStreamFile.println("PropertyC=" + FileIniZZZTest.saValueTestGetAll[2]);
+			objStreamFile.println("PropertyD=" + FileIniZZZTest.saValueTestGetAll[3]);
+			objStreamFile.println("PropertyE=" + FileIniZZZTest.saValueTestGetAll[4]);			
+			
+			objStreamFile.println("[Section for deletion]");
+			objStreamFile.println("TestentryToBeDeleted=the one and only entry in this section. Will be deleted by testStringPropertyDelete()");
+			
+			objStreamFile.println("[Section for formula value]");
+			objStreamFile.println("Value1=first value");
+			
+			objStreamFile.println("[Section for formula]");
+			objStreamFile.println("Formula1=Das ist der '<Z>{[Section for formula value]Value1}</Z>' Wert.");
+			
+			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched]");
+			objStreamFile.println("Value1=first value global");
+			objStreamFile.println("ValueGlobalOnly=second value global");
+			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched!01]");
+			objStreamFile.println("Value1=first value systemnr 01");
+			objStreamFile.println("ValueLocalOnly=local value systemnr 01");
+			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched!02]");
+			objStreamFile.println("Value1=first value systemnr 02");
+			
+			objStreamFile.println("[Section for ProofSectionExists]");
+			
+			
+			//20210707 Tests für die Arbeit mit JSON Strings
+			//Merke:			
+			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
+			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
+			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
+			objStreamFile.println("[Section for testJsonHashmap]");
+			objStreamFile.println("Map1="+ KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
+				
+			objStreamFile.println("[Section for testJsonArraylist]");
+			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
+			
+			objStreamFile.close();
+		
+			objReturn = new File(sFilePathTotal);
+		} catch (FileNotFoundException e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("FileNotFoundException", e);
+			throw ez;
+		} catch (IOException e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("IOException", e);
+			throw ez;
+		} catch (Exception e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("Exception", e);
+			throw ez;
+		}	
+		}//end main:
+		return objReturn;
+	}
 }

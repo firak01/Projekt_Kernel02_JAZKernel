@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
@@ -26,10 +27,10 @@ import custom.zKernel.file.ini.*;
 import custom.zUtil.io.FileZZZ;
 
 public class FileIniZZZTest extends TestCase {
-	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitFileIniTest.ini");
+	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
+	public final static String strFILE_NAME_DEFAULT = new String("JUnitFileIniTest.ini");
 	
-	private final static String[] saValueTestGetAll ={"ValueA", "ValueB", "ValueC", "ValueD", "ValueE"} ;
+	public final static String[] saValueTestGetAll ={"ValueA", "ValueB", "ValueC", "ValueD", "ValueE"} ;
 	private Hashtable objHtSection;  
 	
 	private File objFile;
@@ -45,92 +46,7 @@ public class FileIniZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 			
-			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt. 
-			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
-			//Merke: Damit die Datei nicht im Code-Repository landet, wird sie explizit immer auf der lokalen Festplatte erzeugt.
-			//       ALSO NICHT im Eclipse Workspace
 			
-			String sFileDirectoryUsed = strFILE_DIRECTORY_DEFAULT;
-			if(!FileEasyZZZ.exists(sFileDirectoryUsed)){
-				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryUsed);
-			}
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );				
-//			if(sFilePathTotal==null){
-//				//Eclipse Workspace
-//				File f = new File("");
-//			    String sPathEclipse = f.getAbsolutePath();
-//			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
-//			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
-//			}
-			
-			IStreamZZZ objStreamFile = null;
-			try{
-				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
-			} catch (FileNotFoundException e) {
-				sFileDirectoryUsed = "c:\\temp";
-				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
-				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
-			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
-			objStreamFile.println("#This is another commentline");
-			objStreamFile.println("[Section A]");
-			objStreamFile.println("Testentry1=Testvalue1");			
-			objStreamFile.println("TestentryToBeDeleted=will be deleted by testStringPropertyDelete()");
-			
-			objStreamFile.println("[Section for testGetPropertyAll]");
-			objStreamFile.println("Property1=");
-			objStreamFile.println("Property2=");
-			objStreamFile.println("Property3=");
-			objStreamFile.println("Property4=");
-			objStreamFile.println("Property5=");
-			
-			objStreamFile.println("[Section for testGetValueAll]");
-			objStreamFile.println("PropertyA=" + saValueTestGetAll[0]);
-			objStreamFile.println("PropertyB=" + saValueTestGetAll[1]);
-			objStreamFile.println("PropertyC=" + saValueTestGetAll[2]);
-			objStreamFile.println("PropertyD=" + saValueTestGetAll[3]);
-			objStreamFile.println("PropertyE=" + saValueTestGetAll[4]);			
-			
-			objStreamFile.println("[Section for deletion]");
-			objStreamFile.println("TestentryToBeDeleted=the one and only entry in this section. Will be deleted by testStringPropertyDelete()");
-			
-			objStreamFile.println("[Section for formula value]");
-			objStreamFile.println("Value1=first value");
-			
-			objStreamFile.println("[Section for formula]");
-			objStreamFile.println("Formula1=Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.");
-			
-			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched]");
-			objStreamFile.println("Value1=first value global");
-			objStreamFile.println("ValueGlobalOnly=second value global");
-			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched!01]");
-			objStreamFile.println("Value1=first value systemnr 01");
-			objStreamFile.println("ValueLocalOnly=local value systemnr 01");
-			objStreamFile.println("[Section for testGetPropertyValueSystemNrSearched!02]");
-			objStreamFile.println("Value1=first value systemnr 02");
-			
-			objStreamFile.println("[Section for ProofSectionExists]");
-			
-			
-			//20210707 Tests für die Arbeit mit JSON Strings
-			//Merke:			
-			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
-			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
-			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
-			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1="+ KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
-				
-			objStreamFile.println("[Section for testJsonArraylist]");
-			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
-			
-			
-			objStreamFile.close();
-			
-			
-			objFile = new File(sFilePathTotal);
 			
 			//### Hashtable zum Setzen einer Beispielsection in testSetSection()
 			objHtSection = new Hashtable();
@@ -146,23 +62,21 @@ public class FileIniZZZTest extends TestCase {
 			//An object just initialized
 			objKernelInit = new KernelZZZ();
 			
-			String[] saFlag = {"init"};
-			objFileIniInit = new FileIniZZZ(objKernel,  objFile, saFlag);
+			String[] saFlagInit = {"init"};
+			objFileIniInit = new FileIniZZZ(objKernel,  objFile, saFlagInit);
 			
 			//The main object used for testing
-			objFileIniTest = new FileIniZZZ(objKernel, sFileDirectoryUsed, strFILE_NAME_DEFAULT, (String[]) null);
+			//objFileIniTest = new FileIniZZZ(objKernel, sFileDirectoryUsed, strFILE_NAME_DEFAULT, (String[]) null);
 
+			objFile = TestUtilZZZ.createKernelFileUsed_FileIniZZZTest();
+			String[] saFlag = {""}; //Merke: Die Flags des Testobjekts selbst werden in den einzelnen Tests explizit gesetzt.
+			objFileIniTest = new FileIniZZZ(objKernel, objFile, saFlag);
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail("Method throws an exception." + e.getMessage());
 		}			
 	}//END setup
 	
@@ -328,6 +242,7 @@ public class FileIniZZZTest extends TestCase {
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 		
@@ -338,6 +253,43 @@ public class FileIniZZZTest extends TestCase {
 	 */
 	public void testGetProperty(){
 		try {
+			boolean btemp;
+			
+			//+++ 20251006: Setzen der notwendigen Flags für diesen Test
+			//... mit Berechnung PATH
+			btemp = objFileIniTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+			assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER,true); //ohne aktivierten Parser keine SUBSTITUTION  
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH,true);  
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE,true);  
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIni_VariableZZZ.FLAGZ.USEEXPRESSION_VARIABLE + "'", btemp);
+							
+			btemp = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+			
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA,true);
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA + "'", btemp);
+		
+			//... mit Berechnung MATH
+			btemp = objFileIniTest.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH, true); 
+			assertTrue("Flag nicht vorhanden '" + IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA_MATH + "'", btemp);
+				
+			//... mit Berechnung JSON
+			btemp = objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); 
+			assertTrue("Das Flag '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON +"' sollte zur Verfügung stehen.", btemp);
+							
+			//... mit Berechnung JSON-MAP
+			btemp = objFileIniTest.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);//Ansonsten wird der Wert sofort ausgerechnet 
+			assertTrue("Das Flag '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP +"' sollte zur Verfügung stehen.", btemp);
+			
+			
+			
+			//########################################################################################################
 			//Erst testen, dass auch kein Leerwert kommt
 			IKernelConfigSectionEntryZZZ objEntry =objFileIniTest.getPropertyValue("Section A", "Testentry1"); 
 			assertNotNull("Es soll ein Entry-Object zurueckgeliefert werden.", objEntry);
@@ -365,23 +317,32 @@ public class FileIniZZZTest extends TestCase {
 			assertNull("NULL erwartet. Wert ist aber '" + objEntry.getValue() + "' Wenn es alles nicht gibt, dann soll der Rueckgabewert aber NULL sein", objEntry.getValue());
 			
 			
-			
-			//NEU 20070306: Hier über eine Formel die Property auslesen
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false);
-			objFileIniTest.setFlag("useFormula", false);
+			//20251006: Nach der gruendlichen Ueberarbeitung der letzten 2 Jahre(!) gibt es viel mehr Flags 
+			//          und eine echte "mathematische"(!) Formel ist das inzwischen hier nicht mehr, 
+			//          sondern lediglich eine PATH Ersetzung durch den Parser.
+			//          Merke: PATH Anweisungen müssen mitlerweile in geschweiften Klammern stehen!
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,false); //reicht nicht das auszuschliessen...
+			objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, false);     //...wird naemlich vom Parser gemacht!!!			
 			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
 			String sTestValueFormula = objEntry.getValue();
-			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
+			assertEquals("Das ist der '<Z>{[Section for formula value]Value1}</Z>' Wert.", sTestValueFormula); 
 			
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true);//Das reicht nicht
 			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
-			sTestValueFormula = objEntry.getValue();
-			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
+			sTestValueFormula = objEntry.getValue(); //Es findet ein Solven statt, darum verschwinden die Z-Tags
+			assertEquals("Das ist der '{[Section for formula value]Value1}' Wert.", sTestValueFormula); 
 		
-			objFileIniTest.setFlag("useFormula", true);//jetzt sollte es klappen
+			objFileIniTest.setFlag(IKernelZFormulaIni_PathZZZ.FLAGZ.USEEXPRESSION_PATH, true); //jetzt sollte es klappen
 			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
 			sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
+			
+			//NEU 20070306: Hier über eine Formel die Property auslesen
+			//TODOGOON 20251006: Wenn mn das so macht, dann muss man auch eine echte Formel in der zugrundeliegenden INI-Datei verwenden.
+			//also Formula2....
+			objFileIniTest.setFlag("useFormula", false);
+			objFileIniTest.setFlag("useFormula", true);//jetzt sollte es klappen
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

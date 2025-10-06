@@ -541,8 +541,8 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 				
 			sReturnRaw = objReturn.getRaw();
 			if(sReturnRaw==null) break main;
-						
-			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können.
+			
+			//+++ 20191126: Auslagern der Formelausrechung in eine Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können.
 			IKernelExpressionIniHandlerZZZ objExpressionHandler = this.getExpressionHandlerNew();			
 			objReturnReference.set(objReturn);
 			String sReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);//Merke: parse() reicht nicht, da damit keine Formeln aufgeloest werden.	

@@ -410,47 +410,63 @@ public void testGetModuleAll(){
 }
 
 public void testGetParameter(){
+	boolean btemp; String stemp;
+	String sValue=null;
 	try{
 		// Dieses Modul soll existieren
-		String sValue = objKernelTest.getParameter("TestGetParameter").getValue();
-		String stemp = StringZZZ.left(sValue+"|","|");
-		assertEquals("Test erfolgreich", stemp);
+		sValue = objKernelTest.getParameter("TestGetParameter").getValue();
+		sValue = StringZZZ.left(sValue+"|","|");
+		assertEquals("Test erfolgreich", sValue);
 				
-		String sRaw = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
-		stemp = StringZZZ.left(sRaw+"|","|");
-		assertEquals("<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>",sRaw);
+		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		sValue = StringZZZ.left(sValue+"|","|");
+		assertEquals("<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>",sValue);
 
 		//############################################################
-		//Nun die Verschluesselung "einschalten"	
+		//Nun die Verschluesselung Schritt fuer Schritt "einschalten"	
 		//objKernelTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
 		//....
+
+		
+		
+		//+++ Expression und der Solver muss noch aktiviert werden
+		btemp = objKernelTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+		assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
+		
+		btemp = objKernelTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //reicht nicht das auszuschliessen...
+		assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
+		
+		//Das reicht noch nicht, unbeding den Cache leeren
+		objKernelTest.getCacheObject().clear();
+		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		sValue = StringZZZ.left(sValue+"|","|");
+		assertEquals("<Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted>", sValue);
+		
 		
 		//Hiermit teste ich aber auch das "Flag-Array-Setzen" per Enumeration
 		IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ = new IKernelEncryptionIniSolverZZZ.FLAGZ[1];
 		objaEnum_IKernelEncryptionIniSolverZZZ[0]=IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION;		
 		boolean[] baReturn0 = objKernelTest.setFlag(objaEnum_IKernelEncryptionIniSolverZZZ, true);
 		assertTrue("Das Flag USEENCRYPTION wurde erwartet",baReturn0[0]);//Verschluesselung aufloesen ist ja genau das was wir wollen.
-		
-		
-		
+	
 		IObjectWithExpressionZZZ.FLAGZ[] objaEnum_IKernelExpressionIniSolverZZZ = new IObjectWithExpressionZZZ.FLAGZ[1];
 		objaEnum_IKernelExpressionIniSolverZZZ[0]=IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION;
 		boolean[] baReturn1 = objKernelTest.setFlag(objaEnum_IKernelExpressionIniSolverZZZ, true);
 		assertTrue("Das Flag USEEXPRESSION wurde erwartet",baReturn1[0]);//Ohne das Flag wird die Behandlung irgendwelcher Ausdrücke gar nicht gemacht.
 		
-		IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ = new IKernelZFormulaIniZZZ.FLAGZ[1];
-		objaEnum_IKernelZFormulaIniZZZ[0]=IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA;
-		boolean[] baReturn2 = objKernelTest.setFlag(objaEnum_IKernelZFormulaIniZZZ, true);
-		assertTrue("Das Flag USEFORMULA wurde erwartet",baReturn2[0]);//Ohne das Flag wird <z>...</z> um das Ergebnis ggfs. rum sein.
+//		IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ = new IKernelZFormulaIniZZZ.FLAGZ[1];
+//		objaEnum_IKernelZFormulaIniZZZ[0]=IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA;
+//		boolean[] baReturn2 = objKernelTest.setFlag(objaEnum_IKernelZFormulaIniZZZ, true);
+//		assertTrue("Das Flag USEFORMULA wurde erwartet",baReturn2[0]);//Ohne das Flag wird <z>...</z> um das Ergebnis ggfs. rum sein.
 		
 		//Das reicht noch nicht, unbeding den Cache leeren, sonst wird das unverschlüsselte Objekt zurueckgeliefert
 		objKernelTest.getCacheObject().clear();
 		
 		//Jetzt erst wird der neue Wert auch mit "Entschluesselung" geholt
-		String sDecrypted = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
-		stemp = StringZZZ.left(sDecrypted+"|","|");
-		assertEquals("Test erfolgreich!", stemp);
-
+		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		sValue = StringZZZ.left(sValue+"|","|");
+		assertEquals("Test erfolgreich!", sValue);
+		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}
