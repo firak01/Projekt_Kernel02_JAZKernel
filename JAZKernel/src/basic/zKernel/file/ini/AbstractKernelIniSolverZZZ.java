@@ -926,10 +926,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReferenceSolve= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReferenceSolve.set(objEntry);
-			sReturnTagSolved = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);
-			//unnoetig doppelt
-			//vecReturn.replace(1, sReturnTagSolved);
-			//sReturnLineSolved = VectorUtilZZZ.implode(vecReturn);
+			sReturnTagSolved = this.solveParsed(sReturnTag2Solve, objReturnReferenceSolve, bRemoveSurroundingSeparators);			
 			objEntry = objReturnReferenceSolve.get();								
 			//##########################
 			

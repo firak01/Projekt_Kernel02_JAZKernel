@@ -433,6 +433,9 @@ public void testGetParameter(){
 		btemp = objKernelTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 		assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 		
+		btemp = objKernelTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);//ohne Parser wird der Expression-Ausdruck nicht erkannt. 
+		assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
+		
 		btemp = objKernelTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //reicht nicht das auszuschliessen...
 		assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 		
