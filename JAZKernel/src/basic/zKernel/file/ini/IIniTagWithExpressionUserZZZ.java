@@ -8,6 +8,6 @@ public interface IIniTagWithExpressionUserZZZ {
 	
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
-	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
-	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ;
+	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;                   //20251007: Wird vor dem Entfernen der Z-Tags im PostSolve / ...Wrapup... verwendet
+	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ; //20251007: Wird vor dem Entfernen der Z-Tags im PostSolve / ...Wrapup... verwendet
 }
