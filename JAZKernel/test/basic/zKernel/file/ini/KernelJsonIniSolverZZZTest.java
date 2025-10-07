@@ -55,7 +55,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, objFileIniTest, saFlagInit);
 				
 			//#### Das konkrete TestObject				
-			objFile = TestUtilZZZ.createKernelFileUsed();
+			objFile = TestUtilZZZ.createKernelFileUsed4JUnit_KernelExpressionIniHandlerZZZTest();
 
 
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.

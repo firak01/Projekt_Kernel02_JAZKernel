@@ -38,7 +38,7 @@ public class FileIniZZZTest extends TestCase {
 	private IKernelZZZ objKernelInit;
 	private LogZZZ objLog;
 	
-	/// +++ Die eigentlichen Test-Objekte
+	//+++ Die eigentlichen Test-Objekte
 	private FileIniZZZ objFileIniInit;
 	private FileIniZZZ objFileIniTest;
 	

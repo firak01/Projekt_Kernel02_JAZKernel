@@ -789,7 +789,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 				String sTagStart = this.getTagPartOpening();
 				String sTagEnd = this.getTagPartClosing();
 				if(sTagStart.equalsIgnoreCase("<Z>")) {
-					//dann mache nix... der Tag wird spaeter behandelt...
+					//dann mache nix... der Tag wird spaeter behandelt... (bzw. in AbstractKernelIniSolverZZZ)
 				}else {
 					//sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLine, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
 					KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(vecExpressionIn, sTagStart, sTagEnd);//also AN JDEDER POSITION (d.h. nicht nur am Anfang) von innnen nach aussen!!!
@@ -867,7 +867,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.updateValueSolveCalled(); 			//20250311: verwendet eine ueberschreibbare Methode der Solver, dito soll fuer Parser gelten
 		this.updateValueSolveCalled(objReturnReference);	//20250311: verwendet eine ueberschreibbare Methode der Solver, dito soll fuer Parser gelten
 		
-		sReturnLine=sExpressionIn;		
+		sReturnLine = sExpressionIn;		
 		sReturnTag = this.getValue();
 		vecReturn.set(0, sReturnLine);//nur bei in dieser Methode neu erstellten Vector.
 		sReturn = sReturnLine;
@@ -885,10 +885,11 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			objReturnReferenceParse.set(objEntry); 
 			vecReturn = this.parseFirstVector(sExpression, objReturnReferenceParse);
 			objEntry = objReturnReferenceParse.get();
-			if(vecReturn==null)break main;			
-			if(StringZZZ.isEmpty(VectorUtilZZZ.getElementAsValueOf(vecReturn, 1))) break solverThis; //Dann ist der Tag nicht enthalten oder "Solver fuer den Tag" deaktiviert
-						
+			if(vecReturn==null)break main;
+			
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecReturn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.
+			if(StringZZZ.isEmpty(sReturnTag)) break solverThis; //Dann ist der Tag nicht enthalten oder "Solver fuer den Tag" deaktiviert
+						
 			sReturnTagParsed = sReturnTag;
 			sReturnTagSolved = sReturnTag;
 			this.setValue(sReturnTag);
@@ -911,8 +912,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 			if(!bUseSolver) break main;
 			
 			//Zwischenstand, falls nach dem Generellen Solver beendet ist, Spezieller Solver also nicht weiter ausgeführt wird
-			sReturnLine = VectorUtilZZZ.implode(vecReturn); 
-			sReturnLineParsed = sReturnLine;
 			sReturnLineParsed2compareWithSolved = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);			
 			if(bRemoveSurroundingSeparators) {
 				sReturnLine = KernelConfigSectionEntryUtilZZZ.getExpressionTagpartsSurroundingRemoved(sReturnLineParsed, sTagStartZ, sTagEndZ);

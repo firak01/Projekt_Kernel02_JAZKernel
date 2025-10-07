@@ -53,7 +53,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	
 	protected void setUp(){
 		try {						
-			objFile = TestUtilZZZ.createKernelFileUsed();
+			objFile = TestUtilZZZ.createKernelFileUsed4JUnit_KernelExpressionIniHandlerZZZTest();
 			
 			//#################
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);

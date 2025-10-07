@@ -84,8 +84,13 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class AbstractKernelObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IExpressionEnabledZZZ,IKernelEncryptionIniSolverZZZ, IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ {
+	//Beachte static Konstanten in IKernelConfigConstant
+	//public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
+	//public final static String strFILE_NAME_DEFAULT = new String("JUnitKernelTest.ini");
+	
 	private static final long serialVersionUID = 699752030418877631L;
-
+	
+	
 	private FileFilterModuleZZZ objFileFilterModule=null;
 	
 	//Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 

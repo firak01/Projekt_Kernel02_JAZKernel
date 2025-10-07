@@ -17,6 +17,8 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.KernelZZZ;
+import basic.zKernel.KernelZZZTest;
 
 public class TestUtilZZZ {
 	public enum TestSubtype{
@@ -33,7 +35,7 @@ public class TestUtilZZZ {
 	} //static methods only
 	
 	
-	public static File createKernelFileUsed() throws ExceptionZZZ {
+	public static File createKernelFileUsed4JUnit_KernelExpressionIniHandlerZZZTest() throws ExceptionZZZ {
 		File objReturn = null;
 		
 		main:{
@@ -282,6 +284,97 @@ public class TestUtilZZZ {
 			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
 			
 			objStreamFile.close();
+		
+			objReturn = new File(sFilePathTotal);
+		} catch (FileNotFoundException e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("FileNotFoundException", e);
+			throw ez;
+		} catch (IOException e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("IOException", e);
+			throw ez;
+		} catch (Exception e) {			
+			e.printStackTrace();
+			ExceptionZZZ ez = new ExceptionZZZ("Exception", e);
+			throw ez;
+		}	
+		}//end main:
+		return objReturn;
+	}
+	
+	
+	public static File createKernelFileUsed_KernelZZZTest(String sFileNameSourceIn, String sFileDirectorySourceIn) throws ExceptionZZZ {
+		File objReturn = null;
+		String sFilePathTotal = null;
+		main:{
+			try {
+			//### Uebernommene Werte siehe echte Datei.
+			//### Die Datei fuer den JUniTest danach extra erstellen (ausserhalb des Git-Repositories)
+			                  
+			String sFileDirectorySourceUsed = sFileDirectorySourceIn;
+			String sFileNameSourceUsed = sFileNameSourceIn;
+			if(!FileEasyZZZ.exists(sFileDirectorySourceUsed)){
+				FileEasyZZZ.createDirectoryForDirectory(sFileDirectorySourceUsed);
+			}
+			sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectorySourceUsed, sFileNameSourceUsed );				
+//				if(sFilePathTotal==null){
+//					//Eclipse Workspace
+//					File f = new File("");
+//				    String sPathEclipse = f.getAbsolutePath();
+//				    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+//				    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+//				}
+			IStreamZZZ objStreamFileSource = null;
+			try{
+				objStreamFileSource = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+			} catch (FileNotFoundException e) {
+				sFileDirectorySourceUsed = KernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectorySourceUsed, KernelZZZ.sFILENAME_CONFIG_DEFAULT );
+				objStreamFileSource = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+				
+				
+			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt. 
+			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
+			//Merke: Damit die Datei nicht im Code-Repository landet, wird sie explizit immer auf der lokalen Festplatte erzeugt.
+			//       ALSO NICHT im Eclipse Workspace
+			
+			
+			String sFileDirectoryUsed = KernelZZZTest.strFILE_DIRECTORY_DEFAULT;
+			if(!FileEasyZZZ.exists(sFileDirectoryUsed)){
+				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryUsed);
+			}
+			sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, KernelZZZTest.strFILE_NAME_DEFAULT );				
+//			if(sFilePathTotal==null){
+//				//Eclipse Workspace
+//				File f = new File("");
+//			    String sPathEclipse = f.getAbsolutePath();
+//			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+//			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+//			}
+			
+			IStreamZZZ objStreamFileTarget = null;
+			try{
+				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+			} catch (FileNotFoundException e) {
+				sFileDirectoryUsed = "c:\\temp";
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, KernelZZZTest.strFILE_NAME_DEFAULT );
+				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			
+			
+			
+			
+			
+			TODOGOON20251007;//Kopiere aus der bestehenden Datei in die JUnitDatei
+			//objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
+			
+			//objStreamFile.close();
 		
 			objReturn = new File(sFilePathTotal);
 		} catch (FileNotFoundException e) {			

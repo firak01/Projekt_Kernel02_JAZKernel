@@ -26,28 +26,40 @@ import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_PathZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIni_VariableZZZ;
+import basic.zKernel.file.ini.TestUtilZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 import custom.zUtil.io.FileZZZ;
 import junit.framework.TestCase;
 
+/** wird in der TestSuite AllTest zusammengefasst.
+ * Darum gibt es hier keine Main - Methode.
+ * Die Main Methode von AllTest kann ausgefuehrt werden.
+ */
 public class KernelZZZTest extends TestCase {
-	/** wird in der TestSuite AllTest zusammengefasst.
-	 * Darum gibt es hier keine Main - Methode.
-	 * Die Main Methode von AllTest kann ausgefuehrt werden.
-	 */
+	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
+	public final static String strFILE_NAME_DEFAULT = new String("JUnitKernelTest.ini");
 	
+	private File objFile;
+	
+	//+++ Die eigentlichen Test-Objekte
 	private IKernelZZZ objKernelFGL;	
 	private IKernelZZZ objKernelTest;
 		
 	protected void setUp(){
 		try {			
-			//TODO: Diese Datei zuvor per Programm erstellen
-			objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
-			
-			//TODO: Diese Datei zuvor per Programm erstellen
-			objKernelTest = new KernelZZZ("TEST", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
+			//Ausgehend von der im Test-Verzeichnis liegenden Datei,
+			//die im Test konkret verwendete Datei wird extra erstellt.
+			String sFileDirectorySource="test";
+			String sFileNameSource="ZKernelConfigKernel_test.ini";
+			objFile = TestUtilZZZ.createKernelFileUsed_KernelZZZTest(sFileDirectorySource, sFileNameSource);
+
+			String sFileDirectoryTarget=objFile.getParent();
+			String sFileNameTarget=objFile.getName();
+			//objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
+			objKernelFGL = new KernelZZZ("FGL", "01", sFileDirectoryTarget, sFileNameTarget,(String[]) null);
+			objKernelTest = new KernelZZZ("TEST", "01", sFileDirectoryTarget, sFileNameTarget,(String[]) null);
 	
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
@@ -917,10 +929,10 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
 				
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
-		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
 		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
@@ -958,7 +970,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
-		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
 		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
@@ -993,6 +1005,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
+	boolean bFlagExists;
 	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
@@ -1000,12 +1013,20 @@ public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_VIGENEREnn";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);
+		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
+				
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
-		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		
 		//############################################
@@ -1193,10 +1214,10 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
 				
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
-		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
-		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		assertTrue("Flag '"+IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
 		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);

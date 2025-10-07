@@ -72,7 +72,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ<Object>(saFlagInit);									
 			
 			//#### Das konkrete TestObject				
-			objFile = TestUtilZZZ.createKernelFileUsed();
+			objFile = TestUtilZZZ.createKernelFileUsed4JUnit_KernelExpressionIniHandlerZZZTest();
 
 			//Merke: Für diesen Test das konkrete Ini-File an das Test-Objekt uebergeben und sich nicht auf den Kernel selbst beziehen.
 			//Merke: 20250816 - Jetzt wird das KernelIniFile-Objekt mit .registerForFlagEvents mit den Flags des Solver verknuepft.
