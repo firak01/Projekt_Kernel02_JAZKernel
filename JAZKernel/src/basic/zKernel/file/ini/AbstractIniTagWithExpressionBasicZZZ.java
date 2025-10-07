@@ -90,11 +90,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return true;
 	}
 	
-	//### aus IIniTagWithExpression
-	@Override 
-	public String getRawAsExpression() throws ExceptionZZZ{
-		return this.getRaw();
-	}
+	
 	
 	//######## Getter / Setter #################
 	

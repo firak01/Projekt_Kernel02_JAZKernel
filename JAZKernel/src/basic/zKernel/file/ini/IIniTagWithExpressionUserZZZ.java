@@ -6,7 +6,6 @@ import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 public interface IIniTagWithExpressionUserZZZ {
 	public String getRawAsExpression() throws ExceptionZZZ;
 	
-	//TODOGOON20251007; //Verschiebe nach IIniTagWithExpressionUserZZZ	
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
 	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
