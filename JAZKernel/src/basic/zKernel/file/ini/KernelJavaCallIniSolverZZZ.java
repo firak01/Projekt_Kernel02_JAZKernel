@@ -264,15 +264,19 @@ public class KernelJavaCallIniSolverZZZ<T>  extends AbstractKernelIniSolver4Chil
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);
+
 		this.updateValueSolveCalled();//Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
 		this.updateValueSolveCalled(objReturnReference);
+		
 		sReturnLine = sExpressionIn;
-		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
-		sReturnTagParsed = sExpressionIn;
-		sReturnTagSolved = sExpressionIn;
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);
 		sReturn = sReturnLine;
+		sReturnTag = sReturnLine; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			

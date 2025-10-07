@@ -269,14 +269,17 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);			
-		//objEntry.isSolveCalled(true);
+		
 		this.updateValueSolveCalled();//Stichwort TODOGOON20250308 , auch die Entry-Werte der Parents muessen gesetzt werden
 		this.updateValueSolveCalled(objReturnReference);
-		sReturnTag = this.getValue();
-		sReturnLine = sExpressionIn;
 		
+		sReturnLine = sExpressionIn;		
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);			
+		sReturn = sReturnLine;
+		
+		sReturnTag = this.getValue(); //??? sollte das nicht auch sReturnLine sein ???
+				
 		main:{			
 			//Aufloesen von Pfaden und ini-Variablen passierte schon beim Parsen.
 			//Aufloesen des Math-Tags
@@ -325,14 +328,17 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		//objEntry.isSolveCalled(true);
-		this.updateValueSolveCalled();
-		this.updateValueSolveCalled(objReturnReference);	
-		sReturnTag = this.getValue();
-		sReturnLine = sExpressionIn;
 		
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objReturnReference);
+		
+		sReturnLine = sExpressionIn;
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);	
+		sReturn = sReturnLine;
+		
+		sReturnTag = this.getValue(); //??? sollte das nicht auch sReturnLine sein ???
+				
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			String sExpression = sExpressionIn;

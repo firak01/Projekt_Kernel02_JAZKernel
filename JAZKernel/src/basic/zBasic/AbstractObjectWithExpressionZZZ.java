@@ -8,7 +8,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
-//Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
+//Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatoren in der Zeile geben muss
 public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithExpressionZZZ, IExpressionEnabledZZZ, IResettableValuesZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 		

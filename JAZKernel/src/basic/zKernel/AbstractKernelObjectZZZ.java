@@ -5020,6 +5020,9 @@ MeinTestParameter=blablaErgebnis
 	
 	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
 	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	 * 
+	 * Hier wird ein bereits verschluesselter Wert als ini-Wert gesetzt.
+	 * Dabei werden die Verschluesselungsparameter aus objCrypt in diese Zeile korrekt aufgenommen.
 	* Lindhauer; 20.05.2006 09:40:36
 	 * @param sModule
 	 * @param sSectionOrProgram
@@ -5076,6 +5079,9 @@ MeinTestParameter=blablaErgebnis
 	
 	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
 	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	 * 
+	 * Hier wird ein bereits verschluesselter Wert als ini-Wert gesetzt.
+	 * Dabei werden die Verschluesselungsparameter aus objCrypt in diese Zeile korrekt aufgenommen.
 	* Lindhauer; 20.05.2006 09:40:36
 	 * @param sModule
 	 * @param sSectionOrProgram

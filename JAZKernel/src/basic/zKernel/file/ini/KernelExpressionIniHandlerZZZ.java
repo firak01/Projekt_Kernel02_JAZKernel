@@ -334,7 +334,6 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				//BESONDERHEIT				
 //				if(!sExpressionIn.equals(sReturnLine)) {
 //					objEntry.setValueFormulaSolvedAndConverted(sReturnTag);					
-//					objEntry.setValueAsExpression(sReturnLine);
 //				}
 				
 				//Besonderheit:
@@ -482,15 +481,18 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
+		
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
+		
 		sReturnLine = sExpressionIn;
-		sReturnTag = sExpressionIn; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
-		sReturnTagParsed = sExpressionIn;
-		sReturnTagSolved = sExpressionIn;
-		sReturn = sReturnLine;
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);	
+		sReturn = sReturnLine;				
+		sReturnTag = sReturnLine; //nein, schliesslich heisst diese Methode solve ! parsed ! //this.getValue();
+		
+		sReturnTagParsed = sReturnTag;
+		sReturnTagSolved = sReturnTag;
 		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			

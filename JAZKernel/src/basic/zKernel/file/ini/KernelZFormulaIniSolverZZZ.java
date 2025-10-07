@@ -198,12 +198,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
-		objEntry.isSolveCalled(true);
+		
+		this.updateValueSolveCalled();
+		this.updateValueSolveCalled(objReturnReference);
+		
 		sReturnLine = sExpressionIn;
-		sReturnTag = this.getValue();
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);	
 		sReturn = sReturnLine;
+	
+		sReturnTag = this.getValue(); //??? sollte das nicht auch sReturnLine sein ???
+		
 		
 		main:{
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;

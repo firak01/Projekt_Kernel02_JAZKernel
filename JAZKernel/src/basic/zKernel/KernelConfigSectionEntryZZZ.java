@@ -491,6 +491,12 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void setRaw(String sRaw) {
 		this.getRawVector().add(sRaw);
 	}
+	
+	@Override //aus IIniTagWithExpressionUserZZZ
+	public String getRawAsExpression() throws ExceptionZZZ{
+		String sValue = this.getRaw();
+		return KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sValue);
+	}
 
 	//####################################
 	//Wg. Der Expression und Sectionbehandlung die einfachen getter/Setter überschreiben
@@ -552,6 +558,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	
 	//#################################
+	//### aus IInitTagWithExpressionUser
 	@Override 
 	public VectorDifferenceZZZ<String> getValueAsExpressionVector(){
 		return this.vecValueAsExpression;

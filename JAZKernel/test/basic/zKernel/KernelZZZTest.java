@@ -894,6 +894,7 @@ public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
+	boolean bFlagExists;
 	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
@@ -909,12 +910,20 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		//###         Dann wird nach der erfolgreichen Suche das vorhandenen CRYPT-Objekt wiederverwendet
 		//#######################################################
 		
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		bFlagExists = objKernelFGL.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
 		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);
+		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
+				
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
+		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
 		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		//Aufruf der privaten Testmethode
 		String sErg = testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(objKernelFGL, sModule, sProgram, sProperty);
@@ -931,6 +940,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
+	boolean bFlagExists;
 	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
@@ -938,12 +948,20 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_ROT13";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);
+		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
+				
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		
 		//############################################
@@ -1087,7 +1105,7 @@ private String testSetParameterByProgramAlias_Encrypted_NewValue2_Ba_(IKernelZZZ
 				//###         und der muss wieder neu geschrieben werden.  
 				//#######################################################
 				
-		//assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
+				//assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
 				String sEncryptedTimestamp = sEncryptedValue + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
 				objKernelUsed.setParameterByProgramAliasEncrypted(sModule, sProgram, sPropertyEncryptedValue, sEncryptedTimestamp, objCrypt);
 				
@@ -1160,6 +1178,7 @@ private String testSetParameterByProgramAlias_Encrypted_NewValueClear_(IKernelZZ
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
+	boolean bFlagExists;
 	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
@@ -1167,12 +1186,20 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_ROT13";
 		
 		//+++ Stetzen der notwendigen FlagZ-Eintraege
-		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
-		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true);
+		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);
+		assertTrue("Flag '"+IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER.name()+ "' sollte vorhanden sein.",bFlagExists);
+				
 		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER, true);
 		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
 		assertTrue("Flag '"+IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
 		
 		//############################################
@@ -1254,6 +1281,8 @@ public void testSetParameterByProgramAlias_ExternesModule(){
 
 private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sProperty) {
 	String sReturn = null;
+	
+	String sValueAsExpression=null;
 	try {
 
 		//+++ Den Cache bei jedem Schritt explizit leeren
@@ -1268,17 +1297,16 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 
 		//Sichern des "RAW" Werts
 		String sRawEncrypted = objEntryDecryptedOriginal.getRawEncryptedAsExpression();
-		String sRaw =  objEntryDecryptedOriginal.getRaw();
+		String sRaw =  objEntryDecryptedOriginal.getRawAsExpression();
 		assertEquals(sRaw,sRawEncrypted);//Vor der Entschluesselung wird der RAW String hier noch "archiviert".
 				
 		//Im RAW String wird der oben verwendete CIPHER-String erwartet.
 		boolean btemp = StringZZZ.contains(sRaw, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
 		assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
 		
-		//Testen der entschluesselten Werte
-		String sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();
-		assertFalse(sRaw.equals(sValueAsExpression));              //also der entschluesselte Werte darf nicht dem Raw Wert entsprechen
-		assertFalse(sValueAsExpression.equals(sDecryptedOriginal));//um den Expression String sollte Z-Tag drum sein.		
+		//Testen der entschluesselten Werte		
+		sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();
+		assertNotNull(sValueAsExpression);
 		
 		//####################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
@@ -1286,9 +1314,12 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 						
 		//Funktioniert nur, wenn es schon einen CRYPT-Tag gibt in der Property. Dann wird der gefundene Crypt-Algorithmus wiederverwendet.
 		ICryptZZZ objCrypt = objEntryDecryptedOriginal.getCryptAlgorithmType();
-		String sDecryptedTimestamp = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
-		String sEncryptedTimestamp = objCrypt.encrypt(sDecryptedTimestamp);
-				
+		sDecryptedOriginal = objEntryDecryptedOriginal.getValue();
+		sDecryptedOriginal = StringZZZ.left(sDecryptedOriginal+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		String sDecryptedTimestamp = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an		
+		String sEncrypted = objCrypt.encrypt(sDecryptedOriginal);
+		String sEncryptedTimestamp = sEncrypted + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an  
+		
 		//ACHTUNG!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE		
 		objKernelUsed.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncryptedTimestamp);  
 
@@ -1300,6 +1331,14 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 		assertTrue(objEntryDecrypted.hasAnyValue());
 		String stemp = objEntryDecrypted.getValue();
 		assertTrue(sEncryptedTimestamp.equals(stemp));
+		
+		//Testen der entschluesselten Werte (nach dem Entschluesseln nicht mehr Null, wert wird im "wrapup" vom postSolve gesetzt)
+		sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();
+		assertNotNull(sValueAsExpression);
+				
+		assertFalse(sRaw.equals(sValueAsExpression));              //also der entschluesselte Werte darf nicht dem Raw Wert entsprechen
+		assertFalse(sValueAsExpression.equals(sDecryptedOriginal));//um den Expression String sollte Z-Tag drum sein.		
+
 
 		//##########################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
@@ -1309,7 +1348,7 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 		//MERKE: DAS IST DIE BESONDERHEIT DIESES TESTS: ES WIRD DAS ORIGINAL CRYPT-OBJEKT NACH DER ERSTEN SUCHE WIEDERVERWENDET
 		ICryptZZZ objCryptOriginal = objEntryDecryptedOriginal.getCryptAlgorithmType();//Das Crypt - Objekt kommt aus der vorherigen Abfrage, wird also wiederverwendet.
 		//Merke: Die Verschluesselung wird nun ohne Timestamp geschrieben.
-		String sEncrypted = objCryptOriginal.encrypt(sDecryptedOriginal);
+		sEncrypted = objCryptOriginal.encrypt(sDecryptedOriginal);
 		objKernelUsed.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sEncrypted, objCryptOriginal);
 		
 		//############################################

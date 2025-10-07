@@ -393,18 +393,20 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);			
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);		
+		
 		this.updateValueSolveCalled();
 		this.updateValueSolveCalled(objReturnReference);
 		
-		
-		sReturnLineParsed2compareWithSolved = sExpressionIn;				
 		sReturnLine = sExpressionIn;
-		sReturnTag = sExpressionIn; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);						
+		sReturnLineParsed2compareWithSolved = sReturnLine;				
+		sReturn = sReturnLine;
+		sReturnTag = sReturnLine; //schlieslich ist das eine .solve ! PARSED ! Methode, also nicht   this.getValue();
+		
 		sReturnTagParsed = sReturnTag;
 		sReturnTagSolved = sReturnTag;
-		sReturn = sReturnLine;
+		
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;
 			

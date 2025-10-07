@@ -167,7 +167,8 @@ public abstract class AbstractKernelIniSolver4ChildTagZZZ<T> extends AbstractKer
 								
 			this.setRaw(sExpression);
 			objEntry.setRaw(sExpression);
-								
+			objEntry.setValueAsExpression(sExpressionIn, false);
+			
 			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 			if(bRemoveSurroundingSeparators & bUseExpression) {
 				String sTagStartZ = "<Z>";
@@ -266,8 +267,11 @@ public abstract class AbstractKernelIniSolver4ChildTagZZZ<T> extends AbstractKer
 			bUseSolver = this.isSolverEnabledGeneral();
 			if(!bUseSolver) break main;
 								
-			this.setRaw(sExpression);
-			objEntry.setRaw(sExpression);
+			this.setRaw(sReturnLine);
+			objEntry.setRaw(sReturnLine);
+			
+			//Besonderheit: Vor dem rausrechnen der Z-Tags den Wert noch einmal quasi speichern
+			objEntry.setValueAsExpression(sReturnLine, false);
 					
 			//Als echten Ergebniswert aber die <Z>-Tags ggfs. rausrechnen, falls gewuenscht
 			if(bRemoveSurroundingSeparators & bUseExpression) {

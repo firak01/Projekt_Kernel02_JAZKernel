@@ -17,6 +17,8 @@ import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionUserZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionUserZZZ;
+import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
  *  Gefüllt wird dieses Objekt in den Kernel.getParameter.... oder ähnlich lautenden Klassen.
@@ -31,7 +33,7 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUserZZZ, IValueUserZZZ, IValueArrayUserZZZ, IValueMapUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, IIniStructurePositionZZZ, IIniStructurePositionUserZZZ, Cloneable{		
+public interface IKernelConfigSectionEntryZZZ extends IIniTagWithExpressionUserZZZ, IValueComputedBufferedUserZZZ, IValueUserZZZ, IValueArrayUserZZZ, IValueMapUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, IIniStructurePositionZZZ, IIniStructurePositionUserZZZ, Cloneable{		
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
 	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap();
 	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
@@ -55,11 +57,11 @@ public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUser
 	public VectorZZZ<String> getHistorySubstituteCalledVector() throws ExceptionZZZ;
 	public void setHistorySubstituteCalled(String sTagName) throws ExceptionZZZ;
 	
-	
-	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
-	public String getValueAsExpression();
-	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
-	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ;
+//	TODOGOON20251007; //Verschiebe nach IIniTagWithExpressionUserZZZ	
+//	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
+//	public String getValueAsExpression();
+//	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
+//	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ;
 			
 	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
 	public HashMap<String,String> getValueHashMap();

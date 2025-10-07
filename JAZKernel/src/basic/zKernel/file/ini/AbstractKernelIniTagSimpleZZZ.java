@@ -879,7 +879,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);			
+			objEntry.setRaw(sExpressionIn);	
+			objEntry.setValueAsExpression(sExpressionIn, false);
+			
 			sReturnLine = sExpressionIn;
 			sReturnTag = VectorUtilZZZ.getElementAsValueOf(vecExpressionIn, 1);//Damit wird aus dem NullObjectZZZ ggfs. NULL als Wert geholt.//hier nicht: this.getValue(); weil der ja erst ggfs. hier geholt wird.
 			sReturn = sReturnLine;
@@ -1004,10 +1006,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 						
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
-		
-			this.setRaw(sExpressionIn);		
-			objEntry.setRaw(sExpressionIn);			
+							
 			sReturnLine=sExpressionIn;
+			this.setRaw(sExpressionIn);		
+			objEntry.setRaw(sExpressionIn);	
+			objEntry.setValueAsExpression(sReturnLine, false);
 												
 			bUseExpression = this.getFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION); 
 			if(!bUseExpression) break main;
@@ -1087,13 +1090,13 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			sExpressionIn = VectorUtilZZZ.implode(vecExpressionIn);
 			if(StringZZZ.isEmpty(sExpressionIn)) break main;
 			
-			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);
-		
+			sReturnLine = sExpressionIn;
+			this.setRaw(sReturnLine);
+			objEntry.setRaw(sReturnLine);
+			objEntry.setValueAsExpression(sReturnLine, false);
+				
 			sReturnTag = this.getValue();
-			sReturnLine = sExpressionIn;			
-			sReturn = sReturnLine;
-			
+							
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;						
 				
@@ -1683,13 +1686,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}							
 		
 		main:{			
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;			    
-			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
 			sReturnLine = sExpressionIn;
-			sReturnTag = this.getValue();
+			this.setRaw(sReturnLine);
+			objEntry.setRaw(sReturnLine);
+			objEntry.setValueAsExpression(sReturnLine, false);
 			sReturn = sReturnLine;
-							
+			
+			sReturnTag = this.getValue();
+									
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
@@ -1739,13 +1745,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		}							
 		
 		main:{		
-			if(StringZZZ.isEmpty(sExpressionIn)) break main;			    
-			this.setRaw(sExpressionIn);
-			objEntry.setRaw(sExpressionIn);
+			if(StringZZZ.isEmpty(sExpressionIn)) break main;
+			
 			sReturnLine = sExpressionIn;
-			sReturnTag = this.getValue();
+			this.setRaw(sReturnLine);
+			objEntry.setRaw(sReturnLine);
 			sReturn = sReturnLine;
-							
+			
+			sReturnTag = this.getValue();
+										
 			bUseExpression = this.isExpressionEnabledGeneral(); 
 			if(!bUseExpression) break main;
 			
@@ -1822,14 +1830,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			objEntry = new KernelConfigSectionEntryZZZ<T>();
 			objReturnReference.set(objEntry);
 		}//Achtung: Das objReturn Objekt NICHT generell uebernehmen. Es verfaelscht bei einem 2. Suchaufruf das Ergebnis.
-		this.setRaw(sExpressionIn);
-		objEntry.setRaw(sExpressionIn);	
 		
 		this.updateValueSubstituteCalled();
 		this.updateValueSubstituteCalled(objReturnReference);	
+		
 		sReturnLine = sExpressionIn;
-		sReturnTag = this.getValue();
+		this.setRaw(sReturnLine);
+		objEntry.setRaw(sReturnLine);	
 		sReturn = sReturnLine;	
+						
+		sReturnTag = this.getValue();
 		
 		main:{						
 			if(StringZZZ.isEmptyTrimmed(sExpressionIn)) break main;			
