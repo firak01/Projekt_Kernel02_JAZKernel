@@ -9,5 +9,6 @@ public interface IStreamZZZ extends IObjectZZZ, IObjectWithExceptionZZZ, IStream
 	public void setCharsetName(String sCharsetName);
 	public String getCharsetName();
 	
+	public String readLineNext() throws ExceptionZZZ;
 	public String readLineLast() throws ExceptionZZZ;
 }

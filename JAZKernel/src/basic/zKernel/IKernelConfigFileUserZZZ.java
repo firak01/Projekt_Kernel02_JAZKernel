@@ -15,5 +15,6 @@ public interface IKernelConfigFileUserZZZ{
 	
 	public boolean proofFileConfigModuleIsConfigured(String sModule) throws ExceptionZZZ;
 	public boolean proofFileConfigModuleExists(String sModule) throws ExceptionZZZ;
+	public boolean proofFileConfigModuleExists(String sModule, boolean bIncludeSystemSectionInSearch) throws ExceptionZZZ;
 	
 }

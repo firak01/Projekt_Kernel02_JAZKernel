@@ -40,28 +40,37 @@ import junit.framework.TestCase;
 public class KernelZZZTest extends TestCase {
 	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
 	public final static String strFILE_NAME_DEFAULT = new String("JUnitKernelTest.ini");
-	
-	private File objFile;
-	
-	//+++ Die eigentlichen Test-Objekte
-	private IKernelZZZ objKernelFGL;	
-	private IKernelZZZ objKernelTest;
 		
+	//+++ Die eigentlichen Test-Objekte
+	private IKernelZZZ objKernelFGL;
+	private IKernelZZZ objKernelTEST;
+	private IKernelZZZ objKernel4ModuleReadonlyFGL;
+	private IKernelZZZ objKernel4ModuleReadonlyTEST;
+	
+	
 	protected void setUp(){
 		try {			
-			//Ausgehend von der im Test-Verzeichnis liegenden Datei,
-			//die im Test konkret verwendete Datei wird extra erstellt.
 			String sFileDirectorySource="test";
 			String sFileNameSource="ZKernelConfigKernel_test.ini";
-			objFile = TestUtilZZZ.createKernelFileUsed_KernelZZZTest(sFileDirectorySource, sFileNameSource);
+			
+			//### Kernel-Objekte mit Konfigurationsdateien zum "Nur Lesen"
+			//Es wird keine Kopie der im Test-Verzeichnis liegenden Datei erstellt.
+			//Dadurch koennen ausgehend von dieser Original-Datei andere Dateien (Moduldateien) im gleichen Verzeichnis gefunden werden.
+			objKernel4ModuleReadonlyFGL=new KernelZZZ("FGL", "01", sFileDirectorySource, sFileNameSource,(String[]) null);
+			objKernel4ModuleReadonlyTEST=new KernelZZZ("TEST", "01", sFileDirectorySource, sFileNameSource,(String[]) null);
+			
+			//### Kernel-Objekte mit Konfigurationsdateien zum "Reinschreiben"
+			//Ausgehend von der im Test-Verzeichnis liegenden Datei,
+			//die im Test konkret verwendete Datei wird extra erstellt.			
+			File objFile = TestUtilZZZ.createKernelFileUsed_KernelZZZTest(sFileDirectorySource, sFileNameSource);
 
-			String sFileDirectoryTarget=objFile.getParent();
-			String sFileNameTarget=objFile.getName();
-			//objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
-			objKernelFGL = new KernelZZZ("FGL", "01", sFileDirectoryTarget, sFileNameTarget,(String[]) null);
-			objKernelTest = new KernelZZZ("TEST", "01", sFileDirectoryTarget, sFileNameTarget,(String[]) null);
+			String sFileDirectorySourceCopied=objFile.getParent();
+			String sFileNameSourceCopied=objFile.getName();			
+			objKernelFGL = new KernelZZZ("FGL", "01", sFileDirectorySourceCopied, sFileNameSourceCopied,(String[]) null);
+			objKernelTEST = new KernelZZZ("TEST", "01", sFileDirectorySourceCopied, sFileNameSourceCopied,(String[]) null);
 	
 		} catch (ExceptionZZZ e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessageLast());
 		}		
 	}
@@ -144,14 +153,14 @@ public void testContructor(){
 		
 		
 		//Testkonfiguration pr�fen
-		assertFalse(objKernelTest.getFlag("init")==true); //Nun w�re init falsch
-		assertEquals("TEST", objKernelTest.getApplicationKey());
-		assertEquals("01", objKernelTest.getSystemNumber());
-		assertEquals("TEST!01", objKernelTest.getSystemKey()); //so wird die Categorie in der ini-Datei bezeichnet
+		assertFalse(objKernelTEST.getFlag("init")==true); //Nun w�re init falsch
+		assertEquals("TEST", objKernelTEST.getApplicationKey());
+		assertEquals("01", objKernelTEST.getSystemNumber());
+		assertEquals("TEST!01", objKernelTEST.getSystemKey()); //so wird die Categorie in der ini-Datei bezeichnet
 		
-		assertNotNull("Test-Configuration-File does not exist", objKernelTest.getFileConfigKernelAsIni()); //die Test-Konfigurationsdatei soll vorhanden sein.
+		assertNotNull("Test-Configuration-File does not exist", objKernelTEST.getFileConfigKernelAsIni()); //die Test-Konfigurationsdatei soll vorhanden sein.
 				
-		assertNotNull("Log-Filepath in configuration file does not exist", objKernelTest.getLogObject());
+		assertNotNull("Log-Filepath in configuration file does not exist", objKernelTEST.getLogObject());
 		
 		
 		//TEST: Einen angegebenen Applikationsschlussel gibt es n der Datei nicht
@@ -286,11 +295,11 @@ public void testFileConfigAllByDir(){
 	try{
 		//Konfiguration & Methode testen
 		//1. Hole das aktuelle Verzeichnis
-		File objFileDir = objKernelFGL.getFileConfigKernel().getParentFile();
+		File objFileDir = objKernel4ModuleReadonlyFGL.getFileConfigKernel().getParentFile();
 		String sDir = objFileDir.getAbsolutePath();
 				
 		//Hier sollte jetzt etwas gefunden werden
-		File[]objaFileConfig = objKernelFGL.getFileConfigModuleAllByDir(sDir);
+		File[]objaFileConfig = objKernel4ModuleReadonlyFGL.getFileConfigModuleAllByDir(sDir);
 		assertNotNull("There should be at least one ini-file.", objaFileConfig);
 		assertTrue("There should be at least two files. ArraySize: " + objaFileConfig.length, objaFileConfig.length>1);
 		
@@ -298,7 +307,7 @@ public void testFileConfigAllByDir(){
 		String sDirNixda = "c:\\temp\\nixda";
 		File[] objaFileConfigNixda=null;
 		try {
-			objaFileConfigNixda = objKernelFGL.getFileConfigModuleAllByDir(sDirNixda);
+			objaFileConfigNixda = objKernel4ModuleReadonlyFGL.getFileConfigModuleAllByDir(sDirNixda);
 			fail("An Exception should have happened looking in a not existing directory '" + sDirNixda + "'");
 		}catch(ExceptionZZZ ez){			
 		}
@@ -316,7 +325,7 @@ public void testFileConfigAllByDir(){
 public void testGetFileConfigModuleIniByAlias(){
 	try{
 		//Konfiguration & Methode testen
-		File objFile = objKernelFGL.getFileConfigModuleOLDDIRECT("TestModule");
+		File objFile = objKernel4ModuleReadonlyFGL.getFileConfigModuleOLDDIRECT("TestModule");
 		assertNotNull("The module for the alias 'TestModule' is not configured in the kernel-configuration-file.", objFile);
 		
 		//Testen, ob die Modulkonfiguration auch vorhanden ist
@@ -331,7 +340,7 @@ public void testGetFileConfigModuleIniByAlias(){
 	
 	try{
 		//Konfiguration & Methode testen
-		File objFile = objKernelFGL.getFileConfigModuleOLDDIRECT("TestModuleExtern");
+		File objFile = objKernel4ModuleReadonlyFGL.getFileConfigModuleOLDDIRECT("TestModuleExtern");
 		assertNotNull("The module for the alias 'TestModuleExtern' is not configured in the kernel-configuration-file.", objFile);
 		
 		//Testen, ob die Modulkonfiguration auch vorhanden ist
@@ -342,13 +351,13 @@ public void testGetFileConfigModuleIniByAlias(){
 		
 		//#### Auslesen von Werten aus dieser Datei
 		//+++ über module Alias
-		String sValueModuleExtern = objKernelFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
+		String sValueModuleExtern = objKernel4ModuleReadonlyFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
 		sValueModuleExtern = StringZZZ.left(sValueModuleExtern+"|","|");
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","TestModuleValueExtern",sValueModuleExtern);
 		
 		
 		//+++ über Program Alias
-		String sValueProgramExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
+		String sValueProgramExtern = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
 		sValueProgramExtern = StringZZZ.left(sValueProgramExtern+"|","|");
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global extern",sValueProgramExtern);
 		
@@ -360,7 +369,7 @@ public void testGetFileConfigModuleIniByAlias(){
 	//#################################################
 	try{
 		//Konfiguration & Methode testen
-		FileIniZZZ objFileConfig = objKernelFGL.getFileConfigModuleIni("TestModuleExtern");
+		FileIniZZZ objFileConfig = objKernel4ModuleReadonlyFGL.getFileConfigModuleIni("TestModuleExtern");
 		assertNotNull("The module for the alias 'TestModuleExtern' is not configured in the kernel-configuration-file.", objFileConfig);
 		
 		//Testen, ob die Modulkonfiguration auch vorhanden ist
@@ -369,18 +378,18 @@ public void testGetFileConfigModuleIniByAlias(){
 		assertTrue("The configuration file for the alias 'TestModuleExtern' does not exist.", objFile.exists());
 				
 		//Diese Konfiguration sollte es nicht geben
-		FileIniZZZ objFileConfigNotExisting = objKernelFGL.getFileConfigModuleIni("NotExistingModuleTest");
+		FileIniZZZ objFileConfigNotExisting = objKernel4ModuleReadonlyFGL.getFileConfigModuleIni("NotExistingModuleTest");
 		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objFileConfigNotExisting);
 		
 		//#### Auslesen von Werten aus dieser Datei
 		//+++ über module Alias
-		String sValueModuleExtern = objKernelFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
+		String sValueModuleExtern = objKernel4ModuleReadonlyFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
 		sValueModuleExtern = StringZZZ.left(sValueModuleExtern+"|","|");
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","TestModuleValueExtern",sValueModuleExtern);
 		
 		
 		//+++ über Program Alias
-		String sValueProgramExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
+		String sValueProgramExtern = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
 		sValueProgramExtern = StringZZZ.left(sValueProgramExtern+"|","|");
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global extern",sValueProgramExtern);
 		
@@ -392,7 +401,7 @@ public void testGetFileConfigModuleIniByAlias(){
 
 public void testProofModuleFileIsConfigured(){
 	try{
-		assertEquals(true, objKernelFGL.proofFileConfigModuleIsConfigured("TestModule"));
+		assertEquals(true, objKernel4ModuleReadonlyFGL.proofFileConfigModuleIsConfigured("TestModule"));
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}
@@ -401,10 +410,10 @@ public void testProofModuleFileIsConfigured(){
 public void testProofModuleFileExists(){
 	try{
 		// Dieses Modul soll existieren
-		assertEquals(true, objKernelFGL.proofFileConfigModuleExists("TestModule"));
+		assertEquals(true, objKernel4ModuleReadonlyFGL.proofFileConfigModuleExists("TestModule"));
 		
 		// Dieses Modul sollte nicht existieren
-		assertEquals(false, objKernelFGL.proofFileConfigModuleExists("blablablablabla"));
+		assertEquals(false, objKernel4ModuleReadonlyFGL.proofFileConfigModuleExists("blablablablabla"));
 		
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -413,7 +422,7 @@ public void testProofModuleFileExists(){
 
 public void testGetModuleAll(){
 	try{
-		ArrayList listaModuleString = objKernelFGL.getModuleAll();
+		ArrayList listaModuleString = objKernel4ModuleReadonlyFGL.getModuleAll();
 		assertNotNull(listaModuleString);
 		assertTrue(listaModuleString.size()>=1);
 	}catch(ExceptionZZZ ez){
@@ -426,11 +435,11 @@ public void testGetParameter(){
 	String sValue=null;
 	try{
 		// Dieses Modul soll existieren
-		sValue = objKernelTest.getParameter("TestGetParameter").getValue();
+		sValue = objKernelTEST.getParameter("TestGetParameter").getValue();
 		sValue = StringZZZ.left(sValue+"|","|");
 		assertEquals("Test erfolgreich", sValue);
 				
-		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		sValue = objKernelTEST.getParameter("TestGetParameter_Encrypted").getValue();
 		sValue = StringZZZ.left(sValue+"|","|");
 		assertEquals("<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>",sValue);
 
@@ -442,18 +451,18 @@ public void testGetParameter(){
 		
 		
 		//+++ Expression und der Solver muss noch aktiviert werden
-		btemp = objKernelTest.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
+		btemp = objKernelTEST.setFlag(IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION, true); 
 		assertTrue("Flag nicht vorhanden '" + IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION + "'", btemp);
 		
-		btemp = objKernelTest.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);//ohne Parser wird der Expression-Ausdruck nicht erkannt. 
+		btemp = objKernelTEST.setFlag(IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER, true);//ohne Parser wird der Expression-Ausdruck nicht erkannt. 
 		assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniParserZZZ.FLAGZ.USEEXPRESSION_PARSER + "'", btemp);
 		
-		btemp = objKernelTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //reicht nicht das auszuschliessen...
+		btemp = objKernelTEST.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER,true); //reicht nicht das auszuschliessen...
 		assertTrue("Flag nicht vorhanden '" + IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION_SOLVER + "'", btemp);
 		
 		//Das reicht noch nicht, unbeding den Cache leeren
-		objKernelTest.getCacheObject().clear();
-		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		objKernelTEST.getCacheObject().clear();
+		sValue = objKernelTEST.getParameter("TestGetParameter_Encrypted").getValue();
 		sValue = StringZZZ.left(sValue+"|","|");
 		assertEquals("<Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted>", sValue);
 		
@@ -461,12 +470,12 @@ public void testGetParameter(){
 		//Hiermit teste ich aber auch das "Flag-Array-Setzen" per Enumeration
 		IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ = new IKernelEncryptionIniSolverZZZ.FLAGZ[1];
 		objaEnum_IKernelEncryptionIniSolverZZZ[0]=IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION;		
-		boolean[] baReturn0 = objKernelTest.setFlag(objaEnum_IKernelEncryptionIniSolverZZZ, true);
+		boolean[] baReturn0 = objKernelTEST.setFlag(objaEnum_IKernelEncryptionIniSolverZZZ, true);
 		assertTrue("Das Flag USEENCRYPTION wurde erwartet",baReturn0[0]);//Verschluesselung aufloesen ist ja genau das was wir wollen.
 	
 		IObjectWithExpressionZZZ.FLAGZ[] objaEnum_IKernelExpressionIniSolverZZZ = new IObjectWithExpressionZZZ.FLAGZ[1];
 		objaEnum_IKernelExpressionIniSolverZZZ[0]=IObjectWithExpressionZZZ.FLAGZ.USEEXPRESSION;
-		boolean[] baReturn1 = objKernelTest.setFlag(objaEnum_IKernelExpressionIniSolverZZZ, true);
+		boolean[] baReturn1 = objKernelTEST.setFlag(objaEnum_IKernelExpressionIniSolverZZZ, true);
 		assertTrue("Das Flag USEEXPRESSION wurde erwartet",baReturn1[0]);//Ohne das Flag wird die Behandlung irgendwelcher Ausdrücke gar nicht gemacht.
 		
 //		IKernelZFormulaIniZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniZZZ = new IKernelZFormulaIniZZZ.FLAGZ[1];
@@ -475,10 +484,10 @@ public void testGetParameter(){
 //		assertTrue("Das Flag USEFORMULA wurde erwartet",baReturn2[0]);//Ohne das Flag wird <z>...</z> um das Ergebnis ggfs. rum sein.
 		
 		//Das reicht noch nicht, unbeding den Cache leeren, sonst wird das unverschlüsselte Objekt zurueckgeliefert
-		objKernelTest.getCacheObject().clear();
+		objKernelTEST.getCacheObject().clear();
 		
 		//Jetzt erst wird der neue Wert auch mit "Entschluesselung" geholt
-		sValue = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
+		sValue = objKernelTEST.getParameter("TestGetParameter_Encrypted").getValue();
 		sValue = StringZZZ.left(sValue+"|","|");
 		assertEquals("Test erfolgreich!", sValue);
 		
@@ -497,7 +506,7 @@ public void testGetParameterByModuleAlias(){
 	//#### TESTS VORWEG
 	String sModuleName = "TestModule";
 	try{		
-		File objFile = objKernelFGL.getFileConfigModuleOLDDIRECT(sModuleName);
+		File objFile = objKernel4ModuleReadonlyFGL.getFileConfigModuleOLDDIRECT(sModuleName);
 		assertNotNull(objFile);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -507,7 +516,7 @@ public void testGetParameterByModuleAlias(){
 	//Konfiguration im "Externen" Modul, d.h. in einer anderen Datei als der ApplicationKey
 	String sModuleNameExtern = "TestModuleExtern";
 	try{		
-		File objFileExtern = objKernelFGL.getFileConfigModuleOLDDIRECT(sModuleNameExtern);
+		File objFileExtern = objKernel4ModuleReadonlyFGL.getFileConfigModuleOLDDIRECT(sModuleNameExtern);
 		assertNotNull(objFileExtern);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -518,7 +527,7 @@ public void testGetParameterByModuleAlias(){
 	try{
 		//Konfiguration im "Lokalen" Module
 		// In der Modulkonfiguration soll dieser Eintrag existieren
-		String stemp = objKernelFGL.getParameterByModuleAlias(sModuleName, "testModuleProperty").getValue();
+		String stemp = objKernel4ModuleReadonlyFGL.getParameterByModuleAlias(sModuleName, "testModuleProperty").getValue();
 		stemp = StringZZZ.left(stemp+"|","|");
 		assertEquals("Expected 'TestModuleValue' as a value of property 'testModuleProperty'. Configured in the Module 'TestModule' of the Application 'FGL'", "TestModuleValue" , stemp);
 	}catch(ExceptionZZZ ez){
@@ -528,7 +537,7 @@ public void testGetParameterByModuleAlias(){
 	//+++++++++++++++++++++++++++++++++++++
 	try{
 		//a) Parameter per Methode holen
-		String stemp = objKernelFGL.getParameterByModuleAlias(sModuleNameExtern, "testModulePropertyExtern").getValue();
+		String stemp = objKernel4ModuleReadonlyFGL.getParameterByModuleAlias(sModuleNameExtern, "testModulePropertyExtern").getValue();
 		stemp = StringZZZ.left(stemp+"|","|");
 		assertEquals("TestModuleValueExtern", stemp);
 	}catch(ExceptionZZZ ez){
@@ -619,14 +628,14 @@ public void testGetParameterByProgramAlias_ExternesModul() {
 		try{
 			//A1) Übergabe als direkte Section testen. Modulname, ProgramName und Systemnummer werden daraus gezogen.
 			//    Der Programname wird dann sogar noch in einen Alias umgewandelt.
-			String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgramName","testProgramPropertyExtern4" ).getValue();
+			String stemp = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgramName","testProgramPropertyExtern4" ).getValue();
 			stemp = StringZZZ.left(stemp,"|");			
 			assertEquals("Expected as a value of property 'testProgramPropertyExtern4'. Configured in the 'TestModuleExtern' of the Application 'FGL'", "testwertextern by progalias GLOBAL" , stemp);
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}	
 		try {
-			int iClearedObjects = objKernelFGL.getCacheObject().clear();
+			int iClearedObjects = objKernel4ModuleReadonlyFGL.getCacheObject().clear();
 			assertTrue(iClearedObjects>=1);
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -732,7 +741,7 @@ public void testGetProgramAliasFor() {
 		IKernelConfigSectionEntryZZZ objEntryAlias = null;
 		
 		//Negativfall, d.h. in den FGL Sections ist diese Testklasse nicht vorhanden!							
-		objEntryAlias = objKernelTest.getProgramAliasFor(sClassname);
+		objEntryAlias = objKernelTEST.getProgramAliasFor(sClassname);
 		assertFalse(objEntryAlias.hasAnyValue());
 	
 		//Jetzt den Positivfall
@@ -1467,7 +1476,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 	String sClassname = this.getClass().getName();
 
 	try{		
-		File objFile = objKernelFGL.getFileConfigModuleOLDDIRECT(sClassname);
+		File objFile = objKernel4ModuleReadonlyFGL.getFileConfigModuleOLDDIRECT(sClassname);
 		assertNotNull(objFile);
 				
 		FileIniZZZ objFileConfigIni = objKernelFGL.getFileConfigModuleIni(sClassname);
@@ -1480,7 +1489,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 	
 	try{
 		//a) Parameter per Methode holen
-		String stemp = objKernelFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass").getValue();
+		String stemp = objKernel4ModuleReadonlyFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass").getValue();
 		
 		assertEquals("TestValue1FromClass", stemp);
 	}catch(ExceptionZZZ ez){
@@ -1502,7 +1511,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 	//TODOGOON20220912;//Neuer GITHUB TOKEN
 	try{
 		//b2) Nun soll der Klassenname ohne den Systemkey funktionieren
-		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass").getValue();
+		String stemp4 = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass").getValue();
 		
 		assertEquals("TestValue2FromClass SOLL GEFUNDEN WERDEN", stemp4);   //Womit der Eintrag ein anderer wäre als der mit "SystemKey" - spezifizierte
 	}catch(ExceptionZZZ ez){
@@ -1512,7 +1521,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 	try{
 		//C) "Verkürzte Parameter"
 		//Wenn der Modulname und der Programname gleich sind, dann soll es moeglich sein ganz einfach nur den Programnamen und die gesuchte Property zu uebergeben
-		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated").getValue();
+		String stemp6 = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated").getValue();
 		
 		assertEquals("TestValue1Abbreviated SOLL GEFUNDEN WERDEN", stemp6);
 	}catch(ExceptionZZZ ez){
@@ -1540,7 +1549,7 @@ public void testGetModuleAliasAll(){
 	try{
 		//Hole alle Werte, die konfiguriert sind und existieren
 	//		+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
-		ArrayList listaAlias = objKernelFGL.getFileConfigModuleAliasAll(true, true);
+		ArrayList listaAlias = objKernel4ModuleReadonlyFGL.getFileConfigModuleAliasAll(true, true);
 		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias);
 		assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias.isEmpty()==true);
 		assertTrue("There was the correct configuration expected of the module 'TestModule'. Application 'TEST'", listaAlias.contains("TestModule"));
@@ -1550,7 +1559,8 @@ public void testGetModuleAliasAll(){
 	
 	try{
 	//	//+++ Von den konfigurierten Modulen diejenigen, deren Konfigurationsdatei fehlt
-		ArrayList listaAlias3 = objKernelTest.getFileConfigModuleAliasAll(false, true);
+		//ArrayList listaAlias3 = objKernelTest.getFileConfigModuleAliasAll(false, true);
+		ArrayList listaAlias3 = objKernel4ModuleReadonlyTEST.getFileConfigModuleAliasAll(false, true);
 		assertNotNull("A configured module with missing configuraton file was expected (arraylist null case)", listaAlias3);
 		assertFalse("A configured module with missing configuraton file was expected (arraylist empty case)", listaAlias3.isEmpty()==true);
 		assertTrue("There was a missing configuration file expected. Application 'TEST'", listaAlias3.contains("NotExisting"));  //Das ist die Datei 'ZKernelConfigTestModuleNotExisting_test.ini'
@@ -1561,7 +1571,7 @@ public void testGetModuleAliasAll(){
     	
 	try{
 		//+++ Von den in dem Kernel-Verzeichnis existierenden Moduldateien, diejenigen, deren Konfiguration in dieser "Hauptkernelkonfiguration" (noch) nicht erfolgt ist.
-		ArrayList listaAlias2 = objKernelTest.getFileConfigModuleAliasAll(true, false);
+		ArrayList listaAlias2 = objKernel4ModuleReadonlyTEST.getFileConfigModuleAliasAll(true, false);
 		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias2);
 		assertFalse("There is no file found wich is not configured (use a dummy configuration file at least. Starting the filename with 'ZKernelConfig ....' (arraylist empty case)", listaAlias2.isEmpty()==true);
 		assertTrue("The configuration file for the module  'ExistingButNotConfigured' should exist. But was expected to be NOT configured in the applicationalias 'TEST'", listaAlias2.contains("ExistingButNotConfigured")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
@@ -1571,7 +1581,8 @@ public void testGetModuleAliasAll(){
 	
 	try{
 		//+++ Alle Module, sowohl aus der Konfiguration als auch aus dem Kernel-Verzeichnis 
-		ArrayList listaAlias4 = objKernelTest.getFileConfigModuleAliasAll(false, false);
+		//ArrayList listaAlias4 = objKernelTest.getFileConfigModuleAliasAll(false, false);
+		ArrayList listaAlias4 = objKernel4ModuleReadonlyTEST.getFileConfigModuleAliasAll(false, false);
 		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias4);
 		assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias4.isEmpty()==true);
 		assertTrue("The module 'Kernel' was expected to be NOT configured in the application 'TEST' but a file should be there", listaAlias4.contains("Kernel")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
@@ -1589,7 +1600,7 @@ public void testGetModuleAliasAll(){
 			IKernelConfigSectionEntryZZZ objEntryAlias = null;
 			
 			//Negativfall							
-			objEntryAlias = objKernelTest.getSectionAliasFor(sClassname);
+			objEntryAlias = objKernelTEST.getSectionAliasFor(sClassname);
 			assertFalse(objEntryAlias.hasAnyValue());
 		
 			//Jetzt den Positivfall
@@ -1672,7 +1683,7 @@ public void testGetModuleAliasAll(){
 
 			String sModule="TestModuleExtern";
 			String sProgramOrSection="TestProg";
-			FileIniZZZ objFileIniModule = objKernelFGL.searchModuleFileWithProgramAlias(sModule, sProgramOrSection);
+			FileIniZZZ objFileIniModule = objKernel4ModuleReadonlyFGL.searchModuleFileWithProgramAlias(sModule, sProgramOrSection);
 			assertNotNull(objFileIniModule);
 			
 			boolean bExists = FileEasyZZZ.exists(objFileIniModule.getFileObject());

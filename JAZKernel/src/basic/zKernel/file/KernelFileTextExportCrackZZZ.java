@@ -22,7 +22,7 @@ import custom.zKernel.LogZZZ;
 */
 public class KernelFileTextExportCrackZZZ extends AbstractKernelUseObjectZZZ{
 	private String sProgramAlias;
-   private File objFile;
+    private File objFile;
 
 	
 	public KernelFileTextExportCrackZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFileToCrack, String sProgramAlias, String[] saFlagControl) throws ExceptionZZZ{
@@ -69,7 +69,7 @@ public class KernelFileTextExportCrackZZZ extends AbstractKernelUseObjectZZZ{
 									if(btemp==false){ 
 											stemp = "the flag '" + stemp + "' is not available.";
 										   ExceptionZZZ ez = new ExceptionZZZ(stemp,IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-										   //doesn�t work. Only works when > JDK 1.4
+										   //doesn't work. Only works when > JDK 1.4
 										   //Exception e = new Exception();
 										   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 										   throw ez;		 
@@ -84,7 +84,7 @@ public class KernelFileTextExportCrackZZZ extends AbstractKernelUseObjectZZZ{
 							if(objFileIn==null){				
 											if(StringZZZ.isEmpty(sFileIn)){										
 											   ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'filename'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
-											   //doesn�t work. Only works when > JDK 1.4
+											   //doesn't work. Only works when > JDK 1.4
 											   //Exception e = new Exception();
 											   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");										
 											   throw ez;		 

@@ -365,27 +365,32 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 	
 	
 	//#############
-	//Neue Komfort-Methoden, die es in der Elternklasse nicht gibt
+	//Neue Komfort-Methoden, die es in der Elternklasse nicht gibt, bzw. Exceptions abfaengt.
+	@Override
+	public String readLineNext() throws ExceptionZZZ{
+		String sReturn=null;
+		try {
+			sReturn = super.readLine();
+		}catch(EOFException e) {	
+			sReturn=null;
+		}catch(IOException ioe) {
+			ioe.printStackTrace();
+			
+			ExceptionZZZ ez = new ExceptionZZZ(ioe.getMessage(), iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
+  			this.setExceptionObject(ez);
+  			throw ez; 
+		}
+		return sReturn;
+	}
+	
+	@Override
 	public String readLineLast() throws ExceptionZZZ {
-		
-		String sLine=null; String stemp = null;
+		String sReturn=null; String stemp = null;
 		do {
-			try {
-				stemp = this.readLine();
-				sLine = stemp;//rette die vorherige Zeile
-				
-			}catch(EOFException e) {	
-				stemp=null;
-			} catch (IOException e) {
-				e.printStackTrace();
-    			
-    			ExceptionZZZ ez = new ExceptionZZZ(e.getMessage(), iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
-	  			this.setExceptionObject(ez);
-	  			throw ez; 
-			}						
-		}while(stemp!=null);
-		
-		return sLine;
+			stemp = this.readLineNext();
+			sReturn = stemp;//rette die vorherige Zeile				
+		}while(stemp!=null);		
+		return sReturn;
 	}
 	
 }

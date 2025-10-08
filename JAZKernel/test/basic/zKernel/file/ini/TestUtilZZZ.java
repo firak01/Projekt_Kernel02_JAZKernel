@@ -304,7 +304,7 @@ public class TestUtilZZZ {
 	}
 	
 	
-	public static File createKernelFileUsed_KernelZZZTest(String sFileNameSourceIn, String sFileDirectorySourceIn) throws ExceptionZZZ {
+	public static File createKernelFileUsed_KernelZZZTest(String sFileDirectorySourceIn, String sFileNameSourceIn) throws ExceptionZZZ {
 		File objReturn = null;
 		String sFilePathTotal = null;
 		main:{
@@ -327,11 +327,11 @@ public class TestUtilZZZ {
 //				}
 			IStreamZZZ objStreamFileSource = null;
 			try{
-				objStreamFileSource = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+				objStreamFileSource = new StreamZZZ(sFilePathTotal, 0); //0 = read the file			
 			} catch (FileNotFoundException e) {
 				sFileDirectorySourceUsed = KernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectorySourceUsed, KernelZZZ.sFILENAME_CONFIG_DEFAULT );
-				objStreamFileSource = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
+				objStreamFileSource = new StreamZZZ(sFilePathTotal, 0);  //0 = read the file	
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -358,24 +358,31 @@ public class TestUtilZZZ {
 			
 			IStreamZZZ objStreamFileTarget = null;
 			try{
-				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
+				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  // 1 = write to the file		
 			} catch (FileNotFoundException e) {
 				sFileDirectoryUsed = "c:\\temp";
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, KernelZZZTest.strFILE_NAME_DEFAULT );
-				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
+				objStreamFileTarget = new StreamZZZ(sFilePathTotal, 1);  // 1 = write to the file
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
 			
-			
-			
-			
-			
-			TODOGOON20251007;//Kopiere aus der bestehenden Datei in die JUnitDatei
+			//TODOGOON20251007;//Kopiere aus der bestehenden Datei in die JUnitDatei
 			//objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
+
+			String sLine; boolean bGoon=true;
+			do {
+				sLine = objStreamFileSource.readLineNext();
+				if(sLine!=null) {
+					objStreamFileTarget.println(sLine);
+				}else {
+					bGoon = false;
+				}
+			}while(bGoon);
+						
+			objStreamFileTarget.close();
+			objStreamFileSource.close();
 			
-			//objStreamFile.close();
-		
 			objReturn = new File(sFilePathTotal);
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();

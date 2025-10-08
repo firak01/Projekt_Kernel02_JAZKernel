@@ -2,14 +2,14 @@ package basic.javagently;
 
 import java.io.IOException;
 
-/**Damit IStreamZZZ daraus erben kann 
+/**Damit IStreamZZZ daraus erben kann.
  * @author Fritz Lindhauer, 11.10.2022, 17:38:28
  * 
  */
 public interface IStream {
 	public int  readInt () throws IOException;
 	public double readDouble () throws IOException;
-	public String readString () throws IOException;
+	public String readString () throws IOException; //Lies Wort fuer Wort ein, es wird ein StringTokenizer verwendet 
 	public char   readChar () throws IOException;
 	
 	public void println(String s);

@@ -33,7 +33,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	//aus IIniStructurePositionUserZZZ
 	protected IIniStructurePositionZZZ objIniPosition;
 	
-	//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String vewendet werden.
+	//Merke: Array erst auf Ini - Ebene behandeln, hier kann ein Separator String verwendet werden.
 	//aus IValueArrayUserZZZ
 	protected VectorDifferenceZZZ<ArrayList<String>> vecalValue = new VectorDifferenceZZZ<ArrayList<String>>();
 	protected boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
