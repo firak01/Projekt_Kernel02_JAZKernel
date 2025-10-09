@@ -3812,6 +3812,22 @@ MeinTestParameter=blablaErgebnis
 				//this.setValueRaw(null);
 			}
 			
+			//TODOGOON20251009;//Wenn das ein relativer Pfad ist, suchen:
+			//		unterhalb des Pfads der aktuellen KernelKonfiguration suchen.
+			//			zum Elternpfad und dann zum relativen Pfad.
+			File objKernel = this.getFileConfigKernel();
+			if(objKernel!=null){
+				File objKernelParent = objKernel.getParentFile();	
+				File objKernelParentParent = objKernelParent.getParentFile();
+				sFilePathUsed = FileEasyZZZ.joinFilePathName(objKernelParentParent, sFilePath);
+				
+				File objModule = FileEasyZZZ.getDirectory(sFilePathUsed);
+				if(objModule.exists()) {
+					sReturn = sFilePathUsed;
+					break main;
+				}
+			}
+			
 			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			//Problem: Hierin wird per Classloader gesucht... Das bedeutet es wird beim Modulen ggfs. im falschen Projektordner gesucht.
 			File objReturn2 = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sFilePathUsed);

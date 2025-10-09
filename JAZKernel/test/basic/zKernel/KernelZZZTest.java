@@ -38,8 +38,10 @@ import junit.framework.TestCase;
  * Die Main Methode von AllTest kann ausgefuehrt werden.
  */
 public class KernelZZZTest extends TestCase {
-	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	public final static String strFILE_NAME_DEFAULT = new String("JUnitKernelTest.ini");
+	//Der abschliessende Verzeichnisname muss dem in der Ini definierten relativen Verzeichnisnamen entsprechen 
+	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest\\test");
+	//Der Dateiname muss dem in der Ini definierten Dateinamen entsprechen.
+	public final static String strFILE_NAME_DEFAULT = new String("ZKernelConfigKernel_test.ini");
 		
 	//+++ Die eigentlichen Test-Objekte
 	private IKernelZZZ objKernelFGL;
@@ -628,14 +630,14 @@ public void testGetParameterByProgramAlias_ExternesModul() {
 		try{
 			//A1) Übergabe als direkte Section testen. Modulname, ProgramName und Systemnummer werden daraus gezogen.
 			//    Der Programname wird dann sogar noch in einen Alias umgewandelt.
-			String stemp = objKernel4ModuleReadonlyFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgramName","testProgramPropertyExtern4" ).getValue();
+			String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgramName","testProgramPropertyExtern4" ).getValue();
 			stemp = StringZZZ.left(stemp,"|");			
 			assertEquals("Expected as a value of property 'testProgramPropertyExtern4'. Configured in the 'TestModuleExtern' of the Application 'FGL'", "testwertextern by progalias GLOBAL" , stemp);
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}	
 		try {
-			int iClearedObjects = objKernel4ModuleReadonlyFGL.getCacheObject().clear();
+			int iClearedObjects = objKernelFGL.getCacheObject().clear();
 			assertTrue(iClearedObjects>=1);
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -907,6 +909,7 @@ public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
 		
 		
 	} catch (ExceptionZZZ ez) {
+		ez.printStackTrace();
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
 }
