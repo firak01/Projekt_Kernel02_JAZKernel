@@ -272,6 +272,27 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			assertEquals(sRoot+CharZZZ.toString(cDirectorySeparator)+sFilePath,sFilePathTotal);
 
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
+	
+	
+	public void testConvertFilePathAsAbsolute() {		
+		try {
+			char cDirectorySeparator = IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR;
+			String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			
+			String sFileDirectorySource="test";
+			String sFileNameSource="ZKernelConfigKernel_test.ini";
+			
+			IFileEasyPathObjectZZZ obj = FileEasyConstantConverterZZZ.convertFilePathToAbsolute(sFileDirectorySource);
+			String sValue = obj.getFilePathTotal();
+			assertEquals(sWorkspace + "\\test", sValue);
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 		

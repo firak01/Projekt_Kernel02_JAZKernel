@@ -2871,8 +2871,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	private static String getFileUsedPath_(String sFilePathRaw, boolean bAsAbsolute) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{
-			IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathRaw,!bAsAbsolute);
-			sReturn = objPath.getFilePathTotal();	
+			if(bAsAbsolute) {
+				IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePathToAbsolute(sFilePathRaw);
+				sReturn = objPath.getFilePathTotal();				
+			}else {
+				IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePathToRelative(sFilePathRaw);
+				sReturn = objPath.getFilePathTotal();
+			}
 		}//end main
 		return sReturn;		
 	}

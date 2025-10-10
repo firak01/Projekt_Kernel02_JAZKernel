@@ -38,9 +38,10 @@ import junit.framework.TestCase;
  * Die Main Methode von AllTest kann ausgefuehrt werden.
  */
 public class KernelZZZTest extends TestCase {
-	//Der abschliessende Verzeichnisname muss dem in der Ini definierten relativen Verzeichnisnamen entsprechen 
-	//public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest\\test");
+	//Der abschliessende Verzeichnisname muss dem in der Ini definierten relativen Verzeichnisnamen entsprechen
 	public final static String strFILE_DIRECTORY_DEFAULT = new String("test");
+	public final static String strFILE_DIRECTORY_DEFAULT_EXTERNAL = new String("c:\\fglKernel\\KernelTest\\"+KernelZZZTest.strFILE_DIRECTORY_DEFAULT);
+	
 	//Der Dateiname muss dem in der Ini definierten Dateinamen entsprechen.
 	public final static String strFILE_NAME_DEFAULT = new String("ZKernelConfigKernel_test.ini");
 		
