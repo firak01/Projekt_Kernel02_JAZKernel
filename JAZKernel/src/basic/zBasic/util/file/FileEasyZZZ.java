@@ -2856,7 +2856,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getFileUsedPath(String sFilePathRaw) throws ExceptionZZZ{
-		return FileEasyZZZ.getFileUsedPath_(sFilePathRaw, false);
+		return FileEasyZZZ.getFileUsedPath_(sFilePathRaw, true);
 	}
 	
 	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück, nach Möglichkeit "absolut".

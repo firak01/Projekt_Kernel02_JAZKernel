@@ -39,7 +39,8 @@ import junit.framework.TestCase;
  */
 public class KernelZZZTest extends TestCase {
 	//Der abschliessende Verzeichnisname muss dem in der Ini definierten relativen Verzeichnisnamen entsprechen 
-	public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest\\test");
+	//public final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest\\test");
+	public final static String strFILE_DIRECTORY_DEFAULT = new String("test");
 	//Der Dateiname muss dem in der Ini definierten Dateinamen entsprechen.
 	public final static String strFILE_NAME_DEFAULT = new String("ZKernelConfigKernel_test.ini");
 		
@@ -364,6 +365,7 @@ public void testGetFileConfigModuleIniByAlias(){
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global extern",sValueProgramExtern);
 		
 	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
 		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
 	}
 	
@@ -418,6 +420,7 @@ public void testProofModuleFileExists(){
 		assertEquals(false, objKernel4ModuleReadonlyFGL.proofFileConfigModuleExists("blablablablabla"));
 		
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 }
@@ -533,6 +536,7 @@ public void testGetParameterByModuleAlias(){
 		stemp = StringZZZ.left(stemp+"|","|");
 		assertEquals("Expected 'TestModuleValue' as a value of property 'testModuleProperty'. Configured in the Module 'TestModule' of the Application 'FGL'", "TestModuleValue" , stemp);
 	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
 	
@@ -634,6 +638,7 @@ public void testGetParameterByProgramAlias_ExternesModul() {
 			stemp = StringZZZ.left(stemp,"|");			
 			assertEquals("Expected as a value of property 'testProgramPropertyExtern4'. Configured in the 'TestModuleExtern' of the Application 'FGL'", "testwertextern by progalias GLOBAL" , stemp);
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}	
 		try {
@@ -732,6 +737,7 @@ public void testSearchAliasForModule() {
 		assertEquals("TestModuleAliasExtern", sReturnAliasExtern);
 		
 	} catch (ExceptionZZZ ez) {
+		ez.printStackTrace();
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
 	
@@ -1308,6 +1314,7 @@ public void testSetParameterByProgramAlias_ExternesModule(){
 		assertEquals(sValue,sReturnSaved);	
 		
 	} catch (ExceptionZZZ ez) {
+		ez.printStackTrace();
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
 }
@@ -1557,6 +1564,7 @@ public void testGetModuleAliasAll(){
 		assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias.isEmpty()==true);
 		assertTrue("There was the correct configuration expected of the module 'TestModule'. Application 'TEST'", listaAlias.contains("TestModule"));
 	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}
 	
@@ -1696,6 +1704,7 @@ public void testGetModuleAliasAll(){
 			//........
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}

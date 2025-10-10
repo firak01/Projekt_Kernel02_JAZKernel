@@ -58,7 +58,8 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 								sReturnFilePathTotal=sReturnFilePath;
 							}
 						}
-				}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
+				}else 
+					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
 						sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
 						sReturnFilePathTotal = sFilePath;
 						sReturnFilePath = StringZZZ.rightback(sReturnFilePathTotal, sReturnRoot+sDirectorySeparator);																	
@@ -123,45 +124,52 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 					}
 				}else {
 					//absolute Pfade
-					if(FileEasyZZZ.isInIDE()) {
-						//den Pfad zum Workspace suchen
-						String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
-						if(StringZZZ.startsWith(sFilePathIn, sWorkspace)) {
-							//absoluter Pfad in der IDE, diesen zerlegen
-							String sReturnFilePathTemp = StringZZZ.rightback(sFilePathIn, sWorkspace + sDirectorySeparator);
-							if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)) {
-								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
-								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
-								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
-								if(!bReturnAsRelativePath) {									
-									if(!StringZZZ.isEmpty(sWorkspace)) {
-										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+					if(bReturnAsRelativePath) {
+						if(FileEasyZZZ.isInIDE()) {
+							//den Pfad zum Workspace suchen
+							String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
+							if(StringZZZ.startsWith(sFilePathIn, sWorkspace)) {
+								//absoluter Pfad in der IDE, diesen zerlegen
+								String sReturnFilePathTemp = StringZZZ.rightback(sFilePathIn, sWorkspace + sDirectorySeparator);
+								if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)) {
+									sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
+									sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
+									sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
+									if(!bReturnAsRelativePath) {									
+										if(!StringZZZ.isEmpty(sWorkspace)) {
+											sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+										}
 									}
-								}
-							}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
-								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
-								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
-								if(!bReturnAsRelativePath) {
-									if(!StringZZZ.isEmpty(sWorkspace)) {
-										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+								}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
+									sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+									sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
+									sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
+									if(!bReturnAsRelativePath) {
+										if(!StringZZZ.isEmpty(sWorkspace)) {
+											sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+										}
 									}
-								}
-							}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
-								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
-								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
-								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
-								if(!bReturnAsRelativePath) {
-									if(!StringZZZ.isEmpty(sWorkspace)) {
-										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+								}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
+									sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+									sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
+									sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
+									if(!bReturnAsRelativePath) {
+										if(!StringZZZ.isEmpty(sWorkspace)) {
+											sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+										}
 									}
-								}
+								}else {
+									sReturnRoot = "";
+									sReturnFilePath = sFilePathIn;
+									sReturnFilePathTotal=sFilePathIn;
+								}							
+													
 							}else {
+								//absoluter Pfad, irgendwo auf der Festplatte
 								sReturnRoot = "";
-								sReturnFilePath = sFilePathIn;
-								sReturnFilePathTotal=sFilePathIn;
-							}							
-												
+								sReturnFilePath=sFilePath;
+								sReturnFilePathTotal=sFilePath;
+							}
 						}else {
 							//absoluter Pfad, irgendwo auf der Festplatte
 							sReturnRoot = "";
@@ -169,10 +177,10 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 							sReturnFilePathTotal=sFilePath;
 						}
 					}else {
-						//absoluter Pfad, irgendwo auf der Festplatte
+						//absoluter Pfad als Input und absoluten Pfad zurückgeben
 						sReturnRoot = "";
 						sReturnFilePath=sFilePath;
-						sReturnFilePathTotal=sFilePath;
+						sReturnFilePathTotal=sFilePath;						
 					}
 				}
 			}

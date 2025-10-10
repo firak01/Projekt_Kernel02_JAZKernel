@@ -314,6 +314,8 @@ public class TestUtilZZZ {
 			                  
 			String sFileDirectorySourceUsed = sFileDirectorySourceIn;
 			String sFileNameSourceUsed = sFileNameSourceIn;
+			TODOGOON; DAS IST NICHT IMMER DER ABSOLUTE PFAD
+			sFileDirectorySourceUsed = FileEasyZZZ.getFileUsedPath(sFileDirectorySourceUsed);
 			if(!FileEasyZZZ.exists(sFileDirectorySourceUsed)){
 				FileEasyZZZ.createDirectoryForDirectory(sFileDirectorySourceUsed);
 			}
