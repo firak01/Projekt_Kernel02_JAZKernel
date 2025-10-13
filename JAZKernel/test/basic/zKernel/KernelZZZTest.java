@@ -67,12 +67,17 @@ public class KernelZZZTest extends TestCase {
 			//Ausgehend von der im Test-Verzeichnis liegenden Datei,
 			//die im Test konkret verwendete Datei wird extra erstellt.			
 			File objFile = TestUtilZZZ.createKernelFileUsed_KernelZZZTest(sFileDirectorySource, sFileNameSource);
-
+	
 			String sFileDirectorySourceCopied=objFile.getParent();
 			String sFileNameSourceCopied=objFile.getName();			
 			objKernelFGL = new KernelZZZ("FGL", "01", sFileDirectorySourceCopied, sFileNameSourceCopied,(String[]) null);
 			objKernelTEST = new KernelZZZ("TEST", "01", sFileDirectorySourceCopied, sFileNameSourceCopied,(String[]) null);
-	
+
+			//### Externe Modulkonfigurationsdatei erstellen, die in einigen Testfaellen verwendet wird.
+			//Hier wird der konkrete in der Kernel-Objekt Konfigurationsdatei verwendete Name hart-coded verwendet.
+			//weil das Suchen nach der richtigen Moduldatei ja auch schon einen Kernelfunktionalitaet ist.
+			//Den Setup der Kerneltests mit einer selbst zu testenden Methode zu machen ist unschoen.
+			File objFileModuleExternUsed = TestUtilZZZ.createKernelFileUsed_KernelZZZTest(sFileDirectorySource, "ZKernelConfigKernelModulExtern_test.ini");			
 		} catch (ExceptionZZZ e) {
 			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessageLast());

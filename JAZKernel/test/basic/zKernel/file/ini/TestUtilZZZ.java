@@ -331,14 +331,15 @@ public class TestUtilZZZ {
 //				}
 			
 			
-			String sFileDirectoryUsed = KernelZZZTest.strFILE_DIRECTORY_DEFAULT_EXTERNAL;
-			sFileDirectoryUsed = FileEasyZZZ.getFileUsedPath(sFileDirectoryUsed);
+			String sFileDirectoryTargetUsed = KernelZZZTest.strFILE_DIRECTORY_DEFAULT_EXTERNAL;
+			sFileDirectoryTargetUsed = FileEasyZZZ.getFileUsedPath(sFileDirectoryTargetUsed);
 			
 		
-			if(!FileEasyZZZ.exists(sFileDirectoryUsed)){
-				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryUsed);
+			if(!FileEasyZZZ.exists(sFileDirectoryTargetUsed)){
+				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryTargetUsed);
 			}
-			sFilePathTotalTarget = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, KernelZZZTest.strFILE_NAME_DEFAULT );				
+			//sFilePathTotalTarget = FileEasyZZZ.joinFilePathName(sFileDirectoryTargetUsed, KernelZZZTest.strFILE_NAME_DEFAULT );				
+			sFilePathTotalTarget = FileEasyZZZ.joinFilePathName(sFileDirectoryTargetUsed, sFileNameSourceUsed );
 //			if(sFilePathTotal==null){
 //				//Eclipse Workspace
 //				File f = new File("");
@@ -370,8 +371,8 @@ public class TestUtilZZZ {
 			try{
 				objStreamFileTarget = new StreamZZZ(sFilePathTotalTarget, 1);  // 1 = write to the file		
 			} catch (FileNotFoundException e) {
-				sFileDirectoryUsed = "c:\\temp";
-				sFilePathTotalTarget = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, KernelZZZTest.strFILE_NAME_DEFAULT );
+				sFileDirectoryTargetUsed = "c:\\temp";
+				sFilePathTotalTarget = FileEasyZZZ.joinFilePathName(sFileDirectoryTargetUsed, KernelZZZTest.strFILE_NAME_DEFAULT );
 				objStreamFileTarget = new StreamZZZ(sFilePathTotalTarget, 1);  // 1 = write to the file
 			} catch (Exception e) {
 				e.printStackTrace();
