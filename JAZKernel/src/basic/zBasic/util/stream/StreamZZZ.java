@@ -372,7 +372,7 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 		try {
 			sReturn = super.readLine();
 		}catch(EOFException e) {	
-			sReturn=null;
+			sReturn = null;
 		}catch(IOException ioe) {
 			ioe.printStackTrace();
 			
@@ -387,8 +387,8 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 	public String readLineLast() throws ExceptionZZZ {
 		String sReturn=null; String stemp = null;
 		do {
-			stemp = this.readLineNext();
-			sReturn = stemp;//rette die vorherige Zeile				
+			sReturn = stemp;//rette die vorherige Zeile
+			stemp = this.readLineNext();							
 		}while(stemp!=null);		
 		return sReturn;
 	}

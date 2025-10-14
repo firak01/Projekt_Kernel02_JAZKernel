@@ -86,10 +86,11 @@ public class StreamZZZTest extends TestCase{
 			objStreamInit = new StreamZZZ();
 
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {			
 			e.printStackTrace();
+			fail("Method throws an exception." + e.getMessage());
 		}		
 	}//END setup
 	
@@ -121,12 +122,16 @@ public class StreamZZZTest extends TestCase{
 			//Kein weiterer Vergleich für DEFAULT
 
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (IOException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		}
 	}
@@ -156,6 +161,7 @@ public class StreamZZZTest extends TestCase{
 			objStream = new StreamZZZ(sFilePathTotal, 0,sEncoding);  //This is not enough, to create the file
 			String sLine = objStream.readLineLast();
 			System.out.println(sLine); //Ausgabe der letzten Zeile mit den Spezialzeichen.
+			assertNotNull("Die letzte Zeile sollte nicht NULL sein", sLine);
 			objStream.close();
 			
 			//Nun das falsche Auslesen
@@ -170,12 +176,16 @@ public class StreamZZZTest extends TestCase{
 			assertFalse(sLine.equals(sLineWrong));
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (IOException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		}
 	}
@@ -219,12 +229,16 @@ public class StreamZZZTest extends TestCase{
 			assertFalse(sLine.equals(sLineWrong));
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (IOException e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Method throws an exception." + e.getMessage());
 		}
 	}
