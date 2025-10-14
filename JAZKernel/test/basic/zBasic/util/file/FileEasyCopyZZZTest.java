@@ -57,4 +57,24 @@ public class FileEasyCopyZZZTest extends TestCase{
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
+	
+	
+	public void testCopyFileByBatch() {
+		try {
+			String sDirectorySource = FileEasyZZZ.joinFilePathName("test", FileEasyCopyZZZTest.strFILE_DIRECTORY_SOURCE);
+			String sFilenameSource = "Datei01.txt";
+			String sDirectoryTarget = FileEasyZZZ.joinFilePathName(FileEasyCopyZZZTest.strFile_DIRECTORY_DEFAULT_EXTERNAL, FileEasyCopyZZZTest.strFILE_DIRECTORY_TARGET);
+			String sFilenameTarget=null;
+			File objFileCreated = FileEasyCopyZZZ.copyFileByBatch(sDirectorySource, sFilenameSource, sDirectoryTarget, sFilenameTarget, true);
+			assertNotNull(objFileCreated);
+			
+			boolean bFileExists = FileEasyZZZ.exists(objFileCreated);
+			assertTrue(bFileExists);
+			
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
 }

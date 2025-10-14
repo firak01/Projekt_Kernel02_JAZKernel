@@ -1,7 +1,9 @@
 package basic.zBasic.util.file;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
@@ -113,6 +115,19 @@ public class FileEasyCopyZZZ extends AbstractObjectWithExceptionZZZ implements I
 				}
 				
 				
+				//### Werte aus, ob die Zieldatei ueberschrieben werden soll
+				if(!bOverwrite) {
+					
+					//Gibt es die Zieldatei schon
+					boolean bExists = FileEasyZZZ.exists(sFilePathTotalTarget);
+					if(bExists) {
+						String sLog = "Zieldatei existiert bereits:'" + sFilePathTotalSource + "'";
+						ObjectZZZ.logLineWithDate(sLog);
+						break main;
+					}
+				}
+				
+				
 				//### Nun die Streams erstellen
 				IStreamZZZ objStreamFileSource = null;
 				try{
@@ -171,10 +186,10 @@ public class FileEasyCopyZZZ extends AbstractObjectWithExceptionZZZ implements I
 	public static File copyFileByBatch(String sDirectorySourceIn, String sFilenameSourceIn, String sDirectoryTargetIn, String sFilenameTargetIn, boolean bOverwrite) throws ExceptionZZZ{
 		File objReturn = null;
 		
-		TODOGOON20251013;//Werte aus, ob eine bestehende Datei ueberschreiben werden soll.
+		
 		
 		main:{
-//			try {
+			try {
 				String sFileDirectorySourceUsed = sDirectorySourceIn;
 				sFileDirectorySourceUsed = FileEasyZZZ.getFileUsedPath(sFileDirectorySourceUsed);
 				if(!FileEasyZZZ.exists(sFileDirectorySourceUsed)){
@@ -269,14 +284,73 @@ public class FileEasyCopyZZZ extends AbstractObjectWithExceptionZZZ implements I
 				}
 				
 				
+				//### Werte aus, ob die Zieldatei ueberschrieben werden soll
+				if(!bOverwrite) {
+					
+					//Gibt es die Zieldatei schon
+					boolean bExists = FileEasyZZZ.exists(sFilePathTotalTarget);
+					if(bExists) {
+						String sLog = "Zieldatei existiert bereits:'" + sFilePathTotalSource + "'";
+						ObjectZZZ.logLineWithDate(sLog);
+						break main;
+					}
+				}
+				
+				
 				//############### NUN DAS KOPIEREN DER DATEI PER BATCH ################
+				String sFilePathTotalTemp = "c:\\temp\\tempfile.txt";
+				File objBatchTemp = File.createTempFile("JavaCopyFileByBatch", ".bat");
+				objBatchTemp.deleteOnExit();//sicherheitshalber, falls das Loeschen spaeter nicht klappt.
+		        BufferedWriter bw = null;
+				try {
+					bw = new BufferedWriter(new FileWriter(objBatchTemp));
+		            bw.write("@echo off");
+		            bw.newLine();
+		            bw.write("echo Erstellt durch FileEasyCopyZZZTest.java 1>" + sFilePathTotalTemp);
+		            bw.newLine();
+		            bw.write("echo als Kopie einer Datei aus dem Git-Repository in dieses externe Verzeichnis. 1>>" + sFilePathTotalTemp);
+		            bw.newLine();
+		            bw.write("echo ### UNTEN INHALT DER ORIGINALDATEI ############## 1>>" + sFilePathTotalTemp);
+		            bw.newLine();
+		            bw.write("type \"" + sFilePathTotalSource + "\" >>" + sFilePathTotalTemp);
+		            bw.newLine();
+		            bw.write("move /Y " + sFilePathTotalTemp + " \"" + sFilePathTotalTarget + "\"");
+		            bw.newLine();
+		        }finally {
+		        	if(bw != null) {
+		        		bw.close();
+		        	}
+		        }
+
+		        // Batch-Datei ausführen
+				String sBatch = objBatchTemp.getAbsolutePath();
+		        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", sBatch);
+		        pb.inheritIO();
+		        Process process = pb.start();
+		        int exitCode = process.waitFor();
+		        if (exitCode == 0) {
+		            System.out.println("Datei erfolgreich kopiert und ergänzt.");
+		        } else {
+		            System.out.println("Fehler beim Kopieren.");
+		        }
 				
-				
-//			} catch (IOException e) {			
-//				e.printStackTrace();
-//				ExceptionZZZ ez = new ExceptionZZZ("IOException", e);
-//				throw ez;
-//			} 
+		        // Batch-Datei löschen (explizit, um sicher zu gehen)
+		        if (objBatchTemp.exists()) {
+		            if (!objBatchTemp.delete()) {
+		                System.out.println("Warnung: Temporäre Batch-Datei konnte nicht gelöscht werden: " + objBatchTemp.getAbsolutePath());
+		            }
+		        }
+		        
+		        objReturn = new File(sFilePathTotalTarget);
+			} catch (IOException e) {			
+				e.printStackTrace();
+				ExceptionZZZ ez = new ExceptionZZZ("IOException", e);
+				throw ez;
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+				ExceptionZZZ ez = new ExceptionZZZ("InterruptedException", e);
+				throw ez;
+			} 
 		}//end main:
 		return objReturn;
 	}
