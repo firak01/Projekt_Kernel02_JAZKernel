@@ -1,5 +1,8 @@
 package basic.zBasic;
 
+import basic.zBasic.util.log.ILogStringZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import junit.framework.TestCase;
 
 /**
@@ -116,7 +119,15 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertFalse("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Klassenname sollte jetzt ueber LogStringZZZ protokolliert werden).", sPositionCurrent.startsWith(sClassCurrent) && sPositionCurrent.length() > sClassCurrent.length());
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Die Zeilennummer "+ iLineCurrentInPosition + "sollte enthalten sein.).", sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
 			
-			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).", sPositionCurrent.startsWith(sMethodCurrent) && sPositionCurrent.length() > sMethodCurrent.length());
+			//Der Methodenname selbst ist nun umgeben von [CM]<method>....</method> Tags. 
+			String sMethodCurrentNormed = ILogStringZZZ.LOGSTRING.CLASSMETHOD.getPrefixSeparator();
+			
+			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethodCurrent);
+			String sMethodTag = objTagMethod.getElementString();
+			sMethodCurrentNormed = sMethodCurrentNormed + sMethodTag;			
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).",
+					sPositionCurrent.startsWith(sMethodCurrentNormed) 
+					&& sPositionCurrent.length() > sMethodCurrent.length());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 

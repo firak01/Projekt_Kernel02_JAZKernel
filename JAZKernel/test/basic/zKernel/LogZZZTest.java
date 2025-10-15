@@ -18,14 +18,14 @@ public class LogZZZTest extends TestCase{
 			//objKernelTest = new KernelZZZ("FGL", "01", "c:\\fglKernel\\KernelTest", "ZKernelConfigKernel_test.ini",(String)null);
 			objKernelTest = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 			
-		/* damit wird logObject null und der test darf nicht weitergehen
+			/* damit wird logObject null und der test darf nicht weitergehen
 			String[] a = {"init"};
 			objKernelTest = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",a);		
 			*/
 			
 			objLogTest = objKernelTest.getLogObject();
 			
-			//TestKonfiguration pr�fen
+			//TestKonfiguration pruefen
 			assertNotNull("LogObject provided by KernelObject is null.", objLogTest);
 			assertFalse(objLogTest.getFlag("init")==true); //Nun w�re init falsch
 			
