@@ -41,6 +41,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertNotNull("Fehler beim Ermitteln des aktuellen Methodennamens mit Zeilennummer (NULL)", stemp);
 			assertTrue("Fehler beim Ermitteln des aktuellen Methodennamens: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.startsWith(sFunction) && stemp.length() > sFunction.length());
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 	}
@@ -52,6 +53,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertNotNull("Fehler beim Ermitteln des aktuellen Klassennamens (NULL)", stemp);
 			assertTrue("Fehler beim Ermitteln des aktuellen Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClass));
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 	}
@@ -63,6 +65,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertNotNull("Fehler beim Ermitteln des aufrufenden Klassennamens (NULL)", stemp);
 			assertFalse("Fehler beim Ermitteln des aufrufenden Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClassCurrent));
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 	}
@@ -119,16 +122,14 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertFalse("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Klassenname sollte jetzt ueber LogStringZZZ protokolliert werden).", sPositionCurrent.startsWith(sClassCurrent) && sPositionCurrent.length() > sClassCurrent.length());
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Die Zeilennummer "+ iLineCurrentInPosition + "sollte enthalten sein.).", sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
 			
-			//Der Methodenname selbst ist nun umgeben von [CM]<method>....</method> Tags. 
-			String sMethodCurrentNormed = ILogStringZZZ.LOGSTRING.CLASSMETHOD.getPrefixSeparator();
-			
+			//Der Methodentag steht nun vora
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethodCurrent);
 			String sMethodTag = objTagMethod.getElementString();
-			sMethodCurrentNormed = sMethodCurrentNormed + sMethodTag;			
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).",
-					sPositionCurrent.startsWith(sMethodCurrentNormed) 
+					sPositionCurrent.startsWith(sMethodTag) 
 					&& sPositionCurrent.length() > sMethodCurrent.length());
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 	}
@@ -148,6 +149,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			String[]saCalling02 = ReflectCodeZZZ.getCallingStack();
 			assertTrue("Es sollte mehr als nur die aufrufende Testklasse im Ergebnis sein.", saCalling02.length>saCalling.length);
 	} catch (ExceptionZZZ ez) {
+		ez.printStackTrace();
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
 	}
