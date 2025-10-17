@@ -55,7 +55,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 
 			//#####################################
 
-			//1. Prüfe auf Integer Objekt des Keys
+			//1. Pruefe auf Integer Objekt des Keys
 			Set keySet = hmIndexed.keySet();
 			Iterator itKey = keySet.iterator();
 			while(itKey.hasNext()){
@@ -72,7 +72,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			}//end while
 
 
-			//2. Pr�fe auf ArrayList des Entries
+			//2. Pruefe auf ArrayList des Entries
 			Set entrySet = hmIndexed.entrySet();
 			Iterator itSet = entrySet.iterator();
 			while(itSet.hasNext()){
@@ -99,7 +99,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 						}
 					}//end if
 
-					//3. Pr�fe auf Integer Objekt der Eintr�ge der ArrayList
+					//3. Pruefe auf Integer Objekt der Eintraege der ArrayList
 					ArrayList alSet = (ArrayList) obj2b;
 					for(int icount=0; icount< alSet.size(); icount++){
 						Object obj3 = alSet.get(icount);
@@ -160,8 +160,8 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 				throw ez;	
 			}
 			//###############################
-			String sMethod = null; //F�r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //F�r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fuer das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;     //Fuer das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
 					
 			//2. Vergleich der gleichen ArrayList, elemtweise.
@@ -175,7 +175,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			
 			
 			//#################################
-			//Ersten Wert holen: �ussere Schleife
+			//Ersten Wert holen: Aeussere Schleife
 			//Merke: Anders als bei der HashMap-Index-Ermittlung, hier mit For-Schleifen arbeiten.
 			int iposMaxExt = objAlExt.size();
 			for(int icountExt=0; icountExt < iposMaxExt; icountExt++){
@@ -207,7 +207,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 				//Object objReturnType = m.invoke(objWithKey, null);
 				//so w�rde der Parameterwert �bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 				//wir habe aber keinen Parameter, also NULL
-				obj = objExt; //F�r das Exception Handling
+				obj = objExt; //Fuer das Exception Handling
 				objErgExt = mExt.invoke(objExt, null);
 				if(objErgExt!=null){
 					System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objErgExt.toString());

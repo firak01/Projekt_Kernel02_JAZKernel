@@ -98,6 +98,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectWithExceptionZZZ<Obje
 		return this.hmIndexed.get(intKey);
 	}
 	
+	
+	
 	/** Object, Den Key des letzten Objekts zurückgeben. (Das ist das letzte Objekt des inneren Vektors.)
 	* Lindhauer; 27.04.2006 08:13:38
 	 * @return Object

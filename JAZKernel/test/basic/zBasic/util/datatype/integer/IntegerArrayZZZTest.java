@@ -23,6 +23,7 @@ public class IntegerArrayZZZTest extends TestCase implements IConstantZZZ {
 			objArraySorted = new IntegerArrayZZZ(iaSorted);
 
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 		
@@ -38,9 +39,22 @@ public class IntegerArrayZZZTest extends TestCase implements IConstantZZZ {
 			assertEquals(iaResult[0].intValue(), 4); 
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
+	
+	public void testImplode() {
+		try{
+			//Die statische Methode testen.
+			Integer[] intaTest = {new Integer(3), new Integer(4), new Integer(1)};
+			String sValue = IntegerArrayZZZ.implode(intaTest); 
+			assertEquals("341", sValue); 			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
 	
 	
 	

@@ -133,7 +133,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01				 
 		 };
 		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
 	}
@@ -147,6 +147,19 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 };
 		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
 	}
+	public synchronized static String computeLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
+		 };
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 return LogStringZZZ.getInstance().compute(obj, stemp, sPositionCalling, iaFormat);
+	}
+	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Biete die Log-Methoden auch static an, siehe ILogZZZ, bzw. AbstractObjectZZZ fuer den Code
@@ -286,6 +299,14 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		boolean bReturn = false;	
 		
 		String sLine = KernelLogZZZ.computeLineDate(obj, stemp);
+		bReturn = WriteLine(sLine);
+		
+		return bReturn;
+	}
+	synchronized public boolean WriteLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		String sLine = KernelLogZZZ.computeLineDateWithPosition(obj, stemp);
 		bReturn = WriteLine(sLine);
 		
 		return bReturn;

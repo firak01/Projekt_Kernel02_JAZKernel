@@ -621,7 +621,7 @@ private static File splitFilePathName_(String sFilePath, ReferenceZZZ<String> st
 public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
-		String sLog = ReflectCodeZZZ.getPositionCurrent() + "Directory to search for= '" + sDirectoryPathIn + "'";
+		String sLog = "Directory to search for= '" + sDirectoryPathIn + "'";
 		System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
 		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
 	}//end main:

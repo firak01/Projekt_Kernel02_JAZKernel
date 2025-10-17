@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -18,7 +19,10 @@ import base.collections.CollectionUtil;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringZZZ;
 import basic.zBasic.util.log.LogString4ReflectCodeZZZ;
+import basic.zBasic.util.log.LogStringContainerZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeZZZ;
@@ -494,13 +498,19 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	}
 		
 	public static String  getPositionCurrent() throws ExceptionZZZ{
-		//return ReflectCodeZZZ.getPositionCurrentSeparated(0);
-		return ReflectCodeZZZ.getPositionCurrentXml(0);
+		return ReflectCodeZZZ.getPosition(1);
 	}
 	
 	public static String  getPositionCalling() throws ExceptionZZZ{
-		//return ReflectCodeZZZ.getPositionCurrentSeparated(1);
-		return ReflectCodeZZZ.getPositionCurrentXml(1);
+		return ReflectCodeZZZ.getPosition(2);
+	}
+	
+	public static String  getPositionCallingPlus(int iLevelPlus) throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPosition(2+iLevelPlus);
+	}
+	
+	public static String getPosition(int iLevel) throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionCurrentXml(iLevel);
 	}
 	
 	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
@@ -591,11 +601,24 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//sReturn = ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 			
 			//Mit LogString-Klasse
-			String[]saParts = new String[2];
-			saParts[0] = sMethodTag;
-			saParts[1] = sPositionInFileTag;
+//			String[]saParts = new String[2];
+//			saParts[0] = sMethodTag;
+//			saParts[1] = sPositionInFileTag;
+//			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
 			
-			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
+			
+			//TODOGOON20251016;//das muss eigentlich ueber einen Hashmap, z.B. mit Eintrag ILogStringZZZ.iFACTOR_CLASSMETHOD=sString gelöst werden.
+            //                                              oder: enum LOGSTRING.CLASSMETHOD=sString
+			//Idee mit einer HashMapIndexedZZZ:
+			//LogStringContainerZZZ[] objaLogString = new LogStringContainerZZZ[2];
+			//objaLogString[0] = new LogStringContainerZZZ(ILogStringZZZ.LOGSTRING.CLASSMETHOD,sMethodTag);
+			//objaLogString[1] = new LogStringContainerZZZ(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION,sPositionInFileTag);
+			//sReturn = LogString4ReflectCodeZZZ.getInstance().compute(objaLogString);
+			
+			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED, sMethodTag);
+			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
+			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(hmLogString);
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
