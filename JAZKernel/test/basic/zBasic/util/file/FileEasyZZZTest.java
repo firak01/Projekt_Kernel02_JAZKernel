@@ -64,6 +64,18 @@ public class FileEasyZZZTest extends TestCase{
 			
 			//### Projektebene			
 			//a)absoluter Pfad
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("<Z:EMPTY/>\\directory", "testNotExisting.txt");
+			System.out.println(sDirPathTotal);						
+			assertEquals(sWorkspace + "\\src\\directory\\testNotExisting.txt",sDirPathTotal);
+			
+			//b) als relativer Pfad
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("<Z:EMPTY/>\\directory", "testNotExisting.txt",true);
+			System.out.println(sDirPathTotal);						
+			assertEquals("src\\directory\\testNotExisting.txt",sDirPathTotal);
+			
+			
+			//### Workspaceebene			
+			//a)absoluter Pfad
 			sDirPathTotal = FileEasyZZZ.joinFilePathName("<Z:NULL/>\\directory", "testNotExisting.txt");
 			System.out.println(sDirPathTotal);						
 			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sDirPathTotal);

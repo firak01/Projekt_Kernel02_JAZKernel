@@ -776,31 +776,32 @@ public static  boolean isPathAbsolute(String sFilePathNameIn)throws ExceptionZZZ
 	boolean bReturn = false;
 	main:{
 		String sFilePathName=null;
-		if(sFilePathNameIn==null){//Merke: Darf ein Leerstring sein.
-			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
+//		if(sFilePathNameIn==null){//Merke: Darf ein Leerstring sein oder auch NULL. Das wird dann ggfs. im FileEasyConstantConvertZZZ zum Worspace-Pfad oder ProjektOrdner-Pfasd.
+//			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+//			throw ez;
+//		}
+		if(sFilePathNameIn==null) break main; //Merke: NULL ist kein absoluter Pfad.				
 		if(sFilePathNameIn.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
 		sFilePathName=sFilePathNameIn;
 		
 		Pattern p = Pattern.compile(IFileEasyConstantsZZZ.sFILE_ABSOLUT_REGEX); 
-		 Matcher m =p.matcher( sFilePathName ); 
-		 bReturn =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
-		 if(bReturn) break main;
+		Matcher m =p.matcher( sFilePathName ); 
+		bReturn =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
+		if(bReturn) break main;
 		 
 		 
-		 if ( sFilePathName.startsWith("\\\\")) { //Wohl für Netzwerkpfade...
-			 bReturn = true;
-			 break main;
-		 }else if (sFilePathName.startsWith("\\")){
+		if ( sFilePathName.startsWith("\\\\")) { //Wohl für Netzwerkpfade...
+			bReturn = true;
+			break main;
+		}else if (sFilePathName.startsWith("\\")){
 			 //irgendwie wohl ein Backslash hinzugekommen, normalerweise relativ, aber noch mal testen
 			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
 			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);			 
-		 }else if (sFilePathName.startsWith("/")){
+		}else if (sFilePathName.startsWith("/")){
 			 //irgendwie wohl ein Slash hinzugekommen, normalerweise relativ, aber noch mal testen
 			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
 			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);
-		 }
+		}
 	}//end main:
 	return bReturn;
 }
@@ -822,10 +823,10 @@ public static  boolean isPathAbsolute(String sFilePathNameIn)throws ExceptionZZZ
 public static boolean isPathRelative(String sFilePathName)throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
-		if(sFilePathName==null){ //Merke: Darf ein Leerstring sein.
-			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
+//		if(sFilePathName==null){ //Merke: Darf ein Leerstring sein oder auch NULL. Das wird dann ggfs. im FileEasyConstantConvertZZZ zum Worspace-Pfad oder ProjektOrdner-Pfasd.
+//			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+//			throw ez;
+//		}
 		
 		bReturn = !FileEasyZZZ.isPathAbsolute(sFilePathName);
 		
@@ -1855,41 +1856,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 		} else{
 			 IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn,cDirectorySeparator, bReturnAsRelativePath);			 		 
-			 sRoot = objPath.getRoot();			 
-			 sFilePath = objPath.getFilePathTotal(); //also: Der Converter liefert für sich den Gesamtpfad zurueck. Aber das .join(...) bildet für sich den Gesamtpfad mit dem Dateinamen. Darum heissen die Variablen so. //alt... FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);			
-			 sFilePathPure = objPath.getFilePath(); //Darin sind ggfs. ergänzende Verzeichnispfade wie src, test, tryout enthalten.
-			 
-			 //TODOGOON20230709;//ggfs. noch Fallunterscheidung absolutes / relatives Ergebnis einbauen.					
-//			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-//			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
-//				sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
-//			}else if(sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) || sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER) || sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-//				sFilePath = sFilePathIn;
-//			}else {
-//				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
-//				sFilePath = StringZZZ.stripFileSeparatorsLeft(sFilePath);
-//				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {													
-//					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
-//						sRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-//					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER + sDirectorySeparator)) {
-//						sRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
-//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-//					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + sDirectorySeparator)) {
-//						sFilePath = sFilePath + sDirectorySeparator;
-//					}else {
-//						sRoot = FileEasyZZZ.getFileRootPath();
-//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-//					}
-//				}else if(FileEasyZZZ.isPathRelative(sFilePath) & StringZZZ.isEmpty(sFilePath)){
-//					if(sFilePath=="") {
-//						sRoot = FileEasyZZZ.getFileRootPath();
-//					}else if(sFilePath==null) {
-//						sFilePath = "";
-//						sRoot = "";
-//					}
-//				}
-//			}
+			 sRoot = objPath.getRootAdditionalComputed();	
+			 if(bReturnAsRelativePath) { //auch wenn der relative Pfad zurueckgegeben wird, ist der PathTotal immer vollstaendiger.
+				 if(FileEasyZZZ.isPathRelative(objPath.getFilePathTotal())){
+					 sFilePath = objPath.getFilePathTotal(); 					 
+				 }else {
+					 sFilePath = objPath.getFilePath(); //Darin sind ggfs. ergänzende Verzeichnispfade wie src, test, tryout enthalten.
+				 }
+			 }else {
+				 sFilePath = objPath.getFilePathTotal(); //also: Der Converter liefert für sich den Gesamtpfad zurueck. Aber das .join(...) bildet für sich den Gesamtpfad mit dem Dateinamen. Darum heissen die Variablen so. //alt... FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);				 
+			 }			
 		}
 				
 		

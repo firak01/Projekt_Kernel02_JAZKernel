@@ -4,8 +4,8 @@ public interface IFileEasyPathObjectZZZ {
 	public String getFilePath();
 	public void setFilePath(String sFilePath);
 	
-	public String getRoot();
-	public void setRoot(String sRoot);
+	public String getRootAdditionalComputed();
+	public void setRootAdditionalComputed(String sRoot);
 	
 	public String getFilePathTotal();
 	public void setFilePathTotal(String sFilePathTotal);

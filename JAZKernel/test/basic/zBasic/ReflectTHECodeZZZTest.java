@@ -109,7 +109,13 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			
 			int iLineCurrentInPosition  = ReflectCodeZZZ.getMethodCurrentLine(0,1);
 			String  sPositionCurrent = ReflectCodeZZZ.getPositionCurrent(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
-			assertNotNull("Fehler beim Ermitteln der aktuellen CodePosition (NULL)", sPositionCurrent);						
+			assertNotNull("Fehler beim Ermitteln der aktuellen CodePosition (NULL)", sPositionCurrent);		
+			System.out.println("sPositionCurrent="+sPositionCurrent);
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: Der String '" + sPositionCurrent + "' enthaelt nicht die ausfuehrende Testmethode.", 
+					sPositionCurrent.contains("testGetPositionCurrent")); 
+						
+			
+			
 			//20240508: Da nun die Logzeilen für das Protokol mit LogStringZZZ errechnet werden, gilt:
 			//          - Der String ist formatierbar
 			//          - Alles was Objektbezogen ist, wird in das Format gepackt.
@@ -119,8 +125,11 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			//assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.endsWith(sMethodCurrentLined) && stemp.length() > sMethodCurrentLined.length());
 			
 			//wg geaendert ab 20240508:
-			assertFalse("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Klassenname sollte jetzt ueber LogStringZZZ protokolliert werden).", sPositionCurrent.startsWith(sClassCurrent) && sPositionCurrent.length() > sClassCurrent.length());
-			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Die Zeilennummer "+ iLineCurrentInPosition + "sollte enthalten sein.).", sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
+			assertFalse("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Klassenname sollte jetzt ueber LogStringZZZ protokolliert werden).", 
+					sPositionCurrent.startsWith(sClassCurrent) 
+					&& sPositionCurrent.length() > sClassCurrent.length());
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Die Zeilennummer "+ iLineCurrentInPosition + "sollte enthalten sein.).",
+					sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
 			
 			//Der Methodentag steht nun vora
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethodCurrent);
@@ -128,6 +137,8 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).",
 					sPositionCurrent.startsWith(sMethodTag) 
 					&& sPositionCurrent.length() > sMethodCurrent.length());
+			
+			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());

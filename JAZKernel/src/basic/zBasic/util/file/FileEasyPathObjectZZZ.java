@@ -31,12 +31,12 @@ public class FileEasyPathObjectZZZ implements IFileEasyPathObjectZZZ{
 	}
 
 	@Override
-	public String getRoot() {
+	public String getRootAdditionalComputed() {
 		return this.sRoot;
 	}
 
 	@Override
-	public void setRoot(String sRoot) {
+	public void setRootAdditionalComputed(String sRoot) {
 		this.sRoot = sRoot;
 	}
 

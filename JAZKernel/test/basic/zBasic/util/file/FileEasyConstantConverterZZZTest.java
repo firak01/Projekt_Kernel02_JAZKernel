@@ -59,7 +59,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = null; //Projektebene
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("",sRoot);
 			
@@ -75,7 +75,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = ""; //src - Ordner
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("src",sRoot);
 			
@@ -93,7 +93,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "src";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("src",sRoot);
 			
@@ -109,7 +109,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "test";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("test",sRoot);
 			
@@ -125,7 +125,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "tryout";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("tryout",sRoot);
 			
@@ -142,7 +142,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "src\\directory\\testNotExisting.txt";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("src",sRoot);
 			
@@ -159,7 +159,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "test\\directory\\testNotExisting.txt";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("test",sRoot);
 			
@@ -175,7 +175,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "tryout\\directory\\testNotExisting.txt";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("tryout",sRoot);
 			
@@ -187,36 +187,30 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			assertNotNull(sFilePathTotal);
 			assertEquals("tryout\\directory\\testNotExisting.txt",sFilePathTotal);
 			
-			//+++++++++++++++++++++++++++
-			//+++ Relative Pfade mit Platzhalter voran:
-			//+++++++++++++++++++++++++++
 			
+			
+			//+++++++++++++++++++++++++++++++++++++
 			//als absoluter Pfad
-			sFilePathIn = "<Z:NULL/>\\directory\\testNotExisting.txt";
+			sFilePathIn = sWorkspace + "\\directory\\testNotExisting.txt";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
-			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
-			assertNotNull(sRoot);
-			assertEquals(sWorkspace,sRoot);
+			assertNotNull(objPath);	
 			
-			sFilePathTotal=objPath.getFilePathTotal();			
+			//Neuen Root (absolut) checken
+			sRoot= objPath.getRootAdditionalComputed();			
+			assertNotNull(sRoot);
+			assertEquals("",sRoot); //Wenn also der absolute Pfad uebergeben wurde, ist kein Root hinzuzurechnen.
+					
+			sFilePathTotal=objPath.getFilePathTotal();	
+			//System.out.println("sFilePathTotal=" + sFilePathTotal);
 			assertNotNull(sFilePathTotal);
 			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sFilePathTotal);
 			
-			//als relativer Pfad
-			sFilePathIn = "<Z:NULL/>\\directory\\testNotExisting.txt";
-			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn, true);
-			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
-			assertNotNull(sRoot);
-			assertEquals(sWorkspace,sRoot);
+			sFilePath=objPath.getFilePath();
+			System.out.println("sFilePath=" + sFilePath);
+			assertNotNull(sFilePath);
+			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sFilePath);
 			
-			sFilePathTotal=objPath.getFilePathTotal();			
-			assertNotNull(sFilePathTotal);
-			assertEquals("directory\\testNotExisting.txt",sFilePathTotal);
-			
-			
-			
+
 			
 			//++++++++++++++++++++++++++++
 			//+++ Absolute Pfade
@@ -226,7 +220,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			sFilePathIn = "c:\\tryout\\directory\\testNotExisting.txt";
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("",sRoot);
 			
@@ -243,23 +237,25 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
-			assertEquals("tryout",sRoot);
+			assertEquals("",sRoot); //Wenn also der absolute Pfad uebergeben wurde, ist kein Root hinzuzurechnen.
 			
-			sFilePath=objPath.getFilePath();			
-			assertNotNull(sFilePath);
-			assertEquals("directory\\testNotExisting.txt",sFilePath);
+			sFilePath=objPath.getFilePath(); //wenn der String von .getRootAdditionalComputed() leer ist, dann kommt hier auch der absolute Pfad raus.			
+			assertNotNull(sFilePath);						
+			assertEquals(sFilePathIn,sFilePath);
 			
 			sFilePathTotal=objPath.getFilePathTotal();			
 			assertNotNull(sFilePathTotal);
 			assertEquals(sFilePathIn,sFilePathTotal);
 			
 			
-			//-- mit Workspacebezug... Ergebnis als relativer Pfad
+			//-- mit Workspacebezug... Ergebnis als relativer Pfad (erzwungen per true Parameter)
+			sFilePathIn = sWorkspace + "\\" + "tryout\\directory\\testNotExisting.txt";
+			
 			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn,true);
 			assertNotNull(objPath);			
-			sRoot= objPath.getRoot();			
+			sRoot= objPath.getRootAdditionalComputed();			
 			assertNotNull(sRoot);
 			assertEquals("tryout",sRoot);
 			
@@ -290,6 +286,88 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			IFileEasyPathObjectZZZ obj = FileEasyConstantConverterZZZ.convertFilePathToAbsolute(sFileDirectorySource);
 			String sValue = obj.getFilePathTotal();
 			assertEquals(sWorkspace + "\\test", sValue);
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
+	
+	
+	public void testConvertFilePathWithPlaceholder() {		
+		try {
+			char cDirectorySeparator = IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR;
+			String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			
+			String sFilePathIn = null;
+			IFileEasyPathObjectZZZ objPath = null;
+			String sRoot=null;
+			String sFilePath=null;
+			String sFilePathTotal=null;
+
+			
+			//+++++++++++++++++++++++++++
+			//+++ Relative Pfade mit Platzhalter voran:
+			//+++++++++++++++++++++++++++
+			
+			//mit dem Parameter "true"= Return as relative path
+			sFilePathIn = "<Z:NULL/>\\directory\\testNotExisting.txt";
+			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn, true);
+			assertNotNull(objPath);	
+			
+			//Neuen Root (relativ) checken
+			sRoot= objPath.getRootAdditionalComputed();			
+			assertNotNull(sRoot);
+			assertEquals(sWorkspace,sRoot);
+											
+			sFilePathTotal=objPath.getFilePathTotal();
+			//System.out.println("sFilePathTotal=" + sFilePathTotal);
+			assertNotNull(sFilePathTotal);						
+			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sFilePathTotal);	
+			
+			sFilePath = objPath.getFilePath();
+			assertEquals("directory\\testNotExisting.txt",sFilePath);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++			
+			//als relativer Pfad uebergeben, wird zu einem relativen Pfad.		
+			//NULL
+			sFilePathIn = "<Z:NULL/>\\directory\\testNotExisting.txt";
+			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
+			assertNotNull(objPath);	
+			
+			//Neuen Root (relativ) checken
+			sRoot= objPath.getRootAdditionalComputed();			
+			assertNotNull(sRoot);
+			assertEquals(sWorkspace,sRoot);
+											
+			sFilePathTotal=objPath.getFilePathTotal();
+			assertNotNull(sFilePathTotal);						
+			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sFilePathTotal);	
+			
+			sFilePath = objPath.getFilePath();
+			assertEquals("directory\\testNotExisting.txt",sFilePath);
+			
+			//++++++++++++++++++++++++++++++++++++++++
+			//als relativer Pfad uebergeben, wird zu einem relativen Pfad.		
+			//EMPTY			
+			sFilePathIn = "<Z:EMPTY/>\\directory\\testNotExisting.txt";
+			objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn);
+			assertNotNull(objPath);	
+			
+			//Neuen Root (relativ) checken
+			sRoot= objPath.getRootAdditionalComputed();			
+			assertNotNull(sRoot);
+			assertEquals("src",sRoot); //Der Projekt-Root, relativ
+			
+			sFilePath = objPath.getFilePath();
+			assertEquals("directory\\testNotExisting.txt",sFilePath);
+						
+			sFilePathTotal=objPath.getFilePathTotal();
+			assertNotNull(sFilePathTotal);						
+			assertEquals(sRoot + "\\directory\\testNotExisting.txt",sFilePathTotal);	
+			
 			
 		}catch(ExceptionZZZ ez){
 			ez.printStackTrace();
