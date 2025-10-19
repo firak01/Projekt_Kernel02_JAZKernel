@@ -153,6 +153,36 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 		}
 	}
 	
+	/** Diesen Test hat auch jeder Solver. 
+	 *  Es gibt also im Solver keine allgemeingueltige .isExpression() Wert als Loesung.
+	 *  .isExpression bezieht sich auf den jeweiligen Tag des Solvers.
+	 * 
+	 * @author Fritz Lindhauer, 19.10.2025, 07:35:22
+	 */
+	public void testIsExpression() {
+		try {			
+			String sExpression=null;
+						
+			sExpression = "<JSON>kljkljlkjklj</JSON>";			
+			boolean bValue = objExpressionHandler.isExpression(sExpression);
+			assertFalse(bValue);
+		
+		
+			sExpression = "<Z>bin kein JSON</Z>";
+			bValue = objExpressionHandler.isExpression(sExpression);
+			assertTrue(bValue);
+			
+			String sTagName = objExpressionHandler.getName();
+			sExpression = XmlUtilZZZ.computeTag(sTagName, "ein beliebiger text");
+			bValue = objExpressionHandler.isExpression(sExpression);
+			assertTrue(bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	
 	public void testCompute_PATH() {
 		String sExpression; String sExpressionSubstituted;String sExpressionSolved; String sTag=null; String sTagSolved=null;
@@ -5655,31 +5685,6 @@ boolean testCompute_Json_JsonMap_JsonMapUnsolved_(String sExpressionIn, String s
 			}
 		}//end main:
 		return bReturn;
-	}
-	
-		
-	public void testIsExpression() {
-		fail("JUnit Test not developed");
-		/* TODOGOON
-//		try {			
-			String sExpression = "<Z>bin kein JSON</Z>";
-			boolean bValue = objExpressionSolver.isExpression(sExpression);
-			assertFalse(bValue);
-		
-		
-			sExpression = "<JSON>kljkljlkjklj</JSON>";
-			bValue = objExpressionSolver.isExpression(sExpression);
-			assertTrue(bValue);
-			
-			//TODOGOON: DIE BERECHUNG ERFOLGT ANHAND DER KONKRETEN ERSTELLENT DATEI
-//			sExpression = sEXPRESSION01_DEFAULT;
-//			bValue = objExpressionSolver.isExpression(sExpression);
-//			assertTrue(bValue);
-			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
- * */ 
 	}
 	
 }//END class

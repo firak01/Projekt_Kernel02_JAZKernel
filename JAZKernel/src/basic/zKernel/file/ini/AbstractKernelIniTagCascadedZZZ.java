@@ -29,6 +29,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IIniTagCascadedZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
+	public static String sTAG_PARENT_NAME = null; //Merke: Statische Variablen werden durch Vererbung aber nicht ueberschrieben.
 	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagParentName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
@@ -108,10 +109,33 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 		}
 	}	
 	
+	//### Aus ITagBasicChildZZZ
 	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Aufgrund des statischen Contexts in Java,  
+	//       und der Tatsache, dass statische Variablen in den erbenden Klassen nicht ueberschrieben werden funktioniert das nicht: 
+	//@Override
+	//public String getParentNameDefault() throws ExceptionZZZ {
+	//	return sTAG_PARENT_NAME;
+	//}
+	
+	//Ein Loesungsansatz wäre dies in jeder Klasse die Methode zu implementieren, 
+	//also kann man das so erzwingen:
+	//
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	//@Override
+	//public abstract String getParentNameDefault() throws ExceptionZZZ; 
+		
+	//Merke: 20251019 Vorgeschlagener Loesungsansatz ist dies per Reflection als instanzbezogene Methode zu implementieren:
 	@Override
-	public abstract String getParentNameDefault() throws ExceptionZZZ; 	
+	public String getParentNameDefault() {
+        try {
+            // Hole das Feld sTAG_NAME der tatsächlichen Klasse (z. B. APLUS)
+            return (String) this.getClass().getField("sTAG_NAME_PARENT").get(null);
+        } catch (Exception e) {
+            return null;
+        }
+    }	
+	
 	
 	@Override
 	public void setParentName(String sTagParentName) throws ExceptionZZZ{

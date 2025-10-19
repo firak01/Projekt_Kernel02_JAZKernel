@@ -59,15 +59,15 @@ public class ExpressionIniUtilZZZ {
 	
 	//++++++++++
 	
-	public static boolean isParse(String sExpression, String sTagName) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParse_(sExpression, sTagName, true);
+	public static boolean isExpression(String sExpression, String sTagName) throws ExceptionZZZ {
+		return ExpressionIniUtilZZZ.isExpression_(sExpression, sTagName, true);
 	}	
 	
-	public static boolean isParse(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParse_(sExpression, sTagName, bExactMatch);
+	public static boolean isExpression(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
+		return ExpressionIniUtilZZZ.isExpression_(sExpression, sTagName, bExactMatch);
 	}
 	
-	private static boolean isParse_(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
+	private static boolean isExpression_(String sExpression, String sTagName, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
@@ -81,7 +81,7 @@ public class ExpressionIniUtilZZZ {
 	
 	//+++++++++++++++++++++
 	//+++ RegEx sinnvoll fuer nicht normale Tags, z.B KernelZFormulaIni_aj
-	public static boolean isParseRegEx(String sExpression, String sRegEx, boolean bExactMatch) throws ExceptionZZZ{
+	public static boolean isExpressionRegEx(String sExpression, String sRegEx, boolean bExactMatch) throws ExceptionZZZ{
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sExpression)) break main;
@@ -91,5 +91,22 @@ public class ExpressionIniUtilZZZ {
 						
 		}//end main
 		return bReturn;
+	}
+	
+	
+	//+++++++++++++++++++++
+	//Gibt es irgendeinen Expression - Ausdruck im String
+	//Merke: Ein Solver oder der Handler betrachtet immer nur seinen eigenen Tag.
+	//       Hier werden alle Solver/Handler verwendet.
+	public static boolean isExpressionAny(String sString) throws ExceptionZZZ{
+		boolean bReturn=false;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sString)) break main;
+		
+			KernelExpressionIniHandlerZZZ obj = new KernelExpressionIniHandlerZZZ();
+			TODOGOON20251019; //obj.parse(sExpression)
+					
+		}//end main
+		return bReturn;		
 	}
 }

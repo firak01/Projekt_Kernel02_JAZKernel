@@ -28,8 +28,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = 7989209806367224848L;
-	public static String sTAG_NAME = "Z:formula";
-	public static String sTAG_PARENT_NAME = null;
+	public static final String sTAG_NAME = "Z:formula";
 	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
@@ -508,17 +507,17 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		}
 
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
-	}
-	
-	
-	//### Aus ITagBasicChildZZZ
-	@Override
-	public String getParentNameDefault() throws ExceptionZZZ {
-		return KernelZFormulaIniSolverZZZ.sTAG_PARENT_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//	 return KernelZFormulaIniSolverZZZ.sTAG_NAME;
+//	}
+//	
+//	
+//	//### Aus ITagBasicChildZZZ
+//	@Override
+//	public String getParentNameDefault() throws ExceptionZZZ {
+//		return KernelZFormulaIniSolverZZZ.sTAG_PARENT_NAME;
+//	}
 	
 	//### aus IKernelEntryExpressionUserZZZ
 	

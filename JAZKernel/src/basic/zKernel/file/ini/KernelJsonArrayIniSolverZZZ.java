@@ -35,8 +35,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildTagZZZ<T> implements IKernelJsonArrayIniSolverZZZ{
 	private static final long serialVersionUID = 8458180798440285715L;
-	public static String sTAG_NAME = "JSON:ARRAY";
-	public static String sTAG_PARENT_NAME = KernelJsonIniSolverZZZ.sTAG_NAME;
+	public static final String sTAG_NAME = "JSON:ARRAY";
+	public static final String sTAG_PARENT_NAME = KernelJsonIniSolverZZZ.sTAG_NAME;
 			
 	public KernelJsonArrayIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
@@ -199,17 +199,17 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolver4Chil
 	
 	//######### Interfaces #######################################################
 	
-	//### aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
-	}
-	
-	//### aus ITagBasicChildZZZ
-	@Override
-	public String getParentNameDefault() throws ExceptionZZZ {
-		return KernelJsonArrayIniSolverZZZ.sTAG_PARENT_NAME		;
-	}
+//	//### aus ITagBasicZZZ
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
+//	}
+//	
+//	//### aus ITagBasicChildZZZ
+//	@Override
+//	public String getParentNameDefault() throws ExceptionZZZ {
+//		return KernelJsonArrayIniSolverZZZ.sTAG_PARENT_NAME		;
+//	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++	
 	//### aus IParseEnabled				

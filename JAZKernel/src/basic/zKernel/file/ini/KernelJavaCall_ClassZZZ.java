@@ -12,7 +12,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelJavaCall_ClassZZZ<T> extends AbstractIniTagSimpleZZZ<T>{//AbstractIniTagWithExpressionBasicZZZ<T>{
 	private static final long serialVersionUID = 8075675133317942190L;
-	public static String sTAG_NAME = "Z:Class";
+	public static final String sTAG_NAME = "Z:Class";
 	
 	public KernelJavaCall_ClassZZZ() throws ExceptionZZZ{
 		super();
@@ -36,10 +36,10 @@ public class KernelJavaCall_ClassZZZ<T> extends AbstractIniTagSimpleZZZ<T>{//Abs
 	
 	
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelJavaCall_ClassZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelJavaCall_ClassZZZ.sTAG_NAME;
+//	}
 	
 	//### aus IConvertableZZZ
 	@Override

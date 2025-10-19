@@ -122,6 +122,32 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		}
 	}
 	
+	/** Diesen Test hat auch jeder Solver. 
+	 *  Es gibt also im Solver keine allgemeingueltige .isExpression() Wert als Loesung.
+	 *  .isExpression bezieht sich auf den jeweiligen Tag des Solvers.
+	 * 
+	 * @author Fritz Lindhauer, 19.10.2025, 07:35:22
+	 */
+	public void testIsExpression() {
+		try {			
+			String sExpression=null;
+						
+			sExpression = "<Z>bin kein ExpressionHandler</Z>";
+			boolean bValue = objExpressionSolver.isExpression(sExpression);
+			assertFalse(bValue);
+		
+	
+			String sTagName = objExpressionSolver.getName();
+			sExpression = XmlUtilZZZ.computeTag(sTagName, "ein beliebiger text");
+			bValue = objExpressionSolver.isExpression(sExpression);
+			assertTrue(bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	
 	public void testCompute_JavaCall() {
 		String sExpression=null; String sExpressionSubstituted=null; String sExpressionSolved=null; String sPre=null; String sPost=null; String sTag=null; String sTagSolved=null;

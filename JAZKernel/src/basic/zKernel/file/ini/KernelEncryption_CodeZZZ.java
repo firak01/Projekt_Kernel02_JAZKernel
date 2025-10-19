@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public class KernelEncryption_CodeZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 5159343273872632561L;
-	public static String sTAG_NAME = "Z:Code";
+	public static final String sTAG_NAME = "Z:Code";
 	
 	public KernelEncryption_CodeZZZ() throws ExceptionZZZ{
 		super();
@@ -28,10 +28,10 @@ public class KernelEncryption_CodeZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelEncryption_CodeZZZ.sTAG_NAME;
-	}		
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelEncryption_CodeZZZ.sTAG_NAME;
+//	}		
 	
 	//### aus IConvertableZZZ
 	@Override

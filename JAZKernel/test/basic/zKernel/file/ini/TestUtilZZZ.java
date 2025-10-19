@@ -3,10 +3,12 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
@@ -412,5 +414,27 @@ public class TestUtilZZZ {
 		}	
 		}//end main:
 		return objReturn;
+	}
+	
+	public static String[] createStringsUsed_ExpressionAny() throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			String sExpression=null;
+			ArrayList<String>listasReturn=new ArrayList<String>();
+			
+			//+++ ExpressionHandler
+			sExpression = ExpressionIniUtilZZZ.makeAsExpression("dummy");
+			sExpression = "PRE" + sExpression + "POST";
+			listasReturn.add(sExpression);
+			
+			//+++ Alle ExpressionSolver
+			sExpression = ExpressionIniUtilZZZ.makeAsExpression("dummy", KernelCallIniSolverZZZ.sTAG_NAME);
+			sExpression = "PRE" + sExpression + "POST";
+			listasReturn.add(sExpression);
+			
+			
+			saReturn = ArrayListUtilZZZ.toStringArray(listasReturn);
+		}//end main:
+		return saReturn;
 	}
 }

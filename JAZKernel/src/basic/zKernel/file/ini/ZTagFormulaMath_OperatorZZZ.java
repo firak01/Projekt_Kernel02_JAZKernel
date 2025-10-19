@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 3096748072633354679L;
-	public static String sTAG_NAME = "Z:op";
+	public static final String sTAG_NAME = "Z:op";
 	private String sOperator = null;
 	private String sOperand01 = null;
 	private String sOperand02 = null;
@@ -79,10 +79,10 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	
 	
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
+//	}
 	
 	public String computeParsed() throws ExceptionZZZ{
 		String sReturn = null;

@@ -18,6 +18,7 @@ import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
@@ -112,6 +113,32 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertTrue("Flag nicht vorhanden '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'", btemp);
 		
 		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** Diesen Test hat auch jeder Solver. 
+	 *  Es gibt also im Solver keine allgemeingueltige .isExpression() Wert als Loesung.
+	 *  .isExpression bezieht sich auf den jeweiligen Tag des Solvers.
+	 * 
+	 * @author Fritz Lindhauer, 19.10.2025, 07:35:22
+	 */
+	public void testIsExpression() {
+		try {			
+			String sExpression=null;
+						
+			sExpression = "<Z>bin kein ExpressionHandler</Z>";
+			boolean bValue = objExpressionSolver.isExpression(sExpression);
+			assertFalse(bValue);
+		
+	
+			String sTagName = objExpressionSolver.getName();
+			sExpression = XmlUtilZZZ.computeTag(sTagName, "ein beliebiger text");
+			bValue = objExpressionSolver.isExpression(sExpression);
+			assertTrue(bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}

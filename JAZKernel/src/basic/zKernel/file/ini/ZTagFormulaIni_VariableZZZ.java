@@ -20,7 +20,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 //Merke: Klasse benötigt Flags, aber keinen Kernel...
 public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelZFormulaIni_VariableZZZ{
 	private static final long serialVersionUID = 6370617551800139734L;
-	public static String sTAG_NAME = "z:Var";
+	public static final String sTAG_NAME = "z:Var";
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 		
 	public ZTagFormulaIni_VariableZZZ() throws ExceptionZZZ{
@@ -185,10 +185,12 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 		return sReturn;
 	}
 
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return sTAG_NAME;
-	}
+	//### Aus ITagBasicZZZ
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return sTAG_NAME;
+//	}
+
 
 	@Override
 	public boolean isConvertRelevant(String sStringToProof) throws ExceptionZZZ {

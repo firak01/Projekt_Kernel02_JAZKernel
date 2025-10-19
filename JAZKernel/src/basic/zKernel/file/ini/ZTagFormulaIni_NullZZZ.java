@@ -25,7 +25,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
-	public static String sTAG_NAME = "z:Null"; 
+	public static final String sTAG_NAME = "z:Null"; 
 		
 	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{	
 		super("init");
@@ -137,10 +137,10 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 
 
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
+//	}
 
 	//### Aus IParseEnabledZZZ	
 	@Override 

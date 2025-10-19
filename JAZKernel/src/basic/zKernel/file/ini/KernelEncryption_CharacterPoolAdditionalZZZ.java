@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 956884729101672279L;
-	public static String sTAG_NAME = "Z:CharacterPoolAdditional";
+	public static final String sTAG_NAME = "Z:CharacterPoolAdditional";
 	
 	public KernelEncryption_CharacterPoolAdditionalZZZ() throws ExceptionZZZ{
 		super();

@@ -19,7 +19,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 //Sie wird einfach nur vom KernelZFormulaIniConvertZZZ aus aufgerufen, wenn dieser die passenden Flags hat.
 public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> implements IConvertEnabledZZZ{	
 	private static final long serialVersionUID = 7203160369729097L;
-	public static String sTAG_NAME = "z:Empty";
+	public static final String sTAG_NAME = "z:Empty";
 	
 	//Hier die Variante ohne ini-File
 	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{		
@@ -85,8 +85,8 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		return sReturn;
 	}
 
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return KernelZFormulaIni_EmptyZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return KernelZFormulaIni_EmptyZZZ.sTAG_NAME;
+//	}
 }//End class

@@ -8,7 +8,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -8540131780423723580L;
-	public static String sTAG_NAME = "Z:FlagControl";
+	public static final String sTAG_NAME = "Z:FlagControl";
 	
 	public Kernel_FlagControlZZZ() throws ExceptionZZZ{
 		super();
@@ -31,10 +31,10 @@ public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return Kernel_FlagControlZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return Kernel_FlagControlZZZ.sTAG_NAME;
+//	}
 
 
 	//### Aus IConvertable

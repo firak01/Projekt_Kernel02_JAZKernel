@@ -8,7 +8,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//AbstractIniTagWithExpressionBasicZZZ<T>{
 	private static final long serialVersionUID = 8437140852114172576L;
-	public static String sTAG_NAME = "Z:Method";
+	public static final String sTAG_NAME = "Z:Method";
 	
 	public KernelJavaCall_MethodZZZ() throws ExceptionZZZ{
 		super();
@@ -29,10 +29,10 @@ public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{//A
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelJavaCall_MethodZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelJavaCall_MethodZZZ.sTAG_NAME;
+//	}
 
 	//### aus IConvertableZZZ
 	@Override

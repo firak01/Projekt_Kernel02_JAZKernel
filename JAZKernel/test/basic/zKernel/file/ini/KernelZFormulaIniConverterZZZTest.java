@@ -10,6 +10,7 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
@@ -122,6 +123,8 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
 	}
+	
+
 	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32

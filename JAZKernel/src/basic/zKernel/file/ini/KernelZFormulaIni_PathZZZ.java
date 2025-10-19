@@ -38,7 +38,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	//public static String sTAG_NAME = ".*<Z>.*[\\[]*[\\]].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text
 	//public static String sTAG_NAME = ".*<Z>.*\\[[^\"].*[^\"]\\].*</Z>.*"; //finde einen Ausdruck in eckigen Klammern mit Z-Tags drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
 	//public static String sTAG_NAME = ".*<[^/].*>.*\\[[^\"].*[^\"]\\].*<[/].*>.*"; //finde einen Ausdruck in eckigen Klammern mit Tags (erstes Tag ohne Slash) drumherum und ggfs. Text UND auf keine Fall nach der offenen eckigen Klammer ein Hochkomma (was fuer Java escaped ist); dito fuer die geschlossenen eckige Klammer
-	public static String sTAG_NAME = ".*\\{\\[.*[^\"']\\].*\\}.*"; //finde einen Ausdruck in geschweiften Klammern drumherum PLUS finde einen Ausdruck in eckigen Klammern und ggfs. Text, aber OHNE Hochkommata (was hier im Ausdruck fuer Java escaped ist), einfaches Hochkommata etc.
+	public static final String sTAG_NAME = ".*\\{\\[.*[^\"']\\].*\\}.*"; //finde einen Ausdruck in geschweiften Klammern drumherum PLUS finde einen Ausdruck in eckigen Klammern und ggfs. Text, aber OHNE Hochkommata (was hier im Ausdruck fuer Java escaped ist), einfaches Hochkommata etc.
 	
 	public static String sSECTION_OPENING = "[";
 	public static String sSECTION_CLOSING = "]";
@@ -115,7 +115,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	@Override
 	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
 		//Ueberschreibt den Standard, da der Name nicht so ist wie ein normales Tag
-		return ExpressionIniUtilZZZ.isParseRegEx(sExpressionToProof, this.getName(), false);
+		return ExpressionIniUtilZZZ.isExpressionRegEx(sExpressionToProof, this.getName(), false);
 	}
 		
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
@@ -349,10 +349,10 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 		
 
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return sTAG_NAME;
+//	}
 
 	//### Aus IConvertable
 	@Override

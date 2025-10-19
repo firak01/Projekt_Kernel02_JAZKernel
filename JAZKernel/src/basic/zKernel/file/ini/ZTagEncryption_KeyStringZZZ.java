@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public class ZTagEncryption_KeyStringZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -79235762837292434L;
-	public static String sTAG_NAME = "Z:KeyString";
+	public static final String sTAG_NAME = "Z:KeyString";
 	
 	public ZTagEncryption_KeyStringZZZ() throws ExceptionZZZ{
 		super();
@@ -26,10 +26,10 @@ public class ZTagEncryption_KeyStringZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return ZTagEncryption_KeyStringZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return ZTagEncryption_KeyStringZZZ.sTAG_NAME;
+//	}
 
 	//### aus IConvertableZZZ
 	@Override

@@ -87,6 +87,7 @@ public class FileEasyZZZTest extends TestCase{
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 		
@@ -191,6 +192,7 @@ public class FileEasyZZZTest extends TestCase{
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 		
@@ -252,6 +254,7 @@ public class FileEasyZZZTest extends TestCase{
 			assertTrue("Das Verzeichnis '" + objDir.getAbsolutePath() + "' sollte leer sein und gelöscht worden sein.", bErg);
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}

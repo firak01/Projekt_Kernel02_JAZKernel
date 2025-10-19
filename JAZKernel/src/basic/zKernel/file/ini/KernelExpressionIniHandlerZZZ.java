@@ -33,7 +33,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZZ<T> implements IKernelExpressionIniHandlerZZZ {
 	private static final long serialVersionUID = -6430027792689200422L;
-	public static String sTAG_NAME = "Z";
+	public static final String sTAG_NAME = "Z";
 		
 	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
 		super("init");
@@ -659,16 +659,16 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	}
 
 	//### Aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() {
-		return KernelExpressionIniHandlerZZZ.sTAG_NAME;
-	}
-	
-	//### Aus ITagBasicChildZZZ
-	@Override
-	public String getParentNameDefault() throws ExceptionZZZ {
-		return null;
-	}
+//	@Override
+//	public String getNameDefault() {
+//		return KernelExpressionIniHandlerZZZ.sTAG_NAME;
+//	}
+//	
+//	//### Aus ITagBasicChildZZZ
+//	@Override
+//	public String getParentNameDefault() throws ExceptionZZZ {
+//		return null;
+//	}
 	
 	//### Interface aus IKernelExpressionIniSolver
 	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {

@@ -1528,12 +1528,12 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		
 	@Override
 	public boolean isSubstitutePath(String sExpression) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParse(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false);
+		return ExpressionIniUtilZZZ.isExpression(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false);
 	}
 	
 	@Override
 	public boolean isSubstituteVariable(String sExpression) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false);
+		return ExpressionIniUtilZZZ.isExpression(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false);
 	}
 	@Override
 	public String substitute(String sExpression) throws ExceptionZZZ {
@@ -1860,7 +1860,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			if(this.isSubstituteVariableEnabledThis()) {
 									
 			//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
-			if(ExpressionIniUtilZZZ.isParse(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
+			if(ExpressionIniUtilZZZ.isExpression(sExpression, ZTagFormulaIni_VariableZZZ.sTAG_NAME, false)) {
 									
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
 				//!!! WICHTIG: BEI DIESEN AUFLOESUNGEN NICHT DAS UEBERGEORNETE OBJENTRY VERWENDEN, SONDERN INTERN EIN EIGENES!!! 
@@ -1912,7 +1912,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 		this.updateValuePathSubstituteCalled(objReturnReference);
 		if(this.isSubstitutePathEnabledThis()){											
 				//Pruefe vorher ob ueberhaupt eine Variable in der Expression definiert ist
-				if(ExpressionIniUtilZZZ.isParseRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
+				if(ExpressionIniUtilZZZ.isExpressionRegEx(sExpression, KernelZFormulaIni_PathZZZ.sTAG_NAME, false)) {
 										
 					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 					//Problem hier: [ ] ist auch der JSON Array-Ausdruck

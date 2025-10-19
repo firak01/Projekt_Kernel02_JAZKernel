@@ -25,8 +25,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelEncryptionIniSolverZZZ{
 	private static final long serialVersionUID = 5426925764480431586L;
-	public static String sTAG_NAME = "Z:Encrypted";	
-	public static String sTAG_PARENT_NAME = null;
+	public static final String sTAG_NAME = "Z:Encrypted";	
+	
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super("init");
 		KernelEncryptionIniSolverNew_(null, null);
@@ -116,16 +116,16 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	 }//end function KernelEncryptionIniSolverNew_
 	
 	//### aus ITagBasicZZZ
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
-	}
-	
-	//### Aus ITagBasicChildZZZ
-	@Override
-	public String getParentNameDefault() throws ExceptionZZZ {
-		return KernelEncryptionIniSolverZZZ.sTAG_PARENT_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
+//	}
+//	
+//	//### Aus ITagBasicChildZZZ
+//	@Override
+//	public String getParentNameDefault() throws ExceptionZZZ {
+//		return KernelEncryptionIniSolverZZZ.sTAG_PARENT_NAME;
+//	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++	
 	//### aus IParseEnabled		

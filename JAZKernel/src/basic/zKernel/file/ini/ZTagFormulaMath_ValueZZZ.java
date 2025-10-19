@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -6014276444711828780L;
-	public static String sTAG_NAME = "Z:val";
+	public static final String sTAG_NAME = "Z:val";
 	public ZTagFormulaMath_ValueZZZ() throws ExceptionZZZ{
 		super();
 		KernelExpressionMathValueNew_();
@@ -24,10 +24,10 @@ public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ {
-		return ZTagFormulaMath_ValueZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ {
+//		return ZTagFormulaMath_ValueZZZ.sTAG_NAME;
+//	}
 	
 	//### aus IConvertableZZZ
 	@Override

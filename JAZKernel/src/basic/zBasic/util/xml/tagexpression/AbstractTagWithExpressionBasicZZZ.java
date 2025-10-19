@@ -31,7 +31,8 @@ import basic.zKernel.file.ini.KernelEncryption_CodeZZZ;
  */
 public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
 	private static final long serialVersionUID = -367756957686201953L;
-
+	public static String sTAG_NAME = null;  //Merke: Statische Variablen werden durch Vererbung aber nicht ueberschrieben.
+	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
 	
@@ -84,9 +85,32 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}	
 	
 	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Aufgrund des statischen Contexts in Java,  
+	//       und der Tatsache, dass statische Variablen in den erbenden Klassen nicht ueberschrieben werden funktioniert das nicht: 
+	//@Override
+	//public String getNameDefault() throws ExceptionZZZ{
+	//	return sTAG_NAME;
+	//}
+	//
+	//Ein Loesungsansatz wäre dies in jeder Klasse die Methode zu implementieren, 
+	//also kann man das so erzwingen:
+	//
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	//@Override
+	//public abstract String getNameDefault() throws ExceptionZZZ; 
+		
+	//Merke: 20251019 Vorgeschlagener Loesungsansatz ist dies per Reflection als instanzbezogene Methode zu implementieren:
 	@Override
-	public abstract String getNameDefault() throws ExceptionZZZ; 
+	public String getNameDefault() throws ExceptionZZZ {
+        try {
+            // Hole das Feld sTAG_NAME der tatsächlichen Klasse
+            return (String) this.getClass().getField("sTAG_NAME").get(null);
+        } catch (Exception e) {
+        	ExceptionZZZ ez = new ExceptionZZZ(e);
+        	throw ez;            
+        }
+    }
+	
 	
 	@Override
 	public void setName(String sTagName) throws ExceptionZZZ{
@@ -279,7 +303,7 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			//bReturn = ExpressionIniUtilZZZ.isParseRegEx(sExpression, this.getName(), false);
 			
 			//Fuer Tags, die dem nomalen XML-Tag-Konzept entsprechen.
-			bReturn = ExpressionIniUtilZZZ.isParse(sExpression, sExpression, false);
+			bReturn = ExpressionIniUtilZZZ.isExpression(sExpression, sExpression, false);
 			
 			//Auf dieser Ebene gibt es dann erstmals Tags
 			bReturn = XmlUtilZZZ.containsTagName(sExpression, this.getName(), false); //also, kein exact match

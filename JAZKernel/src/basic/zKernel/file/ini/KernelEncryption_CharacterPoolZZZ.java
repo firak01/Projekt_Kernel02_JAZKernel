@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public class KernelEncryption_CharacterPoolZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -3249222443434359620L;
-	public static String sTAG_NAME = "Z:CharacterPool";
+	public static final String sTAG_NAME = "Z:CharacterPool";
 	
 	public KernelEncryption_CharacterPoolZZZ() throws ExceptionZZZ{
 		super();
@@ -29,10 +29,10 @@ public class KernelEncryption_CharacterPoolZZZ<T>  extends AbstractIniTagSimpleZ
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelEncryption_CharacterPoolZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelEncryption_CharacterPoolZZZ.sTAG_NAME;
+//	}
 
 
 	//### aus IConvertableZZZ
