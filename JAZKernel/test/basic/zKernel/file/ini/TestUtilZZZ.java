@@ -416,6 +416,8 @@ public class TestUtilZZZ {
 		return objReturn;
 	}
 	
+	//Merke: Erfasse alle Klassen auch in:
+	//       ExpressionIniUtilZZZ.isExpressionDefaultAny(...)
 	public static String[] createStringsUsed_ExpressionAny() throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{

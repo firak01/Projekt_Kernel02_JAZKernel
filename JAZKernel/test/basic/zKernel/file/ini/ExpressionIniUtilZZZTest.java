@@ -9,19 +9,20 @@ import junit.framework.TestCase;
 public class ExpressionIniUtilZZZTest extends TestCase{
 
 	
-	public void testIsExpressionAny() {
+	public void testIsExpressionDefaultAny() {
 		try {
 			boolean bValue=false;
 			String sString=null; String[]saString=null;
 			
 			
 			sString = "abcd";
-			bValue = ExpressionIniUtilZZZ.isExpressionAny(sString);
+			bValue = ExpressionIniUtilZZZ.isExpressionDefaultAny(sString);
 			assertFalse(bValue);
 			
 			saString = TestUtilZZZ.createStringsUsed_ExpressionAny();
 			for(String sTemp : saString) {
-				bValue = ExpressionIniUtilZZZ.isExpressionAny(sString);
+				System.out.println(sTemp);
+				bValue = ExpressionIniUtilZZZ.isExpressionDefaultAny(sTemp);
 				assertTrue(bValue);
 			}
 			

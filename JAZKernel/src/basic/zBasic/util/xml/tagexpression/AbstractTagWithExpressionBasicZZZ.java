@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagBasicZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
@@ -71,9 +72,10 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 	}
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//+++ Details aus ITagBasicsZZZ +++++++++++++++++++++++++++++++++++++++++
+	//+++ Details aus ITagBasicsZZZ +++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//#### Aus Interfacace
+		
+	//#### Aus Interface
 	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.
 	@Override
 	public String getName() throws ExceptionZZZ{

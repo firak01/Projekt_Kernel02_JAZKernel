@@ -411,7 +411,7 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 		//################################
 		return vecReturn;
 	}
-	
+		
 	//### Analog zu AbstractTagBasicZZZ
 	//### aus ITagBasicZZZ
 	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.

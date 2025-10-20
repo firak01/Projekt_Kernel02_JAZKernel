@@ -95,19 +95,43 @@ public class ExpressionIniUtilZZZ {
 		return bReturn;
 	}
 	
-	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	TODOGOON20251020;//Irgendwo alle Klassen, die einen Expression haben, als ein Array deklarieren.
 	//+++++++++++++++++++++
+	public static boolean isExpressionDefault(String sExpression, ITagBasicZZZ objWithTag) throws ExceptionZZZ {
+		Class classObjectWithTag = objWithTag.getClass();
+		return isExpressionDefault(sExpression, classObjectWithTag);
+	}
+	
+	public static boolean isExpressionDefault(String sString, Class classObjectWithTag) throws ExceptionZZZ {
+		String sTag = ExpressionIniUtilZZZ.getTagNameDefault(classObjectWithTag);
+		return XmlUtilZZZ.isExpression4TagXml(sString, sTag);		
+	}
+	
 	//Gibt es irgendeinen Expression - Ausdruck im String
 	//Merke: Ein Solver oder der Handler betrachtet immer nur seinen eigenen Tag.
 	//       Hier werden alle Solver/Handler verwendet.
-	public static boolean isExpressionAny(String sString) throws ExceptionZZZ{
-		boolean bReturn=false;
+	//
+	//Merke: Fuer den JUnit-Test gilt: Erfasse alle Klassen auch in 
+	//       TestUtilZZZ.createStringsUsed_ExpressionAny();
+	public static boolean isExpressionDefaultAny(String sString) throws ExceptionZZZ{
+		boolean bReturn=true;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sString)) break main;
 		
-			KernelExpressionIniHandlerZZZ obj = new KernelExpressionIniHandlerZZZ();
-			//TODOGOON20251019; //obj.parse(sExpression)
-					
+			try {
+				bReturn = isExpressionDefault(sString, KernelExpressionIniHandlerZZZ.class);
+				if(bReturn) break main;
+				
+				bReturn = isExpressionDefault(sString, KernelCallIniSolverZZZ.class);
+				if(bReturn) break main;
+			
+			}catch(Exception e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+			
+			bReturn = false;
 		}//end main
 		return bReturn;		
 	}
@@ -132,7 +156,19 @@ public class ExpressionIniUtilZZZ {
 	public static String getTagParentNameDefault(ITagBasicChildZZZ objWithTag) throws ExceptionZZZ {
 		try {
 			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
-			return (String) objWithTag.getClass().getField("sTAG_PARENT_NAME").get(null);
+			//return (String) objWithTag.getClass().getField("sTAG_PARENT_NAME").get(null);
+			Class classObjectWithTag = objWithTag.getClass();
+			return getTagParentNameDefault(classObjectWithTag);
+	  } catch (Exception e) {
+		  	ExceptionZZZ ez = new ExceptionZZZ(e);
+		  	throw ez;
+	  }
+	}
+	
+	public static String getTagParentNameDefault(Class classObjectWithTag) throws ExceptionZZZ {
+		try {
+			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
+			return (String) classObjectWithTag.getField("sTAG_PARENT_NAME").get(null);
 	  } catch (Exception e) {
 		  	ExceptionZZZ ez = new ExceptionZZZ(e);
 		  	throw ez;
@@ -142,7 +178,19 @@ public class ExpressionIniUtilZZZ {
 	public static String getTagNameDefault(ITagBasicZZZ objWithTag) throws ExceptionZZZ {
 		try {
 			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
-			return (String) objWithTag.getClass().getField("sTAG_NAME").get(null);
+			//return (String) objWithTag.getClass().getField("sTAG_NAME").get(null);
+			Class classObjectWithTag = objWithTag.getClass();
+			return getTagParentNameDefault(classObjectWithTag);
+	  } catch (Exception e) {
+		  	ExceptionZZZ ez = new ExceptionZZZ(e);
+		  	throw ez;
+	  }
+	}
+	
+	public static String getTagNameDefault(Class classObjectWithTag) throws ExceptionZZZ {
+		try {
+			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
+			return (String) classObjectWithTag.getField("sTAG_NAME").get(null);
 	  } catch (Exception e) {
 		  	ExceptionZZZ ez = new ExceptionZZZ(e);
 		  	throw ez;

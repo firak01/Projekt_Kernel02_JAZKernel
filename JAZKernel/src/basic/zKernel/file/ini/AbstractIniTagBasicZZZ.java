@@ -438,12 +438,11 @@ public abstract class AbstractIniTagBasicZZZ<T> extends AbstractTagParseEnabledZ
 	//### Merke: Kein IValueSolvedUserZZZ hier eingebunden, da es keine Expression ist
 
 	
+
+	
 	//### aus IExpressionUserZZZ
 	@Override
 	public boolean isExpression(String sExpression) throws ExceptionZZZ {
 		return XmlUtilZZZ.isExpression4TagXml(sExpression, this.getName());
 	}	
-	
-	
-	
 }
