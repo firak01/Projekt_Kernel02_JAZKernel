@@ -3,6 +3,8 @@ package basic.zKernel.file.ini;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagBasicChildZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagBasicZZZ;
 
 public class ExpressionIniUtilZZZ {
 
@@ -104,9 +106,46 @@ public class ExpressionIniUtilZZZ {
 			if(StringZZZ.isEmptyTrimmed(sString)) break main;
 		
 			KernelExpressionIniHandlerZZZ obj = new KernelExpressionIniHandlerZZZ();
-			TODOGOON20251019; //obj.parse(sExpression)
+			//TODOGOON20251019; //obj.parse(sExpression)
 					
 		}//end main
 		return bReturn;		
+	}
+	
+	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Aufgrund des statischen Contexts in Java,  
+	//       und der Tatsache, dass statische Variablen in den erbenden Klassen nicht ueberschrieben werden funktioniert das nicht: 
+	//@Override
+	//public String getParentNameDefault() throws ExceptionZZZ {
+	//	return sTAG_PARENT_NAME;
+	//}
+	
+	//Ein Loesungsansatz wäre dies in jeder Klasse die Methode zu implementieren, 
+	//also kann man das so erzwingen:
+	//
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	//@Override
+	//public abstract String getParentNameDefault() throws ExceptionZZZ; 
+		
+	//Merke: 20251019 Vorgeschlagener Loesungsansatz ist dies per Reflection als instanzbezogene Methode zu implementieren, 
+	//                hier an zentraler Stelle fuer die verschiedenenen Vererbungspfade:	
+	public static String getTagParentNameDefault(ITagBasicChildZZZ objWithTag) throws ExceptionZZZ {
+		try {
+			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
+			return (String) objWithTag.getClass().getField("sTAG_PARENT_NAME").get(null);
+	  } catch (Exception e) {
+		  	ExceptionZZZ ez = new ExceptionZZZ(e);
+		  	throw ez;
+	  }
+	}
+	
+	public static String getTagNameDefault(ITagBasicZZZ objWithTag) throws ExceptionZZZ {
+		try {
+			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
+			return (String) objWithTag.getClass().getField("sTAG_NAME").get(null);
+	  } catch (Exception e) {
+		  	ExceptionZZZ ez = new ExceptionZZZ(e);
+		  	throw ez;
+	  }
 	}
 }

@@ -110,30 +110,9 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelI
 	}	
 	
 	//### Aus ITagBasicChildZZZ
-	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
-	//Merke: Aufgrund des statischen Contexts in Java,  
-	//       und der Tatsache, dass statische Variablen in den erbenden Klassen nicht ueberschrieben werden funktioniert das nicht: 
-	//@Override
-	//public String getParentNameDefault() throws ExceptionZZZ {
-	//	return sTAG_PARENT_NAME;
-	//}
-	
-	//Ein Loesungsansatz wäre dies in jeder Klasse die Methode zu implementieren, 
-	//also kann man das so erzwingen:
-	//
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
-	//@Override
-	//public abstract String getParentNameDefault() throws ExceptionZZZ; 
-		
-	//Merke: 20251019 Vorgeschlagener Loesungsansatz ist dies per Reflection als instanzbezogene Methode zu implementieren:
 	@Override
-	public String getParentNameDefault() {
-        try {
-            // Hole das Feld sTAG_NAME der tatsächlichen Klasse (z. B. APLUS)
-            return (String) this.getClass().getField("sTAG_NAME_PARENT").get(null);
-        } catch (Exception e) {
-            return null;
-        }
+	public String getParentNameDefault() throws ExceptionZZZ{
+        	return ExpressionIniUtilZZZ.getTagParentNameDefault(this);           
     }	
 	
 	

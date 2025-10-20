@@ -15,6 +15,7 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
+import basic.zKernel.file.ini.ExpressionIniUtilZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.Kernel_FlagControlZZZ;
 
@@ -422,32 +423,10 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 			return this.sTagName;
 		}
 	}	
-	
-	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
-	//Merke: Aufgrund des statischen Contexts in Java,  
-	//       und der Tatsache, dass statische Variablen in den erbenden Klassen nicht ueberschrieben werden funktioniert das nicht: 
-	//@Override
-	//public String getNameDefault() throws ExceptionZZZ{
-	//	return sTAG_NAME;
-	//}
-	//
-	//Ein Loesungsansatz wäre dies in jeder Klasse die Methode zu implementieren, 
-	//also kann man das so erzwingen:
-	//
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
-	//@Override
-	//public abstract String getNameDefault() throws ExceptionZZZ; 
 		
-	//Merke: 20251019 Vorgeschlagener Loesungsansatz ist dies per Reflection als instanzbezogene Methode zu implementieren:
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
-        try {
-            // Hole das Feld sTAG_NAME der tatsächlichen Klasse
-            return (String) this.getClass().getField("sTAG_NAME").get(null);
-        } catch (Exception e) {
-        	ExceptionZZZ ez = new ExceptionZZZ(e);
-        	throw ez;   
-        }
+      return ExpressionIniUtilZZZ.getTagNameDefault(this);
     }
 	
 	@Override

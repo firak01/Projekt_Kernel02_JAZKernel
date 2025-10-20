@@ -93,6 +93,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			String[] saFlag = {""}; //Die Flags werden in den konkreten Tests an-/ausgeschaltet.
 			objExpressionSolver = new KernelJavaCallIniSolverZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 //			catch (FileNotFoundException e) {			
@@ -245,6 +246,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		testCompute_JavaCall_(TestUtilZZZ.TestSubtype.AS_ENTRY, sExpression, sExpressionSubstituted, sExpressionSolved, sPre, sPost, sTag, sTagSolved);
 
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 }
@@ -679,6 +681,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			}
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -843,6 +846,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 		return bReturn;
@@ -999,6 +1003,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
 			return bReturn;
@@ -1154,6 +1159,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				bReturn = true;
 			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			}
 			
@@ -1275,6 +1281,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 		
@@ -1396,6 +1403,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			
 			bReturn = true;
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 		
@@ -1583,6 +1591,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -1743,6 +1752,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -1828,6 +1838,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}		
@@ -1909,6 +1920,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}		

@@ -30,10 +30,10 @@ public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIni
 		
 	
 	//###### Getter / Setter
-	@Override
-	public String getNameDefault() throws ExceptionZZZ{
-		return KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME;
-	}
+//	@Override
+//	public String getNameDefault() throws ExceptionZZZ{
+//		return KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME;
+//	}
 
 
 	//### aus IConvertableZZZ
