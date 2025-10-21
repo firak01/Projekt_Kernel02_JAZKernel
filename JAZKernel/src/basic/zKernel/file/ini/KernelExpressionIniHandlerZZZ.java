@@ -575,11 +575,9 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				
 				boolean bAnyCall = KernelConfigSectionEntryUtilZZZ.getCallSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverCall);
 				objEntry = objReturnReferenceSolverCall.get();	
-				
-				//TODOGOON20250809; Hier objentry.getLineCallSolved(); 
+ 
 				String sLineDecalled = objEntry.getValueCallSolved();//Wert zur weiteren Verarbeitung weitergeben						
-				sExpressionUsed = sLineDecalled; 
-				
+				sExpressionUsed = sLineDecalled; 		
 			}//end if busecall
 			
 			
@@ -602,29 +600,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 				boolean bForFurtherProcessing = false; //Auf ExpressionHandler-Ebene entferne die Z-Tags der einzelnen Solver
 				boolean bAnyJson = KernelConfigSectionEntryUtilZZZ.getJsonSolved(this.getFileConfigKernelIni(), sExpressionUsed, bUseJson, bForFurtherProcessing, saFlagZpassed, objReturnReferenceSolverJson, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 				objEntry = objReturnReferenceSolverJson.get();
-//TODOGOON20250818: Das sollte vorher schon erledigt sein.
-//				if(objEntry.isExpression()) { //TODOGOON20250806; //nach objEntry sollte das folgende nicht mehr notwendig sein!!!!
-//					this.getEntry().isExpression(true);
-//					if(objEntry.isJson()) {
-//						this.getEntry().isJson(true);
-//						if(objEntry.isJsonArray()) {
-//							this.getEntry().isJsonArray(true);								
-//							this.setValue(objalsReturnValueJsonSolved.getArrayList());
-//							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
-//							//der wird automatisch beim Setzen der ArrayList mitgesetzt.
-//							//this.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));						
-//						}
-//						
-//						if(objEntry.isJsonMap()) {	
-//							this.getEntry().isJsonMap(true);
-//							this.setValue(objhmReturnValueJsonSolved.get());	
-//							//NEIN, nicht den DebugString verwenden, es gibt auch einen echten String.  
-//							//der wird automatisch beim Setzen der HashMap mitgesetzt. 
-//							//this.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
-//						}
-						sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
-//					}//Merke: Keinen Else-Zweig zum false setzen. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
-//				}
+				sExpressionUsed = objEntry.getValue(); //Zur Verarbeitung weitergeben
 			}//end if busejson									
 								
 			sReturnLine = sExpressionUsed;	
@@ -634,7 +610,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 			                   //      Dann müssen alle anderen Solver erneut aufgerufen werden, da ggfs. deren Werte sich nun aendern.
 			                   //      z.B. vorher war etwas verschluesselt.
 			                   //      Also die Schleife nur verlassen, wenn alle als Bool-Wert false zurückliefern.
-			
+							   //
 			
 			this.updateValueSolved();
 			this.updateValueSolved(objReturnReference);

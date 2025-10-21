@@ -201,7 +201,7 @@ public class ExpressionIniUtilZZZ {
 			//Hole das Feld sTAG_NAME der tatsächlichen Klasse
 			//return (String) objWithTag.getClass().getField("sTAG_NAME").get(null);
 			Class classObjectWithTag = objWithTag.getClass();
-			return getTagParentNameDefault(classObjectWithTag);
+			return getTagNameDefault(classObjectWithTag);
 	  } catch (Exception e) {
 		  	ExceptionZZZ ez = new ExceptionZZZ(e);
 		  	throw ez;
