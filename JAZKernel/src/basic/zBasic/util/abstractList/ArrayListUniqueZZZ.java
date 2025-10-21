@@ -28,10 +28,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ArrayListUniqueZZZ<T> extends AbstractArrayListZZZ<T> implements  IConstantZZZ, IObjectZZZ, IArrayListExtendedZZZ{
+public class ArrayListUniqueZZZ<T> extends AbstractArrayListZZZ<T> implements IArrayListExtendedZZZ{
 	private static final long serialVersionUID = 2859619907770188881L;
-	private ExceptionZZZ objException;
-		/**
+	
+	/**
 	 * @param iCapacityInitial
 	 */
 	public ArrayListUniqueZZZ(int iCapacityInitial) {

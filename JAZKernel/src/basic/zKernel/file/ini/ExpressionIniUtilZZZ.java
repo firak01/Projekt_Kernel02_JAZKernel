@@ -1,6 +1,9 @@
 package basic.zKernel.file.ini;
 
+import java.util.ArrayList;
+
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagBasicChildZZZ;
@@ -12,10 +15,31 @@ public class ExpressionIniUtilZZZ {
 		//zum 'Verstecken" des Konstruktors
 	}//only static Methods
 	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//Alle Klassen, die einen Expression haben, als ein Array deklarieren.
+	//Das sind die Klassen, die letztendlich ISolveUserZZZ implementieren.
+	//TODOGOON20251021;//Hole das per ReflectionAPI. Dabei ist aber das Interface der Ausgangspunkt der Suche.
+	//                   In bisherigen Lösungen ist immer eine Klasse der Ausgangspunkt der Suche.
+	public static ArrayListUniqueZZZ<Class> getExpressionUsingSolver_Classes() throws ExceptionZZZ{
+		ArrayListUniqueZZZ<Class> listaReturn = new ArrayListUniqueZZZ<Class>();
+		main:{
+			listaReturn.add(KernelExpressionIniHandlerZZZ.class);
+			listaReturn.add(KernelEncryptionIniSolverZZZ.class);
+			listaReturn.add(KernelCallIniSolverZZZ.class);
+			listaReturn.add(KernelJavaCallIniSolverZZZ.class);
+			listaReturn.add(KernelJsonIniSolverZZZ.class);
+			listaReturn.add(KernelJsonArrayIniSolverZZZ.class);
+			listaReturn.add(KernelJsonMapIniSolverZZZ.class);
+			listaReturn.add(KernelZFormulaIniSolverZZZ.class);
+			listaReturn.add(KernelZFormulaMathSolverZZZ.class);						
+		}//end main:
+		return listaReturn;
+	}
+	
 	/* Setze Z-Tags um den Ausdruck rum, falls noch nicht vorhanden. 
 	 */
 	public static String makeAsExpression(String sString) throws ExceptionZZZ {
-		return ExpressionIniUtilZZZ.makeAsExpression(sString, "Z");
+		return ExpressionIniUtilZZZ.makeAsExpression(sString, KernelExpressionIniHandlerZZZ.sTAG_NAME);
 	}
 	
 	/* Setze den angegebenen Tag um den Ausdruck rum, falls noch nicht vorhanden. 
@@ -95,8 +119,8 @@ public class ExpressionIniUtilZZZ {
 		return bReturn;
 	}
 	
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	TODOGOON20251020;//Irgendwo alle Klassen, die einen Expression haben, als ein Array deklarieren.
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++
 	public static boolean isExpressionDefault(String sExpression, ITagBasicZZZ objWithTag) throws ExceptionZZZ {
 		Class classObjectWithTag = objWithTag.getClass();
@@ -115,23 +139,20 @@ public class ExpressionIniUtilZZZ {
 	//Merke: Fuer den JUnit-Test gilt: Erfasse alle Klassen auch in 
 	//       TestUtilZZZ.createStringsUsed_ExpressionAny();
 	public static boolean isExpressionDefaultAny(String sString) throws ExceptionZZZ{
-		boolean bReturn=true;
+		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sString)) break main;
 		
 			try {
-				bReturn = isExpressionDefault(sString, KernelExpressionIniHandlerZZZ.class);
-				if(bReturn) break main;
-				
-				bReturn = isExpressionDefault(sString, KernelCallIniSolverZZZ.class);
-				if(bReturn) break main;
-			
+				ArrayListUniqueZZZ<Class> listaClass = ExpressionIniUtilZZZ.getExpressionUsingSolver_Classes();
+				for(Class classObj : listaClass) {
+					bReturn = ExpressionIniUtilZZZ.isExpressionDefault(sString, classObj);
+					if(bReturn) break main;
+				}
 			}catch(Exception e) {
 				ExceptionZZZ ez = new ExceptionZZZ(e);
 				throw ez;
-			}
-			
-			bReturn = false;
+			}	
 		}//end main
 		return bReturn;		
 	}

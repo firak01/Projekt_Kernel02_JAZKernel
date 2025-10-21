@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
@@ -422,7 +423,7 @@ public class TestUtilZZZ {
 		String[] saReturn = null;
 		main:{
 			String sExpression=null;
-			ArrayList<String>listasReturn=new ArrayList<String>();
+			ArrayListUniqueZZZ<String>listasReturn=new ArrayListUniqueZZZ<String>();
 			
 			//+++ ExpressionHandler
 			sExpression = ExpressionIniUtilZZZ.makeAsExpression("dummy");
@@ -430,11 +431,15 @@ public class TestUtilZZZ {
 			listasReturn.add(sExpression);
 			
 			//+++ Alle ExpressionSolver
-			sExpression = ExpressionIniUtilZZZ.makeAsExpression("dummy", KernelCallIniSolverZZZ.sTAG_NAME);
-			sExpression = "PRE" + sExpression + "POST";
-			listasReturn.add(sExpression);
-			
-			
+			ArrayListUniqueZZZ<Class>listaClass=ExpressionIniUtilZZZ.getExpressionUsingSolver_Classes();
+			for(Class classObj : listaClass) {
+				String sTag = ExpressionIniUtilZZZ.getTagNameDefault(classObj);
+				
+				sExpression = ExpressionIniUtilZZZ.makeAsExpression("dummy", sTag);
+				sExpression = "PRE" + sExpression + "POST";
+				listasReturn.add(sExpression);
+			}
+																		
 			saReturn = ArrayListUtilZZZ.toStringArray(listasReturn);
 		}//end main:
 		return saReturn;
