@@ -1,8 +1,8 @@
 package basic.zKernel.status;
 
-import java.util.ArrayList;
 import java.util.EventListener;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 
 
 /**Dieses Interface enthaelt Methoden, die von den Klassen implementiert werden muessen, 
@@ -21,5 +21,5 @@ public interface ISenderObjectStatusBasicZZZ extends EventListener{
 	
 	//Damit soll sichergestellt werden, dass jedes Objekt sich nur 1x registriert. 
 	//Merke: Wenn ein Objekt mehrmals registriert wird, kann es sein, das beim 2ten feuern des gleichen Events an das gleich Objekt unerwuenschte Nebeneffekte auftreten.
-	public abstract ArrayList<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ;
+	public abstract ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ;
 }

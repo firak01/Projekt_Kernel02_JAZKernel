@@ -114,7 +114,7 @@ public abstract class AbstractSenderObjectWithFlagStatusLocalBasicZZZ extends Ab
 	}
 	
 	@Override
-	public ArrayList<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
+	public ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
 		return listaLISTENER_REGISTERED;
 	}
 }
