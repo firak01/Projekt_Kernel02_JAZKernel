@@ -1346,6 +1346,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		return this.setStatusLocal(enumStatusMapped.getName(), bStatusValue, sStatusMessage);
 	}
+	
 
 	@Override
 	public boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
