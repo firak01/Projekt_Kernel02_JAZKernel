@@ -163,17 +163,5 @@ public abstract class AbstractKernelUseObjectOnStatusListeningZZZ extends Abstra
 		}//end main;
 		return bReturn;
 	}
-	
-	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom(){
-		HashMap<IEnumSetMappedStatusZZZ,String>hmReturn = new HashMap<IEnumSetMappedStatusZZZ,String>();
-		main:{
-			
-		}//end main:
-		return hmReturn;
-	}
-	
-	
-	
 }//end class
 

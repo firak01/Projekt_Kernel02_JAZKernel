@@ -16,9 +16,10 @@ public interface IStatusLocalMapForStatusLocalUserZZZ{
 	public final String sERROR_STATUS_UNMAPPED = "this LOCAL status is not mapped";
 	public final int iERROR_STATUS_UNMAPPED = 52;
 	
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ>getHashMapEnumSetForStatusLocal();
-	public abstract void setHashMapEnumSetForStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSet);	
+	//FGL20251025: Nun in AbtractObjectWithFlagOnStatusListeningZZZ
+	//public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ>getHashMapEnumSetForStatusLocal();
+	//public abstract void setHashMapEnumSetForStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSet);	
 	
 	//Map: ExternerWert aus Event, LokalerWert
-	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ>createHashMapEnumSetForStatusLocalCustom();
+	//public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ>createHashMapEnumSetForStatusLocalCustom();
 }

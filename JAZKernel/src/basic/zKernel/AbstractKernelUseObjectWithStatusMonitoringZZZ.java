@@ -167,7 +167,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 		}
 		
 		@Override
-		public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
+		public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> createHashMapStatusLocal4ReactionCustom_Enum();
 		
 }//end class
 

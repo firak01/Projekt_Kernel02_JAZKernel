@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
 public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasicZZZ{
 	//Hier wird ggfs. der empfangene Status mit einem Alias gemappt. 
@@ -12,14 +13,27 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	//Merke: Es können als Action-Angabe auch verwendet werden
 	//       KernelZFormulaIni_NullZZZ.getExpressionTagNull(), d.h. ist NICHT relevant, s. HashMap=NULL 
 	//       KernelZFormulaIni_NullZZZ.getExpressionTagEmpty(), d.h. ist auf jeden Fall relevant, ohne spezielle Differenzierung. Wie "".
-	public HashMap<IEnumSetMappedStatusZZZ,String> getHashMapStatusLocal4Reaction(); 	
-	public void setHashMapStatusLocal4Reaction(HashMap<IEnumSetMappedStatusZZZ,String> hmEnumSetForReaction);	
 	
 	//Eine HashMap mit den StatusLocal-Enums und einem ActionAlias.
 	//Hier macht es nur Sinn StatusLocal-Enums aufzunehmen von Objekten, an denen das Objekt selbst als  Listener registriert ist.
 	//Die definierten ActionAliassse werden verwendet in der Methode: reactOnStatusLocalEvent4ActionCustom
-	public HashMap<IEnumSetMappedStatusZZZ,String> createHashMapStatusLocal4ReactionCustom();
+	public HashMap<IEnumSetMappedStatusZZZ,String> createHashMapStatusLocal4ReactionCustom_String();
+	public HashMap<IEnumSetMappedStatusZZZ,String> getHashMapStatusLocal4Reaction_String();	
+	public void setHashMapStatusLocal4Reaction_String(HashMap<IEnumSetMappedStatusZZZ,String> hmEnumSetForReaction);	
 	
+	
+	//dito, nur eine HashMap mit einem Enum, statt einem action Alias.
+	public HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> createHashMapStatusLocal4ReactionCustom_Enum();
+	public HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> getHashMapStatusLocal4Reaction_Enum(); 	
+	public void setHashMapStatusLocal4Reaction_Enum(HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> hmEnumSetForReaction);	
+	
+	
+	//dito, nur eine HashMap mit einem Enum, das auch einen Status hat. Mappe also einen Status auf einen eigenen Status (Z.B. verwendet in den Monitor-Objekten)(Z.B. verwendet in den ClientTray/ServerTray Objekten des OVPN Projekts)	
+	public HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> createHashMapStatusLocal4ReactionCustom_EnumStatus();
+	public HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> getHashMapStatusLocal4Reaction_EnumStatus(); 	
+	public void setHashMapStatusLocal4Reaction_EnumStatus(HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSetForReaction);	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++
 	public String getActionAliasString(IEnumSetMappedStatusZZZ enumStatus);
 		
 	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;

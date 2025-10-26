@@ -11,10 +11,8 @@ import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
 public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
-	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
+	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSetForActionCascaded_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
-	
-	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
 	public AbstractObjectWithStatusMonitoringZZZ() {	
@@ -47,15 +45,15 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	//### aus IStatusLocalMapForMonitoringStatusMessageUserZZZ	
 	@Override
 	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> getHashMapEnumSetForCascadingStatusLocal() {
-		if(this.hmEnumSet==null) {
-			this.hmEnumSet = this.createHashMapEnumSetForCascadingStatusLocalCustom();
+		if(this.hmEnumSetForActionCascaded_EnumStatus==null) {
+			this.hmEnumSetForActionCascaded_EnumStatus = this.createHashMapEnumSetForCascadingStatusLocalCustom();
 		}
-		return this.hmEnumSet;
+		return this.hmEnumSetForActionCascaded_EnumStatus;
 	}
 	
 	@Override
 	public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet) {
-		this.hmEnumSet = hmEnumSet;
+		this.hmEnumSetForActionCascaded_EnumStatus = hmEnumSet;
 	}
 	
 	//---------- der Monitor erweitert dies um reactOnStatusLocalEvent4Monitor ....
