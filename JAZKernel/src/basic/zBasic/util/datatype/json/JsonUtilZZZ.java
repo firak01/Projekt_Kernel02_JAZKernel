@@ -270,9 +270,19 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 03.04.2021, 09:52:34
 	 */
-	public static HashMap<?,?> toHashMap(String sJson) throws ExceptionZZZ {
-		HashMap<?,?> hmReturn = null; 
+	public static HashMap<String,String> toHashMap(String sJson) throws ExceptionZZZ {								
+			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>() {};
+			return JsonUtilZZZ.toHashMap(sJson, typeToken);
+	}
+	
+	public static <K,V> HashMap<K,V> toHashMap(String sJson, TypeToken<HashMap<K, V>> typeToken) throws ExceptionZZZ {
+		HashMap<K,V> hmReturn = null; 
 		main:{
+			if(typeToken==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No typeToken available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
 			if(StringZZZ.isEmpty(sJson)){
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -309,16 +319,27 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 		   Ohne anonyme Klasse (new TypeToken<...>()) → durch Type Erasure verlierst du die Typinformationen.
 		   */
 			
-			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>() {};
 			Type type = typeToken.getType();
 			hmReturn = gson.fromJson(sJson, type);	
 		}//end main:
 		return hmReturn;
 	}
+
 	
-	public static LinkedHashMap<?,?> toLinkedHashMap(String sJson) throws ExceptionZZZ{
-		LinkedHashMap<?,?> hmReturn = null;
+	//Merke: Die LinkedHashMap soll die Reihenfolge sicherstellen
+	public static LinkedHashMap<String, String> toLinkedHashMap(String sJson) throws ExceptionZZZ{				
+			TypeToken<LinkedHashMap<String, String>> typeToken = new TypeToken<LinkedHashMap<String,String>>(){};
+			return JsonUtilZZZ.toLinkedHashMap(sJson, typeToken);
+	}
+		
+	//Merke: Die LinkedHashMap soll die Reihenfolge sicherstellen
+	public static <K, V> LinkedHashMap<K,V> toLinkedHashMap(String sJson, TypeToken<LinkedHashMap<K, V>> typeToken) throws ExceptionZZZ{
+		LinkedHashMap<K,V> hmReturn = null;
 		main:{
+			if(typeToken==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No typeToken available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			if(StringZZZ.isEmpty(sJson)){
 				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonUtilZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -327,10 +348,7 @@ public class JsonUtilZZZ  implements IConstantZZZ{
 				break main;
 			}
 	
-			Gson gson=new GsonBuilder().create();
-			
-			//Merke: Die LinkedHashMap soll die Reihenfolge sicherstellen
-			TypeToken<LinkedHashMap<String,String>> typeToken = new TypeToken<LinkedHashMap<String,String>>(){};
+			Gson gson=new GsonBuilder().create();						
 			Type type = typeToken.getType();					
 			hmReturn = gson.fromJson(sJson, type);	
 		}//end main:

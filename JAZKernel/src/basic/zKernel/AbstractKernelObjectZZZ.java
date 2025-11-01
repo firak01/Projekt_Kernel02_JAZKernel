@@ -7083,24 +7083,45 @@ MeinTestParameter=blablaErgebnis
 					//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
 					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagPassed();	
 					if(hmFlagZpassed!=null) {
-						Set<String> setFlag = hmFlagZpassed.keySet();
-						Iterator<String> itFlag = setFlag.iterator();
-						while(itFlag.hasNext()) {
-							String sKey = itFlag.next();
-							 if(!StringZZZ.isEmpty(sKey)){
-								 Boolean booValue = hmFlagZpassed.get(sKey);
-								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
-								 if(btemp==false){						 
-									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-	//								  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
-	//								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-	//								  throw ez;		 
-								  }
-							 }
+						
+						
+					
+//						Set<String> setFlag = hmFlagZpassed.keySet();
+//						Iterator<String> itFlag = setFlag.iterator();
+//						while(itFlag.hasNext()) {
+//							String sKey = itFlag.next();
+//							 if(!StringZZZ.isEmpty(sKey)){
+//								 Boolean booValue = hmFlagZpassed.get(sKey);
+//								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+//								 if(btemp==false){						 
+//									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+//									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+//	//								  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+//	//								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+//	//								  throw ez;		 
+//								  }
+//							 }
+//						}
+						
+						for(Map.Entry<String, Boolean> entry : hmFlagZpassed.entrySet()){
+							String sKey = entry.getKey();
+							
+							if(!StringZZZ.isEmpty(sKey)){
+								Boolean booValue = entry.getValue();												
+								btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+								if(btemp==false){						 
+									sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+									this.logLineDate(sLog);
+	//								Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+	//								ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+	//								throw ez;		 
+								}
+							 }							
 						}
-					}
-				}
+						
+						
+					}//end if hmFlagZpassed!=null
+				}//end if objConfig!=null
 				
 					
 								
@@ -7520,13 +7541,13 @@ MeinTestParameter=blablaErgebnis
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(sLog);
+			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
 			System.out.println(sTemp);
 		}else {
 			objLog.WriteLineDate(sLog);
 		}			
 	}
-
+	
 	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.

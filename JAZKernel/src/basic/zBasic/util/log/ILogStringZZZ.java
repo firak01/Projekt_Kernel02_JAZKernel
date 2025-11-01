@@ -57,8 +57,9 @@ public interface ILogStringZZZ{
 	public static int iFACTOR_CLASSPOSITION=23;       //mit der Zeilenummer dahinter
 	public static int iFACTOR_CLASSFILEPOSITION=29;  //mit der Zeilenummer dahinter
 	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=31;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_THREADID=37;
-	public static int iFACTOR_DATE=41;//
+	public static int iFACTOR_POSITIONCURRENT=37;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
+	public static int iFACTOR_THREADID=41;
+	public static int iFACTOR_DATE=43;//
 	//Weitere Primzahlen sind
 	//43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
 	
@@ -73,6 +74,7 @@ public interface ILogStringZZZ{
 	//                  Diese NACHTRAEGLICHE Sortierung kann man zumindest bei dem Default-Format extra durchfuehren und so erzwingen. 
 	
 	//Merke: Methoden und Zeilennummern können nicht aus dem aktuellen Objekt ermittelt werden, daher sind sie von einem uebergebenen String abhaengig.
+	//       POSITIONCALLING ist das entsprechende Format und kann fuer die Reihenfolge festgelegt werden.
 	
 	//ALIAS("Uniquename",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")
 	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
@@ -90,6 +92,8 @@ public interface ILogStringZZZ{
 		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
 		CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "[File:%s]",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
 		CLASSFILEPOSITION_REFLECTED("classfileposition_reflected",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "%s",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
+		
+		POSITIONCURRENT("positioncurrent", ILogStringZZZ.iFACTOR_POSITIONCURRENT, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[POS]", "%s", ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/POS]", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCalling(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
 		
 		THREADID("threadid",ILogStringZZZ.iFACTOR_THREADID, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringZZZ.iARG_NOTHING, "", "Gib die ID des Threads in diesem Format aus."),
 		DATE("date",ILogStringZZZ.iFACTOR_DATE,ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringZZZ.iARG_NOTHING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/D]", "Gib das errechnete Datum in diesem Format aus.")
@@ -237,6 +241,14 @@ public interface ILogStringZZZ{
 
 	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
 	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
+
+	//Das alles noch in einer Variante in der die Klasse uebergeben wird.
+	public String compute(Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public String compute(Class classObj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Class classObj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	
 	
 	//Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm)throws ExceptionZZZ;
@@ -296,6 +308,7 @@ public interface ILogStringZZZ{
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	
 	
 	
 	//#######################################################################################

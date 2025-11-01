@@ -109,12 +109,15 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 //			this.sDebugKeyDelimiterUsed = sKeyDelimiter;
 //		}
 		
-		//### aus ILogZZZ	
+		
+		
+		
+		//### aus ILogZZZ, Merke: Dazu gibt es jeweils auch eine static-Methode fuer die Klasse als Argument.	
 		@Override
 		public void logLineDate(String sLog) throws ExceptionZZZ {
 			ObjectZZZ.logLineDate(this, sLog);
 		}
-		
+				
 		//++++++++++++++++++++++++++++++++++++++++++++++++
 		@Override
 		public synchronized void logProtocolString(String[] saLog) throws ExceptionZZZ{

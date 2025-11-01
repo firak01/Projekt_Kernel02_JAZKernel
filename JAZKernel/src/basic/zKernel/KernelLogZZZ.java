@@ -7,6 +7,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
@@ -147,17 +148,77 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 };
 		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
 	}
+	
+	
+	public synchronized static String computeLineDate(Class classObj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
+	}
+	
 	public synchronized static String computeLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 return LogStringZZZ.getInstance().compute(obj, stemp, sPositionCalling, iaFormat);
+		 String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(obj, satemp, iaFormat);
+	}
+	
+	public synchronized static String computeLineDateWithPosition(Class classObj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
+		 };
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
+	}
+	
+	public synchronized static String computeLineDateWithPosition(Object obj, String[] satemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
+		 };
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(obj, satemp, iaFormat);
+	}
+	
+	public synchronized static String computeLineDateWithPosition(Class classObj, String[] satemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
+		 };
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
 	}
 	
 	

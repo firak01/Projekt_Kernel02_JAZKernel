@@ -16,7 +16,7 @@ public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 		System.out.println(sPositionCalling + sLog);
 	}
 	
-	public static void logLineWithDate(String sLog) throws ExceptionZZZ{
+	public static void logLineDateStatic(String sLog) throws ExceptionZZZ{
 		String sTemp = KernelLogZZZ.computeLineDate(sLog);		
 		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
 		System.out.println(sPositionCalling + sTemp);
@@ -27,6 +27,14 @@ public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
 		System.out.println(sPositionCalling + sTemp);
 	}
+	
+	//##### Das dann jeweils als Variante mit einer Klasse als Argument
+	public static void logLineDate(Class classObj, String sLog) throws ExceptionZZZ{
+		String sTemp = KernelLogZZZ.computeLineDate(classObj, sLog);		
+		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+		System.out.println(sPositionCalling + sTemp);
+	}
+	
 
 	
 	

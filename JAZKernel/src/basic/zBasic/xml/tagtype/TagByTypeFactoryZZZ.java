@@ -9,6 +9,7 @@ import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
+import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -23,7 +24,10 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		LINENUMBER("linenumber",TagTypeLineNumberZZZ.sTAGNAME, "Zeilennummer im Quellcode"),
 		FILENAME("filename",TagTypeFileNameZZZ.sTAGNAME,"Name der (Java) Datei"),
 		METHOD("method",TagTypeMethodZZZ.sTAGNAME,"Name der aufgerufenen Methode"),
-		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist.");
+		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist."),
+		POSITIONCURRENT("positioncurrent",TagTypePositionCurrentZZZ.sTAGNAME,"Umgebender Tag fuer die CLASSMETHOD und CLASSFILE_POSITION Tags. Damit werden die Werte, die per ReflectCodeZZZ.getPositionCalling() gekapselt.")
+		;
+		
 		
 		private String sAbbreviation,sTag,sDescription;
 	
@@ -176,6 +180,9 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 				break;
 			case TagTypeFilePositionZZZ.sTAGNAME:
 				objReturn = new TagTypeFilePositionZZZ();
+				break;
+			case TagTypePositionCurrentZZZ.sTAGNAME:
+				objReturn = new TagTypePositionCurrentZZZ();
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");

@@ -60,11 +60,65 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 		this.bIsString = true;
 	}
 	
-	public static String[] append(String[] saString1, String[] saString2, String sFlagin) throws ExceptionZZZ{
+	//#########################################################
+	//Strings als Array hintereinander haengen
+	public static String[] append(String sString1, String sString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(sString1, sString2, (String)null);
+	}
+	
+	public static String[] append(String sString1, String sString2, String sFlagIn) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
-			String[]saFlag=new String[1];
-			saFlag[0]=sFlagin;
+			String[]saFlag=null;
+			if(sFlagIn!=null) {
+				saFlag=new String[1];
+				saFlag[0]=sFlagIn;
+			}
+			
+			String[]saString1=new String[1];
+			saString1[0]=sString1;
+						
+			String[]saString2=new String[1];
+			saString2[0]=sString2;
+						
+			objReturn = StringArrayZZZ.append(saString1, saString2, saFlag);
+		}//end main:
+		return objReturn;
+	}
+	
+	public static String[] append(String[] saString1, String sString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(saString1, sString2, (String)null);		
+	}
+	
+	public static String[] append(String[] saString1, String sString2, String sFlagIn) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			String[]saFlag=null;
+			if(sFlagIn!=null) {
+				saFlag=new String[1];
+				saFlag[0]=sFlagIn;
+			}
+			
+			String[]saString2=new String[1];
+			saString2[0]=sString2;
+			objReturn = StringArrayZZZ.append(saString1, saString2, saFlag);
+		}//end main:
+		return objReturn;
+	}
+	
+	
+	public static String[] append(String[] saString1, String[] saString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(saString1, saString2, (String)null);
+	}
+	
+	public static String[] append(String[] saString1, String[] saString2, String sFlagIn) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			String[]saFlag=null;
+			if(sFlagIn!=null) {
+				saFlag=new String[1];
+				saFlag[0]=sFlagIn;
+			}
 			objReturn = StringArrayZZZ.append(saString1, saString2, saFlag);
 		}//end main:
 		return objReturn;
@@ -86,7 +140,6 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 		
 		boolean bBehind=false; boolean bSkipNull=false; boolean bAddMissing=false;
 		
-		String sFlag = null;
 		if(saFlagIn==null){
 			bBehind=true;
 		}else{

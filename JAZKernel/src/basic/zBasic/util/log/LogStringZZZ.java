@@ -69,6 +69,4 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 		
 		return hmReturn;
 	}
-
-		
 }

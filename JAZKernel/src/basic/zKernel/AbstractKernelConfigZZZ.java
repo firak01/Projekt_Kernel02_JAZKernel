@@ -48,7 +48,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author lindhauer
  * 
  */
-public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigZZZ,IKernelExpressionIniSolverZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ,IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{
+public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigZZZ,IKernelExpressionIniSolverZZZ, IKernelZFormulaIniZZZ, IKernelZFormulaIni_PathZZZ, IKernelJsonIniSolverZZZ, IKernelJsonArrayIniSolverZZZ,IKernelJsonMapIniSolverZZZ, IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ, IKernelEncryptionIniSolverZZZ, ICryptUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 //	public enum FLAGZ{
 //		USEFORMULA, USEFORMULA_MATH;
@@ -173,7 +173,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 			if(!JsonUtilZZZ.isJsonValid(sJSON)) break main;
 						
 			TypeToken<HashMap<String, Boolean>> typeToken = new TypeToken<HashMap<String, Boolean>>(){};
-			hmReturn = (HashMap<String, Boolean>) JsonUtilZZZ.toHashMap(sJSON);												
+			hmReturn = (HashMap<String, Boolean>) JsonUtilZZZ.toHashMap(sJSON, typeToken);												
 		}//end main
 		return hmReturn;
 	}
@@ -498,6 +498,44 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	//##################################################
 	//### FLAG Handling
 	
+	//### aus IKernelZFormulaIniZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ{
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIniZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelZFormulaIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+		
 	//### aus IKernelZFormulaIni_PathZZZ
 	@Override
 	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ{

@@ -620,6 +620,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
 			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(hmLogString);
 			
+			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.			
+			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+			sReturn = objTagPositionCurrent.getElementString();
+			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
 		}//end main:
