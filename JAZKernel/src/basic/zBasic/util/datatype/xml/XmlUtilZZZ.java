@@ -313,12 +313,25 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			if (matcher.find()) {
 			    String DataElements = matcher.group(1);
 		    	System.out.println(DataElements);
-			    Matcher matcher2 = regex2.matcher(DataElements);
+		    	
+		    	//Sichere den TagWert
+		    	objReturn.setValue(DataElements);
+		    	
+		    	//FGL: Was soll das dann??? ist das wichtig??? Wahrscheinlich nur fuer ineinander verschachtelte Tags
+		    	//sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
+		    	//ABER: DAS Klappt NUR wenn man den ClosingTag ergänzt!!!
+			    Matcher matcher2 = regex2.matcher(DataElements+sTagClosing);
 			    while (matcher2.find()) {
 			        //list.add(new DataElement(matcher2.group(1), matcher2.group(2)));
-			    	String stemp = matcher2.group(2);
+			    	String stemp = matcher2.group(2);			    	
 			    	System.out.println(stemp);
 			    	
+			    	//Sichere den TagWert
+			    	objReturn.setValue(stemp);
+			    	
+			    	//Nimm nur den erste Tag?
+			    	//NEIN: Dann klappt es auch mit verschachtelten gleichen Tags.
+			    	//break;
 			    } 
 			}
 			

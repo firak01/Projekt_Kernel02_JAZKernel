@@ -1,6 +1,7 @@
 package basic.zBasic.util.file;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -45,6 +46,7 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 	
 	public static IFileEasyPathObjectZZZ convertFilePathToAbsolute(String sFilePathIn, char cDirectorySeparator) throws ExceptionZZZ{
 		IFileEasyPathObjectZZZ objReturn = new FileEasyPathObjectZZZ(sFilePathIn);
+		String sLog=null;
 		
 		//ggfs. ueberfluessige Slashes, etc. entfernen
 		String sFilePath = StringZZZ.stripFileSeparators(sFilePathIn);		
@@ -133,8 +135,12 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 						}	
 					}else {
 						sReturnRoot = FileEasyZZZ.getFileRootPath();
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sReturnRoot='"+sReturnRoot+"'");
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sFilePath='"+sFilePath+"'");
+						sLog="sReturnRoot='"+sReturnRoot+"'";
+						ObjectZZZ.logLineDateWithPosition(FileEasyConstantConverterZZZ.class, sLog);
+						
+						sLog="sFilePath='"+sFilePath+"'";
+						ObjectZZZ.logLineDateWithPosition(FileEasyConstantConverterZZZ.class, sLog);
+						
 						if(!StringZZZ.isEmpty(sReturnRoot)) {
 							sReturnFilePath=StringZZZ.rightback(sFilePath, sReturnRoot+sDirectorySeparator);
 						}else {

@@ -129,6 +129,37 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	}
 
 	//#### static Methoden #########################################
+	//+++ als moeglichst einfacher String
+	public synchronized static String computeLine(String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01				 
+		 };
+		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
+	}
+	public synchronized static String computeLine(Object obj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
+	}
+	
+	
+	public synchronized static String computeLine(Class classObj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
+	}
+	
+	//+++ mit Datum
 	public synchronized static String computeLineDate(String stemp) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
@@ -161,7 +192,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
 	}
 	
+	//+++ mit CodePosition
 	public synchronized static String computeLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ {	
+		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
+		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
+		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
@@ -177,6 +212,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	}
 	
 	public synchronized static String computeLineDateWithPosition(Class classObj, String stemp) throws ExceptionZZZ {	
+		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
+		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
+		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {

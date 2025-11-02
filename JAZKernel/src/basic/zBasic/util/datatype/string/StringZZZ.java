@@ -4624,13 +4624,31 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return iReturn;
 	}
 	
+	//Leerzeichen wird von links und rechts abgeschnitten
 	public static String trim(String sString) {
 		return StringZZZ.trim(sString," ");
 	}
 	
+	//Zeichen werden von links und von rechts abgeschnitten
 	public static String trim(String sString, String sStringToBeTrimmed) {
 		String sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed);
 		sReturn = StringZZZ.trimRight(sString, sStringToBeTrimmed);
+		return sReturn;
+	}
+	
+	
+	public static String trimLeft(String sStringIn, String[] saStringToBeTrimmed){
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			if(StringArrayZZZ.isEmpty(saStringToBeTrimmed)) break main;
+			
+			String sString = sStringIn;
+			for(String sStringToBeTrimmed : saStringToBeTrimmed) {
+				sString = StringZZZ.trimLeft(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
+			}
+			sReturn = sString;
+		}//end main:
 		return sReturn;
 	}
 	
@@ -4667,6 +4685,22 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 					bGoon = true;
 				}
 			}
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	public static String trimRight(String sStringIn, String[] saStringToBeTrimmed){
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			if(StringArrayZZZ.isEmpty(saStringToBeTrimmed)) break main;
+			
+			String sString = sStringIn;
+			for(String sStringToBeTrimmed : saStringToBeTrimmed) {
+				sString = StringZZZ.trimRight(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
+			}
+			sReturn = sString;
 		}//end main:
 		return sReturn;
 	}
@@ -4708,6 +4742,20 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
+	/* Trimme den String, schneide links und rechts jeweils das Markierungszeichen weg, trimme wieder, ...  schneide Markierungszeichen weg, usw. bis es kein passendes Paar Markierungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String trimMarked(String sStringIn, String[] saMark){
+		String sReturn = sStringIn;
+		main:{
+			
+			String sString = sStringIn;
+			for(String sMark : saMark) {
+				sString = StringZZZ.trimMarked(sString, sMark);
+			}
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
 	
 	/* Trimme den String, schneide links und rechts jeweils das Markierungszeichen weg, trimme wieder, ...  schneide Markierungszeichen weg, usw. bis es kein passendes Paar Markierungszeichen links und rechts mehr gibt.	 
 	 */
@@ -4716,7 +4764,6 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 		
-			sReturn = sString.trim();
 			boolean bGoon = false;
 			while(!bGoon){
 				if(sReturn.startsWith(sMark) && sReturn.endsWith(sMark)){
@@ -4762,6 +4809,90 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return StringZZZ.trimMarked(sString, "\"");
 	}
 	
+	//Trimme FILE-SEPARATORS
+	public static String trimFileSeparators(String sStringIn){
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
+			sString = StringZZZ.trimFileSeparatorsLeft(sString);
+			sString = StringZZZ.trimFileSeparatorsRight(sString);
+			if(sString.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)) {
+				sString = "";
+			}
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String trimFileSeparatorsLeft(String sStringIn) {
+		String sReturn = sStringIn;
+		main:{           
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
+			if(sString.length()<=IFileEasyConstantsZZZ.sDIRECTORY_CURRENT.length())break main;
+			String[] saStringsToBeTrimmed = {IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, IFileEasyConstantsZZZ.sDIRECTORY_CURRENT,"/"};
+			sString = StringZZZ.trimLeft(sString, saStringsToBeTrimmed);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	public static String trimFileSeparatorsRight(String sStringIn){
+		String sReturn = sStringIn;
+		main:{			         
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
+			if(sString.length()<=IFileEasyConstantsZZZ.sDIRECTORY_CURRENT.length())break main;
+			String[] saStringsToBeTrimmed = {IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, IFileEasyConstantsZZZ.sDIRECTORY_CURRENT,"/"};
+			sString = StringZZZ.trimRight(sString, saStringsToBeTrimmed);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	//Trimme die Zahlen von links und von rechts weg
+	public static String trimNumeric(String sStringIn) {
+		String sReturn = sStringIn;
+		main:{			
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
+			sString = StringZZZ.trimNumericLeft(sString);
+			sString = StringZZZ.trimNumericRight(sString);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	//Trimme die Zahlen von links weg
+	public static String trimNumericLeft(String sString) {
+		String sReturn = sString;
+		main:{
+			String[] saToTrim = {"1","2","3","4","5","6","7","8","9","0"};
+			sReturn = StringZZZ.trimLeft(sString, saToTrim);
+		}//end main:
+		return sReturn;
+	}
+	
+	//Trimme die Zahlen von rechts weg
+	public static String trimNumericRight(String sString) {
+		String sReturn = sString;
+		main:{
+			String[] saToTrim = {"1","2","3","4","5","6","7","8","9","0"};
+			sReturn = StringZZZ.trimRight(sString, saToTrim);
+		}//end main:
+		return sReturn;
+	}
 	
 	
 	/* Trimme den String, schneide links und rechts jeweils ein Anfuehrungszeichen weg, trimme wieder, ...  schneide Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
@@ -4792,6 +4923,24 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
+	public static String stripCharacters(String sStringIn, String[]saToStrip) {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			if(StringArrayZZZ.isEmpty(saToStrip)) break main;
+
+			String sString = sStringIn;
+			for(String sToStrip : saToStrip) {
+				if(sToStrip!=null) {
+					char[] caToStrip = sToStrip.toCharArray();
+					sString = StringZZZ.stripCharacters(sString, caToStrip);
+				}			
+			}
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
 	/* Anders als beim trimMarked werden hier Leerzeichen nicht getrimmt. 
 	 */
 	public static String stripMarked(String sString, String sMark){
@@ -4811,13 +4960,13 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anf�hrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String stripSingleQuoteMarked(String sString){
 		return StringZZZ.stripMarked(sString, "'");
 	}
 	
-	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anf�hrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String stripDoubleQuoteMarked(String sString){
 		return StringZZZ.stripMarked(sString, "\"");
@@ -4869,24 +5018,26 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripLeft(String sString, String[] saStringsToBeStripped){
-		String sReturn = sString;
+	public static String stripLeft(String sStringIn, String[] saStringsToBeStripped){
+		String sReturn = sStringIn;
 		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringIn)) break main;
 			if(saStringsToBeStripped==null) break main;
-									
+				
+			String sString = sStringIn;
+			String sStringWithRemaining=sStringIn;
 			boolean bGoon = false;
 			while(!bGoon){
 				bGoon = true;
-				String sStringTemp = "";
 				for(String sStringToBeStripped:saStringsToBeStripped){
-					if(StringZZZ.startsWithIgnoreCase(sReturn, sStringToBeStripped)){
+					if(StringZZZ.startsWithIgnoreCase(sString, sStringToBeStripped)){
 						bGoon = false;
-						sStringTemp = StringZZZ.rightback(sReturn, sStringToBeStripped.length());
-						sReturn = sStringTemp;
+						sStringWithRemaining = sString;
+						sString = StringZZZ.rightback(sString, sStringToBeStripped.length());
 					}
 				}				
 			}
+			sReturn = sStringWithRemaining;//Nimm den Wert, bei dem etwas uebriggeblieben ist.
 		}//end main:
 		return sReturn;
 	}
@@ -4906,14 +5057,18 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripFileSeparatorsLeft(String sString){
-		String sReturn = sString;
+	public static String stripFileSeparatorsLeft(String sStringIn){
+		String sReturn = sStringIn;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
-			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
 			if(sString.length()<=IFileEasyConstantsZZZ.sDIRECTORY_CURRENT.length())break main;
 			String[] saStringsToBeStripped = {IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, IFileEasyConstantsZZZ.sDIRECTORY_CURRENT,"/"};
-			sReturn = StringZZZ.stripLeft(sString, saStringsToBeStripped);
+			sString = StringZZZ.stripLeft(sString, saStringsToBeStripped);
+			
+			sReturn = sString;
 		}//end main:
 		return sReturn;
 	}
@@ -5016,26 +5171,92 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sString, String[] saStringsToBeStripped){
-		String sReturn = sString;
+	public static String stripRight(String sStringIn, String[] saStringsToBeStripped){
+		String sReturn = sStringIn;
 		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringIn)) break main;
 			if(saStringsToBeStripped==null) break main;
-									
+			
+			String sString = sStringIn;						
+			String sStringRemaining = sStringIn;
 			boolean bGoon = false;
 			while(!bGoon){
 				bGoon = true;
-				String sStringTemp = "";
 				for(String sStringToBeStripped:saStringsToBeStripped){
-					if(StringZZZ.endsWithIgnoreCase(sReturn, sStringToBeStripped)){
+					if(StringZZZ.endsWithIgnoreCase(sString, sStringToBeStripped)){
 						bGoon = false;
-						sStringTemp = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
-						sReturn = sStringTemp;
+						sStringRemaining = sString;
+						sString = StringZZZ.leftback(sString, sStringToBeStripped.length());
 					}
 				}				
 			}
+			sReturn = sStringRemaining;
 		}//end main:
 		return sReturn;
 	}
+	
+	
+	//##########################################################
+	/** Schneide numerische Strings links und rechts ab und lasse jeweils 1 Zeichen uebrig.
+	 *  Ohne ein Zeichen uebrig links oder rechts uebrig zu lassen trimNumeric(...)
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
+	 */
+	public static String stripNumeric(String sStringIn) {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			
+			String sString = sStringIn;
+			sString = StringZZZ.stripNumericLeft(sString);
+			sString = StringZZZ.stripNumericRight(sString);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	/** Entferne den Numerische String von links kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimNumericLeft(...)
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
+	 */
+	public static String stripNumericLeft(String sStringIn) {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			String sString = sStringIn;
+			
+			String[] saToStrip = {"1","2","3","4","5","6","7","8","9","0"};
+			sString = StringZZZ.stripLeft(sString, saToStrip);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimNumericRight(...)
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
+	 */
+	public static String stripNumericRight(String sStringIn) {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			String sString = sStringIn;
+			
+			String[] saToStrip = {"1","2","3","4","5","6","7","8","9","0"};
+			sString = StringZZZ.stripRight(sString, saToStrip);
+			
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
 	
 }// END class

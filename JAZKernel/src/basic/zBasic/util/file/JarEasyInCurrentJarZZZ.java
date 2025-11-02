@@ -50,9 +50,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
 
             JarEntry entry = JarEasyUtilZZZ.getEntryForDirectory(jar, sPath);
             if (entry == null) {
-                ObjectZZZ.logLineDateStatic("(D) ENTRY IN JAR FILE NOT FOUND: '" + sPath + "'");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) ENTRY IN JAR FILE NOT FOUND: '" + sPath + "'");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) ENTRY IN JAR FILE FOUND: '" + sPath + "'");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) ENTRY IN JAR FILE FOUND: '" + sPath + "'");
 
                 // Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
                 if (entry.isDirectory()) { // Dateien nicht extrahieren!!!
@@ -86,9 +86,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class, "(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.extractFileAsTemp(jar, sPath);
             }
         } // end main:
@@ -106,7 +106,7 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
                 objaReturn = JarEasyZZZ.peekDirectories(jar, sSourceDirectoryPath, sTargetDirectoryPathIn);
             }
@@ -126,7 +126,7 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
                 objaReturn = JarEasyZZZ.peekDirectories(jar, sSourceDirectoryPath, sTargetDirectoryPathIn, bWithFiles);
             }
@@ -145,9 +145,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.peekFileFirst(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -165,9 +165,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -185,9 +185,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.peekDirectoryFirst(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -205,9 +205,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.searchResourceDirectoryFirst(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -225,9 +225,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.searchResourceFileFirst(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -245,9 +245,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objaReturn = JarEasyZZZ.searchResourceFiles(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -266,9 +266,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objReturn = JarEasyZZZ.searchResourceDirectoryFirst(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
             }
         } // end main:
@@ -286,9 +286,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class,"(D) JAR FILE FOUND.");
                 objaReturn = JarEasyZZZ.searchResources(jar, sPath, sTargetDirectoryPathRootIn);
             }
         } // end main:
@@ -307,9 +307,9 @@ public class JarEasyInCurrentJarZZZ implements IConstantZZZ, IResourceHandlingOb
         main: {
             JarFile jar = JarKernelZZZ.getJarFileCurrent();
             if (jar == null) {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE NOT FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class, "(D) JAR FILE NOT FOUND.");
             } else {
-                ObjectZZZ.logLineDateStatic("(D) JAR FILE FOUND.");
+                ObjectZZZ.logLineDate(JarEasyInCurrentJarZZZ.class, "(D) JAR FILE FOUND.");
                 objaReturn = JarEasyZZZ.searchResources(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
             }
         } // end main:

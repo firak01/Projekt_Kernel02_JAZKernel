@@ -199,8 +199,8 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 				int iSize = saString1.length + saString2.length;
 				
 				objReturn = new String[iSize];
-				System.arraycopy(saString2,0,objReturn, 0, saString2.length);
-				System.arraycopy(saString1,0,objReturn, saString2.length, saString1.length);							
+				System.arraycopy(saString1,0,objReturn, 0, saString1.length);
+				System.arraycopy(saString2,0,objReturn, saString1.length, saString2.length);							
 			}
 			break main;			
 		}else{

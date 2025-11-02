@@ -18,6 +18,7 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
@@ -705,7 +706,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			
 				if(isFormatUsingString(ienumMappedFormat)) {
 					if(saLog.length>iLogIndexCurrent) {					
-						if(ienumMappedFormat.getName().startsWith("ARGNEXT")) {
+						if(ienumMappedFormat.getName().startsWith(StringZZZ.stripNumericRight(ILogStringZZZ.LOGSTRING.ARGNEXT01.getName()))) { //Da gibt es ja in den Varianten mit Endungen ...01 bis ...05
 							if(saLog.length>iLogIndexNext) {
 								sLog = saLog[iLogIndexNext];						
 								sLogUsed = this.compute(classObj, sLog, ienumMappedFormat);
@@ -715,6 +716,17 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 									//Hintergrund: Nur so kann z.B. eine FILEPOSITION aus einem String herausgerechnet werden, falls die FILEPOSITION ans Ende kommen soll, nachdem das ARGNEXT verarbeitet worden ist.
 								}
 							}
+						}else if(ienumMappedFormat.getName().startsWith(ILogStringZZZ.LOGSTRING.POSITIONCURRENT.getName())) {
+							//Fische aus dem saLog - Array den String mit dem Tag <positioncurrent> heraus.
+							System.out.println("FGLTEST: .....");
+							for(String sLogTemp : saLog) {
+								
+								TODOGON20251102; Das soll ohne den Leerstring funktionieren und nur den TagNamen zurückliefern
+								String sTagTemp = XmlUtilZZZ.findFirstOpeningTagNameNext(sLogTemp, "");
+								System.out.println("FGLTEST: ....." + sTagTemp);
+							}
+							
+							
 						}else{						
 							sLogUsed = this.compute(classObj, sLog, ienumMappedFormat); //die Method kann z.B. nicht einfach ausgelesen werden. Muss also von aussen als Text uebergeben werden.														
 						}

@@ -891,6 +891,120 @@ public void testStrWord(){
 	assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
 }
 
+
+	public void testStripNumeric() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.stripNumeric(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.stripNumeric(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.stripNumeric(sTest);
+		assertEquals("1aa b2b cc3", stemp); //Lasse 1 Zeichen uebrig, ohne ein Zeichen uebrig zu lassen waer das trim.
+		
+		sTest = "123 b2b 543";
+		stemp = StringZZZ.stripNumeric(sTest);
+		assertEquals("3 b2b 5", stemp);
+	}
+
+	public void testStripNumericLeft() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.stripNumericLeft(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.stripNumericLeft(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.stripNumericLeft(sTest);
+		assertEquals("1aa b2b cc3", stemp); //Lasse 1 Zeichen uebrig, ohne ein Zeichen uebrig zu lassen waer das trim.
+		
+		sTest = "123 b2b 543";
+		stemp = StringZZZ.stripNumericLeft(sTest);
+		assertEquals("3 b2b 543", stemp);
+	}
+	
+	public void testStripNumericRight() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.stripNumericRight(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.stripNumericRight(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.stripNumericRight(sTest);
+		assertEquals("1aa b2b cc3", stemp); //Lasse 1 Zeichen uebrig, ohne ein Zeichen uebrig zu lassen waer das trim.
+		
+		sTest = "123 b2b 543";
+		stemp = StringZZZ.stripNumericRight(sTest);
+		assertEquals("123 b2b 5", stemp);
+	}
+	
+	//###############################
+	public void testTrimNumeric() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.trimNumeric(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.trimNumeric(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.trimNumeric(sTest);
+		assertEquals("aa b2b cc", stemp);
+		
+		sTest = "123 b2b 543";
+		stemp = StringZZZ.trimNumeric(sTest);
+		assertEquals(" b2b ", stemp);
+	}
+	
+	
+	public void testTrimNumericLeft() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.trimNumericLeft(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.trimNumericLeft(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.trimNumericLeft(sTest);
+		assertEquals("aa b2b cc3", stemp);				
+	}
+	
+	public void testTrimNumericRight() {
+		String sTest = "aaa bbb ccc";
+		
+		String stemp = StringZZZ.trimNumericRight(sTest);
+		assertEquals("aaa bbb ccc", stemp);
+		
+		sTest = "aaa 123 ccc";
+		stemp = StringZZZ.trimNumericRight(sTest);
+		assertEquals("aaa 123 ccc", stemp);
+		
+		sTest = "1aa b2b cc3";
+		stemp = StringZZZ.trimNumericRight(sTest);
+		assertEquals("1aa b2b cc", stemp);		
+		
+		sTest = "1aa b2b 543";
+		stemp = StringZZZ.trimNumericRight(sTest);
+		assertEquals("1aa b2b ", stemp);			
+	}
+
+
 public void testContains(){
 	String sTest = "aaa bbb ccc";
 	

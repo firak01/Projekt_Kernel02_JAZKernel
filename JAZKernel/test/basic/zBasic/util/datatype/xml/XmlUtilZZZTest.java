@@ -8,6 +8,7 @@ import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import junit.framework.TestCase;
 
@@ -430,9 +431,71 @@ public class XmlUtilZZZTest extends TestCase{
 	 }
 	 
 	
-	 
-
-	 
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 //+++ TAG-FIRST
+	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 public void testGetTagNextByName() {
+		 try {
+			String sExpression; String sExpressionSolved;
+			String sValue; String sTagName;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			//++++++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
+			sTagName= "Z:Class";
+				
+			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
+			//Das ist hierbei nicht der Fall
+			try {
+				ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);
+				fail("Exception should have been thrown. TagType not handled in Factory");
+			}catch(ExceptionZZZ ez1){
+			}
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
+			sTagName= "Z:Class";
+				
+			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
+			//Das ist hierbei der Fall: filename
+			sExpression = "<Z:Call><Z:Java><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
+			sTagName= "filename";
+			ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
+			sValue = objTag.getValue();
+			assertEquals(sExpressionSolved, sValue);
+			
+			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
+			//Das ist hierbei der Fall: filename und darunter filename
+			//Also verschachtelt
+			sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
+			sTagName= "filename";
+			ITagByTypeZZZ objTag2 = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
+			sValue = objTag2.getValue();
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//Also verschachtelt mit anderer Reihenfolge im inneren Tag.
+			sExpression = "<Z:Call><filename><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><filename>{[ArgumentSection for testCallComputed]JavaMethod}</filename></filename></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaMethod}";
+			sTagName= "filename";
+			ITagByTypeZZZ objTag3 = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
+			sValue = objTag3.getValue();
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+		 
+		
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 public void testComputeTagNameFromTagPart() {

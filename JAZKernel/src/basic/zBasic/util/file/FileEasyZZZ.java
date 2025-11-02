@@ -622,7 +622,7 @@ public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		String sLog = "Directory to search for= '" + sDirectoryPathIn + "'";
-		ObjectZZZ.logLineDate(FileEasyZZZ.class, sLog);
+		ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);
 		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
 	}//end main:
 	return objReturn;
@@ -795,11 +795,15 @@ public static  boolean isPathAbsolute(String sFilePathNameIn)throws ExceptionZZZ
 			break main;
 		}else if (sFilePathName.startsWith("\\")){
 			 //irgendwie wohl ein Backslash hinzugekommen, normalerweise relativ, aber noch mal testen
-			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
-			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);			 
+			 sFilePathName = StringZZZ.trimFileSeparatorsLeft(sFilePathName);
+			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);	
+		}else if (sFilePathName.startsWith("//")){
+			 //irgendwie wohl ein Slash hinzugekommen, normalerweise relativ, aber noch mal testen
+			sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
+			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);
 		}else if (sFilePathName.startsWith("/")){
 			 //irgendwie wohl ein Slash hinzugekommen, normalerweise relativ, aber noch mal testen
-			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
+			 sFilePathName = StringZZZ.trimFileSeparatorsLeft(sFilePathName);
 			 bReturn = FileEasyZZZ.isPathAbsolute(sFilePathName);
 		}
 	}//end main:
@@ -1869,9 +1873,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 				
 		
-		//ObjectZZZ.logLineDateStatic( "wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'" );
-		//ObjectZZZ.logLineDateStatic( "wird NICHT benutzt sRoot='"+ sRoot + "'" );
-		//ObjectZZZ.logLineDateStatic( "wird benutzt! sFilePath as total='"+ sFilePath+"'" ); 
+		//ObjectZZZ.logLineDate(FileEasyZZZ.class,  "wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'" );
+		//ObjectZZZ.logLineDate(FileEasyZZZ.class,  "wird NICHT benutzt sRoot='"+ sRoot + "'" );
+		//ObjectZZZ.logLineDate(FileEasyZZZ.class,  "wird benutzt! sFilePath as total='"+ sFilePath+"'" ); 
 		
 		if(StringZZZ.isEmpty(sFileName)){
 			//An empty string or NULL is allowed for Filename	
@@ -2043,7 +2047,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		
 			bReturn = !file2proof.isFile();
 		}//end main:
-		ObjectZZZ.logLineDateStatic( "#Return=" + bReturn );
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn );
 		return bReturn;	
 	}
 	
@@ -2096,7 +2100,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				bReturn = FileEasyZZZ.isDirectoryExisting(file2proof);				
 			}						
 		}//end main:
-		ObjectZZZ.logLineDateStatic("#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
 		return bReturn;	
 	}
 	
@@ -2124,7 +2128,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				bReturn = !FileEasyZZZ.isDirectory(file2proof);
 			}						
 		}//end main;
-		ObjectZZZ.logLineDateStatic("#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
 		return bReturn;	
 	}
 	
@@ -2144,12 +2148,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 			
 			if(FileEasyZZZ.isDirectory(file2proof)==false) break main;
-			ObjectZZZ.logLineDateStatic("#Ist Verzeichnis: '" + file2proof.getAbsolutePath() + "'");
+			ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Ist Verzeichnis: '" + file2proof.getAbsolutePath() + "'");
 			
 			File fileParent = file2proof.getParentFile();
 			if(fileParent == null) bReturn = true;
 		}
-		ObjectZZZ.logLineDateStatic("#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
 		return bReturn;
 	}
 	
@@ -2250,7 +2254,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject existiert nicht: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					//throw ez;
 					
-					ObjectZZZ.logLineDateStatic("Provided File Objekt does not exist = '" + objFile.getAbsolutePath() +"'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "Provided File Objekt does not exist = '" + objFile.getAbsolutePath() +"'");
 					break main;
 				}
 				if(!objFile.isFile()) {
@@ -2258,7 +2262,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject ist keine Datei: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					//throw ez;
 					
-					ObjectZZZ.logLineDateStatic("Provided File Objekt is no file = '" + objFile.getAbsolutePath() +"'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "Provided File Objekt is no file = '" + objFile.getAbsolutePath() +"'");
 					break main;
 				}
 				
@@ -2267,7 +2271,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				try {
 					//Merke: Wenn es kein ZipFile ist, so wird ein Fehler (IOException) geworfen. Dieses vorher prüfen und so die Exception vermeiden. 
 					if(!FileEasyZZZ.isZip(objFile)) {
-						ObjectZZZ.logLineDateStatic("Provided File Objekt is no zip-file-Type = '" + objFile.getAbsolutePath() +"'");
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "Provided File Objekt is no zip-file-Type = '" + objFile.getAbsolutePath() +"'");
 						break main;
 					}
 					
@@ -2336,7 +2340,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					fileDirectory = fileDirectoryIn;
 				}else {
 					fileDirectory = fileDirectoryIn.getParentFile();
-					ObjectZZZ.logLineDateStatic("Verwende Parent '" + fileDirectory.getAbsolutePath() +"'");					
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "Verwende Parent '" + fileDirectory.getAbsolutePath() +"'");					
 				}
 				
 				FileFilter directoryFilter = new FileFilter() {
@@ -2367,7 +2371,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					fileDirectory = fileDirectoryIn;
 				}else {					
 					fileDirectory = fileDirectoryIn.getParentFile();
-					ObjectZZZ.logLineDateStatic("Verwende Parent '" + fileDirectory.getAbsolutePath() +"'");					
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "Verwende Parent '" + fileDirectory.getAbsolutePath() +"'");					
 				}
 				
 				FileFilter fileFilter = new FileFilter() {
@@ -2427,7 +2431,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static File searchFileObjectInWorkspace(IKernelConfigZZZ objConfig, String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
-			ObjectZZZ.logLineDateStatic("Suche auf Projektebene im Workspace.");
+			ObjectZZZ.logLineDate(FileEasyZZZ.class, "Suche auf Projektebene im Workspace.");
 		    		    
 		    if(objConfig==null) {
 		    	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -2460,7 +2464,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des aktuell ausgefuehrten Projekts!!!
 			if(sFile==null) {//Merke: NULL führt in der searchFileObjectByClassloader_ Methode zu einer Exception.				
 				sFile=FileEasyZZZ.getFileRootPath();
-				ObjectZZZ.logLineDateStatic("NULL in '" + sFile +"' umgeändert.");
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, "NULL in '" + sFile +"' umgeändert.");
 			}
 			objReturn = searchFileObjectByClassloader_(sFile, true);
 								
@@ -2599,12 +2603,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//1. Versuch mit Classloader
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){
-					ObjectZZZ.logLineDateStatic("(B) Searching for file by classloader.getResource '" + sPath +"'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(B) Searching for file by classloader.getResource '" + sPath +"'");
 					String sPathInWorkspace = workspaceURL.getPath();
 					String[] saStringsToBeStripped ={File.separator};
 					String sPathNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);					
 					
-					ObjectZZZ.logLineDateStatic("(B) URL is not null'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(B) URL is not null'");
 					try {			
 						objReturn = new File(workspaceURL.toURI());
 						if(FileEasyZZZ.exists(objReturn)) break main;
@@ -2613,19 +2617,19 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						if(FileEasyZZZ.exists(objReturn)) break main;
 					}
 				}else{
-					ObjectZZZ.logLineDateStatic("(B) URL is null'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(B) URL is null'");
 				}
 				
 				
 				//2. Versuch (beim "." wird ggfs. das bin - - Verzeichnis zurükgegeben. Dies entfernen.
 				if(workspaceURL!=null){
-					ObjectZZZ.logLineDateStatic("(C) Searching for file by classloader.getResource '" + sPath +"', stripping bin - Directory");		
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(C) Searching for file by classloader.getResource '" + sPath +"', stripping bin - Directory");		
 					String sPathInWorkspace = workspaceURL.getPath();
 					String[] saStringsToBeStripped2 ={"bin",File.separator};
 					String sParthNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped2);
 					workspaceURL = classLoader.getResource(sParthNormed);
 					if(workspaceURL!=null){
-						ObjectZZZ.logLineDateStatic("(C) URL is not null'");
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(C) URL is not null'");
 						try {			
 							objReturn = new File(workspaceURL.toURI());
 							if(FileEasyZZZ.exists(objReturn)) break main;
@@ -2634,7 +2638,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							if(FileEasyZZZ.exists(objReturn)) break main;
 						}
 					}else{
-						ObjectZZZ.logLineDateStatic("(C) URL is null'");						
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(C) URL is null'");						
 					}
 				}				
 			} catch (MalformedURLException e) {	
@@ -2729,19 +2733,19 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			try {		
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){	
-					ObjectZZZ.logLineDateStatic("(A) Searching for file by URI '" + sPath +"'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(A) Searching for file by URI '" + sPath +"'");
 				    				    
 					String sWorkspaceURL = workspaceURL.getPath();					
 					sWorkspaceURL = StringZZZ.stripFileSeparators(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
 					if(FileEasyZZZ.exists(objReturn)) {
-						ObjectZZZ.logLineDateStatic("(A1) FileObjekt gefunden '" + sPath + "'");
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(A1) FileObjekt gefunden '" + sPath + "'");
 						break main;
 					}else{
-						ObjectZZZ.logLineDateStatic("(A1) FileObjekt nicht gefunden '" + sPath + "'");
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(A1) FileObjekt nicht gefunden '" + sPath + "'");
 					}
 				}else{
-					ObjectZZZ.logLineDateStatic("(A1) URL is null'");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(A1) URL is null'");
 				}
 				
 			} catch (MalformedURLException e) {	
@@ -2910,11 +2914,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			URL url= ClassLoader.getSystemResource(".");
 			if(url==null) {
 				String sLog = "unable to receive url object";
-				ObjectZZZ.logLineDateStatic(sLog);
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}else {
-				ObjectZZZ.logLineDateStatic("URL = '"+url.toExternalForm() + "'");				
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, "URL = '"+url.toExternalForm() + "'");				
 			}
 			sReturn = url.toExternalForm();
 		}//end main:
@@ -2927,11 +2931,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			URL url= ClassLoader.getSystemResource(".");
 			if(url==null) {
 				String sLog = "unable to receive url object";
-				ObjectZZZ.logLineDateStatic(sLog);
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}else {
-				ObjectZZZ.logLineDateStatic("URL = '"+url.toString() + "'");				
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, "URL = '"+url.toString() + "'");				
 			}
 			sReturn = url.toString();
 		}//end main:
@@ -3051,7 +3055,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//Falls ein Verzeichnispfad übergeben wird, wird dieser "flach" gemacht. Man kann als temp-Datei keine Verzeichnisse bauen.
 				String sFilePathNormedForTempFile = FileEasyZZZ.flattenFilePathToFileName(sFilePath);
 				
-				ObjectZZZ.logLineDateStatic("(F) To FileName flattended Path: '" + sFilePathNormedForTempFile + "'");				
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, "(F) To FileName flattended Path: '" + sFilePathNormedForTempFile + "'");				
 				objReturn = File.createTempFile(sFilePathNormedForTempFile, null);
 			} catch (IOException ioe) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "",ioe);
@@ -3118,7 +3122,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					ExceptionZZZ ez  = new ExceptionZZZ("File Object for DirectoryPath ", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}				
-				ObjectZZZ.logLineDateStatic("(KA) XXXXXXXXXXXXXX.");
+				ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA) XXXXXXXXXXXXXX.");
 				
 				//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 				File objFileDirectory;
@@ -3127,55 +3131,55 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					bFileStart = true;
 					objFileDirectory = objFileIn.getParentFile();
 					
-					ObjectZZZ.logLineDateStatic("(KA->X) XXXXXXXXXXXXXX.");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA->X) XXXXXXXXXXXXXX.");
 					if(objFileDirectory==null) break main;			
 				}else {
 					objFileDirectory = objFileIn;
 				}
 				if(objFileDirectory.exists()==false){
-					ObjectZZZ.logLineDateStatic("(KA->Y) XXXXXXXXXXXXXX.");				   	
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA->Y) XXXXXXXXXXXXXX.");				   	
 					bReturn = true;
 					break main;
 				}
 				if(FileEasyZZZ.isRoot(objFileDirectory)) {
-					ObjectZZZ.logLineDateStatic("(KA->Z) XXXXXXXXXXXXXX.");				   	
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA->Z) XXXXXXXXXXXXXX.");				   	
 					break main;
 				}
 				
 				//REKURSION: Wenn Unterverzeichnisse gelöscht werden sollen. Diese hier holen.
 				if(bEmptyDirectoryBefore || bFileStart){
-					ObjectZZZ.logLineDateStatic("(KAA) XXXXXXXXXXXXXX.");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAA) XXXXXXXXXXXXXX.");
 				   	
 					//Hole alle Dateien und Verzeichniss			
 					File[] objaFile =  objFileDirectory.listFiles();
 					if(objaFile.length==0) {
 						if(bRemoveSubDirectories) {
-							ObjectZZZ.logLineDateStatic("(KAAA) XXXXXXXXXXXXXX.");						   							   
+							ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAAA) XXXXXXXXXXXXXX.");						   							   
 							bReturn = objFileDirectory.delete();//Lösche das aktuelle Verzeichnis, es sollte nun leer sein.
 						}else {
 							//Dann ist es halt ohne Löschen des Verzeichnisses erfolgreich zuende
 							bReturn = true;
 						}
 					}else {
-						ObjectZZZ.logLineDateStatic("(KAAB) XXXXXXXXXXXXXX.");
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAAB) XXXXXXXXXXXXXX.");
 					   	
 						//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 						if(bEmptyDirectoryBefore) {
 							for(int icount = 0; icount <= objaFile.length - 1; icount++){
 								File objFileTemp = objaFile[icount];
 								if(objFileTemp.isFile()) {
-									ObjectZZZ.logLineDateStatic("(KAABA) XXXXXXXXXXXXXX.");								   									   	
+									ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAABA) XXXXXXXXXXXXXX.");								   									   	
 									bReturn = objFileTemp.delete();
 								}else {
 									if(bRemoveSubDirectories) {
-										ObjectZZZ.logLineDateStatic("(KAABB) XXXXXXXXXXXXXX.");									   										   	
+										ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAABB) XXXXXXXXXXXXXX.");									   										   	
 										bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryBefore, bRemoveSubDirectories);
 									}else {
 								}	
 							}//if(!bReturn).....
 						}		
 							
-						ObjectZZZ.logLineDateStatic("(KAABC) XXXXXXXXXXXXXX.");						
+						ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KAABC) XXXXXXXXXXXXXX.");						
 						bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 					}else {
 							//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
@@ -3186,12 +3190,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						}
 					}
 				}else{			
-					ObjectZZZ.logLineDateStatic("(KA->ZZ) XXXXXXXXXXXXXX.");
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA->ZZ) XXXXXXXXXXXXXX.");
 				   						
 					//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 					bReturn = objFileDirectory.delete();
 					
-					ObjectZZZ.logLineDateStatic("(KA->ZZ) bReturn = " + bReturn);
+					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(KA->ZZ) bReturn = " + bReturn);
 				}
 			}
 			return bReturn;
