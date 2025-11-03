@@ -628,7 +628,17 @@ public class XmlUtilZZZTest extends TestCase{
 	 }
 	 
 	 
+	 public void testGetTagPreviousByName() {
+			fail("Test existiert noch nicht");		 
+	 }
 	 
+	 public void testGetTagFirst() {
+			fail("Test existiert noch nicht");		 
+	 }
+	 
+	 public void testGetTagLast() {
+			fail("Test existiert noch nicht");		 
+	 }
 	 
 	
 }//End class
