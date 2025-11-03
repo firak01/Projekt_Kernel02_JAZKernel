@@ -91,19 +91,25 @@ public class FileZZZTest extends TestCase {
 	/** Test: Join the filepath and a filename undere any circumstances
 	 */
 	public void testJoinFilePathName(){
-		try{				
-		//Normal case
-		assertEquals("c:\\test\\test.txt", FileEasyZZZ.joinFilePathName("c:\\test", "test.txt"));
-				
-		//Path has the backslash (or more backslashes) at the end
-		assertEquals("c:\\test\\test.txt", FileEasyZZZ.joinFilePathName("c:\\test\\\\", "test.txt"));
-		
-		//An here with more directories
-		assertEquals("c:\\test\\1\\test.txt", FileEasyZZZ.joinFilePathName("c:\\test\\1\\\\", "test.txt"));
-				
-		//Path has to be the first param only (ignore any obsolete backslashes)
-		assertEquals("c:\\test", FileEasyZZZ.joinFilePathName("c:\\test\\\\", ""));
-		
+		try{		
+			String sValue = null;
+			
+			//Normal case
+			sValue = FileEasyZZZ.joinFilePathName("c:\\test", "test.txt");
+			assertEquals("c:\\test\\test.txt", sValue);
+					
+			//Path has the backslash (or more backslashes) at the end
+			sValue = FileEasyZZZ.joinFilePathName("c:\\test\\\\", "test.txt");
+			assertEquals("c:\\test\\test.txt", sValue);
+			
+			//An here with more directories
+			sValue = FileEasyZZZ.joinFilePathName("c:\\test\\1\\\\", "test.txt");
+			assertEquals("c:\\test\\1\\test.txt", sValue);
+					
+			//Path has to be the first param only (ignore any obsolete backslashes)
+			sValue = FileEasyZZZ.joinFilePathName("c:\\test\\\\", "");
+			assertEquals("c:\\test", sValue);
+			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

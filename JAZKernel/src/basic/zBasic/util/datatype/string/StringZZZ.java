@@ -2018,10 +2018,10 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			String sSepLeft = XmlUtilZZZ.findFirstTagNamePrevious(sStringToParse, sStringToFind);
+			String sSepLeft = XmlUtilZZZ.findFirstTagNamePreviousTo(sStringToParse, sStringToFind);
 			
 			
-			String sSepRight = XmlUtilZZZ.findFirstTagNamePrevious(sStringToParse, sStringToFind);
+			String sSepRight = XmlUtilZZZ.findFirstTagNamePreviousTo(sStringToParse, sStringToFind);
 			
 			vecReturn = StringZZZ.vecMidFirstKeepSeparatorCentral(sStringToParse, sSepLeft, sSepRight, bExactMatch);
 		}//end main:

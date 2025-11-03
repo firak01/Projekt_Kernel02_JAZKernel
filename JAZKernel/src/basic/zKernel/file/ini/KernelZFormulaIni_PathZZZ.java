@@ -203,8 +203,8 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 			String sTagXPathStarting = this.getTagPartOpening();
 			int iTagXPathStartingIndex = sExpression.indexOf(sTagXPathStarting)-1;
 			
-			String sSepLeft = XmlUtilZZZ.findFirstTagPartPrevious(sExpression, sTagXPathStarting);
-			String sSepRight = XmlUtilZZZ.findFirstTagPartNext(sExpression, sTagXPathStarting);
+			String sSepLeft = XmlUtilZZZ.findFirstTagPartPreviousTo(sExpression, sTagXPathStarting);
+			String sSepRight = XmlUtilZZZ.findFirstTagPartNextTo(sExpression, sTagXPathStarting);
 		
 			String sTagValueTotal=null;
 			if(StringZZZ.isEmpty(sSepLeft)){

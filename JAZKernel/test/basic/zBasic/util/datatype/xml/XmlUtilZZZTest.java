@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.NullObjectZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
+import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
@@ -25,7 +26,7 @@ public class XmlUtilZZZTest extends TestCase{
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 //+++ PREVIOUS
 	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 public void testFindFirstTagNamePrevious() {
+	 public void testFindFirstTagNamePreviousTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -37,7 +38,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolved = "Z:Class";
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//#################################################################
@@ -48,7 +49,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -57,23 +58,43 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression="Der dynamische Wert1 ist '{[Section A]Testentry1}'. FGL rulez.";
 			sExpressionSolved = null;
 			sStringToSearch= "{[";
-			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
+						
+			//mit Leerstring
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			//+++++++++++++++++++++++++
 			//+++++ Negativtest ohne Suchwert im String
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++ Negativtest ohne Suchwert im String und Leerstring als Suchtstring
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			//+++++++++++++++++++++++++
 			//+++++ Negativtest mit Suchwert im String
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -83,7 +104,7 @@ public class XmlUtilZZZTest extends TestCase{
 	 
 	 
 	 
-	 public void testFindFirstOpeningTagNamePrevious() {
+	 public void testFindFirstOpeningTagNamePreviousTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -97,7 +118,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "Z:Method";
 			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
@@ -105,33 +126,37 @@ public class XmlUtilZZZTest extends TestCase{
 			sStringToSearch= "[";
 			sExpressionSolved = "Z:Class";
 			
-			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
-			
-		
-			
-			
-			
-			
 			
 			//#################################################################
 			//### Einfache Verschachtelung
 			//#################################################################
-			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
-			
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();			
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POS";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
+			
+			//mit Leerstring
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
 			//+++++ Negativtest ohne Suchwert im String
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
@@ -139,7 +164,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -147,7 +172,7 @@ public class XmlUtilZZZTest extends TestCase{
 		}
 	 }
 	 
-	 public void testFindFirstClosingTagNamePrevious() {
+	 public void testFindFirstClosingTagNamePreviousTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -160,14 +185,14 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "Z:Method";
 			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "[";
 			sExpressionSolved = null;//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		
@@ -182,15 +207,26 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression="PRE"+ objTagTypeMethod.getTagPartOpening() + "eine Methode" +objTagTypeMethod.getTagPartClosing() +  "a"+ objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POS";
 			sExpressionSolved = objTagTypeMethod.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
-			
-			//+++ Negativtest ohne einen CLOSING Tag vorher
+			//+++++++++++++++++++++++++++++++++++++++++++++++++
+			//Einfacher Test, wenn Leerstring angegeben ist, soll vom Anfang aus gesucht werden und das Erste Tag geholt werden.
+			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();			
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = null;
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+							
+			//################################################
+			//### Negativtest ohne einen CLOSING Tag vorher
+			//################################################
 			sExpression="PRE" + objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POS";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -199,7 +235,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
@@ -207,7 +243,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -222,7 +258,7 @@ public class XmlUtilZZZTest extends TestCase{
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 //+++ NEXT
 	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 public void testFindFirstTagNameNext() {
+	 public void testFindFirstTagNameNextTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -236,7 +272,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sStringToSearch= "Z:Class";
 			sExpressionSolved = "Z:Class";
 			
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//++++++++++++++++++++++++++++
@@ -244,7 +280,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sStringToSearch= "/Z:Class";
 			sExpressionSolved = "Z:Method";
 			
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -252,7 +288,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "[";
 			sExpressionSolved = "Z:Class";
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -260,21 +296,42 @@ public class XmlUtilZZZTest extends TestCase{
 			//#################################################################
 			//### Einfache Verschachtelung
 			//#################################################################
-			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
-			
+			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();		
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
+
+			//Einfacher Test, wenn Leerstring angegeben ist, soll vom Anfang aus gesucht werden und das Erste Tag geholt werden.
+			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = "positioncurrent";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
 			
-			//+++++++++++++++++++++++++
-			//+++++ Negativtest ohne Suchwert im String
+			//############################################
+			//### Negativtest
+			//############################################
+			
+			//+++++ ohne Suchwert im String
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+
+			//und das auch mit Leerstring als Suchstring
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
@@ -282,7 +339,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -292,7 +349,7 @@ public class XmlUtilZZZTest extends TestCase{
 	 
 	 
 	 
-	 public void testFindFirstOpeningTagNameNext() {
+	 public void testFindFirstOpeningTagNameNextTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -305,7 +362,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "[";
 			sExpressionSolved = "Z:Method";			
-			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -314,7 +371,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "/Z:Java";
 			sExpressionSolved = "Z:Method";//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -322,31 +379,37 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "Z:Method";
 			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstClosingTagNamePrevious(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNamePreviousTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
-			
-			
-			
-			
 			
 			//#################################################################
 			//### Einfache Verschachtelung
 			//#################################################################
 			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
-			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
-				
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();				
 			sExpression="PRE"+ objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "a" + objTagTypeMethod.getTagPartOpening() + "eine Methode" + objTagTypeMethod.getTagPartClosing() + "POST";								
 			sExpressionSolved = objTagTypeMethod.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 						
-			//++++ NEgativtest, es gibt keinen folgenden, offenen TagPArt
+			//++++ Negativtest, es gibt keinen folgenden, offenen TagPArt
 			sExpression="PRE" + objTagTypeFile.getTagPartOpening() + "ein Test[abc]pfad" + objTagTypeFile.getTagPartClosing() + "POST";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+
+			//+++++++++++++++++++++++++++++++++++++++++++++++++
+			//Einfacher Test, wenn Leerstring angegeben ist, soll vom Anfang aus gesucht werden und das Erste Tag geholt werden.
+			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();			
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = "positioncurrent";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -355,15 +418,23 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
+			
+			//und das auch mit Leerstring als Suchstring
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
 			
 			//+++++++++++++++++++++++++
 			//+++++ Negativtest mit Suchwert im String
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstOpeningTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -371,7 +442,7 @@ public class XmlUtilZZZTest extends TestCase{
 		}
 	 }
 	 
-	 public void testFindFirstClosingTagNameNext() {
+	 public void testFindFirstClosingTagNameNextTo() {
 		 try {
 			String sExpression; String sExpressionSolved;
 			String sValue; String sStringToSearch;
@@ -384,7 +455,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sStringToSearch= "Z:Java";
 			sExpressionSolved = "Z:Class";//es gibt kein schliessendes Tag vorher			
-			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -392,7 +463,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolved = "Z:Class";
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
@@ -405,16 +476,36 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression="PRE" + objTagType.getTagPartOpening() + "ein Test[abc]pfad" + objTagType.getTagPartClosing() + "POST";
 			sExpressionSolved = objTagType.getTagName();
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++
+			//Einfacher Test, wenn Leerstring angegeben ist, soll vom Anfang aus gesucht werden und das Erste Tag geholt werden.
+			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+            ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();						
+			sStringToSearch = "";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = "method";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			
-			//+++++++++++++++++++++++++
-			//+++++ Negativtest ohne Suchwert im String
+			//#####################################
+			//### Negativtest ohne Suchwert im String
+			//#######################################
 			sExpression = "Das ist ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
+			assertEquals(sExpressionSolved, sValue);
+			
+			//und das auch mit Leerstring als Suchstring
+			sExpression = "Das ist ein Wert";
+			sExpressionSolved = null;
+			sStringToSearch= "";
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//+++++++++++++++++++++++++
@@ -422,7 +513,7 @@ public class XmlUtilZZZTest extends TestCase{
 			sExpression = "Das [ist] ein Wert";
 			sExpressionSolved = null;
 			sStringToSearch= "[";
-			sValue = XmlUtilZZZ.findFirstClosingTagNameNext(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.findFirstClosingTagNameNextTo(sExpression, sStringToSearch);
 			assertEquals(sExpressionSolved, sValue);
 			
 		}catch(ExceptionZZZ ez){
@@ -434,66 +525,7 @@ public class XmlUtilZZZTest extends TestCase{
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 //+++ TAG-FIRST
 	 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 public void testGetTagNextByName() {
-		 try {
-			String sExpression; String sExpressionSolved;
-			String sValue; String sTagName;
-			
-			//################################################################
-			//### Cascaded Verschachtelung
-			//################################################################
-			
-			//++++++++++++++++++++++++++++
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
-			sTagName= "Z:Class";
-				
-			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
-			//Das ist hierbei nicht der Fall
-			try {
-				ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);
-				fail("Exception should have been thrown. TagType not handled in Factory");
-			}catch(ExceptionZZZ ez1){
-			}
-			
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
-			sTagName= "Z:Class";
-				
-			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
-			//Das ist hierbei der Fall: filename
-			sExpression = "<Z:Call><Z:Java><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
-			sTagName= "filename";
-			ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
-			sValue = objTag.getValue();
-			assertEquals(sExpressionSolved, sValue);
-			
-			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
-			//Das ist hierbei der Fall: filename und darunter filename
-			//Also verschachtelt
-			sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
-			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
-			sTagName= "filename";
-			ITagByTypeZZZ objTag2 = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
-			sValue = objTag2.getValue();
-			assertEquals(sExpressionSolved, sValue);
-			
-			
-			//Also verschachtelt mit anderer Reihenfolge im inneren Tag.
-			sExpression = "<Z:Call><filename><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><filename>{[ArgumentSection for testCallComputed]JavaMethod}</filename></filename></Z:Call>";
-			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaMethod}";
-			sTagName= "filename";
-			ITagByTypeZZZ objTag3 = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
-			sValue = objTag3.getValue();
-			assertEquals(sExpressionSolved, sValue);
-			
-			
-		}catch(ExceptionZZZ ez){
-			ez.printStackTrace();
-			fail("Method throws an exception." + ez.getMessageLast());
-		}
-	 }
+	
 		 
 		
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -528,88 +560,74 @@ public class XmlUtilZZZTest extends TestCase{
 		}
 	 }
 	 
-	 public void testParseFirstVector_ByObjTagType(){
-		 try{
-			 ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
+	 public void testGetTagNextByName() {
+		 try {
 			 
-			String sTest = "Das ist ein Wert";
-		    String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
-		    System.out.println("Zeile1: " + sTestXml);
-		    
-		    Vector<String> vec01 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
-		    assertNotNull(vec01);
-		    assertTrue(vec01.size()==3);
-		    assertTrue(((Object)vec01.get(0)).toString().equals("aBc"));
-		    assertTrue(((Object)vec01.get(1)).toString().equals(sTest));
-		    assertTrue(((Object)vec01.get(2)).toString().equals("xYz"));
-		    
-		    //B) Empty Tag
-		    sTestXml = "aBc" + objTagType.getTagPartEmpty() +"xYz";
-		    System.out.println("Zeile1: " + sTestXml);
-		    
-		    Vector<String> vec02 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
-		    assertNotNull(vec02);
-		    assertTrue(vec02.size()==3);
-		    assertTrue(((Object)vec02.get(0)).toString().equals("aBc"));
-		    
-		    assertNotNull((Object)vec02.get(1));                      //empty Tag wird zu NullObjectZZZ
-		    assertTrue(((Object)vec02.get(1)).toString().equals("")); //NullObjectZZZ .toString()==""
-		    assertNull(((NullObjectZZZ)((Object)vec02.get(1))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
-		    
-		    assertTrue(((Object)vec02.get(2)).toString().equals("xYz"));
-		    
-		    //C) Nicht vorhandener Tag
-		    sTestXml = "aBcxYz";
-		    System.out.println("Zeile1: " + sTestXml);
-		    
-		    Vector<String> vec03 = XmlUtilZZZ.parseFirstVector(sTestXml, objTagType);		    
-		    assertNotNull(vec03);
-		    assertTrue(vec03.size()==3);
-		    assertTrue(((Object)vec03.get(0)).toString().equals("aBcxYz"));
-		    
-		    assertNotNull((Object)vec03.get(1));                      //empty Tag wird zu NullObjectZZZ
-		    assertTrue(((Object)vec03.get(1)).toString().equals("")); //NullObjectZZZ .toString()==""
-		    assertNull(((NullObjectZZZ)((Object)vec03.get(1))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
-		    
-		    assertNotNull((Object)vec03.get(2));                      //empty Tag wird zu NullObjectZZZ
-		    assertTrue(((Object)vec03.get(2)).toString().equals("")); //NullObjectZZZ .toString()==""
-		    assertNull(((NullObjectZZZ)((Object)vec03.get(2))).valueOf()); //Caste Object zu NullObjectZZZ .valueOf()==null
-		    
-		    
-		 }catch(ExceptionZZZ ez){
-				fail("Method throws an exception." + ez.getMessageLast());
+			TODOGOON20251103;//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+			String sExpression; String sExpressionSolved;
+			String sValue; String sTagName;
+			
+			//################################################################
+			//### Cascaded Verschachtelung
+			//################################################################
+			
+			//++++++++++++++++++++++++++++
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
+			sTagName= "Z:Class";
+
+			sValue = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);
+			
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
+			sTagName= "Z:Class";
+				
+			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
+			//Das ist hierbei der Fall: filename
+			sExpression = "<Z:Call><Z:Java><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
+			sTagName= "filename";
+			sValue =  XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
+			assertEquals(sExpressionSolved, sValue);
+			
+			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
+			//Das ist hierbei der Fall: filename und darunter filename
+			//Also verschachtelt
+			sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
+			sTagName= "filename";
+			sValue = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);			
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//Also verschachtelt mit anderer Reihenfolge im inneren Tag.
+			sExpression = "<Z:Call><filename><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><filename>{[ArgumentSection for testCallComputed]JavaMethod}</filename></filename></Z:Call>";
+			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaMethod}";
+			sTagName= "filename";
+			sValue = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);						
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//Einfacher Test, wenn Leerstring angegeben ist, soll vom Anfang aus gesucht werden und das Erste Tag geholt werden.
+			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+			ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+			ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+			sTagName= "filename";
+			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpressionSolved = "positioncurrent";
+			//sValue = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sExpression, sStringToSearch);
+			sValue = XmlUtilZZZ.getTagNextByName(sTagName, sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
 	 
-	 public void testIsExpression(){
-		 try{
-			ITagTypeZZZ objTagType = new TagTypeFilePositionZZZ();
-			
-			String sTest = "Das ist ein Wert";
-			
-			//+++++ Negativtest
-			boolean bErg = XmlUtilZZZ.isExpression(sTest, objTagType);		    
-			assertFalse(bErg); 
-			
-			//+++++ Positivtest
-			//A) Ganzer Tag
-			String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
-			System.out.println("Zeile1: " + sTestXml);
-		    
-			bErg = XmlUtilZZZ.isExpression(sTestXml, objTagType);		    
-			assertTrue(bErg);
-			
-			//B) Empty Tag
-			sTestXml = "aBc" + objTagType.getTagPartEmpty() +"xYz";
-			System.out.println("Zeile1: " + sTestXml);
-		    
-			bErg = XmlUtilZZZ.isExpression(sTestXml, objTagType);		    
-			assertTrue(bErg);
-			
-		 }catch(ExceptionZZZ ez){
-				fail("Method throws an exception." + ez.getMessageLast());
-		}
-	 }
+	 
 	 
 	 
 	

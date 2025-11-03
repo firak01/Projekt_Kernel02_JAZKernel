@@ -1826,7 +1826,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
-		String sFilePath; String sFilePathPure=null; String sFileName; String sRoot="";
+		String sFilePath; String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 				
 		//ZUALLERERST DEN FILENAME pruefen
@@ -1954,8 +1954,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 			}
 			
-			//Vor dem Schluss noch einmal normieren
-			sReturn = StringZZZ.stripFileSeparators(sReturn);
+			//Vor dem Schluss noch einmal normieren, also Backslashe etc. vorne und hinten wegnehmen.
+			sReturn = StringZZZ.trimFileSeparators(sReturn);
 			if(bRemote) {
 				sReturn = IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR_UNIX + sReturn; //Somit wird sichergestellt, das auf dem Remote Server ein relativer Pfad vorhanden ist.
 			}

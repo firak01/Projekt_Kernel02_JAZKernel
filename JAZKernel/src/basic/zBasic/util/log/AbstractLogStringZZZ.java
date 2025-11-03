@@ -720,10 +720,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 							//Fische aus dem saLog - Array den String mit dem Tag <positioncurrent> heraus.
 							System.out.println("FGLTEST: .....");
 							for(String sLogTemp : saLog) {
+								System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sLogTemp='" + sLogTemp+"'");
 								
-								TODOGON20251102; Das soll ohne den Leerstring funktionieren und nur den TagNamen zurückliefern
-								String sTagTemp = XmlUtilZZZ.findFirstOpeningTagNameNext(sLogTemp, "");
-								System.out.println("FGLTEST: ....." + sTagTemp);
+								//TODOGON20251102;//Das soll ohne den Leerstring funktionieren und nur den TagNamen zurückliefern
+								String sTagTemp = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sLogTemp, "");
+								System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sTagTemp= '" + sTagTemp + "'");
+								System.out.println("-------------");
 							}
 							
 							

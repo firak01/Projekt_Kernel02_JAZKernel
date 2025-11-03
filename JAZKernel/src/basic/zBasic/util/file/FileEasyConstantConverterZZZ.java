@@ -49,7 +49,7 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 		String sLog=null;
 		
 		//ggfs. ueberfluessige Slashes, etc. entfernen
-		String sFilePath = StringZZZ.stripFileSeparators(sFilePathIn);		
+		String sFilePath = StringZZZ.trimFileSeparators(sFilePathIn);		
 		main:{			
 			String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 			

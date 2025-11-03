@@ -35,6 +35,7 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;
+import basic.zBasic.util.datatype.xml.XmlTagByTypeUtilZZZTest;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZTest;
 import basic.zBasic.util.file.FileEasyConstantConverterZZZTest;
 import basic.zBasic.util.file.FileEasyCopyZZZTest;
@@ -132,6 +133,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(XmlTagMatcherZZZTest.class);
 		objReturn.addTestSuite(XmlParserZZZTest.class);		
 		objReturn.addTestSuite(XmlUtilZZZTest.class);
+		objReturn.addTestSuite(XmlTagByTypeUtilZZZTest.class);
 		
 		//Stream - Tests
 		objReturn.addTestSuite(StreamZZZTest.class);

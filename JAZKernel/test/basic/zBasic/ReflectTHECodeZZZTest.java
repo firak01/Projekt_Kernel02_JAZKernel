@@ -1,5 +1,6 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.ILogStringZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
@@ -113,9 +114,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			System.out.println("sPositionCurrent="+sPositionCurrent);
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: Der String '" + sPositionCurrent + "' enthaelt nicht die ausfuehrende Testmethode.", 
 					sPositionCurrent.contains("testGetPositionCurrent")); 
-						
-			
-			
+				
 			//20240508: Da nun die Logzeilen für das Protokol mit LogStringZZZ errechnet werden, gilt:
 			//          - Der String ist formatierbar
 			//          - Alles was Objektbezogen ist, wird in das Format gepackt.
@@ -131,11 +130,22 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Die Zeilennummer "+ iLineCurrentInPosition + "sollte enthalten sein.).",
 					sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
 			
-			//Der Methodentag steht nun vora
+		
+			//Der Methodentag folgt nun auf <postioncurrent> und steht trotzdem voran
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethodCurrent);
 			String sMethodTag = objTagMethod.getElementString();
+			
+			//wg geaendert ab 20251102: Nun wird Methodenname und Klassenname noch von dem Tag <positioncurrent> umgeben.
+			ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sMethodTag);
+			String sPositionTag = objTagPosition.getElementString();
+			
+//			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).",
+//					sPositionCurrent.startsWith(sMethodTag) 
+//					&& sPositionCurrent.length() > sMethodCurrent.length());
+			
+			String sPositionTagStart = StringZZZ.left(sPositionTag, objTagPosition.getTagPartClosing());
 			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Methodenname sollte jetzt am Anfang stehen).",
-					sPositionCurrent.startsWith(sMethodTag) 
+					sPositionCurrent.startsWith(sPositionTagStart) 
 					&& sPositionCurrent.length() > sMethodCurrent.length());
 			
 			

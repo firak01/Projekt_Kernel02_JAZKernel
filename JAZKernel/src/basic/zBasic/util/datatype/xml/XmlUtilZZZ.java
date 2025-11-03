@@ -1,8 +1,6 @@
 package basic.zBasic.util.datatype.xml;
 
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.measure.spi.SystemOfUnits;
 
@@ -16,9 +14,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
-import basic.zBasic.xml.tagtype.ITagTypeZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
-import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_PathZZZ;
@@ -287,58 +282,6 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return org.apache.xerces.util.XMLChar.isValidName(sTagName);
 	}
 	
-	//+++++++++++++++++++++++++++++
-	/**FGL: Der intern verwendete RegEx funktioniert nur, wenn man den ersten Tag kennt, beim Namen
-	 * @param sXml
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 09.06.2024, 11:17:35
-	 */
-	public static ITagByTypeZZZ getTagNextByName(String sTagName, String sXml) throws ExceptionZZZ {
-		ITagByTypeZZZ objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sTagName)) break main;
-			if(StringZZZ.isEmpty(sXml)) break main;
-			
-			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )		
-			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
-			String sTagOpening = XmlUtilZZZ.computeTagPartOpening(sTagName); 
-			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
-					
-			objReturn = TagByTypeFactoryZZZ.createTagByName(sTagName);
-			
-			Pattern regex = Pattern.compile(sTagOpening + "(.*?)" + sTagClosing, Pattern.DOTALL);
-			Matcher matcher = regex.matcher(sXml);
-			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
-			if (matcher.find()) {
-			    String DataElements = matcher.group(1);
-		    	System.out.println(DataElements);
-		    	
-		    	//Sichere den TagWert
-		    	objReturn.setValue(DataElements);
-		    	
-		    	//FGL: Was soll das dann??? ist das wichtig??? Wahrscheinlich nur fuer ineinander verschachtelte Tags
-		    	//sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
-		    	//ABER: DAS Klappt NUR wenn man den ClosingTag ergänzt!!!
-			    Matcher matcher2 = regex2.matcher(DataElements+sTagClosing);
-			    while (matcher2.find()) {
-			        //list.add(new DataElement(matcher2.group(1), matcher2.group(2)));
-			    	String stemp = matcher2.group(2);			    	
-			    	System.out.println(stemp);
-			    	
-			    	//Sichere den TagWert
-			    	objReturn.setValue(stemp);
-			    	
-			    	//Nimm nur den erste Tag?
-			    	//NEIN: Dann klappt es auch mit verschachtelten gleichen Tags.
-			    	//break;
-			    } 
-			}
-			
-		}//end main:
-		return objReturn;
-	}
-	
 	//######################################
 	//### Ensure wirft immer eine Exception, wenn was nicht klappt
 	//######################################
@@ -468,10 +411,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	//### PREVIOUS
 	//########################################
 				
-	public static String findFirstTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstTagNamePreviousTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstTagPartPrevious(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstTagPartPreviousTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -481,10 +424,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	public static String findFirstOpeningTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstOpeningTagNamePreviousTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartPrevious(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartPreviousTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -494,10 +437,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	public static String findFirstClosingTagNamePrevious(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstClosingTagNamePreviousTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartPrevious(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartPreviousTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -507,7 +450,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String findFirstTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+	public static String findFirstTagPartPreviousTo(String sXml, String sSep) throws ExceptionZZZ{	
 		String sReturn = null;
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
@@ -550,7 +493,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	public static String findFirstOpeningTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+	public static String findFirstOpeningTagPartPreviousTo(String sXml, String sSep) throws ExceptionZZZ{	
 		String sReturn = null;
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
@@ -601,7 +544,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 
-	public static String findFirstClosingTagPartPrevious(String sXml, String sSep) throws ExceptionZZZ{	
+	public static String findFirstClosingTagPartPreviousTo(String sXml, String sSep) throws ExceptionZZZ{	
 		String sReturn = null;
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
@@ -650,10 +593,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	//### NEXT
 	//########################################
 
-	public static String findFirstTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstTagNameNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstTagPartNext(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstTagPartNextTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -662,10 +605,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 
 	//++++++++++++++++++++++
-	public static String findFirstOpeningTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstOpeningTagNameNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartNext(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartNextTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -674,10 +617,10 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//+++++++++++++++++++++++
-	public static String findFirstClosingTagNameNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstClosingTagNameNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartNext(sXml, sSep);
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartNextTo(sXml, sSep);
 			if(sTagPart==null) break main;
 			
 			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
@@ -687,7 +630,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String findFirstTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstTagPartNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(!StringZZZ.contains(sXml, sSep)) break main;
@@ -730,13 +673,16 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String findFirstOpeningTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstOpeningTagPartNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			if(!StringZZZ.contains(sXml, sSep)) break main;
+			if(!StringZZZ.contains(sXml, sSep) & !StringZZZ.isEmpty(sSep)) break main; //Leerstring ist fuer sSep erlaubt. Dann soll vom Anfang her gesucht werden.
 			
 			String sRIGHT = StringZZZ.rightback(sXml, sSep);
-			if(StringZZZ.isEmpty(sRIGHT)) break main;
+			if(StringZZZ.isEmpty(sRIGHT)) {
+				sRIGHT = sXml;
+				//break main;
+			}
 			
 			int iIndexCLOSING=-1; int iIndexOPENING = -1;
 			
@@ -780,13 +726,18 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String findFirstClosingTagPartNext(String sXml, String sSep) throws ExceptionZZZ{
+	public static String findFirstClosingTagPartNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			if(!StringZZZ.contains(sXml, sSep)) break main;
+			if(!StringZZZ.contains(sXml, sSep) & !StringZZZ.isEmpty(sSep)) break main; //Leerstring ist fuer sSep erlaubt. Dann soll vom Anfang her gesucht werden.
 			
 			String sRIGHT = StringZZZ.rightback(sXml, sSep);
-			if(StringZZZ.isEmpty(sRIGHT)) break main;
+			if(StringZZZ.isEmpty(sRIGHT)) {
+				sRIGHT = sXml;
+				//break main;
+			}
+			//String sRIGHT = StringZZZ.rightback(sXml, sSep);
+			//if(StringZZZ.isEmpty(sRIGHT)) break main;
 			
 			int iIndexCLOSING=-1; int iIndexOPENING = -1;
 			
@@ -869,23 +820,6 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isExpression(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sExpression, objTagType.getTagPartOpening(), false);
-			if(btemp) {
-				btemp = StringZZZ.contains(sExpression, objTagType.getTagPartClosing(), false);
-				if(btemp==false) break main;
-			}else {
-				btemp = StringZZZ.contains(sExpression, objTagType.getTagPartEmpty(), false);
-				if(btemp==false) break main;
-			}
-												
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
 	public static boolean isExpression4TagXml(String sExpression, String sTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
@@ -934,31 +868,6 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	
-	//+++++++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++++++
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public static Vector3ZZZ<String> parseFirstVector(String sExpression, ITagTypeZZZ objTagType) throws ExceptionZZZ{
-		Vector3ZZZ<String> vecReturn = new Vector3ZZZ<String>();		
-		main:{
-			if(objTagType==null) break main;
-			
-			if(StringZZZ.contains(sExpression, objTagType.getTagPartEmpty())) {
-				vecReturn = StringZZZ.vecSplitFirst(sExpression, objTagType.getTagPartEmpty(), false,true);				
-				
-			}else {
-				vecReturn = StringZZZ.vecMid(sExpression, objTagType.getTagPartOpening(), objTagType.getTagPartClosing(), false,true);
-				
-			}
-		}
-		return vecReturn;
-	}
 	
 	public static Vector3ZZZ<String>parseFirstVector(String sExpression, String sTagOpening, String sTagClosing, boolean bKeepSurroundingSeparatorsOnParse) throws ExceptionZZZ{
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();		
