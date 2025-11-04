@@ -61,6 +61,9 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 	}
 	
 	//#########################################################
+	//### apend
+	///#####################################
+	
 	//Strings als Array hintereinander haengen
 	public static String[] append(String sString1, String sString2) throws ExceptionZZZ{
 		return StringArrayZZZ.append(sString1, sString2, (String)null);
@@ -367,6 +370,71 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 		return objReturn;
 	}
 	
+	
+	//#####################################
+	//### prepend als Komfortfunktion
+	//#####################################
+	public static String[] prepend(String sString1, String sString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(sString1, sString2, "BEFORE");
+	}
+	
+	public static String[] prepend(String sString1, String sString2, String sFlagControl) throws ExceptionZZZ{
+		String[]saFlagControl=new String[2];
+		saFlagControl[0]=sFlagControl;
+		saFlagControl[1]="BEFORE";
+		
+		String[]saString1=new String[1];
+		saString1[0]=sString1;
+					
+		String[]saString2=new String[1];
+		saString2[0]=sString2;
+		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
+	}
+	
+	public static String[] prepend(String sString1, String sString2, String[] saFlagControlIn) throws ExceptionZZZ{
+		String[]saFlagControl=StringArrayZZZ.prepend(saFlagControlIn, "BEFORE");
+		
+		String[]saString1=new String[1];
+		saString1[0]=sString1;
+					
+		String[]saString2=new String[1];
+		saString2[0]=sString2;
+		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
+	}
+	
+	
+	public static String[] prepend(String[] saString1, String sString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(saString1, sString2, "BEFORE");
+	}
+		
+	public static String[] prepend(String[] saString1, String sString2, String sFlagControlIn) throws ExceptionZZZ{
+		String[]saFlagControl=StringArrayZZZ.prepend(sFlagControlIn, "BEFORE");
+		
+		String[]saString2=new String[1];
+		saString2[0]=sString2;
+		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
+	}
+	
+	public static String[] prepend(String[] saString1, String sString2, String[] saFlagControlIn) throws ExceptionZZZ{		
+		String[]saFlagControl=StringArrayZZZ.prepend(saFlagControlIn, "BEFORE");
+		
+		String[]saString2=new String[1];
+		saString2[0]=sString2;
+		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
+	}
+	
+	
+	public static String[] prepend(String[] saString1, String[] saString2) throws ExceptionZZZ{
+		return StringArrayZZZ.append(saString1, saString2, "BEFORE");
+	}
+	
+	public static String[] prepend(String[] saString1, String[] saString2, String sFlagControlIn) throws ExceptionZZZ{
+		String[]saFlagControl=StringArrayZZZ.prepend(sFlagControlIn, "BEFORE");		
+		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
+	}
+	
+	
+	//#####################################
 	public static String asHtml(String[] saValue) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
@@ -866,6 +934,7 @@ output:
 		}
 		return true;
 	}
+
 	
 	/**Alle Elemente des String Arrays werden um einen weiteren String erweitert.
 	 * Merke: Bei "BEFORE" gilt, dass ein String um die Elemente eines Arrays erweitert wird.

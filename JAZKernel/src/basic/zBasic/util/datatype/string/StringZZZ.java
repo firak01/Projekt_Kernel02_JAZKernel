@@ -1100,16 +1100,11 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, int iPos){
-		String sReturn=sString;
-		main:{
-			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
-				if(iPos<=0) {
-					sReturn = "";
-					break main;
-				}
-			}
+		String sReturn = null;
+		main:{			
+			if (StringZZZ.isEmpty(sString)) break main;
+			if(iPos<=-1) break main;
+			
 			if (iPos > sString.length()){
 				sReturn = sString;
 			}else{
@@ -1125,20 +1120,16 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, int iPos){
-		String sReturn=sString;
-		main:{
-			check:{
-				if (StringZZZ.isEmpty(sString)) break main;
-				
-				sReturn = "";
-				if(iPos<=0) break main;				
-			}
-		
+		String sReturn = null;
+		main:{			
+			if (StringZZZ.isEmpty(sString)) break main;
+			if(iPos<=-1) break main;	
+			
 			sReturn = sString;
 			int iLength = sString.length();
 			int iBeginn = iLength-iPos;
 			if(iBeginn<=0) break main;			
-			if(iBeginn>=iLength) break main;
+			if(iBeginn>=iLength+1) break main;
 		
 			sReturn = sString.substring(iBeginn);
 
@@ -1483,14 +1474,14 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind, boolean bExactMatch){
-		String sReturn=sString;
+		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-				
-			sReturn = "";
-			if(StringZZZ.isEmpty(sToFind)) break main;	
-			
-		
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+					
 			int iIndex;
 			if(bExactMatch){
 				iIndex = sString.lastIndexOf(sToFind);				
@@ -2648,7 +2639,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 */
 	public static String join(String[] saString, String sString, String sFlag) throws ExceptionZZZ {
 		//FGL: Erst ab Java 8: return String.join(File.separator, pathElements);
-    	String sReturn = new String("");
+    	String sReturn = null;
 	    main:{    		
 			if(StringZZZ.isEmpty(sFlag)){
 				sFlag = "BEFORE";				
@@ -3082,20 +3073,16 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 15.06.2007 00:52:08
 	 */
 	public static String rightback(String sString, int iPosition){
-		String sReturn = sString;
+		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-			
+			if(iPosition <= -1) break main;
 			
 			if(iPosition >= sString.length()) {
 				sReturn = "";
 				break main;
 			}
-			if(iPosition <= 0){
-				sReturn = sString;
-				break main;
-			}
-			
+		
 			sReturn = sString.substring(iPosition, sString.length());
 		}
 		return sReturn;
@@ -3120,11 +3107,13 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 */
 	public static String rightback(String sString, String sToFind, boolean bExactMatch){
-		String sReturn = "";
-		main:{
-			
+		String sReturn = null;
+		main:{		
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
 			
 			int iIndex;
 			if(bExactMatch) {
@@ -3156,9 +3145,8 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRight(String sString, int iLeftPosition, int iRightPosition){
-		String sReturn = "";
-		main:{
-			
+		String sReturn = null;
+		main:{			
 			if(StringZZZ.isEmpty(sString))break main;
 			if (iLeftPosition <= -1) break main;
 			if (iRightPosition >= sString.length()+1) break main;
@@ -3185,9 +3173,8 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition){
-		String sReturn = "";
-		main:{
-			
+		String sReturn = null;
+		main:{			
 			if(StringZZZ.isEmpty(sString))break main;
 			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
 						
@@ -3213,7 +3200,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midBounds(String sString, int iLeftPositionFromLeft, int iRightPositionFromRight){
-		String sReturn = "";
+		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
 			
@@ -3246,7 +3233,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
 			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
@@ -3294,7 +3281,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
 			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
@@ -3345,7 +3332,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
 			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
@@ -3447,7 +3434,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 24.09.2008 09:19:44
 	 */
 	public static String replaceOneCharacterGerman(String sString2Parse)throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = null;
 		main:{
 			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, null);
 		}///end main
@@ -3481,7 +3468,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 24.09.2008 09:19:44
 	 */
 	public static String replaceOneCharacterGerman(String sString2Parse, ReferenceZZZ<Boolean>objReturn)throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = null;
 		main:{
 			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, objReturn);		
 		}///end main
@@ -3725,7 +3712,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @author Fritz Lindhauer, 27.09.2025, 16:11:37
 	 */
 	private static String replaceCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturnRefernce)throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = sString2Parse;
 		main:{
 			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind.
 			//So bleiben Abkuerzungen bestehen. Z.B. EU
@@ -4439,8 +4426,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
-			
-			sReturn = "";
+
 			boolean isNumeric=false;
 			for(int iIndex=0; iIndex<=sString.length()-1; iIndex++){
 				String s = sString.substring(iIndex, iIndex+1);
@@ -4505,8 +4491,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	
 	public static String asHtml(String sString) throws ExceptionZZZ{
 		String sReturn = null;
-		main:{
-			
+		main:{		
 			if(StringZZZ.isEmpty(sString)){
 				sReturn = "<html><body></body></html>";
 				break main;
@@ -4533,7 +4518,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	public static String toHtml(String sString) throws ExceptionZZZ{
-		String sReturn = new String("");
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 			sReturn = StringZZZ.toHtmlEscaped(sString);
@@ -4780,10 +4765,9 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	/* Trimme den String, schneide links und rechts jeweils ein einfaches/doppeltes Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches/doppeltes Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String trimAnyQuoteMarked(String sString){
-		String sReturn = null;		
+		String sReturn = sString;		
 		main:{
-			sReturn = sString;
-			if(StringZZZ.isEmptyTrimmed(sString))break main;
+			if(StringZZZ.isEmpty(sString))break main;
 			
 			boolean bGoon = false;
 			while(!bGoon) {

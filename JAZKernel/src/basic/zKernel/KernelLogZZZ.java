@@ -225,7 +225,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 String[] satemp = StringArrayZZZ.prepend(stemp, sPositionCalling);
 		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
 	}
 	
@@ -240,7 +241,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 satemp = StringArrayZZZ.prepend(satemp, sPositionCalling);
 		 return LogStringZZZ.getInstance().compute(obj, satemp, iaFormat);
 	}
 	
@@ -255,7 +257,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 satemp = StringArrayZZZ.prepend(satemp, sPositionCalling);
 		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
 	}
 	

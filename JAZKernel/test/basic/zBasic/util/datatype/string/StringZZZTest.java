@@ -41,7 +41,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("das ist ein Test", -1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.left("das ist ein Test", 1);
 		 assertEquals("d", stemp);
@@ -212,7 +212,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("das ist ein Test", -1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.right("das ist ein Test", 1);
 		 assertEquals("t", stemp);
@@ -248,7 +248,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("das ist ein Test", stemp);
 		 
 		 stemp = StringZZZ.rightback("das ist ein Test", -1);
-		 assertEquals("das ist ein Test", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.rightback("das ist ein Test", 1);
 		 assertEquals("as ist ein Test", stemp);
@@ -280,7 +280,7 @@ public class StringZZZTest extends TestCase{
 		stemp = StringZZZ.rightback("123456789", 0);
 		assertEquals("123456789", stemp);
 		stemp = StringZZZ.rightback("123456789", -1);
-		assertEquals("123456789", stemp);
+		assertNull(stemp);
 		
 		stemp = StringZZZ.rightback("123456789", 1);
 		assertEquals("23456789", stemp);
@@ -793,7 +793,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("123456789", "0");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.right("123456789", "8");
 		 assertEquals("9", stemp);
@@ -829,7 +829,7 @@ public class StringZZZTest extends TestCase{
 		
 		//Teste fehlenden Wert
 		stemp = StringZZZ.rightback("123456789 123456789", "0");
-		assertEquals("", stemp);
+		assertNull(stemp);
 		
 		//Teste normale
 		stemp = StringZZZ.rightback("123456789 123456789", "2");

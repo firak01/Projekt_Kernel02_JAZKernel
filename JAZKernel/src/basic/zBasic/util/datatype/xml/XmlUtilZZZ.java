@@ -408,7 +408,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	
 	//########################################
-	//### PREVIOUS
+	//### PREVIOUS - Richtung
 	//########################################
 				
 	public static String findFirstTagNamePreviousTo(String sXml, String sSep) throws ExceptionZZZ{
@@ -590,9 +590,52 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	
 	//########################################
-	//### NEXT
+	//### NEXT - Richtung
 	//########################################
+	public static String findFirstOpeningTagName(String sXml) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartNextTo(sXml, "");
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;
+	}
 
+	
+	public static String findFirstTagValue(String sXmlIn) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
+			String sXml=sXmlIn;
+			
+			String sTagPartOpening = XmlUtilZZZ.findFirstOpeningTagPartNextTo(sXml, "");
+			if(sTagPartOpening==null) break main;									
+			
+			String sTagName = XmlUtilZZZ.computeTagNameFromTagPart(sTagPartOpening);
+			String sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			sXml = sXmlIn;
+			sReturn = StringZZZ.midLeftRight(sXml, sTagPartOpening, sTagPartClosing);			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String findFirstTagValue(String sXmlIn, String sTagName) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
+			String sXml=sXmlIn;
+			
+			String sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			String sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			sReturn = StringZZZ.midLeftRight(sXml, sTagPartOpening, sTagPartClosing);
+		}//end main:
+		return sReturn;
+	}
+	
 	public static String findFirstTagNameNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -780,6 +823,23 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;						
 	}
 	
+	
+	public static String findFirstChildTagNameByParentName(String sXmlIn, String sTagName) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn))break main;
+			if(StringZZZ.isEmpty(sTagName))break main;
+			
+			String sXml = sXmlIn;
+			sXml = XmlUtilZZZ.findFirstTagValue(sXml, sTagName);
+			if(sXml==null) break main;
+			
+			sXml = XmlUtilZZZ.findFirstOpeningTagName(sXml);
+			
+			sReturn = sXml;
+		}//end main:
+		return sReturn;	
+	}
 	
 	
 	//#############################

@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractArray;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -172,6 +173,36 @@ public class ArrayUtilZZZ<T>{
 		}//end main:
 		return objaReturn;
 	}
+	
+	
+	/** von ChatGPT...
+	 * @param array
+	 * @param index
+	 * @return
+	 * @author Fritz Lindhauer, 04.11.2025, 11:05:43
+	 */
+	public static <T> T[] removeAt(T[] objArray, int index) {
+		checkmain:{
+			boolean bEmptyArray = ArrayUtilZZZ.isNull(objArray);
+			if(bEmptyArray) {
+				return objArray;   
+			}
+			if (index < 0 || index >= objArray.length) {
+				return objArray;
+			}
+		}//end checkmain:
+		
+		@SuppressWarnings("unchecked")
+        T[] objaReturn = (T[]) Array.newInstance(objArray.getClass().getComponentType(), objArray.length - 1);
+		main:{
+	        // Elemente vor dem Index kopieren
+	        System.arraycopy(objArray, 0, objaReturn, 0, index);
+	        
+	        // Elemente nach dem Index kopieren
+	        System.arraycopy(objArray, index + 1, objaReturn, index, objArray.length - index - 1);	        
+		}//end main:
+        return objaReturn;
+    }
 	
 	/** s. https://sentry.io/answers/arraylist-from-array/
 	 * 

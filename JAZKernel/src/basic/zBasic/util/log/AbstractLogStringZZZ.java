@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
@@ -21,6 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
@@ -708,9 +710,18 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					if(saLog.length>iLogIndexCurrent) {					
 						if(ienumMappedFormat.getName().startsWith(StringZZZ.stripNumericRight(ILogStringZZZ.LOGSTRING.ARGNEXT01.getName()))) { //Da gibt es ja in den Varianten mit Endungen ...01 bis ...05
 							if(saLog.length>iLogIndexNext) {
-								sLog = saLog[iLogIndexNext];						
-								sLogUsed = this.compute(classObj, sLog, ienumMappedFormat);
-								iLogIndexNext++; //Also nur wenn das naechste Argument verarbeitet wurde, den Index weiterschieben.
+								ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+								boolean bGoon = true;
+								while(bGoon && iLogIndexNext <= saLog.length-1) {
+									//Suche nach einem Logstring, der kein an anderer Stelle zu betrachtendes XML ist.
+									sLog = saLog[iLogIndexNext];									
+									if(!XmlUtilZZZ.containsTagName(sLog, objTagTypePositionCurrent.getTagName())) {
+										sLogUsed = this.compute(classObj, sLog, ienumMappedFormat);
+										bGoon = false;
+									}		
+									iLogIndexNext++; //Also nur wenn das naechste Argument verarbeitet wurde, den Index weiterschieben.	
+								}	
+								
 								if(saLog.length>iLogIndexNext) {
 									iLogIndexCurrent = iLogIndexNext; //Also den Current Index nur weiterschieben, wenn noch nicht das ende erreicht ist.
 									//Hintergrund: Nur so kann z.B. eine FILEPOSITION aus einem String herausgerechnet werden, falls die FILEPOSITION ans Ende kommen soll, nachdem das ARGNEXT verarbeitet worden ist.
@@ -718,14 +729,24 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 							}
 						}else if(ienumMappedFormat.getName().startsWith(ILogStringZZZ.LOGSTRING.POSITIONCURRENT.getName())) {
 							//Fische aus dem saLog - Array den String mit dem Tag <positioncurrent> heraus.
-							System.out.println("FGLTEST: .....");
+							//System.out.println("FGLTEST: .....");
+							ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+							int iIndex=0;
 							for(String sLogTemp : saLog) {
-								System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sLogTemp='" + sLogTemp+"'");
+								//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sLogTemp='" + sLogTemp+"'");
 								
-								//TODOGON20251102;//Das soll ohne den Leerstring funktionieren und nur den TagNamen zurückliefern
-								String sTagTemp = XmlUtilZZZ.findFirstOpeningTagNameNextTo(sLogTemp, "");
-								System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sTagTemp= '" + sTagTemp + "'");
-								System.out.println("-------------");
+								//Hole den ggfs. vorhandenen PositionCurrent-Wert aus den Logstrings	
+								String sTagTemp = XmlUtilZZZ.findFirstTagValue(sLogTemp, objTagTypePositionCurrent.getTagName());
+								//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": FGLTEST: .....sTagTemp= '" + sTagTemp + "'");
+								//System.out.println("-------------");
+								if(sTagTemp!=null) {
+									sLogUsed = sTagTemp;
+									
+									//Wichtig: Den String aus den Logstrings rausnehmen, damit er nicht noch durch ARGNEXT verarbeitet wird.
+									saLog = ArrayUtilZZZ.removeAt(saLog, iIndex);
+									break;
+								}
+								iIndex++;
 							}
 							
 							
