@@ -109,19 +109,29 @@ public class StringJustifierZZZ extends AbstractObjectWithExceptionZZZ implement
 		String sReturn = sLog;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
+
+			//ermittle die Grenze aus dem Logstring
+			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
+			if(iBoundLeftBehind==-1) break main; //Dann gibt es diese Grenzmarkierung noch nicht, z.B. beim anfänglichen Datumsstring.
+
 			
 			//hole die bisherige, aktuelle Grenze
 			int iBoundLeftBehindCurrent = this.getInfoPartBoundLeftBehindCurrent();
 						
-			//ermittle die Grenze aus dem Logstring
-			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
+			//Keine Differenz vorhanden			
+			if(iBoundLeftBehind == iBoundLeftBehindCurrent) break main;				
 			
-			//Differenz vorhanden			
-			if(iBoundLeftBehind == iBoundLeftBehindCurrent) {				
-				sReturn = sReturn;//  + "-DEBUG01: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
-			}
+			//Differenz vorhanden und groesser.
+			//Merke: Nun zum Schluss, da hier iBoundLeftBehind neu gesetzt wird			
+			if(iBoundLeftBehind > iBoundLeftBehindCurrent) { 
+				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
+				break main;
+			}	
+		
+			//Differenz vorhanden und kleiner
+			//Merke: Nun aufsplitten und auffuellen
 			if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
-				//aufsplitten und auffuellen
+
 				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
 				int iDifference = iBoundLeftBehindCurrent - iBoundLeftBehind;
 				
@@ -133,7 +143,7 @@ public class StringJustifierZZZ extends AbstractObjectWithExceptionZZZ implement
 					//wieder zusamensetzen
 					sReturn = sLeft + sMid + sRight;// + "-DEBUG02a: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}else {
-					sReturn = sReturn;// + "-DEBUG02b: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+					break main;
 				}
 				
 				//Es werden keine TABS mehr verwendet, sondern nur noch die wirklichen Zeichen. Auffuellzeichen ist " ".
@@ -154,13 +164,7 @@ public class StringJustifierZZZ extends AbstractObjectWithExceptionZZZ implement
 				
 				
 				
-			}//end if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
-			
-			//Merke diesen Fall zum Schluss, da hier iBoundLeftBehind neu gesetzt wird
-			if(iBoundLeftBehind > iBoundLeftBehindCurrent) { 
-				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
-				sReturn = sReturn;//  + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
-			}		
+			}//end if(iBoundLeftBehind < iBoundLeftBehindCurrent) {	
 		}//end main:
 		return sReturn;
 	}
