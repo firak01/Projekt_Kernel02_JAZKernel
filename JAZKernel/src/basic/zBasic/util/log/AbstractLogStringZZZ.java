@@ -439,19 +439,24 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}
 			if (!isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
-			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
-			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+			
+			//+++ Pruefe darauf, ob es ein XML-String ist. Wenn ja... Abbruch. Ansonsten wird ggfs. <filepositioncurrent> als normaler Logeintrag behandelt.
+			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ). 
+			boolean bXml = XmlUtilZZZ.isXmlContained(sLogIn);
+			if(bXml) break main;
+			
+			//+++++++++++++++++++++++++++					
+//		    Class classObj = null;		
+//			if(classObjIn==null) {
+//				classObj = this.getClass();			
+//			}else {
+//				classObj = classObjIn;
+//			}
 
 			String sLog=sLogIn;
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 						
-		    Class classObj = null;		
-			if(classObjIn==null) {
-				classObj = this.getClass();			
-			}else {
-				classObj = classObjIn;
-			}
-
-			
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			
 			switch(ienumFormatLogString.getFactor()) {		
@@ -632,12 +637,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();
 			
-		    Class classObj = null;		
-			if(classObjIn==null) {
-				classObj = this.getClass();			
-			}else {
-				classObj = classObjIn;
-			}
+//		    Class classObj = null;		
+//			if(classObjIn==null) {
+//				classObj = this.getClass();			
+//			}else {
+//				classObj = classObjIn;
+//			}
 
 			String sLog=sLogIn;
 						

@@ -592,6 +592,17 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	//########################################
 	//### NEXT - Richtung
 	//########################################
+	public static String findFirstOpeningTagPart(String sXml) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstOpeningTagPartNextTo(sXml, "");
+			if(sTagPart==null) break main;
+			
+			sReturn = sTagPart;
+		}//end main:
+		return sReturn;
+	}
+	
 	public static String findFirstOpeningTagName(String sXml) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -602,8 +613,64 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		}//end main:
 		return sReturn;
 	}
-
 	
+	
+	public static String findFirstClosingTagPart(String sXml) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartNextTo(sXml, "");
+			if(sTagPart==null) break main;
+			
+			sReturn = sTagPart;
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	/**Da lediglich die Rueckgabe des Tags keinen Mehrwert besitzt, gib wenigstens die Startposition als Index zurück.
+	 * @param sXmlIn
+	 * @param sTagName
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 06.11.2025, 09:42:55
+	 */
+	public static int findFirstClosingTagPartIndex(String sXmlIn, String sTagName) throws ExceptionZZZ{
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
+			String sXmlPart = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			int iXmlPartLength = sXmlPart.length();
+			//Nun in einer Schleife diesen TagPart suchen
+			String sXmlRemaining = sXmlIn;
+			String sTagPart = null;			
+			while(true) {
+				sTagPart = XmlUtilZZZ.findFirstClosingTagPartNextTo(sXmlRemaining, "");
+				if(sTagPart==null) break main;
+			
+				if(sXmlPart.equalsIgnoreCase(sTagPart)) break;
+				
+				sXmlRemaining = StringZZZ.right(sXmlRemaining, sTagPart); 
+				if(sXmlRemaining.length() < iXmlPartLength) break main; //Dann kann der Tag nicht mehr im String vorhanden sein.
+			}
+			sReturn = sTagPart;
+		}//end main:
+		return iReturn;
+	}
+	
+	public static String findFirstClosingTagName(String sXml) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sTagPart = XmlUtilZZZ.findFirstClosingTagPartNextTo(sXml, "");
+			if(sTagPart==null) break main;
+			
+			sReturn = XmlUtilZZZ.computeTagNameFromTagPart(sTagPart);
+		}//end main:
+		return sReturn;
+	}
+	
+	
+
+	//+++++++++++++++++++++++++
 	public static String findFirstTagValue(String sXmlIn) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -636,6 +703,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	//++++++++++++++++++++++++++++++++
 	public static String findFirstTagNameNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -844,6 +912,35 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	//#############################
 	//#############################
+	
+	
+	/** Heuristischer Ansatz. Ermittle einen Tagname.
+	 *  Dann ermittle, ob es zu dem Tagnamen einen schliessenden Tag gibt.
+	 *  Dann sollte es irgendwie etwas mit XML sein...
+	 *   
+	 * @param sXml
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 06.11.2025, 08:42:35
+	 */
+	public static boolean isXmlContained(String sXml) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			//ermittle einen unbestimmten Tag
+			String sTagOpening = XmlUtilZZZ.findFirstOpeningTagPart(sXml);
+			if(StringZZZ.isEmpty(sTagOpening)) break main;
+		
+			//ermittle nun dahinter den abschliessenden Tag
+			String sXmlRemaining = StringZZZ.right(sXml, sTagOpening);
+			String sTagName = XmlUtilZZZ.computeTagNameFromTagPart(sTagOpening);
+			String sTagClosing = XmlUtilZZZ.findFirstClosingTagPart(sXmlRemaining, sTagName);
+			if(StringZZZ.isEmpty(sTagClosing)) break main;
+		
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 	public static boolean isExpression(String sExpression) throws ExceptionZZZ{
 		boolean bReturn = true;
 		main:{

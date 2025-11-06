@@ -56,14 +56,13 @@ public interface ILogStringZZZ{
 	public static int iFACTOR_CLASSMETHOD=13;
 	public static int iFACTOR_CLASSMETHOD_REFLECTED=17;
 	public static int iFACTOR_CLASSFILENAME=19;
-	//public static int iFACTOR_CLASSPOSITION=23;       //mit der Zeilenummer dahinter
-	public static int iFACTOR_CLASSFILEPOSITION=29;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=31;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_POSITIONCURRENT_REFLECTED=37;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
-	public static int iFACTOR_THREADID=41;
-	public static int iFACTOR_DATE=43;//
-	//Weitere Primzahlen sind
-	//43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
+	public static int iFACTOR_CLASSFILEPOSITION=23;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=29;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_POSITIONCURRENT_REFLECTED=31;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
+	public static int iFACTOR_THREADID=47;
+	public static int iFACTOR_DATE=41;//
+	//Weitere Primzahlen sind:
+	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
 	
 
 	//Merke:
@@ -97,9 +96,9 @@ public interface ILogStringZZZ{
 		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s:",ILogStringZZZ.iARG_OBJECT, ":" + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CS]", "Gib den einfachen Klassennamen in diesem Format aus."),				
 		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
 		
-		CLASSFILEPOSITION_REFLECTED("fileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "%s",ILogStringZZZ.iARG_STRINGXML, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
-		CLASSMETHOD_REFLECTED("method",ILogStringZZZ.iFACTOR_CLASSMETHOD_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CM]", "%s",ILogStringZZZ.iARG_STRINGXML, sPOSITION_METHOD_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CM]", "Gib den Methodennamen in diesem Format aus."),
-		POSITIONCURRENT_REFLECTED("positioncurrent", ILogStringZZZ.iFACTOR_POSITIONCURRENT_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[POS]", "%s", ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/POS]", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCalling(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
+		CLASSMETHOD_REFLECTED("method",ILogStringZZZ.iFACTOR_CLASSMETHOD_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
+		CLASSFILEPOSITION_REFLECTED("fileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
+		POSITIONCURRENT_REFLECTED("positioncurrent", ILogStringZZZ.iFACTOR_POSITIONCURRENT_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s", ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCalling(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
 		
 		THREADID("threadid",ILogStringZZZ.iFACTOR_THREADID, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringZZZ.iARG_SYSTEM, "", "Gib die ID des Threads in diesem Format aus."),
 		DATE("date",ILogStringZZZ.iFACTOR_DATE,ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringZZZ.iARG_SYSTEM, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/D]", "Gib das errechnete Datum in diesem Format aus.")
@@ -276,7 +275,7 @@ public interface ILogStringZZZ{
 	public int computeFormatPositionsNumber() throws ExceptionZZZ;
 	
 	
-	/* Beispiel für solch ein Array mit den Angaben wo was stehen soll ist:
+	/* Beispiel für solch ein Array IEnumSetMappedLogStringFormatZZZ[] mit den Angaben wo was stehen soll ist:
 	            int[] iaFormat = {
 				ILogStringZZZ.iTHREAD,
 				ILogStringZZZ.iARGNEXT,

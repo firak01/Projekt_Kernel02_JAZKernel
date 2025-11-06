@@ -199,12 +199,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED,
+				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02				
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
+				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -217,14 +218,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02,		
+				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -241,8 +241,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
 				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED
+				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,				 
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
