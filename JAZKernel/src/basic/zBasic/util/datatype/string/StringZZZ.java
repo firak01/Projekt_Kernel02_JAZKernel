@@ -1168,6 +1168,49 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	
+	public static String mid(String sString, int iPos, String sToFind){
+		return StringZZZ.mid(sString, iPos, sToFind, true);
+	}
+	
+	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+		String sReturn = sString;
+		main:{
+			if (StringZZZ.isEmpty(sString)) break main;
+				
+			sReturn = "";
+			if(iIndexStart<0) break main;								
+			if(StringZZZ.isEmpty(sToFind)) break main;				
+			if(iIndexStart > sString.length())	break main;				
+			
+		
+			sReturn = sString.substring(iIndexStart, sString.length()-1);
+			sReturn = StringZZZ.left(sReturn, sToFind, bExactMatch);			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String midKeep(String sString, int iPos, String sToFind){
+		return StringZZZ.midKeep(sString, iPos, sToFind, true);
+	}
+	
+	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+		String sReturn = sString;
+		main:{
+			if (StringZZZ.isEmpty(sString)) break main;
+				
+			sReturn = "";
+			if(iIndexStart<0) break main;								
+			if(StringZZZ.isEmpty(sToFind)) break main;				
+			if(iIndexStart > sString.length())	break main;				
+			
+		
+			sReturn = sString.substring(iIndexStart, sString.length()-1);
+			sReturn = StringZZZ.leftKeep(sReturn, sToFind, bExactMatch);			
+		}//end main:
+		return sReturn;
+	}
+	
 	/** String, analog to LotusScript, returns the substring left from the first occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	* Lindhauer; 15.05.2006 10:53:48

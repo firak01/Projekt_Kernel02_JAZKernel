@@ -130,102 +130,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		
 	}
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		
-
-//		@Override
-//		public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
-//			String sReturn = null;
-//			main:{
-//				if(isFormatUsingString(ienumFormatLogString)) break main; //Hier werden also nur Werte errechnet aufgrund des Objekts selbst
-//				
-//				String sFormat=null;
-//				switch(ienumFormatLogString.getFactor()) {
-//				case ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE:
-//					if(obj==null) {
-//							
-//					}else {
-//						if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-//						}else {
-//							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE));
-//							sReturn= String.format(sFormat, obj.getClass().getSimpleName());
-//						}
-//					}
-//					break;
-//				case ILogStringZZZ.iFACTOR_CLASSNAME:
-//					if(obj==null) {
-//							
-//					}else {
-//						if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-//						}else {
-//							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME));
-//							sReturn= String.format(sFormat, obj.getClass().getName());
-//						}
-//					}
-//					break;
-////Ich kann die Method nicht einfach aus dem Klassenobjekt auslesen.
-////				case ILogStringZZZ.iFACTOR_CLASSMETHOD:
-////					if(obj==null) {
-////							
-////					}else {
-//////						if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-//////							System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-//////						}else {
-////							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSMETHOD));
-////							sReturn= String.format(sFormat, obj.getClass().getName());
-//////						}
-////					}
-////					break;
-//				case ILogStringZZZ.iFACTOR_CLASSFILENAME:
-//					if(obj==null) {
-//							
-//					}else {
-//						if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
-//						}else {
-//							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME));
-//							sReturn = String.format(sFormat, obj.getClass().getName());
-//						}
-//					}
-//					break;
-//				case ILogStringZZZ.iFACTOR_DATE:
-//					
-//					 GregorianCalendar d = new GregorianCalendar();
-//					 Integer iDateYear = new Integer(d.get(Calendar.YEAR));
-//					 Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-//					 Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-//					 Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-//					 Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE)); 			
-//					 
-//					 String sDate =new String( iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-//					 + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString());
-//					
-//					sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_DATE));
-//					sReturn = String.format(sFormat, sDate);
-//					break;
-//
-//				case ILogStringZZZ.iFACTOR_THREADID:
-//					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD)) {
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
-//					}else {
-//						sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_THREADID));
-//						
-//						long lngThreadID = Thread.currentThread().getId();
-//						sReturn = String.format(sFormat, lngThreadID);
-//					}				
-//					break;
-//				default:
-//					System.out.println("AbtractLogStringZZZ.compute(..,..): Dieses Format ist nicht in den gueltigen Formaten für einen objektbasierten nLogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
-//					break;					
-//				}
-//				
-//			}//end main:
-//			return sReturn;
-//		}
-		
-		
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		return compute(this.getClass(), ienumFormatLogString);
@@ -443,7 +348,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			//+++ Pruefe darauf, ob es ein XML-String ist. Wenn ja... Abbruch. Ansonsten wird ggfs. <filepositioncurrent> als normaler Logeintrag behandelt.
 			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ). 
 			boolean bXml = XmlUtilZZZ.isXmlContained(sLogIn);
-			if(bXml) break main;
+			if(bXml) break main; //hier werden nur einfach Strings verarbeitet und keine XML Strings...
 			
 			//+++++++++++++++++++++++++++					
 //		    Class classObj = null;		

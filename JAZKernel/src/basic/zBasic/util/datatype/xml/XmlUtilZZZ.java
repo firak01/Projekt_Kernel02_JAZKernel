@@ -642,17 +642,23 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			int iXmlPartLength = sXmlPart.length();
 			//Nun in einer Schleife diesen TagPart suchen
 			String sXmlRemaining = sXmlIn;
-			String sTagPart = null;			
+			String sTagPartFound=null;
+			int iTagPartIndex;	int iTagPartIndexTotal=0;		
 			while(true) {
-				sTagPart = XmlUtilZZZ.findFirstClosingTagPartNextTo(sXmlRemaining, "");
-				if(sTagPart==null) break main;
+				iTagPartIndex = XmlUtilZZZ.findFirstClosingTagPartIndexNextTo(sXmlRemaining, "");
+				if(iTagPartIndex==-1) break main;
 			
-				if(sXmlPart.equalsIgnoreCase(sTagPart)) break;
+				iTagPartIndexTotal = iTagPartIndexTotal+iTagPartIndex; 				
+				sXmlRemaining = StringZZZ.rightback(sXmlIn, iTagPartIndexTotal);
 				
-				sXmlRemaining = StringZZZ.right(sXmlRemaining, sTagPart); 
+				sTagPartFound = StringZZZ.midKeep(sXmlIn, iTagPartIndexTotal, ">");
+				if(sXmlPart.equalsIgnoreCase(sTagPartFound)) break;
+				
+				iTagPartIndexTotal = iTagPartIndexTotal+sTagPartFound.length();
+				sXmlRemaining = StringZZZ.right(sXmlRemaining, sTagPartFound); 
 				if(sXmlRemaining.length() < iXmlPartLength) break main; //Dann kann der Tag nicht mehr im String vorhanden sein.
 			}
-			sReturn = sTagPart;
+			iReturn = iTagPartIndexTotal;
 		}//end main:
 		return iReturn;
 	}
@@ -837,6 +843,60 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static int findFirstClosingTagPartIndexNextTo(String sXml, String sSep) throws ExceptionZZZ{
+		int iReturn = -1;
+		main:{
+			if(!StringZZZ.contains(sXml, sSep) & !StringZZZ.isEmpty(sSep)) break main; //Leerstring ist fuer sSep erlaubt. Dann soll vom Anfang her gesucht werden.
+			
+			String sRIGHT = StringZZZ.rightback(sXml, sSep);
+			if(StringZZZ.isEmpty(sRIGHT)) {
+				sRIGHT = sXml;
+				//break main;
+			}
+			//String sRIGHT = StringZZZ.rightback(sXml, sSep);
+			//if(StringZZZ.isEmpty(sRIGHT)) break main;
+			
+			int iIndexCLOSING=-1; int iIndexOPENING = -1;
+			
+			//Suche nach dem TAG, bzw. dem naechsten gueltigen TAG.
+			boolean bGoon = false; boolean bValidTagName = false;
+			String sTagPartName = null; 
+			do {
+ 				
+				iIndexOPENING = StringZZZ.indexOfFirstBehind(sRIGHT, "</"); //Dann gibt es kein (weiteres) oeffnendes Tagzeichen
+				if(iIndexOPENING <= -1) break main;
+
+				iIndexCLOSING = StringZZZ.indexOfFirstBefore(sRIGHT,  ">", iIndexOPENING);
+				if(iIndexCLOSING <= -1) break main; //Dann gibt es kein (weiteres) abschliessendes Tagzeichen
+								
+	
+				sTagPartName = StringZZZ.midLeftRight(sRIGHT, iIndexOPENING, iIndexCLOSING);
+				if(sTagPartName==null)break main;
+				
+				//Kein schliesendes Tag gefunden
+				if(StringZZZ.endsWith(sTagPartName, "/")) {
+					//Leere Tags werden nicht beruecksichtigt
+				}else {						
+					bValidTagName = XmlUtilZZZ.isTagNameValid(sTagPartName);
+					if(bValidTagName) {
+						bGoon=true;
+						break;
+					}
+				}
+				
+				
+				sTagPartName=null;
+				sRIGHT = StringZZZ.rightback(sRIGHT, iIndexOPENING+1); //Vorbereitung zum Weitersuchen.
+				
+				
+			
+			} while(bGoon==false);
+			
+			iReturn = iIndexOPENING-2; //-2 wg Laenge von "<" und "Behind".
+		}//end main:
+		return iReturn;						
+	}
+	
 	public static String findFirstClosingTagPartNextTo(String sXml, String sSep) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -933,9 +993,12 @@ public class XmlUtilZZZ implements IConstantZZZ{
 			//ermittle nun dahinter den abschliessenden Tag
 			String sXmlRemaining = StringZZZ.right(sXml, sTagOpening);
 			String sTagName = XmlUtilZZZ.computeTagNameFromTagPart(sTagOpening);
-			String sTagClosing = XmlUtilZZZ.findFirstClosingTagPart(sXmlRemaining, sTagName);
-			if(StringZZZ.isEmpty(sTagClosing)) break main;
+			int iIndex = XmlUtilZZZ.findFirstClosingTagPartIndex(sXmlRemaining, sTagName);
+			if(iIndex==-1) break main;
 		
+			//TEST: Hier muss nun der String mit dem abschliessenden Tag anfangen....
+			//String sText = sXmlRemaining.substring(iIndex);
+			
 			bReturn = true;
 		}//end main:
 		return bReturn;
