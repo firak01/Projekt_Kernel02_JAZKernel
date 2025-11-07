@@ -95,9 +95,9 @@ public class LogStringZZZTest  extends TestCase{
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat= {
 							ILogStringZZZ.LOGSTRING.CLASSNAME,						
-							ILogStringZZZ.LOGSTRING.ARGNEXT01,
+							ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 							ILogStringZZZ.LOGSTRING.THREADID,				
-							ILogStringZZZ.LOGSTRING.ARGNEXT02,												
+							ILogStringZZZ.LOGSTRING.STRINGTYPE02,												
 							};
 			LogStringZZZ.getNewInstance().setFormatPositionsMapped(ienumaFormat);
 			

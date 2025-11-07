@@ -63,8 +63,8 @@ public class LogString4SenderZZZ extends AbstractLogStringZZZ{
 				
 				//Bleibt drin aus ueberichtlichkeitsgruenden
 				ILogStringZZZ.LOGSTRING.THREADID,
-				ILogStringZZZ.LOGSTRING.ARGNEXT01,					
-				ILogStringZZZ.LOGSTRING.ARGNEXT02,
+				ILogStringZZZ.LOGSTRING.STRINGTYPE01,					
+				ILogStringZZZ.LOGSTRING.STRINGTYPE02,
 				ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 		};
 		return iaenumReturn;

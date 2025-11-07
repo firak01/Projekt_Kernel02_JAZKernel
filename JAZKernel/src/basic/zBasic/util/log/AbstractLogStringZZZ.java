@@ -46,11 +46,37 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	//Das Fomat
 	protected volatile IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat=null;
 	
+	//Der LogString-Index - also von den reinen String ( nicht ggfs. hinzugefuegte XML Strings wie von ReflectCodeZZZ.getPositionCurrent() ) 
+	protected volatile int iStringIndexToReadLbound=0;	
+	
 	//Zum Buendig machen
 	protected volatile StringJustifierZZZ objStringJustifier = null;
-	//protected volatile String sPositionSeparator = null;	  //Ggfs. individuelle Positions-Trenner Zeichen.
-	//protected volatile int iInfoPartBoundLeft=-1; //Die aktuelle linke Grenze, an der der InfoPart beginnt.
 	
+	
+	//### GETTER / SETTER
+	@Override 
+	public boolean reset() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(this.iStringIndexToReadLbound!=0) {
+				this.iStringIndexToReadLbound=0;
+				bReturn = true;
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public int getStringIndexStart() throws ExceptionZZZ {
+		return this.iStringIndexToReadLbound;
+	}
+	
+	@Override
+	public void setStringIndexStart(int iStringIndex) throws ExceptionZZZ {
+		this.iStringIndexToReadLbound = iStringIndex;
+	}
+	
+	//+++ Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override 
 	public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
 		if(this.objStringJustifier==null) {
@@ -63,10 +89,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	public void setStringJustifier(StringJustifierZZZ objStringJustifier) {
 		this.objStringJustifier = objStringJustifier;
 	}
-	
-	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
-	
-	
 	
 	//############################################################
 	public static boolean isFormatUsingString(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
@@ -147,17 +169,21 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.reset();
 		return computeByObject_(classObj, ienumFormatLogString);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.reset();
 		return this.compute(null, sLog, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ {
+		this.reset();
+		
 		ArrayList<String>listas = new ArrayList<String>();
 		if(sLog01!=null) {
 			listas.add(sLog01);
@@ -172,6 +198,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.reset();
+		
 		Class classObj=null;
 		if(obj == null) {
 			classObj = this.getClass();
@@ -181,7 +209,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		return compute_(classObj,saLog,ienumFormatLogString);		
+		
+		int iStringIndexToStartFrom = 0;
+		return compute_(classObj,saLog,iStringIndexToStartFrom, ienumFormatLogString);		
 	}
 	
 	/**Den Code fuer compute in dieser zentralen private-Methode konzentriert.
@@ -195,12 +225,15 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	 */	
 	@Override
 	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.reset();
+		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		return this.compute_(classObj, saLog, ienumFormatLogString);
+		int iStringIndexToReadFrom = this.getStringIndexStart();
+		return this.compute_(classObj, saLog, iStringIndexToReadFrom, ienumFormatLogString);
 	}
 	
-	private String compute_(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	private String compute_(Class classObjIn, String[] saLog, int iStringIndexToReadFromStart, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			Class classObj=null;
@@ -218,12 +251,18 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
 			if(bFormatUsingObject) {
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
+				
 			}else if(bFormatUsingString) {
-				for(String sLog:saLog) {
-					sReturn = sReturn + this.computeByString_(classObj, sLog, ienumFormatLogString);				
-				}				
-								
-			}else if(bFormatUsingStringXml) {
+				if(!StringArrayZZZ.isEmpty(saLog)) {
+					if(iStringIndexToReadFromStart<saLog.length) {
+						sReturn = this.computeByString_(classObj, saLog[iStringIndexToReadFromStart], ienumFormatLogString);
+						if(!StringZZZ.isEmpty(sReturn)) {
+							this.setStringIndexStart(iStringIndexToReadFromStart+1);
+						}
+					}
+				}							
+										
+			}else if(bFormatUsingStringXml) {			
 				sReturn = this.computeByStringXml_(classObj, saLog, ienumFormatLogString);
 			}else {
 				//mache nix				
@@ -365,8 +404,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			
 			switch(ienumFormatLogString.getFactor()) {		
-			case ILogStringZZZ.iFACTOR_ARGNEXT_TYPE01:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT_TYPE01));
+			case ILogStringZZZ.iFACTOR_STRING_TYPE01:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE01));
 								
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -386,8 +425,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case ILogStringZZZ.iFACTOR_ARGNEXT_TYPE02:	
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT_TYPE02));
+			case ILogStringZZZ.iFACTOR_STRING_TYPE02:	
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE02));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -407,8 +446,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
-			case ILogStringZZZ.iFACTOR_ARGNEXT_TYPE03:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT_TYPE03));
+			case ILogStringZZZ.iFACTOR_STRING_TYPE03:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE03));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -426,8 +465,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
-			case ILogStringZZZ.iFACTOR_ARGNEXT_TYPE05:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT_TYPE05));
+			case ILogStringZZZ.iFACTOR_ARGNEXT:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT));
 				
 				//MERKE: DAS IST EIN FORMAT ZUM EINFACHEN WEITERSCHIEBEN DES ARGNEXT - WERTS.
 				//       Z.B. wenn vorher die FilePostion ausgegeben wurde. Diese ist immer Bestandteil eines Argument-Strings
@@ -522,7 +561,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				break main;
 			}
 			
-			//###### Mit Strings			
+			//###### Mit Strings, alle durchsuchen.			
 			for(String sLog:saLog) {
 				sReturn = sReturn + this.computeByStringXml_(classObj, sLog, ienumMappedFormat);
 			}
@@ -673,8 +712,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);			
 			}else {
 				IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-				ienumaFormatLogString[0] = ienumFormatLogString;				
-				sReturn = this.compute_(classObj, saLog, ienumaFormatLogString);
+				ienumaFormatLogString[0] = ienumFormatLogString;
+				int iStringIndexToReadFromStart = this.getStringIndexStart();
+				sReturn = this.compute_(classObj, saLog, iStringIndexToReadFromStart, ienumaFormatLogString);
 			}
 		}//end main:
 		return sReturn;
@@ -691,10 +731,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
-		return this.compute_(classObjIn, saLog, ienumaFormatLogString);
+		this.reset();
+		int iStringIndexToReadFromStart = this.getStringIndexStart();
+		return this.compute_(classObjIn, saLog, iStringIndexToReadFromStart, ienumaFormatLogString);
 	}
 	
-	private String compute_(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
+	private String compute_(Class classObjIn, String[] saLog, int iStringIndexToReadFromStart, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
@@ -725,7 +767,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			
 			//##### Mit zu verarbeitenden Strings
 			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
-				sReturn = sReturn + this.compute_(classObj, saLog, ienumFormatLogString);
+				sReturn = sReturn + this.compute_(classObj, saLog, iStringIndexToReadFromStart, ienumFormatLogString);
 			}
 			
 
@@ -751,45 +793,59 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(String sMessage01, String sMessage02) throws ExceptionZZZ {
-				String[] saMessage = new String[2];
-				saMessage[0] = sMessage01;
-				saMessage[1] = sMessage02;
-				return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+		this.reset();
+		
+		String[] saMessage = new String[2];
+		saMessage[0] = sMessage01;
+		saMessage[1] = sMessage02;
+		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
-	public String compute(String[] saMessage) throws ExceptionZZZ {				
-				return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+	public String compute(String[] saMessage) throws ExceptionZZZ {		
+		this.reset();
+		
+		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
-				String[] saMessage = new String[1];
-				saMessage[0] = sMessage;
-				return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+		this.reset();
+		
+		String[] saMessage = new String[1];
+		saMessage[0] = sMessage;
+		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-				String[] saMessage = new String[2];
-				saMessage[0] = sMessage01;
-				saMessage[1] = sMessage02;
-				return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+		this.reset();
+		
+		String[] saMessage = new String[2];
+		saMessage[0] = sMessage01;
+		saMessage[1] = sMessage02;
+		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ {
+		this.reset();
+		
 		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-			return this.compute(this.getClass(), hm);				
+		this.reset();
+		
+		return this.compute(this.getClass(), hm);				
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		this.reset();
+		
 		if(obj==null) {
 			return this.compute(this.getClass(), hm);			
 		}else {
@@ -813,6 +869,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				classObj = classObjIn;
 			}
 
+			this.reset();
 			
 			//Der zu verwendende Logteil
 			String sLogUsed=null;
@@ -829,69 +886,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = sReturn + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;									
 				}
 	        }
-	        
-//			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : hm){
-//				hm.get.getKey(iLogIndexCurrent);
-//				
-//				iLogIndexCurrent++
-//			}
-//				sLogUsed=null;
-//			
-//				if(isFormatUsingLogString(ienumMappedFormat)) {
-//					if(saLog.length>iLogIndexCurrent) {					
-//						if(ienumMappedFormat.getName().startsWith("ARGNEXT")) {
-//							if(saLog.length>iLogIndexNext) {
-//								sLog = saLog[iLogIndexNext];						
-//								sLogUsed = this.compute(obj, sLog, ienumMappedFormat);
-//								iLogIndexNext++; //Also nur wenn das naechste Argument verarbeitet wurde, den Index weiterschieben.
-//								if(saLog.length>iLogIndexNext) {
-//									iLogIndexCurrent = iLogIndexNext; //Also den Current Index nur weiterschieben, wenn noch nicht das ende erreicht ist.
-//									//Hintergrund: Nur so kann z.B. eine FILEPOSITION aus einem String herausgerechnet werden, falls die FILEPOSITION ans Ende kommen soll, nachdem das ARGNEXT verarbeitet worden ist.
-//								}
-//							}
-//						}else if(ienumMappedFormat.getName().startsWith("CLASSMETHOD")) {{
-//							//TODOGOON20251016; sLog = saLog[iLogIndexCurrent];DAS MACHT DEN LOGEINTRAG DOPPELT
-//							sLogUsed = this.compute(obj, sLog, ienumMappedFormat); //die Method kann z.B. nicht einfach ausgelesen werden. Muss also von aussen als Text uebergeben werden.														
-//						}
-//					};
-//				}else {
-//					sLogUsed = this.compute(obj, ienumMappedFormat);
-//				}
-//			
-//				
-//				
-//				if(sLogUsed!=null) { 
-//					if(sReturn==null) {
-//						sReturn = sLogUsed;
-//					}else {
-//						//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
-//						sReturn = sReturn + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;
-//					}					
-//				}
-//			}//end for
-//				
-//			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//			//Wenn jetzt noch Text vorhanden ist, diesen mit dem Standardformat ausgeben.
-//			while(saLog.length>iLogIndexNext) {
-//				sLog = saLog[iLogIndexNext];
-//				if(iLogIndexNext==0) {
-//					sLogUsed = this.compute(obj, sLog, ILogStringZZZ.LOGSTRING.ARGNEXT01);
-//				}else if(iLogIndexNext>=1) {
-//					sLogUsed = this.compute(obj, sLog, ILogStringZZZ.LOGSTRING.ARGNEXT02);
-//				}
-//				iLogIndexNext++;
-//				
-//				if(sLogUsed!=null) { 
-//					if(sReturn==null) {
-//						sReturn = sLogUsed;
-//					}else {
-//						//Die einzelnen Bestandteile noch mit Leerstring voneinander trennen.
-//						sReturn = sReturn + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;
-//					}					
-//				}
-//			}
-			
-			
+	        			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 			sReturn = this.getStringJustifier().justifyInfoPart(sReturn);

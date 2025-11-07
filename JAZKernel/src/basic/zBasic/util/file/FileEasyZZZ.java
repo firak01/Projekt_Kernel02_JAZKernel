@@ -640,7 +640,7 @@ public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
-		String sDirectory = null;
+		String sLog = null; String sDirectory = null;
 		
 		sDirectory = sDirectoryIn;
 		if(sDirectory!=null) {
@@ -654,7 +654,8 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				}
 			}
 		}else {
-			System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sDirectory=null.");
+			sLog = "sDirectory=null.";
+			ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);			
 		}
 		
 		sDirectory = FileEasyZZZ.getFileUsedPath(sDirectoryIn);		
@@ -662,9 +663,13 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//Relative Pfadangabe....
 			//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT...				
 			String sDirectoryRoot = FileEasyZZZ.getDirectoryOfExecutionAsString();
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "(2) sDirectoryRoot='" + sDirectoryRoot + "'");
+			sLog = "(2) sDirectoryRoot='" + sDirectoryRoot + "'";
+			ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);
+			
 			String sDirectoryAbsolute = FileEasyZZZ.joinFilePathName(sDirectoryRoot, sDirectory);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "(2) GEBAUTER ABSOLUTER PFAD sDirectoryAbsolute='" + sDirectoryAbsolute + "'");
+			sLog = "(2) GEBAUTER ABSOLUTER PFAD sDirectoryAbsolute='" + sDirectoryAbsolute + "'";
+			ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);
+			
 			objReturn = FileEasyZZZ.searchDirectory(sDirectoryAbsolute, bSearchInJar); //Diesmal aber als absoluten Pfad...
 			if(objReturn!=null){
 				if(objReturn.exists()) {
@@ -684,7 +689,8 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//##################################################
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//Merke: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden.
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "() SUCHE IN JAR mit searchResourceDirectoryFirst mit '" + sDirectory + "' und sTargetDirectoryPathRootIn=ZZZ");
+			sLog = "() SUCHE IN JAR mit searchResourceDirectoryFirst mit '" + sDirectory + "' und sTargetDirectoryPathRootIn=ZZZ";
+			ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);
 			objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectoryFirst(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(objReturn.exists()) {

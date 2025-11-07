@@ -47,10 +47,10 @@ public interface ILogStringZZZ{
 	//Argumente der compute Methode (sofern vorhanden und != null)
 	//TODO IDEE: Wenn man eine Zahl angibt, soll die Zusammenstellung des Formats definiert sein.
 	//           Darum sind das alles Primzahlen...	
-	public static int iFACTOR_ARGNEXT_TYPE01=1;
-	public static int iFACTOR_ARGNEXT_TYPE02=2;     //4 verschiedene Varianten fuer Argnext (Name entspricht der dahinterstehenden Primzahl)
-	public static int iFACTOR_ARGNEXT_TYPE03=3;
-	public static int iFACTOR_ARGNEXT_TYPE05=5;
+	public static int iFACTOR_STRING_TYPE01=1;
+	public static int iFACTOR_STRING_TYPE02=2;     //4 verschiedene Varianten fuer Argnext (Name entspricht der dahinterstehenden Primzahl)
+	public static int iFACTOR_STRING_TYPE03=3;
+	public static int iFACTOR_ARGNEXT=5;
 	public static int iFACTOR_CLASSNAME=7;
 	public static int iFACTOR_CLASSNAMESIMPLE=11;
 	public static int iFACTOR_CLASSMETHOD=13;
@@ -85,10 +85,10 @@ public interface ILogStringZZZ{
 	
 	//  CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CP]", "[Class: %s]",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CP]", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
 	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
-		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT_TYPE01, "[A01]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT02("argnext02",ILogStringZZZ.iFACTOR_ARGNEXT_TYPE02, "[A02]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT03("argnext03",ILogStringZZZ.iFACTOR_ARGNEXT_TYPE03, "[A03]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT05("argnext05",ILogStringZZZ.iFACTOR_ARGNEXT_TYPE05, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),
+		STRINGTYPE01("stringtype01",ILogStringZZZ.iFACTOR_STRING_TYPE01, "[A01]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		STRINGTYPE02("stringtype02",ILogStringZZZ.iFACTOR_STRING_TYPE02, "[A02]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		STRINGTYPE03("stringtype03",ILogStringZZZ.iFACTOR_STRING_TYPE03, "[A03]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT("argnext",ILogStringZZZ.iFACTOR_ARGNEXT, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringZZZ.iARG_NOTHING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),
 		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CM]", "[Method: %s]",ILogStringZZZ.iARG_STRING, sPOSITION_METHOD_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CM]", "Gib den Methodennamen in diesem Format aus."),
 		CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "[File:%s]",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
 		
@@ -296,11 +296,19 @@ public interface ILogStringZZZ{
 	public HashMap<Integer,String>getHashMapFormatPositionStringDefault() throws ExceptionZZZ;
 	
 	//###########################
+	//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
+	public boolean reset() throws ExceptionZZZ;
+	
 	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
 	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.
 	//Mit Leerzeichen wird dann gearbeitet um die Ausgaben des Informationsteils möglichst buendig untereinander zu bekommen.
     public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
     public void setStringJustifier(StringJustifierZZZ objStringJustifier);
+    
+    //Methode, mit der zu einer anderen LogZeilen - Verarbeitung gesprungen werden kann.
+    //Das wird durch den iARGNEXT Parameter in der Formatierungsanweisung gesteuert.
+    public int getStringIndexStart() throws ExceptionZZZ;
+    public void setStringIndexStart(int iIndexStart) throws ExceptionZZZ;
 	
 	
 	//#############################################################

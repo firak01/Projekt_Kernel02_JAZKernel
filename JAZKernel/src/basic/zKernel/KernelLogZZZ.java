@@ -2,6 +2,7 @@ package basic.zKernel;
 
 import basic.javagently.Stream;
 import basic.zBasic.IObjectZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -134,7 +135,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01				 
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
 		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
 	}
@@ -143,7 +144,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
 		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
 	}
@@ -154,7 +155,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
 		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
 	}
@@ -165,7 +166,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01				 
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
 		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
 	}
@@ -175,7 +176,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
 		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
 	}
@@ -187,7 +188,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
 		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
 	}
@@ -203,8 +204,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
@@ -222,8 +222,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
@@ -239,8 +238,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE02,	
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,				 
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
@@ -256,8 +255,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT02,	
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE02,	
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED
 		 };
@@ -387,8 +386,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	try {
 		objFileWriter = this.getFileTextWriterObject();
 		bReturn = objFileWriter.writeLine(stemp);
-	} catch (ExceptionZZZ e) {
-		// TODO Auto-generated catch block
+		
+		System.out.println(stemp);
+	} catch (ExceptionZZZ e) {		
 		e.printStackTrace();
 	}	
 	return bReturn;
@@ -406,8 +406,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		boolean bReturn = false;	
 		
 		String sLine = KernelLogZZZ.computeLineDate(obj, stemp);
-		bReturn = WriteLine(sLine);
-		
+		bReturn = WriteLine(sLine); //Schreibe in eine Logdatei
 		return bReturn;
 	}
 	synchronized public boolean WriteLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ{
@@ -452,9 +451,10 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		FileTextWriterZZZ objFileWriter;
 		try {
 			objFileWriter = this.getFileTextWriterObject();
-			bReturn = objFileWriter.write(stemp);
-		} catch (ExceptionZZZ e) {
-			// TODO Auto-generated catch block
+			bReturn = objFileWriter.write(stemp); //Kein Zeilenumbruch.
+			
+			System.out.print(stemp); //Kein Zeilenumbruck
+		} catch (ExceptionZZZ e) {			
 			e.printStackTrace();
 		}	
 		return bReturn;
@@ -484,7 +484,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 			throw ez;					
 		}	
 		String sDirectoryPathNormed = objDirectory.getAbsolutePath();
-		System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+		String sLog = "Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'";
+		//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+		ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, sLog);
 		this.sLogDirectorypath = sDirectoryPathNormed; 
 		
 		//File Objekte wieder zurücksetzen
