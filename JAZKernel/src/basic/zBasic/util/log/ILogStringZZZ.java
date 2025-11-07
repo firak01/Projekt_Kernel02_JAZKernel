@@ -296,8 +296,11 @@ public interface ILogStringZZZ{
 	public HashMap<Integer,String>getHashMapFormatPositionStringDefault() throws ExceptionZZZ;
 	
 	//###########################
-	//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
+	//Zurücksetzen von allem, auch des StringJustifiers
 	public boolean reset() throws ExceptionZZZ;
+	
+	//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
+	public boolean resetStringIndex() throws ExceptionZZZ;	
 	
 	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
 	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.

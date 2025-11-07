@@ -15,6 +15,19 @@ public class StringJustifierZZZ extends AbstractObjectWithExceptionZZZ implement
 	public StringJustifierZZZ() {			
 	}
 	
+	//### Zuruecksetzen
+	public boolean reset() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(this.iInfoPartBoundLeft==-1) break main;
+			this.iInfoPartBoundLeft=-1;
+					
+			bReturn = true;
+		}//end main:
+		return bReturn;
+		
+	}
+	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override
 	public String getPositionSeparatorDefault() {

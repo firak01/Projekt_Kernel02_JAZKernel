@@ -54,14 +54,26 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	
 	//### GETTER / SETTER
-	@Override 
+	@Override
 	public boolean reset() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			if(this.iStringIndexToReadLbound!=0) {
-				this.iStringIndexToReadLbound=0;
-				bReturn = true;
-			}
+			boolean btemp1 = this.resetStringIndex();			
+			boolean btemp2 = this.getStringJustifier().reset();
+			
+			bReturn = btemp1 | btemp2;
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override 
+	public boolean resetStringIndex() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(this.iStringIndexToReadLbound==0) break main;
+			
+			this.iStringIndexToReadLbound=0;
+			bReturn = true;			
 		}//end main:
 		return bReturn;
 	}
@@ -169,20 +181,20 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		return computeByObject_(classObj, ienumFormatLogString);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		return this.compute(null, sLog, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		ArrayList<String>listas = new ArrayList<String>();
 		if(sLog01!=null) {
@@ -198,7 +210,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		Class classObj=null;
 		if(obj == null) {
@@ -225,7 +237,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	 */	
 	@Override
 	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
@@ -731,7 +743,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		int iStringIndexToReadFromStart = this.getStringIndexStart();
 		return this.compute_(classObjIn, saLog, iStringIndexToReadFromStart, ienumaFormatLogString);
 	}
@@ -793,7 +805,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(String sMessage01, String sMessage02) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		String[] saMessage = new String[2];
 		saMessage[0] = sMessage01;
@@ -803,14 +815,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(String[] saMessage) throws ExceptionZZZ {		
-		this.reset();
+		this.resetStringIndex();
 		
 		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		String[] saMessage = new String[1];
 		saMessage[0] = sMessage;
@@ -819,7 +831,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		String[] saMessage = new String[2];
 		saMessage[0] = sMessage01;
@@ -829,7 +841,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
@@ -837,14 +849,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		return this.compute(this.getClass(), hm);				
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		this.reset();
+		this.resetStringIndex();
 		
 		if(obj==null) {
 			return this.compute(this.getClass(), hm);			
@@ -869,7 +881,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				classObj = classObjIn;
 			}
 
-			this.reset();
+			this.resetStringIndex();
 			
 			//Der zu verwendende Logteil
 			String sLogUsed=null;
