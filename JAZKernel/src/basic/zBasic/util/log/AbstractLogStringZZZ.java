@@ -491,51 +491,51 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				break;
 				
 				
-			case ILogStringZZZ.iFACTOR_CLASSMETHOD:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSMETHOD));
-				
-				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
-				//Merke: Der Position steht im Logstring immer am Anfang
-				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
-				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
-				
-				//Auseinanderbauen
-				sLeft = StringZZZ.left(sLogIn+ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER, ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER);
-				sMid = StringZZZ.midLeftRightback(sLogIn, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLogIn, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
-				
-				//Nur die Methodenangabe
-				sLog = StringZZZ.stripRight(sLeft, ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER);
-				sLog = String.format(sFormat, sLog);
-				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
-				break;
-			case ILogStringZZZ.iFACTOR_CLASSFILEPOSITION:
-				if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens (also auch der Dateiposition) per gesetztem Flag unterbunden.");
-				}else {
-					sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSFILEPOSITION));
-					//sReturn = String.format(sFormat, sLog);//Merke: Da wir hier nicht die Postion erraten können, gehen wir davon aus, dass sie im naechsten Argument steckt.
-					
-					//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
-					//Merke: Der Position steht im Logstring immer am Anfang
-					//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
-					//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
-					
-					//Auseinanderbauen
-					sLeft = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-					sMid = StringZZZ.midLeftRightback(sLogIn, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-					sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLogIn, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
-					
-					//Die Postionsangabe weglassen
-					sLog = StringZZZ.stripRight(sLeft, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-					sLog = String.format(sFormat, sLog);
-					sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
-					
-					ITagByTypeZZZ objTagFilePosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sReturn);
-					sReturn = objTagFilePosition.getElementString();
-					break;
-				}
-			 break;
+//			case ILogStringZZZ.iFACTOR_CLASSMETHOD:
+//				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSMETHOD));
+//				
+//				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+//				//Merke: Der Position steht im Logstring immer am Anfang
+//				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+//				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+//				
+//				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLogIn+ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER, ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLogIn, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLogIn, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Nur die Methodenangabe
+//				sLog = StringZZZ.stripRight(sLeft, ReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER);
+//				sLog = String.format(sFormat, sLog);
+//				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
+//				break;
+//			case ILogStringZZZ.iFACTOR_CLASSFILEPOSITION:
+//				if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens (also auch der Dateiposition) per gesetztem Flag unterbunden.");
+//				}else {
+//					sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSFILEPOSITION));
+//					//sReturn = String.format(sFormat, sLog);//Merke: Da wir hier nicht die Postion erraten können, gehen wir davon aus, dass sie im naechsten Argument steckt.
+//					
+//					//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+//					//Merke: Der Position steht im Logstring immer am Anfang
+//					//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+//					//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+//					
+//					//Auseinanderbauen
+//					sLeft = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//					sMid = StringZZZ.midLeftRightback(sLogIn, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//					sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLogIn, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//					
+//					//Die Postionsangabe weglassen
+//					sLog = StringZZZ.stripRight(sLeft, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//					sLog = String.format(sFormat, sLog);
+//					sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
+//					
+//					ITagByTypeZZZ objTagFilePosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sReturn);
+//					sReturn = objTagFilePosition.getElementString();
+//					break;
+//				}
+//			 break;
 			default:
 				System.out.println("AbstractLogStringZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
 				break;					

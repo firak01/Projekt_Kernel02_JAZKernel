@@ -4287,6 +4287,10 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
+	public static int indexOfLast(String sSource, String sString2Find) {
+		return StringZZZ.indexOfLastBefore(sSource, sString2Find);
+	}
+	
 	/** wie indexOf, allerdings wird die Laenge des Strings daraufgerechnet.
 	 *  Der index ist also der Anfang des dahinterliegenden Teils
 	 *  

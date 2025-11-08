@@ -26,7 +26,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			assertEquals("<method>testGetPositionCurrent</method><fileposition> (ReflectCodeZZZTest.java:28) </fileposition># ", sValue);
+			assertEquals("<positioncurrent><method>testGetPositionCurrent</method><fileposition> (ReflectCodeZZZTest.java:28) </fileposition></positioncurrent># ", sValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
