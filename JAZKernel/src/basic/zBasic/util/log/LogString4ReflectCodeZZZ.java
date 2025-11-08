@@ -44,9 +44,9 @@ public class LogString4ReflectCodeZZZ extends AbstractLogStringZZZ{
 		//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
-				ILogStringZZZ.LOGSTRING.CLASSMETHOD,
+				ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				ILogStringZZZ.LOGSTRING.ARGNEXT,
-				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION,
+				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 				ILogStringZZZ.LOGSTRING.ARGNEXT,
 		};
 		return iaenumReturn;

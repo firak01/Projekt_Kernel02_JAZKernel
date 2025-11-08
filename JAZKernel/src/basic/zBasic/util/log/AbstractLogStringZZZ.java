@@ -780,6 +780,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			//##### Mit zu verarbeitenden Strings
 			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
 				sReturn = sReturn + this.compute_(classObj, saLog, iStringIndexToReadFromStart, ienumFormatLogString);
+				iStringIndexToReadFromStart = this.getStringIndexStart();
 			}
 			
 

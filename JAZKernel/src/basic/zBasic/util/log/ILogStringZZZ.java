@@ -53,10 +53,10 @@ public interface ILogStringZZZ{
 	public static int iFACTOR_ARGNEXT=5;
 	public static int iFACTOR_CLASSNAME=7;
 	public static int iFACTOR_CLASSNAMESIMPLE=11;
-	public static int iFACTOR_CLASSMETHOD=13;
+	//public static int iFACTOR_CLASSMETHOD=13;
 	public static int iFACTOR_CLASSMETHOD_REFLECTED=17;
 	public static int iFACTOR_CLASSFILENAME=19;
-	public static int iFACTOR_CLASSFILEPOSITION=23;  //mit der Zeilenummer dahinter
+	//public static int iFACTOR_CLASSFILEPOSITION=23;  //mit der Zeilenummer dahinter
 	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=29;  //mit der Zeilenummer dahinter
 	public static int iFACTOR_POSITIONCURRENT_REFLECTED=31;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
 	public static int iFACTOR_THREADID=47;
@@ -84,13 +84,13 @@ public interface ILogStringZZZ{
 	//	
 	
 	//  CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CP]", "[Class: %s]",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CP]", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
+	//   CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CM]", "[Method: %s]",ILogStringZZZ.iARG_STRING, sPOSITION_METHOD_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CM]", "Gib den Methodennamen in diesem Format aus."),
+	//   CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "[File:%s]",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
 	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
 		STRINGTYPE01("stringtype01",ILogStringZZZ.iFACTOR_STRING_TYPE01, "[A01]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		STRINGTYPE02("stringtype02",ILogStringZZZ.iFACTOR_STRING_TYPE02, "[A02]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		STRINGTYPE03("stringtype03",ILogStringZZZ.iFACTOR_STRING_TYPE03, "[A03]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT("argnext",ILogStringZZZ.iFACTOR_ARGNEXT, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringZZZ.iARG_NOTHING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),
-		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CM]", "[Method: %s]",ILogStringZZZ.iARG_STRING, sPOSITION_METHOD_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CM]", "Gib den Methodennamen in diesem Format aus."),
-		CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "[File:%s]",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
+		ARGNEXT("argnext",ILogStringZZZ.iFACTOR_ARGNEXT, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringZZZ.iARG_NOTHING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),				
 		
 		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s:",ILogStringZZZ.iARG_OBJECT, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
 		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s:",ILogStringZZZ.iARG_OBJECT, ":" + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CS]", "Gib den einfachen Klassennamen in diesem Format aus."),				
