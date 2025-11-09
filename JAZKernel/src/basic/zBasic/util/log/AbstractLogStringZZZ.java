@@ -880,10 +880,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			if(ArrayUtilZZZ.isNull(saLog)) {
 				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.
 				for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
+					String sValue = this.computeByObject_(classObj, ienumFormatLogString); 
 					if(sReturn==null) {
-						sReturn = this.computeByObject_(classObj, ienumFormatLogString);
+						sReturn = sValue;
 					}else {
-						sReturn = sReturn + this.computeByObject_(classObj, ienumFormatLogString);
+						sReturn = sReturn + sValue; 
 					}
 				}
 				break main;
@@ -891,11 +892,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			
 			
 			//##### Mit zu verarbeitenden Strings			
-			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {	
-				if(sReturn==null) {
-					sReturn = this.computeUsingFormat_(classObj, saLog, ienumFormatLogString);
-				}else {
-					sReturn = sReturn + this.computeUsingFormat_(classObj, saLog, ienumFormatLogString);
+			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
+				String sValue = this.computeUsingFormat_(classObj, saLog, ienumFormatLogString);
+				if(sValue!=null) {
+					if(sReturn==null) {					
+						sReturn = sValue;
+					}else {					
+						sReturn = sReturn + sValue;
+					}
 				}
 			}
 			
@@ -938,8 +942,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
-		this.resetStringIndexRead();
-		
 		String[] saMessage = new String[1];
 		saMessage[0] = sMessage;
 		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);

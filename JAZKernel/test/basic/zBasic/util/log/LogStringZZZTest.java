@@ -80,30 +80,21 @@ public class LogStringZZZTest  extends TestCase{
 			sLog = "der erste Logeintrag";
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+":";
-			
-			
-			/*  MERKE: DEFAULT FORMATIERUNG IST MOMENTAN:
-			    ILogStringZZZ.LOGSTRING.DATE,
-				ILogStringZZZ.LOGSTRING.THREADID,
-				ILogStringZZZ.LOGSTRING.CLASSNAMESIMPLE,
-				ILogStringZZZ.LOGSTRING.CLASSMETHOD,
-				ILogStringZZZ.LOGSTRING.STRINGTYPE01,					
-				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION,
-			 */
+
 			sLogValue = LogStringZZZ.getNewInstance().compute(objDummy, sLog);
 			assertNotNull(sLogValue);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLogValue);
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog));
 			assertTrue(StringZZZ.count(sLogValue, sLog)==1);
 										
-			assertTrue(StringZZZ.count(sLog,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
-			assertTrue(StringZZZ.count(sLog,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
+			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			assertTrue(StringZZZ.count(sLogValue,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
 						
 			//Logeintrag soll hinter dem Classnamen stehen
 			iLogIndex1 = StringZZZ.indexOfFirst(sLogValue, sLog);
 			iThreadIndex = StringZZZ.indexOfFirst(sLogValue, sThread);
-			assertTrue(iThreadIndex > iLogIndex1+sLog.length());
+			assertTrue(iLogIndex1+sLog.length()> iThreadIndex);
 			
 			iClassNameIndex = StringZZZ.indexOfFirst(sLogValue, sClassName);
 			assertTrue(iLogIndex1 > iClassNameIndex+sClassName.length());
