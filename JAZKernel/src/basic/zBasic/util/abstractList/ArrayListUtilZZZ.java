@@ -367,30 +367,73 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	 * 
 	 * https://stackoverflow.com/questions/10766492/what-is-the-simplest-way-to-reverse-an-arraylist
 	 */
-	//public static void  reverse(ArrayList<String> lista) {
-	//	main:{
-	//		if(lista==null) break main;
-	//		if(lista.size()==0) break main;
-	//		
-	//		 	
-	//	}//end main	
-	//}
-	public static <T> List<T> reverse(final List<T> list) {
-	    final int size = list.size();
-	    final int last = size - 1;
+//	public static <T> List<T> reverse(final List<T> list) {
+//    final int size = list.size();
+//    final int last = size - 1;
+//
+//    // create a new list, with exactly enough initial capacity to hold the (reversed) list
+//    final List<T> result = new ArrayList<>(size);
+//
+//    // iterate through the list in reverse order and append to the result
+//    for (int i = last; i >= 0; --i) {
+//        final T element = list.get(i);
+//        result.add(element);
+//    }
+//
+//    // result now holds a reversed copy of the original list
+//    return result;
+//}
+	public static <T> List<T> reverse(List<T> lista) {
+	    List<T> listaReturn = null; 
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			
+			
+			// create a new list, with exactly enough initial capacity to hold the (reversed) list
+			final int size = lista.size();
+			final int last = size - 1;
+			
+		    listaReturn = new ArrayList<>(size);
+		    
+		    // iterate through the list in reverse order and append to the result
+		    for (int i = last; i >= 0; --i) {
+		        final T element = lista.get(i);
+		        listaReturn.add(element);
+		    }
+		}//end main	
+	    return listaReturn;
+	}	
 	
-	    // create a new list, with exactly enough initial capacity to hold the (reversed) list
-	    final List<T> result = new ArrayList<>(size);
+	/** von ChatGPT erstellt
+	 * @param originalList
+	 * @return
+	 * @author Fritz Lindhauer, 09.11.2025, 08:21:28
+	 */
+	public static <T> ArrayList<T> reverse(ArrayList<T> listaOriginal) {
+		ArrayList<T> listaReturn = null;
+		main:{
+			if(listaOriginal==null) break main;
+			
+        	// Sicherheitskopie erstellen, um die ursprüngliche Liste nicht zu verändern
+        	listaReturn = new ArrayList<T>(listaOriginal);
+        	Collections.reverse(listaReturn);
+		}//end main
+        return listaReturn;
+    }
 	
-	    // iterate through the list in reverse order and append to the result
-	    for (int i = last; i >= 0; --i) {
-	        final T element = list.get(i);
-	        result.add(element);
-	    }
-	
-	    // result now holds a reversed copy of the original list
-	    return result;
-	}
+	public static <T> ArrayListUniqueZZZ<T> reverse(ArrayListUniqueZZZ<T> listaOriginal) {
+		ArrayListUniqueZZZ<T> listaReturn = null;
+		main:{
+			if(listaOriginal==null) break main;
+			
+        	// Sicherheitskopie erstellen, um die ursprüngliche Liste nicht zu verändern
+        	listaReturn = new ArrayListUniqueZZZ<T>(listaOriginal);
+        	Collections.reverse(listaReturn);
+		}//end main
+        return listaReturn;
+    }
 	
 	/**
 	 * @param lista
@@ -423,6 +466,41 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			}
 		}//end main:
 		return aReturn;	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(ArrayList<T> lista, Object obj) {
+		T[]aReturn = null;
+		main:{
+			if(lista==null) break main;
+			if(obj==null) {
+				aReturn= (T[]) ArrayListUtilZZZ.toArray(lista);
+				break main;
+			}
+			
+			Class<T> objClass = (Class<T>) obj.getClass();
+			aReturn = ArrayListUtilZZZ.toArray(lista, objClass);
+			
+		}//end main:
+		return aReturn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(ArrayList<T> lista, Class<T> classObjIn) {
+		T[]aReturn = null;
+		main:{
+			if(lista==null) break main;
+			
+			Class<T> classObj = null; 
+			if(classObjIn == null) {
+				classObj = (Class<T>) Object.class;
+			}else {
+				classObj = classObjIn;				
+			}
+			
+			aReturn = lista.toArray((T[]) java.lang.reflect.Array.newInstance(classObj, lista.size()));
+		}
+		return aReturn;
 	}
 	
 	public static Component[]toComponentArray(ArrayList<Component> lista){

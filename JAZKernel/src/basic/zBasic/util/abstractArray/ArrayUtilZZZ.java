@@ -204,6 +204,41 @@ public class ArrayUtilZZZ<T>{
         return objaReturn;
     }
 	
+	
+    /** von ChatGPT erstellt
+     * @param sourceArray
+     * @param splitValue
+     * @param clazz
+     * @return
+     * @author Fritz Lindhauer, 09.11.2025, 07:21:33
+     */
+    public static <T> List<T[]> splitArrayByValue(T[] sourceArray, T splitValue, Class<T> clazz) {
+    	List<T[]> listaReturn = new ArrayList<T[]>();
+    	main:{
+	        List<T> currentList = new ArrayList<T>();
+	
+	        for (T element : sourceArray) {
+	            if (element == null ? splitValue == null : element.equals(splitValue)) {
+	                // Wenn Split-Wert gefunden: aktuellen Abschnitt abschließen
+	                if (!currentList.isEmpty()) {
+	                    T[] subArray = currentList.toArray((T[]) java.lang.reflect.Array.newInstance(clazz, currentList.size()));
+	                    listaReturn.add(subArray);
+	                    currentList.clear();
+	                }
+	            } else {
+	                currentList.add(element);
+	            }
+	        }
+	
+	        // Letztes Teilarray hinzufügen (falls vorhanden)
+	        if (!currentList.isEmpty()) {
+	            T[] subArray = currentList.toArray((T[]) java.lang.reflect.Array.newInstance(clazz, currentList.size()));
+	            listaReturn.add(subArray);
+	        }
+    	}//end main:
+        return listaReturn;
+    }
+	
 	/** s. https://sentry.io/answers/arraylist-from-array/
 	 * 
 	 * 

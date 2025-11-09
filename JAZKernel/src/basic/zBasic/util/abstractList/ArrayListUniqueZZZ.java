@@ -41,17 +41,35 @@ public class ArrayListUniqueZZZ<T> extends AbstractArrayListZZZ<T> implements IA
 		super();
 	}
 	public ArrayListUniqueZZZ(T[]obja) {	
-		ArrayListUniqueNew_(obja);
-	
+		super();
+		ArrayListUniqueNew_(obja);	
 	}
+	public ArrayListUniqueZZZ(ArrayList<T>lista) {
+		super();
+		ArrayListUniqueNew_(lista);
+	}
+	
+	private boolean ArrayListUniqueNew_(ArrayList<T>lista) {
+		boolean bReturn = false;
+		main:{
+			if(lista==null) break main;
+			
+			for(T obj : lista) {
+				this.add(obj); //Merke: Die Abfrage, ob ein Wert schon vorhanden ist, wird in der ueberschriebenen add-Methode gemacht.
+			}
+			bReturn = true;
+		}//end main:
+				
+		return bReturn;
+	}//end private constructor
 	
 	private boolean ArrayListUniqueNew_(T[] obja){		
 		boolean bReturn = false;
 		main:{
 			if(obja==null) break main;
 			
-			for(T obj : obja) {
-				this.add(obj);
+			for(T obj : obja) {				
+				this.add(obj);  //Merke: Die Abfrage, ob ein Wert schon vorhanden ist, wird in der ueberschriebenen add-Methode gemacht.
 			}
 			bReturn = true;
 		}//end main:

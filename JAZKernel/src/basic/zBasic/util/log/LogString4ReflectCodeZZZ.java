@@ -45,9 +45,9 @@ public class LogString4ReflectCodeZZZ extends AbstractLogStringZZZ{
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
 				ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				ILogStringZZZ.LOGSTRING.ARGNEXT,
+				ILogStringZZZ.LOGSTRING.LINENEXT,
 				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
-				ILogStringZZZ.LOGSTRING.ARGNEXT,
+				ILogStringZZZ.LOGSTRING.LINENEXT,
 		};
 		return iaenumReturn;
 	}
