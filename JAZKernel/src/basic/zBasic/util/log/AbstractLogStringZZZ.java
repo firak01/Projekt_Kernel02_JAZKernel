@@ -464,7 +464,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				//Die Postionsangabe weglassen
 				
 				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sLog = sLeft + sMid + sRight;
+				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
@@ -485,7 +485,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				//Die Postionsangabe weglassen
 				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
 				
-				sLog = sLeft + sMid + sRight;
+				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);				
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
@@ -504,22 +504,25 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLogIn, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
 				
 				//Die Postionsangabe weglassen
-				sLog = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
 			case ILogStringZZZ.iFACTOR_LINENEXT:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_LINENEXT));
+				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN 
 				
-				//MERKE: DAS IST EIN FORMAT ZUM EINFACHEN WEITERSCHIEBEN DES ARGNEXT - WERTS.
-				//       Z.B. wenn vorher die FilePostion ausgegeben wurde. Diese ist immer Bestandteil eines Argument-Strings
-				//       Diese ist aber nicht ARGNEXT...
-				//       Damit also ein nachfolgender Argument-String danach verarbeitet wird, muss das Argument mit dieser "Schiebe" Anweisung extra weitergeschoben werden.
-				//Die Postionsangabe weglassen
-				sLog = "";
-				sLog = String.format(sFormat, sLog);
-				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
+//				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_LINENEXT));
+//				
+//				//MERKE: DAS IST EIN FORMAT ZUM EINFACHEN WEITERSCHIEBEN DES ARGNEXT - WERTS.
+//				//       Z.B. wenn vorher die FilePostion ausgegeben wurde. Diese ist immer Bestandteil eines Argument-Strings
+//				//       Diese ist aber nicht ARGNEXT...
+//				//       Damit also ein nachfolgender Argument-String danach verarbeitet wird, muss das Argument mit dieser "Schiebe" Anweisung extra weitergeschoben werden.
+//				//Die Postionsangabe weglassen
+//				sLog = "";
+//				sLog = String.format(sFormat, sLog);
+//				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
 				

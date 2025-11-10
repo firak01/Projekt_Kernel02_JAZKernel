@@ -1001,6 +1001,91 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;	
 	}
 	
+	//############################
+	//############################
+	//++++++++++++++++++++++++
+		public static String findLastTag(String sXmlIn) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmpty(sXmlIn)) break main;
+				
+				String sXml=sXmlIn;				
+				boolean bGoon=true;
+				do {
+					String sTagTemp = XmlUtilZZZ.findFirstTag(sXml);
+					if(!StringZZZ.isEmpty(sTagTemp)) {
+						sXml = StringZZZ.rightback(sXml, sTagTemp);
+						sReturn = sTagTemp;						
+					}else {
+						bGoon=false;
+					}					
+				}while(bGoon);		
+			}//end main:
+			return sReturn;
+		}
+		
+		public static String findLastTag(String sXmlIn, String sTagName) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmpty(sXmlIn)) break main;
+				
+				String sXml=sXmlIn;				
+				boolean bGoon=true;
+				do {
+					String sTagTemp = XmlUtilZZZ.findFirstTag(sXml, sTagName);
+					if(!StringZZZ.isEmpty(sTagTemp)) {
+						sXml = StringZZZ.rightback(sXml, sTagTemp);
+						sReturn = sTagTemp;						
+					}else {
+						bGoon=false;
+					}					
+				}while(bGoon);
+			}//end main:
+			return sReturn;
+		}
+		
+
+		//+++++++++++++++++++++++++
+		public static String findLastTagValue(String sXmlIn) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmpty(sXmlIn)) break main;
+				
+				String sXml=sXmlIn;				
+				boolean bGoon=true;
+				do {
+					String sTagTemp = XmlUtilZZZ.findFirstTagValue(sXml);
+					if(!StringZZZ.isEmpty(sTagTemp)) {
+						sXml = StringZZZ.rightback(sXml, sTagTemp);
+						sReturn = sTagTemp;						
+					}else {
+						bGoon=false;
+					}					
+				}while(bGoon);	
+			}//end main:
+			return sReturn;
+		}
+		
+		public static String findLastTagValue(String sXmlIn, String sTagName) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmpty(sXmlIn)) break main;
+									
+				String sXml=sXmlIn;				
+				boolean bGoon=true;
+				do {
+					String sTagTemp = XmlUtilZZZ.findFirstTagValue(sXml, sTagName);
+					if(!StringZZZ.isEmpty(sTagTemp)) {
+						sXml = StringZZZ.rightback(sXml, sTagTemp);
+						sReturn = sTagTemp;						
+					}else {
+						bGoon=false;
+					}					
+				}while(bGoon);	
+			}//end main:
+			return sReturn;
+		}
+	
 	
 	//#############################
 	//#############################
@@ -1009,33 +1094,57 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sXml)) break main;
 			
-			String sBefore = XmlUtilZZZ.findTextOuterXmlBefore(sXml);			
-			String sBehind = XmlUtilZZZ.findTextOuterXmlBehind(sXml);
-									
+			
+			boolean bContainsXml = XmlUtilZZZ.isXmlContained(sXml);			
+			if(!bContainsXml)break main; //Wenn kein xml vorhanden ist, dann nimm nur 1 Wert, bzw. gib den Wert zurueck
+			
+			//Wenn xml vorhanden ist, dann verbinde beide Werte
+			String sBefore = null;
+			String sBeforeIn = XmlUtilZZZ.findTextOuterXmlBefore(sXml);
+			if(sBeforeIn!=null) {
+				sBefore = sBeforeIn;
+			}else {
+				sBefore = "";
+			}
+			
+			String sBehindIn = XmlUtilZZZ.findTextOuterXmlBehind(sXml);								
+			String sBehind = null;
+			if(sBehindIn!=null) {
+				sBehind = sBehindIn;
+			}else {
+				sBehind = "";
+			}
+			
 			sReturn = sBefore + sBehind;
 		}//end main:
 		return sReturn;
 	}
 	
-	public static String findTextOuterXmlBefore(String sXml) throws ExceptionZZZ{
-		String sReturn = sXml;
+	public static String findTextOuterXmlBefore(String sXmlIn) throws ExceptionZZZ{
+		String sReturn = sXmlIn;
 		main:{
-			if(StringZZZ.isEmpty(sXml)) break main;
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
 			
-			//TODOGOON20251110;
-		
+
+			String sTag = XmlUtilZZZ.findFirstTag(sXmlIn);
+			if(StringZZZ.isEmpty(sTag)) break main; //dannn gibt es keinen Tag
+			
+			sReturn = StringZZZ.left(sXmlIn, sTag);
 		}//end main:
 		return sReturn;
 	}
 	
 	
-	public static String findTextOuterXmlBehind(String sXml) throws ExceptionZZZ{
-		String sReturn = sXml;
+	public static String findTextOuterXmlBehind(String sXmlIn) throws ExceptionZZZ{
+		String sReturn = sXmlIn;
 		main:{
-			if(StringZZZ.isEmpty(sXml)) break main;
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
 			
-			//TODOGOON20251110;
-		
+
+			String sTag = XmlUtilZZZ.findLastTag(sXmlIn);
+			if(StringZZZ.isEmpty(sTag)) break main; //dannn gibt es keinen Tag
+			
+			sReturn = StringZZZ.rightback(sXmlIn, sTag);
 		}//end main:
 		return sReturn;
 	}

@@ -835,6 +835,60 @@ public class XmlUtilZZZTest extends TestCase{
 		}
 	 }
 	 
+	 //###########
+	 public void testFindLastTag() {
+		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+		//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
+		String sExpression; String sExpressionSolved;
+		String sValue; String sTagName;
+		
+		try {
+			//################################################################
+			//### KEINE Cascaded Verschachtelung
+			//################################################################
+			
+			//############ OHNE KONKRETEN NAMEN #################
+			//++++++++++++++++++++++++++++
+			sExpression = "PRE<eins>firstvalue</eins><zwei>secondvalue</zwei>POST";
+			sExpressionSolved= "<zwei>secondvalue</zwei>";
+			sValue = XmlUtilZZZ.findLastTag(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+								
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		 
+	 }
+	 
+	 //###########
+	 public void testFindLastTagValue() {
+		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+		//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
+		String sExpression; String sExpressionSolved;
+		String sValue; String sTagName;
+		
+		try {
+			//################################################################
+			//### KEINE Cascaded Verschachtelung
+			//################################################################
+			
+			//############ OHNE KONKRETEN NAMEN #################
+			//++++++++++++++++++++++++++++
+			sExpression = "PRE<eins>firstvalue</eins><zwei>secondvalue</zwei>POST";
+			sExpressionSolved= "secondvalue";
+			sValue = XmlUtilZZZ.findLastTagValue(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+								
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		 
+	 }
+	 
+	 
+	
+	 
+	 //###########
 	 public void testFindSibblingTagNameNextByName() {
 			fail("Test existiert noch nicht");
 	 }
@@ -844,32 +898,80 @@ public class XmlUtilZZZTest extends TestCase{
 	 }
 	 
 	 public void testFindTextOuterXmlBefore() {	
-		 	String sExpression = null; String sExpressionSolved = null; String sValue = null;
-		 	
-			try {
-				//Besonderer Test... ueberhaupt kein XML im String vorhanden
-				sExpression = "Bin ein Text ohne XML";
-				sExpressionSolved= "Bin ein Text ohne XML";
-				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
-				assertEquals(sExpressionSolved, sValue);
-				
-				
-				//Negativtest... nix vorher vorhanden				
-				sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-				sExpressionSolved= "";
-				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
-				assertEquals(sExpressionSolved, sValue);
-				
-				sExpression = "Bin ein Text vor dem XML<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
-				sExpressionSolved= "Bin ein Text vor dem XML";
-				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
-				assertEquals(sExpressionSolved, sValue);
-				
-				
-			}catch(ExceptionZZZ ez){
-				ez.printStackTrace();
-				fail("Method throws an exception." + ez.getMessageLast());
-			}
-		 
+		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+		//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
+	 	String sExpression = null; String sExpressionSolved = null; String sValue = null;
+	 	
+		try {
+			//Besonderer Test... ueberhaupt kein XML im String vorhanden
+			sExpression = "Bin ein Text ohne XML";
+			sExpressionSolved= "Bin ein Text ohne XML";
+			sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//Negativtest... nix vorher vorhanden				
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "";
+			sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			sExpression = "Bin ein Text vor dem XML<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "Bin ein Text vor dem XML";
+			sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+															
+
+			//++++++++++++++++++++++++++++
+			//+++ Bei mehreren Tags auf gleicher Ebene
+			//++++++++++++++++++++++++++++
+			sExpression = "PRE<eins>firstvalue</eins><zwei>secondvalue</zwei>POST";
+			sExpressionSolved= "PRE";
+			sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+								
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	 }
+		
+	 public void testFindTextOuterXmlBehind() {	
+		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+		//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
+	 	String sExpression = null; String sExpressionSolved = null; String sValue = null;
+	 	
+		try {
+			//Besonderer Test... ueberhaupt kein XML im String vorhanden
+			sExpression = "Bin ein Text ohne XML";
+			sExpressionSolved= "Bin ein Text ohne XML";
+			sValue = XmlUtilZZZ.findTextOuterXmlBehind(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			
+			//Negativtest... nix dahinter vorhanden				
+			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpressionSolved= "";
+			sValue = XmlUtilZZZ.findTextOuterXmlBehind(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+			
+			sExpression = "Bin ein Text vor dem XML<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>Bin ein Text hinter dem XML";
+			sExpressionSolved= "Bin ein Text hinter dem XML";
+			sValue = XmlUtilZZZ.findTextOuterXmlBehind(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+															
+
+			//++++++++++++++++++++++++++++
+			//+++ Bei mehreren Tags auf gleicher Ebene
+			//++++++++++++++++++++++++++++
+			sExpression = "PRE<eins>firstvalue</eins><zwei>secondvalue</zwei>POST";
+			sExpressionSolved= "POST";
+			sValue = XmlUtilZZZ.findTextOuterXmlBehind(sExpression);
+			assertEquals(sExpressionSolved, sValue);
+							
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
 	 }
 }//End class

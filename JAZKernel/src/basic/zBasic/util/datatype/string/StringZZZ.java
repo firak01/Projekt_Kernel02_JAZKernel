@@ -1046,6 +1046,62 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	//######################################################################
+	
+	public static String[] explode(String sString, String sDelimiter){
+		String[] saReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(sDelimiter==null) break main;
+			
+			saReturn = StringUtils.splitByWholeSeparator(sString, sDelimiter);
+		}//end main
+		return saReturn;
+	}
+	
+	public static String[] explode(String sString, String[] saDelimiter){
+		String[] saReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(ArrayUtilZZZ.isNull(saDelimiter)) break main;
+			
+			//Eine ArrayList aus den Delimitern machen
+			ArrayList<String> listaDelim = StringArrayZZZ.toArrayList(saDelimiter);
+			
+			//Zerlegen mit dem ersten Delimiter
+			String sDelimiter = (String) listaDelim.get(0);
+			String[] saTemp = StringUtils.splitByWholeSeparator(sString, sDelimiter);  //Sollte hier nicht der Separator im Array enthalten sein ???
+			
+			//Alle gefundenen Teilstrings erneut zerlegen, aber (!) die Liste der Delimiter um den gerade verarbeiteten reduzieren
+			listaDelim.remove(0);
+			if(listaDelim.isEmpty()){
+				//Damit den letzten Delimiter gefunden. Array zur�ckgeben
+				saReturn = saTemp;
+				break main;
+			}
+			
+			ArrayList<String> listaStringFound = new ArrayList<String>();//StringArrayZZZ.toArrayList(saTemp);
+			for(int icount=0; icount <= saTemp.length-1; icount++){
+				String sStringTemp = saTemp[icount];				
+				//-1 korrekt ? 
+				String[] saDelimTemp = new String[listaDelim.size()-1];
+				saDelimTemp = (String[]) listaDelim.toArray(saDelimTemp);
+								
+				String[] saTemp2 = StringZZZ.explode(sStringTemp, saDelimTemp);
+				ArrayList<String> listaTemp = StringArrayZZZ.toArrayList(saTemp2);
+				
+				//Nun das Ergebnis zu dem bisherigen hinzufuegen
+				listaStringFound = (ArrayList<String>) ArrayListUtilZZZ.join(listaStringFound, listaTemp, false);
+			}		
+			saReturn = new String[listaStringFound.size()-1];
+			saReturn = (String[]) listaStringFound.toArray(saReturn);
+		}//end main
+		return saReturn;
+	}
+	
+	//###################################################
+	
+	
 	/* Unter Java String gibt es nur startsWith. Der Vollstaendigkeit halber hier quasi uebernommen. */
 	public static boolean startsWith(String sString, String sMatch){
 		boolean bReturn = false;
@@ -1115,125 +1171,6 @@ public class StringZZZ implements IConstantZZZ{
 				sReturn = sString.substring(0, iPos);
 			}			
 		}//END main:
-		return sReturn;
-	}
-	
-	/** String, analog to LotusScript, returns the iLength number of strings from the right. Null if sString is null or empty.
-	* Lindhauer; 15.05.2006 10:53:48
-	 * @param iLength
-	 * @return String
-	 */
-	public static String right(String sString, int iPos){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-						
-//		String sReturn = null;
-//		main:{			
-//			if (StringZZZ.isEmpty(sString)) break main;
-			if(iPos<=-1) break main;	
-			
-			sReturn = sString;
-			int iLength = sString.length();
-			int iBeginn = iLength-iPos;
-			if(iBeginn<=0) break main;			
-			if(iBeginn>=iLength+1) break main;
-		
-			sReturn = sString.substring(iBeginn);
-
-		}//END main:
-		return sReturn;
-	}
-	
-	/** String, analog to LotusScript, returns the iLength number of strings from the right iPos Position. Null if sString is null or empty.
-	* @param sString
-	* @param iPos, Indexpositon, beginnt mit 0
-	* @param iNumberOfCharacter
-	* @return
-	* 
-	* lindhaueradmin; 18.03.2008 06:29:53
-	 */
-	public static String mid(String sString, int iPos, int iLength){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-						
-//		String sReturn = sString;
-//		main:{
-//				if (StringZZZ.isEmpty(sString)) break main;
-//				
-//				sReturn = "";
-				if(iPos<0) break main;								
-				if(iLength<0) break main;				
-				if(iPos > sString.length())	break main;				
-		
-			int iIndexRight = iPos + iLength;
-			
-			//Ohne diese Sicherheitsabfrage wirft Java einen IndexOutOfBounds Fehler
-			if(iIndexRight>sString.length()){
-				iIndexRight = sString.length();
-			}
-			sReturn = sString.substring(iPos, iIndexRight);		
-		}
-		return sReturn;
-	}
-	
-	
-	public static String mid(String sString, int iPos, String sToFind){
-		return StringZZZ.mid(sString, iPos, sToFind, true);
-	}
-	
-	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) {
-				sReturn = "";
-				break main;	
-			}
-			
-//		String sReturn = sString;
-//		main:{
-//			if (StringZZZ.isEmpty(sString)) break main;
-//				
-//			sReturn = "";
-			if(iIndexStart<0) break main;								
-			if(StringZZZ.isEmpty(sToFind)) break main;				
-			if(iIndexStart > sString.length())	break main;				
-			
-		
-			sReturn = sString.substring(iIndexStart, sString.length()-1);
-			sReturn = StringZZZ.left(sReturn, sToFind, bExactMatch);			
-		}//end main:
-		return sReturn;
-	}
-	
-	public static String midKeep(String sString, int iPos, String sToFind){
-		return StringZZZ.midKeep(sString, iPos, sToFind, true);
-	}
-	
-	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) {
-				sReturn = "";
-				break main;	
-			}
-			
-//		String sReturn = sString;
-//		main:{
-//			if (StringZZZ.isEmpty(sString)) break main;
-//				
-//			sReturn = "";
-			if(iIndexStart<0) break main;								
-			if(StringZZZ.isEmpty(sToFind)) break main;				
-			if(iIndexStart > sString.length())	break main;				
-			
-		
-			sReturn = sString.substring(iIndexStart, sString.length()-1);
-			sReturn = StringZZZ.leftKeep(sReturn, sToFind, bExactMatch);			
-		}//end main:
 		return sReturn;
 	}
 	
@@ -1448,6 +1385,383 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	
+	//########################################################
+	
+	/** String, analog to LotusScript, returns the iLength number of strings from the right iPos Position. Null if sString is null or empty.
+	* @param sString
+	* @param iPos, Indexpositon, beginnt mit 0
+	* @param iNumberOfCharacter
+	* @return
+	* 
+	* lindhaueradmin; 18.03.2008 06:29:53
+	 */
+	public static String mid(String sString, int iPos, int iLength){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+						
+//		String sReturn = sString;
+//		main:{
+//				if (StringZZZ.isEmpty(sString)) break main;
+//				
+//				sReturn = "";
+				if(iPos<0) break main;								
+				if(iLength<0) break main;				
+				if(iPos > sString.length())	break main;				
+		
+			int iIndexRight = iPos + iLength;
+			
+			//Ohne diese Sicherheitsabfrage wirft Java einen IndexOutOfBounds Fehler
+			if(iIndexRight>sString.length()){
+				iIndexRight = sString.length();
+			}
+			sReturn = sString.substring(iPos, iIndexRight);		
+		}
+		return sReturn;
+	}
+	
+	
+	public static String mid(String sString, int iPos, String sToFind){
+		return StringZZZ.mid(sString, iPos, sToFind, true);
+	}
+	
+	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn = sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//				
+//			sReturn = "";
+			if(iIndexStart<0) break main;								
+			if(StringZZZ.isEmpty(sToFind)) break main;				
+			if(iIndexStart > sString.length())	break main;				
+			
+		
+			sReturn = sString.substring(iIndexStart, sString.length()-1);
+			sReturn = StringZZZ.left(sReturn, sToFind, bExactMatch);			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String midKeep(String sString, int iPos, String sToFind){
+		return StringZZZ.midKeep(sString, iPos, sToFind, true);
+	}
+	
+	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn = sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//				
+//			sReturn = "";
+			if(iIndexStart<0) break main;								
+			if(StringZZZ.isEmpty(sToFind)) break main;				
+			if(iIndexStart > sString.length())	break main;				
+			
+		
+			sReturn = sString.substring(iIndexStart, sString.length()-1);
+			sReturn = StringZZZ.leftKeep(sReturn, sToFind, bExactMatch);			
+		}//end main:
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString
+	* @param iLeftPosition
+	* @param iRightPosition
+	* @return
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRight(String sString, int iLeftPosition, int iRightPosition){
+		String sReturn = null;
+		main:{			
+			if(StringZZZ.isEmpty(sString))break main;
+			if (iLeftPosition <= -1) break main;
+			if (iRightPosition >= sString.length()+1) break main;
+						
+			sReturn = StringZZZ.rightback(sString, iLeftPosition);
+			if(StringZZZ.isEmpty(sReturn)) break main;
+			if(iRightPosition-iLeftPosition >= sReturn.length()){
+				sReturn = "";
+				break main;
+			}
+			
+			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition));
+			if(StringZZZ.isEmpty(sReturn)) break main;			
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right, including the edge positions
+	* @param sString
+	* @param iLeftPosition
+	* @param iRightPosition
+	* @return
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition){
+		String sReturn = null;
+		main:{			
+			if(StringZZZ.isEmpty(sString))break main;
+			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
+						
+			sReturn = StringZZZ.rightback(sString, iLeftPosition); //das beinhaltet das Zeichen
+			if(StringZZZ.isEmpty(sReturn)) break main;
+			if(iRightPosition-iLeftPosition >= sReturn.length()){
+				sReturn = "";
+				break main;
+			}
+			
+			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition +1));
+			if(StringZZZ.isEmpty(sReturn)) break main;			
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString
+	* @param iLeftPosition
+	* @param iRightPosition
+	* @return
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midBounds(String sString, int iLeftPositionFromLeft, int iRightPositionFromRight){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;
+			
+			int iRightPosition = sString.length() - iRightPositionFromRight;
+			if(iRightPosition <= iLeftPositionFromLeft) break main;
+			
+			sReturn = StringZZZ.midLeftRight(sString, iLeftPositionFromLeft, iRightPosition);
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightback(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightback(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+			
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.left(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
+				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			}else {
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			}
+		
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRight(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRight(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+								
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+
+		
+		}
+		return sReturn;
+	}
+	
+	//#######################################################################
+	/** returns the string cut on the left and on the right
+	 *  INCLUDING the left and right Border
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightKeep(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	 *  INCLUDING the left and right Border
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+								
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			sReturn = StringZZZ.rightbackKeep(sString, sLeft, bExactMatch);
+			sReturn = StringZZZ.leftKeep(sReturn, sRight, bExactMatch);
+		}
+		return sReturn;
+	}
+	
+	//#######################################################################
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightIntersect(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightbackIntersect(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+			
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			 
+			//Normalerweise wird aber das midLeftRightback Ergebnis erwartet.
+//			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+//			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+			//Merke: Nur nach links und rechts abzuprüfen ist nun logisch richtig. 
+			//       Um sie vom "erwarteten midLeftRighback Ergebnis abzugrenzen, bekommt diese Methode daher einen besonderen Namen "...Intersected(...)
+			
+			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
+				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			}else {
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			}
+		
+		}
+		return sReturn;
+	}
+	
+	
+	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	 * 
@@ -1561,6 +1875,33 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	//#############################
+	/** String, analog to LotusScript, returns the iLength number of strings from the right. Null if sString is null or empty.
+	* Lindhauer; 15.05.2006 10:53:48
+	 * @param iLength
+	 * @return String
+	 */
+	public static String right(String sString, int iPos){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+						
+//		String sReturn = null;
+//		main:{			
+//			if (StringZZZ.isEmpty(sString)) break main;
+			if(iPos<=-1) break main;	
+			
+			sReturn = sString;
+			int iLength = sString.length();
+			int iBeginn = iLength-iPos;
+			if(iBeginn<=0) break main;			
+			if(iBeginn>=iLength+1) break main;
+		
+			sReturn = sString.substring(iBeginn);
+
+		}//END main:
+		return sReturn;
+	}
 	
 	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
@@ -1615,57 +1956,9 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String[] explode(String sString, String sDelimiter){
-		String[] saReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(sDelimiter==null) break main;
-			
-			saReturn = StringUtils.splitByWholeSeparator(sString, sDelimiter);
-		}//end main
-		return saReturn;
-	}
 	
-	public static String[] explode(String sString, String[] saDelimiter){
-		String[] saReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(ArrayUtilZZZ.isNull(saDelimiter)) break main;
-			
-			//Eine ArrayList aus den Delimitern machen
-			ArrayList<String> listaDelim = StringArrayZZZ.toArrayList(saDelimiter);
-			
-			//Zerlegen mit dem ersten Delimiter
-			String sDelimiter = (String) listaDelim.get(0);
-			String[] saTemp = StringUtils.splitByWholeSeparator(sString, sDelimiter);  //Sollte hier nicht der Separator im Array enthalten sein ???
-			
-			//Alle gefundenen Teilstrings erneut zerlegen, aber (!) die Liste der Delimiter um den gerade verarbeiteten reduzieren
-			listaDelim.remove(0);
-			if(listaDelim.isEmpty()){
-				//Damit den letzten Delimiter gefunden. Array zur�ckgeben
-				saReturn = saTemp;
-				break main;
-			}
-			
-			ArrayList<String> listaStringFound = new ArrayList<String>();//StringArrayZZZ.toArrayList(saTemp);
-			for(int icount=0; icount <= saTemp.length-1; icount++){
-				String sStringTemp = saTemp[icount];				
-				//-1 korrekt ? 
-				String[] saDelimTemp = new String[listaDelim.size()-1];
-				saDelimTemp = (String[]) listaDelim.toArray(saDelimTemp);
-								
-				String[] saTemp2 = StringZZZ.explode(sStringTemp, saDelimTemp);
-				ArrayList<String> listaTemp = StringArrayZZZ.toArrayList(saTemp2);
-				
-				//Nun das Ergebnis zu dem bisherigen hinzufuegen
-				listaStringFound = (ArrayList<String>) ArrayListUtilZZZ.join(listaStringFound, listaTemp, false);
-			}		
-			saReturn = new String[listaStringFound.size()-1];
-			saReturn = (String[]) listaStringFound.toArray(saReturn);
-		}//end main
-		return saReturn;
-	}
 	
+	//#####################################
 	
 	/** Ergänzt die String.valueOf(obj) Methode um sicheres Typecasting 
 	 *  und die Betrachtung von speziellen Klassen.
@@ -3249,288 +3542,68 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	}
 	
 	
-	/** returns the string cut on the left and on the right
+	//+++++++++++++++
+	
+	/** Returns the right part, but iPosition is counted from the left.
+	 * e.g. StringZZZ.rightback("abcde", 2) will return "cde".
+	 * 
+	 * This example returns "nard Wallace." 
+@RightBack("Lennard Wallace";3) 
+	 * 
 	* @param sString
-	* @param iLeftPosition
-	* @param iRightPosition
+	* @param iPosition
 	* @return
 	* 
-	* lindhauer; 19.08.2008 09:42:33
+	* lindhauer; 15.06.2007 00:52:08
 	 */
-	public static String midLeftRight(String sString, int iLeftPosition, int iRightPosition){
+	public static String rightbackKeep(String sString, int iPosition){
 		String sReturn = null;
-		main:{			
-			if(StringZZZ.isEmpty(sString))break main;
-			if (iLeftPosition <= -1) break main;
-			if (iRightPosition >= sString.length()+1) break main;
-						
-			sReturn = StringZZZ.rightback(sString, iLeftPosition);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-			if(iRightPosition-iLeftPosition >= sReturn.length()){
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(iPosition <= -1) break main;
+			
+			if(iPosition >= sString.length()) {
 				sReturn = "";
 				break main;
 			}
-			
-			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition));
-			if(StringZZZ.isEmpty(sReturn)) break main;			
-		}
-		return sReturn;
-	}
-	
-	/** returns the string cut on the left and on the right, including the edge positions
-	* @param sString
-	* @param iLeftPosition
-	* @param iRightPosition
-	* @return
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition){
-		String sReturn = null;
-		main:{			
-			if(StringZZZ.isEmpty(sString))break main;
-			if ((iLeftPosition + iRightPosition) > sString.length()) break main;
-						
-			sReturn = StringZZZ.rightback(sString, iLeftPosition); //das beinhaltet das Zeichen
-			if(StringZZZ.isEmpty(sReturn)) break main;
-			if(iRightPosition-iLeftPosition >= sReturn.length()){
-				sReturn = "";
-				break main;
-			}
-			
-			sReturn = StringZZZ.left(sReturn, (iRightPosition - iLeftPosition +1));
-			if(StringZZZ.isEmpty(sReturn)) break main;			
-		}
-		return sReturn;
-	}
-	
-	/** returns the string cut on the left and on the right
-	* @param sString
-	* @param iLeftPosition
-	* @param iRightPosition
-	* @return
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midBounds(String sString, int iLeftPositionFromLeft, int iRightPositionFromRight){
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sString))break main;
-			
-			int iRightPosition = sString.length() - iRightPositionFromRight;
-			if(iRightPosition <= iLeftPositionFromLeft) break main;
-			
-			sReturn = StringZZZ.midLeftRight(sString, iLeftPositionFromLeft, iRightPosition);
-		}
-		return sReturn;
-	}
-	
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: abc~=~xyz
-	* @param sLeft    e.g.: ~
-	* @param sRight  e.g.: ~
-	* @return   ==>           =
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightback(String sString, String sLeft, String sRight){
-		return StringZZZ.midLeftRightback(sString, sLeft, sRight, true);
-	}
-	
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: abc~=~xyz
-	* @param sLeft    e.g.: ~
-	* @param sRight  e.g.: ~
-	* @return   ==>           =
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sString))break main;			
-			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
-			
-			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.left(sString, sRight, bExactMatch);
-				break main;
-			}
-			
-			if(StringZZZ.isEmpty(sRight)){
-				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
-				break main;
-			}
-			
-			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
-				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
-				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
-			}else {
-				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
-				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
-			}
 		
+			iPosition = iPosition - 1;
+			if(iPosition <= -1 ) iPosition = 0;
+			sReturn = sString.substring(iPosition, sString.length());
 		}
 		return sReturn;
 	}
 	
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: [[test]]
-	* @param sLeft    e.g.: [
-	* @param sRight  e.g.: ]
-	* @return   ==>          test
-	* 
-	* lindhauer; 19.08.2008 09:42:33
+	/**Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von LINKS nach dem Suchstring gesucht.
+	 * @param sString
+	 * @param sToFind
+	 * @return
 	 */
-	public static String midLeftRight(String sString, String sLeft, String sRight){
-		return StringZZZ.midLeftRight(sString, sLeft, sRight, true);
+	public static String rightbackKeep(String sString, String sToFind){
+		return StringZZZ.rightbackKeep(sString, sToFind, true);
 	}
 	
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: abc~=~xyz
-	* @param sLeft    e.g.: ~
-	* @param sRight  e.g.: ~
-	* @return   ==>           =
-	* 
-	* lindhauer; 19.08.2008 09:42:33
+	/**Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von LINKS nach dem Suchstring gesucht.
+	 *  bExactMatch=false => es wird von beiden Strings lowercase gebildet.
+	 * @param sString
+	 * @param sToFind
+	 * @param bExactMatch
+	 * @return
 	 */
-	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch){
+	public static String rightbackKeep(String sString, String sToFind, boolean bExactMatch){
 		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sString))break main;			
-			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
-								
-			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
-				break main;
-			}
+		main:{		
+			String sRightBack=StringZZZ.rightback(sString, sToFind, bExactMatch);
+			if(sRightBack==null)break main;
 			
-			if(StringZZZ.isEmpty(sRight)){
-				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-				break main;
-			}
-			
-			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
-			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
-			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
-			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
-
-			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
-			
-
-		
+			sReturn = sToFind + sRightBack;
 		}
 		return sReturn;
 	}
 	
-	//#######################################################################
-	/** returns the string cut on the left and on the right
-	 *  INCLUDING the left and right Border
-	* @param sString e.g.: [[test]]
-	* @param sLeft    e.g.: [
-	* @param sRight  e.g.: ]
-	* @return   ==>          test
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightKeep(String sString, String sLeft, String sRight){
-		return StringZZZ.midLeftRightKeep(sString, sLeft, sRight, true);
-	}
 	
-	/** returns the string cut on the left and on the right
-	 *  INCLUDING the left and right Border
-	* @param sString e.g.: abc~=~xyz
-	* @param sLeft    e.g.: ~
-	* @param sRight  e.g.: ~
-	* @return   ==>           =
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightKeep(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sString))break main;			
-			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
-								
-			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
-				break main;
-			}
-			
-			if(StringZZZ.isEmpty(sRight)){
-				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-				break main;
-			}
-			
-			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
-			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
-			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
-			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
-
-			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
-			
-
-		
-		}
-		return sReturn;
-	}
-	
-	//#######################################################################
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: [[test]]
-	* @param sLeft    e.g.: [
-	* @param sRight  e.g.: ]
-	* @return   ==>          test
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightIntersect(String sString, String sLeft, String sRight){
-		return StringZZZ.midLeftRightbackIntersect(sString, sLeft, sRight, true);
-	}
-	
-	/** returns the string cut on the left and on the right
-	* @param sString e.g.: abc~=~xyz
-	* @param sLeft    e.g.: ~
-	* @param sRight  e.g.: ~
-	* @return   ==>           =
-	* 
-	* lindhauer; 19.08.2008 09:42:33
-	 */
-	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch){
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sString))break main;			
-			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
-			
-			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
-				break main;
-			}
-			
-			if(StringZZZ.isEmpty(sRight)){
-				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-				break main;
-			}
-			 
-			//Normalerweise wird aber das midLeftRightback Ergebnis erwartet.
-//			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-//			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
-			
-			//Merke: Nur nach links und rechts abzuprüfen ist nun logisch richtig. 
-			//       Um sie vom "erwarteten midLeftRighback Ergebnis abzugrenzen, bekommt diese Methode daher einen besonderen Namen "...Intersected(...)
-			
-			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
-				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
-				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
-			}else {
-				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
-				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
-			}
-		
-		}
-		return sReturn;
-	}
 	
 	/** Ersetze ae, ue, ss, oe in dem übergebenen String.
 	 *    Dabei wird versucht besonderheiten zu Berücksichtigen:
