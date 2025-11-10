@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalReactZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
@@ -20,7 +21,7 @@ import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends AbstractObjectWithStatusMonitoringZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ {
+public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends AbstractObjectWithStatusMonitoringZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalReactZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	
 	//Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.

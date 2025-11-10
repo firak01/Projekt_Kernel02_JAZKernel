@@ -418,9 +418,18 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		
 			
 			//+++ Pruefe darauf, ob es ein XML-String ist. Wenn ja... Abbruch. Ansonsten wird ggfs. <filepositioncurrent> als normaler Logeintrag behandelt.
-			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ). 
-			boolean bXml = XmlUtilZZZ.isXmlContained(sLogIn);
-			if(bXml) break main; //hier werden nur einfach Strings verarbeitet und keine XML Strings...
+			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ).
+			
+			//Nein, dadurch wird ggfs. Text vor oder nach dem XML unterschlagen.
+			//boolean bXml = XmlUtilZZZ.isXmlContained(sLogIn);
+			//if(bXml) break main; //hier werden nur einfach Strings verarbeitet und keine XML Strings...
+			
+			//Statt dessen
+			//+++ Pruefe darauf, ob Text vor oder hinter XML steht (oder alles, wenn kein XML).
+			String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
+			if(StringZZZ.isEmpty(sOuter)) break main;
+			
+			
 			
 			//+++++++++++++++++++++++++++					
 //		    Class classObj = null;		
@@ -430,7 +439,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 //				classObj = classObjIn;
 //			}
 
-			String sLog=sLogIn;
+//			String sLog=sLogIn;
+			String sLog = sOuter;
+			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 						

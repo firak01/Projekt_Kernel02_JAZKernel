@@ -674,6 +674,38 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	//++++++++++++++++++++++++
+	public static String findFirstTag(String sXmlIn) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
+			String sXml=sXmlIn;
+			
+			String sTagPartOpening = XmlUtilZZZ.findFirstOpeningTagPartNextTo(sXml, "");
+			if(sTagPartOpening==null) break main;									
+			
+			String sTagName = XmlUtilZZZ.computeTagNameFromTagPart(sTagPartOpening);
+			String sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			sXml = sXmlIn;
+			sReturn = StringZZZ.midLeftRightKeep(sXml, sTagPartOpening, sTagPartClosing);			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String findFirstTag(String sXmlIn, String sTagName) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sXmlIn)) break main;
+			String sXml=sXmlIn;
+			
+			String sTagPartOpening = XmlUtilZZZ.computeTagPartOpening(sTagName);
+			String sTagPartClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			
+			sReturn = StringZZZ.midLeftRightKeep(sXml, sTagPartOpening, sTagPartClosing);
+		}//end main:
+		return sReturn;
+	}
 	
 
 	//+++++++++++++++++++++++++
@@ -969,6 +1001,44 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return sReturn;	
 	}
 	
+	
+	//#############################
+	//#############################
+	public static String findTextOuterXml(String sXml) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			if(StringZZZ.isEmpty(sXml)) break main;
+			
+			String sBefore = XmlUtilZZZ.findTextOuterXmlBefore(sXml);			
+			String sBehind = XmlUtilZZZ.findTextOuterXmlBehind(sXml);
+									
+			sReturn = sBefore + sBehind;
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String findTextOuterXmlBefore(String sXml) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			if(StringZZZ.isEmpty(sXml)) break main;
+			
+			//TODOGOON20251110;
+		
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	public static String findTextOuterXmlBehind(String sXml) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			if(StringZZZ.isEmpty(sXml)) break main;
+			
+			//TODOGOON20251110;
+		
+		}//end main:
+		return sReturn;
+	}
 	
 	//#############################
 	//#############################

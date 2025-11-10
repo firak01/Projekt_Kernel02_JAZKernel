@@ -126,7 +126,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public synchronized void logProtocolString(String sLog) throws ExceptionZZZ{
-			this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+			this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KernelLosZZZ (also static) "null" statt this
 		}
 		
 		@Override

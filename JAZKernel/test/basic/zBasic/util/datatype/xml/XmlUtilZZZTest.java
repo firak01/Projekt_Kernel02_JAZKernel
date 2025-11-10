@@ -609,16 +609,7 @@ public class XmlUtilZZZTest extends TestCase{
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
-	 
-	 
-	 public void testFindSibblingTagNameNextByName() {
-			fail("Test existiert noch nicht");
-	 }
-	 
-	 public void testFindTagPreviousByName() {
-			fail("Test existiert noch nicht");		 
-	 }
-	 
+	  
 	 public void testFindFirstOpeningTagName() {
 		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
 			//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
@@ -654,6 +645,101 @@ public class XmlUtilZZZTest extends TestCase{
 			}		 
 	 }
 	 
+	 public void testFindFirstTag() {
+		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
+			//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
+			String sExpression; String sExpressionSolved;
+			String sValue; String sTagName;
+			
+			try {
+				//################################################################
+				//### KEINE Cascaded Verschachtelung
+				//################################################################
+				
+				//Fuer das Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.
+				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+				ITagTypeZZZ objTagTypeFile = new TagTypeFilePositionZZZ();
+				ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();	
+				
+				
+				//############ OHNE KONKRETEN NAMEN #################
+				//++++++++++++++++++++++++++++
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sExpressionSolved= "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+				sValue = XmlUtilZZZ.findFirstTag(sExpression);
+				assertEquals(sExpressionSolved, sValue);
+				
+				//++++++++++++++++++++++++++++						
+				//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.	
+				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
+				sExpressionSolved = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing();		
+				sValue = XmlUtilZZZ.findFirstTag(sExpression);
+				assertEquals(sExpressionSolved, sValue);
+				
+				//############## MIT KONKRETEN NAMEN ##############
+				//++++++++++++++++++++++++++++
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sTagName = "Z:Call";
+				sExpressionSolved= "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sTagName = "Z:Java";
+				sExpressionSolved= "<Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>";
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sTagName = "Z:Class";
+				sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class>";
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sTagName = "Z:Method";
+				sExpressionSolved= "<Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method>";
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+				//++++++++++++++++++++++++++++						
+				//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.		
+				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
+				sTagName = objTagTypePositionCurrent.getTagName();
+				sExpressionSolved = objTagTypePositionCurrent.getTagName() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() +  objTagTypePositionCurrent.getTagPartClosing();		
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
+				sTagName = objTagTypeMethod.getTagName();
+				sExpressionSolved = objTagTypeMethod.getTagName() + "searchDirectory" + objTagTypeMethod.getTagPartClosing() ;		
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
+				sTagName = objTagTypeFile.getTagName();
+				sExpressionSolved = objTagTypeFile.getTagName() + "< (FileEasyZZZ.java:625) " +  objTagTypeFile.getTagPartClosing();		
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+				//##############################
+				//### Negativtest, Tag nicht im XML enthalten
+				//##############################
+				sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
+				sTagName = "nichtda";
+				sExpressionSolved= null;
+				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+			}catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}		 
+	 }
+	 
 	 public void testFindFirstTagValue() {
 		//Hier ohne FactoryKlassen im Ergebnis arbeiten!!!
 		//GRUND: Der gesuchte TagType muss sonst in der TagByTypeFactory vorhanden sein.
@@ -673,39 +759,39 @@ public class XmlUtilZZZTest extends TestCase{
 			
 			//############ OHNE KONKRETEN NAMEN #################
 			//++++++++++++++++++++++++++++
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sExpressionSolved= "<Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>";
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//++++++++++++++++++++++++++++						
 			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.	
-			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 			sExpressionSolved = objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing();		
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression);
 			assertEquals(sExpressionSolved, sValue);
 			
 			//############## MIT KONKRETEN NAMEN ##############
 			//++++++++++++++++++++++++++++
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sTagName = "Z:Call";
 			sExpressionSolved= "<Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java>";
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
 			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sTagName = "Z:Java";
 			sExpressionSolved= "<Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method>";
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
 			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sTagName = "Z:Class";
 			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
 			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sTagName = "Z:Method";
 			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaMethod}";
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
@@ -714,19 +800,19 @@ public class XmlUtilZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++						
 			//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.		
-			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 			sTagName = objTagTypePositionCurrent.getTagName();
 			sExpressionSolved = objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing();		
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
 			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 			sTagName = objTagTypeMethod.getTagName();
 			sExpressionSolved = "searchDirectory";		
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
 			assertEquals(sExpressionSolved, sValue);
 			
-			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
+			sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 			sTagName = objTagTypeFile.getTagName();
 			sExpressionSolved = "< (FileEasyZZZ.java:625) ";		
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
@@ -736,7 +822,7 @@ public class XmlUtilZZZTest extends TestCase{
 			//##############################
 			//### Negativtest, Tag nicht im XML enthalten
 			//##############################
-			sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+			sExpression = "PRE<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>POST";
 			sTagName = "nichtda";
 			sExpressionSolved= null;
 			sValue = XmlUtilZZZ.findFirstTagValue(sExpression, sTagName);
@@ -747,5 +833,43 @@ public class XmlUtilZZZTest extends TestCase{
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
+	 }
+	 
+	 public void testFindSibblingTagNameNextByName() {
+			fail("Test existiert noch nicht");
+	 }
+	 
+	 public void testFindTagPreviousByName() {
+			fail("Test existiert noch nicht");		 
+	 }
+	 
+	 public void testFindTextOuterXmlBefore() {	
+		 	String sExpression = null; String sExpressionSolved = null; String sValue = null;
+		 	
+			try {
+				//Besonderer Test... ueberhaupt kein XML im String vorhanden
+				sExpression = "Bin ein Text ohne XML";
+				sExpressionSolved= "Bin ein Text ohne XML";
+				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+				//Negativtest... nix vorher vorhanden				
+				sExpression = "<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+				sExpressionSolved= "";
+				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+				assertEquals(sExpressionSolved, sValue);
+				
+				sExpression = "Bin ein Text vor dem XML<Z:Call><Z:Java><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
+				sExpressionSolved= "Bin ein Text vor dem XML";
+				sValue = XmlUtilZZZ.findTextOuterXmlBefore(sExpression);
+				assertEquals(sExpressionSolved, sValue);
+				
+				
+			}catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
+		 
 	 }
 }//End class

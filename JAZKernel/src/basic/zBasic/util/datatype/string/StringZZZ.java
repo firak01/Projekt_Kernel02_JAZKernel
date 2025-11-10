@@ -1100,9 +1100,13 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, int iPos){
-		String sReturn = null;
-		main:{			
-			if (StringZZZ.isEmpty(sString)) break main;
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+//		String sReturn = null;
+//		main:{			
+//			if (StringZZZ.isEmpty(sString)) break main;
 			if(iPos<=-1) break main;
 			
 			if (iPos > sString.length()){
@@ -1120,9 +1124,13 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, int iPos){
-		String sReturn = null;
-		main:{			
-			if (StringZZZ.isEmpty(sString)) break main;
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+						
+//		String sReturn = null;
+//		main:{			
+//			if (StringZZZ.isEmpty(sString)) break main;
 			if(iPos<=-1) break main;	
 			
 			sReturn = sString;
@@ -1146,16 +1154,18 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 18.03.2008 06:29:53
 	 */
 	public static String mid(String sString, int iPos, int iLength){
-		String sReturn = sString;
+		String sReturn=null;
 		main:{
-			check:{
-				if (StringZZZ.isEmpty(sString)) break main;
-				
-				sReturn = "";
+			if(StringZZZ.isEmpty(sString)) break main;
+						
+//		String sReturn = sString;
+//		main:{
+//				if (StringZZZ.isEmpty(sString)) break main;
+//				
+//				sReturn = "";
 				if(iPos<0) break main;								
-				if(iLength<=0) break main;				
+				if(iLength<0) break main;				
 				if(iPos > sString.length())	break main;				
-			}
 		
 			int iIndexRight = iPos + iLength;
 			
@@ -1174,11 +1184,19 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn=null;
 		main:{
-			if (StringZZZ.isEmpty(sString)) break main;
-				
-			sReturn = "";
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn = sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//				
+//			sReturn = "";
 			if(iIndexStart<0) break main;								
 			if(StringZZZ.isEmpty(sToFind)) break main;				
 			if(iIndexStart > sString.length())	break main;				
@@ -1195,11 +1213,19 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn=null;
 		main:{
-			if (StringZZZ.isEmpty(sString)) break main;
-				
-			sReturn = "";
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn = sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//				
+//			sReturn = "";
 			if(iIndexStart<0) break main;								
 			if(StringZZZ.isEmpty(sToFind)) break main;				
 			if(iIndexStart > sString.length())	break main;				
@@ -1228,10 +1254,18 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, String sToFind, boolean bExactMatch){
-		String sReturn=sString;
+		String sReturn=null;
 		main:{
-			if (StringZZZ.isEmpty(sString)) break main;
-			sReturn = "";
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn=sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//			sReturn = "";
 			
 			int iIndex;
 			if(bExactMatch){
@@ -1241,7 +1275,6 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			if(iIndex<= -1) break main;
-			if(iIndex-1<= -1) break main;
 			
 			sReturn = sString.substring(0, iIndex);
 			
@@ -1261,11 +1294,19 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhauer; 06.07.2007 07:24:05
 	 */
 	public static String left(String sString, int iPosition, String sToFind){
-		String sReturn=sString;
+		String sReturn=null;
 		main:{
-			if (StringZZZ.isEmpty(sString)) break main;
-
-			sReturn = "";			
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn=sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//
+//			sReturn = "";			
 			int iStart = 0;
 			if(iPosition < 0) {
 				iStart = 0;
@@ -1276,8 +1317,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 			int iIndex = sStart.indexOf(sToFind);
 			if(iIndex<= -1) break main;
-			if(iIndex-1<= -1) break main;
-			
+						
 			sReturn = sStart.substring(0, iIndex);
 			
 		}//END main:
@@ -1309,12 +1349,20 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
 	public static String leftback(String sString, String sToFind,boolean bExactMatch){
-		String sReturn = sString;
+		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
 			
-			sReturn = "";
-			if(StringZZZ.isEmpty(sToFind)) break main;
+//		String sReturn = sString;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//			
+//			sReturn = "";
+//			if(StringZZZ.isEmpty(sToFind)) break main;
 			
 			int iPosition = -1;
 			if(bExactMatch) {			
@@ -1323,22 +1371,27 @@ public class StringZZZ implements IConstantZZZ{
 				iPosition = sString.toLowerCase().lastIndexOf(sToFind.toLowerCase());
 			}
 			if (iPosition == -1) break main;
-			
+						
 			sReturn = sString.substring(0, iPosition);				
 		}
 		return sReturn;
 	}
 	
 	public static String leftback(String sString, int iPosFromTheRight){
-		String sReturn = sString;
+		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+						
+//		String sReturn = sString;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//			
+//			sReturn = "";
 			
-			sReturn = "";
-			if(iPosFromTheRight<=0) break main;
+			if(iPosFromTheRight<=-1) break main;
 			int iPosition = sString.length()-iPosFromTheRight;
 			if (iPosition <= -1) break main;
-					
+								
 			sReturn = sString.substring(0, iPosition);				
 		}
 		return sReturn;
@@ -1358,10 +1411,18 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String leftKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromLeft){
-		String sReturn=sString;
+		String sReturn=null;
 		main:{
-			if (StringZZZ.isEmpty(sString)) break main;
-			sReturn = ""; //Wenn also der String nicht vorhandn ist, Leerstring zurückgeben.
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+			
+//		String sReturn=sString;
+//		main:{
+//			if (StringZZZ.isEmpty(sString)) break main;
+//			sReturn = ""; //Wenn also der String nicht vorhandn ist, Leerstring zurückgeben.
 			
 			int iIndexFromLeft;
 			if(iIndexStartingPositionFromLeft==-1) {
@@ -1378,6 +1439,7 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			if(iIndex<= -1) break main;
+			
 						
 			iIndex += sToFind.length();			
 			sReturn = sString.substring(0, iIndex);
@@ -1426,13 +1488,21 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String rightKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingFromRight){
-		String sReturn=sString;
+//		String sReturn=sString;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//				
+//			sReturn = "";
+//			if(StringZZZ.isEmpty(sToFind)) break main;	
+			
+		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
 				
-			sReturn = "";
-			if(StringZZZ.isEmpty(sToFind)) break main;	
-			
 			int iIndexStarting = sString.length() - iIndexStartingFromRight - 1;
 			if(iIndexStarting<0) {
 				iIndexStarting=0;
@@ -3353,7 +3423,60 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 	
+	//#######################################################################
+	/** returns the string cut on the left and on the right
+	 *  INCLUDING the left and right Border
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightKeep(sString, sLeft, sRight, true);
+	}
 	
+	/** returns the string cut on the left and on the right
+	 *  INCLUDING the left and right Border
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+								
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+
+		
+		}
+		return sReturn;
+	}
+	
+	//#######################################################################
 	/** returns the string cut on the left and on the right
 	* @param sString e.g.: [[test]]
 	* @param sLeft    e.g.: [

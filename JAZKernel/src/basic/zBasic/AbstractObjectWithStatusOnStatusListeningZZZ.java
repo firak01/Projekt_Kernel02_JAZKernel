@@ -314,7 +314,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//Hole den ActionAlias
 			ReferenceArrayZZZ<String>objReturnReferenceLog = new ReferenceArrayZZZ<String>();
 			
-			//TODOGOON20240518 hier ist was im argen. ProcessWatchRunner bekommt nie den Event vom Monitor, der den passenden actionAlias triggert.
+			//TODOGOON20240518 hier ist was im Argen. ProcessWatchRunner bekommt nie den Event vom Monitor, der den passenden actionAlias triggert.
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(sStatusName, hmEnum, objReturnReferenceLog);
 			String[] saLog = objReturnReferenceLog.get();
 			if(!ArrayUtilZZZ.isNull(saLog)) {

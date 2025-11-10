@@ -6,10 +6,11 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalReactZZZ;
 import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
-public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IMonitorObjectStatusLocalZZZ{
+public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IListenerObjectStatusLocalReactZZZ, IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
 	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSetForActionCascaded_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 

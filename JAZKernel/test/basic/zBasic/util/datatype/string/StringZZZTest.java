@@ -74,12 +74,12 @@ public class StringZZZTest extends TestCase{
 		 
 		 //#######################################
 		 //Teste den linken Rand
-		 stemp = StringZZZ.leftback("das ist ein Test", 0);
-		 assertEquals("", stemp);
-		 
 		 stemp = StringZZZ.leftback("das ist ein Test", -1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
+		 stemp = StringZZZ.leftback("das ist ein Test", 0);
+		 assertEquals("das ist ein Test",stemp);
+		 		 		 		 
 		 stemp = StringZZZ.leftback("das ist ein Test", 1);
 		 assertEquals("das ist ein Tes", stemp);
 		 
@@ -91,7 +91,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() + 1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() - 1);
 		 assertEquals("d", stemp);
@@ -154,7 +154,7 @@ public class StringZZZTest extends TestCase{
 		 int iIndexStartingFromLeft = 16;
 		 boolean bExactMatch = false;
 		 sValue=StringZZZ.leftKeep(sDummy3, sSepLeft, bExactMatch, iIndexStartingFromLeft);
-		 assertEquals("",sValue);
+		 assertNull(sValue);
 		 
 		 //1b. Also muss iIndexStartingFromLeft fuer die Ruckgabe des ersten Tags weniger sein
 		 iIndexStartingFromLeft = 16-sSepLeft.length();
@@ -302,10 +302,10 @@ public class StringZZZTest extends TestCase{
 		
 		 //Teste den linken Rand
 		 stemp = StringZZZ.mid(sTest, -1, 1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.mid(sTest, 0, -1);
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 stemp = StringZZZ.mid(sTest, 0, 0);
 		 assertEquals("", stemp);
@@ -319,7 +319,7 @@ public class StringZZZTest extends TestCase{
 		 //########################################'
 		 //Teste den rechten Rand
 		 stemp = StringZZZ.mid(sTest, sTest.length()+1, 1);
-		 assertEquals("",stemp);
+		 assertNull(stemp);
 		 
 		 stemp =StringZZZ.mid(sTest, sTest.length(), 1);
 		assertEquals("", stemp);
@@ -363,17 +363,17 @@ public class StringZZZTest extends TestCase{
 		//Teste ueber die Raender hinaus
 		//a) ueber den rechten Rand
 		 stemp =StringZZZ.midLeftRightback(sTest, "x", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRightback(sTest, "y", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //b) ueber den linken Rand
 		 stemp =StringZZZ.midLeftRightback(sTest, "~", "c");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRightback(sTest, "~", "b");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //### mal was praktisches				
 		 sTest = "abcdeabcde";
@@ -441,17 +441,17 @@ public class StringZZZTest extends TestCase{
 		//Teste ueber die Raender hinaus
 		//a) ueber den rechten Rand
 		 stemp =StringZZZ.midLeftRight(sTest, "x", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRight(sTest, "y", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //b) ueber den linken Rand
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "c");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "b");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //ca) mal die Eingabeparameter Strings umgedreht
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "x");
@@ -563,17 +563,17 @@ public class StringZZZTest extends TestCase{
 		//Teste ueber die Raender hinaus
 		//a) ueber den rechten Rand
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "x", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "y", "~");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //b) ueber den linken Rand
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "c");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "b");
-		 assertEquals("", stemp);
+		 assertNull(stemp);
 		 
 		 //ca) mal die Eingabeparameter Strings umgedreht
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "x");
@@ -663,12 +663,12 @@ public class StringZZZTest extends TestCase{
 		 
 		 //#######################################
 		 //Teste den linken Rand
-		 stemp = StringZZZ.left("123456789", "1");
-		 assertEquals("", stemp);
-		 
 		 stemp = StringZZZ.left("123456789", "0");
-		 assertEquals("", stemp);
-		 
+		 assertNull(stemp);
+		 		 
+		 stemp = StringZZZ.left("123456789", "1");
+		 assertEquals("",stemp);
+		 		 
 		 stemp = StringZZZ.left("123456789", "2");
 		 assertEquals("1", stemp);
 		  
@@ -691,12 +691,12 @@ public class StringZZZTest extends TestCase{
 		 //#####################################
 		 //#######################################
 		 //Teste den linken Rand (s. oben)
+		 stemp = StringZZZ.left("123456789", 0, "0");
+		 assertNull(stemp);
+		 
 		 stemp = StringZZZ.left("123456789", 0, "1");
 		 assertEquals("", stemp);
-		 
-		 stemp = StringZZZ.left("123456789", 0, "0");
-		 assertEquals("",stemp);
-		 
+		 		 
 		 stemp = StringZZZ.left("123456789", 0, "2");
 		 assertEquals("1", stemp);
 		  
@@ -715,11 +715,11 @@ public class StringZZZTest extends TestCase{
 		 
 		 //#######################################
 		 //Eweiterungen fuer den index-parameter
-		 //		Teste den linken Rand 
-		 stemp = StringZZZ.left("123456789", 1, "2");
-		 assertEquals("", stemp);
-		 
+		 //		Teste den linken Rand
 		 stemp = StringZZZ.left("123456789",1, "1");
+		 assertNull(stemp);
+		 
+		 stemp = StringZZZ.left("123456789", 1, "2");
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789", 1, "3");
@@ -729,13 +729,14 @@ public class StringZZZTest extends TestCase{
 		 //########################################'
 		 //Teste den rechten Rand
 		 sDummy = new String("123456789");		
-		 stemp =StringZZZ.left(sDummy, 8, sDummy);  //Dat haengt nicht im speziellen von der 8 ab, sondern gilt fuer jden wert > 0, wg. sDummy = sDummy
-		 assertEquals("",stemp);
+		 stemp =StringZZZ.left(sDummy, 8, sDummy);  //Das haengt nicht im speziellen von der 8 ab, sondern gilt fuer jden wert > 0, wg. sDummy = sDummy
+		 assertNull(stemp);
 		 
 		 sDummy = new String("123456789");		
-		 stemp =StringZZZ.left(sDummy, 7, sDummy);
-		 assertEquals("",stemp);
+		 stemp =StringZZZ.left(sDummy, 7, sDummy);  //Das haengt nicht im speziellen von der 7 ab, sondern gilt fuer jden wert > 0, wg. sDummy = sDummy
+		 assertNull(stemp);
 		 		 
+		 //+++
 		 stemp =StringZZZ.left("123456789", 8, "9");
 		 assertEquals("", stemp);
 		 
@@ -752,13 +753,17 @@ public class StringZZZTest extends TestCase{
 		 //##################
 		 //Was passiert, wenn es ein Zeichen im String nicht gibt ?
 		 stemp =StringZZZ.left("123456789",7, "A");
-		 assertEquals("",stemp);
+		 assertNull(stemp);
 		 
 		 //System.out.println(stemp);
 	 }
 	
 	public void testStrLeftback(){
 		String stemp;
+	
+		//Teste fehlenden Wert
+		stemp = StringZZZ.leftback("123456789 123456789", "0");
+		assertNull(stemp);
 		
 		//Teste den linken Rand
 		stemp = StringZZZ.leftback("123456789 123456789","1" );
@@ -767,11 +772,7 @@ public class StringZZZTest extends TestCase{
 		//Teste den rechten Rand
 		stemp = StringZZZ.leftback("123456789 123456789", "9");
 		assertEquals("123456789 12345678", stemp);
-		
-		//Teste fehlenden Wert
-		stemp = StringZZZ.leftback("123456789 123456789", "0");
-		assertEquals("", stemp);
-		
+	
 		//Teste normale
 		stemp = StringZZZ.leftback("123456789 123456789", "2");
 		assertEquals("123456789 1", stemp);
