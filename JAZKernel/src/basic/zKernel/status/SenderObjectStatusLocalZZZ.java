@@ -20,7 +20,7 @@ import basic.zBasic.ReflectCodeZZZ;
 public class SenderObjectStatusLocalZZZ extends AbstractSenderObjectStatusLocalBasicZZZ {
 	private static final long serialVersionUID = 8999783685575147532L;	
 	
-		public SenderObjectStatusLocalZZZ() throws ExceptionZZZ{
+	public SenderObjectStatusLocalZZZ() throws ExceptionZZZ{
 		super();
 	}																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
 }
