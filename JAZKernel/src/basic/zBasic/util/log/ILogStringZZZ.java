@@ -263,9 +263,7 @@ public interface ILogStringZZZ{
 	
 	
 	//das ganze auch mit dem intern gespeicherten Format
-	public String compute(String sMessage) throws ExceptionZZZ;
-	public String compute(String sMessage01, String sMessage02) throws ExceptionZZZ;
-	public String compute(String[] saMessage) throws ExceptionZZZ;
+	//Ohne Objekt / Klasse macht das aber keinen Sinn.
 	
 	//... mit Objekt
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ;
@@ -273,6 +271,14 @@ public interface ILogStringZZZ{
 		
 	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 	
+	//... mit Klasse
+	public String compute(Class classObj, String sMessage) throws ExceptionZZZ;
+	public String compute(Class classObj, String sMessage01, String sMessage02) throws ExceptionZZZ;
+	public String compute(Class classObj, String[] saMessage) throws ExceptionZZZ;
+	
+	
+	
+	//+++++++++++++++++++++++++++++++
 	public int computeFormatPositionsNumber() throws ExceptionZZZ;
 	
 	

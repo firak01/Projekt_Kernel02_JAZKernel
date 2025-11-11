@@ -216,19 +216,21 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 	 */
 	@Override
 	public void logProtocolString(String sLog) throws ExceptionZZZ{
-		
-		if(sLog!=null){
+		if(sLog!=null){			
 			LogZZZ objLog = this.getLogObject();
-			objLog.WriteLineDate(sLog);
+			if(objLog==null) {
+				this.logLineDate(sLog);
+			}else {
+				objLog.WriteLineDate(sLog);
+			}
 		}else {
-			this.logLineDate(sLog);	
+			LogZZZ objLog = this.getLogObject();
+			if(objLog==null) {
+				this.logLineDate("");
+			}else {
+				objLog.WriteLineDate("");
+			}	
 		}		
 	}
-
-	public boolean changedStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }//end class
 

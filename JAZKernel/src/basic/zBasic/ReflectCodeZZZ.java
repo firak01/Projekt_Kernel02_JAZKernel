@@ -513,7 +513,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getPositionCurrentXml(iLevel);
 	}
 	
-	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
+	public static String getPositionCurrentSeparated(Object obj, int iLevel) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getPositionCurrentSeparated(obj.getClass(), iLevel);
+	}
+	public static String getPositionCurrentSeparated(Class classObj, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
@@ -546,8 +549,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			String[]saParts = new String[2];
 			saParts[0] = sMethod;
 			saParts[1] = sPositionInFile;
-			
-			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
+
+			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(classObj, saParts);
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;

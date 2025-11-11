@@ -297,11 +297,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 	public synchronized static void logProtocolStringStatic(Object obj, String sLog) throws ExceptionZZZ{
 		String sLogUsed;
-		if(obj==null) {
-			sLogUsed = LogStringZZZ.getInstance().compute(sLog);
-		}else {
-			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);
-		}
+		sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);
 		System.out.println(sLogUsed);
 	}
 	
@@ -394,6 +390,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	return bReturn;
 	}
 
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelLogZZZ#WriteLineDate(java.lang.String)
+	 */
 	synchronized public boolean WriteLineDate(String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
@@ -409,6 +408,15 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		bReturn = WriteLine(sLine); //Schreibe in eine Logdatei
 		return bReturn;
 	}
+	synchronized public boolean WriteLineDateWithPosition(Class classObj, String stemp) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		String sLine = KernelLogZZZ.computeLineDateWithPosition(classObj, stemp);
+		bReturn = WriteLine(sLine);
+		
+		return bReturn;
+	}
+
 	synchronized public boolean WriteLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		

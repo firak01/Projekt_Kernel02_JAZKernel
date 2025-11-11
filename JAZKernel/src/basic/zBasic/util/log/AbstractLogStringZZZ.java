@@ -930,30 +930,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//ohne explizite Formatangabe 
-	@Override
-	public String compute(String sMessage) throws ExceptionZZZ {
-		String[] saMessage = new String[1];
-		saMessage[0] = sMessage;
-		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
-	}
 	
-	@Override
-	public String compute(String sMessage01, String sMessage02) throws ExceptionZZZ {
-		this.resetStringIndexRead();
-		
-		String[] saMessage = new String[2];
-		saMessage[0] = sMessage01;
-		saMessage[1] = sMessage02;
-		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
-	}
-	
-	@Override
-	public String compute(String[] saMessage) throws ExceptionZZZ {		
-		this.resetStringIndexRead();
-		
-		return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
-	}
-	
+	//OHNE KLASSEN ODER OBJEKTANGABE MACHT DAS KEINEN SINN	
+	/* (non-Javadoc)
+	 * @see basic.zBasic.util.log.ILogStringZZZ#compute(java.lang.Object, java.lang.String)
+	 */
 	@Override
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
 		String[] saMessage = new String[1];
@@ -995,6 +976,30 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		}	
 	}
 	
+	//##########################################################
+	@Override
+	public String compute(Class classObj, String sMessage) throws ExceptionZZZ {
+		String[] saMessage = new String[1];
+		saMessage[0] = sMessage;
+		return this.compute(classObj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+	}
+	
+	@Override
+	public String compute(Class classObj, String sMessage01, String sMessage02) throws ExceptionZZZ {
+		String[] saMessage = new String[2];
+		saMessage[0] = sMessage01;
+		saMessage[1] = sMessage02;
+		return this.compute(classObj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+	}
+	
+	@Override
+	public String compute(Class classObj, String[] saMessage) throws ExceptionZZZ {
+		this.resetStringIndexRead();
+		
+		return this.compute(classObj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
+	}
+	
+	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe	
 	/* (non-Javadoc)
 	 * @see basic.zBasic.util.log.ILogStringZZZ#compute(java.util.LinkedHashMap)
 	 */

@@ -3694,6 +3694,7 @@ MeinTestParameter=blablaErgebnis
 	private String KernelSearchFileConfigFilenameDirectLookupInWorkspace_(IKernelConfigZZZ objConfig, IniFile objFileIni, String sModuleOrApplicationSection,String sModule) throws ExceptionZZZ{
 		String sReturn = null;	
 		main:{
+			String sLog = null;
 			if(objConfig==null) {
 				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -3759,6 +3760,7 @@ MeinTestParameter=blablaErgebnis
 	private String  KernelSearchFileConfigFiledirectoryDirectLookup_(IniFile objFileIni, String sModuleOrApplicationSection, String sModule) throws ExceptionZZZ{
 		String sReturn = null;	
 		main:{
+			String sLog = null;
 			if(objFileIni==null){
 				String stemp = "'Inifile'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
@@ -3807,9 +3809,11 @@ MeinTestParameter=blablaErgebnis
 			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");								
-				//this.setValueRaw(sFilePath);
-			}else{
-				//this.setValueRaw(null);
+				if(sFilePathUsed==null) {
+					sLog = "Null Value als Ergebnis des ExpressionIniConverter verändert nach Leerstring.";
+					this.logProtocolStringWithPosition(sLog);//TODOGOON2025111; Hier irgendwie die Position in den String bringen, etc.
+					sFilePathUsed="";
+				}
 			}
 			
 			//TODOGOON20251009;//Wenn das ein relativer Pfad ist, suchen:
@@ -3819,7 +3823,7 @@ MeinTestParameter=blablaErgebnis
 			if(objKernel!=null){
 				File objKernelParent = objKernel.getParentFile();	
 				File objKernelParentParent = objKernelParent.getParentFile();
-				sFilePathUsed = FileEasyZZZ.joinFilePathName(objKernelParentParent, sFilePath);
+				sFilePathUsed = FileEasyZZZ.joinFilePathName(objKernelParentParent, sFilePathUsed);
 				
 				File objModule = FileEasyZZZ.getDirectory(sFilePathUsed);
 				if(objModule.exists()) {
@@ -7536,7 +7540,10 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 	
-	//aus IKernelLogObjectUserZZZ, analog zu KernelUseObjectZZZ
+	//analog zu ObjectZZZ, nur jetzt mit KernelLogZZZ, welches den String ausrechnet.
+	/* (non-Javadoc)
+	 * @see basic.zBasic.AbstractObjectZZZ#logLineDate(java.lang.String)
+	 */
 	@Override
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
@@ -7547,6 +7554,23 @@ MeinTestParameter=blablaErgebnis
 			objLog.WriteLineDate(sLog);
 		}			
 	}
+	
+	//analog zu ObjectZZZ, nur jetzt mit KernelLogZZZ, welches den String ausrechnet.
+	/* (non-Javadoc)
+	 * @see basic.zBasic.AbstractObjectZZZ#logLineDateWithPosition(java.lang.String)
+	 */
+	@Override
+	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
+		LogZZZ objLog = this.getLogObject();
+		if(objLog==null) {
+			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
+			System.out.println(sTemp);
+		}else {
+			objLog.WriteLineDateWithPosition(this, sLog);
+		}			
+	}
+	
+	
 	
 	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
