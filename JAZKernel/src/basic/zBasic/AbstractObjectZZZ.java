@@ -93,6 +93,11 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		public synchronized void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
 			ObjectZZZ.logLineDateWithPosition(this, sLog);
 		}
+		
+		@Override
+		public synchronized void logLineDateWithPosition(String[] saLog) throws ExceptionZZZ {
+			ObjectZZZ.logLineDateWithPosition(this, saLog);
+		}
 				
 		//++++++++++++++++++++++++++++++++++++++++++++++++
 		
@@ -107,26 +112,14 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		}
 		
 		@Override
-		public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
-			main:{
-				if(ArrayUtilZZZ.isNull(saLog)) break main;
-				
-				if(obj==null) {
-					for(String sLog : saLog) {
-						this.logProtocolString(sLog);
-					}
-				}else {
-					for(String sLog : saLog) {
-						this.logProtocolString(obj, sLog);
-					}	
-				}
-				
-			}//end main:
+		public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
+			String sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);						
+			System.out.println(sLogUsed);
 		}
 		
 		@Override
-		public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
-			String sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);						
+		public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
+			String sLogUsed = LogStringZZZ.getInstance().compute(obj, saLog);						
 			System.out.println(sLogUsed);
 		}
 

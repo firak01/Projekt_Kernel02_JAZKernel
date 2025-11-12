@@ -15,6 +15,7 @@ public interface ILogZZZ {
 	//!!! Merke 20240512: Mache in den (abstrakten) Klassen, die diese Methoden implementieren die Methoden "synchronized"
 	public void logLineDate(String sLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
 	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
+	public void logLineDateWithPosition(String[] saLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
 	
 	
 	//##################################

@@ -3760,7 +3760,7 @@ MeinTestParameter=blablaErgebnis
 	private String  KernelSearchFileConfigFiledirectoryDirectLookup_(IniFile objFileIni, String sModuleOrApplicationSection, String sModule) throws ExceptionZZZ{
 		String sReturn = null;	
 		main:{
-			String sLog = null;
+			String sLog = null; String sLog2 = null; String[]saLog = null;
 			if(objFileIni==null){
 				String stemp = "'Inifile'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
@@ -3808,11 +3808,14 @@ MeinTestParameter=blablaErgebnis
 						
 			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsStringStatic(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");								
-				if(sFilePathUsed==null) {
-					sLog = "Null Value als Ergebnis des ExpressionIniConverter verändert nach Leerstring.";
-					this.logProtocolStringWithPosition(sLog);//TODOGOON2025111; Hier irgendwie die Position in den String bringen, etc.
+				sLog = "Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'";											
+				if(sFilePathUsed==null) {				
+					sLog2 = "Null Value als Ergebnis des ExpressionIniConverter verändert nach Leerstring.";
+					saLog = StringArrayZZZ.append(sLog, sLog2);
+					this.logProtocolStringWithPosition(saLog);
 					sFilePathUsed="";
+				}else {
+					this.logProtocolStringWithPosition(sLog);
 				}
 			}
 			

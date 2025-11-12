@@ -131,46 +131,90 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 
 	//#### static Methoden #########################################
 	//+++ als moeglichst einfacher String
-	public synchronized static String computeLine(String stemp) throws ExceptionZZZ {	
+	public synchronized static String computeLine(String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
-		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
 	}
-	public synchronized static String computeLine(Object obj, String stemp) throws ExceptionZZZ {	
+	
+	public synchronized static String computeLine(String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(saLog, iaFormat);
+	}
+	
+	public synchronized static String computeLine(Object obj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(obj, sLog, iaFormat);
 	}
 	
+	public synchronized static String computeLine(Object obj, String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+	}	
 	
-	public synchronized static String computeLine(Class classObj, String stemp) throws ExceptionZZZ {	
+	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(classObj, sLog, iaFormat);
+	}
+	
+	public synchronized static String computeLine(Class classObj, String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	//+++ mit Datum
-	public synchronized static String computeLineDate(String stemp) throws ExceptionZZZ {	
+	public synchronized static String computeLineDate(String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
-		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
 	}
-	public synchronized static String computeLineDate(Object obj, String stemp) throws ExceptionZZZ {	
+	
+	public synchronized static String computeLineDate(String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(saLog, iaFormat);
+	}
+	
+	public synchronized static String computeLineDate(Object obj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
@@ -178,11 +222,23 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(obj, sLog, iaFormat);
+	}
+	
+	public synchronized static String computeLineDate(Object obj, String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
 	
 	
-	public synchronized static String computeLineDate(Class classObj, String stemp) throws ExceptionZZZ {	
+	public synchronized static String computeLineDate(Class classObj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
@@ -190,11 +246,23 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, stemp, iaFormat);
+		 return LogStringZZZ.getInstance().compute(classObj, sLog, iaFormat);
+	}
+	
+	public synchronized static String computeLineDate(Class classObj, String[] saLog) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+		 };
+		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	//+++ mit CodePosition
-	public synchronized static String computeLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ {	
+	public synchronized static String computeLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ {	
 		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
 		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
@@ -208,11 +276,33 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(obj, satemp, iaFormat);
+		 String[] saLog = StringArrayZZZ.append(sLog, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
 	
-	public synchronized static String computeLineDateWithPosition(Class classObj, String stemp) throws ExceptionZZZ {	
+	
+	public synchronized static String computeLineDateWithPosition(Object obj, String[] saLogIn) throws ExceptionZZZ {	
+		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
+		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
+		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
+		 };
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 String[] saLog = StringArrayZZZ.append(saLogIn, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+	}
+	
+	
+	
+	public synchronized static String computeLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ {	
 		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
 		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
@@ -227,28 +317,12 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
-		 String[] satemp = StringArrayZZZ.prepend(stemp, sPositionCalling);
+		 String[] satemp = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
 	}
 	
-	public synchronized static String computeLineDateWithPosition(Object obj, String[] satemp) throws ExceptionZZZ {	
-		
-		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE02,	
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,				 
-		 };
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
-		 satemp = StringArrayZZZ.prepend(satemp, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(obj, satemp, iaFormat);
-	}
 	
-	public synchronized static String computeLineDateWithPosition(Class classObj, String[] satemp) throws ExceptionZZZ {	
+	public synchronized static String computeLineDateWithPosition(Class classObj, String[] saLogIn) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
@@ -256,14 +330,14 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE02,	
+				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,	
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
-		 satemp = StringArrayZZZ.prepend(satemp, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
+		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
+		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	

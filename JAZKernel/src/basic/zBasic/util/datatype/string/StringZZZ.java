@@ -5310,7 +5310,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return StringZZZ.stripRight(sString, sStringToBeStripped, -1);
 	}
 	
-	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	/** Entferne den String von rechts kommend.
 	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 * @param sString
 	 * @param sStringToBeStripped
@@ -5321,23 +5321,23 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
-	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	/** Entferne den String von rechts kommend, lasse mindestens iNumberOfStripsIn Zeichen übrig.
 	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 *   
-	 *  Beachte hier dien Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
+	 *  Beachte hier den Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
 	 *   
 	 * @param sString
 	 * @param sStringToBeStripped
 	 * @return
 	 */
 	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn){
-		return StringZZZ.stripRight(sString, sStringToBeStripped, -1, true);
+		return StringZZZ.stripRight(sString, sStringToBeStripped, iNumberOfStripsIn, true);
 	}
 	
-	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	/** Entferne den String von rechts kommend, lasse mindestens iNumberOfStripsIn Zeichen übrig.
 	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 *   
-	 *  Beachte hier dien Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
+	 *  Beachte hier den Parameter, der es erlaubt festzulege wieviele "Strips" entfernt werden sollen.
 	 *   
 	 * @param sString
 	 * @param sStringToBeStripped
@@ -5392,7 +5392,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	/** Entferne den String von rechts kommend
 	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 * @param sString
 	 * @param sStringToBeStripped

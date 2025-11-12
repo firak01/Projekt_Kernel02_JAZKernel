@@ -50,7 +50,8 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 				ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				ILogStringZZZ.LOGSTRING.STRINGTYPE01,					
 				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
-				
+				ILogStringZZZ.LOGSTRING.LINENEXT,
+				ILogStringZZZ.LOGSTRING.STRINGTYPE01,				
 		};
 		return iaenumReturn;
 	}

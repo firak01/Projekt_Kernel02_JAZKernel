@@ -1,6 +1,7 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import junit.framework.TestCase;
@@ -16,8 +17,9 @@ public class KernelUseObjectZZZTest extends TestCase {
 			//Das eigentliche Testobjekt
 			objKernelUserTest = new DummyTestKernelUseObjectZZZ(objKernelFGL);
 	
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
 	
@@ -35,6 +37,41 @@ public class KernelUseObjectZZZTest extends TestCase {
 			assertFalse("Receiving the previously set Flag 'DEBUG' failed.", objKernelUserTest.getFlag("debug"));
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+		}
+	}
+	
+	
+	public void testLogLineDateWithPosition() {
+		try{
+			String sLog = null; String sLog2 = null; String[]saLog = null;
+			sLog = "Test01";
+			objKernelUserTest.logLineDateWithPosition(sLog);
+			
+			sLog2 = "unter Test01";
+			saLog = StringArrayZZZ.append(sLog, sLog2);
+			objKernelUserTest.logLineDateWithPosition(saLog);
+			
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+		}
+	}
+	
+	public void testLogProtocolStringWithPosition() {
+		try{
+			String sLog = null; String sLog2 = null; String[]saLog = null;
+			sLog = "Test01";
+			objKernelUserTest.logProtocolStringWithPosition(sLog);
+			
+			sLog2 = "unter Test01";
+			saLog = StringArrayZZZ.append(sLog, sLog2);
+			objKernelUserTest.logProtocolStringWithPosition(saLog);
+						
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
 		}
 	}
