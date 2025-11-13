@@ -579,9 +579,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
 			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
 			ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER, iLine);
+			String sLineTag = objTagLine.getElementString();
 			
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
 			ITagByTypeZZZ objTagFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME, sFile);
+			String sFileTag = objTagFile.getElementString();
 			
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethod);
@@ -620,6 +622,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED, sMethodTag);
+			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILELINE_REFLECTED, sLineTag);
+			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILENAME_REFLECTED, sFileTag);
 			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
 			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(hmLogString);
 			

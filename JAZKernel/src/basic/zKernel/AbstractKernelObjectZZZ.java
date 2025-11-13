@@ -7396,8 +7396,10 @@ MeinTestParameter=blablaErgebnis
 				IniFile objIni = this.getFileConfigKernelAsIni();
 				
 				LogZZZ objLog = null;
-				if(objLogIn==null){
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + "Erstelle neues Log Object");
+				if(objLogIn==null){				
+					sLog = "Erstelle neues Log Object";
+					this.logProtocolStringWithPosition(sLog);
+					
 //					1. Versuch: über die Programm-Konfiguration. 
 					//Merke: Dies geht nur, wenn ein Context-Objekt �bergeben worden ist. An dieser Stelle kommt man nicht anders an den Namen der Aufrufenden - Klasse (d.h. den Programnamen) dran.
 					if(this.getContextUsed()!=null){
@@ -7408,7 +7410,8 @@ MeinTestParameter=blablaErgebnis
 							sFileLog = this.getParameterByProgramAlias(this.getContextUsed().getModuleName(), this.getContextUsed().getProgramName(), "KernelLogFile").getValue(); 
 						}catch (ExceptionZZZ ez){
 							//nix tun, Ausgabe nur zum Test/Debug
-							System.out.println(ez.getDetailAllLast());
+							sLog = ez.getDetailAllLast();
+							this.logProtocolStringWithPosition(sLog);
 						}
 					}	
 					

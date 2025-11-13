@@ -707,19 +707,19 @@ public class XmlUtilZZZTest extends TestCase{
 				//Hier am Beispiel eines ReflectCodeZZZ.getPositionCurrent() Strings.		
 				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 				sTagName = objTagTypePositionCurrent.getTagName();
-				sExpressionSolved = objTagTypePositionCurrent.getTagName() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() +  objTagTypePositionCurrent.getTagPartClosing();		
+				sExpressionSolved = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() +  objTagTypePositionCurrent.getTagPartClosing();		
 				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 				sTagName = objTagTypeMethod.getTagName();
-				sExpressionSolved = objTagTypeMethod.getTagName() + "searchDirectory" + objTagTypeMethod.getTagPartClosing() ;		
+				sExpressionSolved = objTagTypeMethod.getTagPartOpening() + "searchDirectory" + objTagTypeMethod.getTagPartClosing() ;		
 				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
 				assertEquals(sExpressionSolved, sValue);
 				
 				sExpression = "PRE" + objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# POST";
 				sTagName = objTagTypeFile.getTagName();
-				sExpressionSolved = objTagTypeFile.getTagName() + "< (FileEasyZZZ.java:625) " +  objTagTypeFile.getTagPartClosing();		
+				sExpressionSolved = objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " +  objTagTypeFile.getTagPartClosing();		
 				sValue = XmlUtilZZZ.findFirstTag(sExpression, sTagName);
 				assertEquals(sExpressionSolved, sValue);
 				

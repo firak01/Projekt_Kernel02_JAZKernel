@@ -12,7 +12,9 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
+import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -256,7 +258,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	 */	
 	@Override
 	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.resetStringIndexRead();
+		//this.resetStringIndexRead();
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog; 
@@ -272,6 +274,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}else {
 				classObj = classObjIn;
 			}
+			
+			this.resetStringIndexRead();
 			
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
@@ -622,6 +626,32 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = objTagMethod.getElementString();
 				}			
 				break;
+			case ILogStringZZZ.iFACTOR_CLASSFILELINE_REFLECTED:
+				ITagTypeZZZ objTagTypeLineNummer = new TagTypeLineNumberZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
+				if(sTagTemp!=null) {
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagLineNumber = new TagByTypeZZZ(objTagTypeLineNummer);
+					objTagLineNumber.setValue(sReturn);
+					sReturn = objTagLineNumber.getElementString();
+				}			
+				break;
+			case ILogStringZZZ.iFACTOR_CLASSFILENAME_REFLECTED:
+				ITagTypeZZZ objTagTypeFileName = new TagTypeFileNameZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
+				if(sTagTemp!=null) {
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagFileName = new TagByTypeZZZ(objTagTypeFileName);
+					objTagFileName.setValue(sReturn);
+					sReturn = objTagFileName.getElementString();
+				}			
+				break;
 			case ILogStringZZZ.iFACTOR_POSITIONCURRENT_REFLECTED:
 				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
@@ -915,14 +945,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		this.resetStringIndexRead();
+		//this.resetStringIndexRead();
 		
 		return this.compute(this.getClass(), hm);				
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		this.resetStringIndexRead();
+		//this.resetStringIndexRead();
 		
 		if(obj==null) {
 			return this.compute(this.getClass(), hm);			
@@ -971,7 +1001,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				classObj = classObjIn;
 			}
 
-			this.resetStringIndexRead();
+			//this.resetStringIndexRead();
 			
 			//Der zu verwendende Logteil
 			String sLogUsed=null;

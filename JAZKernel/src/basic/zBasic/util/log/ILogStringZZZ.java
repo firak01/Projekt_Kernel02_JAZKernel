@@ -57,11 +57,13 @@ public interface ILogStringZZZ{
 	public static int iFACTOR_CLASSNAME=7;
 	public static int iFACTOR_CLASSNAMESIMPLE=11;
 	public static int iFACTOR_CLASSMETHOD_REFLECTED=13;
-	public static int iFACTOR_CLASSFILENAME=19;
-	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=23;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_POSITIONCURRENT_REFLECTED=29;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
-	public static int iFACTOR_THREADID=31;
-	public static int iFACTOR_DATE=37;
+	public static int iFACTOR_CLASSFILELINE_REFLECTED=19;
+	public static int iFACTOR_CLASSFILENAME_REFLECTED=23;
+	public static int iFACTOR_CLASSFILENAME=29;
+	public static int iFACTOR_CLASSFILEPOSITION_REFLECTED=31;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_POSITIONCURRENT_REFLECTED=37;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># 
+	public static int iFACTOR_THREADID=41;
+	public static int iFACTOR_DATE=43;
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
 	
@@ -98,6 +100,8 @@ public interface ILogStringZZZ{
 		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
 		
 		CLASSMETHOD_REFLECTED("method",ILogStringZZZ.iFACTOR_CLASSMETHOD_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
+		CLASSFILELINE_REFLECTED("linenr",ILogStringZZZ.iFACTOR_CLASSFILELINE_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Codezeil in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
+		CLASSFILENAME_REFLECTED("filename",ILogStringZZZ.iFACTOR_CLASSFILENAME_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
 		CLASSFILEPOSITION_REFLECTED("fileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
 		POSITIONCURRENT_REFLECTED("positioncurrent", ILogStringZZZ.iFACTOR_POSITIONCURRENT_REFLECTED, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s", ILogStringZZZ.iARG_STRINGXML, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCalling(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
 		
