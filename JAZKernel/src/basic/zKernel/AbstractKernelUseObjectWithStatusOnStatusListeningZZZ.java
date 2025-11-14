@@ -215,7 +215,7 @@ public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ exte
 	 * @see basic.zBasic.AbstractObjectZZZ#logProtocolString(java.lang.String)
 	 */
 	@Override
-	public void logProtocolString(String sLog) throws ExceptionZZZ{
+	public void logProtocol(String sLog) throws ExceptionZZZ{
 		
 		if(sLog!=null){
 			LogZZZ objLog = this.getLogObject();

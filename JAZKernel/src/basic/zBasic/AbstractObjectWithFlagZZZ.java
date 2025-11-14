@@ -59,7 +59,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 						boolean bFound = this.setFlag(saFlag[icount], true);
 						if(!bFound) {
 							sLog = ReflectCodeZZZ.getPositionCurrent()+"Flag not available: '" + saFlag[icount] +"'";
-							this.logProtocolString(sLog);							
+							this.logProtocol(sLog);							
 						}
 					}
 				}

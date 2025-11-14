@@ -87,11 +87,11 @@ public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectWithExceptionZZ
 					} catch (ExceptionZZZ ez) {
 						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
 						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() + ")# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast(); 
-						this.logProtocolString(sLog);
+						this.logProtocol(sLog);
 					}
 				}else {					
 					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() +") # " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+") - instanceof type is not used yet";
-					this.logProtocolString(sLog);
+					this.logProtocol(sLog);
 				}
 			}
 			

@@ -39,7 +39,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
 			}
@@ -81,7 +81,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
 			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
-				this.logProtocolString(sLog);
+				this.logProtocol(sLog);
 				break main;
 			}
 			

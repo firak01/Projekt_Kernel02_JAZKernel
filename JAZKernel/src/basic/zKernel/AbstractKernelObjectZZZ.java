@@ -3812,10 +3812,10 @@ MeinTestParameter=blablaErgebnis
 				if(sFilePathUsed==null) {				
 					sLog2 = "Null Value als Ergebnis des ExpressionIniConverter verändert nach Leerstring.";
 					saLog = StringArrayZZZ.append(sLog, sLog2);
-					this.logProtocolStringWithPosition(saLog);
+					this.logProtocolWithPosition(saLog);
 					sFilePathUsed="";
 				}else {
-					this.logProtocolStringWithPosition(sLog);
+					this.logProtocolWithPosition(sLog);
 				}
 			}
 			
@@ -7049,8 +7049,8 @@ MeinTestParameter=blablaErgebnis
 		boolean bReturn = false;		
 		main:{			
 				String stemp=null; boolean btemp=false; String sLog = null;
-				this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": Initializing KernelObject");
-				
+				sLog = "Initializing KernelObject";				
+				this.logProtocolWithPosition(sLog);
 				//20191204: Umstrukturierung:
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
 				//siehe als schon realisiertes Beispiel: Die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
@@ -7247,7 +7247,7 @@ MeinTestParameter=blablaErgebnis
 				}
 				if(StringZZZ.isEmpty(sDirectoryConfig)){
 					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";		
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					this.logProtocolWithPosition(sLog);
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
 				}
 				
@@ -7398,7 +7398,7 @@ MeinTestParameter=blablaErgebnis
 				LogZZZ objLog = null;
 				if(objLogIn==null){				
 					sLog = "Erstelle neues Log Object";
-					this.logProtocolStringWithPosition(sLog);
+					this.logProtocolWithPosition(sLog);
 					
 //					1. Versuch: über die Programm-Konfiguration. 
 					//Merke: Dies geht nur, wenn ein Context-Objekt �bergeben worden ist. An dieser Stelle kommt man nicht anders an den Namen der Aufrufenden - Klasse (d.h. den Programnamen) dran.
@@ -7411,7 +7411,7 @@ MeinTestParameter=blablaErgebnis
 						}catch (ExceptionZZZ ez){
 							//nix tun, Ausgabe nur zum Test/Debug
 							sLog = ez.getDetailAllLast();
-							this.logProtocolStringWithPosition(sLog);
+							this.logProtocolWithPosition(sLog);
 						}
 					}	
 					

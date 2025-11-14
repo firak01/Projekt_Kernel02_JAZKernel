@@ -268,14 +268,14 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 				bFunction = this.proofStatusLocalExists(sStatusName);															
 				if(!bFunction) {
 					String sLog = ReflectCodeZZZ.getPositionCurrent() + "Would like to fire event, but this status is not available: '" + sStatusName + "'";
-					this.logProtocolString(sLog);			
+					this.logProtocol(sLog);			
 					break main;
 				}
 				
 			bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 			if(!bFunction) {
 				String sLog = ReflectCodeZZZ.getPositionCurrent() + "Would like to fire event, but this status has not changed: '" + sStatusName + "'";
-				this.logProtocolString(sLog);
+				this.logProtocol(sLog);
 				break main;
 			}	
 			
@@ -299,12 +299,12 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			}
 			
 			String sLog = ReflectCodeZZZ.getPositionCurrent() + "Verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
-			this.logProtocolString(sLog);
+			this.logProtocol(sLog);
 
 			//Falls eine Message extra uebergeben worden ist, ueberschreibe...
 			if(sStatusMessageToSet!=null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
-				this.logProtocolString(sLog);
+				this.logProtocol(sLog);
 			}
 			//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
 			this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
@@ -315,13 +315,13 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			//Dann erzeuge den Event und feuer ihn ab.	
 			if(this.getSenderStatusLocalUsed()==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
-				this.logProtocolString(sLog);		
+				this.logProtocol(sLog);		
 				break main;
 			}
 			
 			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
 			sLog = ReflectCodeZZZ.getPositionCurrent() + "Erzeuge Event fuer '" + sStatusName + "'";		
-			this.logProtocolString(sLog);
+			this.logProtocol(sLog);
 			IEventObjectStatusLocalZZZ event = new EventObjectStatusLocalZZZ(this,enumStatus, bStatusValue);			
 			
 			//### GGFS. noch weitere benoetigte Objekte hinzufuegen............
@@ -330,7 +330,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 					
 			//Feuere den Event ueber den Broker ab.
 			sLog = ReflectCodeZZZ.getPositionCurrent() + "Fires event '" + enumStatus.getAbbreviation() + "'";
-			this.logProtocolString(sLog);
+			this.logProtocol(sLog);
 			this.getSenderStatusLocalUsed().fireEvent(event);
 					
 			bFunction = true;				

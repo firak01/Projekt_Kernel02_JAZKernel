@@ -172,7 +172,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 			super.addElement(obj);
 		}catch(ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {
 				e.printStackTrace();
 			}
@@ -197,7 +197,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 			
 		}catch(ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {
 				e.printStackTrace();
 			}
@@ -222,7 +222,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 			
 		}catch(ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {
 				e.printStackTrace();
 			}
@@ -244,7 +244,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 				
 			}catch(ExceptionZZZ ez) {
 				try {
-					this.logProtocolString(ez.getDetailAllLast());
+					this.logProtocol(ez.getDetailAllLast());
 				} catch (ExceptionZZZ e) {
 					e.printStackTrace();
 				}
@@ -267,7 +267,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 				this.iIndexUsedLast = this.size()-1;
 			}catch(ExceptionZZZ ez) {
 				try {
-					this.logProtocolString(ez.getDetailAllLast());
+					this.logProtocol(ez.getDetailAllLast());
 				} catch (ExceptionZZZ e) {
 					e.printStackTrace();
 				}
@@ -294,7 +294,7 @@ public class VectorLimitedZZZ<T> extends VectorZZZ<T> implements IVectorLimitedZ
 			
 		}catch(ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {
 				e.printStackTrace();
 			}

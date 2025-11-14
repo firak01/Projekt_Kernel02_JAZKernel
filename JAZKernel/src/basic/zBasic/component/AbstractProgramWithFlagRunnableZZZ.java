@@ -27,7 +27,7 @@ public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgram
 			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
-				this.logProtocolString(ez.getDetailAllLast());
+				this.logProtocol(ez.getDetailAllLast());
 			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
 			}

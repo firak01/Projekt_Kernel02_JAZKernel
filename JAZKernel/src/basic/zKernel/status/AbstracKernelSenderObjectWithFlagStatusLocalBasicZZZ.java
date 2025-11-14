@@ -75,7 +75,7 @@ public abstract class AbstracKernelSenderObjectWithFlagStatusLocalBasicZZZ exten
 						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {					
 						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'";
-						this.logProtocolString(sLog);
+						this.logProtocol(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {

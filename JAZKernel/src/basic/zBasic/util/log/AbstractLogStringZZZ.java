@@ -28,6 +28,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
@@ -203,21 +204,20 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.resetStringIndexRead();
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		
 		return computeByObject_(classObj, ienumFormatLogString);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.resetStringIndexRead();
 		return this.compute(null, sLog, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ {
-		this.resetStringIndexRead();
-		
 		ArrayList<String>listas = new ArrayList<String>();
 		if(sLog01!=null) {
 			listas.add(sLog01);
@@ -232,7 +232,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		this.resetStringIndexRead();
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-verschiedenen Stellen aufgerufenen private Methode.
 		
 		Class classObj=null;
 		if(obj == null) {
@@ -258,7 +259,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	 */	
 	@Override
 	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		//this.resetStringIndexRead();
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier in der aufrufenden Methode und nicht in der von x-Stellen aus aufgerufenen private Methode.
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog; 
@@ -274,8 +276,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}else {
 				classObj = classObjIn;
 			}
-			
-			this.resetStringIndexRead();
 			
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
@@ -293,9 +293,16 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 						
 						Integer intIndex = new Integer(iStringIndexToRead);
 						if(!listaIndexRead.contains(intIndex)){
-							sReturn = this.computeByString_(classObj, saLog[iStringIndexToRead], ienumFormatLogString);
-							this.getStringIndexReadList().add(intIndex);
-							break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							String sValue = this.computeByString_(classObj, saLog[iStringIndexToRead], ienumFormatLogString);
+							if(sValue!=null) {								
+								if(sReturn!=null) {
+									sReturn = sReturn + sValue;
+								}else {
+									sReturn = sValue;
+								}
+								this.getStringIndexReadList().add(intIndex);
+								break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							}														
 						}
 					}
 				}							
@@ -370,8 +377,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringZZZ.iFACTOR_CLASSNAME));
-	                        sReturn = String.format(sFormat, classObj.getName());
+	                            new Integer(ILogStringZZZ.iFACTOR_CLASSFILENAME));
+	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
+	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+	                        String sFileName = classObj.getSimpleName() + ".java";
+	                        String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+	                        sReturn = String.format(sFormat, sFilePathTotal);
 	                    }
 	                }
 	                break;
@@ -746,6 +757,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
+			
+			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 						
 			if(StringArrayZZZ.isEmpty(saLog)) {							
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);			
@@ -770,6 +784,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String compute(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+
 		return this.computeLinesInLog_(classObjIn, saLog, ienumaFormatLogString);
 	}
 	
@@ -801,10 +818,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}else {
 				classObj = classObjIn;
 			}
-			
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead();
-			
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
 			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringZZZ.LOGSTRING.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);
@@ -945,15 +958,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		//this.resetStringIndexRead();
-		
 		return this.compute(this.getClass(), hm);				
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		//this.resetStringIndexRead();
-		
 		if(obj==null) {
 			return this.compute(this.getClass(), hm);			
 		}else {
@@ -978,9 +987,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
-	public String compute(Class classObj, String[] saMessage) throws ExceptionZZZ {
-		this.resetStringIndexRead();
-		
+	public String compute(Class classObj, String[] saMessage) throws ExceptionZZZ {		
 		return this.compute(classObj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
@@ -1000,8 +1007,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}else {
 				classObj = classObjIn;
 			}
-
-			//this.resetStringIndexRead();
 			
 			//Der zu verwendende Logteil
 			String sLogUsed=null;

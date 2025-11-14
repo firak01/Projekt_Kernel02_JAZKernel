@@ -145,7 +145,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				IEnumSetMappedStatusZZZ objEnum = hmEnum.get(enumStatus);							
 				if(objEnum==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";					
-					this.logProtocolString(sLog);
+					this.logProtocol(sLog);
 					break main;
 				}
 				
@@ -160,7 +160,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - sStatus='"+sStatus+"'");
 				}else {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Event ist kein instanceof IEventObjectStatusLocalZZZ. Breche ab.";					
-					this.logProtocolString(sLog);
+					this.logProtocol(sLog);
 				}
 				
 			}//end main:

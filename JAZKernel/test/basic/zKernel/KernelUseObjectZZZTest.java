@@ -64,11 +64,11 @@ public class KernelUseObjectZZZTest extends TestCase {
 		try{
 			String sLog = null; String sLog2 = null; String[]saLog = null;
 			sLog = "Test01";
-			objKernelUserTest.logProtocolStringWithPosition(sLog);
+			objKernelUserTest.logProtocolWithPosition(sLog);
 			
 			sLog2 = "unter Test01";
 			saLog = StringArrayZZZ.append(sLog, sLog2);
-			objKernelUserTest.logProtocolStringWithPosition(saLog);
+			objKernelUserTest.logProtocolWithPosition(saLog);
 						
 		}catch(ExceptionZZZ ez){
 			ez.printStackTrace();

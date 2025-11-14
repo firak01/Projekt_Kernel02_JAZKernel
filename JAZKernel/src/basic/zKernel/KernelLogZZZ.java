@@ -135,6 +135,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
 		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
@@ -144,6 +145,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 		 };
@@ -153,7 +155,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static String computeLine(Object obj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
@@ -163,7 +166,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static String computeLine(Object obj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -174,7 +178,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
@@ -184,7 +189,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static String computeLine(Class classObj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {				 
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {	
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -198,6 +204,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
 		 };
 		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
@@ -208,6 +215,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 		 };
@@ -219,6 +227,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
@@ -230,6 +239,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -243,6 +253,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
 		 };
@@ -254,6 +265,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -270,6 +282,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -289,6 +302,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
@@ -310,7 +324,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.THREADID,
+				 ILogStringZZZ.LOGSTRING.CLASSNAMESIMPLE,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
 				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
@@ -327,6 +342,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.THREADID,
 				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
 				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
 				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,

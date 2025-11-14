@@ -72,15 +72,15 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT						
 						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, "");											
 						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Called for IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
-						this.logProtocolString(sLog);
+						this.logProtocol(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						bReacted = lused.reactOnStatusLocalEvent(eventUsed);
 						if(!bReacted) {
 							sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> NICHT reagiert hat IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
-							this.logProtocolString(sLog);
+							this.logProtocol(sLog);
 						}else{
 							sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Reagiert hat IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
-							this.logProtocolString(sLog);
+							this.logProtocol(sLog);
 						}
 						
 						
@@ -89,13 +89,13 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT
 						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, " - nothing will be executed.");
 						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Instanceof type is not used yet: " + sLogUsedAdditional;
-						this.logProtocolString(sLog);
+						this.logProtocol(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {
 				try {
 					sLog = ReflectCodeZZZ.getPositionCurrent() + "throws Exception: " + ez.getDetailAllLast();
-					this.logProtocolString(sLog);
+					this.logProtocol(sLog);
 				} catch (ExceptionZZZ ez2) {				
 					ez2.printStackTrace();
 				}
