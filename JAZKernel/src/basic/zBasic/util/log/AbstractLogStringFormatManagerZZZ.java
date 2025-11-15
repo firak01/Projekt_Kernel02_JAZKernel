@@ -1,39 +1,11 @@
 package basic.zBasic.util.log;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IReflectCodeZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
-import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
-import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
-import basic.zBasic.reflection.position.TagTypeMethodZZZ;
-import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
-import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
-import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.math.PrimeNumberZZZ;
-import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
-import basic.zBasic.xml.tagtype.ITagTypeZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ{
