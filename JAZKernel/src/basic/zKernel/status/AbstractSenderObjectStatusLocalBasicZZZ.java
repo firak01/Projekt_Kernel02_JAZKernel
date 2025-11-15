@@ -8,7 +8,8 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
-import basic.zBasic.util.log.LogStringZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.LogStringFormaterZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
  *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".
@@ -69,8 +70,9 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						//Damit das bei einem Monitor-Objekt nicht passiert, wird dort auch in das Mapping der eigenen zu den fremden Statuswerten geguckt.						
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
 						
-						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT						
-						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, "");											
+						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT
+						LogString4SenderZZZ objFormater = new LogString4SenderZZZ();
+						String sLogUsedAdditional = LogStringFormatManagerZZZ.getInstance().compute(objFormater, l, "");											
 						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Called for IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
 						this.logProtocol(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
@@ -87,7 +89,8 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 					}else {					
 						
 						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT
-						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, " - nothing will be executed.");
+						LogString4SenderZZZ objFormater = new LogString4SenderZZZ();
+						String sLogUsedAdditional = LogStringFormatManagerZZZ.getInstance().compute(objFormater, l, " - nothing will be executed.");
 						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Instanceof type is not used yet: " + sLogUsedAdditional;
 						this.logProtocol(sLog);
 					}

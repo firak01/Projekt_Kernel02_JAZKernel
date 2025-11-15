@@ -20,9 +20,9 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.ILogStringZZZ;
-import basic.zBasic.util.log.LogString4ReflectCodeZZZ;
-import basic.zBasic.util.log.LogStringContainerZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeZZZ;
@@ -550,7 +550,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			saParts[0] = sMethod;
 			saParts[1] = sPositionInFile;
 
-			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(classObj, saParts);
+			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, saParts);
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
@@ -621,11 +622,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//sReturn = LogString4ReflectCodeZZZ.getInstance().compute(objaLogString);
 			
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED, sMethodTag);
-			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILELINE_REFLECTED, sLineTag);
-			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILENAME_REFLECTED, sFileTag);
-			hmLogString.put(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
-			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(hmLogString);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED, sMethodTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_REFLECTED, sLineTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_REFLECTED, sFileTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
+			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
 			
 			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.			
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);

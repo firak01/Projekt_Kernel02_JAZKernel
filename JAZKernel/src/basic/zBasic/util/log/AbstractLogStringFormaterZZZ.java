@@ -36,11 +36,8 @@ import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ implements ILogStringZZZ{
+public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormaterZZZ, ILogStringFormatZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
-	
-	//muss als Singleton static sein.
-	protected static ILogStringZZZ objLogStringSingleton;
 	
 	//Merke: Wenn das aber als Singleton gebraucht wird, dann gilt wg. proteceted:
 	//in der entsprechenden Klasse ein eigenes Objekt definieren. Alsod folgendes nutzen und verwenden:
@@ -59,6 +56,23 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	//Zum Buendig machen
 	protected volatile StringJustifierZZZ objStringJustifier = null;
+	
+	//######################
+	//### KONSTRUKTOR
+	public AbstractLogStringFormaterZZZ() throws ExceptionZZZ{		
+		super();
+	}
+	
+	public AbstractLogStringFormaterZZZ(StringJustifierZZZ objJustifier) throws ExceptionZZZ{
+		super();
+		AbstractLogStringFormaterNew_(objJustifier);
+	}
+	
+	private boolean AbstractLogStringFormaterNew_(StringJustifierZZZ objJustifier) throws ExceptionZZZ{
+		this.setStringJustifier(objJustifier);
+		
+		return true;
+	}
 	
 	
 	//### GETTER / SETTER
@@ -87,16 +101,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		}//end main:
 		return bReturn;
 	}
-	
-//	@Override
-//	public int getStringIndexStart() throws ExceptionZZZ {
-//		return this.iStringIndexToReadLbound;
-//	}
-//	
-//	@Override
-//	public void setStringIndexStart(int iStringIndex) throws ExceptionZZZ {
-//		this.iStringIndexToReadLbound = iStringIndex;
-//	}
 	
 	@Override 
 	public ArrayListUniqueZZZ<Integer> getStringIndexReadList() throws ExceptionZZZ{
@@ -134,7 +138,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			int iArgumentType = ienumFormatLogString.getArgumentType();
 			
 			switch(iArgumentType) {
-			case ILogStringZZZ.iARG_STRING:
+			case ILogStringFormatZZZ.iARG_STRING:
 				bReturn = true;
 				break;
 			default:
@@ -153,7 +157,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			int iArgumentType = ienumFormatLogString.getArgumentType();
 			
 			switch(iArgumentType) {
-			case ILogStringZZZ.iARG_STRINGXML:
+			case ILogStringFormatZZZ.iARG_STRINGXML:
 				bReturn = true;
 				break;
 			default:
@@ -173,10 +177,10 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			int iArgumentType = ienumFormatLogString.getArgumentType();
 			
 			switch(iArgumentType) {
-			case ILogStringZZZ.iARG_OBJECT:
+			case ILogStringFormatZZZ.iARG_OBJECT:
 				bReturn = true;
 				break;
-			case ILogStringZZZ.iARG_SYSTEM:
+			case ILogStringFormatZZZ.iARG_SYSTEM:
 				bReturn = true;
 				break;
 			default:
@@ -324,7 +328,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		String sReturn = null;
 		main:{
 			if(ienumFormatLogString == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
 			if (!isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
@@ -338,46 +342,46 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		    		    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumFormatLogString.getFactor()) {
-	            case ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
-	                    if (this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
 	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE));
 	                        sReturn = String.format(sFormat, classObj.getSimpleName());
 	                    }
 	                }
 	                break;
 
-	            case ILogStringZZZ.iFACTOR_CLASSNAME:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
-	                    if (this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
 	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringZZZ.iFACTOR_CLASSNAME));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME));
 	                        sReturn = String.format(sFormat, classObj.getName());
 	                    }
 	                }
 	                break;
 
-	            case ILogStringZZZ.iFACTOR_CLASSFILENAME:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
-	                    if (this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
 	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() +
 	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringZZZ.iFACTOR_CLASSFILENAME));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME));
 	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
 	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
 	                        String sFileName = classObj.getSimpleName() + ".java";
@@ -387,7 +391,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	                }
 	                break;
 
-	            case ILogStringZZZ.iFACTOR_DATE:
+	            case ILogStringFormatZZZ.iFACTOR_DATE:
 	                GregorianCalendar d = new GregorianCalendar();
 	                Integer iDateYear = new Integer(d.get(Calendar.YEAR));
 	                Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
@@ -398,17 +402,17 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	                String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
 
-	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_DATE));
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE));
 	                sReturn = String.format(sFormat, sDate);
 	                break;
 
-	            case ILogStringZZZ.iFACTOR_THREADID:
-	                if (this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD)) {
+	            case ILogStringFormatZZZ.iFACTOR_THREADID:
+	                if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
 	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
 	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
 	                } else {
 	                    sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringZZZ.iFACTOR_THREADID));
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID));
 	                    long lngThreadID = Thread.currentThread().getId();
 	                    sReturn = String.format(sFormat, lngThreadID);
 	                }
@@ -427,7 +431,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		String sReturn = null;
 		main:{
 			if(ienumFormatLogString == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
 			if (!isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
@@ -471,8 +475,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			
 			switch(ienumFormatLogString.getFactor()) {		
-			case ILogStringZZZ.iFACTOR_STRING_TYPE01:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE01));
+			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE01:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE01));
 								
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -492,8 +496,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case ILogStringZZZ.iFACTOR_STRING_TYPE02:	
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE02));
+			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE02:	
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE02));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -513,8 +517,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
-			case ILogStringZZZ.iFACTOR_STRING_TYPE03:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_STRING_TYPE03));
+			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE03:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE03));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -533,7 +537,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
-			case ILogStringZZZ.iFACTOR_LINENEXT:
+			case ILogStringFormatZZZ.iFACTOR_LINENEXT:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
@@ -553,7 +557,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		String sReturn = null;
 		main:{
 			if(ienumMappedFormat == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
 			if (!isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
@@ -592,7 +596,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		String sReturn = null;
 		main:{
 			if(ienumMappedFormat == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
 			if (!isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
@@ -611,7 +615,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 						
 			String sTagTemp=null;
 			switch(ienumMappedFormat.getFactor()) {
-			case ILogStringZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED:			
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED:			
 				ITagTypeZZZ objTagTypeFilePosition = new TagTypeFilePositionZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
 				if(sTagTemp!=null) {
@@ -624,7 +628,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = objTagFilePosition.getElementString();		            
 				}			
 				break;
-			case ILogStringZZZ.iFACTOR_CLASSMETHOD_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_REFLECTED:
 				ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
 				if(sTagTemp!=null) {
@@ -637,7 +641,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = objTagMethod.getElementString();
 				}			
 				break;
-			case ILogStringZZZ.iFACTOR_CLASSFILELINE_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_REFLECTED:
 				ITagTypeZZZ objTagTypeLineNummer = new TagTypeLineNumberZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
 				if(sTagTemp!=null) {
@@ -650,7 +654,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = objTagLineNumber.getElementString();
 				}			
 				break;
-			case ILogStringZZZ.iFACTOR_CLASSFILENAME_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_REFLECTED:
 				ITagTypeZZZ objTagTypeFileName = new TagTypeFileNameZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
 				if(sTagTemp!=null) {
@@ -663,7 +667,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sReturn = objTagFileName.getElementString();
 				}			
 				break;
-			case ILogStringZZZ.iFACTOR_POSITIONCURRENT_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_REFLECTED:
 				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
 				if(sTagTemp!=null) {
@@ -754,7 +758,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		String sReturn = "";
 		main:{			
 			if(ienumFormatLogString == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
 			
@@ -806,7 +810,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
 				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										
-					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}				
 			}
@@ -820,7 +824,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			}
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
-			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringZZZ.LOGSTRING.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);
+			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);
 			ArrayListUniqueZZZ<String>listasLine = new ArrayListUniqueZZZ<String>();
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, saLog, ienumaLine);
@@ -878,7 +882,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
 				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										
-					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}				
 			}
@@ -1020,7 +1024,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	           
 	            if(sLogUsed!=null) { 
 					//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
-					sReturn = sReturn + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;									
+					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;									
 				}
 	        }
 	        			
@@ -1071,7 +1075,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
 
 		//Array automatisch aus dem Enum errechnen.
-		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringZZZ.sENUMNAME);
+		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
 		return ienumaReturn;
 	}
 	
@@ -1106,7 +1110,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 		//HashMap automatisch aus dem Enum errechnen.
-		IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringZZZ.sENUMNAME);
+		IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
 		for(IEnumSetMappedZZZ ienum : ienuma) {
 			IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 			hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
@@ -1152,26 +1156,26 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 
 	//###################################################
-	//### FLAG: ILogStringZZZ
+	//### FLAG: ILogStringFormaterZZZ
 	//###################################################
 	@Override
-	public boolean getFlag(ILogStringZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ILogStringFormaterZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean setFlag(ILogStringZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(ILogStringFormaterZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 
 	@Override
-	public boolean[] setFlag(ILogStringZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(ILogStringFormaterZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(ILogStringZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(ILogStringFormaterZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -1186,12 +1190,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 
 	@Override
-	public boolean proofFlagExists(ILogStringZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(ILogStringFormaterZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 
 	@Override
-	public boolean proofFlagSetBefore(ILogStringZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(ILogStringFormaterZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }

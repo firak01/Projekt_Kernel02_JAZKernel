@@ -5,7 +5,8 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.LogStringFormaterZZZ;
 
 public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, ILogZZZ{
 	private static final long serialVersionUID = 4785854649300281154L;
@@ -113,13 +114,13 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public synchronized void logProtocol(Object obj, String sLog) throws ExceptionZZZ{
-			String sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);						
+			String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
 			System.out.println(sLogUsed);
 		}
 		
 		@Override
 		public synchronized void logProtocol(Object obj, String[] saLog) throws ExceptionZZZ{
-			String sLogUsed = LogStringZZZ.getInstance().compute(obj, saLog);						
+			String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, saLog);						
 			System.out.println(sLogUsed);
 		}
 
@@ -188,9 +189,9 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		public synchronized void logProtocol(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
 			String sLogUsed;
 			if(obj==null) {
-				sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 			}else {
-				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
 			}
 			System.out.println(sLogUsed);
 		}

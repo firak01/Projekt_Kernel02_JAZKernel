@@ -49,7 +49,7 @@ import basic.zBasic.util.file.jar.JarInfoTest;
 import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
-import basic.zBasic.util.log.LogStringZZZTest;
+import basic.zBasic.util.log.LogStringFormaterZZZTest;
 import basic.zBasic.util.stream.StreamZZZTest;
 import basic.zBasic.util.xml.XmlParserZZZTest;
 import basic.zBasic.util.xml.XmlTagMatcherZZZTest;
@@ -91,7 +91,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
 		//Tests fuer das bauen eines FORMATIERTEN LogStrings
-		objReturn.addTestSuite(LogStringZZZTest.class);
+		objReturn.addTestSuite(LogStringFormaterZZZTest.class);
 		
 		//Tests fuer Enum
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);

@@ -9,12 +9,14 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.ILogStringZZZ;
-import basic.zBasic.util.log.LogStringZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.LogStringFormaterZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
@@ -135,67 +137,67 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01				 
 		 };
-		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLine(String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(saLog, iaFormat);
 	}
 	
 	public synchronized static String computeLine(Object obj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLine(Object obj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}	
 	
 	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLine(Class classObj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {	
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	//+++ mit Datum
@@ -203,48 +205,65 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01				 
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01				 
 		 };
-		 return LogStringZZZ.getInstance().compute(sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLineDate(String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(saLog, iaFormat);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(saLog, iaFormat);
 	}
 	
 	public synchronized static String computeLineDate(Object obj, String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, sLog, iaFormat);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(obj, sLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLineDate(Object obj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(obj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
 	
 	
@@ -252,25 +271,37 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, sLog, iaFormat);
+		
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(classObj, sLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, sLog, iaFormat);
 	}
 	
 	public synchronized static String computeLineDate(Class classObj, String[] saLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(classObj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	//+++ mit CodePosition
@@ -281,16 +312,22 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 String[] saLog = StringArrayZZZ.append(sLog, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+		
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(obj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
 	
 	
@@ -301,17 +338,23 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 String[] saLog = StringArrayZZZ.append(saLogIn, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(obj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLogIn, iaFormat);
 	}
 	
 	
@@ -323,17 +366,23 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSNAMESIMPLE,
-				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
-		 String[] satemp = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(classObj, satemp, iaFormat);
+		 String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(classObj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	
@@ -341,19 +390,26 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.THREADID,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.CLASSMETHOD_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,
-				 ILogStringZZZ.LOGSTRING.STRINGTYPE01,	
-				 ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION_REFLECTED,
-				 ILogStringZZZ.LOGSTRING.POSITIONCURRENT_REFLECTED
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,	
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.POSITIONCURRENT_REFLECTED
 		 };
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
 		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-		 return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 //return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 
+//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
+//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
+//		 objLogString.setStringJustifier(objStringJustifier);
+//		 return objLogString.compute(classObj, saLog, iaFormat);
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
 	
 	
@@ -387,7 +443,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 	public synchronized static void logProtocolStringStatic(Object obj, String sLog) throws ExceptionZZZ{
 		String sLogUsed;
-		sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);
+		sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);
 		System.out.println(sLogUsed);
 	}
 	
@@ -434,9 +490,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static void logProtocolStringStatic(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
 		String sLogUsed;
 		if(obj==null) {
-			sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 		}else {
-			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
 		}
 		System.out.println(sLogUsed);
 	}
