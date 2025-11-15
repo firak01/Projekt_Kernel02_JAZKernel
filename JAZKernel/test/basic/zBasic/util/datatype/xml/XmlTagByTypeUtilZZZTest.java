@@ -39,7 +39,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			//Der gesuchte TagType muss in der TagByTypeFactory vorhanden sein.
 			//Das ist hierbei nicht der Fall
 			try {
-				ITagByTypeZZZ objTag = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
+				ITagByTypeZZZ objTag = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
 				fail("Exception should have been thrown. TagType not handled in Factory");
 			}catch(ExceptionZZZ ez1){
 			}
@@ -53,7 +53,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><Z:Java><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></Z:Java></Z:Call>";
 			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
 			sTagName= "filename";
-			ITagByTypeZZZ objTag = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
+			ITagByTypeZZZ objTag = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
 			sValue = objTag.getValue();
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -63,7 +63,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><filename><filename>{[ArgumentSection for testCallComputed]JavaClass}</filename><Z:Method>{[ArgumentSection for testCallComputed]JavaMethod}</Z:Method></filename></Z:Call>";
 			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaClass}";
 			sTagName= "filename";
-			ITagByTypeZZZ objTag2 = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
+			ITagByTypeZZZ objTag2 = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
 			sValue = objTag2.getValue();
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -72,7 +72,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			sExpression = "<Z:Call><filename><Z:Class>{[ArgumentSection for testCallComputed]JavaClass}</Z:Class><filename>{[ArgumentSection for testCallComputed]JavaMethod}</filename></filename></Z:Call>";
 			sExpressionSolved= "{[ArgumentSection for testCallComputed]JavaMethod}";
 			sTagName= "filename";
-			ITagByTypeZZZ objTag3 = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
+			ITagByTypeZZZ objTag3 = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);			
 			sValue = objTag3.getValue();
 			assertEquals(sExpressionSolved, sValue);
 			
@@ -85,7 +85,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 			sTagName= "";
 			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";			
-			ITagByTypeZZZ objTag4 = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
+			ITagByTypeZZZ objTag4 = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
 			assertNull(objTag4);
 			
 			
@@ -97,7 +97,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			sTagName= objTagTypeLineNr.getTagName();
 			sExpression = objTagTypePositionCurrent.getTagPartOpening() + objTagTypeMethod.getTagPartOpening() +"searchDirectory" + objTagTypeMethod.getTagPartClosing() + objTagTypeFile.getTagPartOpening() + "< (FileEasyZZZ.java:625) " + objTagTypeFile.getTagPartClosing() + objTagTypePositionCurrent.getTagPartClosing() + "# ";
 			sExpressionSolved = objTagTypePositionCurrent.getTagName();
-			ITagByTypeZZZ objTag5 = XmlTagByTypeUtilZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
+			ITagByTypeZZZ objTag5 = XmlUtilTagByTypeZZZ.getTagNextFromFactoryByName(sTagName, sExpression);
 			assertNull(objTag5);
 			
 		}catch(ExceptionZZZ ez){
@@ -113,7 +113,7 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			String sTest = "Das ist ein Wert";
 			
 			//+++++ Negativtest
-			boolean bErg = XmlTagByTypeUtilZZZ.isExpression(sTest, objTagType);		    
+			boolean bErg = XmlUtilTagByTypeZZZ.isExpression(sTest, objTagType);		    
 			assertFalse(bErg); 
 			
 			//+++++ Positivtest
@@ -121,14 +121,14 @@ public class XmlTagByTypeUtilZZZTest extends TestCase{
 			String sTestXml = "aBc" + objTagType.getTagPartOpening() + sTest + objTagType.getTagPartClosing()+"xYz";
 			System.out.println("Zeile1: " + sTestXml);
 		    
-			bErg = XmlTagByTypeUtilZZZ.isExpression(sTestXml, objTagType);		    
+			bErg = XmlUtilTagByTypeZZZ.isExpression(sTestXml, objTagType);		    
 			assertTrue(bErg);
 			
 			//B) Empty Tag
 			sTestXml = "aBc" + objTagType.getTagPartEmpty() +"xYz";
 			System.out.println("Zeile1: " + sTestXml);
 		    
-			bErg = XmlTagByTypeUtilZZZ.isExpression(sTestXml, objTagType);		    
+			bErg = XmlUtilTagByTypeZZZ.isExpression(sTestXml, objTagType);		    
 			assertTrue(bErg);
 			
 		 }catch(ExceptionZZZ ez){

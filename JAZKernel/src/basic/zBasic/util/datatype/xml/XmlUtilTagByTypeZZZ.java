@@ -14,7 +14,7 @@ import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class XmlTagByTypeUtilZZZ implements IConstantZZZ{
+public class XmlUtilTagByTypeZZZ implements IConstantZZZ{
 
 	//+++++++++++++++++++++++++++++
 	/**FGL: Der intern verwendete RegEx funktioniert nur, wenn man den ersten Tag kennt, beim Namen
@@ -111,6 +111,45 @@ public class XmlTagByTypeUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	//###########################
+	public static String replaceTagParts(String sXml, ITagTypeZZZ objTagType, String sToReplaceWith) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			sReturn = StringZZZ.replace(sReturn, objTagType.getTagPartOpening(),sToReplaceWith);
+			sReturn = StringZZZ.replace(sReturn, objTagType.getTagPartClosing(),sToReplaceWith);
+								
+		}//end main
+		return sReturn;
+	}
+	
+	public static String replaceTagParts(String sXml, ITagTypeZZZ objTagType, String sToReplaceOpeningWith, String sToReplaceClosingWith) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			sReturn = StringZZZ.replace(sReturn, objTagType.getTagPartOpening(),sToReplaceOpeningWith);
+			sReturn = StringZZZ.replace(sReturn, objTagType.getTagPartClosing(),sToReplaceClosingWith);								
+		}//end main
+		return sReturn;
+	}
+	
+	//###########################
+	public static String replaceTagParts(String sXml, ITagByTypeZZZ objTag, String sToReplaceWith) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			sReturn = StringZZZ.replace(sReturn, objTag.getTagPartOpening(),sToReplaceWith);
+			sReturn = StringZZZ.replace(sReturn, objTag.getTagPartClosing(),sToReplaceWith);
+								
+		}//end main
+		return sReturn;
+	}
+	
+	public static String replaceTagParts(String sXml, ITagByTypeZZZ objTag, String sToReplaceOpeningWith, String sToReplaceClosingWith) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			sReturn = StringZZZ.replace(sReturn, objTag.getTagPartOpening(),sToReplaceOpeningWith);
+			sReturn = StringZZZ.replace(sReturn, objTag.getTagPartClosing(),sToReplaceClosingWith);								
+		}//end main
+		return sReturn;
+	}
 	
 
 }

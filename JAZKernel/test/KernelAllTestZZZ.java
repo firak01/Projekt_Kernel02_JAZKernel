@@ -49,7 +49,6 @@ import basic.zBasic.util.file.jar.JarInfoTest;
 import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
-import basic.zBasic.util.log.LogStringFormaterZZZTest;
 import basic.zBasic.util.stream.StreamZZZTest;
 import basic.zBasic.util.xml.XmlParserZZZTest;
 import basic.zBasic.util.xml.XmlTagMatcherZZZTest;
@@ -91,7 +90,18 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
 		//Tests fuer das bauen eines FORMATIERTEN LogStrings
-		objReturn.addTestSuite(LogStringFormaterZZZTest.class);
+		//import basic.zBasic.util.log.testV00.LogStringFormatManagerZZZTest;
+		//import basic.zBasic.util.log.testV00.LogStringFormaterZZZTest;
+		//import basic.zBasic.util.log.testV02.LogStringFormatManagerZZZTest;
+		//import basic.zBasic.util.log.testV02.LogStringFormaterZZZTest;
+		objReturn.addTestSuite(basic.zBasic.util.log.testV00.LogStringFormaterZZZTest.class);
+		objReturn.addTestSuite(basic.zBasic.util.log.testV00.LogStringFormatManagerZZZTest.class);
+		
+		objReturn.addTestSuite(basic.zBasic.util.log.testV01.LogStringFormaterZZZTest.class);
+		objReturn.addTestSuite(basic.zBasic.util.log.testV01.LogStringFormatManagerZZZTest.class);
+		
+		objReturn.addTestSuite(basic.zBasic.util.log.testV02.LogStringFormaterZZZTest.class);
+		objReturn.addTestSuite(basic.zBasic.util.log.testV02.LogStringFormatManagerZZZTest.class);
 		
 		//Tests fuer Enum
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);

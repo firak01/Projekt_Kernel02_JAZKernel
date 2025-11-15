@@ -19,11 +19,13 @@ import base.collections.CollectionUtil;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeZZZ;
 import basic.zKernel.KernelZZZ;
@@ -551,7 +553,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			saParts[1] = sPositionInFile;
 
 			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, saParts);
+			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, classObj, saParts);
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
@@ -627,7 +629,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_REFLECTED, sFileTag);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
 			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
+			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
 			
 			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.			
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
@@ -1148,5 +1150,40 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			objaReturn = listaTemp.toArray(new StackTraceElement[listaTemp.size()]);
 		}//end main:
 		return objaReturn;
+	}
+	
+	/**Jetzt hat man die Postionsangaben mit Tags versehen, will sie dann aber wieder raus haben.
+	 * Das ist z.B. im LogStringFormatManagerZZZ der Fall, der die LogStrings ohne "stoerende" Tags ausgeben will. 
+	 * 
+	 * @param sXml
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 15.11.2025, 18:39:28
+	 */
+	public static String removePositionCurrentTagPartsFrom(String sXml) throws ExceptionZZZ{
+		String sReturn = sXml;
+		main:{
+			//Entferne nun die in ReflectCodeZZZ.getPositionCurrent() -sinnvollerweise - hinzugenommenen XML Tags
+			//ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
+			ITagTypeZZZ objTagTypeLine = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeLine, "");
+			
+			//ITagByTypeZZZ objTagFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME);
+			ITagTypeZZZ objTagTypeFile = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeFile, "");
+					
+			//ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD);
+			ITagTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeMethod, "");
+			
+			//ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE);
+			ITagTypeZZZ objTagTypePosition = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypePosition, "");
+			
+			//ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT);
+			ITagTypeZZZ objTagTypePositionCurrent = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypePositionCurrent, "");						
+		}
+		return sReturn;
 	}
 }

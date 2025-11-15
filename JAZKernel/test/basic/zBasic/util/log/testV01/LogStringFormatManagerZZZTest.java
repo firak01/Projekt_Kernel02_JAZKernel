@@ -1,15 +1,29 @@
-package basic.zBasic.util.log;
+package basic.zBasic.util.log.testV01;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormatManagerZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.ILogStringFormatManagerZZZ.FLAGZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import junit.framework.TestCase;
 
-public class LogStringFormatMangerZZZTest extends TestCase {
+
+/** Erweiterungsansatz: Verwende zur Reduktion der Redundanz eine Helper-Klasse.
+ *  Diese wurde von ChatGPT basierend auf den .testV00 Klassen erstellt 
+ *  
+ * 
+ * @author Fritz Lindhauer, 15.11.2025, 16:50:40
+ * 
+ */
+public class LogStringFormatManagerZZZTest extends TestCase {
 	private LogStringFormatManagerZZZ objLogManagerTest = null;
 	
 	protected void setUp(){
@@ -25,7 +39,7 @@ public class LogStringFormatMangerZZZTest extends TestCase {
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			LogStringFormatManagerZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
+			ILogStringFormatManagerZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
 			boolean btemp1a = objLogManager.setFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
 						
@@ -33,7 +47,7 @@ public class LogStringFormatMangerZZZTest extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
-			LogStringFormatManagerZZZ objLogManager2 = LogStringFormatManagerZZZ.getInstance();
+			ILogStringFormatManagerZZZ objLogManager2 = LogStringFormatManagerZZZ.getInstance();
 			
 			boolean btemp2a = objLogManager2.getFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY);
 			assertFalse(btemp2a);
@@ -48,33 +62,16 @@ public class LogStringFormatMangerZZZTest extends TestCase {
 	public void testCompute_FormatDefault() {
 		
 		try{
-			String sLog = null; String sThread = null; String sClassName = null;
-			String sLogValue = null; 
-			int iLogIndex1 = -1;  int iLogIndex2 = -1; int iThreadIndex = -1; int iClassNameIndex = -1;
-			
-			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
-			sLog = "der erste Logeintrag";
-			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			DummyTestObjectZZZ dummy = new DummyTestObjectZZZ();
+	        String sLog = "der erste Logeintrag";
+	        String thread = "[Thread:";
+	        String cls = dummy.getClass().getSimpleName() + ":";
 
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, sLog);
-			assertNotNull(sLogValue);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
-			
-			assertTrue(StringZZZ.contains(sLogValue, sLog));
-			assertTrue(StringZZZ.count(sLogValue, sLog)==1);
-										
-			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
-			assertTrue(StringZZZ.count(sLogValue,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
-						
-			//Logeintrag soll hinter dem Classnamen stehen
-			iLogIndex1 = StringZZZ.indexOfFirst(sLogValue, sLog);
-			iThreadIndex = StringZZZ.indexOfFirst(sLogValue, sThread);
-			assertTrue(iLogIndex1+sLog.length()> iThreadIndex);
-			
-			iClassNameIndex = StringZZZ.indexOfFirst(sLogValue, sClassName);
-			assertTrue(iLogIndex1 > iClassNameIndex+sClassName.length());
-			
+	        String result = LogStringFormatManagerZZZ.getInstance().compute(dummy, sLog);
+
+	        LogStringFormatTestHelper.assertContainsOnce(result, sLog);
+	        LogStringFormatTestHelper.assertThreadAndClass(result, thread, cls);
+	        LogStringFormatTestHelper.assertOrder(result, cls, thread, sLog);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());

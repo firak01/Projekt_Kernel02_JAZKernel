@@ -1,0 +1,69 @@
+package basic.zBasic.util.log.testV01;
+
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import junit.framework.TestCase;
+
+/**
+ * Hilfsklasse zur Reduktion redundanter Testlogik.
+ * Beide Testklassen (Formater & Manager) können diese statischen Methoden nutzen.
+ */
+public class LogStringFormatTestHelper extends TestCase {
+
+    // -------------------------------------------------------------
+    // Grundlegende Prüfungen
+    // -------------------------------------------------------------
+
+    /** Prüft, ob ein Text exakt einmal im Ergebnis vorkommt */
+    public static void assertContainsOnce(String result, String part) {
+        assertTrue("Fehlt: " + part, StringZZZ.contains(result, part));
+        assertEquals("Nicht exakt 1x enthalten: " + part,
+                1, StringZZZ.count(result, part));
+    }
+
+    /** Prüft, ob Thread- und Klassenname exakt einmal vorkommen */
+    public static void assertThreadAndClass(String result, String thread, String cls) {
+        assertEquals("Thread fehlt oder mehrfach",
+                1, StringZZZ.count(result, thread));
+        assertEquals("Klassenname fehlt oder mehrfach",
+                1, StringZZZ.count(result, cls));
+    }
+
+    /** Prüft Reihenfolge: class -> log -> thread */
+    public static void assertOrder(String result, String cls, String thread, String log) {
+        int iLog   = StringZZZ.indexOfFirst(result, log);
+        int iThread= StringZZZ.indexOfFirst(result, thread);
+        int iCls   = StringZZZ.indexOfFirst(result, cls);
+
+        assertTrue("Log müsste hinter Class kommen",  iLog > iCls + cls.length());
+        assertTrue("Thread müsste hinter Log kommen", iThread + thread.length() < iLog );
+    }
+
+    // -------------------------------------------------------------
+    // Multi-Log-Prüfungen
+    // -------------------------------------------------------------
+
+    /** Prüft, dass mehrere Logs jeweils genau 1x vorkommen */
+    public static void assertContainsLogsOnce(String result, String... logs) {
+        for (String log : logs) {
+            assertContainsOnce(result, log);
+        }
+    }
+
+    /** Prüft, dass ein Log vorhanden ist und hinter Thread steht */
+    public static void assertLogBehindThread(
+            String result, String log, String threadMarker) {
+
+        int idxLog = StringZZZ.indexOfLast(result, log);
+        int idxThread = StringZZZ.indexOfLast(result, threadMarker);
+
+        assertTrue("Log sollte hinter Thread stehen",
+                idxLog > idxThread + threadMarker.length());
+    }
+
+    /** Prüft, dass ein Log NICHT enthalten ist */
+    public static void assertLogNotPresent(String result, String log) {
+        assertEquals(-1, StringZZZ.indexOfLast(result, log));
+    }
+}
+

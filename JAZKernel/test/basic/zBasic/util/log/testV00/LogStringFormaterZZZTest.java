@@ -1,4 +1,4 @@
-package basic.zBasic.util.log;
+package basic.zBasic.util.log.testV00;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
@@ -6,11 +6,17 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormaterZZZ;
+import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ.LOGSTRINGFORMAT;
+import basic.zBasic.util.log.ILogStringFormaterZZZ.FLAGZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import junit.framework.TestCase;
 
-public class LogStringFormaterZZZTest  extends TestCase{
+public class LogStringFormaterZZZTest extends TestCase{
 	
 	private LogStringFormaterZZZ objLogStringTest = null;
 
