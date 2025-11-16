@@ -222,11 +222,6 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
 		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(saLog, iaFormat);
-		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(saLog, iaFormat);
 	}
 	
@@ -239,11 +234,6 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(obj, sLog, iaFormat);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, iaFormat);
 	}
@@ -258,10 +248,6 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(obj, saLog, iaFormat);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
@@ -276,12 +262,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01
 		 };
-		
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(classObj, sLog, iaFormat);
-		 
+				 
 		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, sLog, iaFormat);
 	}
 	
@@ -295,11 +276,6 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 		 };
-		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(classObj, saLog, iaFormat);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
@@ -319,13 +295,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 String[] saLog = StringArrayZZZ.append(sLog, sPositionCalling);
-		
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(obj, saLog, iaFormat);
+
+		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		 
+		 //Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
@@ -346,15 +322,15 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 String[] saLog = StringArrayZZZ.append(saLogIn, sPositionCalling);
+		
+		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
 		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(obj, saLog, iaFormat);
+		 //Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLogIn, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
 	}
 	
 	
@@ -373,14 +349,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 		 };
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
+		 
+		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		 
+		 //Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(classObj, saLog, iaFormat);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}
@@ -399,15 +374,12 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.POSITIONCURRENT_REFLECTED
 		 };
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingPlus(1);
-		 //satemp = StringArrayZZZ.append(satemp, sPositionCalling);
-		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-		 //return LogStringZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
 		 
-//		 StringJustifierZZZ objStringJustifier = LogStringFormaterZZZ.getInstance().getStringJustifier();
-//		 ILogStringFormatZZZ objLogString = LogStringFormaterZZZ.getNewInstance(); //neue Instanz, damit der StringArray - Index des LogFiles nicht versehentlich wiederverwendet werden.
-//		 objLogString.setStringJustifier(objStringJustifier);
-//		 return objLogString.compute(classObj, saLog, iaFormat);
+		 //Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		 //String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
+		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
 	}

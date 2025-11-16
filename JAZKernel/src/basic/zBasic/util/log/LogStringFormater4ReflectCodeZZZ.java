@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
@@ -40,6 +42,7 @@ public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZ
 		
 		return hmReturn;
 	}
-
-		
+	
+	//Wenn ganz einfache Ausgabe gewünscht wird, .getPositionCurrentSimple verwenden
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 }

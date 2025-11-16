@@ -22,6 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormaterZZZ;
 import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
@@ -167,78 +168,78 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  }
 	  
 	  /**
-		 * use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
-		 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
-		   * @return Return the name of the routine that called getCurrentMethodName
-		   */
-		  public static String getMethodCurrentNameLined(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
-				String method = null;
+	 * use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
+	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
+	   * @return Return the name of the routine that called getCurrentMethodName
+	   */
+	  public static String getMethodCurrentNameLined(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
+			String method = null;
+			
+			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+				//int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset;
+				method = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset+1);
 				
-				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
-					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					//int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset;
-					method = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset+1);
-					
-					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset+1, iLineOffset); //Berechne die gewünschte Zeile					
-					method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
-										
-				}else{
-					
-				//Verarbeitung vor Java 1.4
+				int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset+1, iLineOffset); //Berechne die gewünschte Zeile					
+				method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
+									
+			}else{
 				
-				  ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				  PrintWriter pw = new PrintWriter(baos);
-				  (new Throwable()).printStackTrace(pw);
-				  pw.flush();
-				  String stackTrace = baos.toString();
-				  pw.close();
+			//Verarbeitung vor Java 1.4
+			
+			  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			  PrintWriter pw = new PrintWriter(baos);
+			  (new Throwable()).printStackTrace(pw);
+			  pw.flush();
+			  String stackTrace = baos.toString();
+			  pw.close();
 
-				  StringTokenizer tok = new StringTokenizer(stackTrace, "\n");
-				  String l = tok.nextToken(); // 'java.lang.Throwable'
-				  String t = null;
-				  l = tok.nextToken(); // 'at ...getCurrentMethodName'
-				  l = tok.nextToken(); // 'at ...<caller to getCurrentRoutine>'
-				  	  
-				  // Parse line 2
-				  tok = new StringTokenizer(l.trim(), " <(");
+			  StringTokenizer tok = new StringTokenizer(stackTrace, "\n");
+			  String l = tok.nextToken(); // 'java.lang.Throwable'
+			  String t = null;
+			  l = tok.nextToken(); // 'at ...getCurrentMethodName'
+			  l = tok.nextToken(); // 'at ...<caller to getCurrentRoutine>'
+			  	  
+			  // Parse line 2
+			  tok = new StringTokenizer(l.trim(), " <(");
+			  try{
+			  t = tok.nextToken(); // 'at'
+			  t = tok.nextToken(); // '...<caller to getCurrentRoutine>'
+			  }catch(NoSuchElementException nsee){
+				  t=null;
+			  }
+			  
+			  //!!! Falls hier nix ist, dann hat sich der Aufbau ge�ndert.
+			  if(t==null){
+				  tok = new StringTokenizer(l.trim(), "(");
 				  try{
-				  t = tok.nextToken(); // 'at'
-				  t = tok.nextToken(); // '...<caller to getCurrentRoutine>'
+					  t = tok.nextToken();
 				  }catch(NoSuchElementException nsee){
 					  t=null;
 				  }
-				  
-				  //!!! Falls hier nix ist, dann hat sich der Aufbau ge�ndert.
-				  if(t==null){
-					  tok = new StringTokenizer(l.trim(), "(");
-					  try{
-						  t = tok.nextToken();
-					  }catch(NoSuchElementException nsee){
-						  t=null;
-					  }
+			  }
+			  
+			  if(t!=null){
+				  String methodWithPackageName = t;
+				  int iDotPos = methodWithPackageName.lastIndexOf(ReflectCodeZZZ.sPACKAGE_SEPERATOR);
+				  if(iDotPos<=-1){
+					  method = methodWithPackageName;
+				  }else{
+					  method = methodWithPackageName.substring(iDotPos+1);
 				  }
-				  
-				  if(t!=null){
-					  String methodWithPackageName = t;
-					  int iDotPos = methodWithPackageName.lastIndexOf(ReflectCodeZZZ.sPACKAGE_SEPERATOR);
-					  if(iDotPos<=-1){
-						  method = methodWithPackageName;
-					  }else{
-						  method = methodWithPackageName.substring(iDotPos+1);
-					  }
-				  }
-				}//End if : Verarbeitung vor Java 1.4
-				  return method;
-		  }
+			  }
+			}//End if : Verarbeitung vor Java 1.4
+			  return method;
+	  }
+  
+	  public static String getMethodCallingName() {
+		  return getMethodCallingName(1); //1 StacktracePostion weiter
+	  }
 	  
-		  public static String getMethodCallingName() {
-			  return getMethodCallingName(1); //1 StacktracePostion weiter
-		  }
-		  
-		  public static String getMethodCallingFileName() {
-			  return getMethodCallingFileName(1); //1 StacktracePostion weiter
-		  }
-		  
+	  public static String getMethodCallingFileName() {
+		  return getMethodCallingFileName(1); //1 StacktracePostion weiter
+	  }
+	  
 		  
   
 		  
@@ -503,6 +504,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getPosition(1);
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++
 	public static String  getPositionCalling() throws ExceptionZZZ{
 		return ReflectCodeZZZ.getPosition(2);
 	}
@@ -545,12 +547,29 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			sPositionInFile = sPositionInFile + ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
 			
 			//Mit LogString-Klasse
-			String[]saParts = new String[2];
-			saParts[0] = sMethod;
-			saParts[1] = sPositionInFile;
+//			String[]saParts = new String[2];
+//			saParts[0] = sMethod;
+//			saParts[1] = sPositionInFile;
 			
-			TODOGOON20251116;//Wie war das früher, dann dieses Zusammenrechnen hier übernehmen.
-			sReturn = LogStringFormater4ReflectCodeZZZ.compute(saParts);
+			String sParts = sMethod + sPositionInFile;
+			
+			TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
+			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
+			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD, sMethod);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE, sLineTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME, sFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION, sPositionInFile);
+			
+			//Erzeuge hier den String als XML Variante. 
+			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
+			
+		
+			//ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();			
+			//sReturn = objFormater.compute();
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
@@ -603,11 +622,70 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		}//end main:
 		return sReturn;
 	}
+	//####################
 	
+	/** Alte Version, vor dem Entwickeln der Formater - Klassen
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 16.11.2025, 21:30:35
+	 */
+	public static String  getPositionCurrentSimple() throws ExceptionZZZ{
+		String sReturn = null;
+		  main:{
+			  
+			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+
+				  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
+				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
+					String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
+			
+					sReturn = sLineTotal;
+				}else{
+					
+						//Verarbeitung vor Java 1.4
+					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	   
+				}//end Java Version
+		  }//end main:
+		  return sReturn;
+	}
+	
+	public static String  getPositionCallingSimple() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionCallingSimple(1);
+	}
+	
+	public static String  getPositionCallingSimple(int iStacktraceOffset) throws ExceptionZZZ{
+		String sReturn = null;
+		  main:{
+			  
+			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+
+				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iStacktraceOffset);
+				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
+					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iStacktraceOffset) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iStacktraceOffset)  + sLine;
+			
+					sReturn = sLineTotal;
+				}else{
+					
+						//Verarbeitung vor Java 1.4
+					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	   
+				}//end Java Version
+		  }//end main:
+		  return sReturn;
+	}
+	
+	
+	//####################
 	public static String  getPositionCurrentXml() throws ExceptionZZZ{
 		return ReflectCodeZZZ.getPositionXml(1);
 	}
 	
+	//####################
 	public static String  getPositionCallingXml() throws ExceptionZZZ{
 		return ReflectCodeZZZ.getPositionXml(2);
 	}
@@ -661,33 +739,16 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 			
-			//Mit Method voran
-			//sReturn = sMethod + ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-			
-			//Ohne die Method
-			//sReturn = ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-			
-			//Mit LogString-Klasse
-//			String[]saParts = new String[2];
-//			saParts[0] = sMethodTag;
-//			saParts[1] = sPositionInFileTag;
-//			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
-			
-			
-			//TODOGOON20251016;//das muss eigentlich ueber einen Hashmap, z.B. mit Eintrag ILogStringZZZ.iFACTOR_CLASSMETHOD=sString gelöst werden.
-            //                                              oder: enum LOGSTRING.CLASSMETHOD=sString
-			//Idee mit einer HashMapIndexedZZZ:
-			//LogStringContainerZZZ[] objaLogString = new LogStringContainerZZZ[2];
-			//objaLogString[0] = new LogStringContainerZZZ(ILogStringZZZ.LOGSTRING.CLASSMETHOD,sMethodTag);
-			//objaLogString[1] = new LogStringContainerZZZ(ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION,sPositionInFileTag);
-			//sReturn = LogString4ReflectCodeZZZ.getInstance().compute(objaLogString);
-			
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED, sMethodTag);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_REFLECTED, sLineTag);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_REFLECTED, sFileTag);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
-			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+			
+			//Erzeuge hier den String als XML Variante. 
+			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
 			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
 			
 			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.			

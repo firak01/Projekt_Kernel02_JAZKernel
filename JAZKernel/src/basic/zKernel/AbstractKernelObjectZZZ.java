@@ -4316,8 +4316,11 @@ MeinTestParameter=blablaErgebnis
 		sDebug = hmDebug.computeDebugString(" | ",":");
 		if(objFound!=null && objFound.hasAnyValue()) {
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "'/sSectionUsed='"+sSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Wert gefunden fuer sMainSection='" + sMainSection + "'/sSectionUsed='"+sSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
-			
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
+			System.out.println(ReflectCodeZZZ.getPositionCurrentSimple() + ": TESTFGLTEST");			
+			System.out.println(ReflectCodeZZZ.getPositionCurrentXml() + ": TESTFGL2TEST");
 			//################
 			//DEBUG: Entsprechen die oben eingegebenen Suchstrings auch dem 1. Suchschritt?
 			/*
