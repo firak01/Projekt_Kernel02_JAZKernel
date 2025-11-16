@@ -1,11 +1,12 @@
 package basic.zBasic.util.log;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.datatype.string.StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 
 public interface ILogStringFormatManagerZZZ extends ILogStringFormatManagerComputerZZZ, ILogStringFormatComputerZZZ{
-	public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
-	public void setStringJustifier(StringJustifierZZZ objStringJustifier) throws ExceptionZZZ;
+	public boolean hasStringJustifierPrivate() throws ExceptionZZZ;
+	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
+	public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ;
 	
 	public boolean reset() throws ExceptionZZZ;
 	

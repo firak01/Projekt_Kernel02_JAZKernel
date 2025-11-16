@@ -23,7 +23,7 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 		super();
 	}
 	
-	public static ILogStringFormatManagerZZZ getInstance() throws ExceptionZZZ{
+	public static synchronized ILogStringFormatManagerZZZ getInstance() throws ExceptionZZZ{
 		if(objLogStringManagerINSTANCE==null){
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
@@ -38,14 +38,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 		return (ILogStringFormatManagerZZZ) objLogStringManagerINSTANCE;
 	}
 	
-	public static LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
+	public static synchronized LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
 		objLogStringManagerINSTANCE = new LogStringFormatManagerZZZ();
 		return (LogStringFormatManagerZZZ)objLogStringManagerINSTANCE;
 	}
 	
-	public static void destroyInstance() throws ExceptionZZZ{
+	public static synchronized void destroyInstance() throws ExceptionZZZ{
 		objLogStringManagerINSTANCE = null;
 	}
 	
@@ -70,37 +70,53 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 		return sReturn;
 	}
 
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String compute(String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(sMessage, ienumFormatLogString);
+	public String compute(String sLog) throws ExceptionZZZ {
+		String sReturn = super.compute(sLog);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		return sReturn;
+	}
+	
+	@Override
+	public String compute(String[] saLog) throws ExceptionZZZ {
+		String sReturn = super.compute(saLog);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		return sReturn;
+	}
+	
+	@Override
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(sMessage, ienumaFormatLogString);
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(String[] saMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString)	throws ExceptionZZZ {
-		String sReturn = super.compute(saMessage, ienumaFormatLogString);
+	public String compute(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString)	throws ExceptionZZZ {
+		String sReturn = super.compute(saLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage, ienumFormatLogString);
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage, ienumaFormatLogString);
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
@@ -120,29 +136,29 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage01, sMessage02, ienumFormatLogString);
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog01, sLog02, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage01, sMessage02, ienumaFormatLogString);
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog01, sLog02, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, sMessage, ienumFormatLogString);
+	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, sMessage, ienumaFormatLogString);
+	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
@@ -190,43 +206,43 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage);
+	public String compute(Object obj, String sLog) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, saMessage);
+	public String compute(Object obj, String[] saLog) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, saLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sMessage01, sMessage02);
+	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ {
+		String sReturn = super.compute(obj, sLog01, sLog02);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, String sMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, sMessage);
+	public String compute(Class classObj, String sLog) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, sLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, sMessage01, sMessage02);
+	public String compute(Class classObj, String sLog01, String sLog02) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, sLog01, sLog02);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, String[] saMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, saMessage);
+	public String compute(Class classObj, String[] saLog) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, saLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
@@ -247,36 +263,36 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, sMessage, ienumFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, sMessage, ienumaFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, String[] saMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, saMessage, ienumaFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, saLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage, ienumFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage, ienumaFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
@@ -296,29 +312,29 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage01, sMessage02, ienumFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog01, sLog02, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage01, sMessage02, ienumaFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog01, sLog02, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, sMessage, ienumFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, sLog, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, sMessage, ienumaFormatLogString);
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, sLog, ienumaFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
@@ -366,43 +382,43 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ{
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String[] saMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, saMessage);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String[] saLog) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, saLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sMessage01, sMessage02);
+	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog01, String sLog02) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLog01, sLog02);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, sMessage);
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, sLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sMessage01, String sMessage02) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, sMessage01, sMessage02);
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog01, String sLog02) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, sLog01, sLog02);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String[] saMessage) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, saMessage);
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String[] saLog) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, saLog);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		return sReturn;
 	}

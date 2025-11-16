@@ -3,7 +3,8 @@ package basic.zBasic.util.datatype.string;
 import basic.zBasic.ExceptionZZZ;
 
 public interface IStringJustifierZZZ {
-
+	public boolean reset() throws ExceptionZZZ;
+	
 	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
 	//Beispiel:
 	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.

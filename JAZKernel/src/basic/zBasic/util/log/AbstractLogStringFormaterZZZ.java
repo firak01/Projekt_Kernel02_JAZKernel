@@ -24,6 +24,7 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -39,10 +40,7 @@ import basic.zKernel.flag.IFlagZEnabledZZZ;
 public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormaterZZZ, ILogStringFormatZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
 	
-	//Merke: Wenn das aber als Singleton gebraucht wird, dann gilt wg. proteceted:
-	//in der entsprechenden Klasse ein eigenes Objekt definieren. Alsod folgendes nutzen und verwenden:
-	//protected static ILogStringZZZ objLogStringSingletonHERE; //muss als Singleton static sein, und HERE weil das Objekt in AbstractLogString vom Typ LogStringZZZ ist, gibt es dann eine TypeCastException.
-	
+	// --- Globale Objekte ---
 	//MERKE: Alles volatile, damit es über mehrere Threads gleich bleibt.
 	protected volatile HashMap<Integer,String>hmFormatPositionString=null;
 	
@@ -55,20 +53,24 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	protected volatile ArrayListUniqueZZZ<Integer>listaintStringIndexRead=null;
 	
 	//Zum Buendig machen
-	protected volatile StringJustifierZZZ objStringJustifier = null;
+	//Idee: Bei mehreren Instanzen per Default auf das Singleton zugreifen
+	//      Aber ggfs. ueberschreibend auf einen hinterlegten zugreifen.
+	protected volatile IStringJustifierZZZ objStringJustifier = null;
+		
 	
 	//######################
 	//### KONSTRUKTOR
 	public AbstractLogStringFormaterZZZ() throws ExceptionZZZ{		
 		super();
+		AbstractLogStringFormaterNew_(null);
 	}
 	
-	public AbstractLogStringFormaterZZZ(StringJustifierZZZ objJustifier) throws ExceptionZZZ{
+	public AbstractLogStringFormaterZZZ(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{
 		super();
 		AbstractLogStringFormaterNew_(objJustifier);
 	}
 	
-	private boolean AbstractLogStringFormaterNew_(StringJustifierZZZ objJustifier) throws ExceptionZZZ{
+	private boolean AbstractLogStringFormaterNew_(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{
 		this.setStringJustifier(objJustifier);
 		
 		return true;
@@ -77,11 +79,25 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	//### GETTER / SETTER
 	@Override
+	public boolean hasStringJustifierPrivate() throws ExceptionZZZ{
+		if(this.objStringJustifier==null) {
+			return false;
+		}else {
+			return true;
+		}		
+	}
+	
+	@Override
 	public boolean reset() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			boolean btemp1 = this.resetStringIndexRead();			
-			boolean btemp2 = this.getStringJustifier().reset();
+			boolean btemp1 = this.resetStringIndexRead();
+
+			//!!! nur resetten, wenn es ein eigener String Justifier ist
+			boolean btemp2 = false;
+			if(this.hasStringJustifierPrivate()) {
+				btemp2 = this.getStringJustifier().reset();
+			}
 			
 			bReturn = btemp1 | btemp2;
 		}//end main:
@@ -116,16 +132,32 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	}
 	
 	//+++ Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
-	@Override 
-	public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
-		if(this.objStringJustifier==null) {
-			this.objStringJustifier = new StringJustifierZZZ();
-		}
-		return this.objStringJustifier;
-	}
+//	@Override 
+//	public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
+//		if(this.objStringJustifier==null) {
+//			this.objStringJustifier = new StringJustifierZZZ();
+//		}
+//		return this.objStringJustifier;
+//	}
+//	
+//	@Override
+//	public void setStringJustifier(StringJustifierZZZ objStringJustifier) {
+//		this.objStringJustifier = objStringJustifier;
+//	}
 	
 	@Override
-	public void setStringJustifier(StringJustifierZZZ objStringJustifier) {
+	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
+		if(!this.hasStringJustifierPrivate()) {
+			//Verwende als default das Singleton
+			return StringJustifierZZZ.getInstance();
+		}else {
+			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
+			return this.objStringJustifier;
+		}
+	}
+
+	@Override
+	public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ {
 		this.objStringJustifier = objStringJustifier;
 	}
 	
@@ -212,6 +244,19 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 		
 		return computeByObject_(classObj, ienumFormatLogString);
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public String compute(String sLog) throws ExceptionZZZ {
+		String[]saLog=new String[1];
+		saLog[0]=sLog;
+		return this.compute(null, saLog, (IEnumSetMappedLogStringFormatZZZ[]) null);
+	}
+	
+	@Override
+	public String compute(String[] saLog) throws ExceptionZZZ {
+		return this.compute(null, saLog, (IEnumSetMappedLogStringFormatZZZ[]) null);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

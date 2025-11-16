@@ -23,8 +23,6 @@ public abstract class AbstractObjectWithExceptionZZZ <T> extends AbstractObjectZ
 		super();	
 	}
 	
-	
-		
 	//### aus IObjectZZZ
 	@Override
 	public ExceptionZZZ getExceptionObject() {

@@ -9,6 +9,7 @@ public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZ
 	private static final long serialVersionUID = 5164996113432507434L;
 	
 	public LogStringFormater4ReflectCodeZZZ() throws ExceptionZZZ{		
+		super();
 	}
 	
 	

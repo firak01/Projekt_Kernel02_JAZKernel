@@ -23,7 +23,11 @@ import basic.zBasic.ReflectCodeZZZ;
  *
  */
 public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java.io.Serializable {
-		private static KernelPropertyZZZ objProperty;                           //dies ist das eigentliche Singleton Objekt, von dem es nur ein einziges gibt 
+		// --- Singleton Instanz ---
+		//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
+		protected static KernelPropertyZZZ objPropertyINSTANCE;   
+		
+		//--- weiter Objekte ---
 		private static HashMap hmProperty = new HashMap();
 		
 		/** This is a private constructor !!! 
@@ -49,12 +53,12 @@ public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
-	public static KernelPropertyZZZ getInstance() throws ExceptionZZZ{
-		if(objProperty == null){
+	public static synchronized KernelPropertyZZZ getInstance() throws ExceptionZZZ{
+		if(objPropertyINSTANCE == null){
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PROPERTY_MISSING, iERROR_PROPERTY_MISSING, null,ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		return objProperty;
+		return objPropertyINSTANCE;
 	}
 		
 	/** KernelPropertyZZZ, receive the singleton object. If the file has been loaded before it will become reloaded, but no new property will be stored in the hashmap ( .getFileLoadedAll() ).
@@ -63,13 +67,13 @@ public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java
 	 * @return
 	 * @throws IOException
 	 */
-	public static KernelPropertyZZZ getInstance(String sConfigFile) throws IOException{
+	public static synchronized KernelPropertyZZZ getInstance(String sConfigFile) throws IOException{
 		KernelPropertyZZZ objReturn = null;
 		main:{
-			objReturn = objProperty;
+			objReturn = objPropertyINSTANCE;
 			if(objReturn==null){
 				objReturn = new KernelPropertyZZZ(sConfigFile);
-				objProperty = objReturn;
+				objPropertyINSTANCE = objReturn;
 			}
 			
 			if (hmProperty==null) hmProperty = new HashMap();

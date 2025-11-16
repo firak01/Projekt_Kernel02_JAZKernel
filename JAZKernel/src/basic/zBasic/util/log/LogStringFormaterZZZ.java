@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 
 public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
-	
-	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
+		
 	public LogStringFormaterZZZ() throws ExceptionZZZ{		
 		super();
 	}
 	
-	public LogStringFormaterZZZ(StringJustifierZZZ objJustifier) throws ExceptionZZZ{		
+	public LogStringFormaterZZZ(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{		
 		super(objJustifier);
 	}
 

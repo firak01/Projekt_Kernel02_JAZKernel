@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
-import basic.zBasic.util.datatype.string.StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 
 public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ{
 	//+++++++++++++++++++++++++++++++
@@ -32,7 +32,7 @@ public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ{
 		public HashMap<Integer,String>getHashMapFormatPositionStringDefault() throws ExceptionZZZ;
 		
 		
-		//###########################
+		//###########################		
 		//Zurücksetzen von allem, auch des StringJustifiers
 		public boolean reset() throws ExceptionZZZ;
 		
@@ -40,10 +40,13 @@ public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ{
 		public boolean resetStringIndexRead() throws ExceptionZZZ;	
 		
 		//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
+		public boolean hasStringJustifierPrivate() throws ExceptionZZZ;
+		
 		//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.
 		//Mit Leerzeichen wird dann gearbeitet um die Ausgaben des Informationsteils möglichst buendig untereinander zu bekommen.
-	    public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
-	    public void setStringJustifier(StringJustifierZZZ objStringJustifier);
+	    public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
+	    public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ;
+	    
 	    
 	    //Methode, mit der zu einer anderen LogZeilen - Verarbeitung gesprungen werden kann.
 	    //Das wird durch den iLINENEXT Parameter in der Formatierungsanweisung gesteuert.

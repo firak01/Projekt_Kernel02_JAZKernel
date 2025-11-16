@@ -13,10 +13,11 @@ public class LogStringFormatManagerXmlZZZ extends AbstractLogStringFormatManager
 
 	
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
-	protected LogStringFormatManagerXmlZZZ() throws ExceptionZZZ{		
+	protected LogStringFormatManagerXmlZZZ() throws ExceptionZZZ{
+		super();
 	}
 	
-	public static ILogStringFormatManagerZZZ getInstance() throws ExceptionZZZ{
+	public static synchronized ILogStringFormatManagerZZZ getInstance() throws ExceptionZZZ{
 		if(objLogStringManagerINSTANCE==null){
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
@@ -31,14 +32,14 @@ public class LogStringFormatManagerXmlZZZ extends AbstractLogStringFormatManager
 		return (ILogStringFormatManagerZZZ) objLogStringManagerINSTANCE;
 	}
 	
-	public static LogStringFormatManagerXmlZZZ getNewInstance() throws ExceptionZZZ{
+	public static synchronized ILogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
 		objLogStringManagerINSTANCE = new LogStringFormatManagerXmlZZZ();
-		return (LogStringFormatManagerXmlZZZ)objLogStringManagerINSTANCE;
+		return (ILogStringFormatManagerZZZ)objLogStringManagerINSTANCE;
 	}
 	
-	public static void destroyInstance() throws ExceptionZZZ{
+	public static synchronized void destroyInstance() throws ExceptionZZZ{
 		objLogStringManagerINSTANCE = null;
 	}
 }

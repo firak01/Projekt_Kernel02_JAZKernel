@@ -512,7 +512,50 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	}
 	
 	public static String getPosition(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml(iLevel);
+		return ReflectCodeZZZ.getPositionCurrentSeparated(iLevel);
+	}
+	
+	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			//Wichtig:
+			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
+			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
+			int iLevelUsed = iLevel+1;
+			
+			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
+			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
+			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
+			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
+
+			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man gerne haette... file oder object zentriert.
+			//a) Variante mit dem Dateinamen
+			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
+			
+			//b) Variante mit Objektname und dahinter iLine
+			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
+			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
+
+			//Erweitere um Separatoren
+			sMethod = sMethod + ReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			
+			//Ohne die Method
+			sPositionInFile = sPositionInFile + ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
+			
+			//Mit LogString-Klasse
+			String[]saParts = new String[2];
+			saParts[0] = sMethod;
+			saParts[1] = sPositionInFile;
+			
+			TODOGOON20251116;//Wie war das früher, dann dieses Zusammenrechnen hier übernehmen.
+			sReturn = LogStringFormater4ReflectCodeZZZ.compute(saParts);
+			
+			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+		}//end main:
+		return sReturn;
 	}
 	
 	public static String getPositionCurrentSeparated(Object obj, int iLevel) throws ExceptionZZZ {
@@ -559,6 +602,22 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
 		}//end main:
 		return sReturn;
+	}
+	
+	public static String  getPositionCurrentXml() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionXml(1);
+	}
+	
+	public static String  getPositionCallingXml() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionXml(2);
+	}
+	
+	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionXml(2+iLevelPlus);
+	}
+	
+	public static String getPositionXml(int iLevel) throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionCurrentXml(iLevel);
 	}
 	
 	/**Umgib die einzelen Elemente mit XML-Tags.
