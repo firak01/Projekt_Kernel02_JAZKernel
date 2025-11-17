@@ -652,7 +652,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 				sXmlRemaining = StringZZZ.rightback(sXmlIn, iTagPartIndexTotal);
 				
 				sTagPartFound = StringZZZ.midKeep(sXmlIn, iTagPartIndexTotal, ">");
+				if(sTagPartFound==null) break main; //Dann gibt es den Tag nicht
 				if(sXmlPart.equalsIgnoreCase(sTagPartFound)) break;
+				
 				
 				iTagPartIndexTotal = iTagPartIndexTotal+sTagPartFound.length();
 				sXmlRemaining = StringZZZ.right(sXmlRemaining, sTagPartFound); 

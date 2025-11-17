@@ -2053,7 +2053,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		
 			bReturn = !file2proof.isFile();
 		}//end main:
-		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn );
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "isDirectory=" + bReturn );
 		return bReturn;	
 	}
 	
@@ -2078,7 +2078,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 		
 		}//end main:
-		ObjectZZZ.logLine("#Return=" + bReturn) ;
+		ObjectZZZ.logLine("isDirectoryExisting=" + bReturn) ;
 		return bReturn;	
 	}
 	
@@ -2106,7 +2106,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				bReturn = FileEasyZZZ.isDirectoryExisting(file2proof);				
 			}						
 		}//end main:
-		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "isDirectoryExistingInTemp=" + bReturn) ;
 		return bReturn;	
 	}
 	
@@ -2134,7 +2134,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				bReturn = !FileEasyZZZ.isDirectory(file2proof);
 			}						
 		}//end main;
-		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "isFileExisting=" + bReturn) ;
 		return bReturn;	
 	}
 	
@@ -2159,7 +2159,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			File fileParent = file2proof.getParentFile();
 			if(fileParent == null) bReturn = true;
 		}
-		ObjectZZZ.logLineDate(FileEasyZZZ.class, "#Return=" + bReturn) ;
+		ObjectZZZ.logLineDate(FileEasyZZZ.class, "isRoot=" + bReturn) ;
 		return bReturn;
 	}
 	
@@ -2609,7 +2609,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//1. Versuch mit Classloader
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){
-					ObjectZZZ.logLineDate(FileEasyZZZ.class, "(B) Searching for file by classloader.getResource '" + sPath +"'");
+					ObjectZZZ.logLineDateWithPosition(FileEasyZZZ.class, "(B) Searching for file by classloader.getResource '" + sPath +"'");
 					String sPathInWorkspace = workspaceURL.getPath();
 					String[] saStringsToBeStripped ={File.separator};
 					String sPathNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);					

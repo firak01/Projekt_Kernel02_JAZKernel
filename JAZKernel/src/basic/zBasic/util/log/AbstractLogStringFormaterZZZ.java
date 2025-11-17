@@ -385,11 +385,45 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = this.computeByStringHashMap_(classObj, hmLogString, ienumFormatLogString);
 			}else {
 				//mache nix				
+			}									
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeUsingFormat_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog,  IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			Class classObj=null;
+			if(classObjIn == null) {
+				classObj = this.getClass();
+			}else {
+				classObj = classObjIn;
 			}
 			
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//sReturn = this.getStringJustifier().justifyInfoPart(sReturn);						
+			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = isFormatUsingHashMap(ienumFormatLogString);
+			
+			
+			
+			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
+			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
+			if(bFormatUsingObject) {
+				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
+				
+			}else if(bFormatUsingString) {	
+				String sLog = hmLog.get(ienumFormatLogString);
+				sReturn = this.computeByString_(classObj, sLog, ienumFormatLogString);
+							
+			}else if(bFormatUsingStringXml) {
+				String sLog = hmLog.get(ienumFormatLogString); //Könnte ja auch ein etwas umfangreicherer Tag sein und man fischt daraus den passenden raus.
+				sReturn = this.computeByStringXml_(classObj, sLog, ienumFormatLogString);
+			}else if(bFormatUsingStringHashMap) {
+				sReturn = this.computeByStringHashMap_(classObj, hmLog, ienumFormatLogString);
+			}else {
+				//mache nix				
+			}									
 		}//end main:
 		return sReturn;
 	}
@@ -496,6 +530,22 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		}//end main:
 		return sReturn;
 	}
+	
+	private String computeByObject_Justified_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			sReturn = this.computeByObject_(classObjIn, ienumFormatLogString);
+
+			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+			sReturn = sReturn  + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			sReturn = this.getStringJustifier().justifyInfoPart(sReturn);
+		}//end main:
+		return sReturn;
+	}
+	
 	
 	private String computeByString_(Class classObjIn, String sLogIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
@@ -615,10 +665,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				break;					
 			}				
 						
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//sReturn = this.justifyInfoPart(sReturn);
-						
 		}//end main:
 		return sReturn;		
 	}
@@ -658,6 +704,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = sReturn + this.computeByStringXml_(classObj, sLog, ienumMappedFormat);
 				}
 			}
+			
+			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.
+//			if(sReturn!=null) {
+//				ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+//				sReturn = objTagPositionCurrent.getElementString();
+//			}
 		}//end main:
 		return sReturn;
 	}
@@ -753,20 +805,130 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			default:
 				System.out.println("AbstractLogStringZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
 				break;					
-			}		
-						
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//sReturn = this.justifyInfoPart(sReturn);
-						
+			}								
 		}//end main:
 		return sReturn;		
 	}
 	
+	//######################################
+	private String computeLinesInLog_Justified_(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{	
+			ArrayListUniqueZZZ<String> listasLine = this.computeLinesInLog_(classObj, hmLog);
+			
+			//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
+			ArrayListUniqueZZZ<String>listasLineReversed1 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
+			ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
+			for(String sLine : listasLineReversed1) {
+				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
+				listasLineReversedJustified1.add(sLineJustified);
+			}
+			
+			ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
+			ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
+			for(String sLine : listasLineReversed2) {
+				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
+				listasLineReversedJustified2.add(sLineJustified);
+			}
+			
+			//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
+			for(String sLine : listasLineReversedJustified2) {
+				if(sReturn.equals("")){
+					sReturn = sLine;
+				}else {					
+					sReturn = sReturn + StringZZZ.crlf() + sLine;
+				}
+			}			
+		}//end main:
+		return sReturn;
+
+	}
+	
+	private String computeLineInLog_(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{	
+			String sLog = null;
+			
+			//Ermittle in einer Schleife den auszugebenden Teil
+			//Iteration über die Einträge, die ja in einer Zeile sein sollen
+	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hmLog.entrySet()) {
+	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
+	            sLog = this.computeUsingFormat_(classObj, hmLog, enumAsKey);	                  
+	            if(sLog!=null) {
+	            	if(StringZZZ.isEmpty(sReturn)) {
+	            		sReturn = sLog;
+	            	}else {
+	            		//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
+	            		sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLog;	
+	            	}
+				}
+	        }	        			
+		}//end main:
+		return sReturn;
+
+	}
+	
+	private ArrayListUniqueZZZ<String> computeLinesInLog_(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		ArrayListUniqueZZZ<String>  alsReturn = new ArrayListUniqueZZZ<String>();
+		main:{	
+			String sLog = null;
+			
+			//TODOGOON20251117;//Eigentlich müssten hier mit dem .LINENEXT Argument versehn die HashMap gesplittet werden.
+			//
+			
+			//Ermittle in einer Schleife jede Zeile
+			//Iteration über die mit LINENEXT gesteuerten Einträge
+	        //for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hmLog.entrySet()) {
+	        //    IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
+	            sLog = this.computeLineInLog_(classObj, hmLog);	           
+	            if(sLog!=null) {
+	            	alsReturn.add(sLog);
+				}
+	        //}
+		}//end main:
+		return alsReturn;
+
+	}
+	
+	private String computeByStringHashMap_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{		
+			if(hm == null) 	break main;
+						
+			Class classObj = null;		
+			if(classObjIn==null) {
+				classObj = this.getClass();			
+			}else {
+				classObj = classObjIn;
+			}
+			
+			//Der zu verwendende Logteil
+			String sLogUsed=null;
+						
+			//Ermittle in einer Schleife den auszugebenden Teil
+			// Iteration über die Einträge
+	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hm.entrySet()) {
+	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
+	            sLogUsed = this.computeByStringHashMap_(classObj, hm, enumAsKey);	           
+	            if(sLogUsed!=null) {
+	            	if(StringZZZ.isEmpty(sReturn)) {
+	            		sReturn = sLogUsed;
+	            	}else {
+	            		//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
+	            		sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;	
+	            	}
+				}
+	        }
+		}//end main:
+		return sReturn;
+
+	}
 	
 	private String computeByStringHashMap_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			if(hmLogString == null) 	break main;
+			
 			if(ienumFormatLogString == null) {
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
@@ -780,8 +942,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				classObj = classObjIn;
 			}
 			
-			
-		    		    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumFormatLogString.getFactor()) {
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP:
@@ -825,7 +985,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                System.out.println("AbstractLogStringZZZ.computeByHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
-	        }			    
+	        }		
 		}//end main:
 		return sReturn;
 	}
@@ -903,13 +1063,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 						
 			if(StringArrayZZZ.isEmpty(saLog)) {							
-				sReturn = this.computeByObject_(classObj, ienumFormatLogString);			
+				sReturn = this.computeByObject_Justified_(classObj, ienumFormatLogString);
+											
 			}else {
 				IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
 				ienumaFormatLogString[0] = ienumFormatLogString;
 				
-				sReturn = this.computeLinesInLog_(classObj, saLog, ienumaFormatLogString);
+				sReturn = this.computeLinesInLog_Justified_(classObj, saLog, ienumaFormatLogString);
 			}
+			
 		}//end main:
 		return sReturn;
 	}
@@ -928,7 +1090,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 
-		return this.computeLinesInLog_(classObjIn, saLog, ienumaFormatLogString);
+		return this.computeLinesInLog_Justified_(classObjIn, saLog, ienumaFormatLogString);
 	}
 	
 	/** Beruecksichtigt .LINENEXT als Steuerkennzeichen und teilt das Array entsprechend auf.
@@ -940,8 +1102,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.11.2025, 08:08:19
 	 */
-	private String computeLinesInLog_(Class<?> classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
-		String sReturn = "";
+	private ArrayListUniqueZZZ<String> computeLinesInLog_(Class<?> classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
+		ArrayListUniqueZZZ<String> alsReturn = new ArrayListUniqueZZZ<String>();;
 		main:{
 			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
@@ -961,14 +1123,23 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
-			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);
-			ArrayListUniqueZZZ<String>listasLine = new ArrayListUniqueZZZ<String>();
+			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, saLog, ienumaLine);
 				if(sLine!=null) {
-					listasLine.add(sLine);
+					alsReturn.add(sLine);
 				}
-			}
+			}							
+		}//end main:
+		return alsReturn;
+
+	}
+	
+	
+	private String computeLinesInLog_Justified_(Class<?> classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			ArrayListUniqueZZZ<String> listasLine = this.computeLinesInLog_(classObjIn, saLog, ienumaFormatLogString);
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -1056,12 +1227,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						sReturn = sReturn + sValue;
 					}
 				}
-			}
-			
-
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//sReturn = this.getStringJustifier().justifyInfoPart(sReturn);			
+			}		
 		}//end main:
 		return sReturn;
 
@@ -1137,51 +1303,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @see basic.zBasic.util.log.ILogStringZZZ#compute(java.util.LinkedHashMap)
 	 */
 	@Override
-	public String compute(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = "";
-		main:{		
-			if(hm == null) 	break main;
-						
-			Class classObj = null;		
-			if(classObjIn==null) {
-				classObj = this.getClass();			
-			}else {
-				classObj = classObjIn;
-			}
-			
-			//Der zu verwendende Logteil
-			String sLogUsed=null;
-						
-			//Ermittle in einer Schleife den auszugebenden Teil
-			// Iteration über die Einträge
-	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hm.entrySet()) {
-	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
-	            sLogUsed = this.computeByStringHashMap_(classObj, hm, enumAsKey);	           
-	            if(sLogUsed!=null) {
-	            	if(StringZZZ.isEmpty(sReturn)) {
-	            		sReturn = sLogUsed;
-	            	}else {
-	            		//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
-	            		sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;	
-	            	}
-				}
-	        }
-	        
-	        //Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-	        if(sReturn!=null) {
-	        	sReturn = sReturn  + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-	        } 
-	        
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			sReturn = this.getStringJustifier().justifyInfoPart(sReturn);
-			
-		}//end main:
-		return sReturn;
-
+	public String compute(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		return this.computeLinesInLog_Justified_(classObjIn, hmLog);
 	}
-
-	
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

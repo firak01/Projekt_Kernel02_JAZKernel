@@ -541,13 +541,6 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 
-		
-			//Mit LogString-Klasse
-//			String[]saParts = new String[2];
-//			saParts[0] = sMethod;
-//			saParts[1] = sPositionInFile;
-			
-			String sParts = sMethod + sPositionInFile;
 			
 			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
 			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
@@ -607,10 +600,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
 			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, classObj, saParts);
 			
-			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
-			
-			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+//			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
+//			
+//			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+//			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
 		}//end main:
 		return sReturn;
 	}
@@ -632,7 +625,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 					String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
-			
+					sReturn = IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 					sReturn = sLineTotal;
 				}else{
 					
@@ -724,8 +717,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
 			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
 			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-			ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
-			String sPositionInFileTag = objTagPosition.getElementString();
+			ITagByTypeZZZ objTagPositionInFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
+			String sPositionInFileTag = objTagPositionInFile.getElementString();
 			
 			//b) Variante mit Objektname und dahinter iLine
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
@@ -743,15 +736,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
 			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
 			
-			//Umgib diese XML-Tags noch mit einem weiteren, kuenstlichen Tag, der das Ergebnis von ReflectCodeZZZ.getMethod... und .getPositionInFile... zusammenfasst.			
+			//umgib den Tag mit dem <positioncurrent> Tag
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
-			sReturn = objTagPositionCurrent.getElementString();
-			
-			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
-			
-			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
-			
+			sReturn = objTagPositionCurrent.getElementString();			
 		}//end main:
 		return sReturn;
 	}
