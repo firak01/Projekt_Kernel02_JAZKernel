@@ -2371,7 +2371,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		}//end main:	
 		if(objFound==null) {
 			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.computeDebugString("\t|", ":");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else {

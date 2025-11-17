@@ -313,11 +313,13 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  }
 	
 	
-	 public static String formatMethodCallingLine(int iLine){
-		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt
+	 public static String formatMethodCallingLine(int iLine){         		 
 		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.
-		 return " - Line " + iLine + "# ";
+		 //return " - Line " + iLine + "# ";
+		 
+		 //Merke: Den Kommentartrenner # an anderer Stelle hinzufuegen
+		 return " - Line " + iLine;
 		 
 	 }
 	 
@@ -555,7 +557,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
 			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);			
+			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
+			
+			//Abschliessenden Trenner für Folgekommentare
+			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 		}//end main:
 		return sReturn;
 	}
@@ -625,8 +630,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 					String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
-					sReturn = IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-					sReturn = sLineTotal;
+					sReturn = sLineTotal + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	
 				}else{
 					
 						//Verarbeitung vor Java 1.4
@@ -738,7 +743,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//umgib den Tag mit dem <positioncurrent> Tag
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
-			sReturn = objTagPositionCurrent.getElementString();			
+			sReturn = objTagPositionCurrent.getElementString();	
+			
+			//Abschliessenden Trenner für Folgekommentare
+			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 		}//end main:
 		return sReturn;
 	}
