@@ -562,14 +562,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
 			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
-			
-		
-			//ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();			
-			//sReturn = objFormater.compute();
-			
-			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);			
 		}//end main:
 		return sReturn;
 	}
@@ -613,6 +606,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
 			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
 			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, classObj, saParts);
+			
+			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
@@ -754,6 +749,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
 			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+			
+			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
+			
 		}//end main:
 		return sReturn;
 	}

@@ -1166,7 +1166,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	}
 				}
 	        }
-	        			
+	        
+	        //Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+	        if(sReturn!=null) {
+	        	sReturn = sReturn  + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+	        } 
+	        
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 			sReturn = this.getStringJustifier().justifyInfoPart(sReturn);

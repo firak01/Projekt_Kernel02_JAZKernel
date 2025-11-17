@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.IDummyTestObjectWithStatusByInterfaceExtendedZZZ.STATUSLOCAL;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
@@ -28,6 +29,7 @@ public interface ILogStringFormatZZZ{
 	public static String sENUMNAME="LOGSTRINGFORMAT";
 	public static String sSEPARATOR_PREFIX_DEFAULT="";
 	public static String sSEPARATOR_POSTFIX_DEFAULT="";
+	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
