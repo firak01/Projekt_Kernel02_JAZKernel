@@ -529,6 +529,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
 			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+			String sLine = new Integer(iLine).toString();
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 
@@ -553,13 +554,13 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			String sParts = sMethod + sPositionInFile;
 			
-			TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
+			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
 			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD, sMethod);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE, sLineTag);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME, sFile);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION, sPositionInFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_HASHMAP, sMethod);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_HASHMAP, sLine);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_HASHMAP, sFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_HASHMAP, sPositionInFile);
 			
 			//Erzeuge hier den String als XML Variante. 
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
@@ -740,10 +741,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 			
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED, sMethodTag);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_REFLECTED, sLineTag);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_REFLECTED, sFileTag);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED, sPositionInFileTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML, sMethodTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_XML, sLineTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML, sFileTag);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML, sPositionInFileTag);
 			
 			//Erzeuge hier den String als XML Variante. 
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)

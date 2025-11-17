@@ -200,6 +200,25 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 	}
 	
+	public static boolean isFormatUsingHashMap(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_STRINGHASHMAP:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+	
 	
 	public static boolean isFormatUsingObject(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
 		boolean bReturn = false;
@@ -294,7 +313,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
 		
-		return computeUsingFormat_(classObj,saLog,ienumFormatLogString);		
+		return computeUsingFormat_(classObj,saLog, null, ienumFormatLogString);		
 	}
 	
 	/**Den Code fuer compute in dieser zentralen private-Methode konzentriert.
@@ -313,10 +332,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog; 
-		return this.computeUsingFormat_(classObj, saLog, ienumFormatLogString);
+		return this.computeUsingFormat_(classObj, saLog, null, ienumFormatLogString);
 	}
-		
+
 	private String computeUsingFormat_(Class classObjIn, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return this.computeUsingFormat_(classObjIn, saLog, null, ienumFormatLogString);	
+	}
+	private String computeUsingFormat_(Class classObjIn, String[] saLog, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString,  IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			Class classObj=null;
@@ -329,6 +351,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
 			boolean bFormatUsingStringXml = isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = isFormatUsingHashMap(ienumFormatLogString);
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
@@ -358,6 +381,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 										
 			}else if(bFormatUsingStringXml) {			
 				sReturn = this.computeByStringXml_(classObj, saLog, ienumFormatLogString);
+			}else if(bFormatUsingStringHashMap) {
+				sReturn = this.computeByStringHashMap_(classObj, hmLogString, ienumFormatLogString);
 			}else {
 				//mache nix				
 			}
@@ -660,7 +685,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			String sTagTemp=null;
 			switch(ienumMappedFormat.getFactor()) {
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_REFLECTED:			
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML:			
 				ITagTypeZZZ objTagTypeFilePosition = new TagTypeFilePositionZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
 				if(sTagTemp!=null) {
@@ -673,7 +698,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = objTagFilePosition.getElementString();		            
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML:
 				ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
 				if(sTagTemp!=null) {
@@ -686,7 +711,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = objTagMethod.getElementString();
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML:
 				ITagTypeZZZ objTagTypeLineNummer = new TagTypeLineNumberZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
 				if(sTagTemp!=null) {
@@ -699,7 +724,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = objTagLineNumber.getElementString();
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML:
 				ITagTypeZZZ objTagTypeFileName = new TagTypeFileNameZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
 				if(sTagTemp!=null) {
@@ -712,7 +737,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = objTagFileName.getElementString();
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_REFLECTED:
+			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML:
 				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
 				if(sTagTemp!=null) {
@@ -736,6 +761,101 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 		}//end main:
 		return sReturn;		
+	}
+	
+	
+	private String computeByStringHashMap_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!isFormatUsingHashMap(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+		    Class classObj = null;		
+			if(classObjIn==null) {
+				classObj = this.getClass();			
+			}else {
+				classObj = classObjIn;
+			}
+			
+			
+		    		    
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
+	        switch (ienumFormatLogString.getFactor()) {
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP:
+	            	//TODOGOON20251117;//Anpassen
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
+	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP));
+	                        sReturn = String.format(sFormat, classObj.getSimpleName());
+	                    }
+	                }
+	                break;
+
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_HASHMAP:
+	            	//TODOGOON20251117;//Anpassen
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
+	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME));
+	                        sReturn = String.format(sFormat, classObj.getName());
+	                    }
+	                }
+	                break;
+
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_HASHMAP:
+	            	//TODOGOON20251117;//Anpassen
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() +
+	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
+	                    } else {
+	                    	
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME));
+	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
+	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+	                        String sFileName = classObj.getSimpleName() + ".java";
+	                        String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+	                        sReturn = String.format(sFormat, sFilePathTotal);
+	                    }
+	                }
+	                break;
+
+	            case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP:	            
+	               // sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP));
+	               // sReturn = String.format(sFormat, sLog);
+	            	
+	            	sLog = hmLogString.get(ienumFormatLogString);
+	            	if(sReturn==null) {
+	            		sReturn = sLog;
+	            	}else {
+	            		sReturn = sReturn + sLog;
+	            	}
+	                break;
+
+	            default:
+	                System.out.println("AbstractLogStringZZZ.computeByHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                        + ienumFormatLogString.getFactor());
+	                break;
+	        }			    
+		}//end main:
+		return sReturn;
 	}
 	
 
@@ -1150,29 +1270,22 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return this.hmFormatPositionString;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zBasic.util.log.ILogStringFormaterZZZ#getHashMapFormatPositionStringDefault()
+	 * 
+	 * Macht eine HashMap mit dem Enum des Formats als Key 
+	 * und dem "Abarbeitungstypen" als Wert
+	 */
 	@Override
 	public HashMap<Integer, String> getHashMapFormatPositionStringDefault() throws ExceptionZZZ {
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
-		//HashMap automatisch aus dem Enum errechnen.
-		IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
-		for(IEnumSetMappedZZZ ienum : ienuma) {
-			IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
-			hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
-		}
-		
-		//für Custom Eintraege ist dann so ein Ueberschreiben moeglich
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT01), ILogStringZZZ.sARGNEXT01);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT02), ILogStringZZZ.sARGNEXT02);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME),ILogStringZZZ.sCLASSNAME);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSMETHOD),ILogStringZZZ.sCLASSMETHOD);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSFILENAME),ILogStringZZZ.sCLASSFILENAME);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSPOSITION),ILogStringZZZ.sCLASSPOSITION);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSFILEPOSITION),ILogStringZZZ.sCLASSFILEPOSITION);
-//
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_THREADID), ILogStringZZZ.sTHREAD);
-//		hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_DATE), ILogStringZZZ.sDATE);
-		
+			//HashMap automatisch aus dem Enum errechnen.
+			IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
+			for(IEnumSetMappedZZZ ienum : ienuma) {
+				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
+				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
+			}				
 		}//end main:
 		return hmReturn;
 	}

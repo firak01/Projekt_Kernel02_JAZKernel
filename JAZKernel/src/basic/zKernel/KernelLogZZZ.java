@@ -291,9 +291,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML,
 		 };
 
 		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
@@ -317,10 +317,10 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML,
 		 };
 		
 		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
@@ -345,9 +345,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML,
 		 };
 		 
 		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
@@ -368,11 +368,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,	
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_REFLECTED,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.POSITIONCURRENT_REFLECTED
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.POSITIONCURRENT_XML
 		 };
 		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
 		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);

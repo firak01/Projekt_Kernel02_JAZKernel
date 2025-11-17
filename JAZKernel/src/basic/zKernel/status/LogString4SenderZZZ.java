@@ -38,7 +38,7 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,					
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_REFLECTED,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
 		};
 		return iaenumReturn;
 	}

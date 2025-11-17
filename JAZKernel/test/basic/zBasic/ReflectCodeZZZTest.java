@@ -23,10 +23,27 @@ public class ReflectCodeZZZTest   extends TestCase{
 //		} 	
 	}//END setup
 	
+	/** Bedenke: Sobald sich die Zeilennummer in diesem Code aendert stimmt der Wert für <linenr> - Tag nicht mehr.
+	 *           Darum steht der Test ganz oben...
+	 * 
+	 */
+	public void testGetPositionCurrentXml() {
+		try {
+			String sValue = ReflectCodeZZZ.getPositionCurrentXml();
+			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><linenr>28</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:28) </fileposition></positioncurrent># ", sValue); 			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
+	}
+	
+	/** Bedenke: Sobald sich die Zeilennummer in diesem Code aendert stimmt der Wert für nicht mehr.
+	 * 
+	 */
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			assertEquals("<positioncurrent><method>testGetPositionCurrent</method><fileposition> (ReflectCodeZZZTest.java:28) </fileposition></positioncurrent># ", sValue);
+			assertEquals("irgendwas ohne tags# ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
