@@ -785,62 +785,34 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumFormatLogString.getFactor()) {
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP:
-	            	//TODOGOON20251117;//Anpassen
-	                if (classObj == null) {
-	                    // Nichts tun
-	                } else {
-	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
-	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-	                    } else {
-	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP));
-	                        sReturn = String.format(sFormat, classObj.getSimpleName());
-	                    }
-	                }
+	            	sLog = hmLogString.get(ienumFormatLogString);
+	            	if(sReturn==null) {
+	            		sReturn = sLog;
+	            	}else {
+	            		sReturn = sReturn + sLog;
+	            	}
 	                break;
 
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_HASHMAP:
-	            	//TODOGOON20251117;//Anpassen
-	                if (classObj == null) {
-	                    // Nichts tun
-	                } else {
-	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
-	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-	                    } else {
-	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME));
-	                        sReturn = String.format(sFormat, classObj.getName());
-	                    }
-	                }
+	            	sLog = hmLogString.get(ienumFormatLogString);
+	            	if(sReturn==null) {
+	            		sReturn = sLog;
+	            	}else {
+	            		sReturn = sReturn + sLog;
+	            	}
 	                break;
 
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_HASHMAP:
-	            	//TODOGOON20251117;//Anpassen
-	                if (classObj == null) {
-	                    // Nichts tun
-	                } else {
-	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() +
-	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
-	                    } else {
-	                    	
-	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME));
-	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
-	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
-	                        String sFileName = classObj.getSimpleName() + ".java";
-	                        String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
-	                        sReturn = String.format(sFormat, sFilePathTotal);
-	                    }
-	                }
+	            	sLog = hmLogString.get(ienumFormatLogString);
+	            	if(sReturn==null) {
+	            		sReturn = sLog;
+	            	}else {
+	            		sReturn = sReturn + sLog;
+	            	}
 	                break;
 
 	            case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP:	            
-	               // sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP));
-	               // sReturn = String.format(sFormat, sLog);
-	            	
+	               
 	            	sLog = hmLogString.get(ienumFormatLogString);
 	            	if(sReturn==null) {
 	            		sReturn = sLog;
@@ -1183,13 +1155,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			//Ermittle in einer Schleife den auszugebenden Teil
 			// Iteration über die Einträge
 	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hm.entrySet()) {
-	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();
-	            String sLog = entry.getValue();	           
-	            sLogUsed = this.compute(classObj, sLog, enumAsKey);
-	           
-	            if(sLogUsed!=null) { 
-					//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
-					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;									
+	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
+	            sLogUsed = this.computeByStringHashMap_(classObj, hm, enumAsKey);	           
+	            if(sLogUsed!=null) {
+	            	if(StringZZZ.isEmpty(sReturn)) {
+	            		sReturn = sLogUsed;
+	            	}else {
+	            		//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
+	            		sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;	
+	            	}
 				}
 	        }
 	        			

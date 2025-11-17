@@ -43,7 +43,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			assertEquals("irgendwas ohne tags# ", sValue); 			
+			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:45 ~ (ReflectCodeZZZTest.java:45) # ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());

@@ -180,7 +180,6 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			String[] saLog = objReferenceLog.get();
 			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "From referenced Log:";
-				this.logProtocol(sLog);
 				this.logProtocol(saLog);
 			}						
 		}//end main:			

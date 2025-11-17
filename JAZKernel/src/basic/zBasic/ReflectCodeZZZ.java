@@ -533,7 +533,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man gerne haette... file oder object zentriert.
+			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man darin gerne haette... file oder object zentriert.
 			//a) Variante mit dem Dateinamen
 			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
 			
@@ -541,12 +541,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 
-			//Erweitere um Separatoren
-			sMethod = sMethod + ReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
-			
-			//Ohne die Method
-			sPositionInFile = sPositionInFile + ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
-			
+		
 			//Mit LogString-Klasse
 //			String[]saParts = new String[2];
 //			saParts[0] = sMethod;
@@ -556,11 +551,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
 			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
+			//Erweitere um Separatoren
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_HASHMAP, sMethod);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_HASHMAP, sLine);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_HASHMAP, sFile);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_HASHMAP, sPositionInFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);
 			
 			//Erzeuge hier den String als XML Variante. 
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
