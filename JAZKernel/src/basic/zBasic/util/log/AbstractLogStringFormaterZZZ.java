@@ -399,14 +399,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}else {
 				classObj = classObjIn;
 			}
-			
+									
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
 			boolean bFormatUsingStringXml = isFormatUsingStringXml(ienumFormatLogString);
 			boolean bFormatUsingStringHashMap = isFormatUsingHashMap(ienumFormatLogString);
-			
-			
-			
+									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
 			if(bFormatUsingObject) {
@@ -414,8 +412,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				
 			}else if(bFormatUsingString) {	
 				String sLog = hmLog.get(ienumFormatLogString);
-				sReturn = this.computeByString_(classObj, sLog, ienumFormatLogString);
-							
+				sReturn = this.computeByString_(classObj, sLog, ienumFormatLogString);						
 			}else if(bFormatUsingStringXml) {
 				String sLog = hmLog.get(ienumFormatLogString); //Könnte ja auch ein etwas umfangreicherer Tag sein und man fischt daraus den passenden raus.
 				sReturn = this.computeByStringXml_(classObj, sLog, ienumFormatLogString);
@@ -851,9 +848,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 			//Ermittle in einer Schleife den auszugebenden Teil
 			//Iteration über die Einträge, die ja in einer Zeile sein sollen
-	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hmLog.entrySet()) {
-	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
-	            sLog = this.computeUsingFormat_(classObj, hmLog, enumAsKey);	                  
+	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hmLog.entrySet()) {	            	                   
+	            sLog = this.computeByStringHashMap_(classObj, hmLog);	                  
 	            if(sLog!=null) {
 	            	if(StringZZZ.isEmpty(sReturn)) {
 	            		sReturn = sLog;
@@ -873,7 +869,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		main:{	
 			String sLog = null;
 			
-			//TODOGOON20251117;//Eigentlich müssten hier mit dem .LINENEXT Argument versehn die HashMap gesplittet werden.
+			//TODOGOON20251117;//Eigentlich müssten hier mit dem .LINENEXT Argument versehen die HashMap gesplittet werden.
 			//
 			
 			//Ermittle in einer Schleife jede Zeile
@@ -909,7 +905,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			// Iteration über die Einträge
 	        for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hm.entrySet()) {
 	            IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
-	            sLogUsed = this.computeByStringHashMap_(classObj, hm, enumAsKey);	           
+	            sLogUsed = this.computeUsingFormat_(classObj, hm, enumAsKey);	           
 	            if(sLogUsed!=null) {
 	            	if(StringZZZ.isEmpty(sReturn)) {
 	            		sReturn = sLogUsed;
@@ -933,6 +929,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
+			
 			if (!isFormatUsingHashMap(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 		    Class classObj = null;		
