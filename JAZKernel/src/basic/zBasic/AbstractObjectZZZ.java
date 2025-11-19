@@ -199,28 +199,28 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		//############ ALLE METHODEN NUN AUCH NOCH MIT POSITIONSANGABE
 		@Override
 		public synchronized void logProtocolWithPosition(String[] saLogIn) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			this.logProtocol(this, saLog);
 		}
 		
 		@Override
 		public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 			this.logProtocol(this, saLog);
 		}
 		
 		@Override
 		public synchronized void logProtocolWithPosition(Object obj, String[] saLogIn) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			this.logProtocol(obj, saLog); 
 		}
 		
 		@Override
 		public synchronized void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 			this.logProtocol(obj, saLog); 
 		}
@@ -233,7 +233,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public void logProtocolWithPosition(String[] saLogIn, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
@@ -244,14 +244,14 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public synchronized void logProtocolWithPosition(String[] saLogIn, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			this.logProtocol(this, saLog, ienumaMappedLogString); 
 		}
 		
 		@Override
 		public synchronized void logProtocolWithPosition(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
@@ -262,7 +262,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public void logProtocolWithPosition(Object obj, String[] saLogIn, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
@@ -273,14 +273,14 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public synchronized void logProtocolWithPosition(Object obj, String[] saLogIn, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 			this.logProtocol(this, saLog, ienumaMappedLogString); 
 		}
 		
 		@Override
 		public synchronized void logProtocolWithPosition(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 			this.logProtocol(this, saLog, ienumMappedLogString); 
 		}

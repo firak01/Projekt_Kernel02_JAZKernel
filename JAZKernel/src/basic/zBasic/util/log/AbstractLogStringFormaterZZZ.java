@@ -822,7 +822,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//umgib die Werte noch mit einem Tag...
 		            //ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 					ITagByTypeZZZ objTagFilePosition = new TagByTypeZZZ(objTagTypeFilePosition);
-					objTagFilePosition.setValue(sReturn);
+					objTagFilePosition.setValue(sTagTemp);
 					sReturn = objTagFilePosition.getElementString();	
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 					
@@ -836,7 +836,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//umgib die Werte noch mit einem Tag...
 		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 					ITagByTypeZZZ objTagMethod = new TagByTypeZZZ(objTagTypeMethod);
-					objTagMethod.setValue(sReturn);
+					objTagMethod.setValue(sTagTemp);
 					sReturn = objTagMethod.getElementString();
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;					
 				}			
@@ -849,7 +849,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//umgib die Werte noch mit einem Tag...
 		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 					ITagByTypeZZZ objTagLineNumber = new TagByTypeZZZ(objTagTypeLineNummer);
-					objTagLineNumber.setValue(sReturn);
+					objTagLineNumber.setValue(sTagTemp);
 					sReturn = objTagLineNumber.getElementString();
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 					
@@ -863,7 +863,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//umgib die Werte noch mit einem Tag...
 		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 					ITagByTypeZZZ objTagFileName = new TagByTypeZZZ(objTagTypeFileName);
-					objTagFileName.setValue(sReturn);
+					objTagFileName.setValue(sTagTemp);
 					sReturn = objTagFileName.getElementString();
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 					
@@ -877,7 +877,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//umgib die Werte noch mit einem Tag...
 		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 					ITagByTypeZZZ objTagPositionCurrent = new TagByTypeZZZ(objTagTypePositionCurrent);
-					objTagPositionCurrent.setValue(sReturn);
+					objTagPositionCurrent.setValue(sTagTemp);
 					sReturn = objTagPositionCurrent.getElementString();
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 					
