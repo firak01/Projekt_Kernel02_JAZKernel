@@ -443,7 +443,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		    		    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumFormatLogString.getFactor()) {
-	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -452,13 +452,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING));
 	                        sReturn = String.format(sFormat, classObj.getSimpleName());
 	                    }
 	                }
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -467,13 +467,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING));
 	                        sReturn = String.format(sFormat, classObj.getName());
 	                    }
 	                }
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -482,7 +482,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING));
 	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
 	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
 	                        String sFileName = classObj.getSimpleName() + ".java";
@@ -492,7 +492,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                }
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_DATE:
+	            case ILogStringFormatZZZ.iFACTOR_DATE_STRING_BY_STRING:
 	                GregorianCalendar d = new GregorianCalendar();
 	                Integer iDateYear = new Integer(d.get(Calendar.YEAR));
 	                Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
@@ -503,17 +503,17 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
 
-	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE));
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE_STRING_BY_STRING));
 	                sReturn = String.format(sFormat, sDate);
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_THREADID:
+	            case ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING:
 	                if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
 	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
 	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
 	                } else {
 	                    sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID));
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING));
 	                    long lngThreadID = Thread.currentThread().getId();
 	                    sReturn = String.format(sFormat, lngThreadID);
 	                }
@@ -592,8 +592,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			
 			switch(ienumFormatLogString.getFactor()) {		
-			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE01:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE01));
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING));
 								
 //				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 //				//Merke: Der Position steht im Logstring immer am Anfang
@@ -613,8 +613,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE02:	
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE02));
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING:	
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING));
 				
 //				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 //				//Merke: Der Position steht im Logstring immer am Anfang
@@ -634,8 +634,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
-			case ILogStringFormatZZZ.iFACTOR_STRING_TYPE03:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRING_TYPE03));
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING));
 				
 //				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 //				//Merke: Der Position steht im Logstring immer am Anfang
@@ -653,8 +653,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
-			case iFACTOR_CLASSMETHOD_STRING:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING));
+			case iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -674,8 +674,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case iFACTOR_CLASSFILELINE_STRING:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING));
+			case iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -695,8 +695,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case iFACTOR_CLASSFILENAME_STRING:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING));
+			case iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -716,8 +716,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
 				
-			case iFACTOR_CLASSFILEPOSITION_STRING:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING));
+			case iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP));
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -735,7 +735,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
 				break;
-			case ILogStringFormatZZZ.iFACTOR_LINENEXT:
+			case ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING_BY_STRING:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
@@ -815,7 +815,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			String sTagTemp=null;
 			switch(ienumMappedFormat.getFactor()) {
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML:			
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_XML:			
 				ITagTypeZZZ objTagTypeFilePosition = new TagTypeFilePositionZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
 				if(sTagTemp!=null) {
@@ -828,7 +828,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML:
+			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_XML:
 				ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
 				if(sTagTemp!=null) {
@@ -841,7 +841,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;					
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_XML:
 				ITagTypeZZZ objTagTypeLineNummer = new TagTypeLineNumberZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
 				if(sTagTemp!=null) {
@@ -855,7 +855,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML:
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_XML:
 				ITagTypeZZZ objTagTypeFileName = new TagTypeFileNameZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
 				if(sTagTemp!=null) {
@@ -869,7 +869,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					
 				}			
 				break;
-			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML:
+			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML_BY_XML:
 				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
 				if(sTagTemp!=null) {
@@ -1016,7 +1016,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumMappedFormat.getFactor()) {
-	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_HASHMAP:
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
 	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
@@ -1028,7 +1028,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	}
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_HASHMAP:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_HASHMAP:
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
 	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;					
@@ -1040,7 +1040,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	}
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_HASHMAP:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP:
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
 	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
@@ -1052,7 +1052,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	}
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP:	            	               
+	            case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_HASHMAP:	            	               
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
 	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;

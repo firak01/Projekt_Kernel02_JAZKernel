@@ -83,13 +83,13 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             String cls = dummy.getClass().getSimpleName()+":";      
 
             IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID, 
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING, 
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING
             };
 
             String result = computeWithFormat(dummy, format, s1, s2, s3);

@@ -39,34 +39,34 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	//Argumente der compute Methode (sofern vorhanden und != null)
 	//TODO IDEE: Wenn man eine Zahl angibt, soll die Zusammenstellung des Formats definiert sein.
 	//           Darum sind das alles Primzahlen...			
-	public static int iFACTOR_STRING_TYPE01=1;
-	public static int iFACTOR_STRING_TYPE02=2;     //4 verschiedene Varianten fuer Argnext (Name entspricht der dahinterstehenden Primzahl)
-	public static int iFACTOR_STRING_TYPE03=3;
+	public static int iFACTOR_STRINGTYPE01_STRING_BY_STRING=1;
+	public static int iFACTOR_STRINGTYPE02_STRING_BY_STRING=2;     //4 verschiedene Varianten fuer Argnext (Name entspricht der dahinterstehenden Primzahl)
+	public static int iFACTOR_STRINGTYPE03_STRING_BY_STRING=3;
 	
-	public static int iFACTOR_LINENEXT=5;
+	public static int iFACTOR_LINENEXT_STRING_BY_STRING=5;
 	
-	public static int iFACTOR_CLASSNAME=7;
-	public static int iFACTOR_CLASSNAMESIMPLE=11;
-	public static int iFACTOR_CLASSFILENAME=13;
+	public static int iFACTOR_CLASSNAME_STRING_BY_STRING=7;
+	public static int iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING=11;
+	public static int iFACTOR_CLASSFILENAME_STRING_BY_STRING=13;
 	
-	public static int iFACTOR_CLASSMETHOD_STRING=19;
-	public static int iFACTOR_CLASSFILELINE_STRING=23;
-	public static int iFACTOR_CLASSFILENAME_STRING=29;
-	public static int iFACTOR_CLASSFILEPOSITION_STRING=31;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP=19;
+	public static int iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP=23;
+	public static int iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP=29;
+	public static int iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP=31;  //mit der Zeilenummer dahinter
 	
-	public static int iFACTOR_CLASSMETHOD_XML=41;
-	public static int iFACTOR_CLASSFILELINE_XML=43;
-	public static int iFACTOR_CLASSFILENAME_XML=47;
-	public static int iFACTOR_CLASSFILEPOSITION_XML=53;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_POSITIONCURRENT_XML=59;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition>#
+	public static int iFACTOR_CLASSMETHOD_XML_BY_XML=41;
+	public static int iFACTOR_CLASSFILELINE_XML_BY_XML=43;
+	public static int iFACTOR_CLASSFILENAME_XML_BY_XML=47;
+	public static int iFACTOR_CLASSFILEPOSITION_XML_BY_XML=53;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_POSITIONCURRENT_XML_BY_XML=59;  //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition>#
 	
-	public static int iFACTOR_CLASSMETHOD_HASHMAP=61;
-	public static int iFACTOR_CLASSFILELINE_HASHMAP=67;
-	public static int iFACTOR_CLASSFILENAME_HASHMAP=71;
-	public static int iFACTOR_CLASSFILEPOSITION_HASHMAP=73;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_CLASSMETHOD_XML_BY_HASHMAP=61;
+	public static int iFACTOR_CLASSFILELINE_XML_BY_HASHMAP=67;
+	public static int iFACTOR_CLASSFILENAME_XML_BY_HASHMAP=71;
+	public static int iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP=73;  //mit der Zeilenummer dahinter
 	
-	public static int iFACTOR_THREADID=79;
-	public static int iFACTOR_DATE=83;
+	public static int iFACTOR_THREADID_STRING_BY_STRING=79;
+	public static int iFACTOR_DATE_STRING_BY_STRING=83;
 	
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
@@ -84,34 +84,34 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	//Aufbau des Enum:
 	//ALIAS("Uniquename bzw. Tag",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")	
 		public enum LOGSTRINGFORMAT implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
-		STRINGTYPE01("stringtype01",ILogStringFormatZZZ.iFACTOR_STRING_TYPE01, "[A01]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		STRINGTYPE02("stringtype02",ILogStringFormatZZZ.iFACTOR_STRING_TYPE02, "[A02]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		STRINGTYPE03("stringtype03",ILogStringFormatZZZ.iFACTOR_STRING_TYPE03, "[A03]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		LINENEXT("linenext",ILogStringFormatZZZ.iFACTOR_LINENEXT, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringFormatZZZ.iARG_NOTHING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),				
+		STRINGTYPE01_STRING_BY_STRING("stringtype01",ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING, "[A01]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		STRINGTYPE02_STRING_BY_STRING("stringtype02",ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING, "[A02]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		STRINGTYPE03_STRING_BY_STRING("stringtype03",ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING, "[A03]" + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		LINENEXT("linenext",ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringFormatZZZ.iARG_NOTHING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),				
 		
-		CLASSNAME("classname",ILogStringFormatZZZ.iFACTOR_CLASSNAME, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s:",ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
-		CLASSNAMESIMPLE("classnamesimple",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s:",ILogStringFormatZZZ.iARG_OBJECT, ":" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CS]", "Gib den einfachen Klassennamen in diesem Format aus."),				
-		CLASSFILENAME("classfilename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringFormatZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
+		CLASSNAME_STRING_BY_STRING("classname",ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s:",ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
+		CLASSNAMESIMPLE_STRING_BY_STRING("classnamesimple",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s:",ILogStringFormatZZZ.iARG_OBJECT, ":" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CS]", "Gib den einfachen Klassennamen in diesem Format aus."),				
+		CLASSFILENAME_STRING_BY_STRING("classfilename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringFormatZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
 		
-		CLASSMETHOD_STRING("methodbystring",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
-		CLASSFILELINE_STRING("linenrbystring",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Codezeil in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
-		CLASSFILENAME_STRING("filenamebystring",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
-		CLASSFILEPOSITION_STRING("filepositionbystring",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
+		CLASSMETHOD_STRING_BY_HASHMAP("methodbystring",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
+		CLASSFILELINE_STRING_BY_HASHMAP("linenrbystring",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Codezeil in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
+		CLASSFILENAME_STRING_BY_HASHMAP("filenamebystring",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
+		CLASSFILEPOSITION_STRING_BY_HASHMAP("filepositionbystring",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
 		
 		
-		CLASSMETHOD_XML("method",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
-		CLASSFILELINE_XML("linenr",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Codezeil in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
-		CLASSFILENAME_XML("filename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
-		CLASSFILEPOSITION_XML("fileposition",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),		
-		POSITIONCURRENT_XML("positioncurrent", ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s", ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCallingXml(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
+		CLASSMETHOD_XML_BY_XML("method",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib den Methodennamen in diesem  in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
+		CLASSFILELINE_XML_BY_XML("linenr",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Codezeil in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
+		CLASSFILENAME_XML_BY_XML("filename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),
+		CLASSFILEPOSITION_XML_BY_XML("fileposition",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Gib die errechnete Position in der Java-Datei in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),		
+		POSITIONCURRENT_XML_BY_XML("positioncurrent", ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s", ILogStringFormatZZZ.iARG_STRINGXML, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCallingXml(). . Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '."),
 		
-		CLASSMETHOD_HASHMAP("methodbyhm",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeMethodZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeMethodZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem  in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
-		CLASSFILELINE_HASHMAP("linenrbyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeLineNumberZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeLineNumberZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
-		CLASSFILENAME_HASHMAP("filenamebyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeFileNameZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeFileNameZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
-		CLASSFILEPOSITION_HASHMAP("filepositionbyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeFilePositionZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeFilePositionZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Position in der Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),		
+		CLASSMETHOD_XML_BY_HASHMAP("methodbyhm",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeMethodZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeMethodZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem  in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
+		CLASSFILELINE_XML_BY_HASHMAP("linenrbyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeLineNumberZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeLineNumberZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
+		CLASSFILENAME_XML_BY_HASHMAP("filenamebyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeFileNameZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeFileNameZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
+		CLASSFILEPOSITION_XML_BY_HASHMAP("filepositionbyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeFilePositionZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeFilePositionZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Position in der Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),		
 		
-		THREADID("threadid",ILogStringFormatZZZ.iFACTOR_THREADID, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringFormatZZZ.iARG_SYSTEM, "", "Gib die ID des Threads in diesem Format aus."),
-		DATE("date",ILogStringFormatZZZ.iFACTOR_DATE,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/D]", "Gib das errechnete Datum in diesem Format aus.")
+		THREADID_STRING_BY_STRING("threadid",ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringFormatZZZ.iARG_SYSTEM, "", "Gib die ID des Threads in diesem Format aus."),
+		DATE_STRING_BY_STRING("date",ILogStringFormatZZZ.iFACTOR_DATE_STRING_BY_STRING,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/D]", "Gib das errechnete Datum in diesem Format aus.")
 		;		
 		
 		int iFactor, iArgumentType;

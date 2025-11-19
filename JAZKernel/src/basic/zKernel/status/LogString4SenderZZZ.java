@@ -32,13 +32,13 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 				//raus, weil dieser String nur eine Ergaenzung des eigentlichen LogString ist, somit waere Datum-Uhrzeit redundant...
 				//ILogStringZZZ.LOGSTRING.DATE,
 												
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
 				
 				//Bleibt drin aus ueberichtlichkeitsgruenden
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01,					
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,					
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
 		};
 		return iaenumReturn;
 	}
@@ -49,10 +49,10 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 		
 		//Hier mögliche Abweichende Strings angeben, z.B. in einfache Hochkommata packen			
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME),"'" + ILogStringZZZ.LOGSTRING.CLASSNAME.getFormat() + "'");
-		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE),"'%s'");
+		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING),"'%s'");
 		
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_THREADID), "-" + ILogStringZZZ.LOGSTRING.THREADID.getFormat() + "-");
-		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_THREADID), "- Thread: %s");
+		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING), "- Thread: %s");
 		
 		//und das ist nicht notwendig, dar argnext02 schon einfache hochkommata enthaelt: hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT01), "'" + ILogStringZZZ.sARGNEXT01 + "'");
 		
