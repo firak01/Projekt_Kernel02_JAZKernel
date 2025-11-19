@@ -2,34 +2,27 @@ package basic.zBasic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import base.collections.CollectionUtil;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
-import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormaterZZZ;
-import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
+import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeZZZ;
-import basic.zKernel.KernelZZZ;
 
 public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
@@ -802,8 +795,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Dabei ist der String der aktuellen Position eh nur für andere Log-Formatierungen die Quelle für Daten.
 			//Das ist etwas uebertrieben. Wird aber hier als alternativer Ansatz implementiert.
 			
-			TODOGOON20251118;//Hier müssen nun die PRO und POST Formatierungsanweisungen definiert werden
-			                 //und sie müssen vor und dahinter geschrieben werden.
+			
+			//Hier müssen nun die PRO und POST Formatierungsanweisungen definiert werden
+			//und sie müssen vor und dahinter geschrieben werden.
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_HASHMAP, sMethod);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_HASHMAP, sLine);

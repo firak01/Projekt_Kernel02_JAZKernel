@@ -1,12 +1,5 @@
 package basic.zBasic;
 
-import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.ILogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
-import basic.zBasic.util.math.PrimeFactorizationZZZ;
-import basic.zBasic.util.math.PrimeNumberZZZ;
 import junit.framework.TestCase;
 
 public class ReflectCodeZZZTest   extends TestCase{
@@ -30,7 +23,8 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXml() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXml();
-			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>32</linenr><fileposition> (ReflectCodeZZZTest.java:32) </fileposition></positioncurrent># ", sValue); 			
+			int iLineNr = 25;
+			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -43,7 +37,8 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:45 ~ (ReflectCodeZZZTest.java:45) # ", sValue); 			
+			int iLineNr=39;
+			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") # ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -57,7 +52,8 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXmlFormated() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
-			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><linenr>59</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:59) </fileposition></positioncurrent># ", sValue); 			
+			int iLineNr = 54;
+			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
