@@ -3,6 +3,8 @@ package basic.zBasic.util.abstractArray;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -203,6 +205,42 @@ public class ArrayUtilZZZ<T>{
 		}//end main:
         return objaReturn;
     }
+	
+	
+	
+	
+	/** von ChatGPT...
+	 * @param array
+	 * @param index
+	 * @return
+	 * @author Fritz Lindhauer, 04.11.2025, 11:05:43
+	 */
+	public static <T> T[] reverse(T[] objArray) {
+		T[] objaReturn = (T[]) Array.newInstance(objArray.getClass().getComponentType(), objArray.length - 1);
+		main:{
+			if(objArray==null) return null;
+			boolean bEmptyArray = ArrayUtilZZZ.isNull(objArray);
+			if(bEmptyArray) break main;
+			
+			// Elemente kopieren		
+	        System.arraycopy(objArray, 0, objaReturn, 0, objArray.length - 1);
+			
+	        //Nun im neu erstellten Array umsortieren.
+		    int left = 0;
+		    int right = objaReturn.length - 1;
+	
+		    while(left < right) {
+		        T temp = objaReturn[left];
+		        objaReturn[left] = objaReturn[right];
+		        objaReturn[right] = temp;
+	
+		        left++;
+		        right--;
+		    }
+
+		}//end main:
+	    return objaReturn; // optional, da das Array in-place geändert wird
+	}
 	
 	
     /** von ChatGPT erstellt

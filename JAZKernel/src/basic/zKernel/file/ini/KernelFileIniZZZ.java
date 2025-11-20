@@ -595,7 +595,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			if(bSectionExists) {
 				String sReturnRaw=null;
 				objReturn.setSection(sSection, true);
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ "Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 				if(sReturnRaw!=null) {											
 					objReturn.setRaw(sReturnRaw);

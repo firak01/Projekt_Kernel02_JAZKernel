@@ -2292,7 +2292,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
     		
 		}else {
 			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ +++ Suchpfad: " + hmDebug.computeDebugString("\t|", ":");
-    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
 			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);

@@ -897,29 +897,36 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		main:{	
 			ArrayListUniqueZZZ<String> listasLine = this.computeLinesInLog_(classObj, hmLog);
 			
-			//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
-			ArrayListUniqueZZZ<String>listasLineReversed1 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
-			ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
-			for(String sLine : listasLineReversed1) {
-				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
-				listasLineReversedJustified1.add(sLineJustified);
-			}
-			
-			ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
-			ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
-			for(String sLine : listasLineReversed2) {
-				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
-				listasLineReversedJustified2.add(sLineJustified);
-			}
-			
-			//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
-			for(String sLine : listasLineReversedJustified2) {
-				if(sReturn.equals("")){
-					sReturn = sLine;
-				}else {					
-					sReturn = sReturn + StringZZZ.crlf() + sLine;
+			if(listasLine.size()>=2) {
+				//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
+				ArrayListUniqueZZZ<String>listasLineReversed1 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
+				ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
+				for(String sLine : listasLineReversed1) {
+					String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
+					listasLineReversedJustified1.add(sLineJustified);
 				}
-			}			
+				
+				ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
+				ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
+				for(String sLine : listasLineReversed2) {
+					String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
+					listasLineReversedJustified2.add(sLineJustified);
+				}
+				
+				//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
+				for(String sLineJustified : listasLineReversedJustified2) {
+					if(sReturn.equals("")){
+						sReturn = sLineJustified;
+					}else {					
+						sReturn = sReturn + StringZZZ.crlf() + sLineJustified;
+					}
+				}							
+			}else {
+				String sLine = listasLine.get(0);
+				if(sLine!=null) {
+					sReturn = this.getStringJustifier().justifyInfoPart(sLine);					
+				}
+			}		
 		}//end main:
 		return sReturn;
 
@@ -987,6 +994,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	}
 				}
 	        }
+	        
+	        
 		}//end main:
 		return sReturn;
 
@@ -1228,29 +1237,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 			//sReturn = this.getStringJustifier().justifyInfoPart(sReturn);
 			
-			//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
-			ArrayListUniqueZZZ<String>listasLineReversed1 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
-			ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
-			for(String sLine : listasLineReversed1) {
-				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
-				listasLineReversedJustified1.add(sLineJustified);
-			}
-			
-			ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
-			ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
-			for(String sLine : listasLineReversed2) {
-				String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
-				listasLineReversedJustified2.add(sLineJustified);
-			}
-			
-			//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
-			for(String sLine : listasLineReversedJustified2) {
-				if(sReturn.equals("")){
-					sReturn = sLine;
-				}else {					
-					sReturn = sReturn + StringZZZ.crlf() + sLine;
-				}
-			}												
+			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, listasLine);				
 		}//end main:
 		return sReturn;
 

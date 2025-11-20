@@ -82,7 +82,8 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	private boolean ConfigNew_(String[] saArgIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{				
-			System.out.println("Initializing ConfigObject");
+			String sLog = "Initializing ConfigObject";
+			this.logLineDateWithPosition(sLog);
 			if(this.getFlag("INIT")==true){
 				bReturn = true;
 				break main; 
