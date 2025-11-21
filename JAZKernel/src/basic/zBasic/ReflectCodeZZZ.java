@@ -14,14 +14,17 @@ import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormaterZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormater4ReflectCodeZZZ;
 import basic.zBasic.util.log.LogStringFormaterUtilZZZ;
+import basic.zBasic.util.log.LogStringFormaterZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
@@ -168,14 +171,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	   * @return Return the name of the routine that called getCurrentMethodName
 	   */
 	  public static String getMethodCurrentNameLined(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
+		  return getMethodCurrentNameLined_(iStacktraceOffset, iLineOffset);
+	  }
+	  
+	  public static String getMethodCurrentNameLined_(int iStacktraceOffsetIn, int iLineOffset) throws ExceptionZZZ{		  
 			String sReturn = null;
 			main:{
+				int iStacktraceOffset = iStacktraceOffsetIn + 2; //Halt wieder und noch eine Zeile tiefer.
+				
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 					//int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset;
-					sReturn = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset+1);
+					sReturn = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset);
 					
-					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset+1, iLineOffset); //Berechne die gewünschte Zeile					
+					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset, iLineOffset); //Berechne die gewünschte Zeile					
 					sReturn +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
 										
 				}else{
@@ -224,7 +233,17 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					  }
 				  }				 				  
 				}//End if : Verarbeitung vor Java 1.4
+				
+				//Abschliessenden Trenner für Folgekommentare
 				sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+				
+				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+				
+				IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
+				
 			}//end main:
 			return sReturn;
 	  }
@@ -517,63 +536,73 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	}
 	
 	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-			//Wichtig:
-			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
-			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
-			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+1;
-			
-			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
-			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
-			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
-			String sLine = new Integer(iLine).toString();
-			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
-			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
-
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man darin gerne haette... file oder object zentriert.
-			//a) Variante mit dem Dateinamen
-			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-			
-			//b) Variante mit Objektname und dahinter iLine
-			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
-			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
-
-			
-			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
-			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
-			//Erweitere um Separatoren
-			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);
-			
-			//Erzeuge hier den String als XML Variante. 
-			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
-			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
-		}//end main:
-		return sReturn;
+		return getPositionCurrentSeparated_(null, iLevel);
 	}
 	
+//	private static String getPositionCurrentSeparated_(int iLevel) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{
+//			//Wichtig:
+//			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
+//			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+//			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
+//			int iLevelUsed = iLevel+1;
+//			
+//			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
+//			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
+//			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+//			String sLine = new Integer(iLine).toString();
+//			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
+//			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
+//
+//			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man darin gerne haette... file oder object zentriert.
+//			//a) Variante mit dem Dateinamen
+//			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
+//			
+//			//b) Variante mit Objektname und dahinter iLine
+//			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
+//			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
+//
+//			
+//			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
+//			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
+//			//Erweitere um Separatoren
+//			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
+//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);
+//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
+//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);
+//			
+//			//Erzeuge hier den String als XML Variante. 
+//			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+//			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+//			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+//			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
+//		}//end main:
+//		return sReturn;
+//	}
+	
 	public static String getPositionCurrentSeparated(Object obj, int iLevel) throws ExceptionZZZ {
-		return ReflectCodeZZZ.getPositionCurrentSeparated(obj.getClass(), iLevel);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(obj.getClass(), iLevel);
 	}
 	public static String getPositionCurrentSeparated(Class classObj, int iLevel) throws ExceptionZZZ {
+		return getPositionCurrentSeparated_(classObj, iLevel);
+	}
+	
+	private static String getPositionCurrentSeparated_(Class classObj, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
-			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+			//in den Funtionen darunter muesste ja alles wieder um 2 Ebenen tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+1;
+			int iLevelUsed = iLevel+2;
 			
-			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
-			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
+			//Merke1: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
+			//        Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.
+			//Merke2: Zusaetzliche Separatoren werden im LOGSTRINGFORMAT definiert.
 			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+			String sLine = new Integer(iLine).toString();
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 
@@ -585,27 +614,44 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 
-			//Erweitere um Separatoren
-			sMethod = sMethod + ReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			//Mit LogString-Klasse
+//			String[]saParts = new String[3];
+//			saParts[0] = sMethod;
+//			saParts[1] = sPositionInFile;
+//			saParts[2] = sPOSITION_MESSAGE_SEPARATOR; //Den Trenner zum Kommentar hier schon einbauen. Im Formater wird dann daran die Bündigkeit per justifier gemacht.
 			
-			//Ohne die Method
-			sPositionInFile = sPositionInFile + ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
-			
-			//Mit LosgString-Klasse
-			String[]saParts = new String[2];
-			saParts[0] = sMethod;
-			saParts[1] = sPositionInFile;
+//			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+//			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, saParts);
 
-			LogStringFormater4ReflectCodeZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, classObj, saParts);
 			
-//			TODOGOON20251117;//Der sPOSITION_MESSAGE_SEPARATOR MUSS DIREKTE VOR DEM STRINGJUSTIFIER UND IM .compute(.) gesetzt werden
-//			
-//			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-//			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+			//Erweitere um Separatoren
+			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);
+						
+			
+			//Erzeuge hier den String als NICHT - XML Variante. 
+			//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+			//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
+			
+			//Abschliessenden Trenner für Folgekommentare
+			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			
+			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:
 		return sReturn;
 	}
+	
+	
 	//####################
 	
 	/** Alte Version, vor dem Entwickeln der Formater - Klassen
@@ -614,18 +660,43 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @author Fritz Lindhauer, 16.11.2025, 21:30:35
 	 */
 	public static String  getPositionCurrentSimple() throws ExceptionZZZ{
+		return getPositionCurrentSimple_(null, 1);
+	}
+	
+	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ{
 		String sReturn = null;
 		  main:{
 			  
+				//Wichtig:
+				//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
+				//in den Funtionen darunter muesste ja alles wieder um 1 Ebenen tiefer definiert werden.
+				//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
+				int iLevelUsed = iLevel+1;
+			
 			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
 
-				  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
+				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-					String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
-					sReturn = sLineTotal + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
+					sReturn = sLineTotal + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR; //Den Trenner zum Kommentar hier schon einbauen. Im Formater wird dann daran die Bündigkeit per justifier gemacht.
 	
+					//Erzeuge hier den String als NICHT - XML Variante. 
+					//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+					//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+					ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
+					sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, sReturn);
+					
+					//Abschliessenden Trenner für Folgekommentare
+					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+					
+					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+					//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+					
+					IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+					sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 				}else{
 					
 						//Verarbeitung vor Java 1.4
@@ -636,6 +707,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return sReturn;
 	}
 	
+	//##########################
 	public static String  getPositionCallingSimple() throws ExceptionZZZ{
 		return ReflectCodeZZZ.getPositionCallingSimple(1);
 	}
@@ -663,7 +735,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return sReturn;
 	}
 	
-	
+	//#####################################################################################
 	//####################
 	public static String  getPositionCurrentXml() throws ExceptionZZZ{
 		return ReflectCodeZZZ.getPositionXml(1);
@@ -691,13 +763,17 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXml(int iLevel) throws ExceptionZZZ {
+		return getPositionCurrentXml_(iLevel);
+	}
+	
+	private static String getPositionCurrentXml_(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
-			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+1;
+			int iLevelUsed = iLevel+2;
 			
 			//FGL20251118: 
 			//Formatanweisungen hier zu verwenden ist uebertrieben. (Extra Code zur Ansicht in getPositionCurrentXmlFormated() )
@@ -737,19 +813,27 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//Abschliessenden Trenner für Folgekommentare
 			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			
+//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//			
+//			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:
 		return sReturn;
 	}
 	
 	//#################################################################
 	//####################
-		public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ{
-			return ReflectCodeZZZ.getPositionXmlFormated(1);
-		}
-		
-		public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ{
-			return ReflectCodeZZZ.getPositionCurrentXmlFormated(iLevel);
-		}
+	public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionXmlFormated(1);
+	}
+	
+	public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ{
+		return ReflectCodeZZZ.getPositionCurrentXmlFormated(iLevel);
+	}
 		
 	/**Umgib die einzelen Elemente mit XML-Tags.
 	 * Ganz einfach gehalten, weil grundliegende Klasse in zBasic-Bibliothek
@@ -760,13 +844,18 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXmlFormated(int iLevel) throws ExceptionZZZ {
+		return getPositionCurrentXmlFormated_(iLevel);
+	}
+	
+	
+	private static String getPositionCurrentXmlFormated_(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
-			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+1;
+			int iLevelUsed = iLevel+2;
 			
 			//FGL20251118: 
 			//Formatanweisungen hier zu verwenden ist ein alternativer Ansatz
@@ -817,6 +906,14 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//Abschliessenden Trenner für Folgekommentare
 			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+
+//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN			
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//			
+//			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:
 		return sReturn;
 	}
@@ -1343,6 +1440,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	public static String removePositionCurrentTagPartsFrom(String sXml) throws ExceptionZZZ{
 		String sReturn = sXml;
 		main:{
+			if(StringZZZ.isEmpty(sXml)) break main;
+			
 			//Entferne nun die in ReflectCodeZZZ.getPositionCurrent() -sinnvollerweise - hinzugenommenen XML Tags
 			//ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
 			ITagTypeZZZ objTagTypeLine = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);

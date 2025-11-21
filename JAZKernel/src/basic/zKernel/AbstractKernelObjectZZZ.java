@@ -3544,7 +3544,8 @@ MeinTestParameter=blablaErgebnis
 				//Mache das neue Ini-Objekt
 				String sPathTotalToUse = objFile.getAbsolutePath();
 				String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+				System.out.println(sLog);
 				if(FileEasyZZZ.exists(sPathTotalToUse)) {
 					objReturn = new IniFile(sPathTotalToUse);
 					//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
