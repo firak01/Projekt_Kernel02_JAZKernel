@@ -191,7 +191,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 			if(obj==null) {
 				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 			}else {
-				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
 			}
 			System.out.println(sLogUsed);
 		}

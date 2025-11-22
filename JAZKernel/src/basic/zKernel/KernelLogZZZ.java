@@ -162,7 +162,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLine(Object obj, String[] saLog) throws ExceptionZZZ {	
@@ -174,7 +174,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}	
 	
 	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
@@ -185,7 +185,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLine(Class classObj, String[] saLog) throws ExceptionZZZ {	
@@ -197,7 +197,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	//+++ mit Datum
@@ -209,7 +209,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING				 
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLineDate(String[] saLog) throws ExceptionZZZ {	
@@ -222,7 +222,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLineDate(Object obj, String sLog) throws ExceptionZZZ {	
@@ -235,7 +235,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLineDate(Object obj, String[] saLog) throws ExceptionZZZ {	
@@ -249,7 +249,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
 	
@@ -263,7 +263,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
 				 
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLineDate(Class classObj, String[] saLog) throws ExceptionZZZ {	
@@ -277,7 +277,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	//+++ mit CodePosition
@@ -303,7 +303,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
 	
@@ -330,7 +330,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(obj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
 	
@@ -357,7 +357,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -381,7 +381,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
 		 String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 		 
-		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -462,9 +462,9 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	public synchronized static void logProtocolStringStatic(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
 		String sLogUsed;
 		if(obj==null) {
-			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(ienumMappedLogString, sLog);
 		}else {
-			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
 		}
 		System.out.println(sLogUsed);
 	}

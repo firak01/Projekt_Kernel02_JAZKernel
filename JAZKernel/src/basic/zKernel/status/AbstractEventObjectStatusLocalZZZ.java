@@ -354,7 +354,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		if(obj==null) {
 			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 		}else {
-			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
 		}
 		System.out.println(sLogUsed);
 	}

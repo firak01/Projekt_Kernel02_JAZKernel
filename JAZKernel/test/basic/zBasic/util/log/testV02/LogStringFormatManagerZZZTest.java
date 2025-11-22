@@ -18,12 +18,8 @@ public class LogStringFormatManagerZZZTest extends AbstractLogStringFormatZZZTes
     }
 
     @Override
-    protected String computeWithFormat(
-            DummyTestObjectZZZ dummy,
-            IEnumSetMappedLogStringFormatZZZ[] format,
-            String... logs
-    ) throws ExceptionZZZ {
-        return LogStringFormatManagerZZZ.getInstance().compute(dummy, logs, format);
+    protected String computeWithFormat(DummyTestObjectZZZ dummy,IEnumSetMappedLogStringFormatZZZ[] format,String... logs) throws ExceptionZZZ {
+        return LogStringFormatManagerZZZ.getInstance().compute(dummy, format, logs);
     }
 }
 
