@@ -216,7 +216,7 @@ public class ArrayUtilZZZ<T>{
 	 * @author Fritz Lindhauer, 04.11.2025, 11:05:43
 	 */
 	public static <T> T[] reverse(T[] objArray) {
-		T[] objaReturn = (T[]) Array.newInstance(objArray.getClass().getComponentType(), objArray.length - 1);
+		T[] objaReturn = (T[]) Array.newInstance(objArray.getClass().getComponentType(), objArray.length);
 		main:{
 			if(objArray==null) return null;
 			boolean bEmptyArray = ArrayUtilZZZ.isNull(objArray);
@@ -227,13 +227,10 @@ public class ArrayUtilZZZ<T>{
 			
 	        //Nun im neu erstellten Array umsortieren.
 		    int left = 0;
-		    int right = objaReturn.length - 1;
+		    int right = objArray.length - 1;
 	
-		    while(left < right) {
-		        T temp = objaReturn[left];
-		        objaReturn[left] = objaReturn[right];
-		        objaReturn[right] = temp;
-	
+		    while(left <= objArray.length - 1) {
+		        objaReturn[left] = objArray[right];		        
 		        left++;
 		        right--;
 		    }

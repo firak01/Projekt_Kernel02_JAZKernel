@@ -93,9 +93,9 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			for(int icount=0; icount <= lista.size()-1; icount++){
 				String sPosition = (String) lista.get(icount);
 				if(sReturn==null){
-					sReturn=sPosition+sDelimiter;
+					sReturn=sPosition;
 				}else{
-					sReturn+=sPosition+sDelimiter;
+					sReturn+=sDelimiter+sPosition;
 				}
 			}
 		}
@@ -120,7 +120,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 				if(sReturn==null){
 					sReturn=sPosition;
 				}else{
-					sReturn+=sPosition;
+					sReturn+=sDelimiter+sPosition;
 				}
 			}		
 		}

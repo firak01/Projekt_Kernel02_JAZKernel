@@ -245,15 +245,23 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return compute(this.getClass(), ienumFormatLogString);
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+				
+		return computeByObject_(this.getClass(), ienumFormatLogString);
 	}
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+						
 	    if (obj == null) {
-	    	return compute(this.getClass(), ienumFormatLogString);
+	    	return computeByObject_(this.getClass(), ienumFormatLogString);
 	    }else {
-	    	return compute(obj.getClass(), ienumFormatLogString);
+	    	return computeByObject_(obj.getClass(), ienumFormatLogString);
 	    }
 	}
 
@@ -273,7 +281,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {
-		return this.compute(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;		
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -284,7 +300,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return this.computeLineInLog_(obj.getClass(), ienumaFormatLogString, sLogs);	
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		return this.computeLinesInLog_Justified_(obj, ienumaFormatLogString, sLogs);	
 	}
 	
 //	@Override
@@ -1079,7 +1098,16 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		return this.compute(this.getClass(), ienumaFormatLogString, sLogs);					
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(this.getClass(), ienumaFormatLogString, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;
 	}
 
 //	@Override
@@ -1131,11 +1159,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{			
-			if(ienumFormatLogString == null) {
-				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;				
-			}
-			
+						
 			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 						
@@ -1143,10 +1167,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = this.computeByObject_Justified_(classObj, ienumFormatLogString);
 											
 			}else {
-				IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-				ienumaFormatLogString[0] = ienumFormatLogString;
-				
-				sReturn = this.computeLinesInLog_Justified_(classObj, ienumaFormatLogString, sLogs);
+				sReturn = this.computeLinesInLog_Justified_(classObj, ienumFormatLogString, sLogs);
 			}
 			
 		}//end main:
@@ -1164,6 +1185,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 
@@ -1217,6 +1239,39 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	}
 	
+	private String computeLinesInLog_Justified_(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			Class classObj = null;
+			if(obj==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = obj.getClass();
+			}
+			
+			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+			ienumaFormatLogString[0] = ienumFormatLogString;
+			
+			sReturn = computeLinesInLog_Justified_(classObj, ienumaFormatLogString, sLogs);		
+		}//end main:
+		return sReturn;
+
+	}
+	
+	private String computeLinesInLog_Justified_(Object obj, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			Class classObj = null;
+			if(obj==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = obj.getClass();
+			}
+			sReturn = computeLinesInLog_Justified_(classObj, ienumaFormatLogString, sLogs);		
+		}//end main:
+		return sReturn;
+
+	}
 	
 	private String computeLinesInLog_Justified_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
@@ -1312,7 +1367,17 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-		return this.compute(obj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+			
+		Class classObj = null;
+		if(obj==null) {
+			classObj = this.getClass();
+		}else {
+			classObj = obj.getClass();
+		}
+		return this.computeLinesInLog_Justified_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
 	}
 	
 //	@Override
@@ -1323,7 +1388,11 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return this.compute(this.getClass(), hm);				
+
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		
+		return this.computeLinesInLog_Justified_(this.getClass(), hm);
 	}
 	
 	@Override
@@ -1343,7 +1412,16 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
-		return this.compute(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+	
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;
 	}
 	
 //	@Override
@@ -1357,6 +1435,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 */
 	@Override
 	public String compute(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		
 		return this.computeLinesInLog_Justified_(classObjIn, hmLog);
 	}
 
