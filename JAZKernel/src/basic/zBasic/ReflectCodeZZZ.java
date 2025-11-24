@@ -654,13 +654,14 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	//####################
 	
-	/** Alte Version, vor dem Entwickeln der Formater - Klassen
+	/** Alte Version, vor dem Entwickeln der Formater - Klassen. Hier fehlt der Dateiname.
+	 *  Trotzdem schon mit einem "Bündigmacher" für mögliche Folgekommentare.
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 16.11.2025, 21:30:35
 	 */
 	public static String  getPositionCurrentSimple() throws ExceptionZZZ{
-		return getPositionCurrentSimple_(null, 1);
+		return getPositionCurrentSimple_(null, 0);
 	}
 	
 	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ{
@@ -676,20 +677,14 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
-
+                   
+				    //Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
-					sReturn = sLineTotal + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR; //Den Trenner zum Kommentar hier schon einbauen. Im Formater wird dann daran die Bündigkeit per justifier gemacht.
-	
-					//Erzeuge hier den String als NICHT - XML Variante. 
-					//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
-					//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-					ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-					sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, sReturn);
-					
-					//Abschliessenden Trenner für Folgekommentare
-					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+										
+					//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)
+					sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 					
 					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -709,30 +704,30 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	//##########################
 	public static String  getPositionCallingSimple() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCallingSimple(1);
+		return ReflectCodeZZZ.getPositionCallingSimple_(1);
 	}
 	
-	public static String  getPositionCallingSimple(int iStacktraceOffset) throws ExceptionZZZ{
+	private static String getPositionCallingSimple_(int iLevel) throws ExceptionZZZ{
 		String sReturn = null;
 		  main:{
-			  
-			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
-					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
-
-				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iStacktraceOffset);
-				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iStacktraceOffset) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iStacktraceOffset)  + sLine;
-			
-					sReturn = sLineTotal;
-				}else{
+			 if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				 int iLevelUsed = iLevel+1;
+				 
+				 //Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
+				 int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+				 String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine);
+				 String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
+										
+				//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)
+				sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			 }else{
 					
-						//Verarbeitung vor Java 1.4
-					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	   
-				}//end Java Version
-		  }//end main:
-		  return sReturn;
+				//Verarbeitung vor Java 1.4
+				ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	   
+			}//end Java Version
+		}//end main:
+		return sReturn;
 	}
 	
 	//#####################################################################################

@@ -45,6 +45,18 @@ public class ReflectCodeZZZTest   extends TestCase{
 		}	
 	}
 	
+	public void testGetPositionCurrentSimple() {
+		try {
+			String sValue = ReflectCodeZZZ.getPositionCurrentSimple();
+			int iLineNr=50; 
+			assertEquals("basic.zBasic.ReflectCodeZZZTest.testGetPositionCurrentSimple - Line "+ iLineNr +"# ", sValue);
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
+	}
+	
+	
 	/** Bedenke: Sobald sich die Zeilennummer in diesem Code aendert stimmt der Wert für <linenr> - Tag nicht mehr.
 	 *           Darum steht der Test ganz oben...
 	 * 
@@ -52,12 +64,33 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXmlFormated() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
-			int iLineNr = 54;
+			int iLineNr = 67;
 			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}	
+	}
+	
+	//######################################################################################################
+	public void testGetPositionCalling() {
+		try {
+			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
+			String sValue = testGetPositionCallingSimple_();			
+			int iLineNr = 80;
+			assertEquals("basic.zBasic.ReflectCodeZZZTest.testGetPositionCalling - Line " + iLineNr + "# ", sValue); 			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
+	}
+	
+	private String testGetPositionCallingSimple_() throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			sReturn = ReflectCodeZZZ.getPositionCallingSimple();
+		}//end main:
+		return sReturn;
 	}
 	
 	

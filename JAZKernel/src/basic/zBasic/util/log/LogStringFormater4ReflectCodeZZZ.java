@@ -22,8 +22,10 @@ public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZ
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
 		};
 		return iaenumReturn;
