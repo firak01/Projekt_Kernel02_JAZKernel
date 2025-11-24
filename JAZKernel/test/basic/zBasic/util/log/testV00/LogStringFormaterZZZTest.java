@@ -75,7 +75,7 @@ public class LogStringFormaterZZZTest extends TestCase{
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+":";
 
-			sLogValue = objLogStringTest .compute(objDummy, sLog);
+			sLogValue = objLogStringTest.compute(objDummy, sLog);
 			assertNotNull(sLogValue);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 			

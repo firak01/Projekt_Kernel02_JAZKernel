@@ -20,6 +20,8 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	//Zum Buendig machen
 	//Idee: Bei mehreren Instanzen per Default auf das Singleton zugreifen
 	//      Aber ggfs. ueberschreibend auf einen hinterlegten zugreifen.
+	//Merke: XML-Strings werden nicht buendig gemacht. 
+	//       Darum wird der StringJustifier nicht mehr in dieser Elternklasse im Konstruktor an den "Formater" uebergeben.
 	protected volatile IStringJustifierZZZ objStringJustifier = null;
 		
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
@@ -70,222 +72,89 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(ienumFormatLogString);
 	}
 
 	@Override
-	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		//StringJustifierZZZ objJustifier = (StringJustifierZZZ) this.getStringJustifier();
-		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(obj, ienumFormatLogString);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//	@Override
-//	public String compute(String sLog) throws ExceptionZZZ {		
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLog);
-//	}
-	
+
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {		
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
 	}
 	
-//	@Override
-//	public String compute(String... sLogs) throws ExceptionZZZ {
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(null,(IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
-//	}
-
-//	@Override
-//	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(sLog, ienumaFormatLogString);
-//	}
-
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
-	//	IStringJustifierZZZ objJustifier = this.getStringJustifier();
-		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(ienumaFormatLogString, sLogs);
 	}
 
-//	@Override
-//	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(obj, sLog, ienumaFormatLogString);
-//	}
-
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(obj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(obj, ienumaFormatLogString, sLogs);
 	}
 
-//	@Override
-//	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(obj, sLog01, sLog02, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... slogs) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(obj, sLog01, sLog02, ienumaFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(classObj, sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		//IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		//LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(classObj, sLog, ienumaFormatLogString);
-//	}
-
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(classObj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(classObj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(classObj, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(hm);
 	}
 
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(obj, hm);
 	}
 
 	@Override
 	public String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(classObj, hm);
 	}
 
-//	@Override
-//	public String compute(Object obj, String sLog) throws ExceptionZZZ {
-////		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-////		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(obj, sLog);
-//	}
-
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(obj, sLogs);
 	}
 
-//	@Override
-//	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ {
-////		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-////		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(obj, sLog01, sLog02);
-//	}
-
-//	@Override
-//	public String compute(Class classObj, String sLog) throws ExceptionZZZ {
-////		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-////		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//		return objFormater.compute(classObj, sLog);
-//	}
-
 	@Override
 	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
-//		IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.compute(classObj, sLogs);
 	}
-
-//	@Override
-//	public String compute(Class classObj, String[] saLog) throws ExceptionZZZ {
-////		IStringJustifierZZZ objJustifier = this.getStringJustifier();			
-////		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ(objJustifier);
-//		LogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();		
-//		return objFormater.compute(classObj, saLog);
-//	}
 	
 	//######################
 	@Override
@@ -306,24 +175,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		return objFormater.compute(obj, ienumFormatLogString);
 	}
 
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(sLog, ienumaFormatLogString);
-//	}
-
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		if(this.hasStringJustifierPrivate()) {
@@ -332,42 +183,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		}
 		return objFormater.compute(ienumaFormatLogString, sLogs);
 	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, sLog, ienumaFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, saLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, saLog, ienumaFormatLogString);
-//	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -386,24 +201,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		}
 		return objFormater.compute(obj, ienumaFormatLogString, sLogs);
 	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(classObj, sLog, ienumFormatLogString);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(classObj, sLog, ienumaFormatLogString);
-//	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -459,24 +256,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		return objFormater.compute(classObj, hm);
 	}
 
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String sLog) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, sLog);
-//	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String[] saLog) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(obj, saLog);
-//	}
-
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		if(this.hasStringJustifierPrivate()) {
@@ -486,15 +265,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		return objFormater.compute(obj, sLogs);
 	}
 
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String sLog) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(classObj, sLog);
-//	}
-
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		if(this.hasStringJustifierPrivate()) {
@@ -503,15 +273,6 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		}
 		return objFormater.compute(classObj, sLogs);
 	}
-
-//	@Override
-//	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String[] saLog) throws ExceptionZZZ {
-//		if(this.hasStringJustifierPrivate()) {
-//			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-//			objFormater.setStringJustifier(objJustifier);
-//		}
-//		return objFormater.compute(classObj, saLog);
-//	}
 		
 	//###################################################
 	//### FLAG: ILogStringFormatManagerZZZ

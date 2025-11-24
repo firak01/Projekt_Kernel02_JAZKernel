@@ -820,11 +820,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 //			}
 
 			String sLog=sLogIn;
+			ITagTypeZZZ objTagTypePositionCurrent = null; ITagTypeZZZ objTagTypeLineNummer = null; ITagTypeZZZ objTagTypeFileName = null; ITagTypeZZZ objTagTypeFilePosition = null; ITagTypeZZZ objTagTypeMethod = null;
 						
 			String sTagTemp=null;
 			switch(ienumMappedFormat.getFactor()) {
+			//#######################################################################
+			//### XML AUS DEM XML-STRING WERT ZURUECKGEBEN
+			//#######################################################################
 			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_XML:			
-				ITagTypeZZZ objTagTypeFilePosition = new TagTypeFilePositionZZZ();
+				objTagTypeFilePosition = new TagTypeFilePositionZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
 				if(sTagTemp!=null) {
 					//umgib die Werte noch mit einem Tag...
@@ -837,7 +841,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				}			
 				break;
 			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_XML:
-				ITagTypeZZZ objTagTypeMethod = new TagTypeMethodZZZ();
+				objTagTypeMethod = new TagTypeMethodZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
 				if(sTagTemp!=null) {
 					
@@ -850,7 +854,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				}			
 				break;
 			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_XML:
-				ITagTypeZZZ objTagTypeLineNummer = new TagTypeLineNumberZZZ();
+				objTagTypeLineNummer = new TagTypeLineNumberZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
 				if(sTagTemp!=null) {
 					
@@ -864,7 +868,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				}			
 				break;
 			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_XML:
-				ITagTypeZZZ objTagTypeFileName = new TagTypeFileNameZZZ();
+				objTagTypeFileName = new TagTypeFileNameZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
 				if(sTagTemp!=null) {
 					
@@ -878,7 +882,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				}			
 				break;
 			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML_BY_XML:
-				ITagTypeZZZ objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+				objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
 				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
 				if(sTagTemp!=null) {
 					
@@ -889,6 +893,38 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = objTagPositionCurrent.getElementString();
 					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 					
+				}			
+				break;
+				
+			//#######################################################################
+			//### EINFACHEN STRING AUS DEM XML-STRINGWERT ZURUECKGEBEN
+			//#######################################################################
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_XML:			
+				objTagTypeFilePosition = new TagTypeFilePositionZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}			
+				break;
+			case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_XML:
+				objTagTypeMethod = new TagTypeMethodZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}		
+				break;
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_XML:
+				objTagTypeLineNummer = new TagTypeLineNumberZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}		
+				break;
+			case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_XML:
+				objTagTypeFileName = new TagTypeFileNameZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
 				}			
 				break;
 			default:

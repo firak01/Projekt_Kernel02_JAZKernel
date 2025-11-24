@@ -64,12 +64,22 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDateWithPosition(){
 		try {
+			//Verwende intern das Format STRING_BY_XML
 			assertTrue(objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT));
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
 		}
 	}
 	
+	public void testWriteLineDateWithPositionXml(){
+		try {
+			//Verwende intern das Format XML_BY_XML
+			boolean bValue = objLogTest.WriteLineDateWithPositionXml(this, strTEST_ENTRY_DEFAULT); 
+			assertTrue(bValue);
+		} catch (ExceptionZZZ e) {
+			fail("Method throws an exception." + e.getMessageLast());
+		}
+	}
 	
 	
 	
