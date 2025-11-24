@@ -158,11 +158,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  }
 	  
 	  public static String getMethodCurrentNameLined() throws ExceptionZZZ{
-		  return ReflectCodeZZZ.getMethodCurrentNameLined(1,0);//0=StacktraceOffset, 0=iLineOffset
+		  return ReflectCodeZZZ.getMethodCurrentNameLined_(1,0);//0=StacktraceOffset, 0=iLineOffset
 	  }
 	  
 	  public static String getMethodCurrentNameLined(int iLineOffset) throws ExceptionZZZ{
-		  return ReflectCodeZZZ.getMethodCurrentNameLined(1,iLineOffset);
+		  return ReflectCodeZZZ.getMethodCurrentNameLined_(1,iLineOffset);
 	  }
 	  
 	  /**
@@ -177,7 +177,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  public static String getMethodCurrentNameLined_(int iStacktraceOffsetIn, int iLineOffset) throws ExceptionZZZ{		  
 			String sReturn = null;
 			main:{
-				int iStacktraceOffset = iStacktraceOffsetIn + 2; //Halt wieder und noch eine Zeile tiefer.
+				int iStacktraceOffset = iStacktraceOffsetIn + 1; //Halt wieder und noch eine Zeile tiefer.
 				
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
