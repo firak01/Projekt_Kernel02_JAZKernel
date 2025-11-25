@@ -1,5 +1,6 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.string.StringZZZ;
 import junit.framework.TestCase;
 
 public class ReflectCodeZZZTest   extends TestCase{
@@ -23,7 +24,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXml() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXml();
-			int iLineNr = 25;
+			int iLineNr = 26;
 			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -37,7 +38,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			int iLineNr=39;
+			int iLineNr=40;
 			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") # ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -48,8 +49,12 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentSimple() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentSimple();
-			int iLineNr=50; 
-			assertEquals("basic.zBasic.ReflectCodeZZZTest.testGetPositionCurrentSimple - Line "+ iLineNr +"# ", sValue);
+			int iLineNr=51; 
+			boolean bStartsWith = StringZZZ.startsWith(sValue, "basic.zBasic.ReflectCodeZZZTest.testGetPositionCurrentSimple - Line "+ iLineNr);
+			assertTrue(bStartsWith);
+			
+			boolean bEndsWith = StringZZZ.endsWith(sValue, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR);
+			assertTrue(bEndsWith);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -64,7 +69,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXmlFormated() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
-			int iLineNr = 67;
+			int iLineNr = 71;
 			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -77,7 +82,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
 			String sValue = testGetPositionCallingSimple_();			
-			int iLineNr = 80;
+			int iLineNr = 84;
 			assertEquals("basic.zBasic.ReflectCodeZZZTest.testGetPositionCalling - Line " + iLineNr + "# ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();

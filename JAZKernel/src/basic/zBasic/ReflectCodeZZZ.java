@@ -347,7 +347,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 //Merke:         Hinter der Zeilenummer muss ein Leerzeichen sein, sonst erkennt die Eclipse Konsole das nicht.
 		 //               Das Leerzeichen muss aber in der aufrufenden Methode gesetzt werden.
 
-		 return ":" + iLine; 		 
+		 return IReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + iLine; 		 
 	 }
 	 
 	 public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) {
@@ -519,74 +519,31 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	}
 		
 	public static String  getPositionCurrent() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPosition(1);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 1);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++
 	public static String  getPositionCalling() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPosition(2);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2);
 	}
 	
 	public static String  getPositionCallingPlus(int iLevelPlus) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPosition(2+iLevelPlus);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2+iLevelPlus);
 	}
 	
 	public static String getPosition(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentSeparated(iLevel);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, iLevel+1);
 	}
 	
 	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentSeparated_(null, iLevel);
+		return getPositionCurrentSeparated_(null, iLevel+1);
 	}
-	
-//	private static String getPositionCurrentSeparated_(int iLevel) throws ExceptionZZZ {
-//		String sReturn = null;
-//		main:{
-//			//Wichtig:
-//			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
-//			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
-//			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-//			int iLevelUsed = iLevel+1;
-//			
-//			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
-//			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
-//			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
-//			String sLine = new Integer(iLine).toString();
-//			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
-//			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
-//
-//			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man darin gerne haette... file oder object zentriert.
-//			//a) Variante mit dem Dateinamen
-//			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-//			
-//			//b) Variante mit Objektname und dahinter iLine
-//			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
-//			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
-//
-//			
-//			//TODOGOON20251116;//Nimm diese Als iFaktor auf und in Enum vom Logstringformat, als OBJEKT Typen
-//			                 //Wenn dann Objekte(!) verarbeitet werden, nimm diese dort auf,
-//			//Erweitere um Separatoren
-//			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
-//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);
-//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
-//			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);
-//			
-//			//Erzeuge hier den String als XML Variante. 
-//			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
-//			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-//			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-//			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
-//		}//end main:
-//		return sReturn;
-//	}
-	
+		
 	public static String getPositionCurrentSeparated(Object obj, int iLevel) throws ExceptionZZZ {
-		return ReflectCodeZZZ.getPositionCurrentSeparated_(obj.getClass(), iLevel);
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(obj.getClass(), iLevel+1);
 	}
 	public static String getPositionCurrentSeparated(Class classObj, int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentSeparated_(classObj, iLevel);
+		return getPositionCurrentSeparated_(classObj, iLevel+1);
 	}
 	
 	private static String getPositionCurrentSeparated_(Class classObj, int iLevel) throws ExceptionZZZ {
@@ -596,7 +553,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 2 Ebenen tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+2;
+			int iLevelUsed = iLevel+1;
 			
 			//Merke1: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//        Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.
@@ -661,7 +618,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @author Fritz Lindhauer, 16.11.2025, 21:30:35
 	 */
 	public static String  getPositionCurrentSimple() throws ExceptionZZZ{
-		return getPositionCurrentSimple_(null, 0);
+		return getPositionCurrentSimple_(null, 1);
 	}
 	
 	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ{
@@ -704,7 +661,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	//##########################
 	public static String  getPositionCallingSimple() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCallingSimple_(1);
+		return ReflectCodeZZZ.getPositionCallingSimple_(2);
 	}
 	
 	private static String getPositionCallingSimple_(int iLevel) throws ExceptionZZZ{
@@ -733,20 +690,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	//#####################################################################################
 	//####################
 	public static String  getPositionCurrentXml() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionXml(1);
+		return ReflectCodeZZZ.getPositionCurrentXml_(1);
 	}
 	
 	//####################
 	public static String  getPositionCallingXml() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionXml(2);
+		return ReflectCodeZZZ.getPositionCurrentXml_(2);
 	}
 	
 	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionXml(2+iLevelPlus);
+		return ReflectCodeZZZ.getPositionCurrentXml_(2+iLevelPlus);
 	}
 	
 	public static String getPositionXml(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml(iLevel);
+		return ReflectCodeZZZ.getPositionCurrentXml_(iLevel+1);
 	}
 	
 	/**Umgib die einzelen Elemente mit XML-Tags.
@@ -758,7 +715,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXml(int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentXml_(iLevel);
+		return getPositionCurrentXml_(iLevel+1);
 	}
 	
 	private static String getPositionCurrentXml_(int iLevel) throws ExceptionZZZ {
@@ -768,7 +725,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+2;
+			int iLevelUsed = iLevel+1;
 			
 			//FGL20251118: 
 			//Formatanweisungen hier zu verwenden ist uebertrieben. (Extra Code zur Ansicht in getPositionCurrentXmlFormated() )
@@ -823,11 +780,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	//#################################################################
 	//####################
 	public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionXmlFormated(1);
+		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(1);
 	}
 	
 	public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXmlFormated(iLevel);
+		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(iLevel+1);
 	}
 		
 	/**Umgib die einzelen Elemente mit XML-Tags.
@@ -839,7 +796,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXmlFormated(int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentXmlFormated_(iLevel);
+		return getPositionCurrentXmlFormated_(iLevel+1);
 	}
 	
 	
@@ -850,7 +807,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
-			int iLevelUsed = iLevel+2;
+			int iLevelUsed = iLevel+1;
 			
 			//FGL20251118: 
 			//Formatanweisungen hier zu verwenden ist ein alternativer Ansatz
