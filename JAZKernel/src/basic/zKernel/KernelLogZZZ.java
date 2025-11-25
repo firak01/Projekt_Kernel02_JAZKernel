@@ -8,6 +8,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -16,6 +17,7 @@ import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.log.LogStringFormaterUtilZZZ;
 import basic.zBasic.util.log.LogStringFormaterZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
@@ -207,6 +209,16 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	}
 	
 	//+++ mit Datum
+	public synchronized static String computeLineDate() throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,			 
+		 };
+		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat);
+	}
+	
 	public synchronized static String computeLineDate(String sLog) throws ExceptionZZZ {	
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
@@ -229,6 +241,18 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 };
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog);
+	}
+	
+	public synchronized static String computeLineDate(Object obj) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+		 };
+		 
+		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat);
 	}
 	
 	public synchronized static String computeLineDate(Object obj, String sLog) throws ExceptionZZZ {	
@@ -643,42 +667,100 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	return bReturn;
 	}
 
+	//##################################################################################################
 	/* (non-Javadoc)
 	 * @see basic.zKernel.IKernelLogZZZ#WriteLineDate(java.lang.String)
 	 */
-	synchronized public boolean WriteLineDate(String stemp) throws ExceptionZZZ{
+	synchronized public boolean WriteLineDate(String sLog) throws ExceptionZZZ{
+		return WriteLineDate_(this, sLog);
+	}
+	synchronized public boolean WriteLineDate(Object obj, String sLog) throws ExceptionZZZ{
+		return WriteLineDate_(obj, sLog);
+	}
+	
+	synchronized private boolean WriteLineDate_(Object obj, String sLog) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDate(stemp);
+		String sLine = KernelLogZZZ.computeLineDate(obj, "");
+		
+		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
+		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+					
 		bReturn = WriteLine(sLine);
-		
+				
 		return bReturn;
 	}
-	synchronized public boolean WriteLineDate(Object obj, String stemp) throws ExceptionZZZ{
-		boolean bReturn = false;	
-		
-		String sLine = KernelLogZZZ.computeLineDate(obj, stemp);
-		bReturn = WriteLine(sLine); //Schreibe in eine Logdatei
-		return bReturn;
+	
+	//######################################
+	synchronized public boolean WriteLineDateWithPosition(String sLog) throws ExceptionZZZ{
+		return WriteLineDateWithPosition_(this.getClass(), sLog, 1);
 	}
-	synchronized public boolean WriteLineDateWithPosition(Class classObj, String stemp) throws ExceptionZZZ{
-		boolean bReturn = false;	
-		
-		String sLine = KernelLogZZZ.computeLineDateWithPosition(classObj, stemp);
-		bReturn = WriteLine(sLine);
-		
-		return bReturn;
+	
+	synchronized public boolean WriteLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ{
+		return WriteLineDateWithPosition_(classObj, sLog, 1);
 	}
-
-	synchronized public boolean WriteLineDateWithPosition(Object obj, String stemp) throws ExceptionZZZ{
+	
+	synchronized private boolean WriteLineDateWithPosition_(Class classObj, String sLog, int iStackTraceOffset) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDateWithPosition(obj, stemp);
+		String sLine = KernelLogZZZ.computeLineDate(classObj, "");
+		
+		//Jetzt die Position extra. Sie kommt ganz hintenan.
+		int iLevelUsed = iStackTraceOffset + 1;		
+		String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(iLevelUsed);
+		sLog = sLog + sPosition;
+				
+		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
+		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+			
 		bReturn = WriteLine(sLine);
 		
 		return bReturn;
 	}
 	
+	
+	
+	
+	
+//############################################
+	synchronized public boolean WriteLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ{
+		return WriteLineDateWithPosition_(obj, sLog, 1);
+	}
+	
+	
+	synchronized public boolean WriteLineDateWithPosition(Object obj, String sLog, int iStackTraceOffset) throws ExceptionZZZ{
+		return WriteLineDateWithPosition_(obj, sLog, iStackTraceOffset+1);
+	}
+	
+	synchronized private boolean WriteLineDateWithPosition_(Object obj, String sLog, int iStackTraceOffset) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		//Hier nicht die Position hinzunehmen. Wg. des Leerstring kommt sie dann VOR den Kommentar
+		String sLine = KernelLogZZZ.computeLineDate(obj, "");
+		
+		//Jetzt die Position extra. Sie kommt ganz hintenan.
+		int iLevelUsed = iStackTraceOffset + 1;		
+		String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(iLevelUsed);
+		sLog = sLog + sPosition;
+		
+		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
+		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+		
+		bReturn = WriteLine(sLine);
+		
+		return bReturn;
+	}
+	
+	/** Merke: Beim XML String findet kein "Bündigmachen" mit dem Justifier statt. 
+	 * @param obj
+	 * @param stemp
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
+	 */
 	synchronized public boolean WriteLineDateWithPositionXml(Object obj, String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		

@@ -73,4 +73,36 @@ public class LogStringFormaterUtilZZZ {
 		}//end  main:
 		return sReturn;
 	}
+	
+	//###############################################
+	//Wenn nun schon eine StringPosition uebergeben wurde, dann wird die Kommentarmarkierung ggfs. unnoetigerweise weit nach rechts verschoben.
+	//Also aufteilen, trimmen und neu bauen.
+	public static String justifyInfoPartAdded(IStringJustifierZZZ objStringJustifier, String sLine, String sLog) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			boolean bLineEmpty = StringZZZ.isEmpty(sLine);
+			boolean bLogEmpty  = StringZZZ.isEmpty(sLog);
+			if( bLogEmpty & bLineEmpty ) break main;
+			if(bLogEmpty && !bLineEmpty) {
+				return justifyInfoPart(objStringJustifier, sLine);
+			}else if (!bLogEmpty && bLineEmpty) {
+				return justifyInfoPart(objStringJustifier, sLog);
+			}
+			
+			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
+			String[]saLog = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			
+			//Trimme nun ggf. Leerzeichen weg
+			String[] saLogTrimmed = StringArrayZZZ.trim(saLog);
+			
+			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen 
+			String[] saLogCommented = StringArrayZZZ.plusStringBefore(saLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			
+			saLogCommented[0] = sLine + saLogCommented[0]; //vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
+			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
+		}//end  main:
+		return sReturn;
+	}
+	
+	
 }

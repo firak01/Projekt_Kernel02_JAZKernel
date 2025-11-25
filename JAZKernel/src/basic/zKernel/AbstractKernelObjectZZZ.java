@@ -39,13 +39,16 @@ import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.log.LogStringFormaterUtilZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
@@ -2372,6 +2375,9 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		if(objFound==null) {
 			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.computeDebugString("\t|", ":");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + stemp);
+			
+			this.logLineDateWithPosition(stemp);
+			
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else {
@@ -3537,17 +3543,18 @@ MeinTestParameter=blablaErgebnis
 				//#######################################
 				//### Proof the existance of the file
 				//#######################################
-				String sFileTotal = FileEasyZZZ.joinFilePathName(sDirectoryname, sFilename);
-				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
+				String sFileTotal = FileEasyZZZ.joinFilePathName(sDirectoryname, sFilename);				
+				if(this.getLogObject()!=null) this.getLogObject().WriteLineDateWithPosition("sFileTotal = " +  sFileTotal);
 				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
 				
 				//Mache das neue Ini-Objekt
 				String sPathTotalToUse = objFile.getAbsolutePath();
 				String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 				sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
-				System.out.println(sLog);
+				this.logLineDate(sLog);
 				if(FileEasyZZZ.exists(sPathTotalToUse)) {
 					objReturn = new IniFile(sPathTotalToUse);
+					
 					//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
 					
 				}else {
@@ -7556,7 +7563,11 @@ MeinTestParameter=blablaErgebnis
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
+			String sTemp = KernelLogZZZ.computeLineDate(this);
+			
+			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+			sTemp = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sTemp, sLog);
+			
 			System.out.println(sTemp);
 		}else {
 			objLog.WriteLineDate(sLog);
@@ -7571,10 +7582,19 @@ MeinTestParameter=blablaErgebnis
 	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
-			System.out.println(sTemp);
+			//Hier nicht die Position hinzunehmen. Wg. des Leerstring kommt sie dann VOR den Kommentar
+			String sLine = KernelLogZZZ.computeLineDate(this, ""); 
+			
+			//Jetzt die Position extra. Sie kommt ganz hintenan.
+			String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(1);//current+1=calling
+			sLog = sLog + sPosition;
+			
+			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+			sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+			
+			System.out.println(sLine);
 		}else {
-			objLog.WriteLineDateWithPosition(this, sLog);
+			objLog.WriteLineDateWithPosition(this, sLog, 1);
 		}			
 	}
 	

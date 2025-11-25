@@ -99,5 +99,24 @@ public class ReflectCodeZZZTest   extends TestCase{
 	}
 	
 	
+	//#####################################################################################################
+	
+	public void testGetMethodCurrentNameLined() {
+		try {
+			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
+			String sValue = ReflectCodeZZZ.getMethodCurrentNameLined();			
+			int iLineNr = 107;
+			boolean bStartsWith = StringZZZ.startsWith(sValue, "testGetMethodCurrentNameLined - Line " + iLineNr );
+			assertTrue(bStartsWith);
+			
+			boolean bEndsWith = StringZZZ.endsWith(sValue, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR);
+			assertTrue(bEndsWith);
+						
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
+	}
+	
 	
 }//end class

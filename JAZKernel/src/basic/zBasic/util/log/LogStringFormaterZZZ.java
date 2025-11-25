@@ -42,10 +42,6 @@ public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 		//Hier mögliche Abweichende Strings angeben, z.B. in einfache Hochkommata packen			
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME),"'" + ILogStringZZZ.LOGSTRING.CLASSNAME.getFormat() + "'");
 		
-		//und das ist nicht notwendig, dar argnext02 schon einfache hochkommata enthaelt: hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT01), "'" + ILogStringZZZ.sARGNEXT01 + "'");
-		//und das bleibt unveraendert hmReturn.put(new Integer(ILogStringZZZ.iTHREAD), ILogStringZZZ.sTHREAD);
-		
-		
 		return hmReturn;
 	}
 }

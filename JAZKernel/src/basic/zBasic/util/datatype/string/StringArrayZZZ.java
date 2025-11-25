@@ -949,6 +949,14 @@ output:
 	 *
 	 * javadoc created by: 0823, 08.12.2006 - 13:13:09
 	 */
+	public static String[] plusStringBefore(String[] saString, String sString) throws ExceptionZZZ{
+		return plusString(saString, sString, "BEFORE");
+	}
+	
+	public static String[] plusStringBehind(String[] saString, String sString, String sFlagin) throws ExceptionZZZ{
+		return plusString(saString, sString, "BEHIND");
+	}
+	
 	public static String[] plusString(String[] saString, String sString, String sFlagin) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
@@ -1117,6 +1125,29 @@ output:
 	public static String[] sort(Object[] saSource) throws ExceptionZZZ{
 		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
 		return saObj.sort();					
+	}
+	
+	/**Trimme hier nicht leere Array-Elemente (einzeln wie mit String.trim() )
+	 * @param saString
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.11.2025, 19:11:51
+	 */
+	public static String[] trim(String[] saString) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(saString)) break main;
+			
+			saReturn = new String[saString.length];
+			int iIndex = -1;
+			for(String sString : saString) {
+				iIndex++;
+				if(sString!=null) {
+					saReturn[iIndex] = sString.trim();
+				}
+			}
+		}//end main:
+		return saReturn;
 	}
 		
 	public static Vector toVector(String[] saString){
