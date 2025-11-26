@@ -5,9 +5,10 @@ import basic.zBasic.ReflectTHECodeZZZTest;
 import basic.zBasic.ReflectUtilZZZTest;
 import basic.zBasic.ReflectClassZZZTest;
 import basic.zBasic.ReflectEnvironmentZZZTest;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
-import basic.zBasic.util.abstractList.ArrayListZZZTest;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZTest;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapIterableKeyZZZTest;
@@ -107,10 +108,18 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);
 		objReturn.addTestSuite(EnumSetMappedZZZTest.class);
 		
-		//Tests fuer Datentypen etc.
+		//Tests fuer Container ARRAY
+		objReturn.addTestSuite(ArrayUtilZZZTest.class);
+		objReturn.addTestSuite(IntegerArrayZZZTest.class);
+		objReturn.addTestSuite(StringArrayZZZTest.class);
+		
+		//Tests fuer Container LISTE / MAP
 		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);
-		objReturn.addTestSuite(ArrayListZZZTest.class);	
-		objReturn.addTestSuite(AsciiZZZTest.class);		
+		objReturn.addTestSuite(ArrayListUtilZZZTest.class);	
+		
+		objReturn.addTestSuite(VectorUtilZZZTest.class);
+		objReturn.addTestSuite(VectorLimitedZZZTest.class);
+		objReturn.addTestSuite(Vector3ZZZTest.class);
 		
 		objReturn.addTestSuite(HashMapZZZTest.class);
 		objReturn.addTestSuite(HashMapIterableKeyZZZTest.class);
@@ -129,16 +138,13 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(CounterByCharacterAscii_AlphanumericSignificantZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiFactoryZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiSingletonZZZTest.class);
-		objReturn.addTestSuite(VectorUtilZZZTest.class);
-		objReturn.addTestSuite(VectorLimitedZZZTest.class);
-		objReturn.addTestSuite(Vector3ZZZTest.class);
 		
+		//Tests fuer Datentypen etc.
+		objReturn.addTestSuite(AsciiZZZTest.class);				
 		objReturn.addTestSuite(DataStoreZZZTest.class);
 		objReturn.addTestSuite(DateTimeZZZTest.class);
 		objReturn.addTestSuite(BinaryTokenizerZZZTest.class);
-		objReturn.addTestSuite(IntegerZZZTest.class);
-		objReturn.addTestSuite(IntegerArrayZZZTest.class);
-		objReturn.addTestSuite(StringArrayZZZTest.class);
+		objReturn.addTestSuite(IntegerZZZTest.class);		
 		objReturn.addTestSuite(StringZZZTest.class);
 		objReturn.addTestSuite(XmlTagMatcherZZZTest.class);
 		objReturn.addTestSuite(XmlParserZZZTest.class);		

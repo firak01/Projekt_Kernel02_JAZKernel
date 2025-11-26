@@ -682,7 +682,11 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			int iIndex = -1;
 			for(Object obj : lista){
 				iIndex++;
-				saReturn[iIndex] = obj.toString();
+				if(obj!=null) {
+					saReturn[iIndex] = obj.toString();
+				}else {
+					saReturn[iIndex] = null;
+				}
 			}
 		}//end main:
 		return saReturn;	
@@ -705,6 +709,23 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return aReturn;	
 	}
 	
+	//###############################
+	@SuppressWarnings({ "rawtypes", "unchecked"})
+	public static ArrayList<?> trim(ArrayList<?> lista){
+		ArrayList listaReturn = null;
+		main:{
+			if(lista==null)break main;					
+			
+			listaReturn=new ArrayList();
+			for(int icount=0; icount < lista.size(); icount++ ){
+				Object obj = lista.get(icount);
+				if(obj!=null) listaReturn.add(obj);
+			}	
+		}//End main:
+		return listaReturn;
+	}
+	
+	//###############################
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<?> unique(ArrayList<?> lista){
 		ArrayList listaReturn = null;

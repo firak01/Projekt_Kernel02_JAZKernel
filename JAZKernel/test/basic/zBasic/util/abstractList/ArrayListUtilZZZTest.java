@@ -14,7 +14,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZ;
 
 import junit.framework.TestCase;
 
-public class ArrayListZZZTest extends TestCase{
+public class ArrayListUtilZZZTest extends TestCase{
 	private ArrayList alTest = null; 
 	 
     protected void setUp(){

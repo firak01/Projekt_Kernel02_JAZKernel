@@ -206,6 +206,93 @@ public class ArrayUtilZZZ<T>{
         return objaReturn;
     }
 	
+	 /** Ein und Ausgabearray unterscheiden sich
+     * @param objArray
+     * @return
+     * @author Fritz Lindhauer, 25.11.2025, 19:15:01
+     */
+    public static <T> T[] removeNulls(T[] objArray) {
+    	return removeNulls1_(objArray);   //Ein und Ausgabearray unterscheiden sich
+    	//return removeNullsUsingArraycopy_(objArray); //Ein und Ausgabearray unterscheiden sich
+    }
+    
+    /** von ChatGPT erstellte Version 1
+     * @param input
+     * @return
+     * @author Fritz Lindhauer, 25.11.2025, 19:27:29
+     */
+    private static <T> T[] removeNulls1_(T[] input) {
+        if (input == null) {
+            return null;
+        }
+
+        // 1. Anzahl der nicht-null Elemente bestimmen
+        int count = 0;
+        for (T element : input) {
+            if (element != null) {
+                count++;
+            }
+        }
+
+        // Wenn nur null-Werte vorhanden sind → leeres Array zurückgeben
+        @SuppressWarnings("unchecked")
+        T[] result = (T[]) Array.newInstance(
+                input.getClass().getComponentType(),
+                count
+        );
+
+        // 2. Nicht-null Werte in neues Array kopieren
+        int index = 0;
+        for (T element : input) {
+            if (element != null) {
+                result[index++] = element;
+            }
+        }
+
+        return result;
+    }
+
+    
+    /**von ChatGPT erstellte Version 2
+     * @param input
+     * @return
+     * @author Fritz Lindhauer, 25.11.2025, 19:27:53
+     */
+    private static <T> T[] removeNullsUsingArraycopy_(T[] input) {
+        if (input == null) {
+            return null;
+        }
+
+        // 1. Zählen, wie viele Elemente nicht null sind
+        int count = 0;
+        for (T element : input) {
+            if (element != null) {
+                count++;
+            }
+        }
+
+        // Wenn alle null → leeres Array zurückgeben
+        @SuppressWarnings("unchecked")
+        T[] result = (T[]) Array.newInstance(
+                input.getClass().getComponentType(), 
+                count
+        );
+
+        // 2. Kopieren mit System.arraycopy
+        int index = 0;
+        for (T element : input) {
+            if (element != null) {
+                // einzelnes Element kopieren
+                System.arraycopy(new Object[]{element}, 0, result, index, 1);
+                index++;
+            }
+        }
+
+        return result;
+    }
+	
+	
+	
 	
 	
 	
@@ -274,89 +361,16 @@ public class ArrayUtilZZZ<T>{
         return listaReturn;
     }
     
-    /**
+    /** Ein und Ausgabearray unterscheiden sich
      * @param objArray
      * @return
      * @author Fritz Lindhauer, 25.11.2025, 19:15:01
      */
-    public static <T> T[] trim(T[] objArray) {
-    	return removeNulls1(objArray);
+    public static <T> T[] trim(T[] objArray) {    	
+    	return removeNulls(objArray);
     }
     
-    /** von ChatGPT erstellte Version 1
-     * @param input
-     * @return
-     * @author Fritz Lindhauer, 25.11.2025, 19:27:29
-     */
-    public static <T> T[] removeNulls1(T[] input) {
-        if (input == null) {
-            return null;
-        }
-
-        // 1. Anzahl der nicht-null Elemente bestimmen
-        int count = 0;
-        for (T element : input) {
-            if (element != null) {
-                count++;
-            }
-        }
-
-        // Wenn nur null-Werte vorhanden sind → leeres Array zurückgeben
-        @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(
-                input.getClass().getComponentType(),
-                count
-        );
-
-        // 2. Nicht-null Werte in neues Array kopieren
-        int index = 0;
-        for (T element : input) {
-            if (element != null) {
-                result[index++] = element;
-            }
-        }
-
-        return result;
-    }
-
-    
-    /**von ChatGPT erstellte Version 2
-     * @param input
-     * @return
-     * @author Fritz Lindhauer, 25.11.2025, 19:27:53
-     */
-    public static <T> T[] removeNulls2(T[] input) {
-        if (input == null) {
-            return null;
-        }
-
-        // 1. Zählen, wie viele Elemente nicht null sind
-        int count = 0;
-        for (T element : input) {
-            if (element != null) {
-                count++;
-            }
-        }
-
-        // Wenn alle null → leeres Array zurückgeben
-        @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(
-                input.getClass().getComponentType(), 
-                count
-        );
-
-        // 2. Kopieren mit System.arraycopy
-        int index = 0;
-        for (T element : input) {
-            if (element != null) {
-                // einzelnes Element kopieren
-                System.arraycopy(new Object[]{element}, 0, result, index, 1);
-                index++;
-            }
-        }
-
-        return result;
-    }
+   
 	
 	/** s. https://sentry.io/answers/arraylist-from-array/
 	 * 
