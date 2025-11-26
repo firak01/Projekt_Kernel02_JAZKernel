@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -13,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -758,20 +761,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	//#####################################################################################
 	//####################
 	public static String  getPositionCurrentXml() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml_(1);
+		return ReflectCodeZZZ.getPositionCurrentXml_(null, 1);
 	}
 	
 	//####################
 	public static String  getPositionCallingXml() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml_(2);
+		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2);
 	}
 	
 	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml_(2+iLevelPlus);
+		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2+iLevelPlus);
 	}
 	
 	public static String getPositionXml(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXml_(iLevel+1);
+		return ReflectCodeZZZ.getPositionCurrentXml_(null, iLevel+1);
 	}
 	
 	/**Umgib die einzelen Elemente mit XML-Tags.
@@ -783,10 +786,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXml(int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentXml_(iLevel+1);
+		return getPositionCurrentXml_(null, iLevel+1);
 	}
 	
-	private static String getPositionCurrentXml_(int iLevel) throws ExceptionZZZ {
+	private static String getPositionCurrentXml_(Class objClass, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
@@ -800,6 +803,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Hier wird der LogStringFormatManagerXml verwendet um diesen String zu errechnen.
 			//Dabei ist der String der aktuellen Position eh nur für andere Log-Formatierungen die Quelle für Daten.
 			//Also, einfach nur die Tags ausrechnen und zusammenpacken:
+						
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
+			String sClassname = ReflectCodeZZZ.getClassCallingName(iLevel);
+			ITagByTypeZZZ objTagClassname = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.CLASSNAME, sClassname);
+			String sClassnameTag = objTagClassname.getElementString();
 			
 			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//       Nur die Zeilennummer, etc. muss AN DIESER STELLE (!) so errechnet werden.			
@@ -825,14 +833,35 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 			
-			sReturn = sMethodTag + sFileTag + sLineTag + sPositionInFileTag; 
+			sReturn = sClassnameTag + sMethodTag + sFileTag + sLineTag + sPositionInFileTag; 
 					
 			//umgib den Tag mit dem <positioncurrent> Tag
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 			sReturn = objTagPositionCurrent.getElementString();	
 			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Noch weitere Informationen voranstellen (ausserhalb des positioncurrent-Tags
+			long lngThreadId = Thread.currentThread().getId();     
+			String sThreadId = LongZZZ.longToString(lngThreadId);
+			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
+			String sThreadIdTag = objTagThreadId.getElementString();
+				
+			GregorianCalendar d = new GregorianCalendar();
+	        Integer iDateYear = new Integer(d.get(Calendar.YEAR));
+	        Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	        Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	        Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	        Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+	        String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	               + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();		
+	        ITagByTypeZZZ objTagDate = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.DATE, sDate);
+	 		String sDateTag = objTagThreadId.getElementString();
+	 							
+			String sReturnPre = sThreadIdTag + sDateTag;
+				
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Abschliessenden Trenner für Folgekommentare
-			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 			
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
 //			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
@@ -848,11 +877,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	//#################################################################
 	//####################
 	public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(1);
+		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(null, 1);
 	}
 	
 	public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ{
-		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(iLevel+1);
+		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(null, iLevel+1);
 	}
 		
 	/**Umgib die einzelen Elemente mit XML-Tags.
@@ -864,11 +893,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getPositionCurrentXmlFormated(int iLevel) throws ExceptionZZZ {
-		return getPositionCurrentXmlFormated_(iLevel+1);
+		return getPositionCurrentXmlFormated_(null, iLevel+1);
 	}
 	
 	
-	private static String getPositionCurrentXmlFormated_(int iLevel) throws ExceptionZZZ {
+	private static String getPositionCurrentXmlFormated_(Class objClass, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
@@ -882,6 +911,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Hier wird der LogStringFormatManagerXml verwendet um diesen String zu errechnen.
 			//Da diese Strings eh in XML umgewandelt werden sollen, uebergeben wir keine XML Tags an die zugrundeliegende HashMap,
 			//sondern die einfachen Strings.
+		
+			String sClassname = ReflectCodeZZZ.getClassCallingName(iLevelUsed);
 			
 			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//       Nur die Zeilennummer, etc. muss AN DIESER STELLE (!) so errechnet werden.			
@@ -909,6 +940,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Hier müssen nun die PRO und POST Formatierungsanweisungen definiert werden
 			//und sie müssen vor und dahinter geschrieben werden.
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+			
+			//Ansatzpunkt für weiter Tags als Format			
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_XML_BY_HASHMAP, sClassname);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_HASHMAP, sMethod);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_XML_BY_HASHMAP, sLine);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_HASHMAP, sFile);
@@ -924,14 +958,36 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
 			sReturn = objTagPositionCurrent.getElementString();	
 			
+			//++++++++++++++++++++++++++++++++++++
+			//Noch weitere Informationen voranstellen (ausserhalb des positioncurrent-Tags)
+			long lngThreadId = Thread.currentThread().getId();     
+			String sThreadId = LongZZZ.longToString(lngThreadId);
+			
+			GregorianCalendar d = new GregorianCalendar();
+	        Integer iDateYear = new Integer(d.get(Calendar.YEAR));
+	        Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	        Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	        Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	        Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+	        String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	                     + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();		
+	       	
+			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogStringPre = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();			
+			hmLogStringPre.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML_BY_HASHMAP, sDate);
+			hmLogStringPre.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML_BY_HASHMAP, sThreadId);
+			
+			//Erzeuge hier den String als XML Variante. 
+			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
+			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
+			ILogStringFormaterZZZ objFormaterPre = new LogStringFormater4ReflectCodeZZZ();
+			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);
+			
+			//+++++++++++++++++++++++++++++++++++++
 			//Abschliessenden Trenner für Folgekommentare
-			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN			
 //			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-//			
 //			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
 //			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:

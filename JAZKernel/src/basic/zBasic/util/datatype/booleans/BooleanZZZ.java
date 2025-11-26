@@ -15,6 +15,10 @@ import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
+/** Merke: Der Packagename endet mit einem "s", da "boolean" selbst als java-Schluesselwort nicht darin verwendet werden darf. 
+ * @author fl86kyvo
+ *
+ */
 public class BooleanZZZ implements IConstantZZZ, Serializable{
 	private static final char cYes = IKeyPressConstantZZZ.cKeyYes;
 	private static final char cNo = IKeyPressConstantZZZ.cKeyYes;
