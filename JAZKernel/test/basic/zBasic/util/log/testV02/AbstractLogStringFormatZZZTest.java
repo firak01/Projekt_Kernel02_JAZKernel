@@ -2,6 +2,7 @@ package basic.zBasic.util.log.testV02;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
@@ -56,7 +57,7 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             DummyTestObjectZZZ dummy = new DummyTestObjectZZZ();
             String sLog = "der erste Logeintrag";
             String thread = "[Thread:";
-            String cls = dummy.getClass().getSimpleName() + ":";
+            String cls = dummy.getClass().getSimpleName() + IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 
             String result = compute(dummy, sLog);
             System.out.println(result);
@@ -80,7 +81,7 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             String s3="dritter";
 
             String thread = "[Thread:";
-            String cls = dummy.getClass().getSimpleName()+":";      
+            String cls = dummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;  
 
             IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,

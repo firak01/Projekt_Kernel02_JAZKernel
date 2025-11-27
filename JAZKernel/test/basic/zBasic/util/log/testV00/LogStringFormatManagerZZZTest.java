@@ -2,6 +2,7 @@ package basic.zBasic.util.log.testV00;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -61,7 +62,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
 			sLog = "der erste Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 
 			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, sLog);
 			assertNotNull(sLogValue);
@@ -97,7 +98,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			sLog1 = "der erste Logeintrag";
 			sLog2 = "der zweite Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
@@ -238,7 +239,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
@@ -353,7 +354,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						

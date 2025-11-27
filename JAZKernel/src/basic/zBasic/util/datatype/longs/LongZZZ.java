@@ -24,11 +24,11 @@ public class LongZZZ implements IConstantZZZ, Serializable{
 		String sReturn = null;
 		main:{
 			//Es gibt nun verschieden Möglichkeiten
-			//Variante 1:
-			sReturn = Hex.longToString(lValue);
+			//Variante 1: Setzt '0'en voran
+			//sReturn = Hex.longToString(lValue);
 			
 			//Variante 2:
-			//sReturn = IoUtil.longToString(lValue);
+			sReturn = IoUtil.longToString(lValue);
 
 			//Variante 3:
 			//Long objLong = new Long(lValue);

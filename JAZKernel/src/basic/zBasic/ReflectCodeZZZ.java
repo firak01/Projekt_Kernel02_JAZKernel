@@ -512,7 +512,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getClassCurrentName() throws ExceptionZZZ{
-		  return ReflectCodeZZZ.getClassCallingName_(1);//1 Stacktraceposition weiter steckt schon in "calling"
+		  return ReflectCodeZZZ.getClassCallingName_(0);//0, weil Stacktraceposition weiter steckt schon in "calling"
 	  }
 	
 	  /**
@@ -521,7 +521,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 * @throws ExceptionZZZ 
 		 */
 		public static String getClassCurrentName(int iStacktracePositionOffset) throws ExceptionZZZ{
-			  return ReflectCodeZZZ.getClassCallingName_(iStacktracePositionOffset+1);//1 Stacktraceposition weiter steckt schon in "calling"
+			  return ReflectCodeZZZ.getClassCallingName_(iStacktracePositionOffset);//1 Stacktraceposition weiter steckt schon in "calling"
 		  }
 
 //		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
@@ -855,7 +855,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	        String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	               + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();		
 	        ITagByTypeZZZ objTagDate = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.DATE, sDate);
-	 		String sDateTag = objTagThreadId.getElementString();
+	 		String sDateTag = objTagDate.getElementString();
 	 							
 			String sReturnPre = sThreadIdTag + sDateTag;
 				
@@ -942,7 +942,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			
 			//Ansatzpunkt für weiter Tags als Format			
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_XML_BY_HASHMAP, sClassname);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_XML_BY_HASHMAP, sClassname);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_HASHMAP, sMethod);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_XML_BY_HASHMAP, sLine);
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_HASHMAP, sFile);

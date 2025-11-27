@@ -1451,6 +1451,39 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	public static String mid(String sString, String sToFindLeft, String sToFindRight) {
+		return StringZZZ.mid_(sString, sToFindLeft, sToFindRight, true);
+	}
+	
+	private static String mid_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sToFindLeft) && StringZZZ.isEmpty(sToFindRight))break main;
+								
+			if (StringZZZ.isEmpty(sToFindLeft)){
+				sReturn = StringZZZ.leftback(sString, sToFindRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sToFindRight)){
+				sReturn = StringZZZ.rightback(sString, sToFindLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			sReturn = StringZZZ.rightback(sString, sToFindLeft, bExactMatch);
+			sReturn = StringZZZ.leftback(sReturn, sToFindRight, bExactMatch);
+		}
+		return sReturn;
+	}
+	
+	
+	
 	public static String midKeep(String sString, int iPos, String sToFind){
 		return StringZZZ.midKeep(sString, iPos, sToFind, true);
 	}

@@ -66,20 +66,21 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static int iFACTOR_DATE_XML_BY_HASHMAP=61;
 	public static int iFACTOR_THREADID_XML_BY_HASHMAP=67;
 	public static int iFACTOR_CLASSNAME_XML_BY_HASHMAP=71;
-	public static int iFACTOR_CLASSMETHOD_XML_BY_HASHMAP=73;
-	public static int iFACTOR_CLASSFILELINE_XML_BY_HASHMAP=79;
-	public static int iFACTOR_CLASSFILENAME_XML_BY_HASHMAP=83;
-	public static int iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP=88;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_CLASSNAMESIMPLE_XML_BY_HASHMAP=73;
+	public static int iFACTOR_CLASSMETHOD_XML_BY_HASHMAP=79;
+	public static int iFACTOR_CLASSFILELINE_XML_BY_HASHMAP=83;
+	public static int iFACTOR_CLASSFILENAME_XML_BY_HASHMAP=89;
+	public static int iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP=97;  //mit der Zeilenummer dahinter
 	
-	public static int iFACTOR_CLASSMETHOD_STRING_BY_XML=97;
-	public static int iFACTOR_CLASSFILELINE_STRING_BY_XML=101;
-	public static int iFACTOR_CLASSFILENAME_STRING_BY_XML=103;
-	public static int iFACTOR_CLASSFILEPOSITION_STRING_BY_XML=107;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_POSITIONCURRENT_STRING_BY_XML=113;   //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition>#	
+	public static int iFACTOR_CLASSMETHOD_STRING_BY_XML=101;
+	public static int iFACTOR_CLASSFILELINE_STRING_BY_XML=103;
+	public static int iFACTOR_CLASSFILENAME_STRING_BY_XML=107;
+	public static int iFACTOR_CLASSFILEPOSITION_STRING_BY_XML=113;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_POSITIONCURRENT_STRING_BY_XML=127;   //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition>#	
 	                                                               //... die Tags werden daraus entfernt.
 	
-	public static int iFACTOR_THREADID_STRING_BY_STRING=127;
-	public static int iFACTOR_DATE_STRING_BY_STRING=131;
+	public static int iFACTOR_THREADID_STRING_BY_STRING=131;
+	public static int iFACTOR_DATE_STRING_BY_STRING=137;
 	
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
@@ -121,6 +122,7 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 		DATE_XML_BY_HASHMAP("datebyhm",ILogStringFormatZZZ.iFACTOR_DATE_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeDateZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeDateZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das Datum in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
 		THREADID_XML_BY_HASHMAP("threadidbyhm",ILogStringFormatZZZ.iFACTOR_THREADID_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeThreadIdZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeThreadIdZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das ThreadId in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
 		CLASSNAME_XML_BY_HASHMAP("classnamebyhm",ILogStringFormatZZZ.iFACTOR_CLASSNAME_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeClassNameZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeClassNameZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Klassennamen in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),		
+		CLASSNAMESIMPLE_XML_BY_HASHMAP("classnamesimplebyhm",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeClassNameZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeClassNameZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Klassennamen (ohne Package) in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
 		CLASSMETHOD_XML_BY_HASHMAP("methodbyhm",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeMethodZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeMethodZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
 		CLASSFILELINE_XML_BY_HASHMAP("linenrbyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeLineNumberZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeLineNumberZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),
 		CLASSFILENAME_XML_BY_HASHMAP("filenamebyhm",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + XmlUtilUnensuredZZZ.computeTagPartOpening(ITagTypeFileNameZZZ.sTAGNAME), "%s",ILogStringFormatZZZ.iARG_STRINGHASHMAP, XmlUtilUnensuredZZZ.computeTagPartClosing(ITagTypeFileNameZZZ.sTAGNAME) + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Java-Datei in diesem Format gespeichert in einer HashMap aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXmlFormated()."),

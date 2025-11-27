@@ -2,6 +2,7 @@ package basic.zBasic.util.log.testV00;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -73,7 +74,7 @@ public class LogStringFormaterZZZTest extends TestCase{
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
 			sLog = "der erste Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 
 			sLogValue = objLogStringTest.compute(objDummy, sLog);
 			assertNotNull(sLogValue);
@@ -109,11 +110,11 @@ public class LogStringFormaterZZZTest extends TestCase{
 			sLog1 = "der erste Logeintrag";
 			sLog2 = "der zweite Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,																						
 							};
@@ -141,7 +142,7 @@ public class LogStringFormaterZZZTest extends TestCase{
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag aber nur 1x in der Zeile erscheinen.	
 			//a) identischer Fall
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat02= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
@@ -257,10 +258,10 @@ public class LogStringFormaterZZZTest extends TestCase{
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
@@ -377,10 +378,10 @@ public class LogStringFormaterZZZTest extends TestCase{
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+":";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,

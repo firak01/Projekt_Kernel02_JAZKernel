@@ -25,7 +25,7 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 	public enum TAGTYPE implements IEnumSetMappedTagTypeZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 		DATE("date",TagTypeDateZZZ.sTAGNAME, "Name des Datums (z.B. in einer Logzeile)"),
-		THREADID("threadid",TagTypeDateZZZ.sTAGNAME, "Thread als ID-Nummer (z.B. in einer Logzeile)"),
+		THREADID("threadid",TagTypeThreadIdZZZ.sTAGNAME, "Thread als ID-Nummer (z.B. in einer Logzeile)"),
 		CLASSNAME("classname",TagTypeClassNameZZZ.sTAGNAME, "Name der Klasse im Quellcode"),
 		LINENUMBER("linenumber",TagTypeLineNumberZZZ.sTAGNAME, "Zeilennummer im Quellcode"),
 		FILENAME("filename",TagTypeFileNameZZZ.sTAGNAME,"Name der (Java) Datei"),

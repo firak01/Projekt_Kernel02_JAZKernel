@@ -451,21 +451,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		    		    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
 	        switch (ienumFormatLogString.getFactor()) {
-	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING:
-	                if (classObj == null) {
-	                    // Nichts tun
-	                } else {
-	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
-	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
-	                    } else {
-	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING));
-	                        sReturn = String.format(sFormat, classObj.getSimpleName());
-	                    }
-	                }
-	                break;
-
 	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
@@ -480,7 +465,20 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                    }
 	                }
 	                break;
-
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING:
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
+	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING));
+	                        sReturn = String.format(sFormat, classObj.getSimpleName());
+	                    }
+	                }
+	                break;
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun

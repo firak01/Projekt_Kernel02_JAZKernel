@@ -1,5 +1,9 @@
 package basic.zBasic;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
@@ -62,7 +66,7 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			
 			
 			//Merke: Von dieser Testfunktion aus, ist keine sinnvolle "calling"-Methode aufrufbar.
-			String sMethodCallingMinus1 = ReflectCodeZZZ.getMethodCallingName(-1);			
+			String sMethodCallingMinus1 = ReflectCodeZZZ.getMethodCallingName(0);			
 			assertTrue(sMethodCallingMinus1.equals(sMethodCurrent0));
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -102,8 +106,14 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 			
 			//Merke: Von dieser Testfunktion aus, ist keine sinnvolle "calling"-Methode aufrufbar.
 			iLineCurrent1 = ReflectCodeZZZ.getMethodCurrentLine(0,1);
-			int iLineCallingMinus1 = ReflectCodeZZZ.getMethodCallingLine(-1);
-			assertTrue(iLineCallingMinus1==iLineCurrent1);
+			int iLineCalling0 = ReflectCodeZZZ.getMethodCallingLine(0);
+			assertTrue(iLineCalling0==iLineCurrent1);
+			
+			iLineCurrent1 = ReflectCodeZZZ.getMethodCurrentLine(0,1);
+			int iLineCalling = ReflectCodeZZZ.getMethodCallingLine();
+			assertTrue(iLineCalling==iLineCurrent1);
+			
+			
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -171,18 +181,31 @@ public class ReflectTHECodeZZZTest  extends TestCase{
 					sPositionCurrent.contains(Integer.toString(iLineCurrentInPosition)));
 			
 		
-			//Der Methodentag folgt nun auf <postioncurrent> und steht trotzdem voran
+			//Der Methodentag ist nun innnerhalb <postioncurrent> 
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethodCurrent);
 			String sMethodTag = objTagMethod.getElementString();
 			
-			//wg geaendert ab 20251102: Nun wird Methodenname und Klassenname noch von dem Tag <positioncurrent> umgeben.
-			ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sMethodTag);
-			String sPositionTag = objTagPosition.getElementString();
+			String sPosition = sMethodTag; //eigentlich noch mehr, aber fuer den Test soll es reichen.
+			ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sPosition);
 			
-			String sPositionTagStart = StringZZZ.left(sPositionTag, objTagPosition.getTagPartClosing());
-			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der PositionCurrent-Tag sollte jetzt am Anfang stehen).",
-					sPositionCurrent.startsWith(sPositionTagStart) 
+			//Der Tag mit dem Thread steht voran
+			long lngThreadId = Thread.currentThread().getId();     
+			String sThreadId = LongZZZ.longToString(lngThreadId);
+			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
+			String sThreadIdTag = objTagThreadId.getElementString();
+			
+		
+	 		//+++++++++++++++++++++++++
+			String sPositionTagSearched = StringZZZ.mid(sPositionCurrent, objTagPosition.getTagPartOpening(),objTagPosition.getTagPartClosing());
+			assertNotNull(sPositionTagSearched);
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der Method-Tag sollte enthalten sein).",
+					sPositionCurrent.contains(sMethodTag) 
 					&& sPositionCurrent.length() > sMethodCurrent.length());
+			
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + sPositionCurrent + "' wurde nicht erwartet (Der ThreadId-Tag sollte jetzt am Anfang stehen).",
+					StringZZZ.startsWith(sPositionCurrent, sThreadIdTag)
+					&& sPositionCurrent.length() > sThreadIdTag.length());
+			
 			
 			
 		} catch (ExceptionZZZ ez) {
