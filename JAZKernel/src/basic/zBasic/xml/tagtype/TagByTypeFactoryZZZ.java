@@ -7,6 +7,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
+import basic.zBasic.reflection.position.TagTypeClassNameZZZ;
+import basic.zBasic.reflection.position.TagTypeDateZZZ;
+import basic.zBasic.reflection.position.TagTypeThreadIdZZZ;
 import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
@@ -21,6 +24,9 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	//################### ENUM ALLER "EINFACHEN" KERNEL-TAG-TYPEN ##############
 	//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 	public enum TAGTYPE implements IEnumSetMappedTagTypeZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+		DATE("date",TagTypeDateZZZ.sTAGNAME, "Name des Datums (z.B. in einer Logzeile)"),
+		THREADID("threadid",TagTypeDateZZZ.sTAGNAME, "Thread als ID-Nummer (z.B. in einer Logzeile)"),
+		CLASSNAME("classname",TagTypeClassNameZZZ.sTAGNAME, "Name der Klasse im Quellcode"),
 		LINENUMBER("linenumber",TagTypeLineNumberZZZ.sTAGNAME, "Zeilennummer im Quellcode"),
 		FILENAME("filename",TagTypeFileNameZZZ.sTAGNAME,"Name der (Java) Datei"),
 		METHOD("method",TagTypeMethodZZZ.sTAGNAME,"Name der aufgerufenen Methode"),
@@ -174,6 +180,15 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 				break;	
 			case TagTypeFileNameZZZ.sTAGNAME:
 				objReturn = new TagTypeFileNameZZZ();
+				break;
+			case TagTypeDateZZZ.sTAGNAME:
+				objReturn = new TagTypeDateZZZ();
+				break;
+			case TagTypeThreadIdZZZ.sTAGNAME:
+				objReturn = new TagTypeThreadIdZZZ();
+				break;			
+			case TagTypeClassNameZZZ.sTAGNAME:
+				objReturn = new TagTypeClassNameZZZ();
 				break;
 			case TagTypeMethodZZZ.sTAGNAME:
 				objReturn = new TagTypeMethodZZZ();

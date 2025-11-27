@@ -1520,6 +1520,15 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//Entferne nun die in ReflectCodeZZZ.getPositionCurrent() -sinnvollerweise - hinzugenommenen XML Tags
 			//ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
+			ITagTypeZZZ objTagTypeDate = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.DATE);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeDate, "");
+			
+			ITagTypeZZZ objTagTypeThreadId = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeThreadId, "");
+
+			ITagTypeZZZ objTagTypeClassName = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.CLASSNAME);
+			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeClassName, "");
+			
 			ITagTypeZZZ objTagTypeLine = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeLine, "");
 			
