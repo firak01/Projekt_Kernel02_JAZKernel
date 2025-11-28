@@ -104,7 +104,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,																						
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
 			
 			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat01, sLog1);
@@ -131,7 +131,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat02= {
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 							};
 						
@@ -244,10 +244,10 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 					};
 			
@@ -359,10 +359,10 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,						
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					};
 			

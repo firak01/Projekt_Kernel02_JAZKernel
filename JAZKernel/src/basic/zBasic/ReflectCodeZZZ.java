@@ -251,8 +251,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  }				 				  
 				}//End if : Verarbeitung vor Java 1.4
 				
+				//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 				//Abschliessenden Trenner für Folgekommentare
-				sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+				//sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 				
 				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -666,8 +667,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
 			
+			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 			//Abschliessenden Trenner für Folgekommentare
-			sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			//sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -710,9 +712,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
-										
+						
+					//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 					//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)
-					sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+					//sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 					
 					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -860,8 +863,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			String sReturnPre = sThreadIdTag + sDateTag;
 				
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 			//Abschliessenden Trenner für Folgekommentare
-			sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 			
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
 //			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
@@ -983,8 +987,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);
 			
 			//+++++++++++++++++++++++++++++++++++++
+			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 			//Abschliessenden Trenner für Folgekommentare
-			sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN			
 //			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten

@@ -35,7 +35,7 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
 				
 				//Bleibt drin aus ueberichtlichkeitsgruenden
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,					
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
@@ -52,7 +52,7 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING),"'%s'");
 		
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_THREADID), "-" + ILogStringZZZ.LOGSTRING.THREADID.getFormat() + "-");
-		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING), "- Thread: %s");
+		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING), "- Thread: %s");
 		
 		//und das ist nicht notwendig, dar argnext02 schon einfache hochkommata enthaelt: hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT01), "'" + ILogStringZZZ.sARGNEXT01 + "'");
 		

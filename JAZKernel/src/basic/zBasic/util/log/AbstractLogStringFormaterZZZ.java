@@ -131,20 +131,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		this.listaintStringIndexRead = listaintStringIndexRead;
 	}
 	
-	//+++ Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
-//	@Override 
-//	public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
-//		if(this.objStringJustifier==null) {
-//			this.objStringJustifier = new StringJustifierZZZ();
-//		}
-//		return this.objStringJustifier;
-//	}
-//	
-//	@Override
-//	public void setStringJustifier(StringJustifierZZZ objStringJustifier) {
-//		this.objStringJustifier = objStringJustifier;
-//	}
-	
+	//+++ Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################	
 	@Override
 	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
 		if(!this.hasStringJustifierPrivate()) {
@@ -242,6 +229,25 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 	}
 	
+	public static boolean isFormatUsingControl(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_CONTROL:
+				bReturn = true;
+				break;			
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
@@ -273,11 +279,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return computeByObject_(classObj, ienumFormatLogString);
 	}
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//	@Override
-//	public String compute(String sLog) throws ExceptionZZZ {		
-//		return this.compute(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLog);
-//	}
 	
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {
@@ -292,12 +293,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return sReturn;		
 	}
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//	@Override
-//	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		return this.compute(null, sLog, ienumFormatLogString);
-//	}
-
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		
@@ -306,46 +301,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return this.computeLinesInLog_Justified_(obj, ienumaFormatLogString, sLogs);	
 	}
 	
-//	@Override
-//	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-//		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-verschiedenen Stellen aufgerufenen private Methode.
-//		
-//		Class classObj=null;
-//		if(obj == null) {
-//			classObj = this.getClass();
-//		}else {
-//			classObj = obj.getClass();
-//		}
-//		
-//		String[] saLog = new String[1];
-//		saLog[0] = sLog;
-//		
-//		return computeUsingFormat_(classObj,null, ienumFormatLogString, sLogs);		
-//	}
-	
-//	/**Den Code fuer compute in dieser zentralen private-Methode konzentriert.
-//	 * Dann findet man sie auch sofort wieder, z.B. in der Outline.
-//	 * @param obj
-//	 * @param sLogIn
-//	 * @param ienumFormatLogString
-//	 * @return
-//	 * @throws ExceptionZZZ
-//	 * @author Fritz Lindhauer, 19.05.2024, 09:14:10
-//	 */	
-//	@Override
-//	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-//		this.resetStringIndexRead(); //hier in der aufrufenden Methode und nicht in der von x-Stellen aus aufgerufenen private Methode.
-//		
-//		String[] saLog = new String[1];
-//		saLog[0] = sLog; 
-//		return this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);
-//	}
-
 	private String computeUsingFormat_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		return this.computeUsingFormat_(classObjIn, null, ienumFormatLogString, sLogs);	
 	}
+	
 	private String computeUsingFormat_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString,  IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
@@ -356,6 +315,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				classObj = classObjIn;
 			}
 			
+			boolean bFormatUsingControl = isFormatUsingControl(ienumFormatLogString);
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
 			boolean bFormatUsingStringXml = isFormatUsingStringXml(ienumFormatLogString);
@@ -363,9 +323,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
-			if(bFormatUsingObject) {
-				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
-				
+			if(bFormatUsingControl) {
+				sReturn = this.computeByControl_(classObj, ienumFormatLogString);
+			}else if(bFormatUsingObject) {
+				sReturn = this.computeByObject_(classObj, ienumFormatLogString);				
 			}else if(bFormatUsingString) {				
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
@@ -408,6 +369,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				classObj = classObjIn;
 			}
 									
+			boolean bFormatUsingControl = isFormatUsingControl(ienumFormatLogString);
 			boolean bFormatUsingObject = isFormatUsingObject(ienumFormatLogString);
 			boolean bFormatUsingString = isFormatUsingString(ienumFormatLogString);
 			boolean bFormatUsingStringXml = isFormatUsingStringXml(ienumFormatLogString);
@@ -415,9 +377,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
-			if(bFormatUsingObject) {
-				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
-				
+			if(bFormatUsingControl) {		
+				sReturn = this.computeByControl_(classObj, ienumFormatLogString);
+			}else if(bFormatUsingObject) {
+				sReturn = this.computeByObject_(classObj, ienumFormatLogString);			
 			}else if(bFormatUsingString) {	
 				String sLog = hmLog.get(ienumFormatLogString);
 				sReturn = this.computeByString_(classObj, sLog, ienumFormatLogString);						
@@ -432,6 +395,45 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		}//end main:
 		return sReturn;
 	}
+	
+	
+	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+		    Class classObj = null;		
+			if(classObjIn==null) {
+				classObj = this.getClass();			
+			}else {
+				classObj = classObjIn;
+			}
+		    		    
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
+	        switch (ienumFormatLogString.getFactor()) {
+
+	        
+
+	        
+	        
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:	               
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+	                  sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	                break;
+	            default:
+	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                        + ienumFormatLogString.getFactor());
+	                break;
+	        }			    
+		}//end main:
+		return sReturn;
+	}
+	
 	
 	private String computeByObject_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
@@ -498,7 +500,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                }
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_DATE_STRING_BY_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_DATE_STRING:
 	                GregorianCalendar d = new GregorianCalendar();
 	                Integer iDateYear = new Integer(d.get(Calendar.YEAR));
 	                Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
@@ -509,22 +511,21 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
 
-	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE_STRING_BY_STRING));
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sReturn = String.format(sFormat, sDate);
 	                break;
 
-	            case ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_THREADID_STRING:
 	                if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
 	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
 	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
 	                } else {
 	                    sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING_BY_STRING));
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING));
 	                    long lngThreadID = Thread.currentThread().getId();
 	                    sReturn = String.format(sFormat, lngThreadID);
 	                }
 	                break;
-
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByObject_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
@@ -539,8 +540,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		main:{
 			sReturn = this.computeByObject_(classObjIn, ienumFormatLogString);
 
+			//20251128: Der MessageSeparator ist nun eine eigene Formatanweisung
 			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
-			sReturn = sReturn  + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			//sReturn = sReturn  + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -741,7 +743,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
 				break;
-			case ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING_BY_STRING:
+			case ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
@@ -1144,40 +1146,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return sReturn;
 	}
 
-//	@Override
-//	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {			
-//		if(obj==null) {
-//			return this.compute(this.getClass(), sLog, ienumaFormatLogString);
-//		}else {
-//			return this.compute(obj.getClass(), sLog, ienumaFormatLogString);
-//		}
-//		
-//	}
-	
-//	@Override
-//	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		ArrayList<String> listas = new ArrayList<String>();
-//		if(sLog01!=null) {
-//			listas.add(sLog01);
-//		}
-//		
-//		if(sLog02!=null) {
-//			listas.add(sLog02);
-//		}		
-//		String[]saLog = ArrayListUtilZZZ.toStringArray(listas);
-//		
-//		if(obj==null) {
-//			return this.compute(this.getClass(), saLog, ienumFormatLogString);			
-//		}else {
-//			return this.compute(obj.getClass(), saLog, ienumFormatLogString);
-//		}		
-//	}
-	
-//	@Override
-//	public String compute(Class classObj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		return this.compute(classObj, ienumaFormatLogString, sLog);
-//	}
-	
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {			
@@ -1208,14 +1176,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return sReturn;
 	}
 	
-//	@Override
-//	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
-//		if(obj==null) {
-//			return this.compute(this.getClass(), ienumaFormatLogString, sLogs);			
-//		}else {
-//			return this.compute(obj.getClass(), ienumaFormatLogString, sLogs);
-//		}		
-//	}
 	
 	@Override
 	public String compute(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -1230,6 +1190,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
 		return sReturn;
 	}
+	
 	
 	/** Beruecksichtigt .LINENEXT als Steuerkennzeichen und teilt das Array entsprechend auf.
 	 * @param classObjIn
@@ -1251,8 +1212,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					throw ez;
 				}				
 			}
-			
-			
+						
 			Class<?> classObj = null;		
 			if(classObjIn==null) {
 				classObj = this.getClass();			
@@ -1261,7 +1221,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
-			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT, IEnumSetMappedLogStringFormatZZZ.class);			
+			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, ienumaLine, sLogs);
 				if(sLine!=null) {
@@ -1270,8 +1230,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}							
 		}//end main:
 		return alsReturn;
-
 	}
+	
 	
 	private String computeLinesInLog_Justified_(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
@@ -1292,6 +1252,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	}
 	
+	
 	private String computeLinesInLog_Justified_(Object obj, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
@@ -1307,6 +1268,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	}
 	
+	
 	private String computeLinesInLog_Justified_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
@@ -1320,7 +1282,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, listasLine);				
 		}//end main:
 		return sReturn;
-
 	}
 	
 	

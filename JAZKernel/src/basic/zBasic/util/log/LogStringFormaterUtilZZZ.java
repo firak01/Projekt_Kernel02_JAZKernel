@@ -95,10 +95,20 @@ public class LogStringFormaterUtilZZZ {
 			//Trimme nun ggf. Leerzeichen weg
 			String[] saLogTrimmed = StringArrayZZZ.trim(saLog);
 			
-			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen 
-			String[] saLogCommented = StringArrayZZZ.plusStringBefore(saLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen
+			int iIndex=-1;
+			String[]saLogCommented = new String[saLogTrimmed.length];
+			for(String sLogTrimmed : saLogTrimmed ) {
+				iIndex++;
+				if(!StringZZZ.endsWith(sLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+					saLogCommented[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
+				}else {
+					saLogCommented[iIndex] = sLogTrimmed;
+				}
+			}
+			//String[] saLogCommented = StringArrayZZZ.plusStringBefore(saLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			
-			saLogCommented[0] = sLine + saLogCommented[0]; //vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
+			//saLogCommented[0] = sLine + saLogCommented[0]; //vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
 			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
 		}//end  main:
 		return sReturn;

@@ -86,10 +86,10 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING, 
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING, 
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING
             };
 

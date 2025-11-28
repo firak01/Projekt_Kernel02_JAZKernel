@@ -23,13 +23,15 @@ public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 		//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,					
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.LINENEXT,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
 		};
 		return iaenumReturn;

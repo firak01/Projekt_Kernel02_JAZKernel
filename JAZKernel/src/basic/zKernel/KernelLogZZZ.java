@@ -145,7 +145,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING				 
 		 };
 		 return LogStringFormatManagerZZZ.getInstance().compute(sLog, iaFormat);
@@ -155,7 +155,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
@@ -166,7 +166,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
@@ -177,7 +177,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -189,7 +189,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {		
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
@@ -200,7 +200,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {	
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -213,8 +213,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,			 
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,			 
 		 };
 		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat);
 	}
@@ -223,8 +223,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING				 
 		 };
 		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
@@ -234,8 +234,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
@@ -247,8 +247,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 		 };
 		 
@@ -259,10 +259,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				 
 		 };
 		 
 		 return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLog);
@@ -272,9 +273,10 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
@@ -287,9 +289,10 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING
 		 };
 				 
@@ -300,9 +303,10 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
@@ -324,10 +328,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //Merke: Da nun alles STRING_BY... ist, muss man keine XML-Tags mehr aus dem String entfernen, wie mit:
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,
 		 };
@@ -352,10 +357,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //Merke: Da nun alles STRING_BY... ist, muss man keine XML-Tags mehr aus dem String entfernen, wie mit:
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,
@@ -382,10 +388,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //Merke: Da nun alles STRING_BY... ist, muss man keine XML-Tags mehr aus dem String entfernen, wie mit:
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,
 		 };
@@ -407,10 +414,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //Merke: Da nun alles STRING_BY... ist, muss man keine XML-Tags mehr aus dem String entfernen, wie mit:
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,
@@ -441,10 +449,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		 };
@@ -469,10 +478,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
@@ -499,10 +509,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		 };
@@ -524,10 +535,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		 //                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING_BY_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
@@ -681,11 +693,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	synchronized private boolean WriteLineDate_(Object obj, String sLog) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDate(obj, "");
+		String sLine = KernelLogZZZ.computeLineDate(obj, sLog);
 		
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
 		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+		sLine = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sLine);
 					
 		bReturn = WriteLine(sLine);
 				
