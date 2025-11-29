@@ -324,7 +324,28 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
 			if(bFormatUsingControl) {
-				sReturn = this.computeByControl_(classObj, ienumFormatLogString);
+				if(!StringArrayZZZ.isEmpty(sLogs)) {
+					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
+					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length; iStringIndexToRead++) {					
+						
+						Integer intIndex = new Integer(iStringIndexToRead);
+						if(!listaIndexRead.contains(intIndex)){
+							String sValue = this.computeByControl_(classObj, ienumFormatLogString, sLogs[iStringIndexToRead]);
+							if(sValue!=null) {								
+								if(sReturn!=null) {
+									sReturn = sReturn + sValue;
+								}else {
+									sReturn = sValue;
+								}
+								this.getStringIndexReadList().add(intIndex);
+								break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							}														
+						}
+					}
+				}else {
+					sReturn = this.computeByControl_(classObj, ienumFormatLogString, null);
+				}								
+				
 			}else if(bFormatUsingObject) {
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);				
 			}else if(bFormatUsingString) {				
@@ -378,7 +399,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
 			if(bFormatUsingControl) {		
-				sReturn = this.computeByControl_(classObj, ienumFormatLogString);
+				String sLog = hmLog.get(ienumFormatLogString);
+				sReturn = this.computeByControl_(classObj, ienumFormatLogString, sLog);
 			}else if(bFormatUsingObject) {
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);			
 			}else if(bFormatUsingString) {	
@@ -397,7 +419,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	}
 	
 	
-	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String sLogIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(ienumFormatLogString == null) {
@@ -412,18 +434,36 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}else {
 				classObj = classObjIn;
 			}
-		    		    
-			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
+					    
+			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+			String sLog= null;
+			if(sLogIn==null) {
+				sLog="";
+			}else {
+				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
+				if(StringZZZ.isEmpty(sOuter)) break main;
+				
+				//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+				//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+				//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+				//Darum entfernen wir dies ggfs.
+				sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+				if(StringZZZ.isEmpty(sOuter)) break main;
+			    
+				
+				sLog=sOuter;
+			}
+			
+			
 	        switch (ienumFormatLogString.getFactor()) {
-
-	        
-
-	        
-	        
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:	               
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
-	                  sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	                  sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                  sReturn = sPrefixSeparator + sReturn + sLog + sPostfixSeparator;
 	                break;
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
@@ -526,6 +566,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                    sReturn = String.format(sFormat, lngThreadID);
 	                }
 	                break;
+	              
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByObject_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
@@ -743,6 +784,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
 				break;
+			case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+				//SOLLTE HIER NICHT ERSCHEINEN SONDERN EINE EIGENE FORMATKLASSE SEIN computeByControl_(...)
+//				//By HashMap?
+//				 sFormat = this.getHashMapFormatPositionString().get(
+//	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+//	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	              break;
 			case ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
@@ -1225,7 +1273,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, ienumaLine, sLogs);
 				if(sLine!=null) {
-					alsReturn.add(sLine);
+					//!!!Nimm keine Zeilen auf, die nur diesen ggfs. durch die Konfiguration hinzugekommenen "MessageSeparator" haben.
+					if(!sLine.equalsIgnoreCase(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+					   alsReturn.add(sLine);
+					}
 				}
 			}							
 		}//end main:

@@ -1261,79 +1261,8 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	/** This example returns Lennard. 
-@LeftBack("Lennard Wallace"; " ")
-
-	This example returns Lennard Wall. 
-@LeftBack("Lennard Wallace";3)
-	* @param sString
-	* @param sToFind
-	* 
-	* lindhaueradmin; 04.04.2009 13:15:27
-	 */
-	public static String leftback(String sString, String sToFind){
-		return StringZZZ.leftback(sString, sToFind, true);
-	}
 	
-	/** This example returns Lennard. 
-@LeftBack("Lennard Wallace"; " ")
-
-	This example returns Lennard Wall. 
-@LeftBack("Lennard Wallace";3)
-	* @param sString
-	* @param sToFind
-	* 
-	* lindhaueradmin; 04.04.2009 13:15:27
-	 */
-	public static String leftback(String sString, String sToFind,boolean bExactMatch){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) {
-				sReturn = "";
-				break main;	
-			}
-			
-//		String sReturn = sString;
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//			
-//			sReturn = "";
-//			if(StringZZZ.isEmpty(sToFind)) break main;
-			
-			int iPosition = -1;
-			if(bExactMatch) {			
-				iPosition = sString.lastIndexOf(sToFind);				
-			}else {
-				iPosition = sString.toLowerCase().lastIndexOf(sToFind.toLowerCase());
-			}
-			if (iPosition == -1) break main;
-						
-			sReturn = sString.substring(0, iPosition);				
-		}
-		return sReturn;
-	}
-	
-	public static String leftback(String sString, int iPosFromTheRight){
-		String sReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-						
-//		String sReturn = sString;
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//			
-//			sReturn = "";
-			
-			if(iPosFromTheRight<=-1) break main;
-			int iPosition = sString.length()-iPosFromTheRight;
-			if (iPosition <= -1) break main;
-								
-			sReturn = sString.substring(0, iPosition);				
-		}
-		return sReturn;
-	}
-	//############################################
+	//################################################
 	
 	public static String leftKeep(String sString, String sToFind){
 		return StringZZZ.leftKeep(sString, sToFind, true, -1);
@@ -1355,12 +1284,7 @@ public class StringZZZ implements IConstantZZZ{
 				sReturn = "";
 				break main;	
 			}
-			
-//		String sReturn=sString;
-//		main:{
-//			if (StringZZZ.isEmpty(sString)) break main;
-//			sReturn = ""; //Wenn also der String nicht vorhandn ist, Leerstring zurückgeben.
-			
+						
 			int iIndexFromLeft;
 			if(iIndexStartingPositionFromLeft==-1) {
 				iIndexFromLeft = 0;
@@ -1385,6 +1309,149 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	//#################################################
+	
+	/**Gezählt wird von rechts 
+	 * 
+	 * This example returns Lennard. 
+@LeftBack("Lennard Wallace"; " ")
+
+	This example returns Lennard Wall. 
+@LeftBack("Lennard Wallace";3)
+	* @param sString
+	* @param sToFind
+	* 
+	* lindhaueradmin; 04.04.2009 13:15:27
+	 */
+	public static String leftback(String sString, String sToFind){
+		return StringZZZ.leftback(sString, sToFind, true);
+	}
+	
+	/**Gezählt wird von rechts 
+	 * 
+	 * This example returns Lennard. 
+@LeftBack("Lennard Wallace"; " ")
+
+	This example returns Lennard Wall. 
+@LeftBack("Lennard Wallace";3)
+	* @param sString
+	* @param sToFind
+	* 
+	* lindhaueradmin; 04.04.2009 13:15:27
+	 */
+	public static String leftback(String sString, String sToFind,boolean bExactMatch){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) {
+				sReturn = "";
+				break main;	
+			}
+						
+			int iPosition = -1;
+			if(bExactMatch) {			
+				iPosition = sString.lastIndexOf(sToFind);				
+			}else {
+				iPosition = sString.toLowerCase().lastIndexOf(sToFind.toLowerCase());
+			}
+			if (iPosition == -1) break main;
+						
+			sReturn = sString.substring(0, iPosition);				
+		}
+		return sReturn;
+	}
+	
+	/**Gezählt wird von rechts
+	 * @param sString
+	 * @param iPosFromTheRight
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:20:48
+	 */
+	public static String leftback(String sString, int iPosFromTheRight){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			if(iPosFromTheRight<=-1) break main;
+			int iPosition = sString.length()-iPosFromTheRight;
+			if (iPosition <= -1) break main;
+								
+			sReturn = sString.substring(0, iPosition);				
+		}
+		return sReturn;
+	}
+	
+	//############################################
+	/**Gezählt wird von rechts
+	 * @param sString
+	 * @param sToFind
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:21:47
+	 */
+	public static String leftbackKeep(String sString, String sToFind){
+		return StringZZZ.leftbackKeep(sString, sToFind, true, -1);
+	}
+	
+	/** Gezählt wird von Rechts
+	 * @param sString
+	 * @param iPosFromTheRight
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
+	 */
+	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch){
+		return StringZZZ.leftbackKeep(sString, sToFind, bExactMatch, -1);
+	}
+	
+	/** Gezählt wird von Rechts
+	 * @param sString
+	 * @param iPosFromTheRight
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
+	 */
+	public static String leftbackKeep(String sString, String sToFind, int iIndexStartingPositionFromRight){
+		return StringZZZ.leftbackKeep(sString, sToFind, true, iIndexStartingPositionFromRight);
+	}
+	
+	/** Gezählt wird von Rechts
+	 * @param sString
+	 * @param iPosFromTheRight
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
+	 */
+	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromRight){
+		String sReturn = null;
+		main:{		
+			String sLeftBack=StringZZZ.leftback(sString, sToFind, bExactMatch);
+			if(sLeftBack==null)break main;
+			
+			sReturn = sLeftBack + sToFind;
+		}
+		return sReturn;
+
+	}
+	
+	/** Gezählt wird von Rechts
+	 * @param sString
+	 * @param iPosFromTheRight
+	 * @return
+	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
+	 */
+	public static String leftbackKeep(String sString, int iPosFromTheRight){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			if(iPosFromTheRight<=-1) break main;
+			if(iPosFromTheRight>=sString.length()+1) break main; //+1 wg. Keep
+			
+			int iPosition = sString.length()-iPosFromTheRight + 1; //+1 wg. Keep			
+			if(iPosition <= -1) break main;
+			if(iPosition > sString.length()-1) iPosition = sString.length(); //sonst Index out of Range Fehler
+			
+			sReturn = sString.substring(0, iPosition);				
+		}
+		return sReturn;
+	}
 	
 	//########################################################
 	
@@ -1483,7 +1550,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
-	
+	//########################
 	public static String midKeep(String sString, int iPos, String sToFind){
 		return StringZZZ.midKeep(sString, iPos, sToFind, true);
 	}
@@ -1496,20 +1563,46 @@ public class StringZZZ implements IConstantZZZ{
 				sReturn = "";
 				break main;	
 			}
-			
-//		String sReturn = sString;
-//		main:{
-//			if (StringZZZ.isEmpty(sString)) break main;
-//				
-//			sReturn = "";
+
 			if(iIndexStart<0) break main;								
 			if(StringZZZ.isEmpty(sToFind)) break main;				
 			if(iIndexStart > sString.length())	break main;				
-			
 		
-			sReturn = sString.substring(iIndexStart, sString.length()-1);
+			sReturn = sString.substring(iIndexStart, sString.length());
 			sReturn = StringZZZ.leftKeep(sReturn, sToFind, bExactMatch);			
 		}//end main:
+		return sReturn;
+	}
+	
+	
+	public static String midKeep(String sString, String sToFindLeft, String sToFindRight) {
+		return StringZZZ.midKeep_(sString, sToFindLeft, sToFindRight, true);
+	}
+	
+	private static String midKeep_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sToFindLeft) && StringZZZ.isEmpty(sToFindRight))break main;
+								
+			if (StringZZZ.isEmpty(sToFindLeft)){
+				sReturn = StringZZZ.leftbackKeep(sString, sToFindRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sToFindRight)){
+				sReturn = StringZZZ.rightbackKeep(sString, sToFindLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			sReturn = StringZZZ.rightbackKeep(sString, sToFindLeft, bExactMatch);
+			sReturn = StringZZZ.leftbackKeep(sReturn, sToFindRight, bExactMatch);
+		}
 		return sReturn;
 	}
 	
@@ -3499,7 +3592,11 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	}
 	
 	
-	/** Returns the right part, but iPosition is counted from the left.
+	//#######################################################################
+	/** Gezählt wird von Links
+	 * 
+	 * 
+	 * Returns the right part, but iPosition is counted from the left.
 	 * e.g. StringZZZ.rightback("abcde", 2) will return "cde".
 	 * 
 	 * This example returns "nard Wallace." 
@@ -3527,7 +3624,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 	
-	/**Gibt den String rechts von dem Suchstring zurück.
+	/** Gibt den String rechts von dem Suchstring zurück.
 	 *  Dabei wird von LINKS nach dem Suchstring gesucht.
 	 * @param sString
 	 * @param sToFind
@@ -3576,18 +3673,19 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	
 	
 	//+++++++++++++++
-	
-	/** Returns the right part, but iPosition is counted from the left.
-	 * e.g. StringZZZ.rightback("abcde", 2) will return "cde".
-	 * 
+
+	/**Gibt den String rechts von der Position zurück.
+	 *  Gezählt wird von Links.
+
 	 * This example returns "nard Wallace." 
-@RightBack("Lennard Wallace";3) 
-	 * 
-	* @param sString
-	* @param iPosition
-	* @return
-	* 
-	* lindhauer; 15.06.2007 00:52:08
+	@RightBack("Lennard Wallace";3)
+	
+	 Nun bekommt rightBackKeep das Ergebnis "nnard Wallace"
+
+	 * @param sString
+	 * @param sToFind
+	 * @param bExactMatch
+	 * @return
 	 */
 	public static String rightbackKeep(String sString, int iPosition){
 		String sReturn = null;
@@ -3600,7 +3698,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 				break main;
 			}
 		
-			iPosition = iPosition - 1;
+			iPosition = iPosition - 1; //-1 ist das Keep
 			if(iPosition <= -1 ) iPosition = 0;
 			sReturn = sString.substring(iPosition, sString.length());
 		}

@@ -69,43 +69,6 @@ public class StringZZZTest extends TestCase{
 		 //System.out.println(stemp);
 	 }
 	
-	public void testLeftBack(){
-		 String stemp;
-		 
-		 //#######################################
-		 //Teste den linken Rand
-		 stemp = StringZZZ.leftback("das ist ein Test", -1);
-		 assertNull(stemp);
-		 
-		 stemp = StringZZZ.leftback("das ist ein Test", 0);
-		 assertEquals("das ist ein Test",stemp);
-		 		 		 		 
-		 stemp = StringZZZ.leftback("das ist ein Test", 1);
-		 assertEquals("das ist ein Tes", stemp);
-		 
-		 
-		 //########################################'
-		 //Teste den rechten Rand
-		 String sDummy = new String("das ist ein Test");		
-		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length());
-		 assertEquals("", stemp);
-		 
-		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() + 1);
-		 assertNull(stemp);
-		 
-		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() - 1);
-		 assertEquals("d", stemp);
-		 
-		 //################### 
-		 //Teste auf String
-		 String sDummy2 = new String("das ist ein Test");		
-		 stemp =StringZZZ.leftback("das ist ein Test", " ");
-		 assertEquals("das ist ein",stemp);
-		 				 
-		 //System.out.println(stemp);
-	 }
-	//#############################################################
-	
 	public void testLeftKeep() {
 		String sValue;
 		
@@ -160,45 +123,89 @@ public class StringZZZTest extends TestCase{
 		 iIndexStartingFromLeft = 16-sSepLeft.length();
 		 sValue=StringZZZ.leftKeep(sDummy3, sSepLeft, bExactMatch, iIndexStartingFromLeft);
 		 assertEquals("<Z:Java><Z:Class>",sValue);
-		
-		 
-		
-		 
-		 
-		 
-		 
-		
-		 
-		 
-		 //System.out.println(stemp);
 	}
 	
-	public void testRightKeep(){
-		String stemp;
+	public void testLeftBack(){
+		 String stemp;
+		 
+		 //#######################################
+		 //Teste den linken Rand
+		 stemp = StringZZZ.leftback("das ist ein Test", -1);
+		 assertNull(stemp);
+		 
+		 stemp = StringZZZ.leftback("das ist ein Test", 0);
+		 assertEquals("das ist ein Test",stemp);
+		 		 		 		 
+		 stemp = StringZZZ.leftback("das ist ein Test", 1);
+		 assertEquals("das ist ein Tes", stemp);
+		 
+		 
+		 //########################################'
+		 //Teste den rechten Rand
+		 String sDummy = new String("das ist ein Test");		
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length());
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() + 1);
+		 assertNull(stemp);
+		 
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() - 1);
+		 assertEquals("d", stemp);
 		 
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
-		 stemp =StringZZZ.rightKeep(sDummy2, " ");
-		 assertEquals(" Test", stemp);
-		 
-		 //###################
-		 //Teste auf String, ab einer bestimmten Position VON rechts
-		 stemp =StringZZZ.rightKeep(sDummy2, " ", 6);
-		 assertEquals(" ein Test", stemp);
-		 
-		 stemp =StringZZZ.rightKeep(sDummy2, " ", 5);
-		 assertEquals(" ein Test", stemp);
-		 
-		 stemp =StringZZZ.rightKeep(sDummy2, " ", 4);
-		 assertEquals(" Test", stemp);
-		 
-		 stemp =StringZZZ.rightKeep(sDummy2, " ", 3);
-		 assertEquals(" Test", stemp);
-		 
-		 
+		 stemp =StringZZZ.leftback("das ist ein Test", " ");
+		 assertEquals("das ist ein",stemp);
+		 				 
 		 //System.out.println(stemp);
-	}
+	 }
+	
+	/** Gezählt wird von rechts
+	 * 
+	 * @author Fritz Lindhauer, 29.11.2025, 08:22:11
+	 */
+	public void testLeftBackKeep(){
+		 String stemp;
+		 
+		 String sDummy = new String("das ist ein Test");
+		 //#######################################
+		 //Teste den linken Rand
+		 stemp = StringZZZ.leftbackKeep(sDummy, -1);
+		 assertNull(stemp);
+		 
+		 stemp = StringZZZ.leftbackKeep(sDummy, 0);
+		 assertEquals("das ist ein Test",stemp);
+		 		 		 		 
+		 stemp = StringZZZ.leftbackKeep(sDummy, 1);
+		 assertEquals("das ist ein Test", stemp); //Hier wirkt sich das Keep aus (es bleibt ein Zeichen mehr im String)
+		 
+		 stemp = StringZZZ.leftbackKeep(sDummy, 2);
+		 assertEquals("das ist ein Tes", stemp); //Hier wirkt sich das Keep aus (es bleibt ein Zeichen mehr im String)
+		 
+		 
+		 //########################################'
+		 //Teste den rechten Rand
+		 stemp =StringZZZ.leftbackKeep(sDummy, sDummy.length() + 1); //hoeherer Index als Zeichen vorhanden 
+		 assertNull(stemp);
+
+		 stemp =StringZZZ.leftbackKeep(sDummy, sDummy.length());
+		 assertEquals("d", stemp); //Hier wirkt sich das Keep aus (es bleibt ein Zeichen mehr im String)
+		 		 
+		 stemp =StringZZZ.leftbackKeep(sDummy, sDummy.length() - 1);
+		 assertEquals("da", stemp);
+		 
+		 //################### 
+		 //Teste auf String	
+		 stemp =StringZZZ.leftback(sDummy, " ");
+		 assertEquals("das ist ein",stemp); 
+		 
+		 stemp =StringZZZ.leftbackKeep(sDummy, " ");
+		 assertEquals("das ist ein ",stemp); //hier wirkt sich das Keep aus
+		 				 
+		 //System.out.println(stemp);
+	 }
+	
 	
 	
 	
@@ -239,6 +246,38 @@ public class StringZZZTest extends TestCase{
 		 //System.out.println(stemp);
 	}
 	
+	public void testRightKeep(){
+		String stemp;
+		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.rightKeep(sDummy2, " ");
+		 assertEquals(" Test", stemp);
+		 
+		 //###################
+		 //Teste auf String, ab einer bestimmten Position VON rechts
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 6);
+		 assertEquals(" ein Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 5);
+		 assertEquals(" ein Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 4);
+		 assertEquals(" Test", stemp);
+		 
+		 stemp =StringZZZ.rightKeep(sDummy2, " ", 3);
+		 assertEquals(" Test", stemp);
+		 
+		 
+		 //System.out.println(stemp);
+	}
+	
+	//#############################################
+	/**Gezählt wird von links
+	 * 
+	 * @author Fritz Lindhauer, 29.11.2025, 08:22:51
+	 */
 	public void testRightback01(){
 		String stemp;
 		 
@@ -275,6 +314,10 @@ public class StringZZZTest extends TestCase{
 		 //System.out.println(stemp);
 	}
 	
+	/**Gezählt wird von links
+	 * 
+	 * @author Fritz Lindhauer, 29.11.2025, 08:23:02
+	 */
 	public void testRightback02(){
 		String stemp;
 		stemp = StringZZZ.rightback("123456789", 0);
@@ -295,6 +338,81 @@ public class StringZZZTest extends TestCase{
 		assertEquals("3456789", stemp);	
 	}
 	
+	//################################################
+	/**Gezählt wird von links
+	 * 
+	 * @author Fritz Lindhauer, 29.11.2025, 08:22:27
+	 */
+	public void testRightbackKeep01(){
+		String stemp;
+		 
+		String sDummy = new String("das ist ein Test");
+		
+		 //#######################################
+		 //Teste den rechten Rand
+		 stemp = StringZZZ.rightbackKeep(sDummy, -1);
+		 assertNull(stemp);
+		 
+		 stemp = StringZZZ.rightback(sDummy, 0);
+		 assertEquals("das ist ein Test", stemp);
+		 
+		 stemp = StringZZZ.rightbackKeep(sDummy, 0);
+		 assertEquals("das ist ein Test", stemp);
+		
+		 
+		 stemp = StringZZZ.rightback(sDummy, 1);
+		 assertEquals("as ist ein Test", stemp);
+		 
+		 stemp = StringZZZ.rightbackKeep(sDummy, 1);
+		 assertEquals("das ist ein Test", stemp); //Hier wirkt sich das Keep aus
+		 
+		 stemp = StringZZZ.rightbackKeep(sDummy, 2);
+		 assertEquals("as ist ein Test", stemp);
+		 
+		 //########################################'
+		 //Teste den rechten Rand	
+		 stemp =StringZZZ.rightbackKeep(sDummy, sDummy.length());
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.rightbackKeep(sDummy, sDummy.length() + 1);
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.rightback(sDummy, sDummy.length() - 1);
+		 assertEquals("t", stemp); 
+		 
+		 //################### 
+		 //Teste auf String		
+		 stemp =StringZZZ.rightback(sDummy, " ");
+		 assertEquals("ist ein Test", stemp);
+		 
+		 //System.out.println(stemp);
+	}
+	
+	/**Gezählt wird von links
+	 * 
+	 * @author Fritz Lindhauer, 29.11.2025, 08:22:42
+	 */
+	public void testRightbackKeep02(){
+		String stemp;
+		stemp = StringZZZ.rightbackKeep("123456789", 0);
+		assertEquals("123456789", stemp);
+		stemp = StringZZZ.rightbackKeep("123456789", -1);
+		assertNull(stemp);
+		
+		stemp = StringZZZ.rightbackKeep("123456789", 1);
+		assertEquals("123456789", stemp);  //hier wirkt sich das Keep aus, die "1" bleibt drin.
+		
+		stemp = StringZZZ.rightbackKeep("123456789", 9);
+		assertEquals("", stemp);
+		
+		stemp = StringZZZ.rightbackKeep("123456789", 10);
+		assertEquals("", stemp);
+		
+		stemp = StringZZZ.rightbackKeep("123456789", 2);
+		assertEquals("23456789", stemp);	//hier wirkt sich das Keep aus, die "2" bleibt drin.
+	}
+	
+	//################################################
 	public void testMid(){
 		String stemp;
 		 String sTest = "abcdefghijk";
@@ -331,6 +449,51 @@ public class StringZZZTest extends TestCase{
 		
 		 stemp =StringZZZ.mid(sTest, sTest.length()-2, 2);
 		 assertEquals("jk", stemp);
+		 
+	}
+	
+	public void testMidKeep(){
+		String stemp;
+		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");
+		 
+		 //Test linke Grenze
+		 stemp =StringZZZ.midKeep(sDummy2, 3, "Test");
+		 assertEquals(" ist ein Test", stemp);
+		 
+		 stemp =StringZZZ.midKeep(sDummy2, 4, "Test");
+		 assertEquals("ist ein Test", stemp);
+		 
+		 stemp =StringZZZ.midKeep(sDummy2, 5, "Test");
+		 assertEquals("st ein Test", stemp);
+		 
+		 //Teste rechte Grenze (das Wort)
+		 
+		 
+		 //++++ Negativtest: ist die rechte Grenze nicht vorhanden... null	
+		 stemp =StringZZZ.mid(sDummy2, 4, "nix");
+		 assertNull("ist ein Test", stemp);
+		 
+		 stemp =StringZZZ.midKeep(sDummy2, 4, "nix");
+		 assertNull("ist ein Test", stemp); //wenn das normal schon NULL zurückliefert, dann das keep auch
+		 
+		 //++++++ NEGTIVTEST, ist die linke Grenze nicht vorhanden... null		 
+		 stemp =StringZZZ.mid(sDummy2, "nix", "Test");
+		 assertNull(stemp);  
+		 
+		 stemp =StringZZZ.midKeep(sDummy2, "nix", "Test");
+		 assertNull(stemp);  
+		 
+		 //##########################################################
+		 //#### Positivtest mit Strings
+		 stemp =StringZZZ.midKeep(sDummy2, "das", "Test");
+		 assertEquals("das ist ein Test", stemp);  
+		 
+		 stemp =StringZZZ.midKeep(sDummy2, " ", " ");
+		 assertEquals(" ist ein ", stemp);  
+		 
 		 
 	}
 	
@@ -411,6 +574,17 @@ public class StringZZZTest extends TestCase{
 		 sTest = "[[test]]";
 		 stemp =StringZZZ.midLeftRightback(sTest, "[", "]");
 		 assertEquals("test", stemp);  //!!! Wg. diesem Ziel wurde die Methode ueberhaupt entwickelt!!! Es ist anders als bei midLeftRight(...)
+		 
+		 //++++++ NEGTIVTEST, ist die rechte Grenze nicht vorhanden... null
+		 sTest = "[[test]]";
+		 stemp =StringZZZ.midLeftRightback(sTest, "[", "X");
+		 assertNull(stemp);  
+		 
+		 //++++++ NEGTIVTEST, ist die linke Grenze nicht vorhanden... null
+		 sTest = "[[test]]";
+		 stemp =StringZZZ.midLeftRightback(sTest, "X", "]");
+		 assertNull(stemp);  
+		 
 	}
 	
 	public void testMidLeftRight(){
