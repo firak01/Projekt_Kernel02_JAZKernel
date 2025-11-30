@@ -443,16 +443,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog="";
 			}else {
 				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
-				if(StringZZZ.isEmpty(sOuter)) break main;
-				
-				//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
-				//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
-				//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
-				//Darum entfernen wir dies ggfs.
-				sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
-				if(StringZZZ.isEmpty(sOuter)) break main;
-			    
-				
+				if(!StringZZZ.isEmpty(sOuter)) {				
+					//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+					//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+					//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+					//Darum entfernen wir dies ggfs.
+					sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+					if(StringZZZ.isEmpty(sOuter)) break main;
+				}				
 				sLog=sOuter;
 			}
 			
@@ -1035,6 +1033,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	}
 	
+	
+	
 	private ArrayListUniqueZZZ<String> computeLinesInLog_(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
 		ArrayListUniqueZZZ<String>  alsReturn = new ArrayListUniqueZZZ<String>();
 		main:{	
@@ -1080,9 +1080,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            if(sLogUsed!=null) {
 	            	if(StringZZZ.isEmpty(sReturn)) {
 	            		sReturn = sLogUsed;
-	            	}else {
-	            		//Die einzelnen Bestandteile ggfs. noch mit einem Trennzeichen voneinander trennen.
-	            		sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;	
+	            	}else {	            		
+	            		sReturn = sReturn + sLogUsed;	
 	            	}
 				}
 	        }
@@ -1214,10 +1213,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 						
 			if(StringArrayZZZ.isEmpty(sLogs)) {							
-				sReturn = this.computeByObject_Justified_(classObj, ienumFormatLogString);
+				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
 											
 			}else {
-				sReturn = this.computeLinesInLog_Justified_(classObj, ienumFormatLogString, sLogs);
+				sReturn = this.computeLineInLog_(classObj, ienumFormatLogString, sLogs);
 			}
 			
 		}//end main:
@@ -1238,6 +1237,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
 		return sReturn;
 	}
+	
+	
 	
 	
 	/** Beruecksichtigt .LINENEXT als Steuerkennzeichen und teilt das Array entsprechend auf.
@@ -1272,12 +1273,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, ienumaLine, sLogs);
-				if(sLine!=null) {
-					//!!!Nimm keine Zeilen auf, die nur diesen ggfs. durch die Konfiguration hinzugekommenen "MessageSeparator" haben.
-					if(!sLine.equalsIgnoreCase(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-					   alsReturn.add(sLine);
-					}
-				}
+				alsReturn.add(sLine);
+				
+//				if(sLine!=null) {
+//					//!!!Nimm keine Zeilen auf, die nur diesen ggfs. durch die Konfiguration hinzugekommenen "MessageSeparator" haben.
+//					if(!sLine.equalsIgnoreCase(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+//					   alsReturn.add(sLine);
+//					}
+//				}
 			}							
 		}//end main:
 		return alsReturn;
@@ -1368,31 +1371,66 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			if(ArrayUtilZZZ.isNull(sLogs)) {
 				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.
 				for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
-					String sValue = this.computeByObject_(classObj, ienumFormatLogString); 
+					String sValue = this.computeLineInLog_(classObj, ienumFormatLogString, sLogs);//this.computeByObject_(classObj, ienumFormatLogString);
+					if(sValue!=null) {
+						if(sReturn==null) {
+							sReturn = sValue;
+						}else {
+							sReturn = sReturn + sValue; 
+						}
+					}
+				}
+				break main;
+			}
+			
+						
+			//####### Mit Strings
+			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
+				String sValue = this.computeLineInLog_(classObj, ienumFormatLogString, sLogs);//this.computeByObject_(classObj, ienumFormatLogString);
+				if(sValue!=null) {
 					if(sReturn==null) {
 						sReturn = sValue;
 					}else {
 						sReturn = sReturn + sValue; 
 					}
 				}
-				break main;
 			}
 			
-			
-			//##### Mit zu verarbeitenden Strings			
-			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
-				String sValue = this.computeUsingFormat_(classObj, ienumFormatLogString, sLogs);
-				if(sValue!=null) {
-					if(sReturn==null) {					
-						sReturn = sValue;
-					}else {					
-						sReturn = sReturn + sValue;
-					}
-				}
-			}		
 		}//end main:
 		return sReturn;
-
+	}
+			
+		/** .LINENEXT als Steuerkennzeichen wird hier nicht mehr beruecksichtig
+		 * @param classObjIn
+		 * @param saLog
+		 * @param iStringIndexToRead
+		 * @param ienumaFormatLogString
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 09.11.2025, 08:08:19
+		 */
+		private String computeLineInLog_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+			String sReturn = null;
+			main:{								
+				Class classObj = null;		
+				if(classObjIn==null) {
+					classObj = this.getClass();			
+				}else {
+					classObj = classObjIn;
+				}
+				
+				//###### Ohne irgendeinen String
+				if(ArrayUtilZZZ.isNull(sLogs)) {
+					//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.						
+					sReturn = this.computeByObject_(classObj, ienumFormatLogString); 					
+					break main;
+				}
+		
+			
+				//##### Mit zu verarbeitenden Strings			
+				sReturn = this.computeUsingFormat_(classObj, ienumFormatLogString, sLogs);				
+		}//end main:
+		return sReturn;
 	}
 
 
@@ -1413,17 +1451,28 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		String sReturn = null;
+		main:{
+			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+			this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 			
-		Class classObj = null;
-		if(obj==null) {
-			classObj = this.getClass();
-		}else {
-			classObj = obj.getClass();
-		}
-		return this.computeLinesInLog_Justified_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+			Class classObj = null;
+			if(obj==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = obj.getClass();
+			}
+			
+			ArrayListUniqueZZZ<String> listaline = this.computeLinesInLog_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+			for(String sLine : listaline) {
+				if(sReturn==null) {
+					sReturn = sLine;
+				}else {
+					sReturn = sReturn + StringZZZ.crlf() + sLine;
+				}
+			}
+		}//end main
+		return sReturn;
 	}
 	
 //	@Override

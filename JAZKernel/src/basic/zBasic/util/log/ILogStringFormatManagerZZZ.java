@@ -3,7 +3,7 @@ package basic.zBasic.util.log;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 
-public interface ILogStringFormatManagerZZZ extends ILogStringFormatManagerComputerZZZ, ILogStringFormatComputerZZZ{
+public interface ILogStringFormatManagerZZZ extends ILogStringFormatManagerComputerZZZ{
 	public boolean hasStringJustifierPrivate() throws ExceptionZZZ;
 	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
 	public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ;

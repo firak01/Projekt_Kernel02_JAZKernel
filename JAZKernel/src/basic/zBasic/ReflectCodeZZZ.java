@@ -712,7 +712,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				    //Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
 				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-					String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
+					sReturn = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
 						
 					//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 					//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)

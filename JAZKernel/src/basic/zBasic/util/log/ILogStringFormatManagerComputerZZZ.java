@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface ILogStringFormatManagerComputerZZZ {
+public interface ILogStringFormatManagerComputerZZZ extends ILogStringFormatComputerZZZ{
 	//Da der Manager verschiedenen FormatString-Erzeuger bedienen muss, 
 	//gibt es hier die Methoden diese speziell als Objekt zu uebergeben.
 	//Also wie ILogStringFormatComputerZZZ, nur mit ILogStringFormaterObjekt vorangestellt.
