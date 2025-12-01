@@ -16,6 +16,7 @@ public class ObjectZZZTest extends TestCase{
 			objObjectTestListening = new DummyTestObjectWithFlagOnFlagListeningZZZ();
 		
 //		} catch (ExceptionZZZ e) {
+//			ez.printStackTrace();
 //			fail("Method throws an exception." + e.getMessageLast());
 //		} 
 	}//END setup
@@ -32,6 +33,7 @@ public class ObjectZZZTest extends TestCase{
 			//TestKonfiguration pr�fen
 			assertFalse(objObjectTest.getFlag("init")==true); //Nun wäre init falsch
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
@@ -75,6 +77,7 @@ public class ObjectZZZTest extends TestCase{
 		assertNotNull(saTest02d);		
 		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT KEIN FLAG MEHR für 'false' erwartet.",saTest02d.length==0);
 	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}
 		
@@ -131,9 +134,23 @@ public class ObjectZZZTest extends TestCase{
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 		
+	}
+	
+	public void testLogProtocolWithPosition() {
+		try {
+			TODOGOON20251201;//Eine leere Kommentarzeile darf nicht ausgegeben werden.
+			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ();
+			objObjectInit.logProtocolWithPosition("TESTWERT logProtocolWithPosition");
+			
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
+	
 	}
 
 	

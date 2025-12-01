@@ -347,11 +347,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	 public static String formatMethodCallingLine(int iLine){         		 
 		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
-		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.
-		 //return " - Line " + iLine + "# ";
+		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.		 		 
+		 return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 		 
 		 //Merke: Den Kommentartrenner # an anderer Stelle hinzufuegen
-		 return " - Line " + iLine;
+		 //return " - Line " + iLine;
 		 
 	 }
 	 
@@ -715,8 +715,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					sReturn = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
 						
 					//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-					//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)
-					//sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+					//Abschliessenden Trenner für mögliche(!) Folgekommentare, die ggfs. für ein System.out angehängt werden.
+					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 					
 					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -743,15 +743,17 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		String sReturn = null;
 		  main:{
 			 if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
-				 int iLevelUsed = iLevel+1;
+				int iLevelUsed = iLevel+1;
 				 
-				 //Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
-				 int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
-				 String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine);
-				 String sLineTotal = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
+				//Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
+				int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+				String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine); //enthaelt moeglicherweis schon den Trenner für Folgekommentare
+				sReturn = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
 										
-				//Abschliessenden Trenner für Folgekommentare (Die es hier aber nicht gibt)
-				sReturn = sLineTotal + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+				//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
+				if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
+					 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+			 	}
 			 }else{
 					
 				//Verarbeitung vor Java 1.4
@@ -865,7 +867,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-			//Abschliessenden Trenner für Folgekommentare
+			//Abschliessenden Trenner für mögliche Folgekommentare
+			//ABER: NICHT BEIM XML-FORMAT!!!!
 			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 			
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
@@ -989,7 +992,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			//+++++++++++++++++++++++++++++++++++++
 			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-			//Abschliessenden Trenner für Folgekommentare
+			//Abschliessenden Trenner für mögliche Folgekommentare
+			//Aber beim XML Format gibt es diese nicht!!!
 			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 
 //WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN			

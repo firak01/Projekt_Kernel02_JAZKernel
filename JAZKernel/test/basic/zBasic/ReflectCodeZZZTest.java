@@ -25,7 +25,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXml();
 			int iLineNr = 26;
-			assertEquals("<positioncurrent><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
+			assertEquals("<positioncurrent><classname>basic.zBasic.ReflectCodeZZZ</classname><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent>", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -39,7 +39,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();
 			int iLineNr=40;
-			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") # ", sValue); 			
+			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") [A00/]# ", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -70,7 +70,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
 			int iLineNr = 71;
-			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent># ", sValue); 			
+			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent>", sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
