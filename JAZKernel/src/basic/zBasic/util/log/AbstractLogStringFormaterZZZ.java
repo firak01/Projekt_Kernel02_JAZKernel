@@ -326,7 +326,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			if(bFormatUsingControl) {
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
-					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length-1; iStringIndexToRead++) {					
+					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
 						
 						Integer intIndex = new Integer(iStringIndexToRead);
 						if(!listaIndexRead.contains(intIndex)){
@@ -1273,7 +1273,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
-			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
+			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedLogStringFormatZZZ)ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, ienumaLine, sLogs);
 				alsReturn.add(sLine);
