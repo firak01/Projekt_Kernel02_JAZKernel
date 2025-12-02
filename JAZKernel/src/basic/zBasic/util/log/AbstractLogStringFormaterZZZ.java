@@ -351,7 +351,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}else if(bFormatUsingString) {				
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
-					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length-1; iStringIndexToRead++) {					
+					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
 						
 						Integer intIndex = new Integer(iStringIndexToRead);
 						if(!listaIndexRead.contains(intIndex)){
@@ -1254,7 +1254,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		ArrayListUniqueZZZ<String> alsReturn = new ArrayListUniqueZZZ<String>();;
 		main:{
 			IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString=null;
-			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
+			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogStringIn)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
 				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										
@@ -1355,7 +1355,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		String sReturn = null;
 		main:{
 			IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString=null;
-			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
+			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogStringIn)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
 				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										

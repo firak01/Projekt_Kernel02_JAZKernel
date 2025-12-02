@@ -74,6 +74,7 @@ public class LogZZZTest extends TestCase{
 	public void testWriteLineDateWithPositionXml(){
 		try {
 			boolean bDummy = objLogTest.WriteLineDateWithPositionXml(this, "");
+			assertTrue(bDummy);
 			
 			//Verwende intern das Format XML_BY_XML
 			boolean bValue = objLogTest.WriteLineDateWithPositionXml(this, strTEST_ENTRY_DEFAULT); 

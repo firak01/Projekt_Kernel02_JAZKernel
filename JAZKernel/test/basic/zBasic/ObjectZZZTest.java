@@ -155,7 +155,6 @@ public class ObjectZZZTest extends TestCase{
 	
 	public void testLogLineDate() {
 		try {		
-			TODOGOON20251202;//Hier wird die Zeile nicht ausgegeben, warum????
 			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ();
 			objObjectInit.logLineDate("TESTWERT logLineDate");
 			
