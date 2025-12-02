@@ -128,7 +128,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		@Override
 		public synchronized void logProtocol(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-			this.logProtocol(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+			this.logProtocol(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLogZZZ (also static) "null" statt this
 		}
 		
 		@Override

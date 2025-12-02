@@ -326,7 +326,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			if(bFormatUsingControl) {
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
-					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length; iStringIndexToRead++) {					
+					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length-1; iStringIndexToRead++) {					
 						
 						Integer intIndex = new Integer(iStringIndexToRead);
 						if(!listaIndexRead.contains(intIndex)){
@@ -351,7 +351,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}else if(bFormatUsingString) {				
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
-					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length; iStringIndexToRead++) {					
+					for(int iStringIndexToRead=0; iStringIndexToRead < sLogs.length-1; iStringIndexToRead++) {					
 						
 						Integer intIndex = new Integer(iStringIndexToRead);
 						if(!listaIndexRead.contains(intIndex)){
@@ -1250,9 +1250,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.11.2025, 08:08:19
 	 */
-	private ArrayListUniqueZZZ<String> computeLinesInLog_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	private ArrayListUniqueZZZ<String> computeLinesInLog_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
 		ArrayListUniqueZZZ<String> alsReturn = new ArrayListUniqueZZZ<String>();;
 		main:{
+			IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString=null;
 			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
@@ -1260,6 +1261,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}				
+			}else {
+				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}
 						
 			Class<?> classObj = null;		
@@ -1348,9 +1351,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.11.2025, 08:08:19
 	 */
-	private String computeLineInLog_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	private String computeLineInLog_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString=null;
 			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogString)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 				
@@ -1358,6 +1362,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}				
+			}else {
+				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}
 		
 			Class classObj = null;		

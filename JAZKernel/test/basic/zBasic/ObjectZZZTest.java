@@ -1,5 +1,6 @@
 package basic.zBasic;
 
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import junit.framework.TestCase;
 
@@ -141,18 +142,28 @@ public class ObjectZZZTest extends TestCase{
 	}
 	
 	public void testLogProtocolWithPosition() {
-		try {
-			TODOGOON20251201;//Eine leere Kommentarzeile darf nicht ausgegeben werden.
+		try {			
 			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ();
 			objObjectInit.logProtocolWithPosition("TESTWERT logProtocolWithPosition");
 			
-	}catch(ExceptionZZZ ez){
-		ez.printStackTrace();
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	
 	}
-
 	
+	public void testLogLineDate() {
+		try {		
+			TODOGOON20251202;//Hier wird die Zeile nicht ausgegeben, warum????
+			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ();
+			objObjectInit.logLineDate("TESTWERT logLineDate");
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	
+	}
 
 }//END Class
