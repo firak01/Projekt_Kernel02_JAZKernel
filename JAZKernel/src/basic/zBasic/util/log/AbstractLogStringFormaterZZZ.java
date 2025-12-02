@@ -439,9 +439,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 			String sLog= null;
-			if(sLogIn==null) {
-				sLog="";
-			}else {
+			if(sLogIn!=null) {
 				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
 				if(!StringZZZ.isEmpty(sOuter)) {				
 					//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
@@ -450,9 +448,19 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//Darum entfernen wir dies ggfs.
 					sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
 					if(StringZZZ.isEmpty(sOuter)) break main;
+					sLog = StringZZZ.joinAll(sLog, sOuter);
+				}else {
+					//Also: sOuter ist Leerstring oder Null UND es nicht explizit ein XML, nur dann den String übernehme
+					boolean bContainsXml = XmlUtilZZZ.isXmlContained(sLogIn);	
+					if(bContainsXml) {
+						//mache nix
+					}else {
+						sLog = StringZZZ.joinAll(sLog, sOuter);
+					}
 				}				
-				sLog=sOuter;
 			}
+			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
+			if(sLog==null)break main; //Ein explizit uebergebener Leerstring gilt aber.
 			
 			
 	        switch (ienumFormatLogString.getFactor()) {

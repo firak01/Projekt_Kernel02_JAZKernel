@@ -59,6 +59,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 	//+++ Hier: Entferne aus dem Rückgabestring die XML Tags, die in ReflectCodeZZZ.getPositionCurrent() erzeugt worden sind.
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(ienumFormatLogString);	
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -73,6 +79,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(obj, ienumFormatLogString);
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -87,6 +99,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 	
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(sLogs);
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -115,6 +133,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(obj, ienumFormatLogString, sLogs);	
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -129,6 +153,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(obj, ienumaFormatLogString, sLogs);	
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -143,15 +173,15 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = this.computeJustified(classObj, ienumFormatLogString, sLogs);
 		return sReturn;
 		
 	}
 	
 	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(classObj, ienumFormatLogString, sLogs);
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(classObj, ienumFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -164,20 +194,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, ienumaFormatLogString, sLogs);		
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
+		String sReturn = this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
 
 	@Override
-	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(classObj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -192,15 +214,7 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.compute(hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
+		String sReturn = this.computeJustified(hm);
 		return sReturn;
 	}
 
@@ -234,14 +248,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(obj, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = this.computeJustified(obj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
 	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(obj, sLogs);
+		String sReturn = super.compute(obj, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -251,17 +265,17 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
 		return sReturn;
 	}
-
+	
 	@Override
 	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(classObj, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
+		String sReturn = this.computeJustified(classObj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(classObj, sLogs);
+	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(classObj, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -273,16 +287,19 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 	}
 	
 	//######################
+	
+	
+	
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
+		String sReturn = this.computeJustified(objFormater, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, ienumFormatLogString);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, ienumFormatLogString);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -295,14 +312,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
 	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, obj, ienumFormatLogString);
+		String sReturn = super.compute(objFormater, obj, ienumFormatLogString);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -315,14 +332,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, ienumaFormatLogString, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, ienumaFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -335,14 +352,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, obj, ienumFormatLogString, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, obj, ienumFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -355,14 +372,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);			
+		String sReturn = this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, obj, ienumaFormatLogString, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, obj, ienumaFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -375,14 +392,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, classObj, ienumFormatLogString, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -397,14 +414,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, classObj, ienumaFormatLogString, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, classObj, ienumaFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -417,14 +434,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString);
 		return sReturn;
 	}
-	
+		
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, classObj, ienumFormatLogString);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -437,14 +454,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, hm);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, hm);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, hm);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -457,14 +474,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, obj, hm);
 		return sReturn;
 	}
 
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, obj, hm);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, obj, hm);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -477,14 +494,14 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 	
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
+		String sReturn = this.computeJustified(objFormater, classObj, hm);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, classObj, hm);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.compute(objFormater, classObj, hm);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -497,14 +514,35 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, obj, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
+		String sReturn = this.computeJustified(objFormater, obj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJuistified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, obj, sLogs);
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, obj, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		
+		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+		
+		IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
+		return sReturn;
+	}
+	
+	
+	@Override
+	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(objFormater, classObj, sLogs);	
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+		String sReturn = super.compute(objFormater, classObj, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -515,25 +553,9 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 		return sReturn;
 	}
 
-	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.compute(objFormater, classObj, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
-		return sReturn;
-	}
 	
-	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.compute(objFormater, classObj, sLogs);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
-		return sReturn;
-	}
+
+	
 
 	
 }

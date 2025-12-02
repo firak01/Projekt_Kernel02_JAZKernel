@@ -3220,17 +3220,9 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
 	 */
 	public static String joinAll(String... sStrings) throws ExceptionZZZ {
-        return StringZZZ.joinAll(false, sStrings);
+        return StringZZZ.joinAll(true, sStrings);
 	}
-	
-	/*Java 1.7. Funktionalität
-	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
-	 * NULL Werte werden ignoriert
-	 */
-	 public static String joinAllIgnoreNull(String... sStrings) throws ExceptionZZZ {
-	        return StringZZZ.joinAll(true, sStrings);
-	 }
-	 
+		 
 	 /*Java 1.7. Funktionalität
 	 * Es können beliebig viele Strings übergeben werden (varargs Loesung).
 	 * Aber es ist anders als sonst im ZKernel ueblich notwendig, das der Zusaetzliche Parameter vorne steht.
