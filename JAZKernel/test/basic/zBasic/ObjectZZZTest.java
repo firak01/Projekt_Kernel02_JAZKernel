@@ -1,5 +1,6 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import junit.framework.TestCase;
@@ -50,23 +51,25 @@ public class ObjectZZZTest extends TestCase{
 		//TestKonfiguration prüfen.
 		//1. Hole alle FlagZ des Objekts
 		String[] saTest01 = objObjectInit.getFlagZ();
-		assertNotNull(saTest01);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarchie 3 FlagZ erwartet: DEBUG und INIT.",saTest01.length==3);
-		assertTrue(saTest01[0].equals("DUMMY"));
-		assertTrue(saTest01[1].equals("DEBUG"));
-		assertTrue(saTest01[2].equals("INIT"));
-		
+		assertNotNull(saTest01); 		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarchie mindestens 4 FlagZ erwartet: DUMMY, DEBUG, INIT und FOR_TEST.",saTest01.length==4);
+		assertTrue(StringArrayZZZ.contains(saTest01,"DUMMY"));			
+		assertTrue(StringArrayZZZ.contains(saTest01,"FOR_TEST"));
+		assertTrue(StringArrayZZZ.contains(saTest01,"DEBUG"));
+		assertTrue(StringArrayZZZ.contains(saTest01,"INIT"));
 		
 		//2. Hole alle FlagZ Einträge, die entsprechend true/false gesetzt sind.
 		String[]saTest02 = objObjectInit.getFlagZ(true);
 		assertNotNull(saTest02);		
 		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'true' erwartet: INIT.",saTest02.length==1);
-				
+		assertTrue(StringArrayZZZ.contains(saTest02,"INIT"));		
+		
 		String[]saTest02b = objObjectInit.getFlagZ(false);
 		assertNotNull(saTest02b);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie 2 FlagZ für 'false' erwartet: DEBUG.",saTest02b.length==2);
-		assertTrue(saTest02b[0].equals("DUMMY"));
-		assertTrue(saTest02b[1].equals("DEBUG"));
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie 2 FlagZ für 'false' erwartet: DUMMY, DEBUG.",saTest02b.length==3);
+		assertTrue(StringArrayZZZ.contains(saTest02b,"DUMMY"));
+		assertTrue(StringArrayZZZ.contains(saTest02b,"FOR_TEST"));
+		assertTrue(StringArrayZZZ.contains(saTest02b,"DEBUG"));
 		
 		objObjectInit.setFlag("DEBUG", true);
 		String[]saTest02c = objObjectInit.getFlagZ(false);
@@ -76,7 +79,12 @@ public class ObjectZZZTest extends TestCase{
 		objObjectInit.setFlag("DUMMY", true);
 		String[]saTest02d = objObjectInit.getFlagZ(false);
 		assertNotNull(saTest02d);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT KEIN FLAG MEHR für 'false' erwartet.",saTest02d.length==0);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur noch 1 Flag für 'false' erwartet.",saTest02d.length==1);
+		
+		objObjectInit.setFlag("FOR_TEST", true);
+		String[]saTest02e = objObjectInit.getFlagZ(false);
+		assertNotNull(saTest02e);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie kein Flag für 'false' erwartet.",saTest02e.length==0);
 	}catch(ExceptionZZZ ez){
 		ez.printStackTrace();
 		fail("An exception happend testing: " + ez.getDetailAllLast());

@@ -1536,7 +1536,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					IniFile objIni = this.getFileConfigModuleAsIni(sAlias);
 					if(objIni==null){
 						String sLog = "FileIni missing for Alias in execution Project Path: " + sAlias;
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+						System.out.println(sLog);
+						this.logLineDate(sLog);
+						
 						//ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						//throw ez;																		
 						break main;
@@ -3513,15 +3516,21 @@ MeinTestParameter=blablaErgebnis
 		IniFile objReturn = null;
 		main:{
 			if(objFileIni==null){
-				String stemp = "'Inifile'";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				String sLog = "'Inifile'";
+				sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+				System.out.println(sLog);
+				this.logLineDate(sLog);
+								
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			if(listasModuleOrApplicationSection==null) {
-				String stemp = "'ListAsModuleOrApplication Section'";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				String sLog = "'ListAsModuleOrApplication Section'";
+				sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+				System.out.println(sLog);
+				this.logLineDate(sLog);
+				
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -3559,11 +3568,17 @@ MeinTestParameter=blablaErgebnis
 					
 				}else {
 					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+					System.out.println(sLog);
+					this.logLineDate(sLog);
+
 				}								
 			} catch (IOException ioe) {
 				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
+				System.out.println(sLog);
+				this.logLineDate(sLog);
+				
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName(), ioe );
 				throw ez;
 			}
@@ -6929,7 +6944,10 @@ MeinTestParameter=blablaErgebnis
 			//first, get the Kernel-Configuration-INI-File
 			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
+			String sLog = "xxxxtest Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
+			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
+			System.out.println(sLog);
+			this.logLineDate(sLog);
 			
 			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
 			//Merke: Der Pfad darf leer sein. Dann wird "." als aktuelles Verzeichnis angenommen    String sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
@@ -6999,8 +7017,11 @@ MeinTestParameter=blablaErgebnis
 			}//end check:
 			
 			//first, get the Kernel-Configuration-INI-File
-			IniFile objIni = this.getFileConfigKernelAsIni();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
+			IniFile objIni = this.getFileConfigKernelAsIni();			
+			String sLog = "xxTest Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
+			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
+			System.out.println(sLog);
+			this.logLineDate(sLog);
 			
 			IniFile objFile = this.getFileConfigModuleAsIni(sModule, bIncludeSystemSectionInSearch); //false Schliesst die Suche über den SystemKey aus.
 			if(objFile!=null) {
@@ -7041,9 +7062,11 @@ MeinTestParameter=blablaErgebnis
 				ExceptionZZZ ez = new ExceptionZZZ("Configured KernelIniFile-Object has not internal File used.'",iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			String sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objFile.getAbsolutePath() + "'.";
+			String sLog = "xxxxTEST Verwende als ini-Datei für die Prüfung '"+ objFile.getAbsolutePath() + "'.";
+			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
+			System.out.println(sLog);
 			this.logLineDate(sLog);
-			
+		
 			bReturn = objIni.proofSectionExistsSearched(sAlias);						
 		}//end main:
 		return bReturn;

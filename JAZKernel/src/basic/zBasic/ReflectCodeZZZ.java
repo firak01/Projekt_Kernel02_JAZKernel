@@ -191,7 +191,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return getMethodCurrentNameLined_(iStacktraceOffset, iLineOffset);
 	  }
 	  
-	  public static String getMethodCurrentNameLined_(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
+	  private static String getMethodCurrentNameLined_(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
 			String sReturn = null;
 			main:{								
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -202,8 +202,13 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					sReturn = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset);
 					
 					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset, iLineOffset); //Berechne die gewünschte Zeile					
-					sReturn +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
-										
+					sReturn +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe. Hier kommt ggfs. der KommentarSeparator hinzu
+						
+					//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
+					if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
+						 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+				 	}
+					
 				}else{
 					
 				//Verarbeitung vor Java 1.4
@@ -259,8 +264,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 				
-				IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
+				//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+				//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 				
 			}//end main:
 			return sReturn;
@@ -711,19 +716,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
                    
 				    //Das "simple" ist, das hier die Position so einfach ohne FORMATANWEISUNG zusammengebaut wird.
 				  	int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
-				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
+				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );//enthält möglicheweise schon den Kommentartrenner
 					sReturn = ReflectCodeZZZ.getClassCallingName(iLevelUsed) + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName(iLevelUsed)  + sLine;
-						
-					//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-					//Abschliessenden Trenner für mögliche(!) Folgekommentare, die ggfs. für ein System.out angehängt werden.
-					sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+											
+					//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
+					if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
+						 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+				 	}
 					
 					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 					//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 					
-					IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-					sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
+					//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+					//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 				}else{
 					
 						//Verarbeitung vor Java 1.4

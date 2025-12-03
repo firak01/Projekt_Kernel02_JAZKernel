@@ -101,8 +101,7 @@ public class ReflectCodeZZZTest   extends TestCase{
 	
 	//#####################################################################################################
 	
-	public void testGetMethodCurrentNameLined() {
-		TODOGOO20251202;//HashMap nicht enthalten "FEHLER" im Gesamttest
+	public void testGetMethodCurrentNameLined() {		
 		try {
 			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
 			String sValue = ReflectCodeZZZ.getMethodCurrentNameLined();			
