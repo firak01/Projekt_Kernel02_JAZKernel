@@ -19,6 +19,7 @@ public interface IStringJustifierZZZ {
 
 	public int getInfoPartBoundLeftBehindCurrent();
 	public void setInfoPartBoundLeftBehindCurrent(int iIndex);
+	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease);
 	public int indexOfInfoPartBoundLeft(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
 	public int indexOfInfoPartBoundLeftBehind(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
 	public int getInfoPartBoundLeftBehind2use(String sLog);     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.

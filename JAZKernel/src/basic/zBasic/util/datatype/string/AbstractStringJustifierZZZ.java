@@ -88,6 +88,30 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 		this.iInfoPartBoundLeft = iIndex;
 	}
 	
+	@Override
+	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) {
+		main:{
+			if(iIndexMayIncrease<=0) break main;
+			
+			//hole die bisherige, aktuelle Grenze
+			int iBoundLeftBehindCurrent = this.getInfoPartBoundLeftBehindCurrent();
+			
+			//Keine Differenz vorhanden			
+			if(iIndexMayIncrease == iBoundLeftBehindCurrent) break main;				
+			
+			//Differenz vorhanden und groesser.
+			//Merke: Nun zum Schluss, da hier iBoundLeftBehind neu gesetzt wird			
+			if(iIndexMayIncrease > iBoundLeftBehindCurrent) { 
+				this.setInfoPartBoundLeftBehindCurrent(iIndexMayIncrease);
+				break main;
+			}
+		}//end main:
+	}
+	
+				
+	
+		
+	
 	@Override 
 	public int indexOfInfoPartBoundLeftBehind(String sLog) {
 		int iReturn = -1;
@@ -136,28 +160,20 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 
 			//ermittle die Grenze aus dem Logstring
 			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
-			if(iBoundLeftBehind==-1) break main; //Dann gibt es diese Grenzmarkierung noch nicht, z.B. beim anfänglichen Datumsstring.
+			if(iBoundLeftBehind<=-1) break main; //Dann gibt es diese Grenzmarkierung noch nicht, z.B. beim anfänglichen Datumsstring.
 
+			//erhoehte ggfs. die Grenze
+			this.setInfoPartBoundLeftBehindIncreased(iBoundLeftBehind);
 			
-			//hole die bisherige, aktuelle Grenze
-			int iBoundLeftBehindCurrent = this.getInfoPartBoundLeftBehindCurrent();
+			//hole die nun aktuelle Grenze, die es zu verwenden gilt
+			int iBoundLeftBehindToUse = this.getInfoPartBoundLeftBehindCurrent();
 						
-			//Keine Differenz vorhanden			
-			if(iBoundLeftBehind == iBoundLeftBehindCurrent) break main;				
-			
-			//Differenz vorhanden und groesser.
-			//Merke: Nun zum Schluss, da hier iBoundLeftBehind neu gesetzt wird			
-			if(iBoundLeftBehind > iBoundLeftBehindCurrent) { 
-				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
-				break main;
-			}	
-		
 			//Differenz vorhanden und kleiner
 			//Merke: Nun aufsplitten und auffuellen
-			if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
+			if(iBoundLeftBehind < iBoundLeftBehindToUse) {
 
 				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
-				int iDifference = iBoundLeftBehindCurrent - iBoundLeftBehind;
+				int iDifference = iBoundLeftBehindToUse - iBoundLeftBehind;
 				
 				if(iDifference>=1) {
 					String sLeft = StringZZZ.left(sLog, iBoundLeft);
@@ -168,26 +184,7 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 					sReturn = sLeft + sMid + sRight;// + "-DEBUG02a: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}else {
 					break main;
-				}
-				
-				//Es werden keine TABS mehr verwendet, sondern nur noch die wirklichen Zeichen. Auffuellzeichen ist " ".
-//					//falls ja: Berechne die Anzahl er Tabs aus der Differenz				
-//					int iTabs = iDifference / 7;//7 Leerzeichen entsprechen 1 Tab???
-//					
-//					if(iTabs>=1) {
-//						String sLeft = StringZZZ.left(sLog, iBoundLeft);
-//						String sRight = StringZZZ.rightback(sLog, iBoundLeft);
-//									
-//						//String sMid = StringZZZ.repeat("\t", iTabs); //Die Anzahl der Tabs selbst auszugeben, macht es schwierig.
-//						//Daher nur die Anzahl der Zeichen als Leerzeichen.
-//						String sMid = StringZZZ.repeat(" ", iDifference);
-//									
-//						//wieder zusamensetzen
-//						sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
-//					}
-				
-				
-				
+				}				
 			}//end if(iBoundLeftBehind < iBoundLeftBehindCurrent) {	
 		}//end main:
 		return sReturn;

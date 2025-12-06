@@ -176,6 +176,59 @@ public class ArrayUtilZZZ<T>{
 		return objaReturn;
 	}
 	
+	 /**20251206 - Von ChatGPT inspiriert
+     * Hängt zwei Arrays aneinander, wobei bei objArray2 erst ab indexObjArray2 kopiert wird.
+     *
+     * @param <T> der Elementtyp
+     * @param objArray1 erstes Array
+     * @param objArray2 zweites Array
+     * @param indexObjArray2 Startindex im zweiten Array
+     * @return neues Array mit den kombinierten Werten
+     * @throws IllegalArgumentException wenn indexObjArray2 außerhalb des gültigen Bereichs liegt
+     */
+    public static <T> T[] join(T[] objArray1, T[] objArray2, int indexObjArray2) {
+
+        if (objArray1 == null && objArray2 == null) {
+            return null;
+        }
+        if (objArray2 != null) {
+            if (indexObjArray2 < 0 || indexObjArray2 > objArray2.length) {
+                throw new IllegalArgumentException("indexObjArray2 out of range: " + indexObjArray2);
+            }
+        }
+
+        int len1 = (objArray1 == null) ? 0 : objArray1.length;
+        int len2 = (objArray2 == null) ? 0 : objArray2.length - indexObjArray2;
+        int newLen = len1 + len2;
+
+        // Komponententyp ermitteln
+        Class<?> componentType;
+        if (objArray1 != null) {
+            componentType = objArray1.getClass().getComponentType();
+        } else {
+            componentType = objArray2.getClass().getComponentType();
+        }
+
+        @SuppressWarnings("unchecked")
+        T[] result = (T[]) Array.newInstance(componentType, newLen);
+
+        int pos = 0;
+
+        // Ersten Teil kopieren
+        if (objArray1 != null) {
+            System.arraycopy(objArray1, 0, result, pos, len1);
+            pos += len1;
+        }
+
+        // Zweiten Teil ab indexObjArray2 kopieren
+        if (objArray2 != null && len2 > 0) {
+            System.arraycopy(objArray2, indexObjArray2, result, pos, len2);
+        }
+
+        return result;
+    }
+
+	
 	
 	/** von ChatGPT...
 	 * @param array

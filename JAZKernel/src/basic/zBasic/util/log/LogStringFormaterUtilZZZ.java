@@ -2,6 +2,7 @@ package basic.zBasic.util.log;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
@@ -27,10 +28,19 @@ public class LogStringFormaterUtilZZZ {
 		main:{
 			if(StringArrayZZZ.isEmpty(saLine)) break main;
 			
+			//In den übergebenen Zeilen koennten weitere Kommentartrenner stecken.
+			//Daher jede Zeile splitten und danach das neue "Standardisierte Array" weiterverarbeiten
+			//Ggfs. auch die erste Zeile und die 2te Zeile zusammenfassen.
+			String[] saLineNormed = normStringForJustify(objStringJustifier,saLine);
 			
-			if(saLine.length>=2) {
+			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SepartorStrings setzen
+			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(saLineNormed[0]); 
+			objStringJustifier.setInfoPartBoundLeftBehindIncreased(iIndexMayIncrease);
+			
+			//Nun das Standardisierte Array anpassen
+			if(saLineNormed.length>=2) {
 				//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
-				String[] saLineReversed1 = ArrayUtilZZZ.reverse(saLine);
+				String[] saLineReversed1 = ArrayUtilZZZ.reverse(saLineNormed);
 				ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
 				for(String sLine : saLineReversed1) {
 					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
@@ -53,7 +63,7 @@ public class LogStringFormaterUtilZZZ {
 					}
 				}							
 			}else {
-				String sLine = saLine[0];
+				String sLine = saLineNormed[0];
 				if(sLine!=null) {
 					sReturn = objStringJustifier.justifyInfoPart(sLine);					
 				}
@@ -89,29 +99,125 @@ public class LogStringFormaterUtilZZZ {
 				return justifyInfoPart(objStringJustifier, sLog);
 			}
 			
+
+//			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
+//			String[]saLog = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+//			
+//			//Trimme nun ggf. Leerzeichen weg
+//			String[] saLogTrimmed = StringArrayZZZ.trim(saLog);
+//			
+//			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen
+//			int iIndex=-1;
+//			String[]saLogCommented = new String[saLogTrimmed.length];
+//			for(String sLogTrimmed : saLogTrimmed ) {
+//				iIndex++;
+//				if(iIndex==0) {
+//					//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
+//					saLogCommented[0] = sLine + sLogTrimmed; 
+//				}else {
+//					if(!StringZZZ.endsWith(sLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+//						saLogCommented[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
+//					}else {
+//						saLogCommented[iIndex] = sLogTrimmed;
+//					}
+//				}				
+//			}
+			
+			String[]saLogCommented = normStringForJustify(objStringJustifier, sLine, sLog);
+			
+			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
+		}//end  main:
+		return sReturn;
+	}
+	
+	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String sLine, String sLog) throws ExceptionZZZ {
+		String[] saReturn=null;
+		main:{
+			boolean bLineEmpty = StringZZZ.isEmpty(sLine);
+			boolean bLogEmpty  = StringZZZ.isEmpty(sLog);
+			if(bLineEmpty && bLogEmpty) break main;
+			
+			if(bLogEmpty) {
+				saReturn = new String[1];
+				saReturn[0] = sLine;
+			}
+			
+			if(bLineEmpty) {
+				sLine = "";
+			}
+				
 			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
 			String[]saLog = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			
 			//Trimme nun ggf. Leerzeichen weg
-			String[] saLogTrimmed = StringArrayZZZ.trim(saLog);
+			String[]saLogTrimmed = StringArrayZZZ.trim(saLog);
 			
-			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen
+			//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
 			int iIndex=-1;
-			String[]saLogCommented = new String[saLogTrimmed.length];
+			saReturn = new String[saLogTrimmed.length];
 			for(String sLogTrimmed : saLogTrimmed ) {
 				iIndex++;
-				if(!StringZZZ.endsWith(sLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-					saLogCommented[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
-				}else {
-					saLogCommented[iIndex] = sLogTrimmed;
-				}
+				if(iIndex==0) {
+					//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)					
+					saReturn[iIndex] = sLine + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed; 
+				}else {					
+					saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;					
+				}				
 			}
-			//String[] saLogCommented = StringArrayZZZ.plusStringBefore(saLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+		}//end main:
+		return saReturn;
+	}
+	
+	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String[] saLogIn) throws ExceptionZZZ {
+		String[] saReturn=null;
+		main:{		
+			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
+				
+			//Die Einträge aufteilen und trimmen.
+			ArrayListExtendedZZZ<String>listasLogTrimmed = new ArrayListExtendedZZZ<String>();
+			for(String sLog : saLogIn) {
+				if(sLog!=null) {
+					String[] saLogSub = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+					for(String sLogSub : saLogSub) {
+						listasLogTrimmed.add(sLogSub.trim());//trimmen
+					}
+				}
+			}			
+			String[] saLogTrimmed = listasLogTrimmed.toStringArray();
 			
-			//saLogCommented[0] = sLine + saLogCommented[0]; //vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
-			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
-		}//end  main:
-		return sReturn;
+			
+			//Der 1. Eintrag braucht immer eine Sonderbehandlung, um ggfs. Kommentare auf die Zeile der LogPosition zu heben.
+			String[]saLog = null;
+			if(saLogTrimmed.length>=2) {
+				String[] saLogFirstLine = normStringForJustify(objStringJustifier, saLogTrimmed[0], saLogTrimmed[1]);
+				if(saLogTrimmed.length>=3) {
+					saLog = ArrayUtilZZZ.join(saLogFirstLine, saLogTrimmed, 2);
+				}else {
+					saLog = saLogFirstLine;
+				}
+			}else {
+				saLog = saLogIn;
+			}
+			
+		
+			//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
+			int iIndex=-1;
+			saReturn = new String[saLog.length];
+			for(String sLog : saLog ) {
+				iIndex++;
+				if(iIndex==0) {
+					//der erste String hat ja eine Sonderbehandlung bekommen und schon den MessageSepartor					
+					saReturn[iIndex] = sLog; 
+				}else {
+					if(!StringZZZ.startsWith(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+						saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLog;
+					}else {
+						saReturn[iIndex] = sLog;
+					}
+				}				
+			}
+		}//end main:
+		return saReturn;
 	}
 	
 	
