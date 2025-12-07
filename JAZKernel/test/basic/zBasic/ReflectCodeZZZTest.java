@@ -70,7 +70,19 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
 			int iLineNr = 71;
-			assertEquals("<positioncurrent><method>testGetPositionCurrentXmlFormated</method><linenr>"+ iLineNr + "</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent>", sValue); 			
+			//z.B.: <date>2025-12-7_12_34</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>
+			//Da sich das Datum ja immer aendert nicht auf gleich abpruefen (sonst muss ich das Datum extra berechnen)
+			//assertEquals("<date>2025-12-7_12_34</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>", sValue);
+
+			String sValueExpected = "</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>";
+			boolean bEndsWith = StringZZZ.endsWith(sValue, sValueExpected);
+			assertTrue(bEndsWith);
+			
+			sValueExpected = "<date>";
+			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueExpected);
+			assertTrue(bStartsWith);
+			
+			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());

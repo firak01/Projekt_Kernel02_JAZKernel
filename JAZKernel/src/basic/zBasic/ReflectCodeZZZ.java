@@ -202,13 +202,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					sReturn = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset);
 					
 					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset, iLineOffset); //Berechne die gewünschte Zeile					
-					sReturn +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe. Hier kommt ggfs. der KommentarSeparator hinzu
-						
-					//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
-					if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
-						 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-				 	}
-					
+					sReturn +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe. Hier kommt ggfs. der KommentarSeparator hinzu															
 				}else{
 					
 				//Verarbeitung vor Java 1.4
@@ -256,17 +250,17 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  }				 				  
 				}//End if : Verarbeitung vor Java 1.4
 				
-				//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-				//Abschliessenden Trenner für Folgekommentare
-				//sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-				
+				//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
+				if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
+					 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+			 	}
+								
 				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 				
-				//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-				//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
-				
+				IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);				
 			}//end main:
 			return sReturn;
 	  }
@@ -355,9 +349,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.		 		 
 		 return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 		 
-		 //Merke: Den Kommentartrenner # an anderer Stelle hinzufuegen
-		 //return " - Line " + iLine;
-		 
+		//geht leider nicht, da wir hier den Dateinamen nicht haben. 
+		//String sLine = ReflectCodeZZZ.formatFileCallingLine(iLine);
+		//return " (" + sFilePath + sLine + ") ";
+		//return sLine;
 	 }
 	 
 	 public static String formatFileCallingLine(int iLine){
@@ -671,7 +666,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
 			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, hmLogString);
+			sReturn = LogStringFormatManagerZZZ.getInstance().computeJustified(objFormater, hmLogString);
 			
 			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
 			//Abschliessenden Trenner für Folgekommentare
@@ -681,8 +676,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 			
-			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
+			//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+			//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:
 		return sReturn;
 	}
@@ -994,7 +989,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
 			ILogStringFormaterZZZ objFormaterPre = new LogStringFormater4ReflectCodeZZZ();
-			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);
+			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);			
+			sReturn = sReturnPre + sReturn;
 			
 			//+++++++++++++++++++++++++++++++++++++
 			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung

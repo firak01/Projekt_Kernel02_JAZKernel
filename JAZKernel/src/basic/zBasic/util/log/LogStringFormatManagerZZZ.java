@@ -11,7 +11,7 @@ import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ implements ILogStringFormatComputerJustifiedZZZ{
+public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ implements ILogStringFormatManagerJustifiedZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
 
 	// --- Singleton Instanz ---
@@ -24,7 +24,7 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 		super();
 	}
 	
-	public static synchronized ILogStringFormatManagerZZZ getInstance() throws ExceptionZZZ{
+	public static synchronized ILogStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
 		if(objLogStringManagerINSTANCE==null){
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
@@ -36,7 +36,7 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 			}
 			
 		}
-		return (ILogStringFormatManagerZZZ) objLogStringManagerINSTANCE;
+		return (ILogStringFormatManagerJustifiedZZZ) objLogStringManagerINSTANCE;
 	}
 	
 	public static synchronized LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
@@ -349,6 +349,12 @@ public class LogStringFormatManagerZZZ extends LogStringFormatManagerXmlZZZ impl
 		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
 		return sReturn;
 	}
+	
+//	@Override
+//	public String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString) throws ExceptionZZZ {
+//		String sReturn = 
+//	    return sReturn;
+//	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {

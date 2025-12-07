@@ -1122,8 +1122,32 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				classObj = classObjIn;
 			}
 			
-			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;	
+			
+			//TODO: Weil es immer das gleiche ist, scheint es die SWITCH Anweisung eigentlich nicht zu benoetigen.
 	        switch (ienumMappedFormat.getFactor()) {
+	        	case ILogStringFormatZZZ.iFACTOR_DATE_XML_BY_HASHMAP:
+	        		sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	        		break;
+	        	case ILogStringFormatZZZ.iFACTOR_THREADID_XML_BY_HASHMAP:	        		
+	        		sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	        		break;
 	            case ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_HASHMAP:
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
@@ -1159,7 +1183,19 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		            	}
 	            	}
 	                break;
-
+	                
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML_BY_HASHMAP:	            	
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}	            	
+	            	break;
+	            	
 	            case ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_HASHMAP:	            	               
 	            	sLog = hmLogString.get(ienumMappedFormat);
 	            	if(sLog!=null) {
@@ -1173,7 +1209,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                break;
 
 	            default:
-	                System.out.println("AbstractLogStringZZZ.computeByHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractLogStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumMappedFormat.getFactor());
 	                break;
 	        }		

@@ -225,10 +225,6 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 			this.logProtocol(obj, saLog); 
 		}
 		
-		
-
-	
-
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
 		@Override

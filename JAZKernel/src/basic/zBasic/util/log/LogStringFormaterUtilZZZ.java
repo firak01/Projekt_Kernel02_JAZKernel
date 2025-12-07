@@ -130,6 +130,7 @@ public class LogStringFormaterUtilZZZ {
 		return sReturn;
 	}
 	
+	
 	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String sLine, String sLog) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{
@@ -140,6 +141,7 @@ public class LogStringFormaterUtilZZZ {
 			if(bLogEmpty) {
 				saReturn = new String[1];
 				saReturn[0] = sLine;
+				break main;
 			}
 			
 			if(bLineEmpty) {
@@ -156,19 +158,34 @@ public class LogStringFormaterUtilZZZ {
 			int iIndex=-1;
 			saReturn = new String[saLogTrimmed.length];
 			for(String sLogTrimmed : saLogTrimmed ) {
-				iIndex++;
-				if(iIndex==0) {
-					//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)					
-					saReturn[iIndex] = sLine + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed; 
-				}else {					
-					saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;					
-				}				
+				if(!StringZZZ.isEmpty(sLogTrimmed)){					
+					iIndex++;
+					if(iIndex==0) {
+						//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)	
+						if(sLine.endsWith(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+							saReturn[iIndex] = sLine + sLogTrimmed;
+						}else {
+							saReturn[iIndex] = sLine + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
+						}
+					}else {					
+						saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;					
+					}		
+				}
 			}
 		}//end main:
 		return saReturn;
 	}
 	
+	
+	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ {
+		return normStringForJustify_(objStringJustifier, sLog);
+	}
+	
 	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String[] saLogIn) throws ExceptionZZZ {
+		return normStringForJustify_(objStringJustifier, saLogIn);
+	}
+	
+	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier,String... saLogIn) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{		
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
@@ -179,46 +196,50 @@ public class LogStringFormaterUtilZZZ {
 				if(sLog!=null) {
 					String[] saLogSub = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 					for(String sLogSub : saLogSub) {
-						listasLogTrimmed.add(sLogSub.trim());//trimmen
+						if(!StringZZZ.isEmpty(sLogSub)){         //Leerwerte weglassen
+							listasLogTrimmed.add(sLogSub.trim());//trimmen
+						}
 					}
 				}
 			}			
-			String[] saLogTrimmed = listasLogTrimmed.toStringArray();
+			String[] saLogTrimmed = listasLogTrimmed.toStringArray();				
+			if(ArrayUtilZZZ.isEmpty(saLogTrimmed)) break main;
 			
-			
-			//Der 1. Eintrag braucht immer eine Sonderbehandlung, um ggfs. Kommentare auf die Zeile der LogPosition zu heben.
-			String[]saLog = null;
+			//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
+			//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
+			//       und in der 2. Zeile ff dann die Kommentare.
+			int iIndex=0;
+			ArrayListExtendedZZZ<String>listasReturn = new ArrayListExtendedZZZ<String>();
 			if(saLogTrimmed.length>=2) {
-				String[] saLogFirstLine = normStringForJustify(objStringJustifier, saLogTrimmed[0], saLogTrimmed[1]);
-				if(saLogTrimmed.length>=3) {
-					saLog = ArrayUtilZZZ.join(saLogFirstLine, saLogTrimmed, 2);
-				}else {
-					saLog = saLogFirstLine;
+				//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
+				for(String sLog : saLogTrimmed ) {					
+					if(iIndex==0) {
+						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
+						String sReturnTemp = saLogTrimmed[0] + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + saLogTrimmed[1];
+						listasReturn.add(sReturnTemp);
+						iIndex++;
+					}else if(iIndex==1) {
+						//Mache wg. der Zusammenfassung in 0 hier nix.
+						iIndex++;
+					}else if(iIndex>=2) {	
+						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
+							String sReturnTemp = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLog;
+							listasReturn.add(sReturnTemp);
+							iIndex++;
+						}
+					}				
 				}
 			}else {
-				saLog = saLogIn;
+				if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
+					//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
+					String sReturnTemp = saLogTrimmed[0] + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; 				
+					listasReturn.add(sReturnTemp);
+				}
 			}
-			
-		
-			//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
-			int iIndex=-1;
-			saReturn = new String[saLog.length];
-			for(String sLog : saLog ) {
-				iIndex++;
-				if(iIndex==0) {
-					//der erste String hat ja eine Sonderbehandlung bekommen und schon den MessageSepartor					
-					saReturn[iIndex] = sLog; 
-				}else {
-					if(!StringZZZ.startsWith(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-						saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLog;
-					}else {
-						saReturn[iIndex] = sLog;
-					}
-				}				
-			}
+						
+			saReturn = listasReturn.toStringArray();
 		}//end main:
 		return saReturn;
 	}
-	
 	
 }
