@@ -17,7 +17,7 @@ import basic.zBasic.ReflectCodeZZZ;
  */
 
 //Merke: Wenn man hier <Integr,V> schreibt, defniert man sich sein eigenes Integer und nutzt nicht mehr die Java-Integer Klasse....
-public class HashMapIndexedObjektZZZ<K,V>  extends AbstractObjectWithExceptionZZZ<Object> implements Iterable<V>,Serializable{	
+public class HashMapIndexedObjectZZZ<K,V>  extends AbstractObjectWithExceptionZZZ<Object> implements Iterable<V>,Serializable{	
 	private static final long serialVersionUID = 8726987571013127695L;
 	private HashMap<Integer,V> hmIndexed=null;
 	private VectorZZZ<Integer> vecIndex=null;	
@@ -25,7 +25,7 @@ public class HashMapIndexedObjektZZZ<K,V>  extends AbstractObjectWithExceptionZZ
 	
 	private String sDummy=null;
 	
-	public HashMapIndexedObjektZZZ() throws ExceptionZZZ{
+	public HashMapIndexedObjectZZZ() throws ExceptionZZZ{
 		HashMapIndexedNew_(null);
 	}
 	
@@ -34,7 +34,7 @@ public class HashMapIndexedObjektZZZ<K,V>  extends AbstractObjectWithExceptionZZ
 	 * @throws ExceptionZZZ
 	 * 18.02.2020, 18:37:08, Fritz Lindhauer
 	 */
-	public HashMapIndexedObjektZZZ(HashMap<Integer,V> hmIndexed) throws ExceptionZZZ{
+	public HashMapIndexedObjectZZZ(HashMap<Integer,V> hmIndexed) throws ExceptionZZZ{
 		HashMapIndexedNew_(hmIndexed);
 	}
 	

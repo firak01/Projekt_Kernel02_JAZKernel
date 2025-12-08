@@ -12,13 +12,13 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
 
 public class HashMapIndexedObjectZZZTest extends TestCase{
-	 private HashMapIndexedObjektZZZ<Integer,Object> hmTest = null;	 
+	 private HashMapIndexedObjectZZZ<Integer,Object> hmTest = null;	 
 	 
 	    protected void setUp(){
 	      
 		try {			
 			//### Die TestObjekte, normal	
-			this.hmTest=new HashMapIndexedObjektZZZ<Integer,Object>();
+			this.hmTest=new HashMapIndexedObjectZZZ<Integer,Object>();
 			
 			//### Das spezielle Generics Testobjekt
 			DummyTestObjecWithDefaultValuesZZZ objTest01 = new DummyTestObjecWithDefaultValuesZZZ();

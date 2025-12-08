@@ -26,7 +26,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedObjektZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.counter.CounterHandlerSingleton_AlphabetSignificantZZZ;
@@ -5408,8 +5408,8 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	@Override
-	public HashMapIndexedObjektZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
-		HashMapIndexedObjektZZZ<Integer,IKernelConfigSectionEntryZZZ>hmReturn = null;		
+	public HashMapIndexedObjectZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
+		HashMapIndexedObjectZZZ<Integer,IKernelConfigSectionEntryZZZ>hmReturn = null;		
 		String sDebug;
 			
 		main:{				
@@ -5485,8 +5485,8 @@ MeinTestParameter=blablaErgebnis
 	
 
 	@Override
-	public HashMapIndexedObjektZZZ<Integer, IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sModuleAlias, String sProgramOrSection, String sProperty) throws ExceptionZZZ {
-		HashMapIndexedObjektZZZ<Integer, IKernelConfigSectionEntryZZZ>hmReturn = null;
+	public HashMapIndexedObjectZZZ<Integer, IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sModuleAlias, String sProgramOrSection, String sProperty) throws ExceptionZZZ {
+		HashMapIndexedObjectZZZ<Integer, IKernelConfigSectionEntryZZZ>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
 			
@@ -5504,7 +5504,7 @@ MeinTestParameter=blablaErgebnis
 			if(objaEntry!=null){
 				
 				//Packe jeden Entry in eine HashMap. Verwende dabei den Index des Entrywerts als Schlüssel für die Indizierte HashMap.
-				hmReturn = new HashMapIndexedObjektZZZ<Integer,IKernelConfigSectionEntryZZZ>();
+				hmReturn = new HashMapIndexedObjectZZZ<Integer,IKernelConfigSectionEntryZZZ>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
 					

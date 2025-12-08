@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedObjektZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedObjektZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -48,8 +48,8 @@ public interface IKernelConfigParameterHandlerZZZ extends IKernelConfigFileUserZ
 		
 	public Boolean getParameterBooleanByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	
-	public HashMapIndexedObjektZZZ<Integer,IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
-	public HashMapIndexedObjektZZZ<Integer, IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sProgramAlias, String sParameterName) throws ExceptionZZZ;	
+	public HashMapIndexedObjectZZZ<Integer,IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
+	public HashMapIndexedObjectZZZ<Integer, IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sProgramAlias, String sParameterName) throws ExceptionZZZ;	
 	public HashMap<String,String> getParameterHashMapWithStringByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	public HashMap<String,String> getParameterHashMapWithStringByProgramAlias(String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	
