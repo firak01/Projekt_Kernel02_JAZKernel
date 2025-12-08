@@ -3,7 +3,7 @@ package base.io;
 import java.math.*;
 
 import base.files.DateiUtil;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 import java.io.*;
@@ -130,16 +130,16 @@ public class IoUtil {                      // zaehlt die Buchstaben
   
   //#########################
   //### mit definiertem Zeichenpool
-  static public void printCharPoolPosition(int zeichenInCharacterPool,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+  static public void printCharPoolPosition(int zeichenInCharacterPool,ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
 	  CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);      
 	  System.out.print(objChar.getChar());
   }
   
-  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
 	    printCharPoolPositionWithPosition(zeichenInCharacterPool, -1, sSeparator,listasCharacterPool);
   }
   
-  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, int iPosition, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) { 
+  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, int iPosition, String sSeparator,ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool) { 
 	     
   	 CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);
  

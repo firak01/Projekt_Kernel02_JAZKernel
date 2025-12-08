@@ -9,7 +9,7 @@ import basic.zBasic.util.abstractEnum.EnumSetMappedStatusTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
@@ -52,7 +52,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   
 	   //A) Datentyp Enum
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtended = new ArrayListExtendedZZZ(objaEnum);
+	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<Enum> listaEnum = listaEnumExtended.toArrayList();
 	   
 	   //Test: Aus der ArrayList ein Enum machen
@@ -80,7 +80,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   
 	   //A) Datentyp Enum
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtended = new ArrayListExtendedZZZ(objaEnum);
+	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<Enum> listaEnum = listaEnumExtended.toArrayList();
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -107,7 +107,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   
 	   //A) Datentyp Enum
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtended = new ArrayListExtendedZZZ(objaEnum);
+	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<IEnumSetMappedZZZ> listaEnum = listaEnumExtended.toArrayList();
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -135,7 +135,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   
 	   //A) Datentyp Enum
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtended = new ArrayListExtendedZZZ(objaEnum);
+	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<IEnumSetMappedZZZ> listaEnum = listaEnumExtended.toArrayList();
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -164,7 +164,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   
 	   //A) Datentyp Enum
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtended = new ArrayListExtendedZZZ(objaEnum);
+	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnum = listaEnumExtended.toArrayList();
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -200,7 +200,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   Object[] objaEnumWithoutStatus = objClassWithoutStatusEnum.getEnumConstants();
 	 	 
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtendedWithoutStatus = new ArrayListExtendedZZZ(objaEnumWithoutStatus);
+	   ArrayListZZZ listaEnumExtendedWithoutStatus = new ArrayListZZZ(objaEnumWithoutStatus);
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnumWithoutStatus = listaEnumExtendedWithoutStatus.toArrayList();
 	   
 	 
@@ -217,7 +217,7 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   Object[] objaEnumWithStatus = objClassWithStatusEnum.getEnumConstants();
 	 
 	   //Erst einmal aus dem Enum eine ArrayList machen.
-	   ArrayListExtendedZZZ listaEnumExtendedWithStatus = new ArrayListExtendedZZZ(objaEnumWithStatus);
+	   ArrayListZZZ listaEnumExtendedWithStatus = new ArrayListZZZ(objaEnumWithStatus);
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnumWithStatus = listaEnumExtendedWithStatus.toArrayList();
 	 
 	   //Test: Aus der ArrayList ein Enum-Array machen		  

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
 
-public class ArrayListExtendedZZZTest extends TestCase{
-	private ArrayListExtendedZZZ alTest = null; 
+public class ArrayListZZZTest extends TestCase{
+	private ArrayListZZZ alTest = null; 
 	 
     protected void setUp(){
       
 	//try {			
 		//### Die TestObjecte	
-    	alTest = new ArrayListExtendedZZZ();
+    	alTest = new ArrayListZZZ();
     	alTest.add("Testwert A");  //0
 		alTest.add("Testwert B");  //1
 		alTest.add("Testwert C");  //2
@@ -68,7 +68,7 @@ public class ArrayListExtendedZZZTest extends TestCase{
 			int itemp;
 		
 			//+++ PR�FOBJEKT 1)
-			ArrayListExtendedZZZ alTest1 = (ArrayListExtendedZZZ) alTest.clone();
+			ArrayListZZZ alTest1 = (ArrayListZZZ) alTest.clone();
 			
 			//hmIndexed  jedesmal neu errechnen, da die Indexreihenfolge einem Internen Algorithmus entspricht und nicht so ist, wie notiert.
 			HashMapIndexedZZZ hmIndexed1 = alTest1.getValueDupsIndexedByMethod("toString"); //Eintr�ge, wichtig ist nur, dass die Werte trotz unterschiedlicher Keys an den Stellen (s. hmTest) identisch sind.

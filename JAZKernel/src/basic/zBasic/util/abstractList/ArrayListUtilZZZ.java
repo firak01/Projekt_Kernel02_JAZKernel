@@ -150,7 +150,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			if(objAsList instanceof List){
 				if(ArrayListUtilZZZ.isEmpty((ArrayList<?>) objAsList))break main;
 				
-				ArrayListExtendedZZZ<Class<?>> listaExtended = new ArrayListExtendedZZZ<Class<?>>();
+				ArrayListZZZ<Class<?>> listaExtended = new ArrayListZZZ<Class<?>>();
 				for(Object obj : (List)objAsList) {					
 					ArrayList<Class<?>> listaClass = ReflectClassZZZ.getInstanceOfList(obj);
 					listaExtended.addAllUnique(listaClass);

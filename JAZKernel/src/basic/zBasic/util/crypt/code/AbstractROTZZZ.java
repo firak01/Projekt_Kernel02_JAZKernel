@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ.TypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
@@ -108,12 +108,12 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+	public ArrayListZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
 		return null; //Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) {
 		//Nur wg. ICryptZZZ
 	}
 		

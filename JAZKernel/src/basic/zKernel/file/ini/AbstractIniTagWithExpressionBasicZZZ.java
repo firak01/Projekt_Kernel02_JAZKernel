@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConvertEnabledZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
@@ -217,15 +217,15 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 				
 				//+++ ARRAY BEHANDLUNG
 				String[] saExpression = StringZZZ.explode(sReturnLine, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
-				ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>(saExpression);
+				ArrayListZZZ<String> listasValue = new ArrayListZZZ<String>(saExpression);
 				this.setValue(listasValue);		
 			
 				//Fasse nun zusammen.
-				ArrayListExtendedZZZ<String> listasReturnParsed = new ArrayListExtendedZZZ<String>();
+				ArrayListZZZ<String> listasReturnParsed = new ArrayListZZZ<String>();
 				listasReturnParsed.add((String) vecReturn.get(0));
 			
 				//Fuer den Wert lediglich
-				ArrayListExtendedZZZ<String> listasValueParsed = new ArrayListExtendedZZZ<String>();
+				ArrayListZZZ<String> listasValueParsed = new ArrayListZZZ<String>();
 			
 				String sValue = null;			
 				for(String sExpressionTemp : saExpression) {

@@ -6,7 +6,7 @@ import java.util.Map;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -27,7 +27,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	private static final long serialVersionUID = 1L;
 		
 	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
-	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+	protected ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListZZZ<CharacterExtendedZZZ>();
 	
 	protected String sCharacterPoolBase = null;
 	protected String sCharacterPoolAdditional = null;
@@ -136,7 +136,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+	public ArrayListZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
 		if(ArrayListUtilZZZ.isEmpty(this.listasCharacterPool)) {
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
@@ -148,7 +148,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
 					
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			this.listasCharacterPool = listasCharacterPool;
 		}
 		return this.listasCharacterPool;
@@ -156,7 +156,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	
 	@Override
 	public String getCharacterPool() throws ExceptionZZZ {
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+		ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
 		return listasCharacterPool.debugString("");
 	}
 	
@@ -221,7 +221,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 			
 			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
 			//+++++++++++ CharacterPool normieren			
-			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
+			ArrayListZZZ<Character> listasCharacterPool = new ArrayListZZZ<Character>();
 			for (int i = 0; i < len; i++) {
 				try {
 					listasCharacterPool.addUnique(abcABC.charAt(i));

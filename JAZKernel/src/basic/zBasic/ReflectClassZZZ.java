@@ -12,7 +12,7 @@ import java.util.List;
 import debug.zBasic.MyPrivilegedAction;
 import basic.javareflection.mopex.Mopex;
 import basic.javareflection.mopex.UQueue;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -368,7 +368,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 				//       if(objAsList instanceof List){
 				//	if(ArrayListZZZ.isEmpty((ArrayList<?>) objAsList))break main;
 					
-				ArrayListExtendedZZZ<Class<?>> listaExtended = new ArrayListExtendedZZZ<Class<?>>();
+				ArrayListZZZ<Class<?>> listaExtended = new ArrayListZZZ<Class<?>>();
 				Class<? extends Object> classTemp = objToCheck.getClass();//Das funktioniert aber nicht mit Interfaces
 				listaExtended.addUnique(classTemp);
 					

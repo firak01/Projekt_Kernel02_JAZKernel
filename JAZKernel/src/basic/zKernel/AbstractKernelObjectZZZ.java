@@ -23,7 +23,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
@@ -4568,7 +4568,7 @@ MeinTestParameter=blablaErgebnis
 		//+++ AUSSERHALB DER SCHLEIFE: AlIASWERTE HOLEN
 		String sApplicationKey = this.getApplicationKey();
 		String sSystemNumber= this.getSystemNumber();
-		ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
+		ArrayListZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
 										
 		//############################################################################################
 	    //### Vereinfache den Code, dadurch, dass ein definierte Liste an Schlüsseln abgearbeitet wird.		    
@@ -5747,8 +5747,8 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public ArrayListExtendedZZZ<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
-		ArrayListExtendedZZZ<String> listasReturn = new ArrayListExtendedZZZ<String>();
+	public ArrayListZZZ<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
 		//CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 		//CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
@@ -6238,8 +6238,8 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 */
 	@Override
-	public ArrayListExtendedZZZ<String> getProgramAliasUsed_DirectLookup(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
-		ArrayListExtendedZZZ<String> listasReturn = new ArrayListExtendedZZZ<String>();
+	public ArrayListZZZ<String> getProgramAliasUsed_DirectLookup(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
 		//CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 		//CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();

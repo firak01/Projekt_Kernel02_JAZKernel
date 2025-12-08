@@ -10,7 +10,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -1476,7 +1476,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			ArrayList<String>ls2 = objExpressionSolver.computeArrayList(sExpression);
 			assertTrue("Mit Auflösung des String soll die ArrayList entsprechende Größe haben. ",ls2.size()==2);
 
-			String sValue = ArrayListExtendedZZZ.computeDebugString(ls2);	
+			String sValue = ArrayListZZZ.computeDebugString(ls2);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
 		} catch (ExceptionZZZ ez) {

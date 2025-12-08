@@ -40,7 +40,7 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.AbstractKernelObjectZZZ;
@@ -60,7 +60,7 @@ private FileArrayEasyZZZ(){
 public static File[] add(File[] objaFile, File objFile) {
 	File[] objaReturn = null;
 	main:{
-		ArrayList<File> listaFile = new ArrayListExtendedZZZ<File>(objaFile);		
+		ArrayList<File> listaFile = new ArrayListZZZ<File>(objaFile);		
 		listaFile.add(objFile);
 		objaReturn = ArrayListUtilZZZ.toFileArray(listaFile);
 	}//end main:

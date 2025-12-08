@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 public interface ICharacterPoolEnabledZZZ extends ICharacterPoolEnabledConstantZZZ{
@@ -24,7 +24,7 @@ public interface ICharacterPoolEnabledZZZ extends ICharacterPoolEnabledConstantZ
 		//public String getCryptKey();
 		//public void setCryptKey(String sCryptKey); //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
 
-		public ArrayListExtendedZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
+		public ArrayListZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
 		
 
 		public String getCharacterPoolBase();

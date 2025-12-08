@@ -8,7 +8,7 @@ import basic.zBasic.IValueArrayUserZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zBasic.IValueMapUserZZZ;
 import basic.zBasic.IValueUserZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;

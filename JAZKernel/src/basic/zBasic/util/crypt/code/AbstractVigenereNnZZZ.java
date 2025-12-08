@@ -6,7 +6,7 @@ import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
@@ -20,7 +20,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
 	
 	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
-	ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+	ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListZZZ<CharacterExtendedZZZ>();
 
 	protected String sCharacterPoolBase = null;
 	protected String sCharacterPoolAdditional = null;
@@ -106,7 +106,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional);			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
 			
@@ -137,7 +137,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}
 			          
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
+			ArrayListZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
 						
             iaReturn = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
             this.setEncryptedCharacterPoolPosition(iaReturn);
@@ -158,7 +158,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			
 			String sKeyword = this.getCryptKey();
 
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
 			int[] iaPosition = VigenereNnZZZ.encryptAsPositionInPool(sInput,listasCharacterPool,sKeyword);
 			this.setEncryptedCharacterPoolPosition(iaPosition);
 			
@@ -181,7 +181,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] encryptAsPositionInPool(String sInput, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] encryptAsPositionInPool(String sInput, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -212,7 +212,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] encryptAsPositionInPool(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] encryptAsPositionInPool(int[] iaText, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(ArrayUtilZZZ.isNull(iaText)) break main;
@@ -289,7 +289,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}
 						
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);	
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);					
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);					
 			
 			int[]ppure = AbstractVigenereNnZZZ.decrypt(sInput,listasCharacterPool,sKeyword);
 			
@@ -307,7 +307,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] decrypt(String sInput, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] decrypt(String sInput, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -342,7 +342,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(ArrayUtilZZZ.isNull(iaEncryptedText)) break main;
@@ -399,7 +399,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort, CharacterExtendedZZZ objCharMissingReplacement) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort, CharacterExtendedZZZ objCharMissingReplacement) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(ArrayUtilZZZ.isNull(iaEncryptedText)) break main;
@@ -494,7 +494,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			}
 								
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();	
+			ArrayListZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();	
 			CharacterExtendedZZZ objCharMissingReplacement = this.getCharacterMissingReplacment();
 			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort,objCharMissingReplacement);
 			this.setDecryptedCharacterPoolPosition(iaPosition);
@@ -553,7 +553,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 
 	@Override
-	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+	public ArrayListZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
 		if(ArrayListUtilZZZ.isEmpty(this.listasCharacterPool)) {
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
@@ -565,7 +565,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolEnabledZZZ.FLAGZ.USEADDITIONALCHARACTER);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional);
 					
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			this.listasCharacterPool = listasCharacterPool;
 		}
 		return this.listasCharacterPool;
@@ -574,7 +574,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	@Override
 	public String getCharacterPool() throws ExceptionZZZ {
 		
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();		
+		ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();		
 		String sCharacterPool =listasCharacterPool.debugString("");
 		return sCharacterPool;		
 	}
@@ -637,7 +637,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		int[] iaReturn = null;
 		main:{
 			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+			ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
 			iaReturn = AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaPure, listasCharacterPool);
 		}//end main:
 		return iaReturn;
@@ -658,7 +658,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 25.01.2023, 13:45:09
 	 */
-	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
+	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			ArrayList<Integer>listaInt=new ArrayList<Integer>();//Temporäre Liste, damit ggf. besondere Zeichen angemarkert werden können.
@@ -709,7 +709,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 25.01.2023, 13:45:09
 	 */
-	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			iaReturn = new int[iaPure.length];

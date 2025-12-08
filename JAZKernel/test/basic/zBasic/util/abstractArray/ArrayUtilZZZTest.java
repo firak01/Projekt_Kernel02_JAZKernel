@@ -6,7 +6,7 @@ import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import junit.framework.TestCase;
 

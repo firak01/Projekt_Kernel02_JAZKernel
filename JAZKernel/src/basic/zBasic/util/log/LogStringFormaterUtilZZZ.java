@@ -2,7 +2,7 @@ package basic.zBasic.util.log;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
@@ -191,7 +191,7 @@ public class LogStringFormaterUtilZZZ {
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
 				
 			//Die Einträge aufteilen und trimmen.
-			ArrayListExtendedZZZ<String>listasLogTrimmed = new ArrayListExtendedZZZ<String>();
+			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
 			for(String sLog : saLogIn) {
 				if(sLog!=null) {
 					String[] saLogSub = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
@@ -209,7 +209,7 @@ public class LogStringFormaterUtilZZZ {
 			//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
 			//       und in der 2. Zeile ff dann die Kommentare.
 			int iIndex=0;
-			ArrayListExtendedZZZ<String>listasReturn = new ArrayListExtendedZZZ<String>();
+			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
 			if(saLogTrimmed.length>=2) {
 				//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
 				for(String sLog : saLogTrimmed ) {					

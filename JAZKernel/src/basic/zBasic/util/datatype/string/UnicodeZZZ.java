@@ -22,7 +22,7 @@ import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
 import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
 import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
@@ -153,7 +153,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 23.12.2022, 10:00:47
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		int iaReturn[]=null;
 		main:{
 			if(StringZZZ.isEmpty(s)) break main;
@@ -186,7 +186,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 23.12.2022, 10:00:47
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacement) throws ExceptionZZZ {
+	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacement) throws ExceptionZZZ {
 		int iaReturn[]=null;
 		main:{
 			if(StringZZZ.isEmpty(s)) break main;
@@ -362,7 +362,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static File writeAnsiToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+	public static File writeAnsiToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			if(ia==null) break main;
@@ -428,7 +428,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static File writeUtf8ToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+	public static File writeUtf8ToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			if(ia==null) break main;

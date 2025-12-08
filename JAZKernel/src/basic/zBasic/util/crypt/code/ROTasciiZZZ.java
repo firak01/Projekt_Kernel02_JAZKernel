@@ -5,7 +5,7 @@ import java.util.Map;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -159,7 +159,7 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 			
 			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
 			//+++++++++++ CharacterPool normieren			
-			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
+			ArrayListZZZ<Character> listasCharacterPool = new ArrayListZZZ<Character>();
 			for (int i = 0; i < len; i++) {
 				try {
 					listasCharacterPool.addUnique(abcABC.charAt(i));

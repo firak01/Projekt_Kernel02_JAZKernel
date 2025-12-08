@@ -28,19 +28,19 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements   IArrayListExtendedZZZ{
+public class ArrayListZZZ<T> extends AbstractArrayListZZZ<T> implements   IArrayListExtendedZZZ{
 	private static final long serialVersionUID = 2859619907770188881L;
 		
 	/**
 	 * @param iCapacityInitial
 	 */
-	public ArrayListExtendedZZZ(int iCapacityInitial) {
+	public ArrayListZZZ(int iCapacityInitial) {
 		super(iCapacityInitial);			
 	}
-	public ArrayListExtendedZZZ(){		
+	public ArrayListZZZ(){		
 		super();
 	}
-	public ArrayListExtendedZZZ(T[]obja) {	
+	public ArrayListZZZ(T[]obja) {	
 		ArrayListExtendedNew_(obja);
 	
 	}

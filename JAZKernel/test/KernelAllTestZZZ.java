@@ -7,7 +7,7 @@ import basic.zBasic.ReflectClassZZZTest;
 import basic.zBasic.ReflectEnvironmentZZZTest;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
+import basic.zBasic.util.abstractList.ArrayListZZZTest;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZTest;
 import basic.zBasic.util.abstractList.HashMapZZZTest;
 import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZTest;
@@ -114,7 +114,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(StringArrayZZZTest.class);
 		
 		//Tests fuer Container LISTE / MAP
-		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);
+		objReturn.addTestSuite(ArrayListZZZTest.class);
 		objReturn.addTestSuite(ArrayListUtilZZZTest.class);	
 		
 		objReturn.addTestSuite(VectorUtilZZZTest.class);

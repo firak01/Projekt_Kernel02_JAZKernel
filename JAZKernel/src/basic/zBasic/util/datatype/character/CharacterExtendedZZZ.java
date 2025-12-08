@@ -5,7 +5,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
@@ -110,8 +110,8 @@ public class CharacterExtendedZZZ extends AbstractObjectWithExceptionZZZ impleme
 		return sReturn;
 	}
 	
-	public static ArrayListExtendedZZZ<CharacterExtendedZZZ> computeListFromCharacterPoolString(String sCharacterPool) throws ExceptionZZZ {
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listReturn = null;
+	public static ArrayListZZZ<CharacterExtendedZZZ> computeListFromCharacterPoolString(String sCharacterPool) throws ExceptionZZZ {
+		ArrayListZZZ<CharacterExtendedZZZ> listReturn = null;
 		main:{
 					
 			//IDEE DER NN-Behandlung:
@@ -119,7 +119,7 @@ public class CharacterExtendedZZZ extends AbstractObjectWithExceptionZZZ impleme
 			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
 			//+++++++++++ CharacterPool normieren
 			int len = sCharacterPool.length();			
-			listReturn = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+			listReturn = new ArrayListZZZ<CharacterExtendedZZZ>();
 			for (int i = 0; i < len; i++) {		
 				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(sCharacterPool.charAt(i));
 				listReturn.addUnique(objChar);				
@@ -130,7 +130,7 @@ public class CharacterExtendedZZZ extends AbstractObjectWithExceptionZZZ impleme
 		return listReturn;		
 	}
 	
-	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isNull(iaPosition))break main;
@@ -153,7 +153,7 @@ public class CharacterExtendedZZZ extends AbstractObjectWithExceptionZZZ impleme
 		return sReturn;		
 	}
 	
-	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
+	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isNull(iaPosition))break main;

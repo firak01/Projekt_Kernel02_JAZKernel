@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharSet;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
@@ -219,7 +219,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 	    return bReturn;
 	  }
   
-  public boolean schreibUsingPoolPosition(int[] iaIn, int iEncodingType, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) {
+  public boolean schreibUsingPoolPosition(int[] iaIn, int iEncodingType, ArrayListZZZ<CharacterExtendedZZZ>listasCharacterPool) {
 	  	boolean bReturn = false;
         main:{
 	     try {

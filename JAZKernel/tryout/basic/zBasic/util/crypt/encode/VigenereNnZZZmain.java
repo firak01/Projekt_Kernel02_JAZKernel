@@ -4,7 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnUiZZZ;
@@ -156,7 +156,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		
 		//2. Variante, mit dem int-Array der Position weiterarbeiten
 		int[]iaDecryptedCharacterPositionInPool = objVigenere.getDecryptedCharacterPoolPosition();
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
+		ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
 		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecryptedCharacterPositionInPool, listasCharacterPool);
 		System.out.println("decrypted2: " + stemp);
 		

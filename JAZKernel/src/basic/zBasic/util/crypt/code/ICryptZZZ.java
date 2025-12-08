@@ -3,7 +3,7 @@ package basic.zBasic.util.crypt.code;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
@@ -50,8 +50,8 @@ public interface ICryptZZZ extends IFlagZEnabledZZZ{
 	
 	//Methoden um <Z:CharacterPool> Werte zu setzen
 	//Wichtig fuer ROTnn - Verschluesselung
-	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ;
-	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool);
+	public ArrayListZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ;
+	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool);
 	
 	public String getCharacterPool() throws ExceptionZZZ;
 	//Merke: Kein Setzen... dies wird aus CharacterPoolList berechnet

@@ -576,7 +576,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 		
 		
 		Iterator it = hmIndexed.keySet().iterator(); //jetzt sortiert                                               //das ist sonst nicht sortiert!!! hmIndexed.entrySet().iterator();
-		ArrayListExtendedZZZ alUnique = new ArrayListExtendedZZZ();
+		ArrayListZZZ alUnique = new ArrayListZZZ();
 		while(it.hasNext()){
 			Object obj = it.next();
 			ArrayList alIndexed = (ArrayList) hmIndexed.get(obj);
@@ -703,7 +703,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 		
 		
 		Iterator it = hmIndexed.keySet().iterator(); //jetzt sortiert                                               //das ist sonst nicht sortiert!!! hmIndexed.entrySet().iterator();
-		ArrayListExtendedZZZ alUnique = new ArrayListExtendedZZZ();
+		ArrayListZZZ alUnique = new ArrayListZZZ();
 		while(it.hasNext()){
 			Object obj = it.next();
 			ArrayList alIndexed = (ArrayList) hmIndexed.get(obj);
