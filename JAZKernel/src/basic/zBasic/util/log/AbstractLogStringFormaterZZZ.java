@@ -310,6 +310,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		main:{
 			Class classObj=null;
 			if(classObjIn == null) {
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;	
 				classObj = this.getClass();
 			}else {
 				classObj = classObjIn;
@@ -385,6 +387,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		main:{
 			Class classObj=null;
 			if(classObjIn == null) {
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;	
 				classObj = this.getClass();
 			}else {
 				classObj = classObjIn;
@@ -430,7 +434,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		    Class classObj = null;		
 			if(classObjIn==null) {
-				classObj = this.getClass();			
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;	
+				this.getClass();
 			}else {
 				classObj = classObjIn;
 			}
@@ -492,7 +498,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		    Class classObj = null;		
 			if(classObjIn==null) {
-				classObj = this.getClass();			
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;		
+				this.getClass();
 			}else {
 				classObj = classObjIn;
 			}
@@ -608,6 +616,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			if (!isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
+//			Class classObj = null;		
+//			if(classObjIn==null) {
+////				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+////				throw ez;
+//				classObj = this.getClass();	
+//			}else {
+//				classObj = classObjIn;
+//			}
 			
 			//+++ Pruefe darauf, ob es ein XML-String ist. Wenn ja... Abbruch. Ansonsten wird ggfs. <filepositioncurrent> als normaler Logeintrag behandelt.
 			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ).
@@ -631,14 +647,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 			
 			//+++++++++++++++++++++++++++					
-//		    Class classObj = null;		
-//			if(classObjIn==null) {
-//				classObj = this.getClass();			
-//			}else {
-//				classObj = classObjIn;
-//			}
-
-//			String sLog=sLogIn;
 			String sLog = sOuter;
 			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
@@ -820,7 +828,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		    Class classObj = null;		
 			if(classObjIn==null) {
-				classObj = this.getClass();			
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				classObj = this.getClass();	
 			}else {
 				classObj = classObjIn;
 			}
@@ -868,7 +878,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 //		    Class classObj = null;		
 //			if(classObjIn==null) {
-//				classObj = this.getClass();			
+////				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+////				throw ez;
+//				classObj = this.getClass();	
 //			}else {
 //				classObj = classObjIn;
 //			}
@@ -1072,7 +1084,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			Class classObj = null;		
 			if(classObjIn==null) {
-				classObj = this.getClass();			
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				classObj = this.getClass();	
 			}else {
 				classObj = classObjIn;
 			}
@@ -1115,12 +1129,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();
 			
-		    Class classObj = null;		
-			if(classObjIn==null) {
-				classObj = this.getClass();			
-			}else {
-				classObj = classObjIn;
-			}
+//		    Class classObj = null;		
+//			if(classObjIn==null) {
+////				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+////				throw ez;
+//				classObj = this.getClass();	
+//			}else {
+//				classObj = classObjIn;
+//			}
 			
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;	
 			
@@ -1311,7 +1327,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			Class<?> classObj = null;		
 			if(classObjIn==null) {
-				classObj = this.getClass();			
+//				ExceptionZZZ ez = new ExceptionZZZ("Class - Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				classObj = this.getClass();
 			}else {
 				classObj = classObjIn;
 			}
@@ -1412,6 +1430,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 			Class classObj = null;		
 			if(classObjIn==null) {
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;	
 				classObj = this.getClass();			
 			}else {
 				classObj = classObjIn;
@@ -1464,7 +1484,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			main:{								
 				Class classObj = null;		
 				if(classObjIn==null) {
-					classObj = this.getClass();			
+//					ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;	
+					this.getClass();
 				}else {
 					classObj = classObjIn;
 				}
