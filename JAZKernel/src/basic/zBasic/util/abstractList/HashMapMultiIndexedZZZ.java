@@ -175,7 +175,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			//Hole die aeussere HashMap und dann daraus ueber den Index die Innere HashMap
 			HashMap hmOuter = this.getOuterHashMap();
 			HashMap hmInner = (HashMap) hmOuter.get(iIndexUsed);
-			objReturn = HashMapZZZ.getKeyLast(hmInner);
+			objReturn = HashMapUtilZZZ.getKeyLast(hmInner);
 			
 		}//end main:
 		return objReturn;
@@ -198,7 +198,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			//Hole die aeussere HashMap und dann daraus ueber den Index die Innere HashMap
 			HashMap hmOuter = this.getOuterHashMap();
 			HashMap hmInner = (HashMap) hmOuter.get(iIndexUsed);
-			objReturn = HashMapZZZ.getKeyLast(hmInner);
+			objReturn = HashMapUtilZZZ.getKeyLast(hmInner);
 			
 		}//end main:
 		return objReturn;
@@ -213,7 +213,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			int iHmIndexUsed = this.getIndexLast();
 			HashMap hm = this.getInnerHashMap(iHmIndexUsed);
 			
-			objReturn = HashMapZZZ.getKeyByIndex(hm, iIndex);
+			objReturn = HashMapUtilZZZ.getKeyByIndex(hm, iIndex);
 		}//end main:
 		return objReturn;
 	}
@@ -237,7 +237,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			if(!hmOuter.containsKey(intIndex)) break main;
 			
 			HashMap hmInner = (HashMap) hmOuter.get(intIndex);
-			objReturn = HashMapZZZ.getKeyByIndex(hmInner, iIndex);
+			objReturn = HashMapUtilZZZ.getKeyByIndex(hmInner, iIndex);
 		
 		}//END main:
 		return objReturn;
@@ -320,7 +320,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			int iOuterIndexUsed = this.getIndexLast();
 			
 			HashMap hmInner = this.get(iOuterIndexUsed);
-			objReturn = HashMapZZZ.getEntryFirst(hmInner);			
+			objReturn = HashMapUtilZZZ.getEntryFirst(hmInner);			
 		}//end main:
 		return objReturn;
 
@@ -352,7 +352,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			HashMap hmInner = this.get(iOuterIndexUsed);
 			
 			//Merke: Auf dieses EntryLast bezieht sich der Namensteil der Methode
-			objReturn = HashMapZZZ.getEntryLast(hmInner);			
+			objReturn = HashMapUtilZZZ.getEntryLast(hmInner);			
 		}//end main:
 		return objReturn;
 	}
@@ -532,7 +532,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
 			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
-			objReturn = HashMapZZZ.getEntryByIndex(hmInner, iInnerIndex);
+			objReturn = HashMapUtilZZZ.getEntryByIndex(hmInner, iInnerIndex);
 		
 		}//END main:
 		return objReturn;
@@ -556,7 +556,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
 			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
-			objReturn = HashMapZZZ.getEntryLast(hmInner);
+			objReturn = HashMapUtilZZZ.getEntryLast(hmInner);
 		
 		}//END main:
 		return objReturn;
@@ -580,7 +580,7 @@ public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V> implements
 			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
 			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
-			objReturn = HashMapZZZ.getKeyLast(hmInner);
+			objReturn = HashMapUtilZZZ.getKeyLast(hmInner);
 		
 		}//END main:
 		return objReturn;

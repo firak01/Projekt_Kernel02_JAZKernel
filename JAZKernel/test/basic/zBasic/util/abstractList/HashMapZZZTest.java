@@ -32,7 +32,7 @@ public class HashMapZZZTest extends TestCase{
 		    
 		    public void testSortByKeyAsInteger_StringObject() {
 		    	try{
-		    		HashMapIterableKeyZZZ<String, Object> hmIndexed = HashMapZZZ.sortByKeyAsInteger_StringObject(this.hmTest_StringObject, HashMapIterableKeyZZZ.iSORT_DIRECTION_ASCENDING );					
+		    		HashMapIterableKeyZZZ<String, Object> hmIndexed = HashMapUtilZZZ.sortByKeyAsInteger_StringObject(this.hmTest_StringObject, HashMapIterableKeyZZZ.iSORT_DIRECTION_ASCENDING );					
 					assertNotNull(hmIndexed);
 					
 					DummyTestObjecWithDefaultValuesZZZ  objTest01 = (DummyTestObjecWithDefaultValuesZZZ) hmIndexed.getValueFirst();
@@ -76,7 +76,7 @@ public class HashMapZZZTest extends TestCase{
 		    
 		    public void testSortByKeyInteger() {
 		    	try{
-		    		HashMapIterableKeyZZZ<Integer, Object> hmIndexed = HashMapZZZ.sortByKeyInteger(this.hmTest_IntegerObject);					
+		    		HashMapIterableKeyZZZ<Integer, Object> hmIndexed = HashMapUtilZZZ.sortByKeyInteger(this.hmTest_IntegerObject);					
 					assertNotNull(hmIndexed);
 					
 					DummyTestObjecWithDefaultValuesZZZ  objTest01 = (DummyTestObjecWithDefaultValuesZZZ) hmIndexed.getValueFirst();

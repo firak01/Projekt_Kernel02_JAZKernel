@@ -7,6 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormatManagerJustifiedZZZ;
 import basic.zBasic.util.log.ILogStringFormatManagerZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerZZZ;
@@ -32,7 +33,7 @@ public class LogStringFormatManagerZZZTest extends TestCase {
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			ILogStringFormatManagerZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
+			ILogStringFormatManagerJustifiedZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
 			boolean btemp1a = objLogManager.setFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
 						

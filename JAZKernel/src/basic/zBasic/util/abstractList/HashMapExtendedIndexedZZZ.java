@@ -563,7 +563,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			Integer objtest = (Integer)ittest.next();
 			System.out.println(objtest.intValue());
 		}*/
-		HashMapZZZ.sortByKeyInteger_usingInnerComparator(hmIndexed);  //Fest steht, das die Schl�ssel Integer Werte sind.
+		HashMapUtilZZZ.sortByKeyInteger_usingInnerComparator(hmIndexed);  //Fest steht, das die Schl�ssel Integer Werte sind.
 		
 		/*
 		List list = new LinkedList( hmIndexed.entrySet());
@@ -690,7 +690,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			Integer objtest = (Integer)ittest.next();
 			System.out.println(objtest.intValue());
 		}*/
-		HashMapZZZ.sortByKeyInteger_usingInnerComparator(hmIndexed);  //Fest steht, das die Schl�ssel Integer Werte sind.
+		HashMapUtilZZZ.sortByKeyInteger_usingInnerComparator(hmIndexed);  //Fest steht, das die Schl�ssel Integer Werte sind.
 		
 		/*
 		List list = new LinkedList( hmIndexed.entrySet());

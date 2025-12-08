@@ -6,7 +6,7 @@ import java.util.Set;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -92,13 +92,13 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 //				try {					
 					obj = (AbstractObjectWithFlagZZZ<T>) super.clonez();
 										
-					HashMap<String, Boolean> hmFlag = HashMapZZZ.copy(obj.hmFlag);
+					HashMap<String, Boolean> hmFlag = HashMapUtilZZZ.copy(obj.hmFlag);
 					obj.hmFlag = hmFlag;
 					
-					HashMap<String, Boolean> hmFlagLocal = HashMapZZZ.copy(obj.hmFlagLocal);
+					HashMap<String, Boolean> hmFlagLocal = HashMapUtilZZZ.copy(obj.hmFlagLocal);
 					obj.hmFlagLocal = hmFlagLocal;
 					
-					HashMap<String, Boolean> hmFlagPassed = HashMapZZZ.copy(obj.hmFlagPassed);
+					HashMap<String, Boolean> hmFlagPassed = HashMapUtilZZZ.copy(obj.hmFlagPassed);
 					obj.hmFlagPassed = hmFlagPassed;
 					
 //				}catch(CloneNotSupportedException e) {
