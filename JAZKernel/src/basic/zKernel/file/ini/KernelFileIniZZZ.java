@@ -21,7 +21,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
@@ -113,7 +113,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		
-		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		String[]saFlagControl = HashMapZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
 		KernelFileIniNew_(null, sDirectory, sFilename, null,saFlagControl);
 	}
 	
@@ -130,7 +130,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		
-		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		String[]saFlagControl = HashMapZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
 		KernelFileIniNew_(objFile,null, null, null, saFlagControl);
 	}
 	
@@ -147,7 +147,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		
-		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		String[]saFlagControl = HashMapZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
 		KernelFileIniNew_(null, sDirectory, sFilename, hmVariable, saFlagControl);
 	}
 	
@@ -164,7 +164,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		
-		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		String[]saFlagControl = HashMapZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
 		KernelFileIniNew_(objFile,null, null, hmVariable, saFlagControl);
 	}
 	

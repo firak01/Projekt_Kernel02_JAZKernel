@@ -6,7 +6,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.IHashMapMultiZZZ;
 import basic.zBasic.util.abstractList.IVector4XmlZZZ;
@@ -357,7 +357,7 @@ public class XmlParserZZZTest extends TestCase{
 			
 			
 			HashMap<String,Object>hmTagFirst = hmTag.toHashMapInnerKeyString(IHashMapMultiZZZ.FLAGZ.TO_HASHMAP_KEEPFIRST);
-			sDebug = HashMapExtendedZZZ.computeDebugString(hmTagFirst);
+			sDebug = HashMapZZZ.computeDebugString(hmTagFirst);
 			System.out.println("### AS HashMap ############################");
 			System.out.println(sDebug);
 			System.out.println("###########################################");						

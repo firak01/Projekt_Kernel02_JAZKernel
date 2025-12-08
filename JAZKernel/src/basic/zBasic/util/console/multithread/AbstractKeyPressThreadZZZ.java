@@ -3,7 +3,7 @@ package basic.zBasic.util.console.multithread;
 import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
@@ -102,7 +102,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	this.setSleepTime(lSleepTime);
         }
         
-        public void cancelToMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
+        public void cancelToMenue(HashMapZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
 			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//wieder so als würde das Menü nicht übersprungen.
 			this.cancelToMenue();
 		}
@@ -113,7 +113,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		this.isCurrentInputFinished(true);
 		}
 		
-        public void validToMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
+        public void validToMenue(HashMapZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
 			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//so, damit die Eingabe der Menue-Argumente übersprungen.
 			this.validToMenue();
 		}
@@ -124,7 +124,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		this.isCurrentInputFinished(true);
 		}
 		
-		public void validSkipMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
+		public void validSkipMenue(HashMapZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
 			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyYes)); //so, damit die Eingabe der Menue-Argumente uebersprungen wird 
 			this.validSkipMenue();
 		}
@@ -197,7 +197,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen				
 				this.getConsole().isKeyPressThreadRunning(true);
 				
-				HashMapExtendedZZZ hmVariable = this.getConsole().getVariableHashMap();								
+				HashMapZZZ hmVariable = this.getConsole().getVariableHashMap();								
 	            while(!this.isStopped()){
 	            	
 	            	long lSleepTime = this.getSleepTime();
@@ -308,9 +308,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		public abstract void makeMenueMain() throws InterruptedException,ExceptionZZZ;
     	
     	@Override
-		public abstract boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ;
+		public abstract boolean processMenueMainArgumentInput(String sInput, HashMapZZZ hmVariable) throws ExceptionZZZ;
     	
     	@Override
-    	public abstract boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ;
+    	public abstract boolean processMenuePostArgumentInput(HashMapZZZ hmVariable) throws ExceptionZZZ;
     }
 

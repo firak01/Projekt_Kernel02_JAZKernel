@@ -26,7 +26,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.counter.CounterHandlerSingleton_AlphabetSignificantZZZ;
@@ -7092,7 +7092,7 @@ MeinTestParameter=blablaErgebnis
 				if(objConfig!=null) {
 					//Übernimm die direkt gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlag();
-					saFlagUsed = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
+					saFlagUsed = (String[]) HashMapZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
 				}			
 				
 

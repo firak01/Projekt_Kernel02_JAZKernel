@@ -10,7 +10,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -575,7 +575,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 			if(hmReturn!=null) {
 				//sExpressionUsed = HashMapExtendedZZZ.computeDebugString(hmReturn);
 				//sExpressionUsed = hmReturn.toString();
-				sExpressionUsed = HashMapExtendedZZZ.computeImplodeString(hmReturn);
+				sExpressionUsed = HashMapZZZ.computeImplodeString(hmReturn);
 			}
 			
 			sReturnTag = sExpressionUsed;

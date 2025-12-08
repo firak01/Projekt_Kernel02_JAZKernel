@@ -12,18 +12,18 @@ import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
 public class EnumSetMappedUtilZZZTest  extends TestCase{
-	 private HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ> hmTestGenerics = null;
+	 private HashMapZZZ<String, EnumSetMappedTestTypeZZZ> hmTestGenerics = null;
 	 
 	    protected void setUp(){
 	      
 		//try {			
 		
 			//### Das spezielle Generics Testobjekt			
-			hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();
+			hmTestGenerics = new HashMapZZZ<String, EnumSetMappedTestTypeZZZ>();
 			
 			Set<EnumSetMappedTestTypeZZZ> allTypes = EnumSet.allOf(EnumSetMappedTestTypeZZZ.class);
 			for(EnumSetMappedTestTypeZZZ myType : allTypes) {

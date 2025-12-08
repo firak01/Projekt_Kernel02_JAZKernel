@@ -27,7 +27,7 @@ import basic.zBasic.util.math.MathZZZ;
  * @author lindhaueradmin
  *
  */
-public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapExtendedZZZ{
+public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
 		
 	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
@@ -36,27 +36,27 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	protected volatile String sImplodeKeyDelimiterUsed = null; //zum Formatieren einer Implode Ausgabe
 	protected volatile String sImplodeEntryDelimiterUsed = null;
 	
-	public HashMapExtendedZZZ(){
+	public HashMapZZZ(){
 	}
 	
-	public static HashMapExtendedZZZ toHashMapExtended(HashMap hm){
-		HashMapExtendedZZZ hmReturn=null;
+	public static HashMapZZZ toHashMapExtended(HashMap hm){
+		HashMapZZZ hmReturn=null;
 		main:{
 			if(hm==null)break main;
 			
-			hmReturn=new HashMapExtendedZZZ();
+			hmReturn=new HashMapZZZ();
 			hmReturn.putAll(hm);
 			
 		}//end main:
 		return hmReturn;
 	}
 	
-	public static HashMapExtendedZZZ clone(HashMap hm) {
-		HashMapExtendedZZZ hmReturn=null;
+	public static HashMapZZZ clone(HashMap hm) {
+		HashMapZZZ hmReturn=null;
 		main:{
 			if(hm==null)break main;
 			
-			hmReturn=new HashMapExtendedZZZ();
+			hmReturn=new HashMapZZZ();
 			HashMap hmNew = (HashMap) hm.clone();
 			hmReturn.putAll(hmNew);
 			
@@ -108,7 +108,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		String[] saReturn = null;
 		
 		if(hm == null){
-			ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+			ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 			throw ez;	
 		  }
 				
@@ -123,18 +123,18 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	  }
 	
 	public static String[] getKeysAsStringStartingWith(Map<Object, ?> objHashMap, String sValueToFind) throws ExceptionZZZ {		
-		return HashMapExtendedZZZ.getKeysAsStringStartingWith(objHashMap, sValueToFind, true);
+		return HashMapZZZ.getKeysAsStringStartingWith(objHashMap, sValueToFind, true);
 	}
 	
 	public static String[] getKeysAsStringStartingWith(Map<Object, ?> objHashMap, String sValueToFind, boolean bIgnoreCase) throws ExceptionZZZ {		
 		String[] saReturn=null;
 		main:{
 			if(objHashMap== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(StringZZZ.isEmpty(sValueToFind)){
-				ExceptionZZZ ez = new ExceptionZZZ("String sValueTofind", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("String sValueTofind", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
 			
@@ -195,11 +195,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		HashMapExtendedIndexedZZZ hmIndexed = new HashMapExtendedIndexedZZZ();
 		main:{
 			if(objHashMap== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(StringZZZ.isEmpty(sMethodName)){
-				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
 			hmIndexed = HashMapExtendedIndexedZZZ.getValueDupsIndexedByMethod(objHashMap, sMethodName);
@@ -224,7 +224,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 			  }
 			
 			//Vergleiche zwei Hashmaps, bzgl. der Size()
-			HashMap objHashMapExt = HashMapExtendedZZZ.minElements(this, objHashMap);
+			HashMap objHashMapExt = HashMapZZZ.minElements(this, objHashMap);
 			if(objHashMapExt==null) break main;
 			if(objHashMapExt.equals(this)) bReturn = true;
 		}//end main
@@ -247,7 +247,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 			  }
 			
 			//Vergleiche zwei Hashmaps, bzgl. der Size()
-			HashMap objHashMapExt = HashMapExtendedZZZ.maxElements(this, objHashMap);
+			HashMap objHashMapExt = HashMapZZZ.maxElements(this, objHashMap);
 			if(objHashMapExt==null) break main;
 			if(objHashMapExt.equals(this)) bReturn = true;
 		}//end main
@@ -412,7 +412,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 			  }
 			
 			//Vergleiche zwei Hashmaps, bzgl. der Size()
-			bReturn = HashMapExtendedZZZ.isSameSize(this, objHashMap);
+			bReturn = HashMapZZZ.isSameSize(this, objHashMap);
 		}//end main
 		return bReturn;
 	}
@@ -428,11 +428,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		boolean bReturn = false;
 		main:{
 			if(objHashMap1== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(objHashMap2== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			//###################
@@ -690,11 +690,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		HashMap objReturn = null;
 		main:{
 			if(objHashMap1== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(objHashMap2== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			//###################
@@ -726,11 +726,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		HashMap objReturn = null;
 		main:{
 			if(objHashMap1== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap1 to compare'", iERROR_PARAMETER_MISSING,  HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(objHashMap2== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap2 to compare'", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			//###################
@@ -855,7 +855,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	public String getImplodeEntryDelimiter() throws ExceptionZZZ{
 		String sEntryDelimiter;			
 		if(this.sImplodeEntryDelimiterUsed==null){
-			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IHashMapZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
 		}
@@ -870,7 +870,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
 		String sKeyDelimiter;
 		if(this.sImplodeKeyDelimiterUsed==null){
-			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IHashMapZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
 		}else{
 			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
 		}
@@ -951,14 +951,14 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		
 		String sKeyDelimiter;
 		if(sKeyDelimiterIn==null){
-			sKeyDelimiter = IHashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IHashMapZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 		}else {
 			sKeyDelimiter = sKeyDelimiterIn;
 		}
 		
 		String sEntryDelimiter; 
 		if(sEntryDelimiterIn==null){
-			sEntryDelimiter = IHashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IHashMapZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = sEntryDelimiterIn;
 		}
@@ -1098,7 +1098,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 		return this.getKeysAsStringStartingWith(sValueToFind, true);
 	}
 	public String[] getKeysAsStringStartingWith(String sValueToFind, boolean bIgnoreCase) throws ExceptionZZZ {
-		return HashMapExtendedZZZ.getKeysAsStringStartingWith(this, sValueToFind, bIgnoreCase);		
+		return HashMapZZZ.getKeysAsStringStartingWith(this, sValueToFind, bIgnoreCase);		
 	}
 	
 	/** Gib den Wert an der uebergebenen Indexposition zur�ck.

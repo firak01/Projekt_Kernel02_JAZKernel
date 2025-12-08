@@ -6,17 +6,17 @@ import junit.framework.TestCase;
 import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 
 public class HashMapExtendedZZZTest extends TestCase{
-	 private HashMapExtendedZZZ hmTest = null;
-	 private HashMapExtendedZZZ<String, DummyTestObjecWithDefaultValuesZZZ> hmTestGenerics = null;
+	 private HashMapZZZ hmTest = null;
+	 private HashMapZZZ<String, DummyTestObjecWithDefaultValuesZZZ> hmTestGenerics = null;
 	 
 	    protected void setUp(){
 	      
 		try {			
 			//### Die TestObjecte, normal	
-			hmTest=new HashMapExtendedZZZ();
+			hmTest=new HashMapZZZ();
 			hmTest.put("Alias1","Das ist ein Test");
 			hmTest.put("Alias2", "Das ist der Gleichheits  Fall");
 			
@@ -26,7 +26,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			
 			DummyTestObjecWithDefaultValuesZZZ objTest02 = new DummyTestObjecWithDefaultValuesZZZ();
 			
-			hmTestGenerics = new HashMapExtendedZZZ<String, DummyTestObjecWithDefaultValuesZZZ>();
+			hmTestGenerics = new HashMapZZZ<String, DummyTestObjecWithDefaultValuesZZZ>();
 			hmTestGenerics.put("test01", objTest01);
 			hmTestGenerics.put("test02", objTest02);
 			
@@ -44,7 +44,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			
 				//+++ PR�FOBJEKT 1)
 				//Gleichheitsfall
-				HashMapExtendedZZZ hmTest2 = new HashMapExtendedZZZ();
+				HashMapZZZ hmTest2 = new HashMapZZZ();
 				hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 				btemp = hmTest.isBiggerThan(hmTest2);
 				assertTrue("Testobjekt aus dem Setup sollte gr��er sein als Vergleichsobjekt.", btemp);
@@ -69,7 +69,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 		
 			//+++ PR�FOBJEKT 1)
 			//Gleichheitsfall
-			HashMapExtendedZZZ hmTest2 = new HashMapExtendedZZZ();
+			HashMapZZZ hmTest2 = new HashMapZZZ();
 			hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 			hmTest2.put("Alias1","Das ist ein Test");  //Geliche Werte aber andere Reihenfolge
 			btemp = hmTest.isSubsetFrom(hmTest2);
@@ -104,7 +104,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 		
 			//+++ PR�FOBJEKT 1)
 			//Gleichheitsfall
-			HashMapExtendedZZZ hmTest2 = new HashMapExtendedZZZ();
+			HashMapZZZ hmTest2 = new HashMapZZZ();
 			hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 			hmTest2.put("Alias1","Das ist ein Test");  //Geliche Werte aber andere Reihenfolge
 			btemp = hmTest.isSubsetFromByMethod(hmTest2, "toString");
@@ -141,7 +141,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 		
 			//+++ PR�FOBJEKT 1)
 			//Gleichheitsfall
-			HashMapExtendedZZZ hmTest2 = new HashMapExtendedZZZ();
+			HashMapZZZ hmTest2 = new HashMapZZZ();
 			hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 			hmTest2.put("Alias1","Das ist ein Test");  //Geliche Werte aber andere Reihenfolge
 			btemp = hmTest.isEqualToByMethod(hmTest2, "toString");
@@ -269,7 +269,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			boolean btemp;
 			
 			//!! dazu darf man nicht mit generics arbeiten.
-			HashMapExtendedZZZ hmTest2 = new HashMapExtendedZZZ();
+			HashMapZZZ hmTest2 = new HashMapZZZ();
 			hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 			hmTest2.put("Alias1","Das ist ein Test");  //Geliche Werte aber andere Reihenfolge
 			

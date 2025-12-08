@@ -62,7 +62,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  }
  */
 public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
-	protected volatile HashMapExtendedZZZ<String,Object> hmOuter=new HashMapExtendedZZZ<String,Object>();
+	protected volatile HashMapZZZ<String,Object> hmOuter=new HashMapZZZ<String,Object>();
 
 	//fuer IOutputDebugNormedZZZ
 	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
@@ -483,7 +483,7 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	public String getImplodeEntryDelimiter() throws ExceptionZZZ {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IHashMapZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
 		}
@@ -499,7 +499,7 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
 		String sKeyDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IHashMapZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
 		}else {
 			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
 		}

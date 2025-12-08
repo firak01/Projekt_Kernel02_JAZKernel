@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Klasse zur Eingabe von Befehlen an der Konsole.
@@ -39,7 +39,7 @@ public abstract class AbstractConsoleZZZ extends AbstractObjectWithFlagZZZ imple
 	private volatile static boolean bConsoleUserThreadRunning = false;
 	
 	//Zur dynmischen Verwaltung von Variablen, die in einem Thread für den anderen Thread gedacht sind
-	private volatile static HashMapExtendedZZZ<String,Object> hmVariable = null;
+	private volatile static HashMapZZZ<String,Object> hmVariable = null;
 	//To ensure that updates to variables propagate predictably to other threads, we should apply the volatile modifier to those variables:
 	
 	
@@ -249,15 +249,15 @@ public abstract class AbstractConsoleZZZ extends AbstractObjectWithFlagZZZ imple
 	}
 	
 	@Override
-	public HashMapExtendedZZZ<String,Object> getVariableHashMap(){
+	public HashMapZZZ<String,Object> getVariableHashMap(){
 		if(this.hmVariable==null) {
-			this.hmVariable = new HashMapExtendedZZZ<String,Object>();
+			this.hmVariable = new HashMapZZZ<String,Object>();
 		}
 		return this.hmVariable;
 	}
 	
 	@Override
-	public void setVariableHashMap(HashMapExtendedZZZ<String,Object> hmVariable) {
+	public void setVariableHashMap(HashMapZZZ<String,Object> hmVariable) {
 		this.hmVariable = hmVariable;
 	}
 }

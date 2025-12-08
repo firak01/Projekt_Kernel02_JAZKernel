@@ -85,7 +85,7 @@ public class HashMapUtilZZZ {
 	            HashMap hmInner = (HashMap) objOuterValue;
 
 	            // 20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
-	            String stemp = HashMapExtendedZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
+	            String stemp = HashMapZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
 	            if (stemp != null) {
 	                String[] saValue = StringZZZ.explode(stemp, sEntryDelimiter);
 	                String[] saValueWithKey = StringArrayZZZ.plusString(saValue, sKeyOuter + sKeyDelimiter, "BEFORE");
@@ -116,14 +116,14 @@ public class HashMapUtilZZZ {
 
 	        String sEntryDelimiter;
 	        if (sEntryDelimiterIn == null) {
-	            sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+	            sEntryDelimiter = IHashMapZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
 	        } else {
 	            sEntryDelimiter = sEntryDelimiterIn;
 	        }
 
 	        String sKeyDelimiter;
 	        if (sKeyDelimiterIn == null) {
-	            sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+	            sKeyDelimiter = IHashMapZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
 	        } else {
 	            sKeyDelimiter = sKeyDelimiterIn;
 	        }
@@ -143,7 +143,7 @@ public class HashMapUtilZZZ {
 	            HashMap hmInner = (HashMap) objOuterValue;
 
 	            // 20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
-	            String stemp = HashMapExtendedZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
+	            String stemp = HashMapZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
 	            if (stemp != null) {
 	                String[] saValue = StringZZZ.explode(stemp, sEntryDelimiter);
 	                String[] saValueWithKey = StringArrayZZZ.plusString(saValue, sKeyOuter + sKeyDelimiter, "BEFORE");
@@ -195,11 +195,11 @@ public class HashMapUtilZZZ {
 	        if (hmImplode == null || hmImplode.size() == 0) break main;
 
 	        String sKeyDelimiter = (sKeyDelimiterIn == null) 
-		    		? IHashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT 
+		    		? IHashMapZZZ.sDEBUG_KEY_DELIMITER_DEFAULT 
 		    		: sKeyDelimiterIn;
 
 		    String sEntryDelimiter = (sEntryDelimiterIn == null) 
-		    		? IHashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT 
+		    		? IHashMapZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT 
 		    		: sEntryDelimiterIn;
 
 	        Set setEntry = hmImplode.entrySet();   // raw usage beibehalten wg. Signaturen
@@ -261,11 +261,11 @@ public class HashMapUtilZZZ {
 	        if (hmImplode == null || hmImplode.size() == 0) break main;
 
 	        String sKeyDelimiter = (sKeyDelimiterIn == null) 
-		    		? IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT 
+		    		? IHashMapZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT 
 		    		: sKeyDelimiterIn;
 
 		    String sEntryDelimiter = (sEntryDelimiterIn == null) 
-		    		? IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT 
+		    		? IHashMapZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT 
 		    		: sEntryDelimiterIn;
 
 	        Set setEntry = hmImplode.entrySet();   // raw usage beibehalten wg. Signaturen

@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
@@ -24,7 +24,7 @@ public abstract class AbstractConsoleUserCryptZZZ extends AbstractConsoleUserZZZ
 		super(objConsole, saFlag);	
 	}
 	
-	public boolean preProcessing(ICryptZZZ objCrypt, HashMapExtendedZZZ<String,Object>hmVariable) throws ExceptionZZZ {
+	public boolean preProcessing(ICryptZZZ objCrypt, HashMapZZZ<String,Object>hmVariable) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			
@@ -45,7 +45,7 @@ public abstract class AbstractConsoleUserCryptZZZ extends AbstractConsoleUserZZZ
 		return bReturn;
 	}
 	
-	public boolean preProcessingObject(ICryptZZZ objCrypt, HashMapExtendedZZZ<String,Object>hmVariable) throws ExceptionZZZ {
+	public boolean preProcessingObject(ICryptZZZ objCrypt, HashMapZZZ<String,Object>hmVariable) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String sInput=null;
@@ -81,7 +81,7 @@ public abstract class AbstractConsoleUserCryptZZZ extends AbstractConsoleUserZZZ
 		return bReturn;
 	}
 	
-	public boolean preProcessingFlags(ICryptZZZ objCrypt, HashMapExtendedZZZ<String,Object>hmVariable) throws ExceptionZZZ {
+	public boolean preProcessingFlags(ICryptZZZ objCrypt, HashMapZZZ<String,Object>hmVariable) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String sInput=null;

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
@@ -47,7 +47,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		}
 		
 		@Override
-		public boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+		public boolean processMenueMainArgumentInput(String sInput, HashMapZZZ hmVariable) throws ExceptionZZZ {
 			boolean bReturn = true;
 			main:{
 			//In the JDK 7 release, you can use a String object in the expression of a switch statement:
@@ -105,7 +105,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		return bReturn;
 	}
 				
-		public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+		public boolean processMenuePostArgumentInput(HashMapZZZ hmVariable) throws ExceptionZZZ {
 			boolean bReturn = true;
 			main:{
 
@@ -129,14 +129,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 			return bReturn;
 		}
 		
-		private void processROT13_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+		private void processROT13_(HashMapZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
         		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
         		hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_CIPHER, sCipher);
         	}
 		}
 		
-		private void processROTascii_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+		private void processROTascii_(HashMapZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
         		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii.getAbbreviation();
         		hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_CIPHER, sCipher);
@@ -146,7 +146,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}
 		}
 		
-		private void processROTnumeric_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+		private void processROTnumeric_(HashMapZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
         		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric.getAbbreviation();
         		hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_CIPHER, sCipher);
@@ -158,7 +158,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}
 		}
 		
-		private void processROTnn_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+		private void processROTnn_(HashMapZZZ hmVariable) throws ExceptionZZZ{
 						
 			if(hmVariable!=null) {
         		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
@@ -252,7 +252,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}	
 		}
 		
-		private void processVigenereNn_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+		private void processVigenereNn_(HashMapZZZ hmVariable) throws ExceptionZZZ{
 			
 			if(hmVariable!=null) {
         		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn.getAbbreviation();

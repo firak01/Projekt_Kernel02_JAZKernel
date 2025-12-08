@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zKernel.IKernelConfigConstantZZZ;
@@ -15,14 +15,14 @@ import basic.zKernel.IKernelConfigConstantZZZ.EnumConfigDefaultEntryZZZ;
 
 
 public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
-	 private HashMapExtendedZZZ<String, EnumConfigDefaultEntryZZZ> hmTestGenerics = null;
+	 private HashMapZZZ<String, EnumConfigDefaultEntryZZZ> hmTestGenerics = null;
 	 
 	    protected void setUp(){
 	      
 		//try {			
 		
 			//### Das spezielle Generics Testobjekt			
-			hmTestGenerics = new HashMapExtendedZZZ<String, EnumConfigDefaultEntryZZZ>();
+			hmTestGenerics = new HashMapZZZ<String, EnumConfigDefaultEntryZZZ>();
 			
 			Set<EnumConfigDefaultEntryZZZ> allTypes = EnumSet.allOf(EnumConfigDefaultEntryZZZ.class);
 			for(EnumConfigDefaultEntryZZZ myType : allTypes) {

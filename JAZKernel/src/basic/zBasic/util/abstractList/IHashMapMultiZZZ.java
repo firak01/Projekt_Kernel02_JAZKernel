@@ -5,7 +5,7 @@ import java.util.Map;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
 
-public interface IHashMapMultiZZZ<K,V> extends IHashMapExtendedZZZ, IOutputDebugNormedWithKeyZZZ, IConstantZZZ, Map{
+public interface IHashMapMultiZZZ<K,V> extends IHashMapZZZ, IOutputDebugNormedWithKeyZZZ, IConstantZZZ, Map{
 	public V getElementByIndex(int iIndex); //zur Vereinheitlichung, weil das in HashMapExtendedZZZ auch verwendet wird.
 	
 	//#############################################################

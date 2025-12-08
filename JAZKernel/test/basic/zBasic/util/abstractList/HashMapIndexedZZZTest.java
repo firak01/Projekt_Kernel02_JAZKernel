@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 
 public class HashMapIndexedZZZTest extends TestCase{
 	 private HashMapIndexedZZZ<Integer,Object> hmTest = null;	 

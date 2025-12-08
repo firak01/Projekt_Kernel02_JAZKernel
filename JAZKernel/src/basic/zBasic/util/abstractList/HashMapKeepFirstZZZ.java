@@ -211,7 +211,7 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	public String getImplodeEntryDelimiter() throws ExceptionZZZ {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IHashMapExtendedZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IHashMapZZZ.sIMPLODE_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sImplodeEntryDelimiterUsed;
 		}
@@ -227,7 +227,7 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	public String getImplodeKeyDelimiter() throws ExceptionZZZ {
 		String sKeyDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sKeyDelimiter = IHashMapExtendedZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IHashMapZZZ.sIMPLODE_KEY_DELIMITER_DEFAULT;
 		}else {
 			sKeyDelimiter = this.sImplodeKeyDelimiterUsed;
 		}

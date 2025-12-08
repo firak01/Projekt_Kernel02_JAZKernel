@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
@@ -72,7 +72,7 @@ public class ConsoleUserEncryptZZZ extends AbstractConsoleUserCryptZZZ {
 			this.iCounter++;
 			if(this.getFlag(IFlagZEnabledZZZ.FLAGZ.DEBUG)) System.out.println("Zähler crypt: " + iCounter);
 
-			HashMapExtendedZZZ<String,Object>hmVariable=this.getConsole().getVariableHashMap();
+			HashMapZZZ<String,Object>hmVariable=this.getConsole().getVariableHashMap();
 			if(hmVariable!=null) {
 				String sDebug = hmVariable.computeDebugString("<BR>","|");
 				System.out.println(sDebug);

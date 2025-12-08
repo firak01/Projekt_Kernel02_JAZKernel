@@ -152,11 +152,11 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 		HashMapExtendedIndexedZZZ hmIndexed = new HashMapExtendedIndexedZZZ();
 		main:{
 			if(objAl== null){
-				ExceptionZZZ ez = new ExceptionZZZ("ArrayList to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("ArrayList to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(StringZZZ.isEmpty(sMethodName)){
-				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
 			//###############################
@@ -193,7 +193,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 				Method mExt = Mopex.getSupportedMethod(objExt.getClass(), sMethodName, null);
 				
 				if(mExt==null){
-					ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethodName + " in the value of the key object: " + objExt.toString() , iERROR_RUNTIME, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethodName + " in the value of the key object: " + objExt.toString() , iERROR_RUNTIME, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 			
@@ -246,7 +246,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 					Method mInt = Mopex.getSupportedMethod(objInt.getClass(), sMethodName, null);
 					
 					if(mInt==null){
-						ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethod + " in the value object: " + obj.toString() , iERROR_RUNTIME, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethod + " in the value object: " + obj.toString() , iERROR_RUNTIME, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
 				
@@ -298,16 +298,16 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			}//end for
 			
 			} catch (IllegalArgumentException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IllegalArgumentException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IllegalArgumentException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (IllegalAccessException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IllegalAccessException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IllegalAccessException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (InvocationTargetException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("InvocationTargetException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("InvocationTargetException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (NoSuchMethodException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("NoSuchMethodException " + sMethod + " in Object " + obj.getClass().getName() + ": " + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("NoSuchMethodException " + sMethod + " in Object " + obj.getClass().getName() + ": " + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} 
 		}//end main
@@ -328,11 +328,11 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 		HashMapExtendedIndexedZZZ hmIndexed = new HashMapExtendedIndexedZZZ();
 		main:{
 			if(objHashMap== null){
-				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			  }
 			if(StringZZZ.isEmpty(sMethodName)){
-				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
 			//###############################
@@ -374,7 +374,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 				Method mExt = Mopex.getSupportedMethod(objValueExt.getClass(), sMethodName, null);
 				
 				if(mExt==null){
-					ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethodName + " in the value of the key object: " + objKeyExt.toString() , iERROR_RUNTIME, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethodName + " in the value of the key object: " + objKeyExt.toString() , iERROR_RUNTIME, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 			
@@ -431,7 +431,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 					Method mInt = Mopex.getSupportedMethod(objValueExt.getClass(), sMethodName, null);
 					
 					if(mInt==null){
-						ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethod + " in the value object: " + obj.toString() , iERROR_RUNTIME, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						ExceptionZZZ ez = new ExceptionZZZ("NoMethodFound " + sMethod + " in the value object: " + obj.toString() , iERROR_RUNTIME, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
 				
@@ -483,16 +483,16 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 			} //end while "�u�ere Schleife"
 			
 			} catch (IllegalArgumentException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IllegalArgumentException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IllegalArgumentException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (IllegalAccessException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IllegalAccessException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IllegalAccessException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (InvocationTargetException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("InvocationTargetException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("InvocationTargetException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (NoSuchMethodException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("NoSuchMethodException " + sMethod + " in Object " + obj.getClass().getName() + ": " + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("NoSuchMethodException " + sMethod + " in Object " + obj.getClass().getName() + ": " + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} 
 		}//end main
@@ -513,7 +513,7 @@ public class HashMapExtendedIndexedZZZ<T,X> extends HashMap implements  IConstan
 		int iReturn = 0;
 		main:{
 		if(objAl==null){
-			ExceptionZZZ ez = new ExceptionZZZ("ArrayList to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+			ExceptionZZZ ez = new ExceptionZZZ("ArrayList to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 			throw ez;	
 		  }
 		

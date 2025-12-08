@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedTestCaseZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestFlagsetZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedTestSurroundingZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.abstractList.Vector3ZZZ;
 import basic.zBasic.util.abstractList.VectorUtilZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -1275,7 +1275,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertNotNull(hm);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm.size()==2);
 
-			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			sValue = HashMapZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
 			
@@ -1286,7 +1286,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertNotNull(hm);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm.size()==2);
 
-			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			sValue = HashMapZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
 			
@@ -1621,7 +1621,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertEquals(0,hm.size());//Also der String ist auch kein gueltiger
 			
 			//zu 2.3.2. Wert ermitteln
-			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			sValue = HashMapZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 						
 			//+++++++++++++++++++++++++++++++++++++++
@@ -1669,7 +1669,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertEquals(2,hm.size());
 			
 			//zu 2.2. Wert ermitteln
-			sValue = HashMapExtendedZZZ.computeDebugString(hm);	
+			sValue = HashMapZZZ.computeDebugString(hm);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 						
 			//+++++++++++++++++++++++++++++++++++++++

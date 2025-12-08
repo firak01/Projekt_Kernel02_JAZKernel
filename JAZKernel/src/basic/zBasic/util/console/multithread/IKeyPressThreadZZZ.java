@@ -3,7 +3,7 @@ package basic.zBasic.util.console.multithread;
 import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 
 public interface IKeyPressThreadZZZ extends IThreadEnabledZZZ{
 	public long getSleepTime();
@@ -31,7 +31,7 @@ public interface IKeyPressThreadZZZ extends IThreadEnabledZZZ{
     public void isOutputAllFinished(boolean bOutputAllFinished) ;
     
     public void makeMenueMain() throws InterruptedException,ExceptionZZZ;//zu überschreiben...Das Hauptmenue ausgeben
-    public boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit
-    public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit, Also die Eingabe nach der Eingabe der Argumente
+    public boolean processMenueMainArgumentInput(String sInput, HashMapZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit
+    public boolean processMenuePostArgumentInput(HashMapZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit, Also die Eingabe nach der Eingabe der Argumente
     
 }

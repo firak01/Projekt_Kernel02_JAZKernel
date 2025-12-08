@@ -1,7 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
@@ -19,7 +19,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	super(objConsole, lSleepTime);
     }
     
-	protected boolean printTableASCII(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+	protected boolean printTableASCII(HashMapZZZ hmVariable) throws ExceptionZZZ {
 		//Ausgabe der ASCII-Zeichen auf dem aktuellen System
 		boolean bReturn = true;
 		main:{
@@ -34,7 +34,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
 		return bReturn;						
 	}
 	
-	protected void questionNumericKey(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+	protected void questionNumericKey(HashMapZZZ hmVariable) throws ExceptionZZZ {
 		//######################################################################
     	//### Frage nach dem Numeric-Key (um den dann die Rotation stattfindet
     	if(!this.isCurrentInputFinished()) {
@@ -48,7 +48,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	}
 	}
 	
-	protected void questionAlphabetKey(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+	protected void questionAlphabetKey(HashMapZZZ hmVariable) throws ExceptionZZZ {
 		//######################################################################
     	//### Frage nach dem Alphabet-Key (um dessen Zahlenwert den dann die Rotation stattfindet
     	if(!this.isCurrentInputFinished()) {
@@ -62,7 +62,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	}
 	}
 	
-	protected void questionUseAdditional(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+	protected void questionUseAdditional(HashMapZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
 		
 		//#####################################################################
 		//### Frage nach Sonderzeichen, bzw. Zusatzzeichen        	
@@ -99,7 +99,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	}
 	}
 	
-	protected void questionUseBlank(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+	protected void questionUseBlank(HashMapZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
 		//#####################################################################
 		//### Frage nach Zahlen        	
     	if(!this.isCurrentInputFinished()) {
@@ -125,7 +125,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	}
 	}
 	
-	protected void questionUseNumeric(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+	protected void questionUseNumeric(HashMapZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
 		//#####################################################################
 		//### Frage nach Zahlen        	
     	if(!this.isCurrentInputFinished()) {
@@ -151,7 +151,7 @@ public abstract class AbstractKeyPressThreadCryptZZZ extends AbstractKeyPressThr
     	}
 	}
 	
-	protected void questionUseStrategy_CaseChange(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+	protected void questionUseStrategy_CaseChange(HashMapZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
 		//#####################################################################
 		//### Frage nach der Stragegy "CaseChange"        	
     	if(!this.isCurrentInputFinished()) {

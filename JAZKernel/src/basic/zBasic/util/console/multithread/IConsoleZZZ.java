@@ -1,6 +1,6 @@
 package basic.zBasic.util.console.multithread;
 
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 
 public interface IConsoleZZZ extends IThreadEnabledZZZ {
 	public long getSleepTime();
@@ -32,6 +32,6 @@ public interface IConsoleZZZ extends IThreadEnabledZZZ {
 	public boolean isConsoleUserThreadFinished();
 	public void isConsoleUserThreadFinished(boolean bConsoleUserThreadFinished); //setzen, wenn der gestartete ConsolenUserThread beendet wurde. Dann kann eine neue Eingabe gestartet werden.
 	
-	public HashMapExtendedZZZ<String, Object> getVariableHashMap();
-	public void setVariableHashMap(HashMapExtendedZZZ<String, Object> hmVariable);
+	public HashMapZZZ<String, Object> getVariableHashMap();
+	public void setVariableHashMap(HashMapZZZ<String, Object> hmVariable);
 }

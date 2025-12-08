@@ -5,20 +5,20 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.UrlLogicZZZ;
 
 public class EnumSetMappedZZZTest extends TestCase{
-	 private HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ> hmTestGenerics = null;
+	 private HashMapZZZ<String, EnumSetMappedTestTypeZZZ> hmTestGenerics = null;
 	 
 	    protected void setUp(){
 	      
 		//try {			
 		
 			//### Das spezielle Generics Testobjekt			
-			hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();
+			hmTestGenerics = new HashMapZZZ<String, EnumSetMappedTestTypeZZZ>();
 			
 			Set<EnumSetMappedTestTypeZZZ> allTypes = EnumSet.allOf(EnumSetMappedTestTypeZZZ.class);
 			for(EnumSetMappedTestTypeZZZ myType : allTypes) {
