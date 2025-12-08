@@ -9,13 +9,13 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZTest;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
-import basic.zBasic.util.abstractList.HashMapIndexedZZZTest;
+import basic.zBasic.util.abstractList.HashMapZZZTest;
+import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZTest;
 import basic.zBasic.util.abstractList.HashMapIterableKeyZZZTest;
-import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZTest;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
-import basic.zBasic.util.abstractList.HashMapZZZTest;
+import basic.zBasic.util.abstractList.HashMapUtilZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
 import basic.zBasic.util.abstractList.Vector3ZZZTest;
 import basic.zBasic.util.abstractList.VectorLimitedZZZTest;
@@ -121,12 +121,12 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(VectorLimitedZZZTest.class);
 		objReturn.addTestSuite(Vector3ZZZTest.class);
 		
-		objReturn.addTestSuite(HashMapZZZTest.class);
+		objReturn.addTestSuite(HashMapUtilZZZTest.class);
 		objReturn.addTestSuite(HashMapIterableKeyZZZTest.class);
-		objReturn.addTestSuite(HashMapIndexedZZZTest.class);
+		objReturn.addTestSuite(HashMapIndexedObjectZZZTest.class);
 		
-		objReturn.addTestSuite(HashMapExtendedZZZTest.class);
-		objReturn.addTestSuite(HashMapExtendedIndexedZZZTest.class);
+		objReturn.addTestSuite(HashMapZZZTest.class);
+		objReturn.addTestSuite(HashMapIndexedZZZTest.class);
 		objReturn.addTestSuite(HashMapMultiZZZTest.class);
 		objReturn.addTestSuite(HashMapMultiIndexedZZZTest.class);
 		objReturn.addTestSuite(HashtableSortedZZZTest.class);

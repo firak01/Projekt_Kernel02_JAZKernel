@@ -82,10 +82,10 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 		}//end main		
 	}
 	
-	public HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
-		HashMapExtendedIndexedZZZ hmReturn = null;
+	public HashMapIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
+		HashMapIndexedZZZ hmReturn = null;
 		main:{
-			hmReturn = HashMapExtendedIndexedZZZ.getValueDupsIndexedByMethod(this, sMethodName);
+			hmReturn = HashMapIndexedZZZ.getValueDupsIndexedByMethod(this, sMethodName);
 		}
 		return hmReturn;
 	}
@@ -100,10 +100,10 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 	* 
 	* lindhauer; 17.05.2011 11:37:46
 	 */
-	public int removeDupsFromByIndex( HashMapExtendedIndexedZZZ hmIndexed, String sFlagRemainIn) throws ExceptionZZZ{
+	public int removeDupsFromByIndex( HashMapIndexedZZZ hmIndexed, String sFlagRemainIn) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
-			iReturn = HashMapExtendedIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
+			iReturn = HashMapIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
 		}//end main
 		return iReturn;
 	}	

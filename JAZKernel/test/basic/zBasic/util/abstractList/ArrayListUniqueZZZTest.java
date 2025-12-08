@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
 

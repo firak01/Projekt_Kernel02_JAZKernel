@@ -10,7 +10,7 @@ import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
 

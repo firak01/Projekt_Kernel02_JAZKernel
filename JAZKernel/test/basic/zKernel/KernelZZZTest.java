@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedObjektZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledConstantZZZ;
@@ -1683,7 +1683,7 @@ public void testGetModuleAliasAll(){
 	public void testGetParameterHashMapWithEntryByProgramAlias() {
 		try {
 
-			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapWithEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
+			HashMapIndexedObjektZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapWithEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
 			

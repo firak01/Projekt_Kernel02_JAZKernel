@@ -191,8 +191,8 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* lindhaueradmin; 18.05.2011 06:02:54
 	 * @throws ExceptionZZZ 
 	 */
-	public static HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
-		HashMapExtendedIndexedZZZ hmIndexed = new HashMapExtendedIndexedZZZ();
+	public static HashMapIndexedZZZ getValueDupsIndexedByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
+		HashMapIndexedZZZ hmIndexed = new HashMapIndexedZZZ();
 		main:{
 			if(objHashMap== null){
 				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
@@ -202,7 +202,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
-			hmIndexed = HashMapExtendedIndexedZZZ.getValueDupsIndexedByMethod(objHashMap, sMethodName);
+			hmIndexed = HashMapIndexedZZZ.getValueDupsIndexedByMethod(objHashMap, sMethodName);
 		}//end main
 		return hmIndexed;
 	}

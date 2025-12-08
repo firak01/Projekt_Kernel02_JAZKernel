@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
 
@@ -38,7 +38,7 @@ public class ArrayListExtendedZZZTest extends TestCase{
     public void testGetValueDupsIndexedByMethod(){
     	try{
     		
-    		HashMapExtendedIndexedZZZ hmIndexed = alTest.getValueDupsIndexedByMethod("toString");
+    		HashMapIndexedZZZ hmIndexed = alTest.getValueDupsIndexedByMethod("toString");
     		int itemp = hmIndexed.size();
     		assertEquals("Es wurden 5 doppelte Objekte erwartet.",5, itemp);  //3 mal Testfall A, 2 mal Testfall C
     		
@@ -71,7 +71,7 @@ public class ArrayListExtendedZZZTest extends TestCase{
 			ArrayListExtendedZZZ alTest1 = (ArrayListExtendedZZZ) alTest.clone();
 			
 			//hmIndexed  jedesmal neu errechnen, da die Indexreihenfolge einem Internen Algorithmus entspricht und nicht so ist, wie notiert.
-			HashMapExtendedIndexedZZZ hmIndexed1 = alTest1.getValueDupsIndexedByMethod("toString"); //Eintr�ge, wichtig ist nur, dass die Werte trotz unterschiedlicher Keys an den Stellen (s. hmTest) identisch sind.
+			HashMapIndexedZZZ hmIndexed1 = alTest1.getValueDupsIndexedByMethod("toString"); //Eintr�ge, wichtig ist nur, dass die Werte trotz unterschiedlicher Keys an den Stellen (s. hmTest) identisch sind.
 			assertEquals("Es wurde erwartet, das 5 doppelte Objekte existieren.",5, hmIndexed1.size());
 			int iStartSize = alTest1.size();   
 			

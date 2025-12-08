@@ -13,7 +13,7 @@ import basic.zBasic.ReflectCodeZZZ;
 
 public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ implements ICollectionConstantZZZ, Iterable<T>{
 	private HashMap<T,X> hmOriginal=null;
-	private HashMapIndexedZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
+	private HashMapIndexedObjektZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
 	
 	public void put(T arg0, X arg1)throws ExceptionZZZ {	
 		main:{
@@ -25,7 +25,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 				  throw ez;
 			}
 			
-			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();
+			HashMapIndexedObjektZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();
 			hmIndexed.put(arg0);
 			
 			HashMap<T,X> hmOriginal = this.getHashMap();
@@ -38,7 +38,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			HashMapIndexedObjektZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
 			objReturn = (T) hmIndex.getKeyFirst();
 			
 		}//end main:
@@ -60,7 +60,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			HashMapIndexedObjektZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
 			objReturn = (T) hmIndex.getKeyLast();
 			
 		}//end main:
@@ -81,7 +81,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			HashMapIndexedObjektZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
 			objReturn = (T) hmIndex.getKeyNext();
 			
 		}//end main:
@@ -129,7 +129,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 			if (objIndex==null) break main;
 						
 			//Hole aus der Indexmap den Schluessel aus der gewuenschten Postion (hier: Erster Index, also 0);
-			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();			
+			HashMapIndexedObjektZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();			
 			Object objKeyTemp = hmIndex.getValue((Integer) objIndex);
 			X objKey = (X) objKeyTemp;
 			
@@ -156,10 +156,10 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 		this.hmOriginal=hmOriginal;
 	}
 	
-	public HashMapIndexedZZZ<Integer,T>getHashMapIndexedKey(){
+	public HashMapIndexedObjektZZZ<Integer,T>getHashMapIndexedKey(){
 		if(this.hmIndexedKey==null) {
 			try {
-			this.hmIndexedKey=new HashMapIndexedZZZ<Integer,T>();	
+			this.hmIndexedKey=new HashMapIndexedObjektZZZ<Integer,T>();	
 			}catch(ExceptionZZZ ez) {
 				this.setExceptionObject(ez);
 				String sError = ez.getMessageLast();
@@ -172,14 +172,14 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 		}
 		return this.hmIndexedKey;
 	}
-	private void setHashMapIndexedKey(HashMapIndexedZZZ<Integer,T>hmIndexedKey) {
+	private void setHashMapIndexedKey(HashMapIndexedObjektZZZ<Integer,T>hmIndexedKey) {
 		this.hmIndexedKey=hmIndexedKey;
 	}
 	
 	public VectorZZZ<Integer> getVectorIndex() {
 		VectorZZZ<Integer> vecReturn = null;
 		main:{
-			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
+			HashMapIndexedObjektZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
 			if(hmIndexed!=null) {
 				vecReturn = hmIndexed.getVectorIndex();
 			}
@@ -190,7 +190,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectWithExceptionZZZ 
 	public HashMap<Integer,T> getHashMapIndex(){
 		HashMap<Integer,T> hmReturn = null;
 		main:{
-			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
+			HashMapIndexedObjektZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
 			if(hmIndexed!=null) {
 				hmReturn = hmIndexed.getHashMap();
 			}
