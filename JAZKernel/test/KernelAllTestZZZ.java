@@ -91,10 +91,6 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
 		//Tests fuer das bauen eines FORMATIERTEN LogStrings
-		//import basic.zBasic.util.log.testV00.LogStringFormatManagerZZZTest;
-		//import basic.zBasic.util.log.testV00.LogStringFormaterZZZTest;
-		//import basic.zBasic.util.log.testV02.LogStringFormatManagerZZZTest;
-		//import basic.zBasic.util.log.testV02.LogStringFormaterZZZTest;
 		objReturn.addTestSuite(basic.zBasic.util.log.testV00.LogStringFormaterZZZTest.class);
 		objReturn.addTestSuite(basic.zBasic.util.log.testV00.LogStringFormatManagerZZZTest.class);
 		

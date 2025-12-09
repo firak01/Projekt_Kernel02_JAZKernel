@@ -1,6 +1,8 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zKernel.KernelContextZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -29,9 +31,28 @@ public class LogZZZTest extends TestCase{
 			assertNotNull("LogObject provided by KernelObject is null.", objLogTest);
 			assertFalse(objLogTest.getFlag("init")==true); //Nun w�re init falsch
 			
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}		
+	}
+	
+	public void testComputeLine() {
+		try {
+			String sLog = "XXXTESTXXX";
+			String sValue = objLogTest.computeLine(sLog);
+			String sValueExpectedStart = "[Thread: 1][A01]"+sLog+"[/A01]";
+			String sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
+			assertTrue(bStartsWith);
+			
+			boolean bEndsWith = StringZZZ.endsWith(sValue, sValueExpectedEnd);
+			assertTrue(bEndsWith);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testGetPathDetailAll(){		
@@ -48,8 +69,9 @@ public class LogZZZTest extends TestCase{
 			assertEquals("c:\\fglKernel\\KernelLog", objLogContext.getDirectory());
 			assertEquals("ZKernelLog_LogZZZtest.txt", objLogContext.getFilename());	
 			
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
 	
@@ -57,8 +79,9 @@ public class LogZZZTest extends TestCase{
 	public void testWriteLineDate(){
 		try {
 			assertTrue(objLogTest.WriteLineDate(strTEST_ENTRY_DEFAULT));
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
 	
@@ -66,8 +89,9 @@ public class LogZZZTest extends TestCase{
 		try {
 			//Verwende intern das Format STRING_BY_XML
 			assertTrue(objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT));
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
 	
@@ -79,8 +103,9 @@ public class LogZZZTest extends TestCase{
 			//Verwende intern das Format XML_BY_XML
 			boolean bValue = objLogTest.WriteLineDateWithPositionXml(this, strTEST_ENTRY_DEFAULT); 
 			assertTrue(bValue);
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
 	

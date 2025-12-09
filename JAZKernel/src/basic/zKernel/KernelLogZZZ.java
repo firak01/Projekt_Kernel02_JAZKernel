@@ -148,7 +148,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING				 
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(sLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
 	}
 	
 	public synchronized static String computeLine(String[] saLog) throws ExceptionZZZ {	
@@ -159,7 +159,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
-		 return LogStringFormatManagerZZZ.getInstance().compute(saLog, iaFormat);
+		 return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLine(Object obj, String sLog) throws ExceptionZZZ {	

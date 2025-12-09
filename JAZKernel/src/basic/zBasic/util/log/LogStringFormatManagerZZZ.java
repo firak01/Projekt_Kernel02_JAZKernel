@@ -197,6 +197,20 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		String sReturn = this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
+	
+	@Override
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = super.compute(classObj, ienumaFormatLogString, sLogs);
+		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		
+		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+		
+		IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+		sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);	
+		return sReturn;
+	}
 
 	@Override
 	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
