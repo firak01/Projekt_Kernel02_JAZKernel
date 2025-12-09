@@ -1,5 +1,7 @@
 package basic.zBasic;
 
+import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+
 public class ObjectUtilZZZ implements IConstantZZZ{
 	/** Merke: Ensure Methoden werfen dann die ExceptionZZZ
 	 * @param obj1
@@ -41,5 +43,10 @@ public class ObjectUtilZZZ implements IConstantZZZ{
 			bReturn = obj1.getClass().equals(obj2.getClass());
 		}//end main:
 		return bReturn;
+	}
+	
+	public static void logProtocol(Object obj, String sLog) throws ExceptionZZZ{
+		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
+		System.out.println(sLogUsed);
 	}
 }

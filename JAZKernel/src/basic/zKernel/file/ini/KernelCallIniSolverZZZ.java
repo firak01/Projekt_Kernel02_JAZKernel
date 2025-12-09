@@ -878,4 +878,6 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	public boolean proofFlagSetBefore(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+
+	
 }

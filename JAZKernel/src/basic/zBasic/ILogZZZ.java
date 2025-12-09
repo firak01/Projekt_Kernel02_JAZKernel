@@ -13,9 +13,10 @@ public interface ILogZZZ {
 	//##################################
 	
 	//!!! Merke 20240512: Mache in den (abstrakten) Klassen, die diese Methoden implementieren die Methoden "synchronized"
-	public void logLineDate(String sLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
-	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
-	public void logLineDateWithPosition(String[] saLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
+	public void logLineDate(String sLog) throws ExceptionZZZ;
+	public void logLineDate(String... sLogs) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
+	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ;
+	public void logLineDateWithPosition(String... sLogs) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
 	
 	
 	//##################################
@@ -24,38 +25,48 @@ public interface ILogZZZ {
 	
 	//Merke: 20240130 Weil es in AbstractMainOVPN diese Methode gibt hier aufgenommen. Damit muss man die Codestellen nicht alle durch logLineDate ersetzen, wenn man mal ein Snippet daraus nutzt.
 	public void logProtocol(String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocol(String[] saLog) throws ExceptionZZZ;
+	public void logProtocol(String... sLogs) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
 	
 	//Merke: Ggfs. möchte man fuer ein anderes Objekt einen Log-Eintrag generieren (z.B. ein EventBroker für den gerade verarbeiteten Listener)
 	public void logProtocol(Object obj, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocol(Object obj, String[] saLog) throws ExceptionZZZ;
+	public void logProtocol(Object obj, String... sLogs) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
 	
 	//++++++++++++++++++++++++++
 	//Merke: 20240427 Nun wird auch mit einer moeglichen Formatanweisung fuer LogStringFormatZZZ geschrieben.
-	public void logProtocol(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocol(String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ;
-	public void logProtocol(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ;
+	public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
+	public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ;
+//	public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ;
+//	public void logProtocol(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocol(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ;
 	
 	//Merke: Ggfs. möchte man fuer ein anderes Objekt einen Log-Eintrag generieren (z.B. ein EventBroker für den gerade verarbeiteten Listener)
-	public void logProtocol(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocol(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ;
-	public void logProtocol(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ;
+	public void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
+	//public void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ;
+	//public void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
 	//Merke: Wie bei logLineDate... hier auch die Version mit ...WithPosition
 	public void logProtocolWithPosition(String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocolWithPosition(String[] saLog) throws ExceptionZZZ;
+	//public void logProtocolWithPosition(String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ;
 		
 	public void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocolWithPosition(Object obj, String[] saLog) throws ExceptionZZZ;
+	//public void logProtocolWithPosition(Object obj, String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ;
 	
-	public void logProtocolWithPosition(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocolWithPosition(String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ;
-	public void logProtocolWithPosition(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ;
+	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
+//	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ;
+//	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ;
 	
-	public void logProtocolWithPosition(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
-	public void logProtocolWithPosition(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ;
-	public void logProtocolWithPosition(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ;
+	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ; //Intention dahinter: Anders als logLineDate wird ggfs. noch woanders als im System.out protokolliert. In einfachen Klassen normalerweise wie logLineDate.
+	//public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ;
+	//public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ;
+	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ;
 	
 	
 

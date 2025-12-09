@@ -686,14 +686,19 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	synchronized public boolean WriteLineDate(String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(this, sLog);
 	}
+	
+	synchronized public boolean WriteLineDate(String... sLogs) throws ExceptionZZZ{
+		return WriteLineDate_(this, sLogs);
+	}
+	
 	synchronized public boolean WriteLineDate(Object obj, String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(obj, sLog);
 	}
 	
-	synchronized private boolean WriteLineDate_(Object obj, String sLog) throws ExceptionZZZ{
+	synchronized private boolean WriteLineDate_(Object obj, String... sLogs) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDate(obj, sLog);
+		String sLine = KernelLogZZZ.computeLineDate(obj, sLogs);
 		
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
 		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();

@@ -11,6 +11,8 @@ public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 	//### Also nicht static Methoden sind "logProtoclString" ausgelegt...
 	//#####################	
 	
+	
+	
 	//##### Gib den String aus.
 	//  Die Position des Datums im String wird durch eine Formatanweisung definiert.
 	//  Das dann jeweils als Variante mit einer Klasse als Argument

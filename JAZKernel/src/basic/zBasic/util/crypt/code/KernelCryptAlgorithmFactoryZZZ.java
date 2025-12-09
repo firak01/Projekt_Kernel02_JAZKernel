@@ -57,9 +57,4 @@ private ICryptZZZ objCryptAlgorithmCreatedLast = null;
 	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCryptAlgorithmCreatedLast = objCrypt;
 	}
-	
-	
-
-	
-	
 }
