@@ -7617,7 +7617,7 @@ MeinTestParameter=blablaErgebnis
 			
 			System.out.println(sLine);
 		}else {
-			objLog.WriteLineDateWithPosition(this, sLog, 1);
+			objLog.WriteLineDateWithPosition(this, 1, sLog);
 		}			
 	}
 	

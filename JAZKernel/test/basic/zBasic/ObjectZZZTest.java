@@ -1,6 +1,7 @@
 package basic.zBasic;
 
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.file.FileEasyConstantConverterZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import junit.framework.TestCase;
@@ -171,6 +172,16 @@ public class ObjectZZZTest extends TestCase{
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	
+	}
+	
+	
+	public void testLogLineDateWithPostion() {
+		try {		
+			ObjectZZZ.logLineDateWithPosition(FileEasyConstantConverterZZZ.class, "TESTWERT logLineDateWithPosition");
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	}
 
 }//END Class

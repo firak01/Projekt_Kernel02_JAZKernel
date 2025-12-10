@@ -30,6 +30,7 @@ import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
@@ -488,6 +489,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	
 	private String computeByObject_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		//!!! Verwende hier nur einfache Methoden und keine Methoden, die wiederum Logging verwenden, sonst Endlosschleifengefahr !!!
+		
 		String sReturn = null;
 		main:{
 			if(ienumFormatLogString == null) {
@@ -548,7 +551,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
 	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
 	                        String sFileName = classObj.getSimpleName() + ".java";
-	                        String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+	                        //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
+	                        //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+	                        //ALSO: Einfacher halten.
+	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
 	                        sReturn = String.format(sFormat, sFilePathTotal);
 	                    }
 	                }
@@ -993,8 +999,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
 				}			
 				break;
+			case ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_STRING_BY_XML:
+				objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}			
+				break;
 			default:
-				System.out.println("AbstractLogStringZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
+				System.out.println("AbstractLogStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
 				break;					
 			}								
 		}//end main:
