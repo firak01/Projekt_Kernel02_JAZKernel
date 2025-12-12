@@ -1,6 +1,7 @@
 package basic.zBasic.util.log;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;

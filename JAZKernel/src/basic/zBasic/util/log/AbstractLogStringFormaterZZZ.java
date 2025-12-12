@@ -252,58 +252,56 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
-				
-		return computeByObject_(this.getClass(), ienumFormatLogString);
+		return this.computeJagged(ienumFormatLogString);
 	}
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
-						
-	    if (obj == null) {
-	    	return computeByObject_(this.getClass(), ienumFormatLogString);
-	    }else {
-	    	return computeByObject_(obj.getClass(), ienumFormatLogString);
-	    }
+		return this.computeJagged(obj, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
-		
-		return computeByObject_(classObj, ienumFormatLogString);
+		return this.computeJagged(classObj, ienumFormatLogString);
 	}
 	
 	
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
-
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
-		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
-		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
-		return sReturn;		
+		return this.computeJagged(sLogs);
 	}
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
-		return this.computeLinesInLog_Justified_(obj, ienumaFormatLogString, sLogs);	
+		return this.computeJagged(obj, ienumaFormatLogString, sLogs);		
 	}
 	
-	private String computeUsingFormat_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return this.computeUsingFormat_(classObjIn, null, ienumFormatLogString, sLogs);	
+	
+	@Override
+	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return this.computeJagged(classObj, ienumFormatLogString, sLogs);
+	}
+	
+	@Override
+	public String compute(IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+		return this.computeJagged(ienumaFormatLogString, sLogs);
+	}
+
+	
+	@Override
+	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {			
+		return this.computeJagged(obj, ienumFormatLogString, sLogs);
+	}
+	
+	@Override
+	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return this.computeJagged(classObj, ienumaFormatLogString, sLogs);
+	}
+
+
+	//################################################
+	private String computeUsingFormat_(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return this.computeJagged(classObj, ienumFormatLogString, sLogs);
 	}
 	
 	private String computeUsingFormat_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString,  IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -1142,15 +1140,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();
 			
-//		    Class classObj = null;		
-//			if(classObjIn==null) {
-////				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-////				throw ez;
-//				classObj = this.getClass();	
-//			}else {
-//				classObj = classObjIn;
-//			}
-			
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;	
 			
 			//TODO: Weil es immer das gleiche ist, scheint es die SWITCH Anweisung eigentlich nicht zu benoetigen.
@@ -1246,71 +1235,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return sReturn;
 	}
 	
-
-//	@Override
-//	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
-//		return this.compute(this.getClass(), sLog, ienumaFormatLogString);
-//	}
 	
-	@Override
-	public String compute(IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
-
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
-		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(this.getClass(), ienumaFormatLogString, sLogs);
-		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
-		return sReturn;
-	}
-
-	
-	@Override
-	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {			
-		if(obj==null) {
-			return this.compute(this.getClass(), ienumFormatLogString, sLogs);
-		}else {
-			return this.compute(obj.getClass(), ienumFormatLogString, sLogs);
-		}			
-	}
-	
-	
-	@Override
-	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = "";
-		main:{			
-						
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-						
-			if(StringArrayZZZ.isEmpty(sLogs)) {							
-				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
-											
-			}else {
-				sReturn = this.computeLineInLog_(classObj, ienumFormatLogString, sLogs);
-			}
-			
-		}//end main:
-		return sReturn;
-	}
-	
-	
-	@Override
-	public String compute(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
-
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
-		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(classObjIn, ienumaFormatLogString, sLogs);
-		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
-		return sReturn;
-	}
-	
 	
 	
 	
@@ -1363,6 +1289,63 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		}//end main:
 		return alsReturn;
 	}
+	
+	
+	private String computeLinesInLog_Jagged_(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			Class classObj = null;
+			if(obj==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = obj.getClass();
+			}
+			
+			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+			ienumaFormatLogString[0] = ienumFormatLogString;
+			
+			sReturn = computeLinesInLog_Jagged_(classObj, ienumaFormatLogString, sLogs);		
+		}//end main:
+		return sReturn;
+
+	}
+	
+	
+	private String computeLinesInLog_Jagged_(Object obj, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			Class classObj = null;
+			if(obj==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = obj.getClass();
+			}
+			sReturn = computeLinesInLog_Jagged_(classObj, ienumaFormatLogString, sLogs);		
+		}//end main:
+		return sReturn;
+
+	}
+	
+	
+	private String computeLinesInLog_Jagged_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			ArrayListUniqueZZZ<String> listasLine = this.computeLinesInLog_(classObjIn, ienumaFormatLogString, sLogs);
+			sReturn = ArrayListUtilZZZ.implode(listasLine, StringZZZ.crlf());				
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeLinesInLog_Jagged_(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{	
+			ArrayListUniqueZZZ<String> listasLine = this.computeLinesInLog_(classObj, hmLog);
+			sReturn = ArrayListUtilZZZ.implode(listasLine, StringZZZ.crlf()); 			
+		}//end main:
+		return sReturn;
+
+	}
+	
 	
 	
 	private String computeLinesInLog_Justified_(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -1523,65 +1506,21 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//ohne explizite Formatangabe 
 	
-	//OHNE KLASSEN ODER OBJEKTANGABE MACHT DAS KEINEN SINN	
-	/* (non-Javadoc)
-	 * @see basic.zBasic.util.log.ILogStringZZZ#compute(java.lang.Object, java.lang.String)
-	 */
-//	@Override
-//	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
-//		String[] saMessage = new String[1];
-//		saMessage[0] = sMessage;
-//		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
-//	}
-	
+	//OHNE KLASSEN ODER OBJEKTANGABE MACHT DAS KEINEN SINN		
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
-			
-			Class classObj = null;
-			if(obj==null) {
-				classObj = this.getClass();
-			}else {
-				classObj = obj.getClass();
-			}
-			
-			ArrayListUniqueZZZ<String> listaline = this.computeLinesInLog_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
-			for(String sLine : listaline) {
-				if(sReturn==null) {
-					sReturn = sLine;
-				}else {
-					sReturn = sReturn + StringZZZ.crlf() + sLine;
-				}
-			}
-		}//end main
-		return sReturn;
+		return this.computeJagged(obj, sLogs);
 	}
-	
-//	@Override
-//	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ {
-//		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
-//	}
-	
+		
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-		
-		return this.computeLinesInLog_Justified_(this.getClass(), hm);
+		return this.computeJagged(hm);
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		if(obj==null) {
-			return this.compute(this.getClass(), hm);			
-		}else {
-			return this.compute(obj.getClass(), hm);
-		}	
+		return this.computeJagged(obj, hm);
 	}
 	
 	//##########################################################
@@ -1592,16 +1531,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	@Override
 	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-	
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
-		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
-		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
-		return sReturn;
+		return this.computeJagged(classObj, sLogs);
 	}
 	
 //	@Override
@@ -1614,12 +1544,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @see basic.zBasic.util.log.ILogStringZZZ#compute(java.util.LinkedHashMap)
 	 */
 	@Override
-	public String compute(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
-		
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-		
-		return this.computeLinesInLog_Justified_(classObjIn, hmLog);
+	public String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		return this.computeJagged(classObj, hmLog);
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1730,7 +1656,311 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		}//end main:
 		return iReturn;
 	}
+	
+	//###################################################
+	//### aus ILogStringFormatComputerJaggedZZZ
+	//###################################################
+	
 
+	@Override
+	public String computeJagged(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+				
+		return computeByObject_(this.getClass(), ienumFormatLogString);
+
+	}
+
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+						
+	    if (obj == null) {
+	    	return computeByObject_(this.getClass(), ienumFormatLogString);
+	    }else {
+	    	return computeByObject_(obj.getClass(), ienumFormatLogString);
+	    }
+	}
+		
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		
+		return computeByObject_(classObj, ienumFormatLogString);
+	}
+	
+	@Override
+	public String computeJagged(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+						
+		return this.computeLinesInLog_Justified_(classObj, hmLog);
+	}
+	
+	@Override
+	public String computeJagged(String... sLogs) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(null, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;	
+	}
+
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		return this.computeLinesInLog_Justified_(obj, ienumaFormatLogString, sLogs);
+	}
+	
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs)	throws ExceptionZZZ {
+		String sReturn = "";
+		main:{			
+						
+			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+						
+			if(StringArrayZZZ.isEmpty(sLogs)) {							
+				sReturn = this.computeByObject_(classObj, ienumFormatLogString);
+											
+			}else {
+				sReturn = this.computeLineInLog_(classObj, ienumFormatLogString, sLogs);
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	@Override
+	public String computeJagged(Object obj, String... sLogs) throws ExceptionZZZ {
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(this.getClass(), null, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		if(obj==null) {
+			return this.compute(this.getClass(), ienumFormatLogString, sLogs);
+		}else {
+			return this.compute(obj.getClass(), ienumFormatLogString, sLogs);
+		}
+	}
+
+	
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(classObj, ienumaFormatLogString, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;
+	}
+	
+	@Override
+	public String computeJagged(Class classObj, String... sLogs) throws ExceptionZZZ {
+
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+	
+		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
+		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		ArrayListUniqueZZZ<String> lista =  this.computeLinesInLog_(classObj, (IEnumSetMappedLogStringFormatZZZ[])null, sLogs);
+		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
+		return sReturn;
+	}
+
+	@Override
+	public String computeJagged(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		
+		Class classObj = null;
+		if(obj==null) {
+			classObj = this.getClass();
+		}else {
+			classObj = obj.getClass();
+		}
+		
+		return this.computeLinesInLog_Jagged_(classObj, hm);
+	}
+	
+	@Override
+	public String computeJagged(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		
+		return this.computeLinesInLog_Jagged_(this.getClass(), hm);
+	}
+	
+	//###################################################
+	//### aus ILogStringFormatComputerJustifiedZZZ
+	//###################################################
+	
+	@Override
+	public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		
+		return this.computeLinesInLog_Justified_(this.getClass(), hm);
+	}
+	
+	@Override
+	public String computeJustified(String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString)			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString)			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs)			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString,			String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString,			String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString,			String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj,
+			IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj,IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj,			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj,			IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj,			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj,			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs)			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeJustified(ILogStringFormaterZZZ objFormater,			IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	//###################################################
 	//### FLAG: ILogStringFormaterZZZ
 	//###################################################

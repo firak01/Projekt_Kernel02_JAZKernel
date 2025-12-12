@@ -55,7 +55,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	private FileZZZ objFileZZZ = null;
 	
 	//++++++++++++++++++++++++
-	//Konstructoren
+	//Konstruktoren
 	public KernelLogZZZ(){	
 		super();
 	}

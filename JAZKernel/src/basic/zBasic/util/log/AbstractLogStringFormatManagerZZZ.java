@@ -9,7 +9,7 @@ import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ{
+public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ, ILogStringFormatManagerJaggedZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
 	
 	// --- Singleton Instanz ---
@@ -70,6 +70,9 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	}
 	
 	
+	//#################################################################
+	//### COMPUTE
+	//#################################################################
 	@Override
 	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
@@ -274,6 +277,163 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		return objFormater.compute(classObj, sLogs);
 	}
 		
+	//#####################################################
+	//### Aus ILogStringFormat Manager JAGGED
+	//#####################################################
+	@Override
+	public String computeJagged(String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(sLogs);
+	}
+
+	
+	@Override
+	public String computeJagged(Object obj, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(obj, sLogs);
+	}
+
+	@Override
+	public String computeJagged(Class classObj, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(classObj, (IEnumSetMappedLogStringFormatZZZ[]) null, sLogs);
+	}
+
+	
+	
+	@Override
+	public String computeJagged(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(hm);
+	}
+
+	@Override
+	public String computeJagged(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm)	throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(obj, hm);
+	}
+
+	@Override
+	public String computeJagged(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(classObj, hmLog);
+	}
+
+	@Override
+	public String computeJagged(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(ienumFormatLogString);
+	}
+
+
+	
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(obj, ienumFormatLogString);
+	}
+	
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(classObj, ienumFormatLogString);
+	}
+
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged(obj, ienumFormatLogString);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(ienumaFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged(classObj, ienumFormatLogString);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged(hm);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged(obj, hm);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged(classObj, hm);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged(obj, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs)	throws ExceptionZZZ {
+		return objFormater.computeJagged(classObj, sLogs);
+	}
+
+	@Override
+	public String computeJagged(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged(ienumFormatLogString);
+	}
+	
+	//###################################################
+	//### Merke: COMPUTE JUSTIFIED gibt es nicht bei XML-Format Manager, darum die entsprechenden Methoden direkt in FormatManager-Klasse
+	//###################################################
+
+	
+	
 	//###################################################
 	//### FLAG: ILogStringFormatManagerZZZ
 	//###################################################
