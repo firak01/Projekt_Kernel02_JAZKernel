@@ -110,7 +110,7 @@ public class LogStringFormaterZZZTest extends TestCase{
 			sLog1 = "der erste Logeintrag";
 			sLog2 = "der zweite Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName(); //+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
