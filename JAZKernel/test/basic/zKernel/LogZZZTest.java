@@ -41,8 +41,10 @@ public class LogZZZTest extends TestCase{
 		try {
 			String sLog = "XXXTESTXXX";
 			String sValue = objLogTest.computeLine(sLog);
-			String sValueExpectedStart = "[Thread: 1][A01]"+sLog+"[/A01]";
-			String sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+			
+			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
+			String sValueExpectedStart = "[Thread: 1][A00/]";
+			String sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLog;
 			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			

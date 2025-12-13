@@ -301,7 +301,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	//################################################
 	private String computeUsingFormat_(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return this.computeJagged(classObj, ienumFormatLogString, sLogs);
+		return this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);	
 	}
 	
 	private String computeUsingFormat_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString,  IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -1670,6 +1670,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return computeByObject_(this.getClass(), ienumFormatLogString);
 
 	}
+	
+	
+	@Override
+	public String computeJagged(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		return this.computeLinesInLog_Jagged_(null, ienumaFormatLogString, sLogs);
+	}
+	
 
 	@Override
 	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
@@ -1716,7 +1725,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
-		return this.computeLinesInLog_Justified_(obj, ienumaFormatLogString, sLogs);
+		return this.computeLinesInLog_Jagged_(obj, ienumaFormatLogString, sLogs);
 	}
 	
 	@Override
@@ -1813,6 +1822,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//###################################################
 	
 	@Override
+	public String computeJustified(String... sLogs) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
@@ -1821,12 +1836,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return this.computeLinesInLog_Justified_(this.getClass(), hm);
 	}
 	
+	
 	@Override
-	public String computeJustified(String... sLogs) throws ExceptionZZZ {
+	public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		// TODO Auto-generated method stub

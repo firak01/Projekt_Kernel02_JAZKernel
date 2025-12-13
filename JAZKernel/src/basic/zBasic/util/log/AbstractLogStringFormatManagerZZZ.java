@@ -324,6 +324,12 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
 		return objFormater.computeJagged(ienumFormatLogString);
 	}
+	
+	@Override
+	public String computeJagged(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
+		return objFormater.computeJagged(ienumaFormatLogString, sLogs);
+	}
 
 
 	

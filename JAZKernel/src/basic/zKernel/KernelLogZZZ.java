@@ -218,13 +218,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-			 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,			 
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		};
 		return iaFormat;
 	}
@@ -370,8 +370,14 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	
 	
 	//##########################################
-	//### ALS XML RUECKGABE
+	//### ALS XML RUECKGABE, daher .computeJagged(...) verwenden. 
+	//### Bei .computeJustified(...) wird es zwar buendig gemacht, aber es werden die XML-Tags entfernt. 
+	//###
 	//### TODOGOON20251124;//Hier die Formattypen auch als XML_BY_XML zur Verfuegung stellen
+	//###  
+	//### ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,
+	//### ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML,
+	//### ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,
 	//##########################################
 	//+++ mit CodePosition
 	public synchronized static String computeLineDateWithPositionXml(Object obj, String sLog) throws ExceptionZZZ {	
@@ -384,7 +390,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
+		return LogStringFormatManagerZZZ.getInstance().computeJagged(obj, iaFormat, saLog);
 	}
 	
 	
@@ -398,7 +404,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
 		
-		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
+		return LogStringFormatManagerZZZ.getInstance().computeJagged(obj, iaFormat, saLog);
 	}
 	
 	
@@ -413,7 +419,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
+		return LogStringFormatManagerZZZ.getInstance().computeJagged(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -427,7 +433,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
 		 
-		return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
+		return LogStringFormatManagerZZZ.getInstance().computeJagged(classObj, iaFormat, saLog);
 	}
 	
 	
