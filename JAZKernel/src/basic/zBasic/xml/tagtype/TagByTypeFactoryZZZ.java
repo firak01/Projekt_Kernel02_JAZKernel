@@ -14,6 +14,9 @@ import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
 import basic.zBasic.reflection.position.TagTypeMessageSeparatorZZZ;
+import basic.zBasic.reflection.position.TagTypeStringType01ZZZ;
+import basic.zBasic.reflection.position.TagTypeStringType02ZZZ;
+import basic.zBasic.reflection.position.TagTypeStringType03ZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -34,6 +37,9 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist."),
 		POSITIONCURRENT("positioncurrent",TagTypePositionCurrentZZZ.sTAGNAME,"Umgebender Tag fuer die CLASSMETHOD und CLASSFILE_POSITION Tags. Damit werden die Werte, die per ReflectCodeZZZ.getPositionCalling() gekapselt."),
 		MESSAGESEPARATOR("messageseparator",TagTypeMessageSeparatorZZZ.sTAGNAME,"Umgebender Tag fuer den Messageseparator (der ggfs. auch eine Message enthalten kann). Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		STRINGTYPE01("stringtype01",TagTypeStringType01ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType01, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		STRINGTYPE02("stringtype02",TagTypeStringType02ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType02, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		STRINGTYPE03("stringtype03",TagTypeStringType03ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType03, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),	
 		;
 		
 		
@@ -203,6 +209,15 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 				break;
 			case TagTypeMessageSeparatorZZZ.sTAGNAME:
 				objReturn = new TagTypeMessageSeparatorZZZ();
+				break;
+			case TagTypeStringType01ZZZ.sTAGNAME:
+				objReturn = new TagTypeStringType01ZZZ();
+				break;
+			case TagTypeStringType02ZZZ.sTAGNAME:
+				objReturn = new TagTypeStringType02ZZZ();
+				break;
+			case TagTypeStringType03ZZZ.sTAGNAME:
+				objReturn = new TagTypeStringType03ZZZ();
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");

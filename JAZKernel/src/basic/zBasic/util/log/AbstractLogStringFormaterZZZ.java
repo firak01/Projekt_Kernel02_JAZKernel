@@ -162,6 +162,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			case ILogStringFormatZZZ.iARG_STRING:
 				bReturn = true;
 				break;
+			case ILogStringFormatZZZ.iARG_CONTROLSTRING:
+				bReturn = true;
+				break;
 			default:
 				bReturn = false;
 			};
@@ -241,7 +244,10 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			switch(iArgumentType) {
 			case ILogStringFormatZZZ.iARG_CONTROL:
 				bReturn = true;
-				break;			
+				break;
+			case ILogStringFormatZZZ.iARG_CONTROLSTRING:
+				bReturn = true;
+				break;
 			default:
 				bReturn = false;
 			};
@@ -325,7 +331,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
-			if(bFormatUsingControl) {
+			if(bFormatUsingControl & bFormatUsingString) {
+				//Hier werden Strings mit dem Steuerungszeichen mitverarbeitet
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
 					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
@@ -346,11 +353,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					}
 				}else {
 					sReturn = this.computeByControl_(classObj, ienumFormatLogString, null);
-				}								
-				
+				}	
+			
+			}else if(bFormatUsingControl & !bFormatUsingString) {
+				//Hier wird nur das Steuerungszeichen ohne String verarbeitet
+				sReturn = this.computeByControl_(classObj, ienumFormatLogString);					
 			}else if(bFormatUsingObject) {
 				sReturn = this.computeByObject_(classObj, ienumFormatLogString);				
-			}else if(bFormatUsingString) {				
+			}else if(bFormatUsingString & !bFormatUsingControl) {				
 				if(!StringArrayZZZ.isEmpty(sLogs)) {
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
 					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
@@ -421,6 +431,66 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		}//end main:
 		return sReturn;
 	}
+	
+	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			Class classObj = null;		
+			if(classObjIn==null) {
+				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}else {
+				classObj = classObjIn;
+			}
+			
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		    if (isFormatUsingString(ienumFormatLogString)) break main;
+		    					   
+			String sFormat=null; 
+			String sMessageSeparator=null;
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+		
+	        switch (ienumFormatLogString.getFactor()) {
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	                
+	            default:
+	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                        + ienumFormatLogString.getFactor());
+	                break;
+	        }			    
+		}//end main:
+		return sReturn;
+	}
+
 	
 	
 	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String sLogIn) throws ExceptionZZZ {
@@ -738,6 +808,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 						
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sLogTag=null;
 			
 			switch(ienumFormatLogString.getFactor()) {		
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING:
@@ -762,20 +833,16 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				break;
 			
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING:												
-			TODOGOO20251214;
-			//ALSO VORLAGE, WAS MAN ALLES BRAUCHT AN TAGS und WELCHE METHODEN MAN ERWEITERN MUSS
-			//ZUDEM STELLT SICH DIE FRAGE, WARUM NOCH DER LOG STRING IM MESSAGESEPARATOR-TAG aufgenommen werden muss.
-			 sFormat = this.getHashMapFormatPositionString().get(
-                     new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_XML));
-                 long lngThreadId = Thread.currentThread().getId();     
-     			String sThreadId = LongZZZ.longToString(lngThreadId);
-     			sThreadId = String.format(sFormat, sThreadId);
-     			sThreadId = sPrefixSeparator + sThreadId + sPostfixSeparator;
-     			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
-     			String sThreadIdTag = objTagThreadId.getElementString();
-                 
-                 sReturn = sThreadIdTag; 
+			 	sFormat = this.getHashMapFormatPositionString().get(
+                     new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING));
+			 	
+			 	sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
 				
+     			ITagByTypeZZZ objTagStringType01 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE01, sLog);
+     			sLogTag = objTagStringType01.getElementString();
+                 
+                sReturn = sLogTag; 				
 				break;
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING:	
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING));
@@ -799,8 +866,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				break;
 				
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_XML_BY_STRING:
-				TODOGOO20251214;
+				sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
 				
+     			ITagByTypeZZZ objTagStringType02 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE02, sLog);
+     			sLogTag = objTagStringType02.getElementString();
+                 
+                sReturn = sLogTag; 				
 				break;
 				
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING:
@@ -824,8 +896,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				break;
 			
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_XML_BY_STRING:
-			TODOGOO20251214;
+				sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
 				
+     			ITagByTypeZZZ objTagStringType03 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE03, sLog);
+     			sLogTag = objTagStringType03.getElementString();
+                 
+                sReturn = sLogTag; 				
 				break;
 			
 			case iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP:

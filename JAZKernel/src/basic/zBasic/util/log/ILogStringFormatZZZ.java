@@ -36,7 +36,7 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static int iARG_OBJECT = 3;	
 	public static int iARG_STRINGHASHMAP = 5;
 	public static int iARG_STRINGXML = 7;
-	
+	public static int iARG_CONTROLSTRING = 11;
 	
 	
 	//Argumente der compute Methode (sofern vorhanden und != null)
