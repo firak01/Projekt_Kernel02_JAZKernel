@@ -218,12 +218,12 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
 		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,			 
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,			 
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		};
 		return iaFormat;

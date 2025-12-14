@@ -24,6 +24,7 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringJustifierZZZ;
@@ -442,6 +443,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		    					   
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sMessageSeparator=null;
+			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 			String sLog= null;
@@ -474,9 +477,26 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
-	                  sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-	                  sReturn = sPrefixSeparator + sReturn + sLog + sPostfixSeparator;
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
 	                break;
+	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	                
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
@@ -507,7 +527,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			if (!isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 	    
-			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;						
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sDate = null;
+			GregorianCalendar d=null; Integer iDateYear = null; Integer iDateMonth = null; Integer iDateDay = null; Integer iTimeHour = null; Integer iTimeMinute = null;
+
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+			
 	        switch (ienumFormatLogString.getFactor()) {
 	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING:
 	                if (classObj == null) {
@@ -520,6 +547,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        sFormat = this.getHashMapFormatPositionString().get(
 	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING));
 	                        sReturn = String.format(sFormat, classObj.getName());
+	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
 	                }
 	                break;
@@ -534,6 +562,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        sFormat = this.getHashMapFormatPositionString().get(
 	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING));
 	                        sReturn = String.format(sFormat, classObj.getSimpleName());
+	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
 	                }
 	                break;
@@ -555,25 +584,47 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        //ALSO: Einfacher halten.
 	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
 	                        sReturn = String.format(sFormat, sFilePathTotal);
+	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
 	                }
 	                break;
 
 	            case ILogStringFormatZZZ.iFACTOR_DATE_STRING:
-	                GregorianCalendar d = new GregorianCalendar();
-	                Integer iDateYear = new Integer(d.get(Calendar.YEAR));
-	                Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	                Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	                Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	                Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+	                d = new GregorianCalendar();
+	                iDateYear = new Integer(d.get(Calendar.YEAR));
+	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
 
-	                String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
 
 	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sReturn = String.format(sFormat, sDate);
+                    sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                break;
 
+	            case ILogStringFormatZZZ.iFACTOR_DATE_XML:
+	                d = new GregorianCalendar();
+	                iDateYear = new Integer(d.get(Calendar.YEAR));
+	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+
+	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
+
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_DATE_STRING));
+	                sDate = String.format(sFormat, sDate);
+                    sDate = sPrefixSeparator + sDate + sPostfixSeparator;
+                    
+                    ITagByTypeZZZ objTagDate = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.DATE, sDate);
+        	 		String sDateTag = objTagDate.getElementString();
+                    sReturn = sDateTag;
+	                break;
+	                
 	            case ILogStringFormatZZZ.iFACTOR_THREADID_STRING:
 	                if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
 	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
@@ -583,11 +634,29 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING));
 	                    long lngThreadID = Thread.currentThread().getId();
 	                    sReturn = String.format(sFormat, lngThreadID);
+                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                }
 	                break;
-	              
+	            case ILogStringFormatZZZ.iFACTOR_THREADID_XML:
+	                if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
+	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
+	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
+	                } else {
+	                    sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_XML));
+	                    long lngThreadId = Thread.currentThread().getId();     
+	        			String sThreadId = LongZZZ.longToString(lngThreadId);
+	        			sThreadId = String.format(sFormat, sThreadId);
+	        			sThreadId = sPrefixSeparator + sThreadId + sPostfixSeparator;
+	        			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
+	        			String sThreadIdTag = objTagThreadId.getElementString();
+	                    
+	                    sReturn = sThreadIdTag;                        
+	                }
+	                break;
+	                
 	            default:
-	                System.out.println("AbstractLogStringZZZ.computeByObject_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
@@ -691,7 +760,23 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
+			
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING:												
+			TODOGOO20251214;
+			//ALSO VORLAGE, WAS MAN ALLES BRAUCHT AN TAGS und WELCHE METHODEN MAN ERWEITERN MUSS
+			//ZUDEM STELLT SICH DIE FRAGE, WARUM NOCH DER LOG STRING IM MESSAGESEPARATOR-TAG aufgenommen werden muss.
+			 sFormat = this.getHashMapFormatPositionString().get(
+                     new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_XML));
+                 long lngThreadId = Thread.currentThread().getId();     
+     			String sThreadId = LongZZZ.longToString(lngThreadId);
+     			sThreadId = String.format(sFormat, sThreadId);
+     			sThreadId = sPrefixSeparator + sThreadId + sPostfixSeparator;
+     			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
+     			String sThreadIdTag = objTagThreadId.getElementString();
+                 
+                 sReturn = sThreadIdTag; 
 				
+				break;
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING:	
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING));
 				
@@ -713,6 +798,11 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
 				
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_XML_BY_STRING:
+				TODOGOO20251214;
+				
+				break;
+				
 			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING:
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING));
 				
@@ -732,6 +822,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
 				break;
+			
+			case ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_XML_BY_STRING:
+			TODOGOO20251214;
+				
+				break;
+			
 			case iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP:
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP));
 				
@@ -815,6 +911,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
 				break;
 			case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+				//SOLLTE HIER NICHT ERSCHEINEN SONDERN EINE EIGENE FORMATKLASSE SEIN computeByControl_(...)
+//				//By HashMap?
+//				 sFormat = this.getHashMapFormatPositionString().get(
+//	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+//	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	              break;
+			case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
 				//SOLLTE HIER NICHT ERSCHEINEN SONDERN EINE EIGENE FORMATKLASSE SEIN computeByControl_(...)
 //				//By HashMap?
 //				 sFormat = this.getHashMapFormatPositionString().get(

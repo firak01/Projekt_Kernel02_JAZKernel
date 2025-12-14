@@ -13,6 +13,7 @@ import basic.zBasic.reflection.position.TagTypeThreadIdZZZ;
 import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
+import basic.zBasic.reflection.position.TagTypeMessageSeparatorZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -31,7 +32,8 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		FILENAME("filename",TagTypeFileNameZZZ.sTAGNAME,"Name der (Java) Datei"),
 		METHOD("method",TagTypeMethodZZZ.sTAGNAME,"Name der aufgerufenen Methode"),
 		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist."),
-		POSITIONCURRENT("positioncurrent",TagTypePositionCurrentZZZ.sTAGNAME,"Umgebender Tag fuer die CLASSMETHOD und CLASSFILE_POSITION Tags. Damit werden die Werte, die per ReflectCodeZZZ.getPositionCalling() gekapselt.")
+		POSITIONCURRENT("positioncurrent",TagTypePositionCurrentZZZ.sTAGNAME,"Umgebender Tag fuer die CLASSMETHOD und CLASSFILE_POSITION Tags. Damit werden die Werte, die per ReflectCodeZZZ.getPositionCalling() gekapselt."),
+		MESSAGESEPARATOR("messageseparator",TagTypeMessageSeparatorZZZ.sTAGNAME,"Umgebender Tag fuer den Messageseparator (der ggfs. auch eine Message enthalten kann). Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		;
 		
 		
@@ -198,6 +200,9 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 				break;
 			case TagTypePositionCurrentZZZ.sTAGNAME:
 				objReturn = new TagTypePositionCurrentZZZ();
+				break;
+			case TagTypeMessageSeparatorZZZ.sTAGNAME:
+				objReturn = new TagTypeMessageSeparatorZZZ();
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");

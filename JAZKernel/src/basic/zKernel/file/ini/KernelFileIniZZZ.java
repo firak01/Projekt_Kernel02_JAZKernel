@@ -517,8 +517,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			if(! KernelFileIniZZZ.isSectionWithSystemNrAny(sSection)){
 				//Wenn in der Section keine Systemnr steckt, diese ermitteln.							
 				sSystemNumberUsed = this.getKernelObject().getSystemNumber();
-				objReturn.setSystemNumber(sSystemNumberUsed);
-				
+				objReturn.setSystemNumber(sSystemNumberUsed);				
 			}else {
 				sSystemNumberUsed = AbstractKernelObjectZZZ.extractSytemNumberFromSection(sSection);
 				objReturn.setSystemNumber(sSystemNumberUsed);
@@ -547,9 +546,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 			objReturnReference.set(objReturn);
 			String sReturnValue = objExpressionHandler.solve(sReturnRaw,objReturnReference);//Merke: parse() reicht nicht, da damit keine Formeln aufgeloest werden.	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression: '" + sReturnValue + "'");
-			objReturn = objReturnReference.get();
-			
-			
+			objReturn = objReturnReference.get();						
 		}//end main:
 		objReturnReference.set(objReturn);
 		return objReturn;
