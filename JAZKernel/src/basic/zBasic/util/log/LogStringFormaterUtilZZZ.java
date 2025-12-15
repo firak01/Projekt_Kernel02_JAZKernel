@@ -194,7 +194,10 @@ public class LogStringFormaterUtilZZZ {
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
 			for(String sLog : saLogIn) {
 				if(sLog!=null) {
-					String[] saLogSub = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+					TODOGOON20251215;//nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
+					String sSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
+					
+					String[] saLogSub = StringZZZ.explode(sLog, sSeparator);
 					for(String sLogSub : saLogSub) {
 						if(!StringZZZ.isEmpty(sLogSub)){         //Leerwerte weglassen
 							listasLogTrimmed.add(sLogSub.trim());//trimmen

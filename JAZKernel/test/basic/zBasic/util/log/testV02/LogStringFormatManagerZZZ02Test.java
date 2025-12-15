@@ -10,7 +10,7 @@ import basic.zBasic.util.log.LogStringFormatManagerZZZ;
  * @author Fritz Lindhauer, 15.11.2025, 16:22:02
  * 
  */
-public class LogStringFormatManagerZZZTest extends AbstractLogStringFormatZZZTest {
+public class LogStringFormatManagerZZZ02Test extends AbstractLogStringFormatZZZTest {
 
     @Override
     protected String compute(DummyTestObjectZZZ dummy, String... logs) throws ExceptionZZZ {

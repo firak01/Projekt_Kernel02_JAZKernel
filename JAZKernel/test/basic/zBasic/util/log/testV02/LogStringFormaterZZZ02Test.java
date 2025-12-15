@@ -10,7 +10,7 @@ import basic.zBasic.util.log.LogStringFormaterZZZ;
  * @author Fritz Lindhauer, 15.11.2025, 16:22:53
  * 
  */
-public class LogStringFormaterZZZTest extends AbstractLogStringFormatZZZTest {
+public class LogStringFormaterZZZ02Test extends AbstractLogStringFormatZZZTest {
 
 	private LogStringFormaterZZZ formater = null;
 

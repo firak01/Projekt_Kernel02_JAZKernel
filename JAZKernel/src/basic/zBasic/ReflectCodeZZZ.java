@@ -367,9 +367,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 }
 	 
 	 public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) {
-		//Merke: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
-		//       Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
-		//       Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
+		//Merke1: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
+		//        Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
+		//        Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
+		 
+		//Merke2: Das Clicken funktioniert nicht, wenn es 2x die gleiche Datei im src-Ordner gibt. 
+		//        (vermutlich muesste dann der Pfad mit augegeben werden).
 		String sLine = ReflectCodeZZZ.formatFileCallingLine(iLine);
 		return " (" + sFilePath + sLine + ") ";
 	 }
