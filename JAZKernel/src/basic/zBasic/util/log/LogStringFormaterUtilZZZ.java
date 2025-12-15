@@ -1,6 +1,9 @@
 package basic.zBasic.util.log;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
+import basic.zBasic.IReflectCodeZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
@@ -8,9 +11,118 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class LogStringFormaterUtilZZZ {
+public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
+	public static boolean isFormatUsingControl(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_CONTROL:
+				bReturn = true;
+				break;
+			case ILogStringFormatZZZ.iARG_CONTROLSTRING:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+
+	public static boolean isFormatUsingHashMap(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_STRINGHASHMAP:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+
+	public static boolean isFormatUsingObject(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_OBJECT:
+				bReturn = true;
+				break;
+			case ILogStringFormatZZZ.iARG_SYSTEM:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+
+	//############################################################
+	public static boolean isFormatUsingString(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_STRING:
+				bReturn = true;
+				break;
+			case ILogStringFormatZZZ.iARG_CONTROLSTRING:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+
+	public static boolean isFormatUsingStringXml(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ienumFormatLogString==null) break main;
+			
+			int iArgumentType = ienumFormatLogString.getArgumentType();
+			
+			switch(iArgumentType) {
+			case ILogStringFormatZZZ.iARG_STRINGXML:
+				bReturn = true;
+				break;
+			default:
+				bReturn = false;
+			};
+		}//end main:
+		return bReturn;
+		
+	}
+	
+	//#######################################################################################################################
 	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -99,30 +211,6 @@ public class LogStringFormaterUtilZZZ {
 				return justifyInfoPart(objStringJustifier, sLog);
 			}
 			
-
-//			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
-//			String[]saLog = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-//			
-//			//Trimme nun ggf. Leerzeichen weg
-//			String[] saLogTrimmed = StringArrayZZZ.trim(saLog);
-//			
-//			//Ergänze nun die getrimmten String mit einem neuen Kommentar voranstellen
-//			int iIndex=-1;
-//			String[]saLogCommented = new String[saLogTrimmed.length];
-//			for(String sLogTrimmed : saLogTrimmed ) {
-//				iIndex++;
-//				if(iIndex==0) {
-//					//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)
-//					saLogCommented[0] = sLine + sLogTrimmed; 
-//				}else {
-//					if(!StringZZZ.endsWith(sLogTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-//						saLogCommented[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
-//					}else {
-//						saLogCommented[iIndex] = sLogTrimmed;
-//					}
-//				}				
-//			}
-			
 			String[]saLogCommented = normStringForJustify(objStringJustifier, sLine, sLog);
 			
 			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
@@ -147,9 +235,13 @@ public class LogStringFormaterUtilZZZ {
 			if(bLineEmpty) {
 				sLine = "";
 			}
+			
+			//es reicht nicht  ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT, es muss der Formatierte Kommentartrenner sein.
+			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
+			
 				
 			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
-			String[]saLog = StringZZZ.explode(sLog, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			String[]saLog = StringZZZ.explode(sLog, sSeparatorMessageDefault);
 			
 			//Trimme nun ggf. Leerzeichen weg
 			String[]saLogTrimmed = StringArrayZZZ.trim(saLog);
@@ -162,13 +254,13 @@ public class LogStringFormaterUtilZZZ {
 					iIndex++;
 					if(iIndex==0) {
 						//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)	
-						if(sLine.endsWith(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+						if(sLine.endsWith(sSeparatorMessageDefault)) {
 							saReturn[iIndex] = sLine + sLogTrimmed;
 						}else {
-							saReturn[iIndex] = sLine + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;
+							saReturn[iIndex] = sLine + sSeparatorMessageDefault + sLogTrimmed;
 						}
 					}else {					
-						saReturn[iIndex] = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLogTrimmed;					
+						saReturn[iIndex] = sSeparatorMessageDefault + sLogTrimmed;					
 					}		
 				}
 			}
@@ -189,13 +281,16 @@ public class LogStringFormaterUtilZZZ {
 		String[] saReturn=null;
 		main:{		
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
+			
+			
+			//TODOGOON20251215;//nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
+			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
 				
+			
 			//Die Einträge aufteilen und trimmen.
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
 			for(String sLog : saLogIn) {
 				if(sLog!=null) {
-					TODOGOON20251215;//nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
-					String sSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
 					
 					String[] saLogSub = StringZZZ.explode(sLog, sSeparator);
 					for(String sLogSub : saLogSub) {
@@ -218,7 +313,7 @@ public class LogStringFormaterUtilZZZ {
 				for(String sLog : saLogTrimmed ) {					
 					if(iIndex==0) {
 						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
-						String sReturnTemp = saLogTrimmed[0] + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + saLogTrimmed[1];
+						String sReturnTemp = saLogTrimmed[0] + sSeparatorMessageDefault + saLogTrimmed[1];
 						listasReturn.add(sReturnTemp);
 						iIndex++;
 					}else if(iIndex==1) {
@@ -226,7 +321,7 @@ public class LogStringFormaterUtilZZZ {
 						iIndex++;
 					}else if(iIndex>=2) {	
 						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-							String sReturnTemp = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + sLog;
+							String sReturnTemp = sSeparatorMessageDefault + sLog;
 							listasReturn.add(sReturnTemp);
 							iIndex++;
 						}
@@ -235,7 +330,7 @@ public class LogStringFormaterUtilZZZ {
 			}else {
 				if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
 					//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
-					String sReturnTemp = saLogTrimmed[0] + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; 				
+					String sReturnTemp = saLogTrimmed[0] + sSeparatorMessageDefault; 				
 					listasReturn.add(sReturnTemp);
 				}
 			}
@@ -244,5 +339,91 @@ public class LogStringFormaterUtilZZZ {
 		}//end main:
 		return saReturn;
 	}
+	
+	
+	public static String computeLinePartInLog(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = null;
+		
+		main:{
+//			Class classObj = null;		
+//			if(classObjIn==null) {
+//				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;					
+//			}else {
+//				classObj = classObjIn;
+//			}
+			
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+		    					   
+			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sMessageSeparator=null;
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+//			String sLog= null;
+//			if(sLogIn!=null) {
+//				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
+//				if(!StringZZZ.isEmpty(sOuter)) {				
+//					//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+//					//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+//					//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+//					//Darum entfernen wir dies ggfs.
+//					sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+//					if(StringZZZ.isEmpty(sOuter)) break main;
+//					sLog = StringZZZ.joinAll(sLog, sOuter);
+//				}else {
+//					//Also: sOuter ist Leerstring oder Null UND es nicht explizit ein XML, nur dann den String übernehme
+//					boolean bContainsXml = XmlUtilZZZ.isXmlContained(sLogIn);	
+//					if(bContainsXml) {
+//						//mache nix
+//					}else {
+//						sLog = StringZZZ.joinAll(sLog, sOuter);
+//					}
+//				}				
+//			}
+			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
+			if(sLog==null)break main; //Ein explizit uebergebener Leerstring gilt aber.
+			
+			String sLog = "";
+	        switch (ienumFormatLogString.getFactor()) {
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	                
+	            default:
+	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
+	                break;
+	        }				          
+		}//end main: 
+		return sReturn;
+	}
+
+
 	
 }
