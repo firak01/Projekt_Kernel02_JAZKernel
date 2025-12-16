@@ -1,16 +1,19 @@
 package basic.zBasic.util.datatype.string;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IReflectCodeZZZ;
 
 public interface IStringJustifierZZZ {
+	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	
 	public boolean reset() throws ExceptionZZZ;
 	
 	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
 	//Beispiel:
 	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.
 	//Mit Leerzeichen wird dann gearbeitet um die Ausgaben des Informationsteils möglichst buendig untereinander zu bekommen.	
-	public String getPositionSeparatorDefault();
-	public String getPositionSeparator();
+	public String getPositionSeparatorDefault() throws ExceptionZZZ;
+	public String getPositionSeparator() throws ExceptionZZZ;
 	public void setPositionSeparator(String sPositionSeparator);
 
 	public String getPositionIdentifierDefault();

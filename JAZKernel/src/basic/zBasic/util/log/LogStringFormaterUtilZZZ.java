@@ -1,21 +1,61 @@
 package basic.zBasic.util.log;
 
+import java.util.HashMap;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
 public class LogStringFormaterUtilZZZ implements IConstantZZZ{
+	
+	 /* Macht eine HashMap mit dem ienumLogString.getFactor() als Key 
+	 * und dem IEnumSetMappedZZZ "Abarbeitungstypen" als Wert.
+	 */
+	public static HashMap<Integer, IEnumSetMappedLogStringFormatZZZ> getHashMapFormatPositionAll() throws ExceptionZZZ {
+		HashMap<Integer, IEnumSetMappedLogStringFormatZZZ> hmReturn = new HashMap<Integer,IEnumSetMappedLogStringFormatZZZ>();
+		main:{
+			//HashMap automatisch aus dem Enum errechnen.
+			IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			for(IEnumSetMappedZZZ ienum : ienuma) {
+				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
+				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString);
+			}				
+		}//end main:
+		return hmReturn;
+	}
+	
+	/* Analog zu
+	 * @see basic.zBasic.util.log.ILogStringFormaterZZZ#getHashMapFormatPositionStringDefault()
+	 * 
+	 * Macht eine HashMap mit dem ienumLogString.getFactor() als Key 
+	 * und der Formatanweisung des IEnumSetMappedZZZ "Abarbeitungstypen" als Wert.
+	 */
+	public static HashMap<Integer, String> getHashMapFormatPositionStringAll() throws ExceptionZZZ {
+		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
+		main:{
+			//HashMap automatisch aus dem Enum errechnen.
+			IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			for(IEnumSetMappedZZZ ienum : ienuma) {
+				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
+				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
+			}				
+		}//end main:
+		return hmReturn;
+	}
 	
 	public static boolean isFormatUsingControl(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
 		boolean bReturn = false;
@@ -237,7 +277,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			}
 			
 			//es reicht nicht  ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT, es muss der Formatierte Kommentartrenner sein.
-			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
+			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 			
 				
 			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
@@ -282,19 +322,22 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		main:{		
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
 			
+			String sSeparatorMessageDefault = objStringJustifier.getPositionSeparator();
 			
-			//TODOGOON20251215;//nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
-			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING);
-				
+			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
+			String sSeparatorMessageDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+			//Natürlich wg. dem explode ohne den sSeparatorMessageDefault
+			String sSeparatorMessageDefaultFormatedLeft = StringZZZ.left(sSeparatorMessageDefaultFormated, sSeparatorMessageDefault);
+			String sSeparatorMessageDefaultFormatedRight = StringZZZ.right(sSeparatorMessageDefaultFormated, sSeparatorMessageDefault);
 			
 			//Die Einträge aufteilen und trimmen.
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
 			for(String sLog : saLogIn) {
 				if(sLog!=null) {
 					
-					String[] saLogSub = StringZZZ.explode(sLog, sSeparator);
+					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorMessageDefault);
 					for(String sLogSub : saLogSub) {
-						if(!StringZZZ.isEmpty(sLogSub)){         //Leerwerte weglassen
+						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorMessageDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorMessageDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
 							listasLogTrimmed.add(sLogSub.trim());//trimmen
 						}
 					}
@@ -340,6 +383,10 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
+	public static String computeLinePartInLog_ControlCommentSeparator() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
 	
 	public static String computeLinePartInLog(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
@@ -387,15 +434,16 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 //					}
 //				}				
 //			}
-			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
-			if(sLog==null)break main; //Ein explizit uebergebener Leerstring gilt aber.
+//			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
+//			if(sLog==null)break main; //Ein explizit uebergebener Leerstring gilt aber.
 			
 			String sLog = "";
 	        switch (ienumFormatLogString.getFactor()) {
 	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
 	            	//ByControl?
-	                  sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+	                //  sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));
 	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
@@ -404,8 +452,9 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	                
 	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
 	            	//ByControl?
-	                sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+	               // sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
 	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
@@ -423,6 +472,9 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		}//end main: 
 		return sReturn;
 	}
+	
+	
+	
 
 
 	

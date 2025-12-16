@@ -418,7 +418,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
 					//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
 					//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
-					//Darum entfernen wir dies ggfs.
+					//Darum entfernen wir dies ggfs.															
 					sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
 					if(StringZZZ.isEmpty(sOuter)) break main;
 					sLog = StringZZZ.joinAll(sLog, sOuter);
@@ -1609,7 +1609,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.
-			if(sReturn!=null && sReturn.equalsIgnoreCase("[A00/]# ")){
+			String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+			if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
 				sReturn = null;
 			}
 		}//end main:

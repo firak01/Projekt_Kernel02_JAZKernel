@@ -5,6 +5,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.log.ILogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
+import basic.zBasic.util.log.LogStringFormaterUtilZZZ;
 
 public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ implements IStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
@@ -41,12 +42,16 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override
-	public String getPositionSeparatorDefault() {
-		return ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	public String getPositionSeparatorDefault() throws ExceptionZZZ {
+		//Der einfache "Kommentartrenner" reicht nicht.
+		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+		
+		//Es muss der formatierte Kommentartrenner sein.
+		//return LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 	}
 	
 	@Override
-	public String getPositionSeparator() {
+	public String getPositionSeparator() throws ExceptionZZZ {
 		if(this.sPositionSeparator==null) {
 			this.sPositionSeparator = this.getPositionSeparatorDefault();
 		}
