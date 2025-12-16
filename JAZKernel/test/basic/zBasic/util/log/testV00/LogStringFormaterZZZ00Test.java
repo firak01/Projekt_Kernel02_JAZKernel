@@ -114,7 +114,7 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
@@ -142,7 +142,7 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag aber nur 1x in der Zeile erscheinen.	
 			//a) identischer Fall
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat02= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
+							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
@@ -261,7 +261,7 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,	
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,	
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
@@ -394,7 +394,7 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,						
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,

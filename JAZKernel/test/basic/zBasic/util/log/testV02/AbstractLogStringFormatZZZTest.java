@@ -84,7 +84,7 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             String cls = dummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;  
 
             IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING_BY_STRING,
+                ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING, 
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,

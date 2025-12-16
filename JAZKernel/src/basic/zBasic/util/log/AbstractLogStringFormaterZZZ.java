@@ -499,7 +499,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 			
 	        switch (ienumFormatLogString.getFactor()) {
-	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -508,13 +508,13 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING));
 	                        sReturn = String.format(sFormat, classObj.getName());
 	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
 	                }
 	                break;
-	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAME_XML:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -523,13 +523,52 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAME_XML));
+	                        String sClassname = String.format(sFormat, classObj.getName());
+	                        sClassname = sPrefixSeparator + sClassname + sPostfixSeparator;
+	                        
+	                        ITagByTypeZZZ objTagClassname = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.CLASSNAME, sClassname);
+	            	 		String sClassnameTag = objTagClassname.getElementString();
+	                        sReturn = sClassnameTag;
+	    	                break;
+	                    }
+	                }
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING:
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
+	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING));
 	                        sReturn = String.format(sFormat, classObj.getSimpleName());
 	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
 	                }
 	                break;
-	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML:
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() + 
+	                            "In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING));
+	                        String sClassnameSimple = String.format(sFormat, classObj.getSimpleName());
+	                        sClassnameSimple = sPrefixSeparator + sClassnameSimple + sPostfixSeparator;
+	                        
+	                        ITagByTypeZZZ objTagClassname = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.CLASSNAME, sClassnameSimple);
+	            	 		String sClassnameTag = objTagClassname.getElementString();
+	                        sReturn = sClassnameTag;
+	                    }
+	                }
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING:
 	                if (classObj == null) {
 	                    // Nichts tun
 	                } else {
@@ -538,7 +577,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
 	                    } else {
 	                        sFormat = this.getHashMapFormatPositionString().get(
-	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING));
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING));
 	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
 	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
 	                        String sFileName = classObj.getSimpleName() + ".java";
@@ -548,6 +587,32 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
 	                        sReturn = String.format(sFormat, sFilePathTotal);
 	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+	                    }
+	                }
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML:
+	                if (classObj == null) {
+	                    // Nichts tun
+	                } else {
+	                    if (this.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+	                        System.out.println(ReflectCodeZZZ.getPositionCurrent() +
+	                            "In diesem Format ist die Ausgabe des Klassennamens (also auch des Dateinamens) per gesetztem Flag unterbunden.");
+	                    } else {
+	                        sFormat = this.getHashMapFormatPositionString().get(
+	                            new Integer(ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING));
+	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
+	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+	                        String sFileName = classObj.getSimpleName() + ".java";
+	                        //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
+	                        //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+	                        //ALSO: Einfacher halten.
+	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
+	                        String sClassFileName = String.format(sFormat, sFilePathTotal);
+	                        sClassFileName = sPrefixSeparator + sClassFileName + sPostfixSeparator;
+	                        
+	                        ITagByTypeZZZ objTagClassname = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME, sClassFileName);
+	            	 		String sClassnameTag = objTagClassname.getElementString();
+	                        sReturn = sClassnameTag;
 	                    }
 	                }
 	                break;

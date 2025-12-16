@@ -48,9 +48,9 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	
 	public static int iFACTOR_LINENEXT_STRING=5;
 	
-	public static int iFACTOR_CLASSNAME_STRING_BY_STRING=7;
-	public static int iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING=11;
-	public static int iFACTOR_CLASSFILENAME_STRING_BY_STRING=13;
+	public static int iFACTOR_CLASSNAME_STRING=7;
+	public static int iFACTOR_CLASSNAMESIMPLE_STRING=11;
+	public static int iFACTOR_CLASSFILENAME_STRING=13;
 	
 	public static int iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP=19;
 	public static int iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP=23;
@@ -89,6 +89,9 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static int iFACTOR_STRINGTYPE01_XML_BY_STRING=163;
 	public static int iFACTOR_STRINGTYPE02_XML_BY_STRING=167;     
 	public static int iFACTOR_STRINGTYPE03_XML_BY_STRING=173;
+	public static int iFACTOR_CLASSNAME_XML=179;
+	public static int iFACTOR_CLASSNAMESIMPLE_XML=181;
+	public static int iFACTOR_CLASSFILENAME_XML=191;
 	
 	
 	
@@ -112,11 +115,6 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 		STRINGTYPE02_STRING_BY_STRING("stringtype02",ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02]", "%s",ILogStringFormatZZZ.iARG_STRING, "[/A02]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		STRINGTYPE03_STRING_BY_STRING("stringtype03",ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A03]", "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + "[/A03]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		CONTROL_LINENEXT_("linenext",ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Teile an dieser Stelle die Formatanweisungen auf. Alles danach ist fure eine Folgezeile. Ohne Ausgabe des aktuellen LogString."),				
-		CONTROL_SEPARATORMESSAGE_STRING("separatormessage",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-		
-		CLASSNAME_STRING_BY_STRING("classname",ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s" + sPOSITION_METHOD_SEPARATOR,ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
-		CLASSNAMESIMPLE_STRING_BY_STRING("classnamesimple",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s"  + sPOSITION_METHOD_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CS]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den einfachen Klassennamen in diesem Format aus."),				
-		CLASSFILENAME_STRING_BY_STRING("classfilename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]" + sPOSITION_FILE_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CF]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT , "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
 		
 		CLASSMETHOD_STRING_BY_HASHMAP("methodbystring",ILogStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING,"" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem  in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
 		CLASSFILELINE_STRING_BY_HASHMAP("linenrbystring",ILogStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",ILogStringFormatZZZ.iARG_STRING, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
@@ -146,13 +144,24 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 		POSITIONCURRENT_STRING_BY_XML("positioncurrentbyxml", ILogStringFormatZZZ.iFACTOR_POSITIONCURRENT_STRING_BY_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s", ILogStringFormatZZZ.iARG_STRINGXML, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "getPositionCurrent - Kann nur von aussen als String uebergeben werden. Wird geholt ueber ObjectZZZ.getPostitionCallingXml(). Hat kuenstliches Tag <positioncurrent> und entaelt z.B. '<method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition># '. Als Rueckgabe-String werden diese Tags entfernt."),
 		
 		THREADID_STRING("threadid",ILogStringFormatZZZ.iFACTOR_THREADID_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/T]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die ID des Threads in diesem Format aus."),
-		DATE_STRING("date",ILogStringFormatZZZ.iFACTOR_DATE_STRING,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/D]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das errechnete Datum in diesem Format aus."),
 		THREADID_XML("threadidxml",ILogStringFormatZZZ.iFACTOR_THREADID_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[TX]", "[Thread: %s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/TX]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die ID des Threads in diesem XML-Format aus."),
+		DATE_STRING("date",ILogStringFormatZZZ.iFACTOR_DATE_STRING,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/D]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das errechnete Datum in diesem Format aus."),		
 		DATE_XML("datexml",ILogStringFormatZZZ.iFACTOR_DATE_XML,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[DX]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/DX]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das errechnete Datum in diesem XML-Format aus."),
+		
+		CONTROL_SEPARATORMESSAGE_STRING("separatormessage",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATORMESSAGE_XML("separatormessagexml",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		
+		CLASSNAME_STRING("classname",ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s" + sPOSITION_METHOD_SEPARATOR,ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
+		CLASSNAME_XML("classnamexml",ILogStringFormatZZZ.iFACTOR_CLASSNAME_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CX]", "%s" + sPOSITION_METHOD_SEPARATOR,ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/CX]", "Gib den Klassennamen mit Package in diesem XML-Format aus."),
+		CLASSNAMESIMPLE_STRING("classnamesimple",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s"  + sPOSITION_METHOD_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CS]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den einfachen Klassennamen in diesem Format aus."),				
+		CLASSNAMESIMPLE_XML("classnamesimplexml",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CSX]", "%s"  + sPOSITION_METHOD_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CSX]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den einfachen Klassennamen in diesem XML-Format aus."),
+		CLASSFILENAME_STRING("classfilename",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]" + sPOSITION_FILE_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CF]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT , "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
+		CLASSFILENAME_XML("classfilenamexml",ILogStringFormatZZZ.iFACTOR_CLASSFILENAME_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFX]", "[File:%s]" + sPOSITION_FILE_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CFX]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT , "Gib den Dateinamen der Java-Klasse in diesem XML-Format aus."),
+		
 		STRINGTYPE01_XML_BY_STRING("stringtype01xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A01X]", "%s",ILogStringFormatZZZ.iARG_STRING,  "[/A01X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
 		STRINGTYPE02_XML_BY_STRING("stringtype02xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02X]", "%s",ILogStringFormatZZZ.iARG_STRING, "[/A02X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
 		STRINGTYPE03_XML_BY_STRING("stringtype03xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A03X]", "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + "[/A03X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
-		CONTROL_SEPARATORMESSAGE_XML("separatormessagexml",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
+				
 		;		
 		
 		int iFactor, iArgumentType;

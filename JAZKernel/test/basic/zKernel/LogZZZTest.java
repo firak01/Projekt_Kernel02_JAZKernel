@@ -29,7 +29,7 @@ public class LogZZZTest extends TestCase{
 			
 			//TestKonfiguration pruefen
 			assertNotNull("LogObject provided by KernelObject is null.", objLogTest);
-			assertFalse(objLogTest.getFlag("init")==true); //Nun w�re init falsch
+			assertFalse(objLogTest.getFlag("init")==true); //Nun waere init falsch
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();

@@ -154,7 +154,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat = {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -179,7 +179,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -198,7 +198,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -214,16 +214,15 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 	
-		//20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		//TODOGOON20251124;//Biete alle Formate als XML_BY_STRING an.
-		//                   D.h. Date muss auch mit einem Tag umbeben werden, Thread genauso, String genauso.
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML,
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML,
+			//Merke: Die Methode aus ReflectCodeZZZ.getPositionCurrent stammt (nicht anders zu bekommen), ist die Quelle XML
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_XML,
-			ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,			 
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,
+			//Merke: Die Zeilenummer aus ReflectCodeZZZ.getPositionCurrent stammt (nicht anders zu bekommen), ist die Quelle XML
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		};
 		return iaFormat;

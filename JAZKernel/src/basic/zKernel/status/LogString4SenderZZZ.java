@@ -32,7 +32,7 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 				//raus, weil dieser String nur eine Ergaenzung des eigentlichen LogString ist, somit waere Datum-Uhrzeit redundant...
 				//ILogStringZZZ.LOGSTRING.DATE,
 												
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING_BY_STRING,
+				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,
 				
 				//Bleibt drin aus ueberichtlichkeitsgruenden
 				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
@@ -49,7 +49,7 @@ public class LogString4SenderZZZ extends AbstractLogStringFormaterZZZ{
 		
 		//Hier mögliche Abweichende Strings angeben, z.B. in einfache Hochkommata packen			
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME),"'" + ILogStringZZZ.LOGSTRING.CLASSNAME.getFormat() + "'");
-		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING_BY_STRING),"'%s'");
+		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING),"'%s'");
 		
 		//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_THREADID), "-" + ILogStringZZZ.LOGSTRING.THREADID.getFormat() + "-");
 		hmReturn.put(new Integer(ILogStringFormatZZZ.iFACTOR_THREADID_STRING), "- Thread: %s");
