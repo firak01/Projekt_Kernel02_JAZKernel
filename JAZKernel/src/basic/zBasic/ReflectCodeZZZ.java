@@ -815,7 +815,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Also, einfach nur die Tags ausrechnen und zusammenpacken:
 						
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
-			String sClassname = ReflectCodeZZZ.getClassCallingName(iLevel);
+			String sClassname = ReflectCodeZZZ.getClassCallingName(iLevelUsed);
 			ITagByTypeZZZ objTagClassname = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.CLASSNAME, sClassname);
 			String sClassnameTag = objTagClassname.getElementString();
 			

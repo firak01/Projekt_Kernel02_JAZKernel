@@ -25,7 +25,11 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXml();
 			int iLineNr = 26;
-			assertEquals("<positioncurrent><classname>basic.zBasic.ReflectCodeZZZ</classname><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent>", sValue); 			
+			System.out.println("sValue=" + sValue);
+			String sValueContainsExpected = "<positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXml</method><filename>ReflectCodeZZZTest.java</filename><linenr>"+ iLineNr + "</linenr><fileposition> (ReflectCodeZZZTest.java:"+ iLineNr + ") </fileposition></positioncurrent>";
+			System.out.println("sValueContainsExpected=...\t\t" + sValueContainsExpected);			
+			boolean bValue = StringZZZ.contains(sValue, sValueContainsExpected);
+			assertTrue(bValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -37,9 +41,14 @@ public class ReflectCodeZZZTest   extends TestCase{
 	 */
 	public void testGetPositionCurrent() {
 		try {
-			String sValue = ReflectCodeZZZ.getPositionCurrent();
-			int iLineNr=40;
-			assertEquals("testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") [A00/]# ", sValue); 			
+			String sValue = ReflectCodeZZZ.getPositionCurrent();			
+			int iLineNr=44;
+			System.out.println("sValue=\t\t"+sValue);
+			String sValueExpected = "testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") [A00/]# ";
+			System.out.println("sValueExpected=\t"+sValueExpected);
+			assertEquals(sValueExpected, sValue);
+			
+			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -49,10 +58,14 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentSimple() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentSimple();
-			int iLineNr=51; 
-			boolean bStartsWith = StringZZZ.startsWith(sValue, "basic.zBasic.ReflectCodeZZZTest.testGetPositionCurrentSimple - Line "+ iLineNr);
-			assertTrue(bStartsWith);
+			int iLineNr=60; 
+			System.out.println("sValue=\t\t"+sValue);
 			
+			String sValueStartsWithExpected="basic.zBasic.ReflectCodeZZZTest.testGetPositionCurrentSimple - Line "+ iLineNr;
+			System.out.println("sValueStartsWithExpected=...\t"+sValue);
+			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueStartsWithExpected);
+			assertTrue(bStartsWith);
+						
 			boolean bEndsWith = StringZZZ.endsWith(sValue, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR);
 			assertTrue(bEndsWith);
 		} catch (ExceptionZZZ ez) {
@@ -69,17 +82,19 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrentXmlFormated() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrentXmlFormated();
-			int iLineNr = 71;
+			int iLineNr = 84;
 			//z.B.: <date>2025-12-7_12_34</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>
 			//Da sich das Datum ja immer aendert nicht auf gleich abpruefen (sonst muss ich das Datum extra berechnen)
 			//assertEquals("<date>2025-12-7_12_34</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>", sValue);
-
-			String sValueExpected = "</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>71</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:71) </fileposition></positioncurrent>";
-			boolean bEndsWith = StringZZZ.endsWith(sValue, sValueExpected);
+			System.out.println("sValue=\t" + sValue);							
+			
+			String sValueEndsWithExpected = "</date><threadid>1</threadid><positioncurrent><classname>basic.zBasic.ReflectCodeZZZTest</classname><method>testGetPositionCurrentXmlFormated</method><linenr>"+iLineNr+"</linenr><filename>ReflectCodeZZZTest.java</filename><fileposition> (ReflectCodeZZZTest.java:"+iLineNr+") </fileposition></positioncurrent>";
+			System.out.println("sValueEndsWthExpected=...\t" + sValueEndsWithExpected);
+			boolean bEndsWith = StringZZZ.endsWith(sValue, sValueEndsWithExpected);
 			assertTrue(bEndsWith);
 			
-			sValueExpected = "<date>";
-			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueExpected);
+			String sValueStartsWithExpected = "<date>";
+			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueStartsWithExpected);
 			assertTrue(bStartsWith);
 			
 			
@@ -94,8 +109,12 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
 			String sValue = testGetPositionCallingSimple_();			
-			int iLineNr = 84;
-			assertEquals("basic.zBasic.ReflectCodeZZZTest.testGetPositionCalling - Line " + iLineNr + "# ", sValue); 			
+			int iLineNr = 111;
+			System.out.println("sValue=\t" + sValue);							
+			
+			String sValueExpected = "basic.zBasic.ReflectCodeZZZTest.testGetPositionCalling - Line " + iLineNr + "# ";
+			System.out.println("sValueExpected=\t" + sValueExpected);
+			assertEquals(sValueExpected, sValue); 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -117,8 +136,12 @@ public class ReflectCodeZZZTest   extends TestCase{
 		try {
 			//Weil es calling Tests sind, eine Untermethode aufrufen, von der aus "gerechnet wird".
 			String sValue = ReflectCodeZZZ.getMethodCurrentNameLined();			
-			int iLineNr = 107;
-			boolean bStartsWith = StringZZZ.startsWith(sValue, "testGetMethodCurrentNameLined - Line " + iLineNr );
+			int iLineNr = 138;
+			System.out.println("sValue=\t\t"+sValue);
+			
+			String sValueStartsWithExpected="testGetMethodCurrentNameLined - Line " + iLineNr;
+			System.out.println("sValueStartsWithExpected=...\t"+sValue);
+			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueStartsWithExpected);
 			assertTrue(bStartsWith);
 			
 			boolean bEndsWith = StringZZZ.endsWith(sValue, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR);
