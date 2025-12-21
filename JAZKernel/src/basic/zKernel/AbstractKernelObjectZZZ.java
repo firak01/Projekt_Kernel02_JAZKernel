@@ -6942,11 +6942,10 @@ MeinTestParameter=blablaErgebnis
 			}//end check:
 			
 			//first, get the Kernel-Configuration-INI-File
-			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();
-			String sLog = "xxxxtest Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
+			String sLog = "XXXTEST Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
 			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
-			System.out.println(sLog);
+			//System.out.println(sLog);
 			this.logLineDate(sLog);
 			
 			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
@@ -7018,9 +7017,9 @@ MeinTestParameter=blablaErgebnis
 			
 			//first, get the Kernel-Configuration-INI-File
 			IniFile objIni = this.getFileConfigKernelAsIni();			
-			String sLog = "xxTest Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
+			String sLog = "XXXXTest Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.";
 			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
-			System.out.println(sLog);
+			//System.out.println(sLog);
 			this.logLineDate(sLog);
 			
 			IniFile objFile = this.getFileConfigModuleAsIni(sModule, bIncludeSystemSectionInSearch); //false Schliesst die Suche über den SystemKey aus.
@@ -7064,7 +7063,7 @@ MeinTestParameter=blablaErgebnis
 			}
 			String sLog = "xxxxTEST Verwende als ini-Datei für die Prüfung '"+ objFile.getAbsolutePath() + "'.";
 			sLog = ReflectCodeZZZ.getMethodCurrentNameLined(0) + sLog;
-			System.out.println(sLog);
+			//System.out.println(sLog);
 			this.logLineDate(sLog);
 		
 			bReturn = objIni.proofSectionExistsSearched(sAlias);						
