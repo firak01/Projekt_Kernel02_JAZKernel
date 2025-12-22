@@ -39,13 +39,6 @@ public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 		return objKernelSingleton;	
 	}
 	
-//	public static KernelSingletonZZZ getInstance(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
-//		if(objKernelSingelton==null){
-//			objKernelSingelton = new KernelSingletonZZZ(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
-//		}
-//		return objKernelSingelton;	
-//	}
-	
 	public static KernelSingletonZZZ getInstance(String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
 		if(objKernelSingleton==null){
 			//Verwende hier das Suffix der Klasse als Applicationkey, also ZZZ

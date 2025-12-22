@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ILogZZZ;
+import basic.zBasic.IObjectProtocolLogZZZ;
 import basic.zBasic.IObjectWithStatusEnabledZZZ;
 import basic.zBasic.AbstractObjectWithFlagOnStatusListeningZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;

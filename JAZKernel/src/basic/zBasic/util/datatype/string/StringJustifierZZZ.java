@@ -6,6 +6,21 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.log.ILogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
 
+/** Mache einen String buendig zu den anderen "Vorausgegangenen" String.
+ *  
+ *  Merke: Damit das auch sichtbar wird, ist eine Monospace Schriftart notwendig.
+ *         Sowohl auf der Java-Konsole (z.B. in Eclipse)
+ *         als auch in einer Textdatei für das Protokol.
+ *         
+ *         Verwende dazu die Schriftart:
+ *         a) Unter Windows XP "Lucida Console" (meiner Meinung nach am besten lesbar)
+ *                             , "Courier New", "Terminal"
+ *                             , als ClearType "Consolas" 
+ *         
+ * 
+ * @author Fritz Lindhauer, 22.12.2025, 09:32:31
+ * 
+ */
 public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
 	

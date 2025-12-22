@@ -7,8 +7,10 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormaterZZZ;
+import custom.zKernel.ILogZZZ;
+import custom.zKernel.LogSingletonZZZ;
 
-public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, ILogZZZ{
+public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, IObjectPositionLogZZZ{
 	private static final long serialVersionUID = 4785854649300281154L;
 
 	//fuer IOutputDebugNormedZZZ
@@ -57,352 +59,242 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	}
 		
 		
-		//### aus IOutputDebugNormedZZZ
-		@Override
-		public String computeDebugString() throws ExceptionZZZ{
-			return this.toString();
+	//### aus IOutputDebugNormedZZZ
+	@Override
+	public String computeDebugString() throws ExceptionZZZ{
+		return this.toString();
+	}
+	
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		return this.computeDebugString() + sEntryDelimiter;
+	}
+	
+	@Override
+	public String getDebugEntryDelimiter() {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
 		}
-		
-		@Override
-		public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
-			return this.computeDebugString() + sEntryDelimiter;
-		}
-		
-		@Override
-		public String getDebugEntryDelimiter() {
-			String sEntryDelimiter;			
-			if(this.sDebugEntryDelimiterUsed==null){
-				sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			}else {
-				sEntryDelimiter = this.sDebugEntryDelimiterUsed;
-			}
-			return sEntryDelimiter;
-		}
-		
-		@Override
-		public void setDebugEntryDelimiter(String sEntryDelimiter) {
-			this.sDebugEntryDelimiterUsed = sEntryDelimiter;
-		}
-				
-		//### aus ILogZZZ, Merke: Dazu gibt es jeweils auch eine static-Methode fuer die Klasse als Argument.	
-		@Override
-		public synchronized void logLineDate(String sLog) throws ExceptionZZZ {
-			ObjectZZZ.logLineDate(this, sLog);
-		}
-
-		@Override
-		public synchronized void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
-			ObjectZZZ.logLineDate(this, sLog);
-		}
-		
-		@Override
-		public synchronized void logLineDate(String... sLogs) throws ExceptionZZZ {
-			ObjectZZZ.logLineDate(this, sLogs);
-		}
-		
-		@Override
-		public synchronized void logLineDateWithPosition(String... sLogs) throws ExceptionZZZ {
-			ObjectZZZ.logLineDateWithPosition(this, sLogs);
-		}
-		
-//		@Override
-//		public synchronized void logLineDateWithPosition(String[] saLog) throws ExceptionZZZ {
-//			ObjectZZZ.logLineDateWithPosition(this, saLog);
-//		}
-				
-		//++++++++++++++++++++++++++++++++++++++++++++++++
-		
-//		@Override
-//		public synchronized void logProtocol(String[] saLog) throws ExceptionZZZ{
-//			this.logProtocol(this, saLog); //Merke: In der aehnlichen Methode von KernelLogZZZ (also static) "null" statt this
-//		}
-		
-		@Override
-		public synchronized void logProtocol(String sLog) throws ExceptionZZZ {
-			this.logProtocol(this, sLog); //Merke: In der aehnlichen Methode von KernelLogZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocol(String... sLogs) throws ExceptionZZZ{
-			this.logProtocol(this, sLogs); //Merke: In der aehnlichen Methode von KernelLogZZZ (also static) "null" statt this
-		}
-		
-		@Override
-		public synchronized void logProtocol(Object obj, String sLog) throws ExceptionZZZ {
-			String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
-			System.out.println(sLogUsed);
-		}
-		
-		@Override
-		public synchronized void logProtocol(Object obj, String... sLogs) throws ExceptionZZZ{
-			String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
-			System.out.println(sLogUsed);
-		}
-		
-//		@Override
-//		public synchronized void logProtocol(Object obj, String[] saLog) throws ExceptionZZZ{
-//			String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, saLog);						
-//			System.out.println(sLogUsed);
-//		}
-
-		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		
-		@Override
-		public synchronized void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-			this.logProtocol(this, ienumMappedLogString, sLog); //Merke: In der aehnlichen Methode von KerneleLogZZZ (also static) "null" statt this
-		}
-		
-//		@Override
-//		public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ {
-//			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-//			ienumaMappedLogString[0] = ienumMappedLogString;
-//			
-//			this.logProtocol(this, ienumaMappedLogString, saLog);
-//		}
-		
-		@Override
-		public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-			ienumaMappedLogString[0] = ienumMappedLogString;
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
+	}
 			
-			this.logProtocol(this, ienumaMappedLogString, sLogs);
-		}
+	//### aus ILogZZZ, Merke: Dazu gibt es jeweils auch eine static-Methode fuer die Klasse als Argument.	
+	@Override
+	public synchronized void logLineDate(String sLog) throws ExceptionZZZ {
+		ObjectZZZ.logLineDate(this, sLog);
+	}
+
+	@Override
+	public synchronized void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
+		ObjectZZZ.logLineDate(this, sLog);
+	}
+	
+	@Override
+	public synchronized void logLineDate(String... sLogs) throws ExceptionZZZ {
+		ObjectZZZ.logLineDate(this, sLogs);
+	}
+	
+	@Override
+	public synchronized void logLineDateWithPosition(String... sLogs) throws ExceptionZZZ {
+		ObjectZZZ.logLineDateWithPosition(this, sLogs);
+	}
+			
+	//#########################################
+	//### log Protocol bedeutete, das dies (falls möglich) in einen Protokolldatei geschrieben wird.
+	//### Also sind alle System.outs zu ersetzten durch die Arbeit mit einme LogZZZ-Objekt
+	//#########################################
+	@Override
+	public synchronized void logProtocol(String sLog) throws ExceptionZZZ {
+		this.logProtocol(this, sLog); //Merke: In der aehnlichen Methode von KernelLogZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocol(String... sLogs) throws ExceptionZZZ{
+		this.logProtocol(this, sLogs); //Merke: In der aehnlichen Methode von KernelLogZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocol(Object obj, String sLog) throws ExceptionZZZ {
+		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
+		System.out.println(sLogUsed);
 		
-//		@Override
-//		public synchronized void logProtocol(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ {
-//			this.logProtocol(this, ienumaMappedLogString, saLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-//		}
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+		objLog.WriteLine(sLogUsed);
+	}
+	
+	@Override
+	public synchronized void logProtocol(Object obj, String... sLogs) throws ExceptionZZZ{
+		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
+		System.out.println(sLogUsed);
 		
-		@Override
-		public synchronized void logProtocol(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-			this.logProtocol(this, ienumaMappedLogString, sLogs); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
-		}
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+		objLog.WriteLine(sLogUsed);
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	@Override
+	public synchronized void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+		this.logProtocol(this, ienumMappedLogString, sLog); //Merke: In der aehnlichen Methode von KerneleLogZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public void logProtocol(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaMappedLogString[0] = ienumMappedLogString;
 		
-		
-		
-//		@Override
-//		public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLog) throws ExceptionZZZ {
-//			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-//			ienumaMappedLogString[0] = ienumMappedLogString;
-//			this.logProtocol(ienumaMappedLogString, saLog);
-//		}
-		
-		@Override
-		public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-			ienumaMappedLogString[0] = ienumMappedLogString;
-			this.logProtocol(ienumaMappedLogString, sLogs);
-		}
-		
-//		@Override
-//		public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ {
-//			main:{
-//				if(ArrayUtilZZZ.isNull(saLog)) break main;
-//				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
-//					this.logProtocol(saLog);
-//					break main;
-//				}
-//				
-//				int iIndex=0;
-//				if(obj==null) {			
-//					for(String sLog : saLog) {
-//						if(ienumaMappedLogString.length>iIndex) {
-//							this.logProtocol(ienumaMappedLogString[iIndex],sLog);
-//							iIndex++;
-//						}else {
-//							this.logProtocol(saLog);
-//						}
-//					}
-//				}else {
-//					for(String sLog : saLog) {
-//						if(ienumaMappedLogString.length>iIndex) {
-//							this.logProtocol(obj, ienumaMappedLogString[iIndex],sLog);
-//							iIndex++;
-//						}else {
-//							this.logProtocol(saLog);
-//						}
-//					}			
-//				}
-//			}//end main:
-//		}
-		
-		@Override
-		public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-			main:{
-				if(ArrayUtilZZZ.isNull(sLogs)) break main;
-				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
-					this.logProtocol(sLogs);
-					break main;
-				}
-				
-				int iIndex=0;
-				if(obj==null) {			
-					for(String sLog : sLogs) {
-						if(ienumaMappedLogString.length>iIndex) {
-							this.logProtocol(ienumaMappedLogString[iIndex],sLog);
-							iIndex++;
-						}else {
-							this.logProtocol(sLog);
-						}
+		this.logProtocol(this, ienumaMappedLogString, sLogs);
+	}
+	
+	@Override
+	public synchronized void logProtocol(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+		this.logProtocol(this, ienumaMappedLogString, sLogs); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
+	}
+	
+	@Override
+	public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaMappedLogString[0] = ienumMappedLogString;
+		this.logProtocol(ienumaMappedLogString, sLogs);
+	}
+	
+	@Override
+	public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+		main:{
+			if(ArrayUtilZZZ.isNull(sLogs)) break main;
+			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+				this.logProtocol(sLogs);
+				break main;
+			}
+			
+			int iIndex=0;
+			if(obj==null) {			
+				for(String sLog : sLogs) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocol(ienumaMappedLogString[iIndex],sLog);
+						iIndex++;
+					}else {
+						this.logProtocol(sLog);
 					}
-				}else {
-					for(String sLog : sLogs) {
-						if(ienumaMappedLogString.length>iIndex) {
-							this.logProtocol(obj, ienumaMappedLogString[iIndex],sLog);
-							iIndex++;
-						}else {
-							this.logProtocol(sLog);
-						}
-					}			
 				}
-			}//end main:
-		}
-		
-		@Override
-		public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-			String sLogUsed;
-			if(obj==null) {
-				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 			}else {
-				sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
+				for(String sLog : sLogs) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocol(obj, ienumaMappedLogString[iIndex],sLog);
+						iIndex++;
+					}else {
+						this.logProtocol(sLog);
+					}
+				}			
 			}
-			System.out.println(sLogUsed);
+		}//end main:
+	}
+	
+	@Override
+	public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+		String sLogUsed;
+		if(obj==null) {
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
+		}else {
+			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
 		}
+		System.out.println(sLogUsed);
 		
-		//############ ALLE METHODEN NUN AUCH NOCH MIT POSITIONSANGABE
-//		@Override
-//		public synchronized void logProtocolWithPosition(String[] saLogIn) throws ExceptionZZZ{
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			this.logProtocol(this, saLog);
-//		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			this.logProtocol(this, saLog);
-		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-			this.logProtocol(this, saLog);
-		}
-		
-//		@Override
-//		public synchronized void logProtocolWithPosition(Object obj, String[] saLogIn) throws ExceptionZZZ{
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			this.logProtocol(obj, saLog); 
-//		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			this.logProtocol(obj, saLog); 
-		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ{
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-			this.logProtocol(obj, saLog); 
-		}
-		
-		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		
-//		@Override
-//		public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLogIn) throws ExceptionZZZ {
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			
-//			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-//			ienumaMappedLogString[0] = ienumMappedLogString;
-//			
-//			this.logProtocol(this, ienumaMappedLogString, saLog);
-//		}
-		
-		@Override
-		public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-			ienumaMappedLogString[0] = ienumMappedLogString;
-			
-			this.logProtocol(this, ienumaMappedLogString, saLog);
-		}
-		
-//		@Override
-//		public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLogIn) throws ExceptionZZZ {
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			this.logProtocol(this, ienumaMappedLogString, saLog); 
-//		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			this.logProtocol(this, ienumaMappedLogString, saLog); 
-		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-			ienumaMappedLogString[0] = ienumMappedLogString;
-			
-			this.logProtocol(this, ienumaMappedLogString, saLog); 
-		}
-		
-//		@Override
-//		public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLogIn) throws ExceptionZZZ {
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			
-//			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-//			ienumaMappedLogString[0] = ienumMappedLogString;
-//			
-//			this.logProtocol(this, ienumMappedLogString, saLog);
-//		}
-		
-		@Override
-		public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-			ienumaMappedLogString[0] = ienumMappedLogString;
-			
-			this.logProtocol(this, ienumMappedLogString, saLog);
-		}
-		
-//		@Override
-//		public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLogIn) throws ExceptionZZZ {
-//			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-//			String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
-//			this.logProtocol(this, ienumaMappedLogString, saLog); 
-//		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-			this.logProtocol(this, ienumaMappedLogString, saLog); 
-		}
-		
-		@Override
-		public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-			String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
-			String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-			this.logProtocol(this, ienumMappedLogString, saLog); 
-		}
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+		objLog.WriteLine(sLogUsed);
+	}
+	
+	//############ ALLE METHODEN NUN AUCH NOCH MIT POSITIONSANGABE
 
+	@Override
+	public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		this.logProtocol(this, saLog);
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+		this.logProtocol(this, saLog);
+	}
+			
+	@Override
+	public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		this.logProtocol(obj, saLog); 
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ{
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+		this.logProtocol(obj, saLog); 
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	@Override
+	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
 		
+		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaMappedLogString[0] = ienumMappedLogString;
+		
+		this.logProtocol(this, ienumaMappedLogString, saLog);
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		this.logProtocol(this, ienumaMappedLogString, saLog); 
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+		
+		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaMappedLogString[0] = ienumMappedLogString;
+		
+		this.logProtocol(this, ienumaMappedLogString, saLog); 
+	}
+	
+	@Override
+	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		
+		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaMappedLogString[0] = ienumMappedLogString;
+		
+		this.logProtocol(this, ienumMappedLogString, saLog);
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		this.logProtocol(this, ienumaMappedLogString, saLog); 
+	}
+	
+	@Override
+	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+		this.logProtocol(this, ienumMappedLogString, saLog); 
+	}	
 }

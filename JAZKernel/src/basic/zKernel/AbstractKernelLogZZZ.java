@@ -29,6 +29,7 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import custom.zKernel.ILogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
 
@@ -40,7 +41,7 @@ import custom.zUtil.io.FileZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements IKernelLogZZZ{
+public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ implements ILogZZZ{
 	
 	public static final String sLOG_FILE_NAME_DEFAULT= "ZKernelLog_default.txt";
 	//flags 
@@ -56,7 +57,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	
 	//++++++++++++++++++++++++
 	//Konstruktoren
-	public KernelLogZZZ(){	
+	public AbstractKernelLogZZZ(){	
 		super();
 	}
 
@@ -65,19 +66,19 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	 * Constructor KernelLogZZZ.
 	 * @param LogFile-Path
 	 */
-	public KernelLogZZZ(String sDirectoryPathIn, String sLogFileIn) throws ExceptionZZZ {
+	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn) throws ExceptionZZZ {
 		super();
 		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, (String[])null);
 	}
 	
-	public KernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String sFlagControl) throws ExceptionZZZ {
+	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String sFlagControl) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
 		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
 	
-	public KernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String[] saFlagControl) throws ExceptionZZZ {
+	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String[] saFlagControl) throws ExceptionZZZ {
 		super();
 		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
@@ -106,7 +107,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		String sLogFile;
 		//Idee dahinter: Auch ohne Konfiguration soll soll protokollierung möglich sein.			
 		if(StringZZZ.isEmpty(sLogFileIn)){
-			sLogFile =new String(KernelLogZZZ.sLOG_FILE_NAME_DEFAULT);
+			sLogFile =new String(AbstractKernelLogZZZ.sLOG_FILE_NAME_DEFAULT);
 		} else{
 			sLogFile = sLogFileIn;
 		}
@@ -440,11 +441,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	//+++ Biete die Log-Methoden auch static an, siehe ILogZZZ, bzw. AbstractObjectZZZ fuer den Code
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	public synchronized static void logProtocolStringStatic(String... sLogs) throws ExceptionZZZ{
-		KernelLogZZZ.logProtocolStringStatic(null, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+		AbstractKernelLogZZZ.logProtocolStringStatic(null, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
-		KernelLogZZZ.logProtocolStringStatic(null, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+		AbstractKernelLogZZZ.logProtocolStringStatic(null, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(Object obj, String... sLogs) throws ExceptionZZZ{
@@ -453,11 +454,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 			
 			if(obj==null) {
 				for(String sLog : sLogs) {
-					KernelLogZZZ.logProtocolStringStatic(sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(sLog);
 				}
 			}else {
 				for(String sLog : sLogs) {
-					KernelLogZZZ.logProtocolStringStatic(obj, sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(obj, sLog);
 				}	
 			}
 			
@@ -472,18 +473,18 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	
 	//++++++++++++++++++++++++++++++++++	
 	public synchronized static void logProtocolStringStatic(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-		KernelLogZZZ.logProtocolStringStatic(null, ienumaMappedLogString, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumaMappedLogString, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-		KernelLogZZZ.logProtocolStringStatic(null, ienumMappedLogString, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumMappedLogString, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 		
 	public synchronized static void logProtocolStringStatic(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
 		main:{
 		if(ArrayUtilZZZ.isNull(sLogs)) break main;
 		if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
-			KernelLogZZZ.logProtocolStringStatic(sLogs);
+			AbstractKernelLogZZZ.logProtocolStringStatic(sLogs);
 			break main;
 		}
 		
@@ -491,19 +492,19 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		if(obj==null) {			
 			for(String sLog : sLogs) {
 				if(ienumaMappedLogString.length>iIndex) {
-					KernelLogZZZ.logProtocolStringStatic(ienumaMappedLogString[iIndex],sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(ienumaMappedLogString[iIndex],sLog);
 					iIndex++;
 				}else {
-					KernelLogZZZ.logProtocolStringStatic(sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(sLog);
 				}
 			}
 		}else {
 			for(String sLog : sLogs) {
 				if(ienumaMappedLogString.length>iIndex) {
-					KernelLogZZZ.logProtocolStringStatic(obj, ienumaMappedLogString[iIndex],sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(obj, ienumaMappedLogString[iIndex],sLog);
 					iIndex++;
 				}else {
-					KernelLogZZZ.logProtocolStringStatic(sLog);
+					AbstractKernelLogZZZ.logProtocolStringStatic(sLog);
 				}
 			}			
 		}
@@ -542,35 +543,35 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		}
 		return this.objFileTextWriter;
 	}
-	/* (non-Javadoc)
-	 * @see basic.zKernel.IKernelLogZZZ#WriteLine(String)
-	 */
+
+	@Override
 	public synchronized boolean WriteLine(String stemp){
-	boolean bReturn = false;
-	FileTextWriterZZZ objFileWriter;
-	try {
-		objFileWriter = this.getFileTextWriterObject();
-		bReturn = objFileWriter.writeLine(stemp);
-		
-		System.out.println(stemp);
-	} catch (ExceptionZZZ e) {		
-		e.printStackTrace();
-	}	
-	return bReturn;
+		boolean bReturn = false;
+		FileTextWriterZZZ objFileWriter;
+		try {
+			objFileWriter = this.getFileTextWriterObject();
+			bReturn = objFileWriter.writeLine(stemp);
+			
+			System.out.println(stemp);
+		} catch (ExceptionZZZ e) {		
+			e.printStackTrace();
+		}	
+		return bReturn;
 	}
 
 	//##################################################################################################
-	/* (non-Javadoc)
-	 * @see basic.zKernel.IKernelLogZZZ#WriteLineDate(java.lang.String)
-	 */
+	
+	@Override
 	synchronized public boolean WriteLineDate(String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(this, sLog);
 	}
 	
+	@Override
 	synchronized public boolean WriteLineDate(String... sLogs) throws ExceptionZZZ{
 		return WriteLineDate_(this, sLogs);
 	}
 	
+	@Override
 	synchronized public boolean WriteLineDate(Object obj, String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(obj, sLog);
 	}
@@ -578,7 +579,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	synchronized private boolean WriteLineDate_(Object obj, String... sLogs) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDate(obj, sLogs);
+		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, sLogs);
 		
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
 		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
@@ -590,10 +591,12 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	}
 	
 	//######################################
+	@Override
 	synchronized public boolean WriteLineDateWithPosition(String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition_(this.getClass(), 1, sLog);
 	}
 	
+	@Override
 	synchronized public boolean WriteLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition_(classObj, 1, sLog);
 	}
@@ -601,7 +604,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	synchronized private boolean WriteLineDateWithPosition_(Class classObj, int iStackTraceOffset, String sLog) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDate(classObj, "");
+		String sLine = AbstractKernelLogZZZ.computeLineDate(classObj, "");
 		
 		//Jetzt die Position extra. Sie kommt ganz hintenan.
 		int iLevelUsed = iStackTraceOffset + 1;		
@@ -617,16 +620,14 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		return bReturn;
 	}
 	
-	
-	
-	
-	
-//############################################
+
+	//############################################
+	@Override
 	synchronized public boolean WriteLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition_(obj, 1, sLog);
 	}
 	
-	
+	@Override
 	synchronized public boolean WriteLineDateWithPosition(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition_(obj, iStackTraceOffset+1, sLog);
 	}
@@ -635,7 +636,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		boolean bReturn = false;	
 		
 		//Hier nicht die Position hinzunehmen. Wg. des Leerstring kommt sie dann VOR den Kommentar
-		String sLine = KernelLogZZZ.computeLineDate(obj, "");
+		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, "");
 		
 		//Jetzt die Position extra. Sie kommt ganz hintenan.
 		int iLevelUsed = iStackTraceOffset + 1;		
@@ -658,18 +659,22 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
 	 */
+	@Override
 	synchronized public boolean WriteLineDateWithPositionXml(Object obj, String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = KernelLogZZZ.computeLineDateWithPositionXml(obj, stemp);
+		String sLine = AbstractKernelLogZZZ.computeLineDateWithPositionXml(obj, stemp);
 		bReturn = WriteLine(sLine);
 		
 		return bReturn;
 	}
 	
-	public void setFileObject(FileZZZ objFile){
+	@Override
+	public void setFileObject(FileZZZ objFile) throws ExceptionZZZ{
 		this.objFileZZZ = objFile;
 	}
+	
+	@Override
 	public FileZZZ getFileObject() throws ExceptionZZZ{
 		if(this.objFileZZZ == null) {
 			String sDirectoryPathNormed = this.getDirectory();
@@ -682,11 +687,13 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		return this.objFileZZZ;
 	}
 	
+	@Override
 	public String getFilenameExpanded() throws ExceptionZZZ{
 		return this.objFileZZZ.getNameExpandedCurrent();
 	}
 	
-	public String getFilename(){
+	@Override
+	public String getFilename() throws ExceptionZZZ{
 		//früher  return this.objFileZZZ.getName();
 		return this.sLogFilename;
 	}
@@ -695,17 +702,18 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	/* (non-Javadoc)
 	 * @see basic.zKernel.IKernelLogZZZ#Write(java.lang.String)
 	 */
-	public synchronized boolean Write(String stemp){
+	@Override
+	public synchronized boolean Write(String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;
 		FileTextWriterZZZ objFileWriter;
-		try {
+//		try {
 			objFileWriter = this.getFileTextWriterObject();
 			bReturn = objFileWriter.write(stemp); //Kein Zeilenumbruch.
 			
 			System.out.print(stemp); //Kein Zeilenumbruck
-		} catch (ExceptionZZZ e) {			
-			e.printStackTrace();
-		}	
+//		} catch (ExceptionZZZ e) {			
+//			e.printStackTrace();
+//		}	
 		return bReturn;
 	}
 
@@ -714,7 +722,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	//############################################
 	//### Functions implemented by interface
 	//.....
-	public void setFilename(String sLogFilename) {
+	@Override
+	public void setFilename(String sLogFilename) throws ExceptionZZZ{
 		this.sLogFilename = sLogFilename;
 		
 		//File Objekte wieder zurücksetzen
@@ -722,6 +731,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		this.objFileTextWriter = null;
 	}
 	
+	@Override
 	public void setDirectory(String sLogDirectorypath) throws ExceptionZZZ {
 		
 		//20190116: Suche nach dem Pfad. Er ist ggfs. als Serverapplication ohne den "src"-Ordner.
@@ -729,7 +739,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		if(objDirectory==null) {
 			String sError = "Verzeichnis für das KernelLog  ='" + sLogDirectorypath +"' existiert nicht.";
 			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": " + sError);
-			ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, KernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;					
 		}	
 		String sDirectoryPathNormed = objDirectory.getAbsolutePath();
@@ -742,44 +752,48 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		this.objFileZZZ = null;
 		this.objFileTextWriter = null;
 	}
-	public String getDirectory() {
+	
+	@Override
+	public String getDirectory() throws ExceptionZZZ{
 		return this.sLogDirectorypath;
 		//früher... return this.objFileZZZ.getPathDirectory();    //.getPath();
 	}
 	
-	
-	public IFileExpansionZZZ getFileExpansionObject(){	
-		if(this.getFlag(IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+	@Override
+	public IFileExpansionZZZ getFileExpansionObject() throws ExceptionZZZ{	
+		if(this.getFlag(ILogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
 			if(this.objFileExpansion==null) {
 				String sDir = this.getDirectory();			
 				String sName = this.getFilename();
 				FileZZZ objFileBase;
-				try {
+//				try {
 					objFileBase = new FileZZZ(sDir,sName);
 					this.objFileExpansion=new KernelFileExpansionZZZ(objFileBase);
-				} catch (ExceptionZZZ e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}			
+//				} catch (ExceptionZZZ e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}			
 			}
 			return this.objFileExpansion;
 		}else {
 			return null;
 		}
 	}
-	public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion){
+	
+	@Override
+	public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion) throws ExceptionZZZ{
 		this.objFileExpansion = objFileExpansion;
 		
 		//File Objekt aktualisieren
 		FileZZZ objFile;
-		try {
+//		try {
 			objFile = this.getFileObject();
 			if(objFile!=null) {
 				objFile.setFileExpansionObject(objFileExpansion);
 			}
-		} catch (ExceptionZZZ e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+//		} catch (ExceptionZZZ e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	
 	}
 }//end class

@@ -1,7 +1,7 @@
 package custom.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.KernelLogZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 
 /**
  * @author 0823
@@ -11,7 +11,7 @@ import basic.zKernel.KernelLogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class LogZZZ extends KernelLogZZZ{
+public class LogZZZ extends AbstractKernelLogZZZ{
 	public LogZZZ(){
 		super();	
 	}

@@ -74,6 +74,7 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
+import custom.zKernel.ILogZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -3567,10 +3568,9 @@ MeinTestParameter=blablaErgebnis
 					//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
 					
 				}else {
-					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
-					sLog = ReflectCodeZZZ.getMethodCurrentNameLined() + sLog;
-					System.out.println(sLog);
-					this.logLineDate(sLog);
+					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";					
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined() + "XXXXTest BySyso " + sLog);
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentNameLined() + "XXXXTest ByLogLineDate " + sLog);
 
 				}								
 			} catch (IOException ioe) {
@@ -7469,7 +7469,7 @@ MeinTestParameter=blablaErgebnis
 					}
 					
 					if(this.getFlag ("DEBUG")) System.out.println("Initialisiere KernelLog mit folgendem Pfad, Dateinamen: '" + sDirectoryLog +"', '" + sFileLog + "'");
-					objLog = new LogZZZ(sDirectoryLog, sFileLog,IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name());
+					objLog = new LogZZZ(sDirectoryLog, sFileLog,ILogZZZ.FLAGZ.USE_FILE_EXPANSION.name());
 				}else{
 					System.out.println("Verwende LogObject erneut");
 					objLog = objLogIn;
@@ -7585,7 +7585,7 @@ MeinTestParameter=blablaErgebnis
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(this);
+			String sTemp = AbstractKernelLogZZZ.computeLineDate(this);
 			
 			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
 			sTemp = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sTemp, sLog);
@@ -7605,7 +7605,7 @@ MeinTestParameter=blablaErgebnis
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
 			//Hier nicht die Position hinzunehmen. Wg. des Leerstring kommt sie dann VOR den Kommentar
-			String sLine = KernelLogZZZ.computeLineDate(this, ""); 
+			String sLine = AbstractKernelLogZZZ.computeLineDate(this, ""); 
 			
 			//Jetzt die Position extra. Sie kommt ganz hintenan.
 			String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(1);//current+1=calling

@@ -216,7 +216,7 @@ public abstract class AbstractKernelUseObjectZZZ<T> extends AbstractObjectWithFl
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(sLog);
+			String sTemp = AbstractKernelLogZZZ.computeLineDate(sLog);
 			System.out.println(sTemp);
 		}else {
 			objLog.WriteLineDate(sLog);
@@ -228,7 +228,7 @@ public abstract class AbstractKernelUseObjectZZZ<T> extends AbstractObjectWithFl
 	public void logLineDateWithPosition(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDateWithPosition(this, sLog);
+			String sTemp = AbstractKernelLogZZZ.computeLineDateWithPosition(this, sLog);
 			System.out.println(sTemp);
 		}else {
 			objLog.WriteLineDate(sLog);

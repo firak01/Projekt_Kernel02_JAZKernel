@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormaterZZZ;
-import basic.zKernel.KernelLogZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 
 public abstract class AbstractObjectWithExceptionZZZ <T> extends AbstractObjectZZZ<T> implements IObjectWithExceptionZZZ{
 	private static final long serialVersionUID = 1L;	

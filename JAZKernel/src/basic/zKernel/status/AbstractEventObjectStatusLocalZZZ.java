@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ILogZZZ;
+import basic.zBasic.IObjectPositionLogZZZ;
+import basic.zBasic.IObjectProtocolLogZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -16,7 +17,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormaterZZZ;
-import basic.zKernel.KernelLogZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
@@ -26,7 +27,7 @@ import basic.zKernel.KernelLogZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject implements ILogZZZ, IEventObjectStatusLocalZZZ, Comparable<IEventObjectStatusLocalZZZ>{
+public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject implements IObjectPositionLogZZZ, IEventObjectStatusLocalZZZ, Comparable<IEventObjectStatusLocalZZZ>{
 	//Merke: Das Interface comparable kann nicht mehrmals eingebunden werden. Daher in der Ausgangsklasse comparable nutzen und dort die Methoden erstellen.
 	protected IEnumSetMappedStatusZZZ objStatusEnum=null;
 	protected String sStatusMessage=null;

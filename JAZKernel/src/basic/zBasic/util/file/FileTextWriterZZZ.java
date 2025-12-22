@@ -9,7 +9,7 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
-import basic.zKernel.KernelLogZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 
 public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";

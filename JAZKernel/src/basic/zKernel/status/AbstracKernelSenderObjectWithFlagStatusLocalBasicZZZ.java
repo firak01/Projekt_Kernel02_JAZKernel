@@ -16,7 +16,7 @@ import basic.zKernel.IKernelContextUserZZZ;
 import basic.zKernel.IKernelContextZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelLogZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 import custom.zKernel.LogZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
@@ -210,7 +210,7 @@ public abstract class AbstracKernelSenderObjectWithFlagStatusLocalBasicZZZ exten
 	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(sLog);
+			String sTemp = AbstractKernelLogZZZ.computeLineDate(sLog);
 			System.out.println(sTemp);
 		}else {
 			objLog.WriteLineDate(sLog);
