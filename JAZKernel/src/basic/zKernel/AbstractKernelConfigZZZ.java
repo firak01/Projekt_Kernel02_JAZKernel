@@ -38,6 +38,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * -s = SystemKey
  * -d = directory
  * -f = file (.ini)
+ * -ld = log directory
+ * -lf = log filename
  * -z = flagz, JSON String mit dem beliebige Flags von aussen gesetzt werden. Sie werden in einer extra HashMap-verwaltet.
  * Mit diesen Informationen kann dann das eigentliche Kernel-Objekt erstellt werden
  * Z.B.:  -z {"DEBUGUI_PANELLABEL_ON":true,"DEBUGUI_PANELLIST_STRATEGIE_ENTRYFIRST":true,"DEBUGUI_PANELLIST_STRATEGIE_ENTRYDUMMY":true,"DEBUGUI_PANELLIST_STRATEGIE_ENTRYLAST":true}
@@ -95,7 +97,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 //				ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 				
-				saArg = new String[10];
+				saArg = new String[14];
 				saArg[0] = "-k";
 				saArg[1] = this.getApplicationKeyDefault();
 				saArg[2] = "-s";
@@ -104,8 +106,12 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 				saArg[5] = this.getConfigFileNameDefault();
 				saArg[6] = "-d";
 				saArg[7] = this.getConfigDirectoryNameDefault();
-				saArg[8] = "-z";
-				saArg[9] = this.getConfigFlagzJsonDefault();
+				saArg[8] = "-lf";
+				saArg[9] = this.getLogFileNameDefault();
+				saArg[10] = "-ld";
+				saArg[11] = this.getLogDirectoryNameDefault();								
+				saArg[12] = "-z";
+				saArg[13] = this.getConfigFlagzJsonDefault();
 			}else {
 				saArg = saArgIn;
 			}
@@ -487,6 +493,95 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		public void setCallingProjectPath(String sCallingProjectPathTotal) {
 			this.sCallingProjectPathTotal = sCallingProjectPathTotal;
 		}
+		
+		
+		@Override 
+		public String getLogFileName() {
+			String sReturn = this.readLogFileName();
+			if(StringZZZ.isEmpty(sReturn)) {
+				sReturn = this.getLogFileNameDefault();
+			}
+			return sReturn;
+		}
+		
+		@Override 
+		public String getLogFileNameDefault() {
+			return this.sLOG_FILE_NAME_DEFAULT;
+		}
+		
+		@Override
+		public String readLogFileName(){
+			String sReturn = null;
+			main:{
+				GetOptZZZ objOpt = this.getOptObject();
+				if(objOpt==null) break main;
+				if(objOpt.getFlag("isLoaded")==false) break main;
+				 
+				sReturn = objOpt.readValue("lf");
+			}//end main:		
+			return sReturn;
+		}
+		
+		@Override
+		public boolean isLogFileNameDefault(String sValue) {
+			boolean bReturn = false;{
+				main:{
+					if(StringZZZ.isEmpty(sValue))break main;
+					if(sValue.equals(this.getLogFileNameDefault())) {
+						bReturn = true;
+					}
+				}
+			}
+			return bReturn;
+		}
+		
+		@Override 
+		public String getLogDirectoryName() throws ExceptionZZZ {
+			String sReturn = this.readLogDirectoryName();			
+			if(sReturn==null){
+				sReturn = this.getConfigDirectoryNameDefault();				
+			}
+			sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);
+			
+			return sReturn;
+		}
+		
+		@Override 
+		public String getLogDirectoryNameDefault() {
+			return this.sLOG_FILE_DIRECTORY_DEFAULT;
+		}
+		
+		@Override
+		public String readLogDirectoryName() throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				GetOptZZZ objOpt = this.getOptObject();
+				if(objOpt==null) break main;
+				if(objOpt.getFlag("isLoaded")==false) break main;
+				
+				sReturn = objOpt.readValue("ld");									
+			}//end main:						
+			return sReturn;
+		} 
+		
+		@Override
+		public boolean isLogDirectoryNameDefault(String sValue) {
+			boolean bReturn = false;{
+				main:{
+					if(StringZZZ.isEmpty(sValue))break main;
+					if(sValue.equals(this.getLogDirectoryNameDefault())) {
+						bReturn = true;
+					}
+				}
+			}
+			return bReturn;
+		}
+		
+		
+		  
+		
+		
+		
 		
 		//##########
 		// Getter / Setter

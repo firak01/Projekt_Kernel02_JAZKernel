@@ -1,5 +1,8 @@
 package basic.zKernel;
 
+import static basic.zKernel.IKernelConfigConstantZZZ.sLOG_FILE_NAME_DEFAULT;
+import static basic.zKernel.IKernelConfigConstantZZZ.sLOG_FILE_DIRECTORY_DEFAULT;
+
 import basic.javagently.Stream;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
@@ -29,6 +32,7 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import custom.zKernel.ConfigZZZ;
 import custom.zKernel.ILogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -42,11 +46,9 @@ import custom.zUtil.io.FileZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ implements ILogZZZ{
-	
-	public static final String sLOG_FILE_NAME_DEFAULT= "ZKernelLog_default.txt";
 	//flags 
 	//private boolean bFlagUse_FILE_Expansion; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
-
+	protected volatile IKernelConfigZZZ objConfig = null;   //die Werte für den Applikationskey, Systemnummer, etc.
 		
 	private String sLogFilename=null;
 	private String sLogDirectorypath=null;
@@ -68,22 +70,27 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 */
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn) throws ExceptionZZZ {
 		super();
-		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, (String[])null);
+		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, (String[])null);
 	}
 	
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String sFlagControl) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
-		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, saFlagControl);
+		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
 	
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String[] saFlagControl) throws ExceptionZZZ {
 		super();
-		KernelLogNew_(sDirectoryPathIn, sLogFileIn, null, saFlagControl);
+		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
 	
-	private void KernelLogNew_(String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
+	public AbstractKernelLogZZZ(IKernelConfigZZZ objConfig) throws ExceptionZZZ {
+		super();
+		KernelLogNew_(objConfig, null, null,  null, (String[]) null);
+	}
+	
+	private void KernelLogNew_(IKernelConfigZZZ objConfig, String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
 		
 		main:{
 		if(saFlagControl!=null){
@@ -100,34 +107,16 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 			if(this.getFlag("init")) break main;
 		}
 		
+		this.setConfigObject(objConfig);
+		this.setFilename(sLogFileIn);
+		this.setDirectory(sDirectoryPathIn);
 		
-		/*
-		 *TODO: get the default filename from the Z-Kernel configuration file
-		 */	
-		String sLogFile;
-		//Idee dahinter: Auch ohne Konfiguration soll soll protokollierung möglich sein.			
-		if(StringZZZ.isEmpty(sLogFileIn)){
-			sLogFile =new String(AbstractKernelLogZZZ.sLOG_FILE_NAME_DEFAULT);
-		} else{
-			sLogFile = sLogFileIn;
-		}
-		this.setFilename(sLogFile);
-		
-		/*
-		 * TODO: get the default directory from the Z-Kernel configuration file
-		 */			 			
-		String sDirectoryPath;
-		if(StringZZZ.isEmpty(sDirectoryPathIn)){
-			sDirectoryPath = ".";
-		}else{
-			sDirectoryPath = sDirectoryPathIn;
-		}
-		this.setDirectory(sDirectoryPath);
-	
 		FileTextWriterZZZ objFileTextWriter = this.getFileTextWriterObject();
 		if(objFileTextWriter!=null) {
 			this.WriteLineDate("Log created");
 		}else {
+			String sDirectoryPath=this.getDirectory();
+			String sLogFile = this.getFilename();
 			System.out.println("Unable to create FileWriterObject for Log, for path '" + sDirectoryPath + " and filename: " + sLogFile + "'.");
 		}			
 	}//end main:
@@ -694,7 +683,19 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String getFilename() throws ExceptionZZZ{
-		//früher  return this.objFileZZZ.getName();
+		if(StringZZZ.isEmpty(this.sLogFilename)) {
+			String sLogFileNameFound=null;
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			if(objConfig!=null) {
+				sLogFileNameFound = objConfig.getLogFileName();
+			}
+			
+			if(StringZZZ.isEmpty(sLogFileNameFound)) {
+				sLogFileNameFound =new String(sLOG_FILE_NAME_DEFAULT);
+			}else {
+				this.setFilename(sLogFileNameFound);
+			}
+		}
 		return this.sLogFilename;
 	}
 		
@@ -755,8 +756,20 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public String getDirectory() throws ExceptionZZZ{
+		if(StringZZZ.isEmpty(this.sLogDirectorypath)) {
+			String sLogFileDirectoryFound=null;
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			if(objConfig!=null) {
+				sLogFileDirectoryFound = objConfig.getLogDirectoryName(); 
+			}
+			
+			if(StringZZZ.isEmpty(sLogFileDirectoryFound)) {
+				sLogFileDirectoryFound =new String(sLOG_FILE_DIRECTORY_DEFAULT);
+			}else {
+				this.setDirectory(sLogFileDirectoryFound);
+			}
+		}
 		return this.sLogDirectorypath;
-		//früher... return this.objFileZZZ.getPathDirectory();    //.getPath();
 	}
 	
 	@Override
@@ -795,5 +808,19 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}	
+	}
+	
+	//### aus IKernelConfigUserZZZ
+	@Override
+	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
+		if(this.objConfig==null){
+			this.objConfig = new ConfigZZZ(null);			
+		}
+		return this.objConfig;
+	}
+	
+	@Override
+	public void setConfigObject(IKernelConfigZZZ objConfig){
+		this.objConfig = objConfig;
 	}
 }//end class

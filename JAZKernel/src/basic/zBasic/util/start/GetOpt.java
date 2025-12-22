@@ -1,5 +1,8 @@
 package basic.zBasic.util.start;
 
+import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+
 /** A class to implement UNIX-style (single-character) command arguments
  * @author Ian F. Darwin, ian@darwinsys.com
  * based on the standard UNIX getopt(3) program.
@@ -79,6 +82,59 @@ public class GetOpt {
 			optind--;
 			done = true;
 			return DONE;
+		}
+	}
+	
+	public String getoptString(String argv[]) {
+		if (optind == (argv.length)) {
+			done = true;
+		}
+
+		// Do not combine with previous if statement.
+		if (done) {
+			return CharZZZ.toString(DONE);
+		}
+
+		// Pick off the next command line argument, check if it starts "-".
+		// If so look it up in the list.
+		String thisArg = argv[optind++];
+		if (thisArg.startsWith("-")) {
+			optarg = null;
+			
+			if(thisArg.length()>=2 && thisArg.length() < 3) {
+				for (int i=0; i<pattern.length(); i++) {
+					char c = pattern.charAt(i);
+					if (thisArg.equals("-"+c)) {	// we found it
+						// If it needs an option argument, get it.
+						if (i+1 < pattern.length() && 
+							pattern.charAt(i+1)==':' &&
+							optind < argv.length)
+							optarg = argv[optind++]; 
+						return CharZZZ.toString(c);
+					}
+				}
+				// Still no match, and not used all args, so must be error.
+				return CharZZZ.toString('?');
+			}else if(thisArg.length()>=3) {
+				int iPositionBehind = StringZZZ.indexOfFirstBehind(pattern, thisArg.substring(1,thisArg.length()-1));
+				if (iPositionBehind+1 < pattern.length() && 
+						pattern.charAt(iPositionBehind+1)==':' &&
+						optind < argv.length)
+						optarg = argv[optind++]; 
+				
+				//return new String(thisArg);
+				return thisArg.substring(1,thisArg.length()); //Rueckgabewerte wie bei dem 1 Zeichen Argument ohne "-"
+			} else {
+				// Found non-argument non-option word in argv: end of options.
+				optind--;
+				done = true;
+				return CharZZZ.toString(DONE);
+			}
+		} else {
+			// Found non-argument non-option word in argv: end of options.
+			optind--;
+			done = true;
+			return CharZZZ.toString(DONE);
 		}
 	}
 }

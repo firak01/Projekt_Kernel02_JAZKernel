@@ -99,31 +99,15 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	 * @author Fritz Lindhauer, 31.03.2021, 09:09:29
 	 */
 	public static ArrayList Pattern2ListControlAll(String sPattern){
-		ArrayList listaReturn = new ArrayList();
-		main:{
-			
-			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
-			//          Das ist gescheitert, da zuviel zu ändern ist.
-			//Die Idee der Steuerzeichen ohne Argumente an den Schluss zu setzen ist noch nicht umgesetzt
-			//Daher erst genau den gleichen Code wie für Steuerzeichen mit Argument verwenden
-//			listaReturn = GetOptZZZ.Pattern2ListControlValue(sPattern);
-			
-			
-//Alter Code, eine Version, in der nur 1 Zeichen lange Steuerzeichen gedacht waren.
-			if(StringZZZ.isEmpty(sPattern)) break main;			
-			  for(int icount=0; icount<=sPattern.length()-1; icount++){
-	            	String stemp = sPattern.substring(icount, icount + 1);
-	            	if(!stemp.equals(":")){
-	            		if(!listaReturn.contains(stemp)) {
-	            			listaReturn.add(stemp);
-	            		}
-	            	}
-	            }
-		}
-		return listaReturn;
+		return Pattern2ListControl_(sPattern);
 	}
 	
 	public static ArrayList Pattern2ListControlValue(String sPattern){
+		return Pattern2ListControl_(sPattern);
+	}
+	
+	
+	private static ArrayList Pattern2ListControl_(String sPattern){
 		ArrayList listaReturn = new ArrayList();
 		main:{
 			if(StringZZZ.isEmpty(sPattern)) break main;
@@ -136,8 +120,8 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			
 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel zu ändern ist.
-//			//Nun muessen die Zeichen jeweils Zeichen vor dem Indexwert geholt werden, bis zum vorherigen Indexwert 
-//			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN
+			//Nun muessen die Zeichen jeweils Zeichen vor dem Indexwert geholt werden, bis zum vorherigen Indexwert 
+			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN
 //			 int iIndexLeft = 0;
 //			  if(intaIndex!=null){            	
 //	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
@@ -160,10 +144,23 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
 	            		Integer inttemp = intaIndex[icount];
 	            		if(inttemp.intValue()>=0){
-	            			int itemp = inttemp.intValue()-1;  //Position des Zeichens vor dem ":" 
-	            			String stemp = sPattern.substring(itemp, itemp + 1);
-	            			if(!StringZZZ.isEmpty(stemp)){
-	            				listaReturn.add(stemp);
+	            			int itemp = inttemp.intValue();   
+	            			
+	            			//die Zeichen vor dem ":" ermitteln
+	            			String stemp = null;
+	            			int ilength = 0;
+	            			do {	            				
+	            				stemp = sPattern.substring(itemp-1, itemp); //Position des Zeichens vor dem ":", dann davor, etc.	            					            					            			
+	            				if(!stemp.equals(":") && itemp>0) ilength++;
+	            				itemp = itemp-1; //ein Zeichen weiterschieben nach links
+	            			}while(stemp!=null && !stemp.equals(":") && itemp>0);
+	            			
+	            			if(ilength>=0) {
+	            				itemp = inttemp.intValue();
+	            				String sControl = sPattern.substring(itemp-ilength, itemp);
+	            				if(!StringZZZ.isEmpty(sControl)){
+	            					listaReturn.add(sControl);
+	            				}
 	            			}
 	            		}
 	            	}
@@ -215,16 +212,20 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel in der GetOpt.getopt(saArg) Methode zu ändern ist.			
 			GetOpt objOption = new GetOpt(sPattern);
-			char a = objOption.getopt(saArg);
-			String sOption = StringZZZ.char2String(a).trim();			
+			//char a = objOption.getopt(saArg);			
+			String a = objOption.getoptString(saArg);
+			//String sOption = StringZZZ.char2String(a).trim();			
+			String sOption = a.trim();//.substring(1,a.trim().length()-1);
 			while(!StringZZZ.isEmpty(sOption)){
 				String sParam = objOption.optarg();
 				
 				this.getOptionMap().put(sOption, sParam);
 				
 				//Zum naechsten Argument
-				a = objOption.getopt(saArg);
-				sOption = StringZZZ.char2String(a).trim();
+				//a = objOption.getopt(saArg);
+				a = objOption.getoptString(saArg);
+				//sOption = StringZZZ.char2String(a).trim();
+				sOption = a.trim();//.substring(1,a.trim().length()-1);
 			}
 		    bReturn = true;
 		}//end main
@@ -347,8 +348,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				if(!StringZZZ.isEmpty(saParamAll[icount])){
 					String stemp = saParamAll[icount].substring(0, 1);
 					if(stemp.equals("-") & sControlPrevious.equals("")){
-						listaControlFound.add(StringZZZ.rightback(saParamAll[icount], 1));  //Ohne den Bindestrich !!!
-						//sControlPrevious = saParamAll[icount].substring(1);	      //Das sollte Doch der Wert bis zum n�chsten LEERZEICHEN SEIN
+						listaControlFound.add(StringZZZ.rightback(saParamAll[icount], 1));  //Ohne den Bindestrich !!!						
 						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum n�chsten LEERZEICHEN
 						
 						//Falls dieses gefundene Steuerzeichen mehr kein Zeichen oder mehr als 2 Zeichen lang ist, FEHLER
@@ -360,10 +360,10 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 						//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 						//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
 						//          Sonst müsste folgende überprüfung herausgenommen werden.
-						if(sControlPrevious.length()>=2){
-							sReturn = "Error 20: Argument string contains control parameter longer than 1 character: " + sControlPrevious;
-							break main;
-						}
+//						if(sControlPrevious.length()>=2){
+//							sReturn = "Error 20: Argument string contains control parameter longer than 1 character: " + sControlPrevious;
+//							break main;
+//						}
 						
 						if(!listaControl.contains(sControlPrevious)){						
 							//Fehler ein Steuerelement, dass nicht im PatternString defineirt ist
@@ -561,18 +561,18 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
 			//Das stammt aus der Version, in der die Steuereungszeichen nur 1 Zeichen lang sein durften			
-			String sRest = sPattern;
-			while(sRest.length()>=1){
-				sCharacter = sRest.substring(0,1);
-				sRest = StringZZZ.rightback(sRest, 1);
-				if(!sCharacter.equals(":")){
-					int icount = StringZZZ.count(sRest, sCharacter);
-					if(icount >= 1){   //d.h. wenn das Zeichen noch einmal vorkommt
-						sReturn = "Error 1: The character '" + sCharacter + "' is " + (icount+1) + " times in the pattern string. Pattern '" + sPattern +"'";
-						break main;
-					}
-				}
-			}
+//			String sRest = sPattern;
+//			while(sRest.length()>=1){
+//				sCharacter = sRest.substring(0,1);
+//				sRest = StringZZZ.rightback(sRest, 1);
+//				if(!sCharacter.equals(":")){
+//					int icount = StringZZZ.count(sRest, sCharacter);
+//					if(icount >= 1){   //d.h. wenn das Zeichen noch einmal vorkommt
+//						sReturn = "Error 1: The character '" + sCharacter + "' is " + (icount+1) + " times in the pattern string. Pattern '" + sPattern +"'";
+//						break main;
+//					}
+//				}
+//			}
 			
 			//+++ 3. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
 			String[] saDelim = {":"};
@@ -708,3 +708,4 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		return bFunction;
 	}
 }//END CLASS
+

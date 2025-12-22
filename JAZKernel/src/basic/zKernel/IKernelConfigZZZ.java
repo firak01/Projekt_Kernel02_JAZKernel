@@ -10,7 +10,7 @@ import basic.zKernel.flag.IFlagZEnabledZZZ;
 public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectHelperZZZ, IKernelConfigConstantZZZ{
 	//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 	//          Das ist gescheitert, da zuviel zu ändern ist, u.a in der intern verwendeten GetOpt-Klasse.
-	final static String sPATTERN_DEFAULT="k:s:f:d:z:";	
+	final static String sPATTERN_DEFAULT="k:s:f:d:lf:ld:z:";	
 	final static String sFLAGZ_DEFAULT="{}"; //leerer JSON ähnlicher String für zu setztende Flags, z.B. gefüllt {"DEBUGUI_PANELLABEL_ON":true}
 	
 	/**Falls Kein entsprechender Parameter in der Kommandozeile übergeben worden ist, so wird der hier definierte Wert verwendet für den Initialisierung des Kernels
@@ -26,6 +26,16 @@ public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectH
 	public String getConfigDirectoryNameDefault();
 	public String readConfigFileName();
 	public String getConfigFileNameDefault();
+	
+	public String getLogFileName() throws ExceptionZZZ;
+	public String getLogFileNameDefault();
+	public String readLogFileName() throws ExceptionZZZ;
+	public boolean isLogFileNameDefault(String sValue);
+	
+	public String getLogDirectoryName() throws ExceptionZZZ;
+	public String getLogDirectoryNameDefault();
+	public String readLogDirectoryName() throws ExceptionZZZ;
+	public boolean isLogDirectoryNameDefault(String sValue);
 	
 	
 	//20210331: Flagz, default String, als leerer JSON-Wert

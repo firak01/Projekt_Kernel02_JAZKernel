@@ -2,6 +2,7 @@ package custom.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
+import basic.zKernel.IKernelConfigZZZ;
 
 /**
  * @author 0823
@@ -32,4 +33,7 @@ public class LogZZZ extends AbstractKernelLogZZZ{
 		super(sDirectory, sFile, saFlagControl);
 	}
 	
+	public LogZZZ(IKernelConfigZZZ objConfig) throws ExceptionZZZ {
+		super(objConfig);
+	}
 }

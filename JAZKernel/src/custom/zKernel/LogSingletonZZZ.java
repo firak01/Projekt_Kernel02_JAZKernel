@@ -86,4 +86,8 @@ public class LogSingletonZZZ extends AbstractKernelLogZZZ{
 	private LogSingletonZZZ(String sDirectoryPath, String sLogFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(sDirectoryPath, sLogFile, saFlagControl);
 	}	
+	
+	private LogSingletonZZZ(IKernelConfigZZZ objConfig) throws ExceptionZZZ{
+		super(objConfig);
+	}
 }

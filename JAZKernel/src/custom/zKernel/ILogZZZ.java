@@ -1,11 +1,15 @@
 package custom.zKernel;
 
+import static basic.zKernel.IKernelConfigConstantZZZ.sLOG_FILE_NAME_DEFAULT;
+import static basic.zKernel.IKernelConfigConstantZZZ.sLOG_FILE_DIRECTORY_DEFAULT;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
+import basic.zKernel.IKernelConfigUserZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public interface ILogZZZ extends IFileExpansionEnabledZZZ{
+public interface ILogZZZ extends IFileExpansionEnabledZZZ, IKernelConfigUserZZZ{
 //	public enum FLAGZ{
 //		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 //	}

@@ -1663,7 +1663,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			//####### Mit Strings
 			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
-				String sValue = this.computeLinePartInLog_(classObj, ienumFormatLogString, sLogs);//this.computeByObject_(classObj, ienumFormatLogString);
+				String sValue = this.computeLinePartInLog_(classObj, ienumFormatLogString, sLogs);
 				if(sValue!=null) {
 					if(sReturn==null) {
 						sReturn = sValue;
