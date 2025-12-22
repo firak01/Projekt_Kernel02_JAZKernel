@@ -93,8 +93,8 @@ public class GetOptZZZTest extends TestCase{
 			int itemp= 0;
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			objOptTest.setPattern("a:bc:");
-			stemp = "-a hallo -b -c Welt";
+			objOptTest.setPattern("a:c:b");//Im Pattern, ohne Argumente nach hinten.
+			stemp = "-a hallo -c Welt -b";
 			sResult = objOptTest.proofArgument(stemp);
 			itemp = GetOptZZZ.computeCodeFromProofResult(sResult);
 			assertEquals(-1, itemp);
@@ -238,8 +238,8 @@ public class GetOptZZZTest extends TestCase{
 			boolean btemp=false;
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			objOptTest.setPattern("a:bc:");
-			stemp = "-a hallo -b -c Welt";
+			objOptTest.setPattern("a:c:b");//ohne Argumente nach hinten
+			stemp = "-a hallo -c Welt -b";
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertTrue(btemp);
 			

@@ -366,7 +366,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 //						}
 						
 						if(!listaControl.contains(sControlPrevious)){						
-							//Fehler ein Steuerelement, dass nicht im PatternString defineirt ist
+							//Fehler ein Steuerelement, dass nicht im PatternString definiert ist
 							sReturn = "Error 25: Control character not defined in pattern: '" + sControlPrevious + "'";
 							break main;
 						}
