@@ -589,7 +589,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				String sCharacter = null;
 				String[] saPattern = null; String[] saPatternUnique = null; 
 				int iLength = -1; int iLengthUnique = -1;
-				char cDelim = 0; String sDelim = null; String[] saDelim = null; Integer[] intaIndex = null;
+				char cDelim = 0; 
 				boolean bCharacterDoubled = false;
 				
 				

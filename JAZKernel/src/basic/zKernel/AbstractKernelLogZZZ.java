@@ -108,16 +108,36 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		
 		this.setConfigObject(objConfig);
-		this.setFilename(sLogFileIn);
-		this.setDirectory(sDirectoryPathIn);
+		
+		String sLogFile=null;
+		if(StringZZZ.isEmpty(sLogFileIn)) {
+			if(objConfig!=null) {
+				sLogFile = objConfig.getLogFileName();
+			}else {
+				sLogFile = this.getFilename();
+			}
+		}else {
+			sLogFile = sLogFileIn;
+		}
+		this.setFilename(sLogFile);
+		
+		String sDirectoryName=null;
+		if(StringZZZ.isEmpty(sDirectoryPathIn)) {
+			if(objConfig!=null) {
+				sDirectoryName = objConfig.getLogDirectoryName();
+			}else {
+				sDirectoryName = this.getDirectory();
+			}
+		}
+		this.setDirectory(sDirectoryName);
 		
 		FileTextWriterZZZ objFileTextWriter = this.getFileTextWriterObject();
 		if(objFileTextWriter!=null) {
 			this.WriteLineDate("Log created");
 		}else {
-			String sDirectoryPath=this.getDirectory();
-			String sLogFile = this.getFilename();
-			System.out.println("Unable to create FileWriterObject for Log, for path '" + sDirectoryPath + " and filename: " + sLogFile + "'.");
+			sDirectoryName=this.getDirectory();
+			sLogFile = this.getFilename();
+			System.out.println("Unable to create FileWriterObject for Log, for path '" + sDirectoryName + " and filename: " + sLogFile + "'.");
 		}			
 	}//end main:
 		

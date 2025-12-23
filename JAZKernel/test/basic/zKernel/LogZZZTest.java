@@ -111,6 +111,26 @@ public class LogZZZTest extends TestCase{
 		}
 	}
 	
+	public void testConstructorWithDifferentLogFile() {
+		try {
+			String[]saArg=null; boolean bValue=false;
+					
+			saArg=new String[4];
+			saArg[0]="-ld";
+			saArg[1]="c:\\temp";
+			saArg[2]="-lf";
+			saArg[3]="testLog_Constructor01";
+			IKernelConfigZZZ objConfig = new ConfigZZZ(saArg);
+			LogZZZ objLog01 = new LogZZZ(objConfig);
+			bValue=objLog01.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT);
+			assertTrue(bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	
 	
 }

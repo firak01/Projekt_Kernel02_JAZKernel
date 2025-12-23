@@ -48,7 +48,7 @@ public class ConfigZZZ extends AbstractKernelConfigZZZ{
 	
 	@Override
 	public String getPatternStringDefault() {
-		return "k:s:f:d:";
+		return "k:s:f:d:lf:ld:";
 	}
 	@Override
 	public String getProjectName() {
