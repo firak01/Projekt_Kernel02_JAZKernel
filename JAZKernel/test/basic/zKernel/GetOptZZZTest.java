@@ -1,5 +1,7 @@
 package basic.zKernel;
 
+import java.util.ArrayList;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.GetOptZZZ;
 import junit.framework.TestCase;
@@ -23,6 +25,122 @@ public class GetOptZZZTest extends TestCase{
 		//} catch (ExceptionZZZ e) {
 		//	fail("Method throws an exception." + e.getMessageLast());
 		//}		
+	}
+	
+	public void testGetPatternList4ControlWithValue() {
+//		try {
+			String sPattern=null;
+			ArrayList<String>listaPattern=null;
+			
+			//Liste Argumente mit Wert
+			sPattern = "a:b:c:;";
+			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			//mal ein Argument "ohne Wert" einbauen, das wird jetzt für diese Liste ignoriert
+			sPattern = "a:d|b:c:";
+			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			//pattern nur mit Argumenten "ohne Wert"
+			sPattern = "e|d|f|";
+			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(0,listaPattern.size());
+			
+			//Pattern mit "einfachem Argument" am Schluss, wird komplett ignoriert
+			sPattern = "e|d|f|x";
+			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(0,listaPattern.size());
+			
+					
+//		} catch (ExceptionZZZ ez) {
+//			ez.printStackTrace();
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}	
+	}
+	
+	public void testGetPatternList4ControlSimple() {
+//		try {
+			String sPattern=null;
+			ArrayList<String>listaPattern=null;
+			
+			//Liste Argumente "ohne Wert"
+			sPattern = "a|b|c|;";
+			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			//mal ein Argument "mit Wert" einbauen, das wird jetzt für diese Liste ignoriert
+			sPattern = "a|d:b|c|";
+			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			//pattern nur mit Argumenten "mit Wert"
+			sPattern = "e:d:f:";
+			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(0,listaPattern.size());
+			
+			
+			//Pattern mit einfachem Zeichen am Schluss, wird zu einem Argument "ohne Wert" 
+			sPattern = "e:d:f:x";
+			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(1,listaPattern.size());
+			assertEquals("x", listaPattern.get(0));
+			
+			
+			
+//		} catch (ExceptionZZZ ez) {
+//			ez.printStackTrace();
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}	
+	}
+	
+	
+	
+	public void testGetPatternList4ControlAll() {
+//		try {
+			String sPattern=null;
+			ArrayList<String>listaPattern=null;
+			
+			//Liste Argumente "ohne Wert"
+			sPattern = "a|b|c|;";
+			listaPattern = GetOptZZZ.getPatternList4ControlAll(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			//mal ein Argument "mit Wert" einbauen, das wird jetzt für die Gesamt-Liste mit aufgenommen
+			sPattern = "a|d:b|c|";
+			listaPattern = GetOptZZZ.getPatternList4ControlAll(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(4,listaPattern.size());
+			
+			//pattern nur mit Argumenten "mit Wert"
+			sPattern = "e:d:f:";
+			listaPattern = GetOptZZZ.getPatternList4ControlAll(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(3,listaPattern.size());
+			
+			
+			//Pattern mit einfachem Zeichen am Schluss, wird zu einem Argument "ohne Wert" 
+			sPattern = "e:d:f:x";
+			listaPattern = GetOptZZZ.getPatternList4ControlAll(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(4,listaPattern.size());
+			assertEquals("e", listaPattern.get(0));
+			
+			
+			
+//		} catch (ExceptionZZZ ez) {
+//			ez.printStackTrace();
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}	
 	}
 	
 	/**F�r den Pattern String gilt: 1 Zeichen, ggf. gefolgt von einem Doppelpunkt
@@ -81,8 +199,9 @@ public class GetOptZZZTest extends TestCase{
 			
 			
 			
-		} catch (ExceptionZZZ e) {
-			fail("Method throws an exception." + e.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}	
 	}
 	
@@ -237,8 +356,10 @@ public class GetOptZZZTest extends TestCase{
 			String stemp=null;
 			boolean btemp=false;
 			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//+++
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			objOptTest.setPattern("a:c:b");//ohne Argumente nach hinten
+			objOptTest.setPattern("a:c:b|");//ohne Argumente nach hinten
 			stemp = "-a hallo -c Welt -b";
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertTrue(btemp);
@@ -272,7 +393,80 @@ public class GetOptZZZTest extends TestCase{
 			assertTrue(btemp);
 			
 			
-			//Merke: noch mehr tests in testProofArgumentString
+			//+++++++++++++++++++++++++++++
+			//+++
+			//+++++++++++++++++++++++++++++
+			objOptTest.setPattern("a:b|c:");//ohne Argumente nach hinten
+			stemp = "-a hallo -c Welt -b -d";
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			
+			stemp="-a -b -c"; //ist auch valid 'c' als Steuerungszeichen 'mit Argument' erkannt, aber nix folgt.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b -c welt zwei"; //ist NICHT valid. 'zwei' wird als Argumentwert erkannt, der "�berfl�ssig" ist.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++
+			objOptTest.setPattern("a:b:c:");
+			stemp="-a hallo -b -c "; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
+			
+			stemp="-a hallo -b welt -c zwei"; //ist auch valid, Normalfall
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
+			
+			stemp="-a hallo -b welt -c zwei drei"; 
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			//Falsche L�nge der Steuerungzeichen eingeben
+			stemp="-a hallo -b -cc"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
+			
+			
+			//##################################################
+			//### NEGATIVTESTS
+			//##################################################
+			objOptTest.setPattern("a:b|c:");//ohne Argumente nach hinten
+			stemp = "-a hallo -c Welt -b -d"; // d gibt es nicht als Steuerzeichen
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b -c"; //ist auch valid 'c' als Steuerungszeichen 'mit Argument' erkannt, aber nix folgt.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b -c welt zwei"; //ist NICHT valid. 'zwei' wird als Argumentwert erkannt, der "�berfl�ssig" ist.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			objOptTest.setPattern("a:b:c:");
+//			stemp="-a hallo -b -c"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
+//			btemp = objOptTest.isArgumentValid(stemp);
+//			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -c zwei -d"; //d gibt es nicht
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -c zwei drei"; 
+			btemp = objOptTest.isArgumentValid(stemp); //drei gibt es nicht 
+			assertFalse(btemp);
+			
+			//Falsche L�nge der Steuerungzeichen eingeben
+			stemp="-a hallo -b -cc"; //'cc' gibt es nicht
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
 			
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());

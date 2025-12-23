@@ -3017,6 +3017,42 @@ public class StringZZZ implements IConstantZZZ{
 		}
 		return bReturn;
 	}
+	
+	/** true, wenn das uebergebene Zeichen doppelt im String vorhanden ist.
+	 * @param sString
+	 * @param sCharacter
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.12.2025, 08:32:02
+	 */
+	public static boolean isCharacterDoubled(String sString, char cCharacter) throws ExceptionZZZ{
+		//Merke: Der Algorithums funktioniert nur mit einfachen Zeichen
+		boolean bReturn = false;
+		main:{
+			
+			String sDelim = CharZZZ.toString(cCharacter);
+			Integer[] intaIndex = StringZZZ.indexOfAll(sString, sDelim);
+		
+			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 			
+			if(intaIndex!=null){            	
+            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
+            		Integer inttemp = intaIndex[icount];
+            		if(inttemp.intValue()>=0){
+            			int itemp = inttemp.intValue()-1;  //Position des Zeichens vor dem ":" 
+            			String stemp = sString.substring(itemp, itemp + 1);
+            			
+            			//Falls dies das Zeichen ist, gefunden
+            			if (stemp.equals(sDelim)){
+            				bReturn = true;
+            				break main;
+            			}            			
+            		}
+            	}
+           }
+		
+		}//end main:
+		return bReturn;
+	}
 
 	/** Checks if the CharSequence contains only Unicode letters.
 
@@ -4408,6 +4444,18 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	* 
 	* lindhauer; 30.06.2007 11:43:38
 	 */
+	public static Integer[] indexOfAll(String sSource, String sString2Find){
+		String[]saString2Find=new String[1];
+		saString2Find[0]=sString2Find;
+		return StringZZZ.indexOfAll(sSource, saString2Find, true);		
+	}
+	
+	public static Integer[] indexOfAll(String sSource, String sString2Find, boolean bCaseSensitive){
+		String[]saString2Find=new String[1];
+		saString2Find[0]=sString2Find;
+		return StringZZZ.indexOfAll(sSource, saString2Find, bCaseSensitive);		
+	}
+	
 	public static Integer[] indexOfAll(String sSource, String[] saString2Find){
 		return StringZZZ.indexOfAll(sSource, saString2Find, true);		
 	}

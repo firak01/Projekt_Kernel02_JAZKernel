@@ -9,6 +9,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.start.GetOpt;
@@ -98,17 +99,20 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 31.03.2021, 09:09:29
 	 */
-	public static ArrayList Pattern2ListControlAll(String sPattern){
-		return Pattern2ListControl_(sPattern);
+	public static ArrayList<String> getPatternList4ControlAll(String sPattern){
+		ArrayList<String> listaControlWithValue = getPatternList4ControlWithValue(sPattern);
+		ArrayList<String> listaControlSimple = getPatternList4ControlSimple(sPattern);
+		
+		return (ArrayList<String>) ArrayListUtilZZZ.join(listaControlWithValue, listaControlSimple);
 	}
 	
-	public static ArrayList Pattern2ListControlValue(String sPattern){
-		return Pattern2ListControl_(sPattern);
+	public static ArrayList<String> getPatternList4ControlWithValue(String sPattern){
+		return getPatternList4ControlWithValue_(sPattern);
 	}
 	
 	
-	private static ArrayList Pattern2ListControl_(String sPattern){
-		ArrayList listaReturn = new ArrayList();
+	private static ArrayList<String> getPatternList4ControlWithValue_(String sPattern){
+		ArrayList<String> listaReturn = new ArrayList<String>();
 		main:{
 			if(StringZZZ.isEmpty(sPattern)) break main;
 			
@@ -118,28 +122,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			String[] saDelim = {":"};
 			Integer[] intaIndex = StringZZZ.indexOfAll(sPattern, saDelim);
 			
-			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
-			//          Das ist gescheitert, da zuviel zu ändern ist.
-			//Nun muessen die Zeichen jeweils Zeichen vor dem Indexwert geholt werden, bis zum vorherigen Indexwert 
-			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN
-//			 int iIndexLeft = 0;
-//			  if(intaIndex!=null){            	
-//	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
-//	            		Integer inttemp = intaIndex[icount];
-//	            		if(inttemp.intValue()>=0){
-//	            			int itemp = inttemp.intValue(); 
-//	            			String stemp = sPattern.substring(iIndexLeft, itemp); 
-//	            			if(!StringZZZ.isEmpty(stemp)){
-//	            				listaReturn.add(stemp);
-//	            			}
-//	            			iIndexLeft = itemp+1;//+1 wg des Doppelpunkts als Platzhalter
-//	            		}
-//	            	}
-//	           }
-			
-//Alter Code, eine Version, in der nur 1 Zeichen lange Steuerzeichen gedacht waren.
-			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 
-			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN	
+						
 			  if(intaIndex!=null){            	
 	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
 	            		Integer inttemp = intaIndex[icount];
@@ -158,9 +141,76 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	            			if(ilength>=0) {
 	            				itemp = inttemp.intValue();
 	            				String sControl = sPattern.substring(itemp-ilength, itemp);
-	            				if(!StringZZZ.isEmpty(sControl)){
-	            					listaReturn.add(sControl);
-	            				}
+	            				//if(!StringZZZ.isEmpty(sControl)){
+	            					
+	            					//so, ggfs. haben sich Steuerungszeichen ohne Argument eingeschlichen.
+	            					//diese entfernen aus dem String
+	            					sControl = StringZZZ.right("|" + sControl, "|");
+	            					if(!StringZZZ.isEmpty(sControl)){
+	            						listaReturn.add(sControl);
+	            					}
+	            				//}
+	            			}
+	            		}
+	            	}
+	           }
+		}
+		return listaReturn;
+	}
+	
+	public static ArrayList<String> getPatternList4ControlSimple(String sPattern){
+		return getPatternList4ControlSimple_(sPattern);
+	}
+	
+	private static ArrayList<String> getPatternList4ControlSimple_(String sPattern){
+		ArrayList<String> listaReturn = new ArrayList<String>();
+		main:{
+			if(StringZZZ.isEmpty(sPattern)) break main;
+			
+			//Merke: Ein einzelner Wert ist immer ein Argument "ohne Wert".
+			//       Darum einfach ein PIPE "|" hintenanhaengen.
+			sPattern = sPattern + "|";
+			
+//			1b Pattern String auf PIPE "|" untersuchen. 
+			//Merke: Irgendwelche Indexbetrachtungen koennen nicht funktionieren. Die Reihenfolge der Argumente ist naemlich beliebig. 
+			//Es muss vielmehr das Steuerungszeichen davor ermittelt werden. Damit kann dann das Argumentenarray untersucht werden: Folgt dem Steuerungszeichen immer ein anderer Wert
+			String[] saDelim = {"|"};
+			Integer[] intaIndex = StringZZZ.indexOfAll(sPattern, saDelim);
+			
+		
+			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 
+			//dann hat man die STEUERZEICHEN, die kein ARGUMENT ERWARTEN	
+			  if(intaIndex!=null){            	
+	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
+	            		Integer inttemp = intaIndex[icount];
+	            		if(inttemp.intValue()>=0){
+	            			int itemp = inttemp.intValue();   
+	            			
+	            			//die Zeichen vor dem "|" ermitteln
+	            			String stemp = null;
+	            			int ilength = 0;
+	            			do {	            				
+	            				stemp = sPattern.substring(itemp-1, itemp); //Position des Zeichens vor dem ":", dann davor, etc.	            					            					            			
+	            				if(!stemp.equals("|") && itemp>0) ilength++;
+	            				itemp = itemp-1; //ein Zeichen weiterschieben nach links
+	            			}while(stemp!=null && !stemp.equals("|") && itemp>0);
+	            			
+	            			if(ilength>=0) {
+	            				itemp = inttemp.intValue();
+	            				String sControl = sPattern.substring(itemp-ilength, itemp);
+	            				//if(!StringZZZ.isEmpty(sControl)){
+	            					
+	            					//so, ggfs. haben sich Steuerungszeichen "mit Argument" eingeschlichen.
+	            					//diese entfernen aus dem String
+	            					sControl = StringZZZ.right(":" + sControl, ":");
+	            					if(!StringZZZ.isEmpty(sControl)){
+		            					//es duerfen aber nur Strings ohne Sonderzeichen sein
+		            					boolean bAlphanumeric = StringZZZ.isAlphanumeric(sControl);
+		            					if(bAlphanumeric){
+		            						listaReturn.add(sControl);
+		            					}
+	            					}
+	            				//}
 	            			}
 	            		}
 	            	}
@@ -333,15 +383,17 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			//#### Die Pruefung des Argumentarrays
 			if(saParamAll==null|saParamAll.length==0) break main;
 					
-//			Die Liste der vorherigen Steuerzeichen
-			ArrayList listaControlValue = GetOptZZZ.Pattern2ListControlValue(sPattern);			
-            ArrayList listaControl = GetOptZZZ.Pattern2ListControlAll(sPattern);     
+//			Die Liste der Steuerzeichen
+			ArrayList<String> listaControlValue = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			ArrayList<String> listaControlSimple = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+            ArrayList<String> listaControl = GetOptZZZ.getPatternList4ControlAll(sPattern);     
+            
           
 			
 			//Nun die Argumentliste pr�fen:
             //Es muss immer ein Steuerzeichen sein,
             //nur wenn es ein Steuerzeichen mit Parameter ist, dann darf der folgende Wert beliebig sein
-            ArrayList listaControlFound = new ArrayList();
+            ArrayList<String> listaControlFound = new ArrayList<String>();
             String sControlPrevious = new String("");
             boolean bNeedArgument = false;
 			for(int icount=0; icount <= saParamAll.length-1;icount++){
@@ -534,30 +586,56 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		String sReturn = new String("");
 		main:{			
 			try {
-			//#### Parameter fuer die Funktion pruefen
-//			Null oder Leerstring sind valid
-			if(StringZZZ.isEmpty(sPattern))	break main;
+				String sCharacter = null;
+				String[] saPattern = null; String[] saPatternUnique = null; 
+				int iLength = -1; int iLengthUnique = -1;
+				char cDelim = 0; String sDelim = null; String[] saDelim = null; Integer[] intaIndex = null;
+				boolean bCharacterDoubled = false;
+				
+				
+				//#### Parameter fuer die Funktion pruefen
+				//Null oder Leerstring sind valid
+				if(StringZZZ.isEmpty(sPattern))	break main;
 			
 			
-//			+++ 1. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.
-			String sCharacter = sPattern.substring(0,1);
-			if(sCharacter.equals(":")){
-				sReturn = "Error 3: The character ':' is an argument placeholder. It is not allowed at the beginning. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
-				break main;
-			}
+				//+++ 1a. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.
+				sCharacter = sPattern.substring(0,1);
+				if(sCharacter.equals(":")){
+					sReturn = "Error 3: The character ':' is an argument placeholder. It is not allowed at the beginning. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
+					break main;
+				}
 			
-			//+++ 2. In dem Pattern String darf kein Wert doppelt vorkommen, mit Ausnahme des Doppelpunkts
-			String[] saPattern = StringZZZ.explode(sPattern, ":");
-			int iLength = saPattern.length;
+				//+++ 1a. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.
+				sCharacter = sPattern.substring(0,1);
+				if(sCharacter.equals("|")){
+					sReturn = "Error 4: The character '|' is an argument separator. It is not allowed at the beginning. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
+					break main;
+				}
+			
+				//+++ 2a. In dem Pattern String darf kein Wert doppelt vorkommen, mit Ausnahme des Doppelpunkts
+				saPattern = StringZZZ.explode(sPattern, ":");
+				iLength = saPattern.length;
 
-			String[] saPatternUnique = StringArrayZZZ.unique(saPattern);
-			int iLengthUnique = saPatternUnique.length;
+				saPatternUnique = StringArrayZZZ.unique(saPattern);
+				iLengthUnique = saPatternUnique.length;
 			
-			if(iLength!=iLengthUnique) {
-				sReturn = "Error 1: There are duplicate Entries (seperated by ':') in the pattern string . Pattern '" + sPattern +"'";
-				break main;
-			}
+				if(iLength!=iLengthUnique) {
+					sReturn = "Error 1: There are duplicate Entries (seperated by ':') in the pattern string . Pattern '" + sPattern +"'";
+					break main;
+				}
 			
+				//+++ 2a. In dem Pattern String darf kein Wert doppelt vorkommen, mit Ausnahme des Doppelpunkts
+				saPattern = StringZZZ.explode(sPattern, "|");
+				iLength = saPattern.length;
+
+				saPatternUnique = StringArrayZZZ.unique(saPattern);
+				iLengthUnique = saPatternUnique.length;
+			
+				if(iLength!=iLengthUnique) {
+					sReturn = "Error 1: There are duplicate Entries (seperated by '|') in the pattern string . Pattern '" + sPattern +"'";
+					break main;
+				}
+				
 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
 			//Das stammt aus der Version, in der die Steuereungszeichen nur 1 Zeichen lang sein durften			
@@ -574,30 +652,20 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 //				}
 //			}
 			
-			//+++ 3. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
-			String[] saDelim = {":"};
-			Integer[] intaIndex = StringZZZ.indexOfAll(sPattern, saDelim);
+			//+++ 3a. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
+			cDelim=':';
+			bCharacterDoubled = StringZZZ.isCharacterDoubled(sPattern, cDelim);
+			if(bCharacterDoubled) {
+				sReturn = "Error 2: The character " + cDelim + " is an argument placeholder or separator. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
+				break main;
+			}
 			
-			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 
-			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN	
-			  if(intaIndex!=null){            	
-	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
-	            		Integer inttemp = intaIndex[icount];
-	            		if(inttemp.intValue()>=0){
-	            			int itemp = inttemp.intValue()-1;  //Position des Zeichens vor dem ":" 
-	            			String stemp = sPattern.substring(itemp, itemp + 1);
-	            			
-	            			//Falls das ein Doppelpunkt ist : FEHLER
-	            			if (stemp.equals(":")){
-	            				sReturn = "Error 2: The character ':' is an argument placeholder. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
-	            				break main;
-	            			}
-	            			
-	            		}
-	            	}
-	           }
-			  
-			
+			cDelim='|';
+			bCharacterDoubled = StringZZZ.isCharacterDoubled(sPattern, cDelim);
+			if(bCharacterDoubled) {
+				sReturn = "Error 2: The character " + cDelim + " is an argument placeholder or separator. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
+				break main;
+			}
 		
 			}catch(ExceptionZZZ ez) {
 				sReturn = "Error ExceptionZZZ: '" + ez.getMessageLast() + "'";
