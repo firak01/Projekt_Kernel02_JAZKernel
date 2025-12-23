@@ -124,7 +124,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	@Override
 	public synchronized void logProtocol(Object obj, String sLog) throws ExceptionZZZ {
 		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
-		System.out.println(sLogUsed);
+		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
 		ILogZZZ objLog = LogSingletonZZZ.getInstance();
 		objLog.WriteLine(sLogUsed);
@@ -133,7 +133,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	@Override
 	public synchronized void logProtocol(Object obj, String... sLogs) throws ExceptionZZZ{
 		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
-		System.out.println(sLogUsed);
+		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
 		ILogZZZ objLog = LogSingletonZZZ.getInstance();
 		objLog.WriteLine(sLogUsed);

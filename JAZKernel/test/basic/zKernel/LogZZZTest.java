@@ -119,7 +119,7 @@ public class LogZZZTest extends TestCase{
 			saArg[0]="-ld";
 			saArg[1]="c:\\temp";
 			saArg[2]="-lf";
-			saArg[3]="testLog_Constructor01";
+			saArg[3]="testLog_Constructor01.txt";
 			IKernelConfigZZZ objConfig = new ConfigZZZ(saArg);
 			LogZZZ objLog01 = new LogZZZ(objConfig);
 			bValue=objLog01.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT);
