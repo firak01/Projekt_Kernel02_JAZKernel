@@ -558,10 +558,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		boolean bReturn = false;
 		FileTextWriterZZZ objFileWriter;
 		try {
-			objFileWriter = this.getFileTextWriterObject();
-			bReturn = objFileWriter.writeLine(stemp);
-			
 			System.out.println(stemp);
+			
+			objFileWriter = this.getFileTextWriterObject();
+			bReturn = objFileWriter.writeLine(stemp);						
 		} catch (ExceptionZZZ e) {		
 			e.printStackTrace();
 		}	

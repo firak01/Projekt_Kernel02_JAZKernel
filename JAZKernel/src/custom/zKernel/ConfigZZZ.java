@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.AbstractKernelConfigZZZ;
 
 
-/**Klasse enth�lt die Werte, die im Kernel als default angesehen werden.
+/**Klasse enthaelt die Werte, die im Kernel als default angesehen werden.
 	 *- ApplicationKey: FGL
 	 * - SystemNumber: 01
 	 * - Verzeichnis: c:\\fglKernel\\KernelConfig
@@ -14,15 +14,7 @@ import basic.zKernel.AbstractKernelConfigZZZ;
  * @author lindhauer
  *
  */
-public class ConfigZZZ extends AbstractKernelConfigZZZ{
-	private static String sPROJECT_NAME = "JAZKernel";
-	private static String sPROJECT_PATH = "Project_Kernel02_JAZKernel";
-	
-	//private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";//Wenn der String absolut angegeben ist, so muss er auch vorhanden sein.
-	private static String sDIRECTORY_CONFIG_DEFAULT = "<z:Null/>";//Merke: Ein Leerstring ist der Root vom Classpath, z.B. in Eclipse der src-Ordner. Ein "." oder ein NULL-Wert ist der Projektordner in Eclipse
-	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
-	private static String sKEY_APPLICATION_DEFAULT = "FGL";
-	private static String sNUMBER_SYSTEM_DEFAULT= "01";
+public class ConfigZZZ extends AbstractKernelConfigZZZ implements IConfigZZZ{
 	
 	public ConfigZZZ() throws ExceptionZZZ{
 		super();
@@ -33,7 +25,7 @@ public class ConfigZZZ extends AbstractKernelConfigZZZ{
 			
 	@Override
 	public String getApplicationKeyDefault() {
-		return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
+		return IConfigZZZ.sKEY_APPLICATION_DEFAULT;
 	}
 	@Override
 	public String getConfigDirectoryNameDefault() {
@@ -41,7 +33,7 @@ public class ConfigZZZ extends AbstractKernelConfigZZZ{
 	}
 	@Override
 	public String getConfigFileNameDefault() {		
-		return ConfigZZZ.sFILE_CONFIG_DEFAULT;
+		return ConfigZZZ.sFILENAME_CONFIG_DEFAULT;
 	}
 	@Override
 	public String getPatternStringDefault() {
@@ -49,7 +41,7 @@ public class ConfigZZZ extends AbstractKernelConfigZZZ{
 	}
 	@Override
 	public String getSystemNumberDefault() {
-		return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;
+		return IConfigZZZ.sNUMBER_SYSTEM_DEFAULT;
 }
 	@Override
 	public String getProjectName() {
