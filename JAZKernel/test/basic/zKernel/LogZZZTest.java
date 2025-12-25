@@ -117,7 +117,7 @@ public class LogZZZTest extends TestCase{
 					
 			saArg=new String[4];
 			saArg[0]="-ld";
-			saArg[1]="c:\\temp";
+			saArg[1]="c:\\fglkernel\\kernellog";
 			saArg[2]="-lf";
 			saArg[3]="testLog_Constructor01.txt";
 			IKernelConfigZZZ objConfig = new ConfigZZZ(saArg);

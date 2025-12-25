@@ -16,7 +16,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
-	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE;
+	//protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
 
 	
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
@@ -58,13 +58,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	//+++ Wie von der Eltern-/Abstrakten Klasse
 	//+++ Hier: Entferne aus dem Rückgabestring die XML Tags, die in ReflectCodeZZZ.getPositionCurrent() erzeugt worden sind.
 	@Override
-	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(ienumFormatLogString);	
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -78,13 +78,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(obj, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -98,13 +98,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public String compute(String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -118,7 +118,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public String compute(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
+	public synchronized String compute(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
 		String sReturn = super.compute(ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -132,13 +132,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(obj, ienumFormatLogString, sLogs);	
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -152,13 +152,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(obj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -172,14 +172,14 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(classObj, ienumFormatLogString, sLogs);
 		return sReturn;
 		
 	}
 	
 	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(classObj, ienumFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -193,13 +193,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(classObj, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -213,7 +213,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(classObj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -227,7 +227,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.compute(hm);
 		
 		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
@@ -240,7 +240,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		return this.computeJustified(obj, hm);
 //		String sReturn = super.compute(obj, hm);
 //		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
@@ -255,7 +255,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.compute(classObj, hm);	
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -269,13 +269,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(obj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -289,13 +289,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(classObj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(classObj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -313,13 +313,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -333,13 +333,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = super.compute(objFormater, obj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -353,13 +353,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -379,13 +379,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 //	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, obj, ienumFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -399,13 +399,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, obj, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -419,13 +419,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -441,13 +441,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, classObj, ienumaFormatLogString, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
 		
@@ -461,13 +461,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString);	
 		return sReturn;
 	}
 		
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, classObj, ienumFormatLogString);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -481,13 +481,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, hm);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -501,13 +501,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, hm);
 		return sReturn;
 	}
 
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -521,13 +521,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, hm);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.compute(objFormater, classObj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -541,13 +541,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(objFormater, obj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -562,13 +562,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	
 	@Override
-	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, sLogs);	
 		return sReturn;
 	}
 	
 	@Override
-	public String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.compute(objFormater, classObj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -582,7 +582,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	@Override
-	public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.compute(hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -596,7 +596,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.compute(obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		

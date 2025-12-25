@@ -128,6 +128,8 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 			}else {
 				sDirectoryName = this.getDirectory();
 			}
+		}else {
+			sDirectoryName = sDirectoryPathIn;
 		}
 		this.setDirectory(sDirectoryName);
 		

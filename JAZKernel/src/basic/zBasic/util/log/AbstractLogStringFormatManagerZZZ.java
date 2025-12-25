@@ -15,6 +15,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
 	//protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE; //muss als Singleton static sein
+	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
 	
 	// --- Globale Objekte ---
 	//Zum Buendig machen

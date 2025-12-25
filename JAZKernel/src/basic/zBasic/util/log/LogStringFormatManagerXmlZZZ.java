@@ -9,7 +9,7 @@ public class LogStringFormatManagerXmlZZZ extends AbstractLogStringFormatManager
 
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
-	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE;
+	//protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
 
 	
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
