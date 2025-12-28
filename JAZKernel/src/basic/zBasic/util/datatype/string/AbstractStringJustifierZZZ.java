@@ -84,12 +84,12 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
     //+++++++++++++++++++++++++++++++++
 	
 	@Override
-	public int getInfoPartBoundLeftBehindCurrent() {
+	public synchronized int getInfoPartBoundLeftBehindCurrent() {
 		return this.iInfoPartBoundLeft;
 	}
 	
 	@Override
-	public void setInfoPartBoundLeftBehindCurrent(int iIndex) {
+	public synchronized void setInfoPartBoundLeftBehindCurrent(int iIndex) {
 		this.iInfoPartBoundLeft = iIndex;
 	}
 	

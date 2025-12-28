@@ -16,9 +16,6 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	//fuer IOutputDebugNormedZZZ
 	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	
-	//fuer IOutputDebugNormedWithKeyZZZ
-	//protected volatile String sDebugKeyDelimiterUsed = null; 
-	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	public AbstractObjectZZZ() {		
@@ -123,19 +120,25 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	
 	@Override
 	public synchronized void logProtocol(Object obj, String sLog) throws ExceptionZZZ {
+		//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+				
+		//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
 		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLog);						
 		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
-		ILogZZZ objLog = LogSingletonZZZ.getInstance();
 		objLog.WriteLine(sLogUsed);
 	}
 	
 	@Override
 	public synchronized void logProtocol(Object obj, String... sLogs) throws ExceptionZZZ{
+		//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+		
+		//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
 		String sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
 		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
-		ILogZZZ objLog = LogSingletonZZZ.getInstance();
 		objLog.WriteLine(sLogUsed);
 	}
 	
@@ -201,14 +204,18 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	@Override
 	public synchronized void logProtocol(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
 		String sLogUsed;
+		
+		//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+		ILogZZZ objLog = LogSingletonZZZ.getInstance();
+						
+		//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
 		if(obj==null) {
 			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(sLog, ienumMappedLogString);
 		}else {
 			sLogUsed = LogStringFormatManagerZZZ.getInstance().compute(obj, ienumMappedLogString, sLog);
 		}
-		System.out.println(sLogUsed);
+		//wird schon in .WriteLine(...) gemacht;//System.out.println(sLogUsed);
 		
-		ILogZZZ objLog = LogSingletonZZZ.getInstance();
 		objLog.WriteLine(sLogUsed);
 	}
 	

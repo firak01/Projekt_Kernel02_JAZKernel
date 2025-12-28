@@ -27,6 +27,23 @@ public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java
 		//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
 		protected static KernelPropertyZZZ objPropertyINSTANCE;   
 		
+		//##########################################################
+		//Trick, um Mehrfachinstanzen zu verhindern (optional)
+		//Warum das funktioniert:
+		//initialized ist static → nur einmal pro ClassLoader
+		//Wird beim ersten Konstruktoraufruf gesetzt
+		//Jeder weitere Versuch (Reflection!) schlägt fehl
+	    private static boolean INITIALIZED = false;
+	    
+	    //Reflection-Schutz ist eine Hürde, kein Sicherheitsmechanismus.
+	    //Denn:
+	    //Field f = AbstractService.class.getDeclaredField("initialized");
+	    //f.setAccessible(true);
+	    //f.set(null, false);
+	    //Danach kann man wieder instanziieren.
+		//##########################################################
+		
+		
 		//--- weiter Objekte ---
 		private static HashMap hmProperty = new HashMap();
 		
@@ -67,19 +84,31 @@ public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java
 	 * @return
 	 * @throws IOException
 	 */
-	public static synchronized KernelPropertyZZZ getInstance(String sConfigFile) throws IOException{
+	public static KernelPropertyZZZ getInstance(String sConfigFile) throws ExceptionZZZ, IOException{
 		KernelPropertyZZZ objReturn = null;
 		main:{
-			objReturn = objPropertyINSTANCE;
-			if(objReturn==null){
-				objReturn = new KernelPropertyZZZ(sConfigFile);
-				objPropertyINSTANCE = objReturn;
-			}
-			
-			if (hmProperty==null) hmProperty = new HashMap();
-			Properties p = load(sConfigFile);						
+			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
+			//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
+			synchronized(KernelPropertyZZZ.class) {
+				if(objPropertyINSTANCE == null) {
+					if (INITIALIZED) {
+			            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
+			        }
+					objPropertyINSTANCE = getNewInstance(sConfigFile);
+					INITIALIZED=true;
+				}
+				
+				if (hmProperty==null) hmProperty = new HashMap();
+				Properties p = load(sConfigFile);
+			}					
 		}
 		return objReturn;
+	}
+	
+	public static KernelPropertyZZZ getNewInstance(String sConfigFile) throws IOException{
+		//Damit wird garantiert einen neue, frische Instanz geholt.
+		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
+		return new KernelPropertyZZZ(sConfigFile);
 	}
 	
 	public static Properties load(String sConfigFile) throws IOException{

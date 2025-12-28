@@ -28,20 +28,40 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
 	protected static IStringJustifierZZZ objStringJustifierINSTANCE;
 	
-	
+	//##########################################################
+	//Trick, um Mehrfachinstanzen zu verhindern (optional)
+	//Warum das funktioniert:
+	//initialized ist static → nur einmal pro ClassLoader
+	//Wird beim ersten Konstruktoraufruf gesetzt
+	//Jeder weitere Versuch (Reflection!) schlägt fehl
+    private static boolean INITIALIZED = false;
+    
+    //Reflection-Schutz ist eine Hürde, kein Sicherheitsmechanismus.
+    //Denn:
+    //Field f = AbstractService.class.getDeclaredField("initialized");
+    //f.setAccessible(true);
+    //f.set(null, false);
+    //Danach kann man wieder instanziieren.
+	//##########################################################
+    
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
 	protected StringJustifierZZZ() throws ExceptionZZZ{
 		super();
 	}
 
-	public static synchronized IStringJustifierZZZ getInstance() throws ExceptionZZZ{
+	public static IStringJustifierZZZ getInstance() throws ExceptionZZZ{
 		if(objStringJustifierINSTANCE==null){
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
 			//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
 			synchronized(StringJustifierZZZ.class) {
 				if(objStringJustifierINSTANCE == null) {
+					 // optional: Schutz vor Reflection
+			        if (INITIALIZED) {
+			            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
+			        }
 					objStringJustifierINSTANCE = getNewInstance();
+					INITIALIZED=true;
 				}
 			}
 			
@@ -49,7 +69,7 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 		return (IStringJustifierZZZ) objStringJustifierINSTANCE;
 	}
 	
-	public static synchronized IStringJustifierZZZ getNewInstance() throws ExceptionZZZ{
+	public static IStringJustifierZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
 		objStringJustifierINSTANCE = new StringJustifierZZZ();
@@ -65,5 +85,7 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	
 	
 	//### STATIC METHODEN
+	
+	
 	
 }

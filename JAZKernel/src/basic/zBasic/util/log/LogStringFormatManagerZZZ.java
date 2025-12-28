@@ -16,30 +16,45 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
-	//protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
+	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
 
-	
+	//##########################################################
+	//Trick, um Mehrfachinstanzen zu verhindern (optional)
+	//Warum das funktioniert:
+	//initialized ist static → nur einmal pro ClassLoader
+	//Wird beim ersten Konstruktoraufruf gesetzt
+	//Jeder weitere Versuch (Reflection!) schlägt fehl
+    private static boolean INITIALIZED = false;
+    
+    //Reflection-Schutz ist eine Hürde, kein Sicherheitsmechanismus.
+    //Denn:
+    //Field f = AbstractService.class.getDeclaredField("initialized");
+    //f.setAccessible(true);
+    //f.set(null, false);
+    //Danach kann man wieder instanziieren.
+	//##########################################################
+	    
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
 	private LogStringFormatManagerZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
-	public static synchronized ILogStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
-		if(objLogStringManagerINSTANCE==null){
-			
-			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
-			//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
-			synchronized(LogStringFormatManagerZZZ.class) {
-				if(objLogStringManagerINSTANCE == null) {
-					objLogStringManagerINSTANCE = getNewInstance();
-				}
+	public static ILogStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
+		//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
+		//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
+		synchronized(LogStringFormatManagerZZZ.class) {
+			if(objLogStringManagerINSTANCE == null) {
+				if (INITIALIZED) {
+		            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
+		        }
+				objLogStringManagerINSTANCE = getNewInstance();
+				INITIALIZED=true;
 			}
-			
 		}
 		return (ILogStringFormatManagerJustifiedZZZ) objLogStringManagerINSTANCE;
 	}
 	
-	public static synchronized LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
+	public static LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
 		objLogStringManagerINSTANCE = new LogStringFormatManagerZZZ();
@@ -50,7 +65,11 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		objLogStringManagerINSTANCE = null;
 	}
 	
-	
+	 // Trick, um Mehrfachinstanzen zu verhindern (optional)
+    private static class HolderAlreadyInitializedHolder {
+        private static final boolean INITIALIZED = true;
+    }
+    
 	//################################################
 	//### Methoden
 	

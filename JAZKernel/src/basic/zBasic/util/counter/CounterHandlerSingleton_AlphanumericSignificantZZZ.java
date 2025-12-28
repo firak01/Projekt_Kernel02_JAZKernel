@@ -11,6 +11,22 @@ import basic.zBasic.ReflectCodeZZZ;
 public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 	private static CounterHandlerSingleton_AlphanumericSignificantZZZ objCounterSingleton = null; //muss static sein, wg. getInstance()!!!
 	
+	//##########################################################
+	//Trick, um Mehrfachinstanzen zu verhindern (optional)
+	//Warum das funktioniert:
+	//initialized ist static → nur einmal pro ClassLoader
+	//Wird beim ersten Konstruktoraufruf gesetzt
+	//Jeder weitere Versuch (Reflection!) schlägt fehl
+    private static boolean INITIALIZED = false;
+    
+    //Reflection-Schutz ist eine Hürde, kein Sicherheitsmechanismus.
+    //Denn:
+    //Field f = AbstractService.class.getDeclaredField("initialized");
+    //f.setAccessible(true);
+    //f.set(null, false);
+    //Danach kann man wieder instanziieren.
+	//##########################################################
+
 	private HashMap<String,ICounterAlphanumericSignificantZZZ>hmCounter=new HashMap<String, ICounterAlphanumericSignificantZZZ>();
 	ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;
 	
@@ -24,9 +40,16 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 	}
 	
 	public static CounterHandlerSingleton_AlphanumericSignificantZZZ getInstance() throws ExceptionZZZ{
-		if(objCounterSingleton==null){
-			objCounterSingleton = new CounterHandlerSingleton_AlphanumericSignificantZZZ();
-			
+		//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
+		//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
+		synchronized(CounterHandlerSingleton_AlphanumericSignificantZZZ.class) {
+			if(objCounterSingleton==null){
+				if (INITIALIZED) {
+		            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
+		        }
+				objCounterSingleton = getNewInstance();
+				INITIALIZED=true;
+			}
 			//Merke: Hier ohne Kernel-Objekt arbeiten.
 			//!!! Das Singleton Kernel Objekt holen und setzen !!!
 //			KernelSingletonVIA objKernel = KernelSingletonVIA.getInstance();
@@ -35,12 +58,11 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 		return objCounterSingleton;		
 	}
 	
-//	public static CounterAlphanumericSingletonZZZ getInstance(IKernelZZZ objKernel) throws ExceptionZZZ{
-//		if(objApplicationSingleton==null){
-//			objApplicationSingleton = new ApplicationSingletonVIA(objKernel);
-//		}
-//		return objApplicationSingleton;		
-//	}
+	public static CounterHandlerSingleton_AlphanumericSignificantZZZ getNewInstance() throws ExceptionZZZ{
+		//Damit wird garantiert einen neue, frische Instanz geholt.
+		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
+		return new CounterHandlerSingleton_AlphanumericSignificantZZZ();
+	}
 	
 	public ICounterAlphanumericSignificantZZZ getCounterFor() throws ExceptionZZZ{
 		ICounterAlphanumericSignificantZZZ objCounter = null;

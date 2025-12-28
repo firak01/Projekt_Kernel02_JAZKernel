@@ -15,7 +15,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
 	//protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE; //muss als Singleton static sein
-	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
+	
 	
 	// --- Globale Objekte ---
 	//Zum Buendig machen
@@ -23,12 +23,16 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	//      Aber ggfs. ueberschreibend auf einen hinterlegten zugreifen.
 	//Merke: XML-Strings werden nicht buendig gemacht. 
 	//       Darum wird der StringJustifier nicht mehr in dieser Elternklasse im Konstruktor an den "Formater" uebergeben.
-	protected volatile IStringJustifierZZZ objStringJustifier = null;
+	private volatile IStringJustifierZZZ objStringJustifier = null;
+	
+	private static final boolean INITIALIZED = true;// Trick, um Mehrfachinstanzen zu verhindern (optional)
 		
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
 	protected AbstractLogStringFormatManagerZZZ() throws ExceptionZZZ{
 		super();
 	}
+
+	
 	
 	//##########################################################	
 	//### GETTER / SETTER

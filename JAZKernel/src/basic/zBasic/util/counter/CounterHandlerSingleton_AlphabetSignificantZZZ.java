@@ -7,9 +7,27 @@ import basic.zBasic.ReflectCodeKernelZZZ;
 //import basic.zBasic.KernelSingletonVIA;
 //import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 
 public class CounterHandlerSingleton_AlphabetSignificantZZZ {
 	private static CounterHandlerSingleton_AlphabetSignificantZZZ objCounterSingleton = null; //muss static sein, wg. getInstance()!!!
+	
+	//##########################################################
+	//Trick, um Mehrfachinstanzen zu verhindern (optional)
+	//Warum das funktioniert:
+	//initialized ist static → nur einmal pro ClassLoader
+	//Wird beim ersten Konstruktoraufruf gesetzt
+	//Jeder weitere Versuch (Reflection!) schlägt fehl
+    private static boolean INITIALIZED = false;
+    
+    //Reflection-Schutz ist eine Hürde, kein Sicherheitsmechanismus.
+    //Denn:
+    //Field f = AbstractService.class.getDeclaredField("initialized");
+    //f.setAccessible(true);
+    //f.set(null, false);
+    //Danach kann man wieder instanziieren.
+	//##########################################################
+	    
 	
 	private HashMap<String,ICounterAlphabetSignificantZZZ>hmCounter=new HashMap<String, ICounterAlphabetSignificantZZZ>();
 	ICounterStrategyAlphabetSignificantZZZ objCounterStrategy;
@@ -24,23 +42,32 @@ public class CounterHandlerSingleton_AlphabetSignificantZZZ {
 	}
 	
 	public static CounterHandlerSingleton_AlphabetSignificantZZZ getInstance() throws ExceptionZZZ{
-		if(objCounterSingleton==null){
-			objCounterSingleton = new CounterHandlerSingleton_AlphabetSignificantZZZ();
-			
+		
+		synchronized(CounterHandlerSingleton_AlphabetSignificantZZZ.class) {
+			if(objCounterSingleton == null) {
+				 // optional: Schutz vor Reflection
+		        if (INITIALIZED) {
+		            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
+		        }
+		        objCounterSingleton = getNewInstance();
+				INITIALIZED=true;
+			}
+		}
+	
 			//Merke: Hier ohne Kernel-Objekt arbeiten.
 			//!!! Das Singleton Kernel Objekt holen und setzen !!!
 //			KernelSingletonVIA objKernel = KernelSingletonVIA.getInstance();
 //			objApplicationSingleton.setKernelObject(objKernel);			
-		}
 		return objCounterSingleton;		
 	}
 	
-//	public static CounterAlphanumericSingletonZZZ getInstance(IKernelZZZ objKernel) throws ExceptionZZZ{
-//		if(objApplicationSingleton==null){
-//			objApplicationSingleton = new ApplicationSingletonVIA(objKernel);
-//		}
-//		return objApplicationSingleton;		
-//	}
+	public static CounterHandlerSingleton_AlphabetSignificantZZZ getNewInstance() throws ExceptionZZZ{
+		//Damit wird garantiert einen neue, frische Instanz geholt.
+		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
+		objCounterSingleton = new CounterHandlerSingleton_AlphabetSignificantZZZ();
+		return objCounterSingleton;
+	}
+	
 	
 	public ICounterAlphabetSignificantZZZ getCounterFor() throws ExceptionZZZ{
 		ICounterAlphabetSignificantZZZ objCounter = null;
