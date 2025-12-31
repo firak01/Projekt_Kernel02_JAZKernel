@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
@@ -154,6 +154,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public static IEnumSetMappedLogStringFormatZZZ[] getFormatForComputeLine() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat = {
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -165,6 +166,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public static IEnumSetMappedLogStringFormatZZZ[] getFormatForComputeLine_withObject() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat = {
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
@@ -178,6 +180,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
@@ -190,6 +193,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
@@ -210,6 +214,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
@@ -228,6 +233,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,
+			ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML,
 			ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML,
 			//Merke: Die Methode aus ReflectCodeZZZ.getPositionCurrent stammt (nicht anders zu bekommen), ist die Quelle XML
@@ -593,7 +599,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, sLogs);
 		
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
-		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
 		sLine = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sLine);
 					
 		bReturn = WriteLine(sLine);
@@ -623,7 +629,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		sLog = sLog + sPosition;
 				
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
-		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
 		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
 			
 		bReturn = WriteLine(sLine);
@@ -655,7 +661,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		sLog = sLog + sPosition;
 		
 		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
-		IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
+		IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
 		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
 		
 		bReturn = WriteLine(sLine);

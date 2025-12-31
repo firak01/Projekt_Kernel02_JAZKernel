@@ -20,8 +20,8 @@ public class KernelPropertyZZZTest extends TestCase{
 			//objPropertyTest = KernelPropertyZZZ.getInstance("c:\\fglKernel\\KernelTest\\JUnitTest.property");
 			objPropertyTest = KernelPropertyZZZ.getInstance(".\\JUnitTest.property");
 			
-		//} catch (ExceptionZZZ ez) {
-		//	fail("Method throws an exception." + ez.getMessageLast());
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (IOException e){
 			fail("Method throws an IOException." + e.getMessage());
 		}

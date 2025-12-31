@@ -27,7 +27,7 @@ import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -138,7 +138,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
 		if(!this.hasStringJustifierPrivate()) {
 			//Verwende als default das Singleton
-			return StringJustifierZZZ.getInstance();
+			return MessageStringJustifierZZZ.getInstance();
 		}else {
 			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
 			return this.objStringJustifier;
@@ -375,9 +375,31 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-	                
+	            
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
 	            default:
-	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
@@ -391,6 +413,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		String sReturn = null;
 		main:{
 			Class classObj = null;		
+			ITagByTypeZZZ objTagMessageSeparator = null; String sMessageSeparatorTag = null;
+            
 			if(classObjIn==null) {
 				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
 				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -455,14 +479,35 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
-		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
 	            default:
-	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
 		}//end main:
@@ -963,7 +1008,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
-				System.out.println("AbstractLogStringZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
+				System.out.println("AbstractLogStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
 				break;					
 			}				
 						

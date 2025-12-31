@@ -2,9 +2,13 @@ package basic.zBasic.util.datatype.string;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
+import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.log.ILogStringFormaterZZZ;
+import custom.zKernel.ILogZZZ;
 
 public interface IStringJustifierZZZ {
-	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	public static String sSEPARATOR_MESSAGE_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	public static String sSEPARATOR_THREADID_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT;
 	
 	public boolean reset() throws ExceptionZZZ;
 	

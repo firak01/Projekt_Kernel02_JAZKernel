@@ -21,7 +21,7 @@ import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
  * @author Fritz Lindhauer, 22.12.2025, 09:32:31
  * 
  */
-public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
+public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
 	
 	// --- Singleton Instanz ---
@@ -45,7 +45,7 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	//##########################################################
     
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
-	protected StringJustifierZZZ() throws ExceptionZZZ{
+	protected MessageStringJustifierZZZ() throws ExceptionZZZ{
 		super();
 	}
 
@@ -54,7 +54,7 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
 			//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
-			synchronized(StringJustifierZZZ.class) {
+			synchronized(MessageStringJustifierZZZ.class) {
 				if(objStringJustifierINSTANCE == null) {
 					 // optional: Schutz vor Reflection
 			        if (INITIALIZED) {
@@ -72,7 +72,7 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	public static IStringJustifierZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
-		objStringJustifierINSTANCE = new StringJustifierZZZ();
+		objStringJustifierINSTANCE = new MessageStringJustifierZZZ();
 		return (IStringJustifierZZZ)objStringJustifierINSTANCE;
 	}
 	
@@ -82,6 +82,18 @@ public class StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	
 	//##########################################################
 	//### METHODEN ##########
+	
+	
+	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
+	@Override
+	public String getPositionSeparatorDefault() throws ExceptionZZZ {
+		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+	}
+	
+	@Override
+	public String getPositionIdentifierDefault() {
+		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
+	}
 	
 	
 	//### STATIC METHODEN

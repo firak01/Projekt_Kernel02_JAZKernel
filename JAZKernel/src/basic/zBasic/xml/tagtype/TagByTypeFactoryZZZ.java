@@ -19,6 +19,7 @@ import basic.zBasic.reflection.position.TagTypeStringType02ZZZ;
 import basic.zBasic.reflection.position.TagTypeStringType03ZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.reflection.position.TagTypeThreadIdSeparatorZZZ;
 
 public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	private static final long serialVersionUID = -8672998939542120263L;
@@ -40,6 +41,7 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		STRINGTYPE01("stringtype01",TagTypeStringType01ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType01, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		STRINGTYPE02("stringtype02",TagTypeStringType02ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType02, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		STRINGTYPE03("stringtype03",TagTypeStringType03ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType03, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),	
+		THREADIDSEPARATOR("threadidseparator",TagTypeThreadIdSeparatorZZZ.sTAGNAME,"Umgebender Tag fuer den Threadidseparator. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		;
 		
 		
@@ -218,6 +220,9 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 				break;
 			case TagTypeStringType03ZZZ.sTAGNAME:
 				objReturn = new TagTypeStringType03ZZZ();
+				break;
+			case TagTypeThreadIdSeparatorZZZ.sTAGNAME:
+				objReturn = new TagTypeThreadIdSeparatorZZZ();
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");

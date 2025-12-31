@@ -6,7 +6,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
-import basic.zBasic.util.datatype.string.StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ, ILogStringFormatManagerJaggedZZZ{
@@ -40,7 +40,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
 		if(!this.hasStringJustifierPrivate()) {
 			//Verwende als default das Singleton
-			return StringJustifierZZZ.getInstance();
+			return MessageStringJustifierZZZ.getInstance();
 		}else {
 			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
 			return this.objStringJustifier;

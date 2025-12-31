@@ -43,7 +43,7 @@ public class LogZZZTest extends TestCase{
 			String sValue = objLogTest.computeLine(sLog);
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
-			String sValueExpectedStart = "[T][Thread: 1][/T][A00/]";
+			String sValueExpectedStart = "[A00/]"+ ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT + "[T][Thread: 1][/T][A00/]";
 			String sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog + "[/A01]";
 			boolean bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
@@ -59,7 +59,7 @@ public class LogZZZTest extends TestCase{
 	
 	public void testGetPathDetailAll(){		
 		try {
-			assertEquals("c:\\fglKernel\\KernelLog", objLogTest.getDirectory());
+			assertEquals("c:\\fglKernel\\kernellog", objLogTest.getDirectory());
 			assertEquals("ZKernelLog_test.txt", objLogTest.getFilename());	
 			
 		
@@ -68,7 +68,7 @@ public class LogZZZTest extends TestCase{
 			KernelZZZ objKernelContext =new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini", objContext, (String)null);
 			
 			LogZZZ objLogContext = objKernelContext.getLogObject();
-			assertEquals("c:\\fglKernel\\KernelLog", objLogContext.getDirectory());
+			assertEquals("c:\\fglKernel\\kernellog", objLogContext.getDirectory());
 			assertEquals("ZKernelLog_LogZZZtest.txt", objLogContext.getFilename());	
 			
 		} catch (ExceptionZZZ ez) {

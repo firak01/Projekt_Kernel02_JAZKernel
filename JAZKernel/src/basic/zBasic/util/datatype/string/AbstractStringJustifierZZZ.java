@@ -7,7 +7,7 @@ import basic.zBasic.util.log.ILogStringFormatManagerZZZ;
 import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
 import basic.zBasic.util.log.LogStringFormaterUtilZZZ;
 
-public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ implements IStringJustifierZZZ {
+public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ implements IStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
 	
 	// --- Singleton Instanz ---
@@ -41,14 +41,16 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 	}
 	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
+//	@Override
+//	public String getPositionSeparatorDefault() throws ExceptionZZZ {
+//		//Der einfache "Kommentartrenner" reicht nicht.
+//		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+//		
+//		//Es muss der formatierte Kommentartrenner sein.
+//		//return LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+//	}
 	@Override
-	public String getPositionSeparatorDefault() throws ExceptionZZZ {
-		//Der einfache "Kommentartrenner" reicht nicht.
-		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-		
-		//Es muss der formatierte Kommentartrenner sein.
-		//return LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-	}
+	public abstract String getPositionSeparatorDefault() throws ExceptionZZZ;
 	
 	@Override
 	public String getPositionSeparator() throws ExceptionZZZ {
@@ -65,9 +67,10 @@ public class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ i
 	
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String getPositionIdentifierDefault() {
-		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
-	}
+	public abstract String getPositionIdentifierDefault(); 
+//	public String getPositionIdentifierDefault() {
+//		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
+//	}
 	
 	@Override
 	public String getPositionIdentifier() {

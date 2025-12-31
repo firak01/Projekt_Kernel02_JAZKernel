@@ -21,6 +21,7 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static String sSEPARATOR_PREFIX_DEFAULT="";
 	public static String sSEPARATOR_POSTFIX_DEFAULT="";
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	public static String sSEPARATOR_THREADID_DEFAULT="^";
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
@@ -78,21 +79,22 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static int iFACTOR_CLASSFILEPOSITION_STRING_BY_XML=113;  //mit der Zeilenummer dahinter
 	public static int iFACTOR_POSITIONCURRENT_STRING_BY_XML=127;   //Wird aus ObjectZZZ.getPostionCalling() geholt. Z.B. <method>searchDirectory</method><fileposition> (FileEasyZZZ.java:625) </fileposition>#	
 	                                                               //... die Tags werden daraus entfernt.
-	
 	public static int iFACTOR_THREADID_STRING=131;
 	public static int iFACTOR_DATE_STRING=137;
-	public static int iFACTOR_CONTROLMESSAGESEPARATOR_STRING=139;
 	
-	public static int iFACTOR_THREADID_XML=149;
-	public static int iFACTOR_DATE_XML=151;
-	public static int iFACTOR_CONTROLMESSAGESEPARATOR_XML=157;
-	public static int iFACTOR_STRINGTYPE01_XML_BY_STRING=163;
-	public static int iFACTOR_STRINGTYPE02_XML_BY_STRING=167;     
-	public static int iFACTOR_STRINGTYPE03_XML_BY_STRING=173;
-	public static int iFACTOR_CLASSNAME_XML=179;
-	public static int iFACTOR_CLASSNAMESIMPLE_XML=181;
-	public static int iFACTOR_CLASSFILENAME_XML=191;
+	public static int iFACTOR_THREADID_XML=139;
+	public static int iFACTOR_DATE_XML=149;
+	public static int iFACTOR_STRINGTYPE01_XML_BY_STRING=151;
+	public static int iFACTOR_STRINGTYPE02_XML_BY_STRING=157;     
+	public static int iFACTOR_STRINGTYPE03_XML_BY_STRING=163;
+	public static int iFACTOR_CLASSNAME_XML=167;
+	public static int iFACTOR_CLASSNAMESIMPLE_XML=173;
+	public static int iFACTOR_CLASSFILENAME_XML=179;
 	
+	public static int iFACTOR_CONTROLMESSAGESEPARATOR_STRING=181;
+	public static int iFACTOR_CONTROLMESSAGESEPARATOR_XML=191;
+	public static int iFACTOR_CONTROLTHREADIDSEPARATOR_STRING=193;
+	public static int iFACTOR_CONTROLTHREADIDSEPARATOR_XML=197;
 	
 	
 	//Weitere Primzahlen sind:
@@ -148,9 +150,6 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 		DATE_STRING("date",ILogStringFormatZZZ.iFACTOR_DATE_STRING,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/D]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das errechnete Datum in diesem Format aus."),		
 		DATE_XML("datexml",ILogStringFormatZZZ.iFACTOR_DATE_XML,ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[DX]", "[%s]",ILogStringFormatZZZ.iARG_SYSTEM, "[/DX]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib das errechnete Datum in diesem XML-Format aus."),
 		
-		CONTROL_SEPARATORMESSAGE_STRING("separatormessage",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-		CONTROL_SEPARATORMESSAGE_XML("separatormessagexml",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-		
 		CLASSNAME_STRING("classname",ILogStringFormatZZZ.iFACTOR_CLASSNAME_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s" + sPOSITION_METHOD_SEPARATOR,ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
 		CLASSNAME_XML("classnamexml",ILogStringFormatZZZ.iFACTOR_CLASSNAME_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CX]", "%s" + sPOSITION_METHOD_SEPARATOR,ILogStringFormatZZZ.iARG_OBJECT, ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/CX]", "Gib den Klassennamen mit Package in diesem XML-Format aus."),
 		CLASSNAMESIMPLE_STRING("classnamesimple",ILogStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s"  + sPOSITION_METHOD_SEPARATOR, ILogStringFormatZZZ.iARG_OBJECT, "[/CS]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den einfachen Klassennamen in diesem Format aus."),				
@@ -161,7 +160,11 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 		STRINGTYPE01_XML_BY_STRING("stringtype01xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A01X]", "%s",ILogStringFormatZZZ.iARG_STRING,  "[/A01X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
 		STRINGTYPE02_XML_BY_STRING("stringtype02xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE02_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02X]", "%s",ILogStringFormatZZZ.iARG_STRING, "[/A02X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
 		STRINGTYPE03_XML_BY_STRING("stringtype03xml",ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_XML_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A03X]", "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + "[/A03X]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem XML-Format aus."),
-				
+
+		CONTROL_SEPARATORMESSAGE_STRING("separatormessage",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Kommentar-Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATORMESSAGE_XML("separatormessagexml",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Kommentar-Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATORTHREADID_STRING("separatorthreadid",ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Thread-Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATORTHREADID_XML("separatorthreadidxml",ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Thread-Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
 		;		
 		
 		int iFactor, iArgumentType;

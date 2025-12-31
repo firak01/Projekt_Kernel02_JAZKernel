@@ -48,7 +48,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
-			ILogStringFormatManagerZZZ objLogManager2 = LogStringFormatManagerZZZ.getInstance();
+			ILogStringFormatManagerZZZ objLogManager2 = LogStringFormatManagerZZZ.getNewInstance();
 			
 			boolean btemp2a = objLogManager2.getFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY);
 			assertFalse(btemp2a);
