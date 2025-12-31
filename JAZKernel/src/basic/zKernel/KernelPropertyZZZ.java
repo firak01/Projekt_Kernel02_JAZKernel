@@ -96,10 +96,15 @@ public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java
 			        }
 					objPropertyINSTANCE = getNewInstance(sConfigFile);
 					INITIALIZED=true;
+				}else {
+					//ggfs. die neue Datei hinzufügen
+					//also, das was schon im Konstruktor passiert wiederholen.				
+					if (hmProperty==null) hmProperty = new HashMap();
+					Properties p = load(sConfigFile);		
 				}
+				objReturn = objPropertyINSTANCE;
 				
-				if (hmProperty==null) hmProperty = new HashMap();
-				Properties p = load(sConfigFile);
+													
 			}					
 		}
 		return objReturn;
