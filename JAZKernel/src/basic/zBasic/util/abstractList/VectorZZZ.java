@@ -718,20 +718,20 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //		this.logProtocol(this, saLog);
 //	}
 	
-	@Override
-	public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		this.logProtocol(this, saLog);
-	}
-	
-	@Override
-	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		this.logProtocol(this, saLog);
-	}
-	
+//	@Override
+//	public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		this.logProtocol(this, saLog);
+//	}
+//	
+//	@Override
+//	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+//		this.logProtocol(this, saLog);
+//	}
+//	
 //	@Override
 //	public synchronized void logProtocolWithPosition(Object obj, String[] saLogIn) throws ExceptionZZZ{
 //		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
@@ -739,19 +739,19 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //		this.logProtocol(obj, saLog); 
 //	}
 	
-	@Override
-	public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		this.logProtocol(obj, saLog); 
-	}
-	
-	@Override
-	public synchronized void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ{
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		this.logProtocol(obj, saLog); 
-	}
+//	@Override
+//	public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		this.logProtocol(obj, saLog); 
+//	}
+//	
+//	@Override
+//	public synchronized void logProtocolWithPosition(Object obj, String sLog) throws ExceptionZZZ{
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+//		this.logProtocol(obj, saLog); 
+//	}
 	
 	
 
@@ -770,16 +770,16 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //		this.logProtocol(this, ienumaMappedLogString, saLog);
 //	}
 	
-	@Override
-	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		
-		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-		ienumaMappedLogString[0] = ienumMappedLogString;
-		
-		this.logProtocol(this, ienumaMappedLogString, saLog);
-	}
+//	@Override
+//	public void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		
+//		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+//		ienumaMappedLogString[0] = ienumMappedLogString;
+//		
+//		this.logProtocol(this, ienumaMappedLogString, saLog);
+//	}
 	
 	
 	
@@ -790,24 +790,24 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //		this.logProtocol(this, ienumaMappedLogString, saLog); 
 //	}
 	
-	@Override
-	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		this.logProtocol(this, ienumaMappedLogString, saLog); 
-	}
-	
-	
-	@Override
-	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		
-		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-		ienumaMappedLogString[0] = ienumMappedLogString;
-		
-		this.logProtocol(this, ienumaMappedLogString, saLog); 
-	}
+//	@Override
+//	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		this.logProtocol(this, ienumaMappedLogString, saLog); 
+//	}
+//	
+//	
+//	@Override
+//	public synchronized void logProtocolWithPosition(IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+//		
+//		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+//		ienumaMappedLogString[0] = ienumMappedLogString;
+//		
+//		this.logProtocol(this, ienumaMappedLogString, saLog); 
+//	}
 	
 //	@Override
 //	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String[] saLogIn) throws ExceptionZZZ {
@@ -820,16 +820,16 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //		this.logProtocol(this, ienumMappedLogString, saLog);
 //	}
 	
-	@Override
-	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		
-		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
-		ienumaMappedLogString[0] = ienumMappedLogString;
-		
-		this.logProtocol(this, ienumMappedLogString, saLog);
-	}
+//	@Override
+//	public void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String... sLogs) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		
+//		IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+//		ienumaMappedLogString[0] = ienumMappedLogString;
+//		
+//		this.logProtocol(this, ienumMappedLogString, saLog);
+//	}
 	
 //	@Override
 //	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String[] saLogIn) throws ExceptionZZZ {
@@ -839,19 +839,19 @@ public class VectorZZZ<T> extends Vector implements IVectorZZZ<T>{
 //	}
 	
 		
-	@Override
-	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
-		this.logProtocol(this, ienumaMappedLogString, saLog); 
-	}
-	
-	@Override
-	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
-		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		this.logProtocol(this, ienumMappedLogString, saLog); 
-	}
+//	@Override
+//	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+//		this.logProtocol(this, ienumaMappedLogString, saLog); 
+//	}
+//	
+//	@Override
+//	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+//		String sPositionCalling = ReflectCodeZZZ.getPositionCalling();
+//		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
+//		this.logProtocol(this, ienumMappedLogString, saLog); 
+//	}
 
 	
 }
