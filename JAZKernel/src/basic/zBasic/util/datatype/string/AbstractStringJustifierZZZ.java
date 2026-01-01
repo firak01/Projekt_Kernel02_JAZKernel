@@ -41,14 +41,6 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	}
 	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
-//	@Override
-//	public String getPositionSeparatorDefault() throws ExceptionZZZ {
-//		//Der einfache "Kommentartrenner" reicht nicht.
-//		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-//		
-//		//Es muss der formatierte Kommentartrenner sein.
-//		//return LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-//	}
 	@Override
 	public abstract String getPositionSeparatorDefault() throws ExceptionZZZ;
 	

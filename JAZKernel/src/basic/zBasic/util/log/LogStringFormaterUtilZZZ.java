@@ -164,10 +164,10 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
 	//#######################################################################################################################
 	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLog;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
-					
+								
 			//Teile die Zeile ggfs. am Zeilenumbruch auf
 			String[] saLine = StringZZZ.explode(sLog, StringZZZ.crlf());
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, saLine);			
@@ -179,6 +179,11 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		String sReturn = null;
 		main:{
 			if(StringArrayZZZ.isEmpty(saLine)) break main;
+			if(objStringJustifier==null) {
+				sReturn = StringArrayZZZ.implode(saLine, StringZZZ.crlf());
+				break main;
+			}
+			
 			
 			//In den übergebenen Zeilen koennten weitere Kommentartrenner stecken.
 			//Daher jede Zeile splitten und danach das neue "Standardisierte Array" weiterverarbeiten
@@ -225,10 +230,9 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, ArrayListUniqueZZZ<String> listasLine) throws ExceptionZZZ{
 		String sReturn = null;
-		main:{
+		main:{			
 			if(listasLine==null) break main;
-			if(listasLine.isEmpty()) break main;
-			
+			if(listasLine.isEmpty()) break main;			
 			String[] saLine = ArrayListUtilZZZ.toArray(listasLine, String.class);
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, saLine);
 			
@@ -240,11 +244,11 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	//Wenn nun schon eine StringPosition uebergeben wurde, dann wird die Kommentarmarkierung ggfs. unnoetigerweise weit nach rechts verschoben.
 	//Also aufteilen, trimmen und neu bauen.
 	public static String justifyInfoPartAdded(IStringJustifierZZZ objStringJustifier, String sLine, String sLog) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
+		String sReturn = sLog;
+		main:{			
 			boolean bLineEmpty = StringZZZ.isEmpty(sLine);
 			boolean bLogEmpty  = StringZZZ.isEmpty(sLog);
-			if( bLogEmpty & bLineEmpty ) break main;
+			if( bLogEmpty & bLineEmpty ) break main;			
 			if(bLogEmpty && !bLineEmpty) {
 				return justifyInfoPart(objStringJustifier, sLine);
 			}else if (!bLogEmpty && bLineEmpty) {
@@ -261,7 +265,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
 	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String sLine, String sLog) throws ExceptionZZZ {
 		String[] saReturn=null;
-		main:{
+		main:{			
 			boolean bLineEmpty = StringZZZ.isEmpty(sLine);
 			boolean bLogEmpty  = StringZZZ.isEmpty(sLog);
 			if(bLineEmpty && bLogEmpty) break main;
@@ -319,25 +323,28 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
 	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier,String... saLogIn) throws ExceptionZZZ {
 		String[] saReturn=null;
-		main:{		
+		main:{			
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
-			
-			String sSeparatorMessageDefault = objStringJustifier.getPositionSeparator();
+			if(objStringJustifier==null) {
+				saReturn = saLogIn;
+				break main;
+			}
+			String sSeparatorCommentDefault = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; //Also nicht ThreadIdSeparator, das bringt nur Probleme //;objStringJustifier.getPositionSeparator();
 			
 			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
-			String sSeparatorMessageDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+			String sSeparatorCommentDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 			//Natürlich wg. dem explode ohne den sSeparatorMessageDefault
-			String sSeparatorMessageDefaultFormatedLeft = StringZZZ.left(sSeparatorMessageDefaultFormated, sSeparatorMessageDefault);
-			String sSeparatorMessageDefaultFormatedRight = StringZZZ.right(sSeparatorMessageDefaultFormated, sSeparatorMessageDefault);
+			String sSeparatorCommentDefaultFormatedLeft = StringZZZ.left(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
+			String sSeparatorCommentDefaultFormatedRight = StringZZZ.right(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
 			
 			//Die Einträge aufteilen und trimmen.
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
 			for(String sLog : saLogIn) {
 				if(sLog!=null) {
 					
-					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorMessageDefault);
+					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
 					for(String sLogSub : saLogSub) {
-						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorMessageDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorMessageDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
+						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
 							listasLogTrimmed.add(sLogSub.trim());//trimmen
 						}
 					}
@@ -356,7 +363,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				for(String sLog : saLogTrimmed ) {					
 					if(iIndex==0) {
 						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
-						String sReturnTemp = saLogTrimmed[0] + sSeparatorMessageDefault + saLogTrimmed[1];
+						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault + saLogTrimmed[1];
 						listasReturn.add(sReturnTemp);
 						iIndex++;
 					}else if(iIndex==1) {
@@ -364,17 +371,21 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 						iIndex++;
 					}else if(iIndex>=2) {	
 						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-							String sReturnTemp = sSeparatorMessageDefault + sLog;
+							String sReturnTemp = sSeparatorCommentDefault + sLog;
 							listasReturn.add(sReturnTemp);
 							iIndex++;
 						}
 					}				
 				}
 			}else {
-				if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-					//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
-					String sReturnTemp = saLogTrimmed[0] + sSeparatorMessageDefault; 				
-					listasReturn.add(sReturnTemp);
+				//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
+				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
+						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
+						listasReturn.add(sReturnTemp);
+					}
+				}else {
+					listasReturn.add(saLogTrimmed[0]);
 				}
 			}
 						
@@ -385,6 +396,11 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
 	public static String computeLinePartInLog_ControlCommentSeparator() throws ExceptionZZZ {
 		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	
+	public static String computeLinePartInLog_ControlThreadIdSeparator() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));
 		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
 	}
 	
@@ -410,6 +426,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		    					   
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			String sMessageSeparator=null;
+			ITagByTypeZZZ objTagMessageSeparator = null; String sMessageSeparatorTag = null;
 			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
@@ -459,8 +476,34 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
-		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            	//ByControl?
+	                //  sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	           
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            	//ByControl?
+	               // sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;

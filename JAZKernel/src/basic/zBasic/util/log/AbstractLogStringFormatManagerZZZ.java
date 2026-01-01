@@ -5,8 +5,10 @@ import java.util.LinkedHashMap;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.ThreadIdStringJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ, ILogStringFormatManagerJaggedZZZ{
@@ -23,7 +25,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	//      Aber ggfs. ueberschreibend auf einen hinterlegten zugreifen.
 	//Merke: XML-Strings werden nicht buendig gemacht. 
 	//       Darum wird der StringJustifier nicht mehr in dieser Elternklasse im Konstruktor an den "Formater" uebergeben.
-	private volatile IStringJustifierZZZ objStringJustifier = null;
+	private volatile ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = null;
 	
 	private static final boolean INITIALIZED = true;// Trick, um Mehrfachinstanzen zu verhindern (optional)
 		
@@ -36,30 +38,69 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	
 	//##########################################################	
 	//### GETTER / SETTER
+	
 	@Override
-	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
-		if(!this.hasStringJustifierPrivate()) {
+	public ArrayListZZZ<IStringJustifierZZZ>getStringJustifierListDefault() throws ExceptionZZZ{
+		ArrayListZZZ<IStringJustifierZZZ> listaReturn = new ArrayListZZZ<IStringJustifierZZZ>();
+		ThreadIdStringJustifierZZZ objJustifierThreadId = (ThreadIdStringJustifierZZZ) ThreadIdStringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifierThreadId);
+		
+		MessageStringJustifierZZZ objJustifierMessage = (MessageStringJustifierZZZ) MessageStringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifierMessage);
+		
+		return listaReturn;
+	}
+	
+	@Override
+	public ArrayListZZZ<IStringJustifierZZZ>getStringJustifierList() throws ExceptionZZZ{
+		if(this.listaStringJustifier==null) {
+			this.listaStringJustifier = this.getStringJustifierListDefault();			
+		}
+		return this.listaStringJustifier;
+	}
+	
+	@Override
+	public void setStringJustifierList(ArrayListZZZ listaStringJustifier) throws ExceptionZZZ{
+		this.listaStringJustifier = listaStringJustifier;
+	}
+	
+	@Override
+	public IStringJustifierZZZ getStringJustifierDefault() throws ExceptionZZZ{
+		//Verwende als default das Singleton vom MessageStringJutifier
+		return MessageStringJustifierZZZ.getInstance();
+	}
+	
+	@Override
+	public IStringJustifierZZZ getStringJustifier(int iIndex) throws ExceptionZZZ {
+		if(!this.hasStringJustifier(iIndex)) {
+			//Das Problem ist, so wird fuer jeden Indexwert immer etwas erstellt, das darf nicht sein... eigentlich eine Endlosschleife
 			//Verwende als default das Singleton
-			return MessageStringJustifierZZZ.getInstance();
+			//IStringJustifierZZZ objJustifier = this.getStringJustifierDefault();
+			//this.addStringJustifier(objJustifier);			
+			return null;
 		}else {
 			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
-			return this.objStringJustifier;
+			return this.getStringJustifierList().get(iIndex);
 		}
 	}
 
 	@Override
-	public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ {
-		this.objStringJustifier = objStringJustifier;
+	public void addStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ {
+		this.getStringJustifierList().add(objStringJustifier);
 	}
 
 	//##########################################################
 	//### METHODEN ##########
 	@Override
-	public boolean hasStringJustifierPrivate() throws ExceptionZZZ{
-		if(this.objStringJustifier==null) {
+	public boolean hasStringJustifier(int iIndex) throws ExceptionZZZ{
+		if(this.listaStringJustifier==null) {
 			return false;
 		}else {
-			return true;
+			if(this.listaStringJustifier.size()>=iIndex+1) {
+				return true;
+			}else {
+				return false;
+			}
 		}		
 	}
 	
@@ -67,9 +108,12 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	public boolean reset() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			//this.setStringJustifier(null);
-			
-			bReturn = true;
+			if(this.listaStringJustifier==null) {
+				bReturn=false;
+			}else {
+				this.listaStringJustifier.clear();
+				bReturn = true;
+			}
 		}//end main:
 		return bReturn;
 	}
@@ -167,119 +211,197 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	//######################
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(ienumFormatLogString);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(ienumFormatLogString);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;		
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(obj, ienumFormatLogString);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(obj, ienumFormatLogString);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;			
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(ienumaFormatLogString, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(ienumaFormatLogString, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;	
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(obj, ienumFormatLogString, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;			
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(obj, ienumaFormatLogString, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;			
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(classObj, ienumFormatLogString, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;			
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(classObj, ienumaFormatLogString, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;		
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(classObj, ienumFormatLogString);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;				
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(hm);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.computeJagged(hm);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;		
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(obj, hm);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.compute(obj, hm);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;			
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(classObj, hm);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.compute(classObj, hm);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;		
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(obj, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.compute(obj, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;				
 	}
 
 	@Override
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
-		if(this.hasStringJustifierPrivate()) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier();
-			objFormater.setStringJustifier(objJustifier);
-		}
-		return objFormater.compute(classObj, sLogs);
+		String sReturn = null;
+		main:{
+			sReturn = objFormater.compute(classObj, sLogs);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
+				sReturn = objJustifier.justifyInfoPart(sReturn);
+			}
+		}//end main:
+		return sReturn;		
 	}
 		
 	//#####################################################

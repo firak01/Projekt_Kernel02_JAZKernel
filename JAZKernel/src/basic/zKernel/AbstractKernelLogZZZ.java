@@ -213,8 +213,8 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORTHREADID_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
