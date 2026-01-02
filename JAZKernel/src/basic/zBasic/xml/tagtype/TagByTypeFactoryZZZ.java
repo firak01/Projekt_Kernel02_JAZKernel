@@ -13,13 +13,15 @@ import basic.zBasic.reflection.position.TagTypeThreadIdZZZ;
 import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.reflection.position.TagTypePositionCurrentZZZ;
-import basic.zBasic.reflection.position.TagTypeMessageSeparatorZZZ;
+import basic.zBasic.reflection.position.TagTypeSeparatorMessageZZZ;
 import basic.zBasic.reflection.position.TagTypeStringType01ZZZ;
 import basic.zBasic.reflection.position.TagTypeStringType02ZZZ;
 import basic.zBasic.reflection.position.TagTypeStringType03ZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.reflection.position.TagTypeThreadIdSeparatorZZZ;
+import basic.zBasic.reflection.position.TagTypeSeparator01ZZZ;
+import basic.zBasic.reflection.position.TagTypeSeparator02ZZZ;
+import basic.zBasic.reflection.position.TagTypeSeparator03ZZZ;
 
 public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	private static final long serialVersionUID = -8672998939542120263L;
@@ -37,11 +39,13 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		METHOD("method",TagTypeMethodZZZ.sTAGNAME,"Name der aufgerufenen Methode"),
 		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist."),
 		POSITIONCURRENT("positioncurrent",TagTypePositionCurrentZZZ.sTAGNAME,"Umgebender Tag fuer die CLASSMETHOD und CLASSFILE_POSITION Tags. Damit werden die Werte, die per ReflectCodeZZZ.getPositionCalling() gekapselt."),
-		MESSAGESEPARATOR("messageseparator",TagTypeMessageSeparatorZZZ.sTAGNAME,"Umgebender Tag fuer den Messageseparator (der ggfs. auch eine Message enthalten kann). Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		SEPARATORMESSAGE("separatormessaqge",TagTypeSeparatorMessageZZZ.sTAGNAME,"Umgebender Tag fuer den Messageseparator (der ggfs. auch eine Message enthalten kann). Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		STRINGTYPE01("stringtype01",TagTypeStringType01ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType01, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		STRINGTYPE02("stringtype02",TagTypeStringType02ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType02, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		STRINGTYPE03("stringtype03",TagTypeStringType03ZZZ.sTAGNAME,"Umgebender Tag fuer den StringType03, der die Message enthaelt. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),	
-		THREADIDSEPARATOR("threadidseparator",TagTypeThreadIdSeparatorZZZ.sTAGNAME,"Umgebender Tag fuer den Threadidseparator. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		SEPARATOR01("separator01",TagTypeSeparator01ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 01. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		SEPARATOR02("separator02",TagTypeSeparator02ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 02. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		SEPARATOR03("separator03",TagTypeSeparator03ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 03. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		;
 		
 		
@@ -209,9 +213,6 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			case TagTypePositionCurrentZZZ.sTAGNAME:
 				objReturn = new TagTypePositionCurrentZZZ();
 				break;
-			case TagTypeMessageSeparatorZZZ.sTAGNAME:
-				objReturn = new TagTypeMessageSeparatorZZZ();
-				break;
 			case TagTypeStringType01ZZZ.sTAGNAME:
 				objReturn = new TagTypeStringType01ZZZ();
 				break;
@@ -221,8 +222,17 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			case TagTypeStringType03ZZZ.sTAGNAME:
 				objReturn = new TagTypeStringType03ZZZ();
 				break;
-			case TagTypeThreadIdSeparatorZZZ.sTAGNAME:
-				objReturn = new TagTypeThreadIdSeparatorZZZ();
+			case TagTypeSeparator01ZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparator01ZZZ();
+				break;
+			case TagTypeSeparator02ZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparator02ZZZ();
+				break;
+			case TagTypeSeparator03ZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparator03ZZZ();
+				break;
+			case TagTypeSeparatorMessageZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparatorMessageZZZ();
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");

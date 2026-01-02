@@ -14,7 +14,7 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
@@ -400,7 +400,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	
 	public static String computeLinePartInLog_ControlThreadIdSeparator() throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));
 		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
 	}
 	
@@ -476,38 +476,87 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
 	                
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING:
 	            	//ByControl?
 	                //  sFormat = this.getHashMapFormatPositionString().get(
 	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
-	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));
-	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
 	           
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML:
 	            	//ByControl?
 	               // sFormat = this.getHashMapFormatPositionString().get(
 	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
-	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));
-	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-	                
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING:
+	            	//ByControl?
+	                //  sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	           
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML:
+	            	//ByControl?
+	               // sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR02, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING:
+	            	//ByControl?
+	                //  sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	           
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML:
+	            	//ByControl?
+	               // sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR03, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;

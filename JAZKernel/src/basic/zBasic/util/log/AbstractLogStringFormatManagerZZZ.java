@@ -7,8 +7,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
-import basic.zBasic.util.datatype.string.ThreadIdStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.Separator01StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.Separator02StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.Separator03StringJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ, ILogStringFormatManagerJaggedZZZ{
@@ -42,10 +44,18 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	@Override
 	public ArrayListZZZ<IStringJustifierZZZ>getStringJustifierListDefault() throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ> listaReturn = new ArrayListZZZ<IStringJustifierZZZ>();
-		ThreadIdStringJustifierZZZ objJustifierThreadId = (ThreadIdStringJustifierZZZ) ThreadIdStringJustifierZZZ.getInstance();
-		listaReturn.add(objJustifierThreadId);
 		
-		MessageStringJustifierZZZ objJustifierMessage = (MessageStringJustifierZZZ) MessageStringJustifierZZZ.getInstance();
+		//TODOGOON20260102: Hier muss die Reihenfolge irgendwie aus dem uebergebenen Formatanweisungs-Array ermittelt werden.
+		Separator01StringJustifierZZZ objJustifier01 = (Separator01StringJustifierZZZ) Separator01StringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifier01);
+
+		Separator02StringJustifierZZZ objJustifier02 = (Separator02StringJustifierZZZ) Separator02StringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifier02);
+
+		Separator03StringJustifierZZZ objJustifier03 = (Separator03StringJustifierZZZ) Separator03StringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifier03);
+		
+		SeparatorMessageStringJustifierZZZ objJustifierMessage = (SeparatorMessageStringJustifierZZZ) SeparatorMessageStringJustifierZZZ.getInstance();
 		listaReturn.add(objJustifierMessage);
 		
 		return listaReturn;
@@ -67,7 +77,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	@Override
 	public IStringJustifierZZZ getStringJustifierDefault() throws ExceptionZZZ{
 		//Verwende als default das Singleton vom MessageStringJutifier
-		return MessageStringJustifierZZZ.getInstance();
+		return SeparatorMessageStringJustifierZZZ.getInstance();
 	}
 	
 	@Override

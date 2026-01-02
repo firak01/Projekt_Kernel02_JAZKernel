@@ -8,7 +8,9 @@ import custom.zKernel.ILogZZZ;
 
 public interface IStringJustifierZZZ {
 	public static String sSEPARATOR_MESSAGE_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-	public static String sSEPARATOR_THREADID_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT;
+	public static String sSEPARATOR_01_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+	public static String sSEPARATOR_02_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
+	public static String sSEPARATOR_03_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
 	
 	public boolean reset() throws ExceptionZZZ;
 	

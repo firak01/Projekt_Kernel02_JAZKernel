@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 
 public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;

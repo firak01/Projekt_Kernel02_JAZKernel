@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
@@ -259,7 +259,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 				
-				IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
+				IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
 				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);				
 			}//end main:
 			return sReturn;

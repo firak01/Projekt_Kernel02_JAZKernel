@@ -41,7 +41,7 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -7587,7 +7587,7 @@ MeinTestParameter=blablaErgebnis
 		if(objLog==null) {
 			String sTemp = AbstractKernelLogZZZ.computeLineDate(this);
 			
-			IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
+			IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
 			sTemp = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sTemp, sLog);
 			
 			System.out.println(sTemp);
@@ -7611,7 +7611,7 @@ MeinTestParameter=blablaErgebnis
 			String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(1);//current+1=calling
 			sLog = sLog + sPosition;
 			
-			IStringJustifierZZZ objStringJustifier = MessageStringJustifierZZZ.getInstance();
+			IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
 			sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
 			
 			System.out.println(sLine);

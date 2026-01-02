@@ -21,7 +21,7 @@ import basic.zBasic.util.log.LogStringFormatManagerXmlZZZ;
  * @author Fritz Lindhauer, 22.12.2025, 09:32:31
  * 
  */
-public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
+public class Separator02StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
 	
 	// --- Singleton Instanz ---
@@ -45,7 +45,7 @@ public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
 	//##########################################################
     
 	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
-	protected MessageStringJustifierZZZ() throws ExceptionZZZ{
+	protected Separator02StringJustifierZZZ() throws ExceptionZZZ{
 		super();
 	}
 
@@ -54,7 +54,7 @@ public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
 			
 			//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
 			//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
-			synchronized(MessageStringJustifierZZZ.class) {
+			synchronized(Separator02StringJustifierZZZ.class) {
 				if(objStringJustifierINSTANCE == null) {
 					 // optional: Schutz vor Reflection
 			        if (INITIALIZED) {
@@ -72,7 +72,7 @@ public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
 	public static IStringJustifierZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
-		objStringJustifierINSTANCE = new MessageStringJustifierZZZ();
+		objStringJustifierINSTANCE = new Separator02StringJustifierZZZ();
 		return (IStringJustifierZZZ)objStringJustifierINSTANCE;
 	}
 	
@@ -83,18 +83,20 @@ public class MessageStringJustifierZZZ extends AbstractStringJustifierZZZ {
 	//##########################################################
 	//### METHODEN ##########
 	
-	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override
 	public String getPositionSeparatorDefault() throws ExceptionZZZ {
-		return IStringJustifierZZZ.sSEPARATOR_MESSAGE_DEFAULT;
+		return IStringJustifierZZZ.sSEPARATOR_02_DEFAULT;
+		
+		//Es muss der formatierte Kommentartrenner sein.
+		//return LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String getPositionIdentifierDefault() {
-		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
+		return IStringJustifierZZZ.sSEPARATOR_02_DEFAULT;
 	}
-	
 	
 	//### STATIC METHODEN
 	

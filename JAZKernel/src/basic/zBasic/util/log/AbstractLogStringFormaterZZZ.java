@@ -27,7 +27,7 @@ import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.MessageStringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -138,7 +138,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
 		if(!this.hasStringJustifierPrivate()) {
 			//Verwende als default das Singleton
-			return MessageStringJustifierZZZ.getInstance();
+			return SeparatorMessageStringJustifierZZZ.getInstance();
 		}else {
 			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
 			return this.objStringJustifier;
@@ -370,30 +370,30 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
-		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	ITagByTypeZZZ objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
 		        	String sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
 	            
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING:
 	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));	                    
-	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML:
 	            	//ByControl?
 	                sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));	                    
-	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
@@ -479,29 +479,29 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.MESSAGESEPARATOR, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING:
 	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING));	                    
-	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
-	            case ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML:
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML:
 	            	//ByControl?
 	                sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML));	                    
-	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_THREADID_DEFAULT);
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADIDSEPARATOR, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;

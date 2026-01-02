@@ -21,7 +21,10 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static String sSEPARATOR_PREFIX_DEFAULT="";
 	public static String sSEPARATOR_POSTFIX_DEFAULT="";
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-	public static String sSEPARATOR_THREADID_DEFAULT="^";
+	public static String sSEPARATOR_01_DEFAULT="^";
+	public static String sSEPARATOR_02_DEFAULT="°";
+	public static String sSEPARATOR_03_DEFAULT="@";
+	public static String sSEPARATOR_04_DEFAULT="~";
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
@@ -93,13 +96,19 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	
 	public static int iFACTOR_CONTROLMESSAGESEPARATOR_STRING=181;
 	public static int iFACTOR_CONTROLMESSAGESEPARATOR_XML=191;
-	public static int iFACTOR_CONTROLTHREADIDSEPARATOR_STRING=193;
-	public static int iFACTOR_CONTROLTHREADIDSEPARATOR_XML=197;
+	public static int iFACTOR_CONTROL01SEPARATOR_STRING=193;
+	public static int iFACTOR_CONTROL01SEPARATOR_XML=197;
 	
+	public static int iFACTOR_CONTROL02SEPARATOR_STRING=199;
+	public static int iFACTOR_CONTROL02SEPARATOR_XML=211;
+	
+	public static int iFACTOR_CONTROL03SEPARATOR_STRING=223;
+	public static int iFACTOR_CONTROL03SEPARATOR_XML=227;
 	
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
-	//101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199
+	//101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,
+	//211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293
 
 	//Statt mehrere Strukturen zu pflegen, lieber eine enum, mit den Konfigurationswerten.
 	//Merke: Methoden und Zeilennummern können nicht aus dem aktuellen Objekt ermittelt werden, daher sind sie von einem uebergebenen String abhaengig.
@@ -163,8 +172,14 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 
 		CONTROL_SEPARATORMESSAGE_STRING("separatormessage",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Kommentar-Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
 		CONTROL_SEPARATORMESSAGE_XML("separatormessagexml",ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Kommentar-Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-		CONTROL_SEPARATORTHREADID_STRING("separatorthreadid",ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Thread-Separator. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-		CONTROL_SEPARATORTHREADID_XML("separatorthreadidxml",ILogStringFormatZZZ.iFACTOR_CONTROLTHREADIDSEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Thread-Separator in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
+		CONTROL_SEPARATOR01_STRING("separator01",ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 01. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATOR01_XML("separator01xml",ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 01 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATOR02_STRING("separator02",ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 02. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATOR02_XML("separator02xml",ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 02 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
+		CONTROL_SEPARATOR03_STRING("separator03",ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 03. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+		CONTROL_SEPARATOR03_XML("separator03xml",ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Scheibe den Separator 03 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
+		
+		
 		;		
 		
 		int iFactor, iArgumentType;
