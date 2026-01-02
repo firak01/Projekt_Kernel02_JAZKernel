@@ -225,7 +225,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(ienumFormatLogString);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumFormatLogString, listaStringJustifierDefault);			
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -240,7 +244,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(obj, ienumFormatLogString);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumFormatLogString, listaStringJustifierDefault);						
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -255,7 +263,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(ienumaFormatLogString, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumaFormatLogString, listaStringJustifierDefault);						
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -270,7 +282,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumFormatLogString, listaStringJustifierDefault);			
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -285,7 +301,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumaFormatLogString, listaStringJustifierDefault);						
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -300,7 +320,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumFormatLogString, listaStringJustifierDefault);			
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -315,7 +339,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumaFormatLogString, listaStringJustifierDefault);			
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -330,7 +358,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumFormatLogString, listaStringJustifierDefault);
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -345,7 +377,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.computeJagged(hm);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+			
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(hm, listaStringJustifierDefault);
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -360,7 +396,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.compute(obj, hm);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+						
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(hm, listaStringJustifierDefault);			
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -375,7 +415,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.compute(classObj, hm);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+						
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(hm, listaStringJustifierDefault);						
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -390,7 +434,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.compute(obj, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+						
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(objFormater, listaStringJustifierDefault);						
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
@@ -405,7 +453,11 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		main:{
 			sReturn = objFormater.compute(classObj, sLogs);
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+			//Das wuerde die Defaultreihenfolge holen.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
+						
+			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(objFormater, listaStringJustifierDefault);									
 			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
