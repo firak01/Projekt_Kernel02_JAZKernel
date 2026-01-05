@@ -83,45 +83,45 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 	
-	@Override
-	public synchronized String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = super.computeJagged(ienumFormatLogString);
+//		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+//		
+//		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumFormatLogString);
+//		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+//			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+//		}	
+//		return sReturn;
+//	}
 
-	@Override
-	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(obj, ienumFormatLogString);
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = this.computeJustified(obj, ienumFormatLogString);
+//		return sReturn;
+//	}
 	
-	@Override
-	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(obj, ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = super.computeJagged(obj, ienumFormatLogString);
+//		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+//		
+//		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumFormatLogString);
+//		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+//			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+//		}
+//		return sReturn;
+//	}
 	
 	@Override
 	public synchronized String compute(String... sLogs) throws ExceptionZZZ {
@@ -155,7 +155,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -163,28 +163,28 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(obj, ienumFormatLogString, sLogs);	
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = this.computeJustified(obj, ienumFormatLogString, sLogs);	
+//		return sReturn;
+//	}
 	
-	@Override
-	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(obj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = super.computeJagged(obj, ienumFormatLogString, sLogs);
+//		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+//		
+//		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumFormatLogString);
+//		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+//			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+//		}
+//		return sReturn;
+//	}
 
 	@Override
 	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -201,7 +201,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -209,29 +209,29 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(classObj, ienumFormatLogString, sLogs);
-		return sReturn;
-		
-	}
+//	@Override
+//	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = this.computeJustified(classObj, ienumFormatLogString, sLogs);
+//		return sReturn;
+//		
+//	}
 	
-	@Override
-	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(classObj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+//		String sReturn = super.computeJagged(classObj, ienumFormatLogString, sLogs);
+//		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+//		
+//		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumFormatLogString);
+//		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+//			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+//		}	
+//		return sReturn;
+//	}
 
 	@Override
 	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -248,7 +248,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -256,22 +256,22 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(classObj, ienumFormatLogString);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
-		for(int icount=0; icount<=listaStringJustifier.size();icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
-		return sReturn;
-	}
+//	@Override
+//	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = super.computeJagged(classObj, ienumFormatLogString);
+//		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+//		
+//		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumFormatLogString);
+//		for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+//			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+//		}	
+//		return sReturn;
+//	}
 
 	@Override
 	public synchronized String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
@@ -282,7 +282,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -315,7 +315,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -388,7 +388,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -411,7 +412,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -434,7 +436,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -463,7 +465,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -486,7 +489,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -509,7 +512,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -534,7 +538,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -557,7 +561,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -580,7 +585,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -603,7 +608,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -626,7 +631,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -649,7 +654,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -673,7 +679,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(ienumaFormatLogString);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -690,7 +697,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
@@ -707,11 +714,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}	
 		return sReturn;
 	}
+
+	
 }

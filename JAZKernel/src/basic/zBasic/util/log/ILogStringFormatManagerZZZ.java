@@ -1,5 +1,7 @@
 package basic.zBasic.util.log;
 
+import java.util.LinkedHashMap;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
@@ -7,6 +9,10 @@ import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 public interface ILogStringFormatManagerZZZ extends ILogStringFormatManagerComputerZZZ{
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListDefault() throws ExceptionZZZ;
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList() throws ExceptionZZZ;
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	//sinn? public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	
 	public void setStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaJustifier) throws ExceptionZZZ;
 	
 	public boolean hasStringJustifier(int iIndex) throws ExceptionZZZ;

@@ -74,6 +74,31 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		this.listaStringJustifier = listaStringJustifier;
 	}
 	
+	//+++++++++++++++++++++++++
+	//Die optimale Reihenfolge der Justifier orientiert sich an der Reihenfolge der Formatanweisungen oder der Reihenfolge der Zeichen im String
+	//Bei einer nicht optimalen Reihenfolge sind die vorderen Spalten ggfs. zu breit.
+	@Override
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
+		ArrayListZZZ<IStringJustifierZZZ> listaReturn=new ArrayListZZZ<IStringJustifierZZZ>();
+		main:{
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierListDefault();			
+			listaReturn = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumaFormatLogString, listaStringJustifierDefault);
+		}//end main:
+		return listaReturn;
+	}
+	
+	@Override
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		ArrayListZZZ<IStringJustifierZZZ> listaReturn=new ArrayListZZZ<IStringJustifierZZZ>();
+		main:{
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierListDefault();			
+			listaReturn = LogStringFormatManagerUtilZZZ.getStringJustifierList(hm, listaStringJustifierDefault);
+		}//end main:
+		return listaReturn;
+	}
+	
+	
+	//#############################################
 	@Override
 	public IStringJustifierZZZ getStringJustifierDefault() throws ExceptionZZZ{
 		//Verwende als default das Singleton vom MessageStringJutifier
@@ -382,7 +407,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 			
 			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(hm, listaStringJustifierDefault);
-			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
 			}

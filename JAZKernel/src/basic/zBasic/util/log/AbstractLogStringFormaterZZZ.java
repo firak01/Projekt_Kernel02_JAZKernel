@@ -398,11 +398,56 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
-	                        + ienumFormatLogString.getFactor());
-	                break;
-	        }			    
+	            
+		        case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING:
+		        	//ByControl?
+		            sFormat = this.getHashMapFormatPositionString().get(
+		                    new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));	                    
+		            sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+		            sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		              
+		            sReturn = sMessageSeparator;
+		            break;
+		        case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML:
+		        	//ByControl?
+		            sFormat = this.getHashMapFormatPositionString().get(
+		                    new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));	                    
+		            sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+		            sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		              
+		
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR02, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+		            sReturn = sMessageSeparatorTag;
+		            break;
+		        case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING:
+		        	//ByControl?
+		              sFormat = this.getHashMapFormatPositionString().get(
+		                    new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
+		              sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+		              sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		              
+		            sReturn = sMessageSeparator;
+		            break;
+		        case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML:
+		        	//ByControl?
+		            sFormat = this.getHashMapFormatPositionString().get(
+		                    new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));	                    
+		            sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+		            sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		              
+		
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR03, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+		            sReturn = sMessageSeparatorTag;
+		            break;
+		        default:
+		            System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+		                    + ienumFormatLogString.getFactor());
+		            break;
+		    }	
 		}//end main:
 		return sReturn;
 	}
@@ -502,6 +547,50 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                  
 
 		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR02, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR03, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
@@ -1813,9 +1902,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			if(ArrayUtilZZZ.isNull(this.ienumaMappedFormat)) {
 				this.ienumaMappedFormat = this.getFormatPositionsMappedDefault();
 			}
-			
-			//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
-			//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		}
 		return this.ienumaMappedFormat;
 	}
@@ -2177,47 +2263,47 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			return this.computeLinesInLog_Justified_(obj.getClass(), hm);
 	}
 	
-	@Override
-	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(ienumFormatLogString);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	@Override
+//	public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(ienumFormatLogString);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
-	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(obj, ienumFormatLogString);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	@Override
+//	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(obj, ienumFormatLogString);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
 	@Override
 	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
@@ -2261,68 +2347,68 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	return sReturn;
 	}
 
-	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(classObj, ienumFormatLogString);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	@Override
+//	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(classObj, ienumFormatLogString);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
-	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(obj, ienumFormatLogString, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	@Override
+//	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(obj, ienumFormatLogString, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
-	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(classObj, ienumFormatLogString, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	@Override
+//	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(classObj, ienumFormatLogString, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
 	@Override
 	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
