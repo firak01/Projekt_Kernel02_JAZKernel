@@ -23,8 +23,8 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 	public static String sSEPARATOR_01_DEFAULT="^";
 	public static String sSEPARATOR_02_DEFAULT="°";
-	public static String sSEPARATOR_03_DEFAULT="@";
-	public static String sSEPARATOR_04_DEFAULT="~";
+	public static String sSEPARATOR_03_DEFAULT=IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+	public static String sSEPARATOR_04_DEFAULT=IReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR;
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
