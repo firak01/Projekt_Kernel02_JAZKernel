@@ -40,7 +40,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			ILogStringFormatManagerZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
+			ILogStringFormatManagerZZZ objLogManager = LogStringFormatManagerZZZ.getNewInstance();
 			boolean btemp1a = objLogManager.setFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
 						
@@ -68,7 +68,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 	        String thread = "[Thread:";
 	        String cls = dummy.getClass().getSimpleName() + IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 
-	        String result = LogStringFormatManagerZZZ.getInstance().compute(dummy, sLog);
+	        String result = LogStringFormatManagerZZZ.getNewInstance().compute(dummy, sLog);
 
 	        LogStringFormatTestHelper.assertContainsOnce(result, sLog);
 	        LogStringFormatTestHelper.assertThreadAndClass(result, thread, cls);
@@ -98,7 +98,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
 			
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat01, sLog1);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -126,7 +126,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 							};
 						
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat01, sLog1);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -155,7 +155,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der identische Logeintrag auch 2x in der Zeile erscheinen. Wenn entsprechend uebergeben	
 			//b) gleicher Logeintraege		
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat02, sLog1, sLog1);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat02, sLog1, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -185,7 +185,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag auch 2x in der Zeile erscheinen.	
 			//c) unterschiedliche Logeintraege									
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat02, sLog1, sLog2);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat02, sLog1, sLog2);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -244,7 +244,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat03, sLog1);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat03, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -359,7 +359,7 @@ public class LogStringFormatManagerZZZ01Test extends TestCase {
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat03, sLog1);
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat03, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));

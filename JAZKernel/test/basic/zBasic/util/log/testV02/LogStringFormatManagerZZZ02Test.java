@@ -14,12 +14,12 @@ public class LogStringFormatManagerZZZ02Test extends AbstractLogStringFormatZZZT
 
     @Override
     protected String compute(DummyTestObjectZZZ dummy, String... logs) throws ExceptionZZZ {
-        return LogStringFormatManagerZZZ.getInstance().compute(dummy, logs);
+        return LogStringFormatManagerZZZ.getNewInstance().compute(dummy, logs);
     }
 
     @Override
     protected String computeWithFormat(DummyTestObjectZZZ dummy,IEnumSetMappedLogStringFormatZZZ[] format,String... logs) throws ExceptionZZZ {
-        return LogStringFormatManagerZZZ.getInstance().compute(dummy, format, logs);
+        return LogStringFormatManagerZZZ.getNewInstance().compute(dummy, format, logs);
     }
 }
 
