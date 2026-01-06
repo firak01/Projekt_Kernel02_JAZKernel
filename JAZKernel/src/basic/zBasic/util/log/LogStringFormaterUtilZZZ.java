@@ -78,9 +78,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				            System.out.println("Faktor iFaktor="+iFaktor + " wird nicht behandelt");
 				            break;
 				        }					
-				}
-				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
-				
+				}				
 			}				
 		}//end main:
 		return hmReturn;
