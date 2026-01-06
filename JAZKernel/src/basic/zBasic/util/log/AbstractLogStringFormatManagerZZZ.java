@@ -292,8 +292,8 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault = this.getStringJustifierList();
 			
 			//Ziel ist es aber die Reihenfolge des "Buendigmachens" per Justifier an der Reihenfolge der Formatanweisungen und der Separatoren auszurichten.
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierList(ienumaFormatLogString, listaStringJustifierDefault);						
-			for(int icount=0; icount<=listaStringJustifier.size();icount++) {
+			IStringJustifierZZZ[] aStringJustifier = LogStringFormatManagerUtilZZZ.getStringJustifierArray(ienumaFormatLogString, listaStringJustifierDefault);						
+			for(int icount=0; icount<=aStringJustifier.length-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 				sReturn = objJustifier.justifyInfoPart(sReturn);
 			}

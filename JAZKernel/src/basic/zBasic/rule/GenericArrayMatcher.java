@@ -4,13 +4,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import basic.zBasic.ExceptionZZZ;
+
 public class GenericArrayMatcher {
 
     public static <K, V> V[] filter(
             K[] keys,
             V[] values,
             IMatchRuleZZZ<K, V> rule,
-            Class<V> valueType) {
+            Class<V> valueType) throws ExceptionZZZ {
 
         List<V> result = new ArrayList<V>();
 

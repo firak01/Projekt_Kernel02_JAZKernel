@@ -1,9 +1,11 @@
 package basic.zBasic.rule;
 
-public class MatchRuleZZZ implements IMatchRuleZZZ{
+import basic.zBasic.ExceptionZZZ;
+
+public class MatchRuleZZZ<K,V> implements IMatchRuleZZZ<K,V>{
 
 	@Override
-	public boolean matches(Object key, Object value) {
+	public boolean matches(K key, V value) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(key==null) break main;
@@ -15,5 +17,4 @@ public class MatchRuleZZZ implements IMatchRuleZZZ{
 		}//end main:
 		return bReturn;
 	}
-
 }
