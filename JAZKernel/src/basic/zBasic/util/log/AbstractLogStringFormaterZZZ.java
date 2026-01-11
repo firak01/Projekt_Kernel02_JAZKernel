@@ -1917,9 +1917,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		
 		
 		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
-
+		
+		//Kein Array, s. ChatGPT 20260110
+		List<?> listaReturn = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this.getClass(), ILogStringFormatZZZ.sENUMNAME);
+		
 		//Array automatisch aus dem Enum errechnen.
-		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
+		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = (IEnumSetMappedLogStringFormatZZZ[]) ArrayListUtilZZZ.toArray((ArrayList<?>) listaReturn);
 		return ienumaReturn;
 	}
 	

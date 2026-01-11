@@ -15,6 +15,13 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
+/**Merksatz (wichtig!)(von ChatGPT, 20260110)
+ * Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
+ * auch wenn das Enum dieses Interface implementiert.
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 10.01.2026, 08:22:59
+ */
 public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	private ArrayListUtilZZZ() { 
 		//Zum Verstecken des Konsruktors
@@ -526,87 +533,82 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			if(listae==null) break main;
 			if(listae.size()==0) break main;
 			
-			enumaReturn = (E[]) listae.toArray(new Enum[listae.size()]);
-		//	saReturn = lista.toArray(new String[lista.size()]);
-		//	int iIndex = -1;
-		//	for(Object obj : lista){
-		//		iIndex++;
-		//		saReturn[iIndex] = obj.toString();
-		//	}
+			enumaReturn = (E[]) listae.toArray(new Enum[listae.size()]);		
 		}//end main:
 		return enumaReturn;	
 		}
 
-	public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
+	public static <E extends Enum & IEnumSetMappedZZZ> E[] toEnumArrayByMapped(ArrayList<E> listae){
 		E[] objaeReturn = null;
 		main:{
 			if(listae==null) break main;
 			if(listae.size()==0) break main;
 			
 			objaeReturn = (E[]) listae.toArray(new Enum[listae.size()]);
-//			saReturn = lista.toArray(new String[lista.size()]);
-//			int iIndex = -1;
-//			for(Object obj : lista){
-//				iIndex++;
-//				saReturn[iIndex] = obj.toString();
-//			}
 		}//end main:
 		return objaeReturn;	
 	}
 	
-	public static <E extends Enum> E[] toEnumArrayByMappedStatus(ArrayList<IEnumSetMappedStatusZZZ> listae){
+	public static <E extends Enum & IEnumSetMappedStatusZZZ> E[] toEnumArrayByMappedStatus(ArrayList<E> listae){
 		E[] objaeReturn = null;
 		main:{
 			if(listae==null) break main;
 			if(listae.size()==0) break main;
 			
 			objaeReturn = (E[]) listae.toArray(new Enum[listae.size()]);
-//			saReturn = lista.toArray(new String[lista.size()]);
-//			int iIndex = -1;
-//			for(Object obj : lista){
-//				iIndex++;
-//				saReturn[iIndex] = obj.toString();
-//			}
 		}//end main:
 		return objaeReturn;	
 	}
 	
-	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
-		E[] enumaReturn = null;
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
+//	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
+//		E[] enumaReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			if(listae.size()==0) break main;
+//			
+//			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+//		}//end main:
+//		return enumaReturn;	
+//	}
+	
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//	public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArrayByMapped(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{
+//		IEnumSetMappedStatusZZZ[] enumaReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			if(listae.size()==0) break main;
+//			
+//			///Das gibt eine java.lang.ArrayStoreException...
+//			//enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
+//			//enumaReturn = (IEnumSetMappedStatusZZZ[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
+//			
+//			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
+//			
+//		}//end main:
+//		return enumaReturn;	
+//	}
+	
+	
+	public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedArrayListByMapped(List<E> listae) throws ExceptionZZZ{
+		ArrayList<E> listaeReturn = null;
 		main:{
 			if(listae==null) break main;
+			
+			listaeReturn = new ArrayList<E>();
 			if(listae.size()==0) break main;
 			
-			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
-			//enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray((ArrayList<IEnumSetMappedZZZ>) listae);
-			
+			listaeReturn = EnumSetMappedUtilZZZ.toEnumMappedArrayList(listae);
 		}//end main:
-		return enumaReturn;	
+		return listaeReturn;	
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArrayByMapped(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{
-		IEnumSetMappedStatusZZZ[] enumaReturn = null;
-		main:{
-			if(listae==null) break main;
-			if(listae.size()==0) break main;
-			
-			///Das gibt eine java.lang.ArrayStoreException...
-			//enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-			//enumaReturn = (IEnumSetMappedStatusZZZ[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-			
-			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
-			
-		}//end main:
-		return enumaReturn;	
-	}
-	
-	
-	public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayListByMapped(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
-		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+	public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedStatusArrayListByMapped(List<E> listae) throws ExceptionZZZ{
+		ArrayList<E> listaeReturn = null;
 		main:{
 			if(listae==null) break main;
 			
-			listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+			listaeReturn = new ArrayList<E>();
 			if(listae.size()==0) break main;
 			
 			listaeReturn = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(listae);
@@ -614,28 +616,31 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaeReturn;	
 	}
 	
-		
-	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
-		E[] enumaReturn = null;
-		main:{
-			if(listae==null) break main;
-			if(listae.size()==0) break main;
-			
-			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
-		}//end main:
-		return enumaReturn;	
-	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
-		E[] enumaReturn = null;
-		main:{
-			if(listae==null) break main;
-			if(listae.size()==0) break main;
-			
-			enumaReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
-		}//end main:
-		return enumaReturn;	
-	}
+	
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+//		E[] enumaReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			if(listae.size()==0) break main;
+//			
+//			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+//		}//end main:
+//		return enumaReturn;	
+//	}
+	
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
+//		E[] enumaReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			if(listae.size()==0) break main;
+//			
+//			enumaReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
+//		}//end main:
+//		return enumaReturn;	
+//	}
 
 	
 	public static File[]toFileArray(ArrayList<File> lista){

@@ -14,6 +14,13 @@ import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 
 import junit.framework.TestCase;
 
+/**Merksatz (wichtig!)(von ChatGPT, 20260110)
+*
+* Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
+* auch wenn das Enum dieses Interface implementiert.
+* 
+* @author Fritz Lindhauer, 10.01.2026, 08:27:05
+*/	
 public class ArrayListUtilZZZTest extends TestCase{
 	private ArrayList alTest = null; 
 	 
@@ -128,7 +135,9 @@ public class ArrayListUtilZZZTest extends TestCase{
    }
    
    
-   public void testToEnumMappedArrayByMapped() {
+ //Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
+//   public void testToEnumMappedArrayByMapped() {
+   public void testToEnumMappedArrayListByMapped() {
 	   //try {
 	   Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
 	   Object[] objaEnum = objClass.getEnumConstants();
@@ -137,16 +146,18 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   //Erst einmal aus dem Enum eine ArrayList machen.
 	   ArrayListZZZ listaEnumExtended = new ArrayListZZZ(objaEnum);
 	   ArrayList<IEnumSetMappedZZZ> listaEnum = listaEnumExtended.toArrayList();
+	   assertNotNull(listaEnum);
 	   
 	 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
 	   //Test: Aus der ArrayList ein Enum-Array machen
 	   //Das gibt eine Class Cast Exception... Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
-	   IEnumSetMappedZZZ[]  objaResultToEnumMappedArray = ArrayListUtilZZZ.toEnumMappedArrayByMapped(listaEnum);
-	   assertNotNull(objaResultToEnumMappedArray);
-	   assertTrue(objaResultToEnumMappedArray.length==3);
-	   assertTrue(objaResultToEnumMappedArray instanceof IEnumSetMappedZZZ[]);
-	   assertTrue(objaResultToEnumMappedArray[0] instanceof IEnumSetMappedZZZ);
-	   assertTrue(objaResultToEnumMappedArray[0] instanceof EnumSetMappedTestTypeZZZ);
+//	   IEnumSetMappedZZZ[]  objaResultToEnumMappedArray = ArrayListUtilZZZ.toEnumMappedArrayByMapped(listaEnum);
+//	   assertNotNull(objaResultToEnumMappedArray);
+//	   assertTrue(objaResultToEnumMappedArray.length==3);
+//	   assertTrue(objaResultToEnumMappedArray instanceof IEnumSetMappedZZZ[]);
+//	   assertTrue(objaResultToEnumMappedArray[0] instanceof IEnumSetMappedZZZ);
+//	   assertTrue(objaResultToEnumMappedArray[0] instanceof EnumSetMappedTestTypeZZZ);
 	   
 	   
 	   //EnumSetMappedTestTypeZZZ
@@ -191,8 +202,11 @@ public class ArrayListUtilZZZTest extends TestCase{
 //		}    
    }
    
-   public void testToEnumMappedStatusdArrayByMapped() {
-	   try {
+   
+   //Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   public void testToEnumMappedStatusdArrayListByMapped() {
+//	   try {
 	   
 	   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	   //A) Datentyp Enum ohne Status
@@ -200,45 +214,46 @@ public class ArrayListUtilZZZTest extends TestCase{
 	   Object[] objaEnumWithoutStatus = objClassWithoutStatusEnum.getEnumConstants();
 	 	 
 	   //Erst einmal aus dem Enum eine ArrayList machen.
+
 	   ArrayListZZZ listaEnumExtendedWithoutStatus = new ArrayListZZZ(objaEnumWithoutStatus);
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnumWithoutStatus = listaEnumExtendedWithoutStatus.toArrayList();
+	   assertNotNull(listaEnumWithoutStatus);
 	   
-	 
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
 	   //Test: Aus der ArrayList ein Enum-Array machen
 	   //Das gibt eine Class Cast Exception... Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumMappedArrayByMapped(listaEnum);
 	   //Das gibt eine java.lang.ArrayStoreException   
-	   IEnumSetMappedStatusZZZ[]  objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithoutStatus);
-	   assertNull(objaResultToEnumMappedStatusArray); //weil EnumSetMappedTestTypeZZZ als Klasse nur ein Enum hat vom Typ IEnumSetMappedZZZ
+//	   IEnumSetMappedStatusZZZ[]  objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithoutStatus);
+//	   assertNull(objaResultToEnumMappedStatusArray); //weil EnumSetMappedTestTypeZZZ als Klasse nur ein Enum hat vom Typ IEnumSetMappedZZZ
 	   
 	   
 	  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	   //A) Datentyp Enum mit Status
 	   Class<?> objClassWithStatusEnum = EnumSetMappedStatusTestTypeZZZ.class;
 	   Object[] objaEnumWithStatus = objClassWithStatusEnum.getEnumConstants();
-	 
+
+
 	   //Erst einmal aus dem Enum eine ArrayList machen.
 	   ArrayListZZZ listaEnumExtendedWithStatus = new ArrayListZZZ(objaEnumWithStatus);
 	   ArrayList<IEnumSetMappedStatusZZZ> listaEnumWithStatus = listaEnumExtendedWithStatus.toArrayList();
-	 
+	   assertNotNull(listaEnumWithStatus);
+	   
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
 	   //Test: Aus der ArrayList ein Enum-Array machen		  
-	   objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithStatus);	   
-	   assertNotNull(objaResultToEnumMappedStatusArray);
-	   assertTrue(objaResultToEnumMappedStatusArray.length==3);
+//	   objaResultToEnumMappedStatusArray = ArrayListUtilZZZ.toEnumMappedStatusArrayByMapped(listaEnumWithStatus);	   
+//	   assertNotNull(objaResultToEnumMappedStatusArray);
+//	   assertTrue(objaResultToEnumMappedStatusArray.length==3);
+//	   
+//	   assertTrue(objaResultToEnumMappedStatusArray instanceof IEnumSetMappedZZZ[]); //wohl wg. IEnumSetMappedStatusZZZ extends IEnumSetMappedZZZ. 
+//	   assertTrue(objaResultToEnumMappedStatusArray instanceof IEnumSetMappedStatusZZZ[]);
+//	   
+//	   assertTrue(objaResultToEnumMappedStatusArray[0] instanceof IEnumSetMappedZZZ);//wohl wg. IEnumSetMappedStatusZZZ extends IEnumSetMappedZZZ.
+//	   assertTrue(objaResultToEnumMappedStatusArray[0] instanceof IEnumSetMappedStatusZZZ);
 	   
-	   assertTrue(objaResultToEnumMappedStatusArray instanceof IEnumSetMappedZZZ[]); //wohl wg. IEnumSetMappedStatusZZZ extends IEnumSetMappedZZZ. 
-	   assertTrue(objaResultToEnumMappedStatusArray instanceof IEnumSetMappedStatusZZZ[]);
-	   
-	   assertTrue(objaResultToEnumMappedStatusArray[0] instanceof IEnumSetMappedZZZ);//wohl wg. IEnumSetMappedStatusZZZ extends IEnumSetMappedZZZ.
-	   assertTrue(objaResultToEnumMappedStatusArray[0] instanceof IEnumSetMappedStatusZZZ);
-	   
-	   //assertFalse(objaResultToEnumMappedStatusArray[0] instanceof EnumSetMappedStatusTestTypeZZZ);
-	   
-	   
-	   //EnumSetMappedTestTypeZZZ
-	   System.out.println("test");
-   		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		}    
+
+//   		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}    
    }
    
 }

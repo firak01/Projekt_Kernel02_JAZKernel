@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
@@ -23,8 +24,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
+/**Merksatz (wichtig!)(von ChatGPT, 20260110)
+ *
+ * Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
+ * auch wenn das Enum dieses Interface implementiert.
+ * 
+ * @author Fritz Lindhauer, 10.01.2026, 08:27:05
+ */
 public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
-	
+	private static final long serialVersionUID = 9011362468839990162L;
+
 	public EnumSetMappedUtilZZZ(){		
 	}
 	public EnumSetMappedUtilZZZ(EnumSet<?>enumSetUsed){
@@ -490,77 +499,77 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return sReturn;
 		}
 		
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			//public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
-			public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {				
-				String sReturn = null;
-				main:{
-			    if (clazz==null || name==null || name.isEmpty()) break main;
-			  
-			    
-			    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
-				for(IEnumSetMappedZZZ driver : enumaSetMapped) {
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		//public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
+		public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {				
+			String sReturn = null;
+			main:{
+		    if (clazz==null || name==null || name.isEmpty()) break main;
+		  
+		    
+		    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
-					
-				if(driver.name().equals(name)){						 
-					  sReturn = driver.getDescription();
-					  break main;
-				  }
+				
+			if(driver.name().equals(name)){						 
+				  sReturn = driver.getDescription();
+				  break main;
+			  }
+		
+			}//end for
+			}//end main:
+			return sReturn;
+		}		
 			
-				}//end for
-				}//end main:
-				return sReturn;
-			}		
 			
-			
-			@SuppressWarnings({ "unchecked", "rawtypes" })			
-			public static String getEnumConstant_StatusMessageValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
-				String sReturn = null;
-				main:{
-			    if (clazz==null || name==null || name.isEmpty()) break main;
-			  
-			    
-			    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
-				for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+		@SuppressWarnings({ "unchecked", "rawtypes" })			
+		public static String getEnumConstant_StatusMessageValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+			String sReturn = null;
+			main:{
+		    if (clazz==null || name==null || name.isEmpty()) break main;
+		  
+		    
+		    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
-					
-				if(driver.name().equals(name)){						 
-					  sReturn = driver.getStatusMessage();
-					  break main;
-				  }
+				
+			if(driver.name().equals(name)){						 
+				  sReturn = driver.getStatusMessage();
+				  break main;
+			  }
+		
+			}//end for
+			}//end main:
+			return sReturn;
+		}		
 			
-				}//end for
-				}//end main:
-				return sReturn;
-			}		
 			
-			
-			@SuppressWarnings({ "unchecked", "rawtypes" })			
-			public static int getEnumConstant_StatusGroupIdValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
-				int iReturn = -1;
-				main:{
-			    if (clazz==null || name==null || name.isEmpty()) break main;
-			  
-			    
-			    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
-				for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+		@SuppressWarnings({ "unchecked", "rawtypes" })			
+		public static int getEnumConstant_StatusGroupIdValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+			int iReturn = -1;
+			main:{
+		    if (clazz==null || name==null || name.isEmpty()) break main;
+		  
+		    
+		    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
-					
-				if(driver.name().equals(name)){						 
-					  iReturn = driver.getStatusGroupId();
-					  break main;
-				  }
-			
-				}//end for
-				}//end main:
-				return iReturn;
-			}		
+				
+			if(driver.name().equals(name)){						 
+				  iReturn = driver.getStatusGroupId();
+				  break main;
+			  }
+		
+			}//end for
+			}//end main:
+			return iReturn;
+		}		
 				
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Integer getEnumConstant_PositionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
@@ -717,161 +726,156 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		
 		
 		
-//		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedZZZ> listae){
-//		//ArrayList<Collection<? extends Enum<?>>> listaEnumReturn = null;
-//		Enum[] objaEnumReturn = null;
-//		main:{
-//			if(ArrayListZZZ.isEmpty(listae)) break main;
-//			
-//			//ArrayList<Collection<? extends Enum<?>>> listaEnum = EnumSetMappedUtilZZZ.toEnum(listae);
-//			ArrayList<E> listaEnum = EnumSetMappedUtilZZZ.toEnumArray(listae);
-//			
-//			for(Enum objEnum : lista) {
-//				if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
-//				listaEnum.add((Collection<? extends Enum<?>>) objEnum);					
-//			}	
-//			
-//			ArrayListZZZ.toEnumArray(listaEnum);
-//		}
-//		return (E[]) objaEnumReturn;
-//	}
-	
-//	public static <E extends Enum> E[] toEnumArray(ArrayList<Collection<? extends Enum<?>>> listae){
-//		ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
-//		main:{
-//			if(ArrayListZZZ.isEmpty(listae)) break main;
-//			
-//			ArrayList<Collection<? extends Enum<?>>> listaEnum = EnumSetMappedUtilZZZ.toEnum(listae);
-//			
-//			for(Enum objEnum : listae) {
-//				if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
-//				listaEnum.add((Collection<? extends Enum<?>>) objEnum);					
-//			}				
-//		}
-//		return listaEnum;
-//	}
 		
 		
-		
-		public static IEnumSetMappedZZZ[] toEnumMapped(ArrayList<IEnumSetMappedZZZ> listae){
-			IEnumSetMappedZZZ[] objaReturn = null;
-			main:{
-				objaReturn = (IEnumSetMappedZZZ[]) ArrayListUtilZZZ.toArray(listae);
-			}
-			return objaReturn;
-		}
-		
-//		public static <E extends IEnumSetMappedZZZ>E[] toEnumMappedArray(ArrayList<IEnumSetMappedZZZ> listae){
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110		
+//		public static IEnumSetMappedZZZ[] toEnumMapped(ArrayList<IEnumSetMappedZZZ> listae){
 //			IEnumSetMappedZZZ[] objaReturn = null;
 //			main:{
-//				objaReturn = (IEnumSetMappedZZZ[]) ArrayListZZZ.toArray(listae);
+//				objaReturn = (IEnumSetMappedZZZ[]) ArrayListUtilZZZ.toArray(listae);
 //			}
-//			return (E[]) objaReturn;
+//			return objaReturn;
+//		}
+//				
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(Enum[] enuma){
+//			E[] enumaReturn = null;
+//			main:{
+//				if(ArrayUtilZZZ.isNull(enuma)) break main;
+//				
+//				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
+//				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
+//				
+//				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedZZZ[listeReturnTemp.size()]);
+//			}//end main:
+//			return enumaReturn;	
+//		}
+//		
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+//			E[] enumaReturn = null;
+//			main:{
+//				if(listae==null) break main;
+//				if(listae.size()==0) break main;
+//											
+//				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+//			}//end main:
+//			return enumaReturn;	
+//		}
+						
+//		public static ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(List<IEnumSetMappedZZZ> enuma){
+//			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
+//			main:{
+//				if(enuma==null) break main;
+//				//if(!(enuma instanceof List<IEnumSetMappedZZZ>)) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+//				
+//				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
+//				for(IEnumSetMappedZZZ objenum : enuma) {				
+//					listaeReturn.add(objenum);
+//				}				
+//			}//end main:
+//			return listaeReturn;	
 //		}
 		
-		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(Enum[] enuma){
-			E[] enumaReturn = null;
-			main:{
-				if(ArrayUtilZZZ.isNull(enuma)) break main;
-				
-				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
-				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
-				
-				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedZZZ[listeReturnTemp.size()]);
-			}//end main:
-			return enumaReturn;	
-		}
-		
-		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
-			E[] enumaReturn = null;
+		public static <E extends Enum<E> & IEnumSetMappedZZZ> ArrayList<E> toEnumMappedArrayList(List<E> listae) throws ExceptionZZZ{
+			//ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+			ArrayList<E> listaeReturn = null;
 			main:{
 				if(listae==null) break main;
-				if(listae.size()==0) break main;
-											
-				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
-			}//end main:
-			return enumaReturn;	
-		}
-						
-		public static ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(Enum[] enuma){
-			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
-			main:{
-				if(ArrayUtilZZZ.isNull(enuma)) break main;
-				if(!(enuma instanceof IEnumSetMappedZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				//if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
-				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-				for(Enum objenum : enuma) {				
-					listaeReturn.add((IEnumSetMappedZZZ) objenum);
-				}				
+				listaeReturn = new ArrayList<E>();
+				for(E objenum : listae) {				
+					listaeReturn.add(objenum);
+				}
 			}//end main:
 			return listaeReturn;	
 		}
+		
 		
 		/**
 		 * @param enuma
 		 * @return
 		 */
-		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(Enum[] enuma){
-			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+//		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(List<IEnumSetMappedStatusZZZ> enuma){
+//			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+//			main:{
+//				if(enuma==null) break main;
+//				//if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+//				
+//				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//				for(IEnumSetMappedStatusZZZ objenum : enuma) {				
+//					listaeReturn.add(objenum);
+//				}				
+//			}//end main:
+//			return listaeReturn;	
+//		}
+		
+		
+		public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedStatusArrayList(List<E> listae) throws ExceptionZZZ{
+			//ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+			ArrayList<E> listaeReturn = null;
 			main:{
-				if(ArrayUtilZZZ.isNull(enuma)) break main;
-				if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				if(listae==null) break main;
+				//if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
-				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-				for(Enum objenum : enuma) {				
-					listaeReturn.add((IEnumSetMappedStatusZZZ) objenum);
-				}				
+				listaeReturn = new ArrayList<E>();
+				for(E objenum : listae) {				
+					listaeReturn.add(objenum);
+				}
 			}//end main:
 			return listaeReturn;	
 		}
 		
-		public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(Enum[] enuma){
-			E[] enumaReturn = null;
-			main:{
-				if(ArrayUtilZZZ.isNull(enuma)) break main;
-				
-				ArrayList<IEnumSetMappedStatusZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(enuma);
-				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
-				
-				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedStatusZZZ[listeReturnTemp.size()]);
-			}//end main:
-			return enumaReturn;	
-		}
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//		public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(Enum[] enuma){
+//			E[] enumaReturn = null;
+//			main:{
+//				if(ArrayUtilZZZ.isNull(enuma)) break main;
+//				
+//				ArrayList<IEnumSetMappedStatusZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(enuma);
+//				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
+//				
+//				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedStatusZZZ[listeReturnTemp.size()]);
+//			}//end main:
+//			return enumaReturn;	
+//		}
+
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//		public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
+//			IEnumSetMappedStatusZZZ[] enumaReturn = null;
+//			main:{
+//				if(listae==null) break main;
+//				if(listae.size()==0) break main;
+//				
+//				//das geht so nicht:
+//				//s. https://stackoverflow.com/questions/10108122/how-to-instanceof-listmytype
+//				//if(!(listae instanceof IEnumSetMappedStatusZZZ)) break main;
+//				
+//				//Also eigener, heuristischer Ansatz
+//				boolean bInstanceOfMappedStatus = ArrayListUtilZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class);
+//				if(!bInstanceOfMappedStatus)break main;
+//				
+//				enumaReturn = listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
+//			}//end main:
+//			return enumaReturn;	
+//		}	
 		
-		public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
-			IEnumSetMappedStatusZZZ[] enumaReturn = null;
-			main:{
-				if(listae==null) break main;
-				if(listae.size()==0) break main;
-				
-				//das geht so nicht:
-				//s. https://stackoverflow.com/questions/10108122/how-to-instanceof-listmytype
-				//if(!(listae instanceof IEnumSetMappedStatusZZZ)) break main;
-				
-				//Also eigener, heuristischer Ansatz
-				boolean bInstanceOfMappedStatus = ArrayListUtilZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class);
-				if(!bInstanceOfMappedStatus)break main;
-				
-				enumaReturn = listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-			}//end main:
-			return enumaReturn;	
-		}	
-		
-		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
-			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
-			main:{
-				if(listae==null) break main;
-				
-				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-				if(listae.size()==0) break main;
-				
-				for(IEnumSetMappedZZZ obj : listae) {
-					IEnumSetMappedStatusZZZ objStatus = (IEnumSetMappedStatusZZZ) obj;
-					listaeReturn.add(objStatus);
-				}								
-			}//end main:
-			return listaeReturn;	
-		}	
+//		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+//			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+//			main:{
+//				if(listae==null) break main;
+//				
+//				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//				if(listae.size()==0) break main;
+//				
+//				for(IEnumSetMappedZZZ obj : listae) {
+//					IEnumSetMappedStatusZZZ objStatus = (IEnumSetMappedStatusZZZ) obj;
+//					listaeReturn.add(objStatus);
+//				}								
+//			}//end main:
+//			return listaeReturn;	
+//		}	
 		
 			
 		/* TODO GOON: Weitere Ideen für die Utitlity Klasse

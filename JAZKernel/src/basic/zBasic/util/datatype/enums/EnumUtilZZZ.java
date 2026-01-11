@@ -6,6 +6,13 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
+/**Merksatz (wichtig!) (Von ChatGPT)
+ * Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
+ * auch wenn das Enum dieses Interface implementiert.
+ *   
+ * @author Fritz Lindhauer, 10.01.2026, 08:15:10
+ * 
+ */
 public class EnumUtilZZZ {
 	public static String[] toString(Enum[] enuma) {
 		String[] saReturn = null;
@@ -23,13 +30,13 @@ public class EnumUtilZZZ {
 		return saReturn;
 	}
 	
-	public static ArrayList<IEnumSetMappedZZZ> toArrayListMapped(Enum[] enuma) {
-		ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
+	public static <E extends IEnumSetMappedZZZ> ArrayList<E> toArrayListMapped(Enum[] enuma) {	
+		ArrayList<E> listaeReturn = null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(enuma)) {	
-				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-				for(Enum objEnum : enuma) {				
-					IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) objEnum;				
+				listaeReturn = new ArrayList<E>();
+				for(Enum objEnum : enuma) {								
+					E e = (E) objEnum;
 					if(!listaeReturn.contains(e)) {
 						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
 						listaeReturn.add(e);

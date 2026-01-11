@@ -292,19 +292,20 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 		assertTrue(enumaMappedStatus[0] instanceof IEnumSetMappedStatusZZZ);//weil EnumSetMappedStatusTestType das IEnumSetMappdedStatusZZZ implementiert und nicht IEnumSetMappdedZZZ  	   
     }
     
-    public void testToEnumMappedArray() {	    		    	
-       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
-  	   Object[] obja = objClass.getEnumConstants();
-  	   
-  	   Enum[] objaEnum = (Enum[]) obja;
-  	   
-  	   IEnumSetMappedZZZ[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(objaEnum);
-  	   assertNotNull(enumaMapped);
-  	   assertTrue(enumaMapped.length==3);
-	  		  	   
-	   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);
-	   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);	  	  
-	}
+//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+//    public void testToEnumMappedArray() {	    		    	
+//       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+//  	   Object[] obja = objClass.getEnumConstants();
+//  	   
+//  	   Enum[] objaEnum = (Enum[]) obja;
+//  	   
+//  	   IEnumSetMappedZZZ[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(objaEnum);
+//  	   assertNotNull(enumaMapped);
+//  	   assertTrue(enumaMapped.length==3);
+//	  		  	   
+//	   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);
+//	   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);	  	  
+//	}
     
     public void testToEnumMappedArrayLists() {	    		    	
        Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
