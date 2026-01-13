@@ -177,8 +177,9 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	 * @param c
 	 * @return
 	 * @author Fritz Lindhauer, 16.03.2019, 08:46:42
+	 * @throws ExceptionZZZ 
 	 */
-	public static int getPositionForChar(char c){
+	public static int getPositionForChar(char c) throws ExceptionZZZ{
 		int iReturn = -1;
 		main:{
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?

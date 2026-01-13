@@ -7,19 +7,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.start.GetOpt;
 
 public class DebugGetOptUI {
 	 public static void main(String[] saArg){
+		 try {
 //		TODO GOON: Beim Start werden Parameter mitgegeben
 			//-- ApplikationKey, -- SystemNumber, -- Konfigurationspfad
-			//Den Argumentpatternstring übergeben. Dabei sind die Optionen auf 1 Zeichen beschränkt und ein Doppelpunkt besagt, dass ein Wert folgt.
+			//Den Argumentpatternstring ï¿½bergeben. Dabei sind die Optionen auf 1 Zeichen beschrï¿½nkt und ein Doppelpunkt besagt, dass ein Wert folgt.
 		 	JFrame frame = new JFrame("Application Option Checker");
 			//frame.setUndecorated(true);
 //		 	frame.setLayout( new GridLayout());	
 		 	BoxLayout objLayout = new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS);
-			frame.setLayout(objLayout);  //!!! Nur den LayoutManager zu initialisieren reicht nicht. Auch wenn das Panel-Objekt mit übergeben wird.
+			frame.setLayout(objLayout);  //!!! Nur den LayoutManager zu initialisieren reicht nicht. Auch wenn das Panel-Objekt mit ï¿½bergeben wird.
 			
 			
 		 
@@ -29,7 +31,7 @@ public class DebugGetOptUI {
 			String sOption = StringZZZ.char2String(a);			
 			String sParam = objOption.optarg();
 			
-//			MErke: Einfaches System.out führt aber zu keiner Anzeige unter Windows...
+//			MErke: Einfaches System.out fï¿½hrt aber zu keiner Anzeige unter Windows...
 			//Kleinen frame machen !!!
 			if(StringZZZ.isEmpty(sOption.trim())){
 				JLabel labelDrag = new JLabel("No option at startup provided");			
@@ -55,5 +57,10 @@ public class DebugGetOptUI {
 			
 			frame.pack();
 			frame.setVisible(true);	
+		 }catch(ExceptionZZZ ez) {
+			 System.out.println(ez.getMessage());
+			 ez.printStackTrace();
+			 
+		 }
 	 }
 }
