@@ -49,12 +49,12 @@ public class ROT13ZZZ extends AbstractROTZZZ{
 	}
 	
 	@Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13;
 	}
 	

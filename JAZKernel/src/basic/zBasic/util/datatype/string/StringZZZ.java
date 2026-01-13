@@ -195,7 +195,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * Buch: "Das Java Codebook",  
 	 * Merke: Erst ab JDK 1.5  gibt es eine String.replace(...) Methode, die dasselbe leistet.
 	   */
-	  public static String replace(String textStr, String oldStr, String newStr) {
+	  public static String replace(String textStr, String oldStr, String newStr) throws ExceptionZZZ {
 		  StringBuffer buffer = new StringBuffer();		 
 		  int repLength = oldStr.length();
 		  int startIndex = 0;
@@ -221,7 +221,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * 
 	 * Meine Erweiterung: Es wird nur der erste gefundene String ersetzt 
 	 */
-	  public static String replaceFirst(String textStr, String oldStr, String newStr) {
+	  public static String replaceFirst(String textStr, String oldStr, String newStr) throws ExceptionZZZ {
 		  StringBuffer buffer = new StringBuffer();		  
 		  int repLength = oldStr.length();
 		  int startIndex = 0;
@@ -242,7 +242,7 @@ public class StringZZZ implements IConstantZZZ{
 	  
 	  /**Diese Methode ersetzt am Anfang eines Strings alle gesuchten String durch einen neuen Teilstring.
 	   */
-	  public static String replaceLeft(String sString, String sOld, String sNew) {
+	  public static String replaceLeft(String sString, String sOld, String sNew) throws ExceptionZZZ {
 		  String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -269,7 +269,7 @@ public class StringZZZ implements IConstantZZZ{
 	  
 	  /**Diese Methode ersetzt am Anfang eines Strings alle gesuchten String durch einen neuen Teilstring.
 	   */
-	  public static String replaceRight(String sString, String sOld, String sNew) {
+	  public static String replaceRight(String sString, String sOld, String sNew) throws ExceptionZZZ {
 		  String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -296,7 +296,7 @@ public class StringZZZ implements IConstantZZZ{
 	  
 	  /**Diese Methode ersetzt am Anfang eines Strings den gesuchten String 1x durch einen neuen Teilstring.
 	   */
-	  public static String replaceFromLeft1(String sString, String sOld, String sNew) {
+	  public static String replaceFromLeft1(String sString, String sOld, String sNew) throws ExceptionZZZ {
 		  String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -322,7 +322,7 @@ public class StringZZZ implements IConstantZZZ{
 	  
 	  /**Diese Methode ersetzt am Ende eines Strings den gesuchten String 1x durch einen neuen Teilstring.
 	   */
-	  public static String replaceFromRight1(String sString, String sOld, String sNew) {
+	  public static String replaceFromRight1(String sString, String sOld, String sNew) throws ExceptionZZZ {
 		  String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -361,7 +361,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 22.03.2009 14:43:21
 	 */
-	public static String replaceFarFrom(String textStr, String oldStr, String newStr) {
+	public static String replaceFarFrom(String textStr, String oldStr, String newStr) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 			  if(StringZZZ.isEmpty(textStr)){
@@ -427,7 +427,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 09:07:08
 	 */
-	public static String reverse(String s){
+	public static String reverse(String s) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(s)) break main;
@@ -439,7 +439,7 @@ public class StringZZZ implements IConstantZZZ{
 	  
 	 
 
-	  public static String char2String(char c2String){		 
+	  public static String char2String(char c2String) throws ExceptionZZZ {		 
 		return String.valueOf(c2String);
 	  }
 	  
@@ -449,7 +449,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public static char string2Char(String s2c) throws ExceptionZZZ{
+	public static char string2Char(String s2c) throws ExceptionZZZ {
 		if(s2c.length() >= 2) {			
 			ExceptionZZZ ez = new ExceptionZZZ("The string should only have one character", 101,  ReflectCodeZZZ.getMethodCurrentName(), ""); 
 			//doesn�t work. Only works when > JDK 1.4
@@ -466,7 +466,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iIndex
 	 * @return
 	 */
-	public static char string2Char(String s2c, int iIndex) throws ExceptionZZZ{	
+	public static char string2Char(String s2c, int iIndex) throws ExceptionZZZ {	
 		if(iIndex <= -2 ){
 			ExceptionZZZ ez = new ExceptionZZZ("The index can not be smaller than 0", iERROR_PARAMETER_VALUE,  StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName()); 
 			//doesn�t work. Only works when > JDK 1.4
@@ -477,7 +477,7 @@ public class StringZZZ implements IConstantZZZ{
 	return s2c.charAt(iIndex);
 }
 
-	public static boolean contains(String sString, String sMatch){
+	public static boolean contains(String sString, String sMatch) throws ExceptionZZZ {
 		return StringZZZ.contains(sString, sMatch, true);	
 	}
 	
@@ -492,7 +492,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 17.05.2024, 17:09:30
 	 */
-	public static boolean contains(String sString, String sMatch, boolean bExactMatch){
+	public static boolean contains(String sString, String sMatch, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -535,7 +535,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
-	public static boolean containsAsTagXml(String sString, String sMatchTagName)throws ExceptionZZZ{
+	public static boolean containsAsTagXml(String sString, String sMatchTagName)throws ExceptionZZZ {
 		return StringZZZ.containsAsTagXml(sString, sMatchTagName, true);
 	}
 	
@@ -547,7 +547,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
-	public static boolean containsAsTagXml(String sString, String sMatchTagName, boolean bExactMatch)throws ExceptionZZZ{
+	public static boolean containsAsTagXml(String sString, String sMatchTagName, boolean bExactMatch)throws ExceptionZZZ {
 		return XmlUtilZZZ.containsTagName(sString, sMatchTagName, bExactMatch);
 	}
 	
@@ -559,7 +559,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
-	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing){
+	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing) throws ExceptionZZZ {
 		return StringZZZ.containsAsTag(sString, sMatchTagStarting, sMatchTagClosing, true);
 	}
 	
@@ -571,7 +571,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
-	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing, boolean bExactMatch){
+	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -625,7 +625,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String auch nur irgendein Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
-	public static boolean containsBlankAny(String sString) {
+	public static boolean containsBlankAny(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -647,7 +647,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
-	public static boolean containsBlankOnly(String sString) {
+	public static boolean containsBlankOnly(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -669,7 +669,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String auch nur irgendeinen Kleinbuchstaben enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
-	public static boolean containsLowercaseAny(String sString) {
+	public static boolean containsLowercaseAny(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -691,7 +691,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Kleinbuchstaben und Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
-	public static boolean containsLowercaseAndBlankOnly(String sString) {
+	public static boolean containsLowercaseAndBlankOnly(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -715,7 +715,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String auch nur irgendeine Zahle 0-9 enthaelt.
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:16
 	 */
-	public static boolean containsNumericAny(String sString) {
+	public static boolean containsNumericAny(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -739,7 +739,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Zahlen 0-9 und Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:16
 	 */
-	public static boolean containsNumericAndBlankOnly(String sString) {
+	public static boolean containsNumericAndBlankOnly(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -766,7 +766,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String auch nur irgendeinen Grossbuchstaben enthaelt.
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:44
 	 */
-	public static boolean containsUppercaseAny(String sString) {
+	public static boolean containsUppercaseAny(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -787,7 +787,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Grossbuchstaben und Leerzeichen enthaelt.
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:44
 	 */
-	public static boolean containsUppercaseAndBlankOnly(String sString) {
+	public static boolean containsUppercaseAndBlankOnly(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -806,7 +806,7 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean containsOnly(String sString, String sMatch) {
+	public static boolean containsOnly(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -827,7 +827,7 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean containsOnly(String sString, String sMatch, String sAllowed) {
+	public static boolean containsOnly(String sString, String sMatch, String sAllowed) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -863,7 +863,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author lindhaueradmin, 12.02.2019, 19:43:08
 	 */
-	public static boolean equals(String sString, String sMatch){
+	public static boolean equals(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null && sMatch == null){
@@ -892,7 +892,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author lindhaueradmin, 12.02.2019, 19:43:08
 	 */
-	public static boolean equals(String sString, String sMatch, boolean bExactMatch){
+	public static boolean equals(String sString, String sMatch, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(bExactMatch) {
@@ -928,7 +928,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 27.10.2022, 12:19:10
 	 */
-	public static boolean equalsIgnoreCase(String sString, char cMatch){
+	public static boolean equalsIgnoreCase(String sString, char cMatch) throws ExceptionZZZ {
 		boolean bReturn = true;
 		main:{
 			if(sString==null && cMatch == CharZZZ.getEmpty()){
@@ -972,7 +972,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author lindhaueradmin, 12.02.2019, 19:43:08
 	 */
-	public static boolean equalsIgnoreCase(String sString, String sMatch){
+	public static boolean equalsIgnoreCase(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(sString==null && sMatch == null){
@@ -995,12 +995,12 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	/* Unter Java String gibt es nur startsWith.*/
-	public static boolean endsWith(String sString, String sMatch){
+	public static boolean endsWith(String sString, String sMatch) throws ExceptionZZZ {
 		return StringZZZ.endsWith(sString, sMatch, true);
 	}
 	
 	/* Unter Java String gibt es nur startsWith.*/
-	public static boolean endsWith(String sString, String sMatch, boolean bExactMatch){
+	public static boolean endsWith(String sString, String sMatch, boolean bExactMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1025,7 +1025,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
-	public static boolean endsWithIgnoreCase(String sString, String sMatch){
+	public static boolean endsWithIgnoreCase(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1048,7 +1048,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	//######################################################################
 	
-	public static String[] explode(String sString, String sDelimiter){
+	public static String[] explode(String sString, String sDelimiter) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1059,7 +1059,7 @@ public class StringZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
-	public static String[] explode(String sString, String[] saDelimiter){
+	public static String[] explode(String sString, String[] saDelimiter) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1103,7 +1103,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	
 	/* Unter Java String gibt es nur startsWith. Der Vollstaendigkeit halber hier quasi uebernommen. */
-	public static boolean startsWith(String sString, String sMatch){
+	public static boolean startsWith(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1120,7 +1120,7 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean startsWith(String sString, String sMatch, boolean bExactMatch){		
+	public static boolean startsWith(String sString, String sMatch, boolean bExactMatch) throws ExceptionZZZ {		
 		if(bExactMatch) {
 			return StringZZZ.startsWith(sString, sMatch);
 		}else {				
@@ -1129,7 +1129,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
-	public static boolean startsWithIgnoreCase(String sString, String sMatch){
+	public static boolean startsWithIgnoreCase(String sString, String sMatch) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1155,7 +1155,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iLength
 	 * @return String
 	 */
-	public static String left(String sString, int iPos){
+	public static String left(String sString, int iPos) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1180,7 +1180,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iLength
 	 * @return String
 	 */
-	public static String left(String sString, String sToFind){
+	public static String left(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.left(sString, sToFind, true);
 	}
 	
@@ -1190,7 +1190,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iLength
 	 * @return String
 	 */
-	public static String left(String sString, String sToFind, boolean bExactMatch){
+	public static String left(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1230,7 +1230,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 06.07.2007 07:24:05
 	 */
-	public static String left(String sString, int iPosition, String sToFind){
+	public static String left(String sString, int iPosition, String sToFind) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1264,19 +1264,19 @@ public class StringZZZ implements IConstantZZZ{
 	
 	//################################################
 	
-	public static String leftKeep(String sString, String sToFind){
+	public static String leftKeep(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.leftKeep(sString, sToFind, true, -1);
 	}
 	
-	public static String leftKeep(String sString, String sToFind, int iIndexStartingPositionFromLeft){
+	public static String leftKeep(String sString, String sToFind, int iIndexStartingPositionFromLeft) throws ExceptionZZZ {
 		return StringZZZ.leftKeep(sString, sToFind, true, iIndexStartingPositionFromLeft);
 	}
 	
-	public static String leftKeep(String sString, String sToFind, boolean bExactMatch){
+	public static String leftKeep(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		return StringZZZ.leftKeep(sString, sToFind, bExactMatch, -1);
 	}
 	
-	public static String leftKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromLeft){
+	public static String leftKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromLeft) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1323,7 +1323,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
-	public static String leftback(String sString, String sToFind){
+	public static String leftback(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.leftback(sString, sToFind, true);
 	}
 	
@@ -1339,7 +1339,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
-	public static String leftback(String sString, String sToFind,boolean bExactMatch){
+	public static String leftback(String sString, String sToFind,boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1367,7 +1367,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:20:48
 	 */
-	public static String leftback(String sString, int iPosFromTheRight){
+	public static String leftback(String sString, int iPosFromTheRight) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1388,7 +1388,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:21:47
 	 */
-	public static String leftbackKeep(String sString, String sToFind){
+	public static String leftbackKeep(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.leftbackKeep(sString, sToFind, true, -1);
 	}
 	
@@ -1398,7 +1398,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
 	 */
-	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch){
+	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		return StringZZZ.leftbackKeep(sString, sToFind, bExactMatch, -1);
 	}
 	
@@ -1408,7 +1408,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
 	 */
-	public static String leftbackKeep(String sString, String sToFind, int iIndexStartingPositionFromRight){
+	public static String leftbackKeep(String sString, String sToFind, int iIndexStartingPositionFromRight) throws ExceptionZZZ {
 		return StringZZZ.leftbackKeep(sString, sToFind, true, iIndexStartingPositionFromRight);
 	}
 	
@@ -1418,7 +1418,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
 	 */
-	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromRight){
+	public static String leftbackKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingPositionFromRight) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{		
 			String sLeftBack=StringZZZ.leftback(sString, sToFind, bExactMatch);
@@ -1436,7 +1436,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 29.11.2025, 08:14:09
 	 */
-	public static String leftbackKeep(String sString, int iPosFromTheRight){
+	public static String leftbackKeep(String sString, int iPosFromTheRight) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1463,7 +1463,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 18.03.2008 06:29:53
 	 */
-	public static String mid(String sString, int iPos, int iLength){
+	public static String mid(String sString, int iPos, int iLength) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1489,11 +1489,11 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static String mid(String sString, int iPos, String sToFind){
+	public static String mid(String sString, int iPos, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.mid(sString, iPos, sToFind, true);
 	}
 	
-	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+	public static String mid(String sString, int iIndexStart, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1518,11 +1518,11 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String mid(String sString, String sToFindLeft, String sToFindRight) {
+	public static String mid(String sString, String sToFindLeft, String sToFindRight) throws ExceptionZZZ {
 		return StringZZZ.mid_(sString, sToFindLeft, sToFindRight, true);
 	}
 	
-	private static String mid_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) {
+	private static String mid_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1551,11 +1551,11 @@ public class StringZZZ implements IConstantZZZ{
 	
 	
 	//########################
-	public static String midKeep(String sString, int iPos, String sToFind){
+	public static String midKeep(String sString, int iPos, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.midKeep(sString, iPos, sToFind, true);
 	}
 	
-	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch){
+	public static String midKeep(String sString, int iIndexStart, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1575,11 +1575,11 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static String midKeep(String sString, String sToFindLeft, String sToFindRight) {
+	public static String midKeep(String sString, String sToFindLeft, String sToFindRight) throws ExceptionZZZ {
 		return StringZZZ.midKeep_(sString, sToFindLeft, sToFindRight, true);
 	}
 	
-	private static String midKeep_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) {
+	private static String midKeep_(String sString, String sToFindLeft, String sToFindRight,  boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1614,7 +1614,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRight(String sString, int iLeftPosition, int iRightPosition){
+	public static String midLeftRight(String sString, int iLeftPosition, int iRightPosition) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
 			if(StringZZZ.isEmpty(sString))break main;
@@ -1642,7 +1642,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition){
+	public static String midLeftRightKeep(String sString, int iLeftPosition, int iRightPosition) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
 			if(StringZZZ.isEmpty(sString))break main;
@@ -1669,7 +1669,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midBounds(String sString, int iLeftPositionFromLeft, int iRightPositionFromRight){
+	public static String midBounds(String sString, int iLeftPositionFromLeft, int iRightPositionFromRight) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
@@ -1690,7 +1690,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightback(String sString, String sLeft, String sRight){
+	public static String midLeftRightback(String sString, String sLeft, String sRight) throws ExceptionZZZ {
 		return StringZZZ.midLeftRightback(sString, sLeft, sRight, true);
 	}
 	
@@ -1702,7 +1702,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch){
+	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1738,7 +1738,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRight(String sString, String sLeft, String sRight){
+	public static String midLeftRight(String sString, String sLeft, String sRight) throws ExceptionZZZ {
 		return StringZZZ.midLeftRight(sString, sLeft, sRight, true);
 	}
 	
@@ -1750,7 +1750,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch){
+	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1790,7 +1790,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightKeep(String sString, String sLeft, String sRight){
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight) throws ExceptionZZZ {
 		return StringZZZ.midLeftRightKeep(sString, sLeft, sRight, true);
 	}
 	
@@ -1803,7 +1803,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightKeep(String sString, String sLeft, String sRight, boolean bExactMatch){
+	public static String midLeftRightKeep(String sString, String sLeft, String sRight, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1839,7 +1839,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightIntersect(String sString, String sLeft, String sRight){
+	public static String midLeftRightIntersect(String sString, String sLeft, String sRight) throws ExceptionZZZ {
 		return StringZZZ.midLeftRightbackIntersect(sString, sLeft, sRight, true);
 	}
 	
@@ -1851,7 +1851,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
-	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch){
+	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
@@ -1898,7 +1898,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param sToFind
 	 * @return String
 	 */
-	public static String rightKeep(String sString, String sToFind){
+	public static String rightKeep(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.rightKeep(sString, sToFind, true, 0);
 	}
 	
@@ -1912,7 +1912,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param sToFind
 	 * @return String
 	 */
-	public static String rightKeep(String sString, String sToFind, int iIndexStartingFromRight){
+	public static String rightKeep(String sString, String sToFind, int iIndexStartingFromRight) throws ExceptionZZZ {
 		return StringZZZ.rightKeep(sString, sToFind, true, iIndexStartingFromRight);
 	}
 	
@@ -1927,7 +1927,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param bExactMatch
 	 * @return String
 	 */
-	public static String rightKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingFromRight){
+	public static String rightKeep(String sString, String sToFind, boolean bExactMatch, int iIndexStartingFromRight) throws ExceptionZZZ {
 //		String sReturn=sString;
 //		main:{
 //			if(StringZZZ.isEmpty(sString)) break main;
@@ -1971,7 +1971,7 @@ public class StringZZZ implements IConstantZZZ{
 
 	
 	//############################################
-	public static String letterAtPosition(String sString, int iIndex){
+	public static String letterAtPosition(String sString, int iIndex) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -1988,11 +1988,11 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String letterFirst(String sString){
+	public static String letterFirst(String sString) throws ExceptionZZZ {
 		return StringZZZ.letterAtPosition(sString, 0);
 	}
 	
-	public static String letterLast(String sString){
+	public static String letterLast(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2007,7 +2007,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iLength
 	 * @return String
 	 */
-	public static String right(String sString, int iPos){
+	public static String right(String sString, int iPos) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2040,7 +2040,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param sToFind
 	 * @return String
 	 */
-	public static String right(String sString, String sToFind){
+	public static String right(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.right(sString, sToFind, true);
 	}
 	
@@ -2053,7 +2053,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param bExactMatch
 	 * @return String
 	 */
-	public static String right(String sString, String sToFind, boolean bExactMatch){
+	public static String right(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2093,7 +2093,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.07.2025, 09:08:02
 	 */
-	public static String valueOf(Object obj) throws ExceptionZZZ{
+	public static String valueOf(Object obj) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(obj==null) break main;
@@ -2121,7 +2121,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ {
 		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, true);
 	}
 	
@@ -2136,7 +2136,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ {
 		return StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
 	
@@ -2150,7 +2150,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMid(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ {
 		return StringZZZ.vecMidCascaded(sStringToParse, sSepLeft, sSepRight, bReturnSeparators, bExactMatch);		
 	}
 	
@@ -2167,7 +2167,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep) throws ExceptionZZZ {
 		return StringZZZ.vecMidCascaded(sStringToParse, sLeftSep, sRightSep, true);
 	}
 	
@@ -2182,7 +2182,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ {
 		return StringZZZ.vecMidCascaded(sStringToParse, sLeftSep, sRightSep, bReturnSeparators, true);
 	}
 	
@@ -2196,7 +2196,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+	public static Vector3ZZZ<String>vecMidCascaded(String sStringToParse, String sSepLeft, String sSepRight, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ {
 		Vector3ZZZ<String>vecReturn = new Vector3ZZZ<String>();
 		main:{											
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
@@ -2729,7 +2729,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.08.2022, 21:21:53
 	 */
-	public static String padLeft(String sInput, int length) {
+	public static String padLeft(String sInput, int length) throws ExceptionZZZ {
 		 return String.format("%" + length + "s", sInput);	
 	}
 	
@@ -2741,7 +2741,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.08.2022, 21:21:53
 	 */
-	public static String padLeft(String sInput, int length, char cFiller) {
+	public static String padLeft(String sInput, int length, char cFiller) throws ExceptionZZZ {
 		return String.format("%1$" + length + "s", sInput).replace(' ', cFiller);
 	}
 	
@@ -2752,7 +2752,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.08.2022, 21:21:48
 	 */
-	public static String padRight(String sInput, int length) {
+	public static String padRight(String sInput, int length) throws ExceptionZZZ {
 		 return String.format("%-" + length + "s", sInput);  
 	}
 	
@@ -2763,7 +2763,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.08.2022, 21:21:48
 	 */
-	public static String padRight(String sInput, int length, char cFiller) {
+	public static String padRight(String sInput, int length, char cFiller) throws ExceptionZZZ {
 		return String.format("%1$-" + length + "s", sInput).replace(' ', cFiller);
 	}
 	
@@ -2774,7 +2774,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param iTimes
 	 * @return String
 	 */
-	public static String repeat(String sString, int iTimes){
+	public static String repeat(String sString, int iTimes) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			check:{
@@ -2813,7 +2813,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.08.2022, 21:18:41
 	 */
-	public static final String repeatChar (char c, int icount) {
+	public static final String repeatChar (char c, int icount) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			check:{
@@ -2828,7 +2828,7 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String word(String sString, String sDelimiter, long lPosition){
+	public static String word(String sString, String sDelimiter, long lPosition) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			check:{
@@ -2855,7 +2855,7 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static boolean isNull(String sString) {
+	public static boolean isNull(String sString) throws ExceptionZZZ {
 		if(sString==null) return true;
 		return false;
 	}
@@ -2871,23 +2871,23 @@ public class StringZZZ implements IConstantZZZ{
 	 *
 	 * javadoc created by: 0823, 24.07.2006 - 08:52:50
 	 */
-	public static boolean isEmpty(String sString){
+	public static boolean isEmpty(String sString) throws ExceptionZZZ {
 		return StringUtils.isEmpty(sString);
 	}
 	
-	public static boolean isEmptyNull(String sString){		
+	public static boolean isEmptyNull(String sString) throws ExceptionZZZ {		
 		if(sString==null) return true;
 		if(sString.equals("")) return true;
 		return false;
 	}
 	
-	public static boolean isEmptyTrimmed(String sString){		
+	public static boolean isEmptyTrimmed(String sString) throws ExceptionZZZ {		
 		if(sString==null) return true;
 		if(sString.trim().equals("")) return true;
 		return false;
 	}
 	
-	public static boolean isFloat(String sString){
+	public static boolean isFloat(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2908,7 +2908,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param sString
 	 * @return
 	 */
-	public static boolean isFloatExplizit(String sString){
+	public static boolean isFloatExplizit(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2927,7 +2927,7 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;		
 	}
 	
-	public static boolean isInteger(String sString){
+	public static boolean isInteger(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -2956,7 +2956,7 @@ public class StringZZZ implements IConstantZZZ{
 	 *
 	 * javadoc created by: 0823, 24.07.2006 - 08:52:50
 	 */
-	public static boolean isBlank(String sString){
+	public static boolean isBlank(String sString) throws ExceptionZZZ {
 		return StringUtils.isBlank(sString);
 	}
 	
@@ -2964,7 +2964,7 @@ public class StringZZZ implements IConstantZZZ{
 		return JsonUtilZZZ.isJsonValid(sString);
 	}
 	
-	public static boolean isWhitespace(String sString){
+	public static boolean isWhitespace(String sString) throws ExceptionZZZ {
 		return StringUtils.isWhitespace(sString);
 		/*
 		String sLineProof = sLine.trim();
@@ -2981,7 +2981,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 20.09.2011 14:15:12
 	 */
-	public static boolean isLowerized(String sString){
+	public static boolean isLowerized(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3003,7 +3003,7 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhauer; 20.09.2011 14:16:44
 	 */
-	public static boolean isCapitalized(String sString){
+	public static boolean isCapitalized(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3071,7 +3071,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 * @author Fritz Lindhauer, 14.01.2023, 08:45:10
 	 */
-	public static boolean isAlphabet(String sString){
+	public static boolean isAlphabet(String sString) throws ExceptionZZZ {
 		return StringUtils.isAlpha(sString);
 	}
 	
@@ -3091,7 +3091,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 * @author Fritz Lindhauer, 14.01.2023, 08:47:53
 	 */
-	public static boolean isAlphanumeric(String sString){
+	public static boolean isAlphanumeric(String sString) throws ExceptionZZZ {
 		return StringUtils.isAlphanumeric(sString);
 	}
 	
@@ -3101,10 +3101,10 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* @param sString
 	* lindhaueradmin; 24.10.2006 09:16:35
 	 */
-	public static boolean isNumeric(String sString){
+	public static boolean isNumeric(String sString) throws ExceptionZZZ {
 		return StringUtils.isNumeric(sString);
 	}
-	public static boolean isNumericWithPrefix(String sString) {
+	public static boolean isNumericWithPrefix(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3128,7 +3128,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 12:45:46
 	 */
-	public static boolean isPalindrom(String sString){
+	public static boolean isPalindrom(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3148,7 +3148,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:15:12
 	 */
-	public static boolean isUpperized(String sString){
+	public static boolean isUpperized(String sString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3168,13 +3168,13 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 * @author Fritz Lindhauer, 17.11.2020, 11:30:57
 	 */
-	public static boolean hasConsecutiveDuplicateCharacter(String str) {
+	public static boolean hasConsecutiveDuplicateCharacter(String str) throws ExceptionZZZ {
 	    Pattern p = Pattern.compile("(.)\\1");
 	    Matcher m = p.matcher(str);
 	    return m.find();
 	}
 	
-	public static boolean hasConsecutiveDuplicateCharacter(String str, char cToFind) {
+	public static boolean hasConsecutiveDuplicateCharacter(String str, char cToFind) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(str))break main;
@@ -3193,7 +3193,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 * @author Fritz Lindhauer, 17.11.2020, 11:30:57
 	 */
-	public static boolean endsWithConsecutiveDuplicateCharacter(String str) {
+	public static boolean endsWithConsecutiveDuplicateCharacter(String str) throws ExceptionZZZ {
 	    Pattern p = Pattern.compile("(.)\\1$");
 	    Matcher m = p.matcher(str);
 	    return m.find();
@@ -3298,7 +3298,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 13.06.2007 06:58:41
 	 */
-	public static String capitalize(String sString){
+	public static String capitalize(String sString) throws ExceptionZZZ {
 		return StringUtils.capitalize(sString);
 	}
 	
@@ -3308,7 +3308,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:28:13
 	 */
-	public static String uncapitalize(String sString){
+	public static String uncapitalize(String sString) throws ExceptionZZZ {
 		return StringUtils.uncapitalize(sString);
 	}
 	
@@ -3320,7 +3320,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:46:19
 	 */
-	public static String toCamelCase(String sString, String sDelimiter){
+	public static String toCamelCase(String sString, String sDelimiter) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3344,7 +3344,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:54:55
 	 */
-	public static String toCamelCase(String sString){
+	public static String toCamelCase(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3370,7 +3370,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 
-		public static String toProperCase(String sString) {
+		public static String toProperCase(String sString) throws ExceptionZZZ {
 			String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -3390,7 +3390,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 27.07.2025, 08:23:40
 		 */
-		public static String toString(Object obj) throws ExceptionZZZ{
+		public static String toString(Object obj) throws ExceptionZZZ {
 			String sReturn = null;
 			main:{
 				if(obj==null) break main;
@@ -3408,7 +3408,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 			return sReturn;
 		}
 		
-		public static String toShorten(String sString, int iShortenMethodType, int iOffset) throws ExceptionZZZ{
+		public static String toShorten(String sString, int iShortenMethodType, int iOffset) throws ExceptionZZZ {
 			String sReturn = sString;
 			main:{
 				if(StringZZZ.isEmpty(sString)) break main;
@@ -3455,7 +3455,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		/* http://www.kodejava.org/examples/266.html
 		 * Von FGL angepasst
 		 */
-		public static InputStream toInputStream(String sString){
+		public static InputStream toInputStream(String sString) throws ExceptionZZZ {
 			InputStream objReturn=null;
 			main:{
 				if(sString==null) break main;			
@@ -3485,7 +3485,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	      * http://www.kodejava.org/examples/266.html
 	      * Von FGL angepasst
 	      */
-		 public String InputStream2String(InputStream is) {
+		 public String InputStream2String(InputStream is) throws ExceptionZZZ {
 			 String sReturn = null;
 			 try{
 			 if (is != null) {				 
@@ -3521,7 +3521,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* Fritz Lindhauer; 06.10.2015 07:56:01
 	 */
-	public static int count(String sString, String sToFind){
+	public static int count(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.countMatches(sString, sToFind);
 	}
 	
@@ -3533,7 +3533,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* Fritz Lindhauer; 06.10.2015 07:56:01
 	 */
-	public static int count(String sString, String sToFind, boolean bExactMatch){
+	public static int count(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		return StringZZZ.countMatches(sString, sToFind, bExactMatch);
 	}
 	
@@ -3545,7 +3545,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* Fritz Lindhauer; 06.10.2015 07:59:27
 	 */
-	public static int countMatches(String sString, String sToFind){
+	public static int countMatches(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.countMatches(sString, sToFind, true);
 	}
 	
@@ -3557,7 +3557,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* Fritz Lindhauer; 06.10.2015 07:59:27
 	 */
-	public static int countMatches(String sString, String sToFind, boolean bExactMatch){
+	public static int countMatches(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		if(bExactMatch) {
 			return StringUtils.countMatches(sString, sToFind);
 		}else {
@@ -3569,7 +3569,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		}
 	}
 	
-	public static int countSubstring(String sString, String sToFind){
+	public static int countSubstring(String sString, String sToFind) throws ExceptionZZZ {
 		int iReturn=0;
 		main:{
 			if(StringZZZ.isEmpty(sString) || StringZZZ.isEmpty(sToFind)){
@@ -3589,7 +3589,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return iReturn;
 	}
 	
-	public static int countChar(String sString, char cToFind){
+	public static int countChar(String sString, char cToFind) throws ExceptionZZZ {
 		int iReturn=0;
 		main:{
 			//Merke: Als primitiver Datentyp kann char nicht null sein
@@ -3607,7 +3607,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return iReturn;
 	}
 	
-	public static int countChar(String sString, Character objChar){
+	public static int countChar(String sString, Character objChar) throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			if(StringZZZ.isEmpty(sString) || objChar == null){
@@ -3636,7 +3636,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 15.06.2007 00:52:08
 	 */
-	public static String rightback(String sString, int iPosition){
+	public static String rightback(String sString, int iPosition) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3658,7 +3658,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @param sToFind
 	 * @return
 	 */
-	public static String rightback(String sString, String sToFind){
+	public static String rightback(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.rightback(sString, sToFind, true);
 	}
 	
@@ -3670,7 +3670,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @param bExactMatch
 	 * @return
 	 */
-	public static String rightback(String sString, String sToFind, boolean bExactMatch){
+	public static String rightback(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{		
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3715,7 +3715,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @param bExactMatch
 	 * @return
 	 */
-	public static String rightbackKeep(String sString, int iPosition){
+	public static String rightbackKeep(String sString, int iPosition) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3739,7 +3739,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @param sToFind
 	 * @return
 	 */
-	public static String rightbackKeep(String sString, String sToFind){
+	public static String rightbackKeep(String sString, String sToFind) throws ExceptionZZZ {
 		return StringZZZ.rightbackKeep(sString, sToFind, true);
 	}
 	
@@ -3751,7 +3751,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @param bExactMatch
 	 * @return
 	 */
-	public static String rightbackKeep(String sString, String sToFind, boolean bExactMatch){
+	public static String rightbackKeep(String sString, String sToFind, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{		
 			String sRightBack=StringZZZ.rightback(sString, sToFind, bExactMatch);
@@ -3789,7 +3789,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 24.09.2008 09:19:44
 	 */
-	public static String replaceCharacterGerman(String sString2Parse)throws ExceptionZZZ{
+	public static String replaceCharacterGerman(String sString2Parse) throws ExceptionZZZ {
 		String sReturn = sString2Parse;
 		main:{
 			//Mache dies als mehrmaligen Aufruf von replaceOneCharacterGerman(sString2Parse, objReturnReference);
@@ -3831,7 +3831,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 24.09.2008 09:19:44
 	 */
-	public static String replaceOneCharacterGerman(String sString2Parse)throws ExceptionZZZ{
+	public static String replaceOneCharacterGerman(String sString2Parse) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, null);
@@ -3865,7 +3865,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 24.09.2008 09:19:44
 	 */
-	public static String replaceOneCharacterGerman(String sString2Parse, ReferenceZZZ<Boolean>objReturn)throws ExceptionZZZ{
+	public static String replaceOneCharacterGerman(String sString2Parse, ReferenceZZZ<Boolean>objReturn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			sReturn = StringZZZ.replaceOneCharacterGerman_(sString2Parse, objReturn);		
@@ -3873,7 +3873,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 	
-	private static String replaceOneCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturnReferenceIn)throws ExceptionZZZ{
+	private static String replaceOneCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturnReferenceIn) throws ExceptionZZZ {
 		//TODOGOON20250927 Parameter, ob dieser Umlautkontext für Eigennamen berücksichtigt werden soll
 		String sReturn = sString2Parse;
 		ReferenceZZZ<Boolean> objReturnReference = null;
@@ -4101,144 +4101,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 	
-	
-	/** BACKUP bis replaceFirstCharacterGerman_ läuft
-	 * @param sString2Parse
-	 * @param objReturn
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 27.09.2025, 16:11:37
-	 */
-	private static String replaceCharacterGerman_(String sString2Parse, ReferenceZZZ<Boolean>objReturnRefernce)throws ExceptionZZZ{
-		String sReturn = sString2Parse;
-		main:{
-			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind.
-			//So bleiben Abkuerzungen bestehen. Z.B. EU
-			if(sString2Parse.length() <= 3){
-				sReturn = sString2Parse;
-				break main;
-			}
-						
-			//leider ist es mir nicht gelungen das alles auf einen Streich zu definieren und zu ersetzen        org.apache.regexp.RE objRe = new org.apache.regexp.RE("[(oe)]|[(ae)]|[(ue)]|[(ss)]");
-			//Daher werden mehrere Objekte definiert.
-			//Am Schluss der Funktion erfolgt dann die Ersetzung der Buchstabenkombination in den dt. Umlaut fuer jedes der Objekte.
-			
-		
-			//TODOGOON20250927 Parameter, ob dieser Umlautkontext für Eigennamen berücksichtigt werden soll
-						//###### Umlautkontext beruecksichtigen, heuristischer Ansatz fuer Eigennamen Goethe, Suez
-			/*
-			(?<![qQ])ue(?![aeiouAEIOU])
-ae(?![aeiouAEIOU])
-oe(?![aeiouAEIOU])
-			 */
-			
-			
-						
-			
-			
-			//als Beispiel für einen sinnvollen Parameter			objRe1.setMatchFlags(org.apache.regexp.RE.MATCH_CASEINDEPENDENT); 			
-			// stemp = objRe.subst(stemp, "[ö]|[ä]|[ü]|[ß]");//objRe.subst("[(oe)][(ae)][(ue)][(ss)]","[ö][ä][ü][ß]"); oder ähnlich.
-			//als ein Beispiel für ne statische Methode: String stemp2 =org.apache.regexp.RE.simplePatternToFullRegularExpression("oe");
-			//Merke: Als Beispiel für die Prüfung: 					//boolean bMatch = objRe.match(stemp);					   			   
-			org.apache.regexp.RE objReOe = new org.apache.regexp.RE("(oe)");			
-			org.apache.regexp.RE objReAe = new org.apache.regexp.RE("(ae)");
-			
-			//einen RegEx-Ansatz für die Ersetzung von ue → ü, aber nur in Fällen, wo es sich tatsächlich um ein Umlaut-ue handelt – nicht, wenn es Teil einer echten Buchstabenfolge wie in Quelle ist.
-            //Das Problem: Im Deutschen ist ue nicht immer gleich ü. Klassisch wird ue nur als Ersatz für ü verwendet, wenn kein q davorsteht (weil nach q immer ein „qu-“ Laut kommt, nie ein Umlaut).
-			//Also funktioniert die einfache Loesung nicht: org.apache.regexp.RE objReUe1 = new org.apache.regexp.RE("(ue)");
-			//Zudem noch Wortanfang und in der Mitte unterschiedlich behandeln			
-			// Kleinbuchstaben: ue → ü, aber nicht nach q
-			org.apache.regexp.RE objReUe_klein = new org.apache.regexp.RE("([^qQ])ue");
-			
-			// Großbuchstaben: Ue → Ü, aber nicht nach Q
-			org.apache.regexp.RE objReUe_gross = new org.apache.regexp.RE("([^qQ])Ue");
-			
-						
-			//Direkt am Anfang:
-			org.apache.regexp.RE objReUe_amAnfangGross = new org.apache.regexp.RE("^Ue");
-			org.apache.regexp.RE objReUe_amAnfangKlein = new org.apache.regexp.RE("^ue");
-			
-			//Grossschreibung
-			org.apache.regexp.RE objReUe_Grossschreibung = new org.apache.regexp.RE("![Q]UE");
-			
-				
-			//Problem: Beim Replacen wird hier auch der erste Buchstabe mit umgewandelt.
-			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9]){1}(ss)|^(ss)");   //wie. z.B. in Odyssee, hier nicht umwandeln. Das würde Asseln umwandlen, weil ss am Anfang stehen dürfte.
-			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9öÖüÜäÄ]){1}(ss)");   //nicht ß selber und kein y 																																	//wie. z.B. in Odyssee, hier nicht umwandeln.
-                                                                                                         //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
-			org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([b-dB-Df-hF-Hj-nJ-Np-tP-Tv-xzV-XZ0-9öÖüÜäÄ]){1}(ss)");  //nicht ß selber und kein y (wg. Odyssee) 
-													//wie. z.B. in Odyssee, hier nicht umwandeln.
-			//auch kein Vokal vor dem ss (a, e, i, o, u) führt zum Umwandlen.
-			//wie z.B. in Ereignisse, Essen, Kassel
-
-			//ss am anfang wird nicht umgewandelt, da links und rechts ein Buchstabe abgeschnitten wird
-			//Asseln wird nicht umgewandelt, da beim betrachteten String sseln vorne ein Buchstabe fehlt.
-            //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
-		
-			
-			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treür" werden. 
-						
-			String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
-			boolean bTest = objReVowel.match(sReplace);
-			if(bTest==true){
-				sReturn = sString2Parse;
-				break main;
-			}
-			
-			
-		
-		
-		if(!sReplace.equals("")){//Merke: Ist ein Wort z.B. nur ein Buchstabe, so würde er verdoppelt beim Zusammenbauen
-			sReplace = objReOe.subst(sReplace, "ö");
-			sReplace = objReAe.subst(sReplace, "ä");
-
-			//sReplace = objRe4.subst(sReplace, "ß"); /Ersetzt auch den zusaetzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
-			boolean bMatch = objReSs.match(sReplace);
-			if(bMatch==true){
-				sReplace = StringZZZ.replace(sReplace, "ss", "ß");
-			}   
-		
-//			2b) Wieder zusammenbauen
-			sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);
-		}//end if sReplace!=""
-		
-		
-		if(sReturn.length()>=4) {//20250927 jetzt habe ich auch eine Lösung für Ue am Anfang, darum nicht mehr: && !StringZZZ.isCapitalized(sReturn)){
-			boolean bMatch;
-			
-			bMatch = objReUe_klein.match(sReturn);
-			if(bMatch==true){
-				sReturn = StringZZZ.replace(sReturn, "ue", "ü");
-			}
-			
-			bMatch = objReUe_gross.match(sReturn);
-			if(bMatch==true){
-				sReturn = StringZZZ.replace(sReturn, "Ue", "Ü");
-			}
-			
-			bMatch = objReUe_amAnfangGross.match(sReturn);
-			if(bMatch==true){
-				sReturn = StringZZZ.replaceLeft(sReturn, "Ue", "Ü");
-			}
-			
-			bMatch = objReUe_amAnfangKlein.match(sReturn);
-			if(bMatch==true){
-				sReturn = StringZZZ.replaceLeft(sReturn, "ue", "ü");
-			}
-			
-			
-			bMatch = objReUe_Grossschreibung.match(sReturn);
-			if(bMatch==true){
-				sReturn = StringZZZ.replace(sReturn, "UE", "Ü");
-			}
-		}
-		
-		
-		}///end main
-		return sReturn;
-	}
-	
-	public static String replaceCharacterGermanFromSentence(String sString2ParseIn) throws ExceptionZZZ{
+	public static String replaceCharacterGermanFromSentence(String sString2ParseIn) throws ExceptionZZZ {
 		String sReturn = sString2ParseIn;
 		main:{
 			if(StringZZZ.isEmptyNull(sString2ParseIn)) break main;
@@ -4282,15 +4145,15 @@ StringUtils.abbreviate("abcdefg", 4) = "a..."
 StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 
 	 */
-	public static String abbreviateDynamic(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+	public static String abbreviateDynamic(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ {
 		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, true);
 	}
 	
-	public static String abbreviateDynamicLeft(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+	public static String abbreviateDynamicLeft(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ {
 		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, false);
 	}
 	
-	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bRight) throws ExceptionZZZ{
+	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bRight) throws ExceptionZZZ {
 		String sReturn = sSource;
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
@@ -4351,15 +4214,15 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 
 			 */
-	public static String abbreviateStrict(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+	public static String abbreviateStrict(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ {
 		return abbreviateStrict_(sSource, iMaxCharactersAllowed,true);
 	}
 	
-	public static String abbreviateStrictFromRight(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+	public static String abbreviateStrictFromRight(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ {
 		return abbreviateStrict_(sSource, iMaxCharactersAllowed,false);
 	}
 	
-	private static String abbreviateStrict_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ{
+	private static String abbreviateStrict_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ {
 		String sReturn = sSource;
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
@@ -4413,7 +4276,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @return
 	 * @author Fritz Lindhauer, 05.11.2022, 09:09:25
 	 */
-	public static String appendMissing(String sString, String sToAppend) {
+	public static String appendMissing(String sString, String sToAppend) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)&&StringZZZ.isEmpty(sToAppend)) break main;
@@ -4444,23 +4307,23 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	* 
 	* lindhauer; 30.06.2007 11:43:38
 	 */
-	public static Integer[] indexOfAll(String sSource, String sString2Find){
+	public static Integer[] indexOfAll(String sSource, String sString2Find) throws ExceptionZZZ {
 		String[]saString2Find=new String[1];
 		saString2Find[0]=sString2Find;
 		return StringZZZ.indexOfAll(sSource, saString2Find, true);		
 	}
 	
-	public static Integer[] indexOfAll(String sSource, String sString2Find, boolean bCaseSensitive){
+	public static Integer[] indexOfAll(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		String[]saString2Find=new String[1];
 		saString2Find[0]=sString2Find;
 		return StringZZZ.indexOfAll(sSource, saString2Find, bCaseSensitive);		
 	}
 	
-	public static Integer[] indexOfAll(String sSource, String[] saString2Find){
+	public static Integer[] indexOfAll(String sSource, String[] saString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfAll(sSource, saString2Find, true);		
 	}
 	
-	public static Integer[] indexOfAll(String sSource, String[] saString2Find, boolean bCaseSensitive ){
+	public static Integer[] indexOfAll(String sSource, String[] saString2Find, boolean bCaseSensitive ) throws ExceptionZZZ {
 		Integer[] intaReturn=null;
 		main:{
 			if(isEmpty(sSource)) break main;
@@ -4503,11 +4366,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @return
 	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
 	 */
-	public static int indexOfFirstBefore(String sSource, String sString2Find) {
+	public static int indexOfFirstBefore(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, true);
 	}
 	
-	public static int indexOfFirstBefore(String sSource, String sString2Find, boolean bCaseSensitive) {
+	public static int indexOfFirstBefore(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4527,11 +4390,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	
-	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting) {
+	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting, true);
 	}
 	
-	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+	public static int indexOfFirstBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4550,11 +4413,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return iReturn;
 	}
 	
-	public static int indexOfFirstBehind(String sSource, String sString2Find) {
+	public static int indexOfFirstBehind(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBehind(sSource, sString2Find, true);
 	}
 	
-	public static int indexOfFirstBehind(String sSource, String sString2Find, boolean bCaseSensitive) {
+	public static int indexOfFirstBehind(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4573,11 +4436,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return iReturn;
 	}
 	
-	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting) {
+	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBehind(sSource, sString2Find, iIndexStarting, true);
 	}
 	
-	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+	public static int indexOfFirstBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4596,17 +4459,17 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return iReturn;
 	}
 	
-	public static int indexOfFirst(String sSource, String sString2Find) {
+	public static int indexOfFirst(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirst(sSource, sString2Find, true);
 	}
-	public static int indexOfFirst(String sSource, String sString2Find, boolean bCaseSensitive) {
+	public static int indexOfFirst(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBefore(sSource, sString2Find, bCaseSensitive);
 	}
 	
-	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting) {
+	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirst(sSource, sString2Find, iIndexStarting, true);
 	}
-	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+	public static int indexOfFirst(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) throws ExceptionZZZ {
 		return  StringZZZ.indexOfFirstBefore(sSource, sString2Find, iIndexStarting, bCaseSensitive);
 	}
 	
@@ -4617,10 +4480,10 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @param saString2Find, das Array der Strings, die gesucht werden. D.h. man kann also nach mehreren Strings suchen.
 	 * @return
 	 */
-	public static int indexOfFirst(String sSource, String[] saString2Find){
+	public static int indexOfFirst(String sSource, String[] saString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirst(sSource, saString2Find, true);
 	}
-	public static int indexOfFirst(String sSource, String[] saString2Find, boolean bCaseSensitive){
+	public static int indexOfFirst(String sSource, String[] saString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn=-1; //Merke: -1 wird auch zurueckgegeben, falls keiner der Teilstring nicht im String enthalten ist.
 		main:{
 			if(isEmpty(sSource))break main;
@@ -4654,7 +4517,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	public static int indexOfLast(String sSource, String sString2Find) {
+	public static int indexOfLast(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfLastBefore(sSource, sString2Find);
 	}
 	
@@ -4666,11 +4529,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @return
 	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
 	 */
-	public static int indexOfLastBefore(String sSource, String sString2Find) {
+	public static int indexOfLastBefore(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfLastBefore(sSource, sString2Find, true);
 	}
 	
-	public static int indexOfLastBefore(String sSource, String sString2Find, boolean bCaseSensitive) {
+	public static int indexOfLastBefore(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4690,11 +4553,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 		
-	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting) {
+	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting) throws ExceptionZZZ {
 		return StringZZZ.indexOfLastBefore(sSource, sString2Find, iIndexStarting, true);
 	}
 	
-	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+	public static int indexOfLastBefore(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4713,11 +4576,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return iReturn;
 	}
 
-	public static int indexOfLastBehind(String sSource, String sString2Find) {
+	public static int indexOfLastBehind(String sSource, String sString2Find) throws ExceptionZZZ {
 		return StringZZZ.indexOfLastBehind(sSource, sString2Find, true);
 	}
 	
-	public static int indexOfLastBehind(String sSource, String sString2Find, boolean bCaseSensitive) {
+	public static int indexOfLastBehind(String sSource, String sString2Find, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4737,10 +4600,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 		
-	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting) {
+	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting) throws ExceptionZZZ {
 		return StringZZZ.indexOfLastBehind(sSource, sString2Find, iIndexStarting, true);
 	}
-	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) {
+
+	public static int indexOfLastBehind(String sSource, String sString2Find, int iIndexStarting, boolean bCaseSensitive) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sSource)) break main;
@@ -4777,7 +4641,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	* 
 	* lindhaueradmin; 19.03.2007 12:57:39
 	 */
-	public static ArrayList<String> findSorted(String sString, String[] saPattern){
+	public static ArrayList<String> findSorted(String sString, String[] saPattern) throws ExceptionZZZ {
 		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			if(isEmpty(sString)) break main;
@@ -4836,7 +4700,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @param sString
 	 * @return
 	 */
-	public static String toUpperCaseNumberAbbreviation(String sString){
+	public static String toUpperCaseNumberAbbreviation(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
@@ -4868,7 +4732,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * 
 	 * siehe auch UnicodeZZZ.toByteArray(string) und .from(byte[])
 	 */
-	public static String toUtf8(String sString) throws ExceptionZZZ{		
+	public static String toUtf8(String sString) throws ExceptionZZZ {		
 		String sReturn=sString;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
@@ -4887,7 +4751,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @param sString
 	 * @return
 	 */
-	public static float toFloat(String sString){
+	public static float toFloat(String sString) throws ExceptionZZZ {
 		float fReturn=0.0f;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -4903,7 +4767,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return fReturn;
 	}
 	
-	public static String asHtml(String sString) throws ExceptionZZZ{
+	public static String asHtml(String sString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{		
 			if(StringZZZ.isEmpty(sString)){
@@ -4931,7 +4795,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return sReturn;
 	}
 	
-	public static String toHtml(String sString) throws ExceptionZZZ{
+	public static String toHtml(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -4942,7 +4806,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		}
 		return sReturn;
 	}
-	public static String toHtmlSimple(String sString){
+	public static String toHtmlSimple(String sString) throws ExceptionZZZ {
 		/*
 		 You should do some replacements on the text programmatically. Here are some clues:
 
@@ -4992,13 +4856,13 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	    return builder.toString();
 	}
 	
-	public static String toHtmlCrlf(String sString) throws ExceptionZZZ{
+	public static String toHtmlCrlf(String sString) throws ExceptionZZZ {
 		String sReturn = StringZZZ.replace(sString, StringZZZ.crlf(), "<br>");
 		return sReturn;
 	}
 	
 	
-	public static String toHtmlEscaped(String sString){
+	public static String toHtmlEscaped(String sString) throws ExceptionZZZ {
 		String sReturn = StringEscapeUtils.escapeHtml(sString);
 		return sReturn;
 	}
@@ -5008,7 +4872,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 *              Das wird hier vermieden.
 	 * @param sValue
 	 */
-	public static int toInteger(String sValue){
+	public static int toInteger(String sValue) throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			if(StringZZZ.isEmpty(sValue)) break main;
@@ -5024,19 +4888,19 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	//Leerzeichen wird von links und rechts abgeschnitten
-	public static String trim(String sString) {
+	public static String trim(String sString) throws ExceptionZZZ {
 		return StringZZZ.trim(sString," ");
 	}
 	
 	//Zeichen werden von links und von rechts abgeschnitten
-	public static String trim(String sString, String sStringToBeTrimmed) {
+	public static String trim(String sString, String sStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed);
 		sReturn = StringZZZ.trimRight(sString, sStringToBeTrimmed);
 		return sReturn;
 	}
 	
 	
-	public static String trimLeft(String sStringIn, String[] saStringToBeTrimmed){
+	public static String trimLeft(String sStringIn, String[] saStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5051,7 +4915,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String trimLeft(String sString, String sStringToBeTrimmed){
+	public static String trimLeft(String sString, String sStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5063,7 +4927,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String trimLeft(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn){
+	public static String trimLeft(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5089,7 +4953,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
-	public static String trimRight(String sStringIn, String[] saStringToBeTrimmed){
+	public static String trimRight(String sStringIn, String[] saStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5104,7 +4968,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String trimRight(String sString, String sStringToBeTrimmed){
+	public static String trimRight(String sString, String sStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5116,7 +4980,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String trimRight(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn){
+	public static String trimRight(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5143,7 +5007,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Trimme den String, schneide links und rechts jeweils das Markierungszeichen weg, trimme wieder, ...  schneide Markierungszeichen weg, usw. bis es kein passendes Paar Markierungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimMarked(String sStringIn, String[] saMark){
+	public static String trimMarked(String sStringIn, String[] saMark) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			
@@ -5158,7 +5022,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Trimme den String, schneide links und rechts jeweils das Markierungszeichen weg, trimme wieder, ...  schneide Markierungszeichen weg, usw. bis es kein passendes Paar Markierungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimMarked(String sString, String sMark){
+	public static String trimMarked(String sString, String sMark) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5178,7 +5042,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Trimme den String, schneide links und rechts jeweils ein einfaches/doppeltes Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches/doppeltes Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimAnyQuoteMarked(String sString){
+	public static String trimAnyQuoteMarked(String sString) throws ExceptionZZZ {
 		String sReturn = sString;		
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;
@@ -5197,18 +5061,18 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 
 	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimSingleQuoteMarked(String sString){
+	public static String trimSingleQuoteMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.trimMarked(sString, "'");
 	}
 	
 	/* Trimme den String, schneide links und rechts jeweils ein doppeltes Anfuehrungszeichen weg, trimme wieder, ...  schneide doppeltes Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimDoubleQuoteMarked(String sString){
+	public static String trimDoubleQuoteMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.trimMarked(sString, "\"");
 	}
 	
 	//Trimme FILE-SEPARATORS
-	public static String trimFileSeparators(String sStringIn){
+	public static String trimFileSeparators(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5225,7 +5089,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String trimFileSeparatorsLeft(String sStringIn) {
+	public static String trimFileSeparatorsLeft(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{           
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5241,7 +5105,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
-	public static String trimFileSeparatorsRight(String sStringIn){
+	public static String trimFileSeparatorsRight(String sStringIn) throws ExceptionZZZ{
 		String sReturn = sStringIn;
 		main:{			         
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5258,7 +5122,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	
 	//Trimme die Zahlen von links und von rechts weg
-	public static String trimNumeric(String sStringIn) {
+	public static String trimNumeric(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{			
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5273,7 +5137,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	//Trimme die Zahlen von links weg
-	public static String trimNumericLeft(String sString) {
+	public static String trimNumericLeft(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			String[] saToTrim = {"1","2","3","4","5","6","7","8","9","0"};
@@ -5283,7 +5147,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	//Trimme die Zahlen von rechts weg
-	public static String trimNumericRight(String sString) {
+	public static String trimNumericRight(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			String[] saToTrim = {"1","2","3","4","5","6","7","8","9","0"};
@@ -5295,11 +5159,11 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Trimme den String, schneide links und rechts jeweils ein Anfuehrungszeichen weg, trimme wieder, ...  schneide Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimQuotationMarked(String sString){
+	public static String trimQuotationMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.trimDoubleQuoteMarked(sString);		
 	}
 	
-	public static String stripCharacters(String sString, char[]caToStrip) {
+	public static String stripCharacters(String sString, char[]caToStrip) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5321,7 +5185,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripCharacters(String sStringIn, String[]saToStrip) {
+	public static String stripCharacters(String sStringIn, String[]saToStrip) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5341,7 +5205,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Anders als beim trimMarked werden hier Leerzeichen nicht getrimmt. 
 	 */
-	public static String stripMarked(String sString, String sMark){
+	public static String stripMarked(String sString, String sMark) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5360,19 +5224,19 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String stripSingleQuoteMarked(String sString){
+	public static String stripSingleQuoteMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.stripMarked(sString, "'");
 	}
 	
 	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String stripDoubleQuoteMarked(String sString){
+	public static String stripDoubleQuoteMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.stripMarked(sString, "\"");
 	}
 	
 	/* Anders als beim trimQuotationMarked werden hier Leerzeichen nicht getrimmt. 
 	 */
-	public static String stripQuotationMarked(String sString){
+	public static String stripQuotationMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.stripDoubleQuoteMarked(sString);		
 	}
 	
@@ -5382,7 +5246,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripLeft(String sString, String sStringToBeStripped){
+	public static String stripLeft(String sString, String sStringToBeStripped) throws ExceptionZZZ {
 		return StringZZZ.stripLeft(sString, sStringToBeStripped, true);
 	}
 	
@@ -5392,7 +5256,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripLeft(String sString, String sStringToBeStripped, boolean bExactMatch){
+	public static String stripLeft(String sString, String sStringToBeStripped, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5416,7 +5280,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripLeft(String sStringIn, String[] saStringsToBeStripped){
+	public static String stripLeft(String sStringIn, String[] saStringsToBeStripped) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5440,7 +5304,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripFileSeparators(String sString){
+	public static String stripFileSeparators(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
@@ -5455,7 +5319,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripFileSeparatorsLeft(String sStringIn){
+	public static String stripFileSeparatorsLeft(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
@@ -5477,7 +5341,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sString, String sStringToBeStripped){
+	public static String stripRight(String sString, String sStringToBeStripped) throws ExceptionZZZ {
 		return StringZZZ.stripRight(sString, sStringToBeStripped, -1);
 	}
 	
@@ -5487,7 +5351,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sString, String sStringToBeStripped, boolean bExactMatch){
+	public static String stripRight(String sString, String sStringToBeStripped, boolean bExactMatch) throws ExceptionZZZ {
 		return StringZZZ.stripRight(sString, sStringToBeStripped, -1, bExactMatch);
 	}
 	
@@ -5501,7 +5365,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn){
+	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn) throws ExceptionZZZ {
 		return StringZZZ.stripRight(sString, sStringToBeStripped, iNumberOfStripsIn, true);
 	}
 	
@@ -5514,7 +5378,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn, boolean bExactMatch){
+	public static String stripRight(String sString, String sStringToBeStripped, int iNumberOfStripsIn, boolean bExactMatch) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -5551,7 +5415,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripFileSeparatorsRight(String sString){
+	public static String stripFileSeparatorsRight(String sString) throws ExceptionZZZ {
 		String sReturn = sString;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
@@ -5569,7 +5433,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @param sStringToBeStripped
 	 * @return
 	 */
-	public static String stripRight(String sStringIn, String[] saStringsToBeStripped){
+	public static String stripRight(String sStringIn, String[] saStringsToBeStripped) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5601,7 +5465,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @return
 	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
 	 */
-	public static String stripNumeric(String sStringIn) {
+	public static String stripNumeric(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5621,7 +5485,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @return
 	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
 	 */
-	public static String stripNumericLeft(String sStringIn) {
+	public static String stripNumericLeft(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;
@@ -5642,7 +5506,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 * @return
 	 * @author Fritz Lindhauer, 02.11.2025, 08:49:46
 	 */
-	public static String stripNumericRight(String sStringIn) {
+	public static String stripNumericRight(String sStringIn) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
 			if(StringZZZ.isEmpty(sStringIn)) break main;

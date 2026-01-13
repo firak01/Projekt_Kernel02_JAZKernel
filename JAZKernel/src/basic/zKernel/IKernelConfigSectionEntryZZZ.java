@@ -69,7 +69,7 @@ public interface IKernelConfigSectionEntryZZZ extends IIniTagWithExpressionUserZ
 	
 	public VectorDifferenceZZZ<ArrayList<String>> getValueArrayListVector();
 	public ArrayList<String> getValueArrayList();
-	public void setValue(ArrayList<String> alValue);
+	public void setValue(ArrayList<String> alValue) throws ExceptionZZZ;
 	
 	public boolean hasAnyValue();
 	//soll nur private eingesetzt werden. abstract void hasAnyValue(boolean bAnyValue);

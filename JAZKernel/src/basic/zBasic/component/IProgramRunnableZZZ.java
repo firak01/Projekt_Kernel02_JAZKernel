@@ -15,7 +15,7 @@ public interface IProgramRunnableZZZ extends IProgramZZZ, Runnable{
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(FLAGZ objEnumFlag);
+	public boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;

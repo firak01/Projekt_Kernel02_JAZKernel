@@ -63,7 +63,7 @@ public class CharacterExtendedZZZ extends AbstractObjectWithExceptionZZZ impleme
 	}
 	
 	//##############################
-	public static String computeCharacterPoolExtended(String sCharacterPoolBaseIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
+	public static String computeCharacterPoolExtended(String sCharacterPoolBaseIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) throws ExceptionZZZ {
 		String sReturn="";
 		main:{
 			String sCharacterPoolBase;

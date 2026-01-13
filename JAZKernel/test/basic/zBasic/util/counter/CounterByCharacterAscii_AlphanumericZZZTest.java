@@ -43,7 +43,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		
 	}//END setup
 	    
-	    private boolean assertCheckNullBordersAlphanumeric_(char cInput,int iResult){
+	    private boolean assertCheckNullBordersAlphanumeric_(char cInput,int iResult) throws ExceptionZZZ{
 	    	boolean bReturn = false;
 	    	main:{
 	    		int iAsciiBase = '0';
@@ -519,8 +519,9 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	try{
 	    	 objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
-			} 	
+			} 
 	    	
 	    	//Ungültige Werte
 	    	try {
@@ -569,7 +570,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 	    	//Ungültige Werte, da die Zeichen nicht in Relation zueinander passen.
 	    	//... serielle Strategie
-	    	objCounterStrategy.isLeftAligned(true);
+	    	try {
+	    		objCounterStrategy.isLeftAligned(true);
+	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();	
+			} 
+	    	
 	    	try {
 		    	stemp = "ZZA0";//Merke: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein. 
 		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter false="Serielle Strategy"

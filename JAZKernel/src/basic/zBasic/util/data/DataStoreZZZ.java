@@ -49,10 +49,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *############################################################################################     
  *Anwendungsfall:      
 * Aufgabe dieser Klasse ist der Datenaustausch zwischen dem eingentlichen Servlet und der DocumentCreatorZZZ Klasse.
- * Die Inputwerte werden aus dem HttpRequest-Objekt geholt und an diese Objekt (versehen mit einem Alias) übergeben.
+ * Die Inputwerte werden aus dem HttpRequest-Objekt geholt und an diese Objekt (versehen mit einem Alias) ï¿½bergeben.
  * Dann kann das DocumentCreator-Objekt per Alias auf diese Werte zugreifen.
  * 
- * Die HashMaps, die diese Werte enthalten werden dann z.B. der DocumentCreatorZZZ-Klasse übergeben und beim createDocument(...) ausgelesen.
+ * Die HashMaps, die diese Werte enthalten werden dann z.B. der DocumentCreatorZZZ-Klasse ï¿½bergeben und beim createDocument(...) ausgelesen.
  * Der Alias ist dabei der Feldname. Die verschiedenen Hashmaps beinhalten dabei verschiedene Datentypen.
  * 
  * Hintergrund:
@@ -91,7 +91,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 				fieldaz = rf.selectFieldsPrivileged(objClassCurrent, 0, Modifier.FINAL);
 			}else{
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Kein SecurityManager vorhanden... arbeite ohne spezielle Privilegien..." ); //Seit Java 1.6 auf Servern notwendig
-				fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
+				fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
 			}
 			
 			if(fieldaz.length==0){
@@ -120,7 +120,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 			for(int icount = 0; icount <= fieldaz.length-1; icount++){
 				Field objField = fieldaz[icount];
 				sName = objField.getName();
-				if(!sName.equals("Alias") && !sName.endsWith("$0")){  //Merke: $0 gibt Probleme. Muss was mit Reflection und PRoxies zu tun haben, dass dies überhaupt entsteht.
+				if(!sName.equals("Alias") && !sName.endsWith("$0")){  //Merke: $0 gibt Probleme. Muss was mit Reflection und PRoxies zu tun haben, dass dies ï¿½berhaupt entsteht.
 					//System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#" + icount + "|'" + sAlias + "'----'" + sName);
 					sMetadata = (String)objField.get(objFieldZ);
 					//System.out.print( "'----'" + sMetadata + "'");
@@ -142,7 +142,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 	
 	
 	/** Meke: Metadata ist das, was in DataFieldZZZ als Property festgelegt worden ist.
-	 *             Diese Funktion wird als von .setField(DataFieldZZZ) aufgerufen, für jede Property.
+	 *             Diese Funktion wird als von .setField(DataFieldZZZ) aufgerufen, fï¿½r jede Property.
 	 *                
 	* @param sAlias
 	* @param sName
@@ -198,7 +198,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 			HashMap hm = (HashMap) this.objHmMeta.get(sAlias);
 			if(!hm.containsKey(sName)) break main;
 			
-			//3. Wert zurückgeben
+			//3. Wert zurï¿½ckgeben
 			sReturn = (String) hm.get(sName);
 			
 		}//END main
@@ -535,9 +535,9 @@ public class DataStoreZZZ implements IConstantZZZ{
 		
 		
 	
-	/** Gibt den Wert des Objekts als String zurück.
+	/** Gibt den Wert des Objekts als String zurï¿½ck.
 	 * 
-	 * Merke: Beim Datumswert kann es sein, dass dieser entsprechend des SimpleDateFormats verändert wird (ggf. mit 0 aufgefüllt).
+	 * Merke: Beim Datumswert kann es sein, dass dieser entsprechend des SimpleDateFormats verï¿½ndert wird (ggf. mit 0 aufgefï¿½llt).
 	 *            z.B. 6.12.2006 wird dann zu 06.12.2006 beim Format dd.MM.yyyy
 	 *            
 	* @param sAlias
@@ -567,7 +567,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 					objReturn = this.getValueString(sAlias, sDatatype, obj);
 					break main;
 				}else{
-					//Iterator der Collection natürlich um 1 weiter verschieben
+					//Iterator der Collection natï¿½rlich um 1 weiter verschieben
 					colIt.next();
 					
 				}//End if iPos = iIndex
@@ -600,22 +600,22 @@ public class DataStoreZZZ implements IConstantZZZ{
 				//Der Datentyp entspricht derm angegebenen
 				objReturn = (String)obj;
 			}else if(sDatatype.equals(DataFieldZZZ.sINTEGER)){
-				//Der Datentyp muss dem gewünschten angepasst werden.
+				//Der Datentyp muss dem gewï¿½nschten angepasst werden.
 				Integer objInt = (Integer)obj;
 				objReturn = objInt.toString();
 			}else if(sDatatype.equals(DataFieldZZZ.sDOUBLE)){
-//				Der Datentyp muss dem gewünschten angepasst werden.
+//				Der Datentyp muss dem gewï¿½nschten angepasst werden.
 				Double objDouble = (Double)obj;
 				objReturn = objDouble.toString();
 			}else if(sDatatype.equals(DataFieldZZZ.sLONG)){
-//				Der Datentyp muss dem gewünschten angepasst werden.
+//				Der Datentyp muss dem gewï¿½nschten angepasst werden.
 				Long objLong = (Long) obj;
 				objReturn = objLong.toString();
 			}else if(sDatatype.equals(DataFieldZZZ.sDATE)){
-//				Der Datentyp muss dem gewünschten angepasst werden.
+//				Der Datentyp muss dem gewï¿½nschten angepasst werden.
 				Date objDate = (Date) obj;		
 				
-//				!!! aus irgendeinem Grund muss wohl ein Leerwert als 1.1.1900 zurückgegeben werden. Darauf prüfen
+//				!!! aus irgendeinem Grund muss wohl ein Leerwert als 1.1.1900 zurï¿½ckgegeben werden. Darauf prï¿½fen
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(objDate);
 				int iYear = cal.get(Calendar.YEAR);
@@ -638,10 +638,10 @@ public class DataStoreZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	/**Rückgabe aller Werte für den Alias, als Vektor. Siehe auch .getValueString(...)
+	/**Rï¿½ckgabe aller Werte fï¿½r den Alias, als Vektor. Siehe auch .getValueString(...)
 	 * 
 	 * Hintergrund:
-	 * Will man mit der NotesItem-Klasse arbeiten und Mehrfachwerte hinzufügen, so braucht man einen Vector.
+	 * Will man mit der NotesItem-Klasse arbeiten und Mehrfachwerte hinzufï¿½gen, so braucht man einen Vector.
 	 * 
 	* @param sAlias
 	* @return vector, mit String Elementen
@@ -671,8 +671,8 @@ public class DataStoreZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	/** Rückgabe aller Werte für den Alias als Vektor. ABER: Der Datentyp ist noch nicht festgelegt.
-	 *  Es wird der aufrufenden Funktion überlassen den Datentyp aus den Metadaten zu ermitteln. 
+	/** Rï¿½ckgabe aller Werte fï¿½r den Alias als Vektor. ABER: Der Datentyp ist noch nicht festgelegt.
+	 *  Es wird der aufrufenden Funktion ï¿½berlassen den Datentyp aus den Metadaten zu ermitteln. 
 	 *  z.B. durch 
 	 *                   		
 			//Metadata analysieren
@@ -737,7 +737,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 		}//END main
 	}
 	
-	/**List alle Aliasse aus, für die in der Werte-HashMap ein Wert gespeichert ist.
+	/**List alle Aliasse aus, fï¿½r die in der Werte-HashMap ein Wert gespeichert ist.
 	 * s. getAliasStringAll()
 	* @return ArrayList
 	* 
@@ -759,7 +759,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 		return alsReturn;
 	}
 	
-	/**List alle Aliasse aus, für die in der Werte-HashMap ein Wert gespeichert ist.
+	/**List alle Aliasse aus, fï¿½r die in der Werte-HashMap ein Wert gespeichert ist.
 	 * s. getValueKeyStringAll
 	* @return ArrayList
 	* 
@@ -770,7 +770,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 	}
 	
 	
-	/**List alle Aliasse aus, für die in der Metadata-HashMap ein Wert gespeichert ist.
+	/**List alle Aliasse aus, fï¿½r die in der Metadata-HashMap ein Wert gespeichert ist.
 	 * s. getValueKeyStringAll
 	* @return ArrayList
 	* 
@@ -792,7 +792,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 		return alsReturn;
 	}
 	
-	public boolean isFieldAliasMapped(String sAlias){
+	public boolean isFieldAliasMapped(String sAlias) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sAlias)) break main;
@@ -813,7 +813,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 	}
 	
 	
-	/**List alle Aliasse aus, für die für die es ein Mapping der HTTP-Parameter gibt.
+	/**List alle Aliasse aus, fï¿½r die fï¿½r die es ein Mapping der HTTP-Parameter gibt.
 	 * s. getValueKeyStringAll
 	* @return ArrayList
 	* 
@@ -860,7 +860,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 			sAlias = sAliasin;
 		}
 		
-		//+++ Nun basierend auf einer Konfigurierten Klasse / Methode den gerade eingefügten Wert (das Item) noch nachbearbeiten
+		//+++ Nun basierend auf einer Konfigurierten Klasse / Methode den gerade eingefï¿½gten Wert (das Item) noch nachbearbeiten
 		String sMethodname = this.getMetadata(sAlias, "CustomMethodPostStoreRead");
 		if(! StringZZZ.isEmpty(sMethodname)){
 			String sClassname = this.getMetadata(sAlias, "CustomClassPostStoreRead");

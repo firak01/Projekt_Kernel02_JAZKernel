@@ -81,7 +81,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	//### FLAGZ IProgramRunnableZZZ
 	//##########################################
 	@Override
-	public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

@@ -2,6 +2,7 @@ package basic.zBasic.util.math;
 import java.util.ArrayList;
 import java.util.List;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 
 public class PrimeFactorizationZZZ {
@@ -36,7 +37,7 @@ public class PrimeFactorizationZZZ {
         return factors;
     }
     
-    public static int[] primeFactorsAsIntArray(int n) {
+    public static int[] primeFactorsAsIntArray(int n) throws ExceptionZZZ {
     	List<Integer>lista=primeFactors(n);
     	return ArrayListUtilZZZ.toIntArray((ArrayList<Integer>) lista);
     }

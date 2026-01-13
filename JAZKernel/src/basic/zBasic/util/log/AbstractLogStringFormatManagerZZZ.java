@@ -658,7 +658,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	//### FLAG: ILogStringFormatManagerZZZ
 	//###################################################
 	@Override
-	public boolean getFlag(ILogStringFormatManagerZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ILogStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

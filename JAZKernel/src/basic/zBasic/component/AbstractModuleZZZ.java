@@ -113,7 +113,7 @@ public abstract class AbstractModuleZZZ  extends AbstractObjectWithFlagZZZ imple
 	//### Flag handling
 	
 	@Override
-	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

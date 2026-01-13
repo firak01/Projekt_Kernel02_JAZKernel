@@ -53,19 +53,19 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	}
 	
 	@Override
-	public void setPositionSeparator(String sPositionSeparator) {
+	public void setPositionSeparator(String sPositionSeparator) throws ExceptionZZZ {
 		this.sPositionSeparator = sPositionSeparator;
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
-	public abstract String getPositionIdentifierDefault(); 
+	public abstract String getPositionIdentifierDefault() throws ExceptionZZZ; 
 //	public String getPositionIdentifierDefault() {
 //		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
 //	}
 	
 	@Override
-	public String getPositionIdentifier() {
+	public String getPositionIdentifier() throws ExceptionZZZ {
 		if(this.sPositionIdentifier==null) {
 			this.sPositionIdentifier = this.getPositionIdentifierDefault();
 		}
@@ -73,23 +73,23 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	}
 	
 	@Override
-	public void setPositionIdentifier(String sPositionIdentifier) {
+	public void setPositionIdentifier(String sPositionIdentifier) throws ExceptionZZZ {
 		this.sPositionIdentifier = sPositionIdentifier;
 	}
     //+++++++++++++++++++++++++++++++++
 	
 	@Override
-	public synchronized int getInfoPartBoundLeftBehindCurrent() {
+	public synchronized int getInfoPartBoundLeftBehindCurrent() throws ExceptionZZZ {
 		return this.iInfoPartBoundLeft;
 	}
 	
 	@Override
-	public synchronized void setInfoPartBoundLeftBehindCurrent(int iIndex) {
+	public synchronized void setInfoPartBoundLeftBehindCurrent(int iIndex) throws ExceptionZZZ {
 		this.iInfoPartBoundLeft = iIndex;
 	}
 	
 	@Override
-	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) {
+	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) throws ExceptionZZZ {
 		main:{
 			if(iIndexMayIncrease<=0) break main;
 			
@@ -113,7 +113,7 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 		
 	
 	@Override 
-	public int indexOfInfoPartBoundLeftBehind(String sLog) {
+	public int indexOfInfoPartBoundLeftBehind(String sLog) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
@@ -125,7 +125,7 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	}
 	
 	@Override 
-	public int indexOfInfoPartBoundLeft(String sLog) {
+	public int indexOfInfoPartBoundLeft(String sLog) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
@@ -137,7 +137,7 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	}
 	
 	@Override
-	public int getInfoPartBoundLeftBehind2use(String sLog) {
+	public int getInfoPartBoundLeftBehind2use(String sLog) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
@@ -192,11 +192,11 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 		
 	
 	//### STATIC METHODEN
-	public static int indexOfInfoPartBoundLeftStatic(String sLog, String sPositionSeparator) {
+	public static int indexOfInfoPartBoundLeftStatic(String sLog, String sPositionSeparator) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirst(sLog, sPositionSeparator);				
 	}
 	
-	public static int indexOfInfoPartBoundLeftBehindStatic(String sLog, String sPositionSeparator) {
+	public static int indexOfInfoPartBoundLeftBehindStatic(String sLog, String sPositionSeparator) throws ExceptionZZZ {
 		return StringZZZ.indexOfFirstBefore(sLog, sPositionSeparator);				
 	}
 

@@ -20,7 +20,7 @@ public interface IModuleZZZ extends IFlagZEnabledZZZ {
 		ISMODULE;
 	}	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag);
+	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(IModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean proofFlagExists(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

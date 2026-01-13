@@ -94,7 +94,7 @@ public class Separator01StringJustifierZZZ extends AbstractStringJustifierZZZ {
 	
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String getPositionIdentifierDefault() {
+	public String getPositionIdentifierDefault() throws ExceptionZZZ {
 		return IStringJustifierZZZ.sSEPARATOR_01_DEFAULT;
 	}
 	

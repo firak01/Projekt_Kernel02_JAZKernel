@@ -16,27 +16,42 @@ public class LogStringFormatTestHelper extends TestCase {
 
     /** Prüft, ob ein Text exakt einmal im Ergebnis vorkommt */
     public static void assertContainsOnce(String result, String part) {
+    	try {
         assertTrue("Fehlt: " + part, StringZZZ.contains(result, part));
         assertEquals("Nicht exakt 1x enthalten: " + part,
                 1, StringZZZ.count(result, part));
+	    }catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     /** Prüft, ob Thread- und Klassenname exakt einmal vorkommen */
     public static void assertThreadAndClass(String result, String thread, String cls) {
-        assertEquals("Thread fehlt oder mehrfach",
-                1, StringZZZ.count(result, thread));
-        assertEquals("Klassenname fehlt oder mehrfach",
-                1, StringZZZ.count(result, cls));
+    	try {
+	        assertEquals("Thread fehlt oder mehrfach",
+	                1, StringZZZ.count(result, thread));
+	        assertEquals("Klassenname fehlt oder mehrfach",
+	                1, StringZZZ.count(result, cls));
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     /** Prüft Reihenfolge: class -> log -> thread */
     public static void assertOrder(String result, String cls, String thread, String log) {
-        int iLog   = StringZZZ.indexOfFirst(result, log);
-        int iThread= StringZZZ.indexOfFirst(result, thread);
-        int iCls   = StringZZZ.indexOfFirst(result, cls);
-
-        assertTrue("Log müsste hinter Class kommen",  iLog > iCls + cls.length());
-        assertTrue("Thread müsste hinter Log kommen", iThread + thread.length() < iLog );
+    	try {
+	        int iLog   = StringZZZ.indexOfFirst(result, log);
+	        int iThread= StringZZZ.indexOfFirst(result, thread);
+	        int iCls   = StringZZZ.indexOfFirst(result, cls);
+	
+	        assertTrue("Log müsste hinter Class kommen",  iLog > iCls + cls.length());
+	        assertTrue("Thread müsste hinter Log kommen", iThread + thread.length() < iLog );
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     // -------------------------------------------------------------
@@ -53,17 +68,26 @@ public class LogStringFormatTestHelper extends TestCase {
     /** Prüft, dass ein Log vorhanden ist und hinter Thread steht */
     public static void assertLogBehindThread(
             String result, String log, String threadMarker) {
-
+    	try {
         int idxLog = StringZZZ.indexOfLast(result, log);
         int idxThread = StringZZZ.indexOfLast(result, threadMarker);
 
         assertTrue("Log sollte hinter Thread stehen",
                 idxLog > idxThread + threadMarker.length());
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     /** Prüft, dass ein Log NICHT enthalten ist */
     public static void assertLogNotPresent(String result, String log) {
-        assertEquals(-1, StringZZZ.indexOfLast(result, log));
+    	try {
+    		assertEquals(-1, StringZZZ.indexOfLast(result, log));
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 }
 

@@ -185,7 +185,8 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return hmReturn;
 	}
 	
-	public String readPatternString(){
+	@Override
+	public String readPatternString() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -200,7 +201,8 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	}
 	
-	public String readApplicationKey(){
+	@Override
+	public String readApplicationKey() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -215,7 +217,8 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	}
 	
-	public String readSystemNumber(){
+	@Override
+	public String readSystemNumber() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -246,7 +249,8 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	} 
 	  
-	public String readConfigFileName(){
+	@Override
+	public String readConfigFileName() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -261,7 +265,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	}
 	
-	public String readFlagzJson(){
+	public String readFlagzJson() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			GetOptZZZ objOpt = this.getOptObject();
@@ -326,8 +330,10 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	* @return
 	* 
 	* lindhauer; 12.08.2007 06:50:56
+	 * @throws ExceptionZZZ 
 	 */
-	public boolean isOptionObjectLoaded(){
+	@Override
+	public boolean isOptionObjectLoaded() throws ExceptionZZZ{
 		boolean bReturn =false;
 		main:{
 			if(this.objOpt==null) break main;
@@ -337,7 +343,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isApplicationKeyDefault(String sValue) {
+	public boolean isApplicationKeyDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -350,7 +356,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isSystemNumberDefault(String sValue) {
+	public boolean isSystemNumberDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -363,7 +369,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isConfigDirectoryNameDefault(String sValue) {
+	public boolean isConfigDirectoryNameDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -376,7 +382,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isConfigFileNameDefault(String sValue) {
+	public boolean isConfigFileNameDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -389,7 +395,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isConfigFlagzJsonDefault(String sValue) {
+	public boolean isConfigFlagzJsonDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -402,7 +408,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public boolean isPatternStringDefault(String sValue) {
+	public boolean isPatternStringDefault(String sValue) throws ExceptionZZZ {
 		boolean bReturn = false;{
 			main:{
 				if(StringZZZ.isEmpty(sValue))break main;
@@ -496,7 +502,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		
 		
 		@Override 
-		public String getLogFileName() {
+		public String getLogFileName() throws ExceptionZZZ {
 			String sReturn = this.readLogFileName();
 			if(StringZZZ.isEmpty(sReturn)) {
 				sReturn = this.getLogFileNameDefault();
@@ -510,7 +516,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		}
 		
 		@Override
-		public String readLogFileName(){
+		public String readLogFileName() throws ExceptionZZZ{
 			String sReturn = null;
 			main:{
 				GetOptZZZ objOpt = this.getOptObject();
@@ -523,7 +529,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		}
 		
 		@Override
-		public boolean isLogFileNameDefault(String sValue) {
+		public boolean isLogFileNameDefault(String sValue) throws ExceptionZZZ {
 			boolean bReturn = false;{
 				main:{
 					if(StringZZZ.isEmpty(sValue))break main;
@@ -565,7 +571,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		} 
 		
 		@Override
-		public boolean isLogDirectoryNameDefault(String sValue) {
+		public boolean isLogDirectoryNameDefault(String sValue) throws ExceptionZZZ {
 			boolean bReturn = false;{
 				main:{
 					if(StringZZZ.isEmpty(sValue))break main;
@@ -672,7 +678,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 	//###### aus IKernelExpressionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -710,7 +716,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -748,7 +754,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 	//### aus IKernelJsonIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -786,7 +792,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 	//Aus IKernelJsonMapIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -824,7 +830,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 
 	//### aus IKernelJsonArrayIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+		public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.getFlag(objEnumFlag.name());
 		}
 		
@@ -862,7 +868,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		
 		//### aus IKernelCallIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
+		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.getFlag(objEnumFlag.name());
 		}
 		
@@ -900,7 +906,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		
 		//### Aus Interface IKernelJavaCallIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
 			return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
 		}
 		

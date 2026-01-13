@@ -135,7 +135,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//### Aus IObjectWithStatusZZZ
 	@Override
-	public boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -180,7 +180,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//###############################
 	
 	@Override
-	public boolean getFlag(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -224,7 +224,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		//### Flags ISenderObjectStatusLocalUserZZZ
 		//###############################
 		@Override
-		public boolean getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) {
+		public boolean getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.getFlag(objEnumFlag.name());
 		}
 		@Override

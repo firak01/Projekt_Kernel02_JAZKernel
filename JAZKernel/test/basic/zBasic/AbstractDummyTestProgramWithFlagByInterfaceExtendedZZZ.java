@@ -20,7 +20,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	
@@ -65,7 +65,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 	//###############################################
 			
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

@@ -367,7 +367,7 @@ public class EnumSetUtilZZZ extends AbstractObjectWithExceptionZZZ{
 	
 	
 	//###############
-	public boolean startsWithAnyAlias(String sToFind){
+	public boolean startsWithAnyAlias(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -468,7 +468,7 @@ public class EnumSetUtilZZZ extends AbstractObjectWithExceptionZZZ{
 		}
 		
 		
-		public static boolean startsWithAnyAlias(String sToFind, EnumSet<?> setEnumCurrent){
+		public static boolean startsWithAnyAlias(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
 				if(setEnumCurrent==null) break main; 			
@@ -493,7 +493,7 @@ public class EnumSetUtilZZZ extends AbstractObjectWithExceptionZZZ{
 			return bReturn;
 		}
 	
-		public static IEnumSetZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent){
+		public static IEnumSetZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 			IEnumSetZZZ objReturn = null;
 			main:{
 				if(setEnumCurrent==null) break main; 

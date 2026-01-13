@@ -25,20 +25,22 @@ public class FilenamePartFilterSuffixZipZZZ extends AbstractFilenamePartFilterZi
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getSuffix())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
-				
-				//Ende des Dateinamens berechnen			
-				String sSuffixCur;
-				try {				
+				if(ze==null) break main;
+				try {
+					if(StringZZZ.isEmpty(this.getSuffix())) {
+						bReturn = true;
+						break main;
+					}				
+					String sName = ze.getName();
+					
+					//Ende des Dateinamens berechnen			
+					String sSuffixCur=null;
+								
 					sSuffixCur = FileEasyZZZ.getNameOnly(sName);
 					if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
 				} catch (ExceptionZZZ e) {			
 					e.printStackTrace();
+					return false;
 				} 					
 			}//END main:
 			return bReturn;

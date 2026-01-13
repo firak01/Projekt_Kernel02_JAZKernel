@@ -30,22 +30,37 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
     // -------------------------------------------------------------------------
 
     protected void assertContainsOnce(String text, String part) {
+    	try {
         assertTrue(StringZZZ.contains(text, part));
         assertEquals(1, StringZZZ.count(text, part));
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     protected void assertThreadAndClassPresent(String logValue, String threadMarker, String classMarker) {
+    	try {
         assertEquals(1, StringZZZ.count(logValue, threadMarker));
         assertEquals(1, StringZZZ.count(logValue, classMarker));
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     protected void assertOrder(String logValue, String className, String threadMarker, String logEntry) {
+    	try {
         int idxLog   = StringZZZ.indexOfFirst(logValue, logEntry);
         int idxThread= StringZZZ.indexOfFirst(logValue, threadMarker);
         int idxCls   = StringZZZ.indexOfFirst(logValue, className);
 
         assertTrue(idxLog > idxCls + className.length());
         assertTrue(idxThread + threadMarker.length() < idxCls);
+    	}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
     }
 
     // -------------------------------------------------------------------------

@@ -34,7 +34,7 @@ public class StringZZZTest extends TestCase{
 	 
 	public void testLeft(){
 		 String stemp;
-		 
+		 try {
 		 //#######################################
 		 //Teste den linken Rand
 		 stemp = StringZZZ.left("das ist ein Test", 0);
@@ -67,11 +67,15 @@ public class StringZZZTest extends TestCase{
 		 
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	 }
 	
 	public void testLeftKeep() {
 		String sValue;
-		
+		try {
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
@@ -123,11 +127,15 @@ public class StringZZZTest extends TestCase{
 		 iIndexStartingFromLeft = 16-sSepLeft.length();
 		 sValue=StringZZZ.leftKeep(sDummy3, sSepLeft, bExactMatch, iIndexStartingFromLeft);
 		 assertEquals("<Z:Java><Z:Class>",sValue);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testLeftBack(){
 		 String stemp;
-		 
+		 try {
 		 //#######################################
 		 //Teste den linken Rand
 		 stemp = StringZZZ.leftback("das ist ein Test", -1);
@@ -159,6 +167,10 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("das ist ein",stemp);
 		 				 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	 }
 	
 	/** Gezählt wird von rechts
@@ -167,7 +179,7 @@ public class StringZZZTest extends TestCase{
 	 */
 	public void testLeftBackKeep(){
 		 String stemp;
-		 
+		 try {
 		 String sDummy = new String("das ist ein Test");
 		 //#######################################
 		 //Teste den linken Rand
@@ -204,6 +216,10 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("das ist ein ",stemp); //hier wirkt sich das Keep aus
 		 				 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	 }
 	
 	
@@ -212,6 +228,7 @@ public class StringZZZTest extends TestCase{
 	//#############################################################
 	public void testRight(){
 		String stemp;
+		try {
 		 
 		 //#######################################
 		 //Teste den linken Rand
@@ -244,11 +261,15 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("Test", stemp);
 		 
 		 //System.out.println(stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testRightKeep(){
 		String stemp;
-		 
+		 try {
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");		
@@ -271,6 +292,10 @@ public class StringZZZTest extends TestCase{
 		 
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	}
 	
 	//#############################################
@@ -280,7 +305,7 @@ public class StringZZZTest extends TestCase{
 	 */
 	public void testRightback01(){
 		String stemp;
-		 
+		 try {
 		 //#######################################
 		 //Teste den linken Rand
 		 stemp = StringZZZ.rightback("das ist ein Test", 0);
@@ -312,6 +337,10 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("ist ein Test", stemp);
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	}
 	
 	/**Gezählt wird von links
@@ -320,6 +349,7 @@ public class StringZZZTest extends TestCase{
 	 */
 	public void testRightback02(){
 		String stemp;
+		try {
 		stemp = StringZZZ.rightback("123456789", 0);
 		assertEquals("123456789", stemp);
 		stemp = StringZZZ.rightback("123456789", -1);
@@ -336,6 +366,10 @@ public class StringZZZTest extends TestCase{
 		
 		stemp = StringZZZ.rightback("123456789", 2);
 		assertEquals("3456789", stemp);	
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	//################################################
@@ -345,7 +379,7 @@ public class StringZZZTest extends TestCase{
 	 */
 	public void testRightbackKeep01(){
 		String stemp;
-		 
+		 try {
 		String sDummy = new String("das ist ein Test");
 		
 		 //#######################################
@@ -386,6 +420,10 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("ist ein Test", stemp);
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	}
 	
 	/**Gezählt wird von links
@@ -394,6 +432,7 @@ public class StringZZZTest extends TestCase{
 	 */
 	public void testRightbackKeep02(){
 		String stemp;
+		try {
 		stemp = StringZZZ.rightbackKeep("123456789", 0);
 		assertEquals("123456789", stemp);
 		stemp = StringZZZ.rightbackKeep("123456789", -1);
@@ -410,11 +449,16 @@ public class StringZZZTest extends TestCase{
 		
 		stemp = StringZZZ.rightbackKeep("123456789", 2);
 		assertEquals("23456789", stemp);	//hier wirkt sich das Keep aus, die "2" bleibt drin.
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	//################################################
 	public void testMid(){
 		String stemp;
+		try {
 		 String sTest = "abcdefghijk";
 		 //#######################################
 		
@@ -449,12 +493,16 @@ public class StringZZZTest extends TestCase{
 		
 		 stemp =StringZZZ.mid(sTest, sTest.length()-2, 2);
 		 assertEquals("jk", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		 
 	}
 	
 	public void testMidKeep(){
 		String stemp;
-		 
+		 try {
 		 //################### 
 		 //Teste auf String
 		 String sDummy2 = new String("das ist ein Test");
@@ -493,13 +541,17 @@ public class StringZZZTest extends TestCase{
 		 
 		 stemp =StringZZZ.midKeep(sDummy2, " ", " ");
 		 assertEquals(" ist ein ", stemp);  
-		 
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 		 
 	}
 	
 	
 	public void testMidLeftRightback(){
 		String stemp;
+		try {
 		String sTest = "abc~=~xyz";
 		//#######################################
 		
@@ -584,11 +636,16 @@ public class StringZZZTest extends TestCase{
 		 sTest = "[[test]]";
 		 stemp =StringZZZ.midLeftRightback(sTest, "X", "]");
 		 assertNull(stemp);  
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		 
 	}
 	
 	public void testMidLeftRight(){
 		String stemp;
+		try {
 		 String sTest = "abc~=~xyz";
 		 //#######################################
 		
@@ -706,11 +763,15 @@ public class StringZZZTest extends TestCase{
 		 stemp =StringZZZ.midLeftRight(sTest, "[", "]");
 		 assertEquals("[test]", stemp);  //!!!!! anders als bei midLeftRightback
 		 
-		
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testMidLeftRightbackIntersect(){
 		String stemp;
+		try {
 		 String sTest = "abc~=~xyz";
 		 //#######################################
 		
@@ -828,13 +889,16 @@ public class StringZZZTest extends TestCase{
 		 stemp =StringZZZ.midLeftRightIntersect(sTest, "[", "]");
 		 assertEquals("test", stemp);  //!!!!! anders als bei midLeftRight(...) , wie bei midLeftRightback(...)
 		 
-		
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	
 	public void testStrLeft(){
 		 String stemp;
-		 
+		 try {
 		 //#######################################
 		 //Teste den linken Rand
 		 stemp = StringZZZ.left("123456789", "0");
@@ -930,11 +994,15 @@ public class StringZZZTest extends TestCase{
 		 assertNull(stemp);
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	 }
 	
 	public void testStrLeftback(){
 		String stemp;
-	
+	try {
 		//Teste fehlenden Wert
 		stemp = StringZZZ.leftback("123456789 123456789", "0");
 		assertNull(stemp);
@@ -956,12 +1024,15 @@ public class StringZZZTest extends TestCase{
 		
 		stemp = StringZZZ.leftback("123456789 123456789", "5");
 		assertEquals("123456789 1234", stemp);
-		
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	}
 	
 	public void testStrRight(){
 		 String stemp;
-		 
+		 try {
 		 //#######################################
 		 //Teste den rechten Rand
 		 stemp = StringZZZ.right("123456789", "9");
@@ -988,12 +1059,16 @@ public class StringZZZTest extends TestCase{
 		 
 		 
 		 //System.out.println(stemp);
+		 }catch(ExceptionZZZ ez){
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			}
 	 }
 	
 	public void testStrRightback(){
 		
 		String stemp;
-		
+		try {
 		//Teste den linken Rand
 		stemp = StringZZZ.rightback("123456789 123456789","1" );
 		assertEquals("23456789 123456789", stemp);
@@ -1016,38 +1091,55 @@ public class StringZZZTest extends TestCase{
 		stemp = StringZZZ.rightback("123456789 123456789", "5");
 		assertEquals("6789 123456789", stemp);
 		
-		
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 public void testPadLeft() {
+	try {
 	String stemp = StringZZZ.padLeft("abc", 5);
 	assertEquals("  abc", stemp);
 	
 	
 	String stemp2 = StringZZZ.padLeft("abc",  5, '-');
 	assertEquals("--abc",stemp2);
-	
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testPadRight() {
+	try {
 	String stemp = StringZZZ.padRight("abc", 5);
 	assertEquals("abc  ", stemp);
 	
 	
 	String stemp2 = StringZZZ.padRight("abc",  5, '-');
 	assertEquals("abc--",stemp2);
-	
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 	
 
 public void testRepeat(){
+	try {
 	 //#######################################
 	 //Teste normal
 	 String stemp = StringZZZ.repeat("1", 2);
 	 assertEquals("11", stemp);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testStrWord(){
+	try {
 	String sTest = "aaa bbb ccc";
 	
 	String stemp = StringZZZ.word(sTest," ", 2);
@@ -1064,10 +1156,15 @@ public void testStrWord(){
 	
 	stemp = StringZZZ.word(sTest, " ", 0);
 	assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 
 	public void testStripNumeric() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.stripNumeric(sTest);
@@ -1084,9 +1181,14 @@ public void testStrWord(){
 		sTest = "123 b2b 543";
 		stemp = StringZZZ.stripNumeric(sTest);
 		assertEquals("3 b2b 5", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 
 	public void testStripNumericLeft() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.stripNumericLeft(sTest);
@@ -1103,9 +1205,14 @@ public void testStrWord(){
 		sTest = "123 b2b 543";
 		stemp = StringZZZ.stripNumericLeft(sTest);
 		assertEquals("3 b2b 543", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testStripNumericRight() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.stripNumericRight(sTest);
@@ -1122,10 +1229,15 @@ public void testStrWord(){
 		sTest = "123 b2b 543";
 		stemp = StringZZZ.stripNumericRight(sTest);
 		assertEquals("123 b2b 5", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	//###############################
 	public void testTrimNumeric() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.trimNumeric(sTest);
@@ -1142,10 +1254,15 @@ public void testStrWord(){
 		sTest = "123 b2b 543";
 		stemp = StringZZZ.trimNumeric(sTest);
 		assertEquals(" b2b ", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	
 	public void testTrimNumericLeft() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.trimNumericLeft(sTest);
@@ -1157,10 +1274,15 @@ public void testStrWord(){
 		
 		sTest = "1aa b2b cc3";
 		stemp = StringZZZ.trimNumericLeft(sTest);
-		assertEquals("aa b2b cc3", stemp);				
+		assertEquals("aa b2b cc3", stemp);	
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testTrimNumericRight() {
+		try {
 		String sTest = "aaa bbb ccc";
 		
 		String stemp = StringZZZ.trimNumericRight(sTest);
@@ -1176,60 +1298,89 @@ public void testStrWord(){
 		
 		sTest = "1aa b2b 543";
 		stemp = StringZZZ.trimNumericRight(sTest);
-		assertEquals("1aa b2b ", stemp);			
+		assertEquals("1aa b2b ", stemp);	
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 
 
 public void testContains(){
 	String sTest = "aaa bbb ccc";
-	
-	boolean btemp = StringZZZ.contains(sTest, "  "); //zwei Leerzeichen
-	assertFalse(btemp); // der String ist ja nicht vorhanden
-	
-	boolean btemp2 = StringZZZ.contains(sTest,"c ");
-	assertFalse(btemp2); // der String ist ja nicht vorhanden
-	
-	boolean btemp3 = StringZZZ.contains(sTest, "b ");
-	assertTrue(btemp3);
-	
-	boolean btemp4 = StringZZZ.contains(sTest, "a");
-	assertTrue(btemp4);
-	
-	boolean btemp5 = StringZZZ.contains(sTest, "ccc");
-	assertTrue(btemp5);
-	
-	boolean btemp6 = StringZZZ.contains(sTest, "aaa");
-	assertTrue(btemp6);
+	try {
+		boolean btemp = StringZZZ.contains(sTest, "  "); //zwei Leerzeichen
+		assertFalse(btemp); // der String ist ja nicht vorhanden
+		
+		boolean btemp2 = StringZZZ.contains(sTest,"c ");
+		assertFalse(btemp2); // der String ist ja nicht vorhanden
+		
+		boolean btemp3 = StringZZZ.contains(sTest, "b ");
+		assertTrue(btemp3);
+		
+		boolean btemp4 = StringZZZ.contains(sTest, "a");
+		assertTrue(btemp4);
+		
+		boolean btemp5 = StringZZZ.contains(sTest, "ccc");
+		assertTrue(btemp5);
+		
+		boolean btemp6 = StringZZZ.contains(sTest, "aaa");
+		assertTrue(btemp6);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	
 }
 
 public void testCount(){
-	int itemp = StringZZZ.count("12-3-45", "-");
-	assertEquals(itemp,2);
+	try {
+		int itemp = StringZZZ.count("12-3-45", "-");
+		assertEquals(itemp,2);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testCountMatches(){
-	int itemp = StringZZZ.countMatches("12-3-45", "-");
-	assertEquals(itemp,2);
+	try {
+		int itemp = StringZZZ.countMatches("12-3-45", "-");
+		assertEquals(itemp,2);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testCountSubstring(){
-	int itemp = StringZZZ.countSubstring("12-3-45", "-");
-	assertEquals(itemp,2);
+	try {
+		int itemp = StringZZZ.countSubstring("12-3-45", "-");
+		assertEquals(itemp,2);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testCountChar(){
 	char cToFind='-';
-	int itemp = StringZZZ.countChar("12-3-45", cToFind);
-	assertEquals(itemp,2);
-	
-	Character objChar = new Character(cToFind);
-	itemp = StringZZZ.countChar("12-3-45", objChar);
-	assertEquals(itemp,2);
+	try {
+		int itemp = StringZZZ.countChar("12-3-45", cToFind);
+		assertEquals(itemp,2);
+		
+		Character objChar = new Character(cToFind);
+		itemp = StringZZZ.countChar("12-3-45", objChar);
+		assertEquals(itemp,2);
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 
 public void testExplode(){
+	try {
 	//Erst einmal den einfachen Fall
 	String sTest = "panel1<./>text1.getText()";
 	String[] saToken = StringZZZ.explode(sTest, "<./>");
@@ -1269,10 +1420,14 @@ public void testExplode(){
 	assertEquals(saToken[2], "'#'");
 	assertEquals(saToken[3], "CarrierSequenze");
 	assertEquals(saToken[4], "''");
-	
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 public void testFindSorted(){
+	try {
 	String sTest = "eins  zwei  drei  eins  zwei  vier  acht sechzehn";
 	String[] saPattern = {"drei", "zwei"};
 	
@@ -1281,7 +1436,11 @@ public void testFindSorted(){
 	assertEquals(listaString.size(), 3);
 	assertEquals(listaString.get(0), "zwei");
 	assertEquals(listaString.get(1), "drei");
-	assertEquals(listaString.get(2), "zwei");	
+	assertEquals(listaString.get(2), "zwei");
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 
@@ -2345,16 +2504,26 @@ public void testVecMidFirst(){
 
 	//###############################################################
 	public void testCapitalize(){
+		try {
 			String sTest = "das ist der Test";
 			String stemp = StringZZZ.capitalize(sTest);
 			assertEquals("Das ist der Test", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testCamelcase(){
-		//Variante 1: Ohne Delimiter
-		String sTest = "DASIsTEinTest";
-		String stemp = StringZZZ.toCamelCase(sTest);
-		assertEquals("dasIstEinTest", stemp);
+		try {
+			//Variante 1: Ohne Delimiter
+			String sTest = "DASIsTEinTest";
+			String stemp = StringZZZ.toCamelCase(sTest);
+			assertEquals("dasIstEinTest", stemp);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 	}
 	
@@ -2417,6 +2586,7 @@ public void testVecMidFirst(){
 			assertEquals("ab...", sErg);
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -2481,6 +2651,7 @@ public void testVecMidFirst(){
 			assertEquals("...fg", sErg);
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -2664,6 +2835,7 @@ public void testVecMidFirst(){
 	}
 	
 	public void testIndexOfAll(){
+		try {
 		String sTest = "das:ist:ein:Test:";
 		String [] saToFind = {":"};
 		Integer[] intaIndex = StringZZZ.indexOfAll(sTest, saToFind);
@@ -2687,6 +2859,10 @@ public void testVecMidFirst(){
 		assertEquals(2, intaIndex[4].intValue());
 		assertEquals(5, intaIndex[5].intValue());
 		assertEquals(14, intaIndex[6].intValue());
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	
@@ -2903,7 +3079,7 @@ public void testVecMidFirst(){
 	}
 	
 	public void testReplace() {
-//		try{
+		try{
 			String sReplaceOrig=""; String sReplaced=""; String sErg = "";
 			
 			//++++ Ersetzungen testen	
@@ -2913,13 +3089,14 @@ public void testVecMidFirst(){
 			assertEquals(sReplaced, sErg); 
 			
 					
-//			}catch(ExceptionZZZ ez){
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testReplaceFirst() {
-//		try{
+		try{
 			String sReplaceOrig=""; String sReplaced=""; String sErg = "";
 			
 			//++++ Ersetzungen testen	
@@ -2929,9 +3106,10 @@ public void testVecMidFirst(){
 			assertEquals(sReplaced, sErg); 
 			
 					
-//			}catch(ExceptionZZZ ez){
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	
@@ -3176,7 +3354,7 @@ public void testVecMidFirst(){
 	
 	public void testReplaceLeft(){
 		String sValue = null;
-		//try{			
+		try{			
 			String sOrg="aaabcbaaa";
 						
 			String sOld = "aa";
@@ -3197,14 +3375,15 @@ public void testVecMidFirst(){
 			sValue = StringZZZ.replaceFarFrom(sOrg, sOld, sNew);
 			assertEquals(sErg, sValue);
 			
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testReplaceRight(){
 		String sValue = null;
-		//try{			
+		try{			
 			String sOrg="aaabcbaaa";
 						
 			String sOld = "aa";
@@ -3225,15 +3404,16 @@ public void testVecMidFirst(){
 			sValue = StringZZZ.replaceRight(sOrg, sOld, sNew);
 			assertEquals(sErg, sValue);
 			
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	
 	public void testReplaceFromLeft1() {
 		String sValue = null;
-		//try{			
+		try{			
 			String sOrg="aaabcbaaa";
 						
 			String sOld = "aa";
@@ -3277,9 +3457,10 @@ public void testVecMidFirst(){
 			assertEquals(sErg, sValue);
 			
 			
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 		
 	}
@@ -3287,7 +3468,7 @@ public void testVecMidFirst(){
 	
 	public void testReplaceFromRight1() {
 		String sValue = null;
-		//try{			
+		try{			
 			String sOrg="aaabcbaaa";
 						
 			String sOld = "aa";
@@ -3330,15 +3511,16 @@ public void testVecMidFirst(){
 			sValue = StringZZZ.replaceFromRight1(sOrg, sOld, sNew);
 			assertEquals(sErg, sValue);
 		
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 		
 	}
 	
 	public void testReplaceFarFrom(){
-		//try{
+		try{
 			String sErg = "";
 				
 			String sOrg="aaabcbaaa";
@@ -3360,13 +3542,14 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.replaceFarFrom(sOrg, sOld, sNew);
 			assertEquals("aaabbaaa", sErg);
 			
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testStartsWithIgnoreCase(){
-		//try{
+		try{
 			boolean bErg = false;
 				
 			String sString = "Lorem Ipsum";
@@ -3388,9 +3571,10 @@ public void testVecMidFirst(){
 			bErg = StringZZZ.startsWithIgnoreCase(sString, sMatch);
 			assertTrue(bErg);
 						
-		//}catch(ExceptionZZZ ez){
-		//	fail("Method throws an exception." + ez.getMessageLast());
-		//}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	public void testShorten(){
@@ -3415,8 +3599,9 @@ public void testVecMidFirst(){
 			sErg = StringZZZ.toShorten(sString, StringZZZ.iSHORTEN_METHOD_VOWEL_UPPERCASE, 1);		
 			assertTrue(sMatch.equals(sErg));																				
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
-		}					
+		}				
 	}
 	
 	public void testIsJson() {
@@ -3432,12 +3617,13 @@ public void testVecMidFirst(){
 			assertTrue(bTest);
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
 	
 	public void testIsNumericWithPrefix() {
-		//try{
+		try{
 			String sString = "Lorem Ipsum";
 			boolean bTest = StringZZZ.isNumericWithPrefix(sString);	
 			assertFalse(bTest);
@@ -3460,13 +3646,14 @@ public void testVecMidFirst(){
 			assertTrue(bTest);
 			
 			
-//		}catch(ExceptionZZZ ez){
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}		
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
 	}
 	
 	public void testHasConsecutiveDuplicateCharacter() {
-		
+		try {
 		String sString; char cMatch;
 		
 		
@@ -3498,12 +3685,16 @@ public void testVecMidFirst(){
 		cMatch='/';
 		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString, cMatch);
 		assertFalse(bTest);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 
 	
 	public void testEndsWithConsecutiveDuplicateCharacter() {
-		
+		try {
 		String sString = "Lorem Ipsum";
 		boolean bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);	
 		assertFalse(bTest);
@@ -3519,5 +3710,9 @@ public void testVecMidFirst(){
 		sString = "-1---2-";
 		bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);
 		assertFalse(bTest);
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 }//End class

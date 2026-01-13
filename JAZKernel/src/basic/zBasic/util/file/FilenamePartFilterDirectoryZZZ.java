@@ -3,6 +3,7 @@ package basic.zBasic.util.file;
 import java.io.File;
 
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class FilenamePartFilterDirectoryZZZ extends AbstractObjectWithExceptionZZZ implements IFilenamePartFilterZZZ  {
@@ -18,20 +19,28 @@ public class FilenamePartFilterDirectoryZZZ extends AbstractObjectWithExceptionZ
 	/* (non-Javadoc)
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)	 
 	 */
+	@Override
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
 			//if(objFile==null) break main;
-			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getEnding())) {
-				bReturn = true;
-				break main;
-			}
+			if(sName==null) break main;		
 			
-					
-			//Dateiendung berechnen
-			String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
-			if(sEndingCur.equals(this.sFileEnding)) bReturn = true;			
+			try {
+				if(StringZZZ.isEmpty(this.getEnding())) {
+					bReturn = true;
+					break main;
+				}
+				
+						
+				//Dateiendung berechnen
+				String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+				if(sEndingCur.equals(this.sFileEnding)) bReturn = true;	
+				
+			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				return false;
+			}
 		}//END main:
 		return bReturn;
 	}

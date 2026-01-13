@@ -43,12 +43,12 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
   }
   
   @Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26;
 	}
 

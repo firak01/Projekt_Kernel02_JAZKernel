@@ -42,22 +42,22 @@ public abstract class AbstractCounterStrategyAlphabetZZZ extends AbstractCounter
 	}
 	
 	@Override
-	public int getCharacterPositionMax() {
+	public int getCharacterPositionMax() throws ExceptionZZZ {
 		return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 	}
 	
 	@Override
-	public int getCharacterPositionMin() {
+	public int getCharacterPositionMin() throws ExceptionZZZ {
 		return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
 	}
 	
 	@Override
-	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange){
+	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange) throws ExceptionZZZ{
 		return iDigitValueInMinMaxRange + 1;
 	}
 	
 	@Override
-	public int getDigitValueForPositionValue(int iPositionInMinMaxRange){
+	public int getDigitValueForPositionValue(int iPositionInMinMaxRange) throws ExceptionZZZ{
 		return iPositionInMinMaxRange - 1;
 	}
 	

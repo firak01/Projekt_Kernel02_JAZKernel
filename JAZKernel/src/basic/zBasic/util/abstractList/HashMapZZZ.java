@@ -39,7 +39,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	public HashMapZZZ(){
 	}
 	
-	public static HashMapZZZ toHashMapExtended(HashMap hm){
+	public static HashMapZZZ toHashMapExtended(HashMap hm) throws ExceptionZZZ {
 		HashMapZZZ hmReturn=null;
 		main:{
 			if(hm==null)break main;
@@ -51,7 +51,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 		return hmReturn;
 	}
 	
-	public static HashMapZZZ clone(HashMap hm) {
+	public static HashMapZZZ clone(HashMap hm) throws ExceptionZZZ {
 		HashMapZZZ hmReturn=null;
 		main:{
 			if(hm==null)break main;
@@ -71,7 +71,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	 * @param value
 	 * @return
 	 */
-	public static Object getKeyFromValueFirst(Map hm, Object value) {
+	public static Object getKeyFromValueFirst(Map hm, Object value) throws ExceptionZZZ {
 	    for (Object o : hm.keySet()) {
 	      if (hm.get(o).equals(value)) {
 	        return o;
@@ -87,7 +87,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	 * @param value
 	 * @return
 	 */
-	public static Object[] getKeysFromValue(Map hm, Object value) {
+	public static Object[] getKeysFromValue(Map hm, Object value) throws ExceptionZZZ {
 		ArrayList<Object>listasObject = new ArrayList<Object>();
 		
 	    for (Object o : hm.keySet()) {
@@ -170,7 +170,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	 * @param value
 	 * @return
 	 */
-	public static String[] getKeysAsStringFromValue(Map<String,Boolean> hm, Boolean value) {
+	public static String[] getKeysAsStringFromValue(Map<String,Boolean> hm, Boolean value) throws ExceptionZZZ {
 		ArrayList<String>listasObject = new ArrayList<String>();
 		
 	    for (Object o : hm.keySet()) {
@@ -215,7 +215,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:38:25
 	 */
-	public boolean isSmallerThan(HashMap objHashMap) throws ExceptionZZZ{
+	public boolean isSmallerThan(HashMap objHashMap) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(objHashMap== null){
@@ -238,7 +238,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:38:47
 	 */
-	public boolean isBiggerThan(HashMap objHashMap) throws ExceptionZZZ{
+	public boolean isBiggerThan(HashMap objHashMap) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(objHashMap== null){
@@ -254,7 +254,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 		return bReturn;
 	}
 	
-	public boolean isEqualToByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
+	public boolean isEqualToByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ {
 		boolean bReturn = true;
 		main:{
 			if(objHashMap== null){
@@ -403,7 +403,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:39:48
 	 */
-	public boolean isSameSize(HashMap objHashMap) throws ExceptionZZZ{
+	public boolean isSameSize(HashMap objHashMap) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(objHashMap== null){
@@ -424,7 +424,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:39:48
 	 */
-	public static boolean isSameSize(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ{
+	public static boolean isSameSize(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(objHashMap1== null){
@@ -452,7 +452,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhaueradmin; 14.04.2011 07:03:00
 	 */
-	public boolean isSubsetFrom(HashMap objHashMap) throws ExceptionZZZ{
+	public boolean isSubsetFrom(HashMap objHashMap) throws ExceptionZZZ {
 		boolean bReturn = true;
 		main:{
 			if(objHashMap== null){
@@ -512,7 +512,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhaueradmin; 14.04.2011 07:10:50
 	 */
-	public boolean isSubsetFromByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
+	public boolean isSubsetFromByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ {
 		boolean bReturn = true;
 		main:{
 			if(objHashMap== null){
@@ -686,7 +686,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* lindhaueradmin; 10.04.2011 09:34:03
 	 * @throws ExceptionZZZ 
 	 */
-	public static HashMap minElements(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ{
+	public static HashMap minElements(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ {
 		HashMap objReturn = null;
 		main:{
 			if(objHashMap1== null){
@@ -722,7 +722,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* lindhaueradmin; 10.04.2011 09:34:03
 	 * @throws ExceptionZZZ 
 	 */
-	public static HashMap maxElements(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ{
+	public static HashMap maxElements(HashMap objHashMap1, HashMap objHashMap2) throws ExceptionZZZ {
 		HashMap objReturn = null;
 		main:{
 			if(objHashMap1== null){
@@ -756,7 +756,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhaueradmin; 22.05.2011 08:54:37
 	 */
-	static Map sortByEntryValue(Map map) {
+	static Map sortByEntryValue(Map map) throws ExceptionZZZ {
 	     List list = new LinkedList(map.entrySet());
 	     Collections.sort(list, new Comparator() {
 	          public int compare(Object o1, Object o2) {
@@ -779,7 +779,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhaueradmin; 22.05.2011 08:54:37
 	 */
-	static Map sortByEntryInteger(Map map) {
+	static Map sortByEntryInteger(Map map) throws ExceptionZZZ {
 	     List list = new LinkedList(map.entrySet());
 	     Collections.sort(list, new Comparator() {
 	          public int compare(Object o1, Object o2) {
@@ -809,7 +809,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhaueradmin; 22.05.2011 08:54:37
 	 */
-	static void sortByKeyValue(Map map) {
+	static void sortByKeyValue(Map map) throws ExceptionZZZ {
 	     List list = new LinkedList(map.keySet());
 	     Collections.sort(list, new Comparator() {
 	          public int compare(Object o1, Object o2) {
@@ -820,7 +820,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	
 	//### aus IOutputNormedZZ
 	@Override
-	public String getDebugEntryDelimiter() {
+	public String getDebugEntryDelimiter() throws ExceptionZZZ {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
 			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
@@ -831,11 +831,11 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	}
 	
 	@Override
-	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+	public void setDebugEntryDelimiter(String sEntryDelimiter) throws ExceptionZZZ {
 		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
 	}
 	
-	public String getDebugKeyDelimiter() {
+	public String getDebugKeyDelimiter() throws ExceptionZZZ {
 		String sKeyDelimiter;
 		if(this.sDebugKeyDelimiterUsed==null){
 			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
@@ -846,7 +846,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	}
 	
 	@Override
-	public void setDebugKeyDelimiter(String sEntryDelimiter) {
+	public void setDebugKeyDelimiter(String sEntryDelimiter) throws ExceptionZZZ {
 		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
 	}
 	
@@ -1043,7 +1043,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:41:21
 	 */
-	public void removeByIndex(int iIndex){
+	public void removeByIndex(int iIndex) throws ExceptionZZZ {
 		main:{
 		if(iIndex<0) break main;
 		if(iIndex > this.size()-1) break main;
@@ -1070,7 +1070,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:41:21
 	 */
-	public Object getKeyByIndex(int iIndex){
+	public Object getKeyByIndex(int iIndex) throws ExceptionZZZ {
 		Object objReturn = null;
 		main:{
 			if(iIndex<0) break main;
@@ -1107,7 +1107,7 @@ public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ
 	* 
 	* lindhauer; 05.09.2011 09:41:21
 	 */
-	public Object getValueByIndex(int iIndex){
+	public Object getValueByIndex(int iIndex) throws ExceptionZZZ {
 		Object objReturn = null;
 		main:{
 			if(iIndex<0) break main;

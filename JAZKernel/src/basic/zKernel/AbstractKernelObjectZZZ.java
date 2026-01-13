@@ -724,7 +724,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return AbstractKernelObjectZZZ.computeSystemSectionNameForSection(stemp, stemp2);
 	}
 	
-	public static String computeSystemSectionNameForSection(String sSection, String sSystemNumber){
+	public static String computeSystemSectionNameForSection(String sSection, String sSystemNumber) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
@@ -759,7 +759,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}
 		return alsReturn;		
 	}
- 	public static ArrayList<String> computeSystemSectionNames(String sApplicationOrModuleKey, String sSystemNumber){
+ 	public static ArrayList<String> computeSystemSectionNames(String sApplicationOrModuleKey, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{			
 			String sSection2use="";
@@ -778,7 +778,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	public static ArrayList<String> computeSystemSectionNamesForSection(String sSectionIn, String sApplicationKey, String sSystemNumber){
+	public static ArrayList<String> computeSystemSectionNamesForSection(String sSectionIn, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		
 		main:{
@@ -1265,7 +1265,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	public static String extractSytemNumberFromSection(String sSection) {
+	public static String extractSytemNumberFromSection(String sSection) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
@@ -1296,7 +1296,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	
-	public static String extractModuleFromSection(String sSection) {
+	public static String extractModuleFromSection(String sSection) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
@@ -1322,7 +1322,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;
 	}
 	
-	public static String extractProgramFromSection(String sSection) {
+	public static String extractProgramFromSection(String sSection) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
@@ -1356,8 +1356,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @param sSection
 	 * @return
 	 * @author Fritz Lindhauer, 30.11.2021, 10:27:07
+	 * @throws ExceptionZZZ 
 	 */
-	public static boolean isSystemSection(String sSection) {
+	public static boolean isSystemSection(String sSection) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
@@ -1373,8 +1374,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @param sSection
 	 * @return
 	 * @author Fritz Lindhauer, 11.08.2022, 08:55:28
+	 * @throws ExceptionZZZ 
 	 */
-	public static boolean isSystemSectionWithProgram(String sSectionIn) {
+	public static boolean isSystemSectionWithProgram(String sSectionIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			bReturn = AbstractKernelObjectZZZ.isSystemSection(sSectionIn);			
@@ -1399,8 +1401,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @param sSystemSection
 	 * @return
 	 * @author Fritz Lindhauer, 11.08.2022, 09:06:13
+	 * @throws ExceptionZZZ 
 	 */
-	public static String computeProgramFromSystemSection(String sSectionIn) {
+	public static String computeProgramFromSystemSection(String sSectionIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			boolean bExist = AbstractKernelObjectZZZ.isSystemSectionWithProgram(sSectionIn);			
@@ -1419,8 +1422,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @param sSystemKey
 	 * @return
 	 * @author Fritz Lindhauer, 28.11.2021, 09:25:38
+	 * @throws ExceptionZZZ 
 	 */
-	public static String computeSectionFromSystemSection(String sSystemSection) {
+	public static String computeSectionFromSystemSection(String sSystemSection) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSystemSection)) break main;
@@ -6436,8 +6440,9 @@ MeinTestParameter=blablaErgebnis
 	* Lindhauer; 12.05.2006 09:33:01
 	 * @param sIn
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public static String computeModuleAliasBy(File objFile){
+	public static String computeModuleAliasBy(File objFile) throws ExceptionZZZ{
 		String sReturn =new String("");
 		main:{
 			 String sIn;
@@ -6455,8 +6460,9 @@ MeinTestParameter=blablaErgebnis
 	* Lindhauer; 15.05.2006 08:35:30
 	 * @param sIn
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public static String computeModuleAliasByFilename(String sIn){
+	public static String computeModuleAliasByFilename(String sIn) throws ExceptionZZZ{
 		String sReturn =new String("");
 		main:{
 			check:{
@@ -7810,7 +7816,7 @@ MeinTestParameter=blablaErgebnis
 		
 	//### Aus Interface IKernelZZZ
 	@Override
-	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -7848,7 +7854,7 @@ MeinTestParameter=blablaErgebnis
 
 	//### Aus Interface IKernelExpressionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -7886,7 +7892,7 @@ MeinTestParameter=blablaErgebnis
 	
 	//aus IKernelZFormulaIni_VariableZZZ
 	@Override
-	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) {
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIni_VariableZZZ.name());
 	}
 	
@@ -7924,7 +7930,7 @@ MeinTestParameter=blablaErgebnis
 	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
 	}
 	
@@ -7962,7 +7968,7 @@ MeinTestParameter=blablaErgebnis
 				
 		//### aus IKernelJsonIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ) {
+		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ) throws ExceptionZZZ {
 			return this.getFlag(objEnum_IKernelJsonIniSolverZZZ.name());
 		}
 		
@@ -8001,7 +8007,7 @@ MeinTestParameter=blablaErgebnis
 		
 		//Aus IKernelJsonMapIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.getFlag(objEnumFlag.name());
 		}
 		
@@ -8039,7 +8045,7 @@ MeinTestParameter=blablaErgebnis
 
 		//### aus IKernelJsonArrayIniSolverZZZ
 			@Override
-			public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+			public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.getFlag(objEnumFlag.name());
 			}
 			
@@ -8077,7 +8083,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//### aus IKernelCallIniSolverZZZ
 			@Override
-			public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
+			public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.getFlag(objEnumFlag.name());
 			}
 			
@@ -8115,7 +8121,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//### Aus Interface IKernelJavaCallIniSolverZZZ
 			@Override
-			public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+			public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
 				return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
 			}
 			
@@ -8153,7 +8159,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//### aus IKernelZFormulaIni_PathZZZ
 			@Override
-			public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) {
+			public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.getFlag(objEnumFlag.name());
 			}
 			@Override
@@ -8191,7 +8197,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//### aus IKernelZFormulaIniZZZ
 			@Override
-			public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
+			public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) throws ExceptionZZZ {
 				return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
 			}
 			
@@ -8231,7 +8237,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//### aus IIniTagWithExpressionZZZ
 			@Override
-			public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ) {
+			public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IIniTagWithExpressionZZZ) throws ExceptionZZZ {
 				return this.getFlag(objEnum_IIniTagWithExpressionZZZ.name());
 			}
 			
@@ -8269,7 +8275,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//aus IKernelZFormulaIni_VariableZZZ
 			@Override
-			public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) {
+			public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnum_IKernelZFormulaIni_VariableZZZ) throws ExceptionZZZ {
 				return this.getFlag(objEnum_IKernelZFormulaIni_VariableZZZ.name());
 			}
 			

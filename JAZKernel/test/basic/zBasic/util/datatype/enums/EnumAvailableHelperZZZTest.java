@@ -132,42 +132,46 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 	    public void testGetEnumConstant(){
 			//Merke; Dieser Test bezieht sich nur auf das Verarbeiten der Enums an sich, nicht auf eine konkrete Klasse. 
 			//       Darum Interface als Grundlage der Klassenangabe.
-	    	
-	    	Class<?> objClass = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
-	    	String sName = EnumSetMappedUtilZZZ.getEnumConstant_NameValue(objClass, "ISSTOPPED");
-	    	assertTrue("Prüfstring sollte als Ergebnis 'ISSTOPPED' sein", "ISSTOPPED".equals(sName));
-	    	
-	    	String sString = EnumSetMappedUtilZZZ.getEnumConstant_StringValue(objClass, "ISSTOPPED");
-	    	assertTrue("Prüfstring sollte als Ergebnis 'isstopped' sein", "isstopped".equals(sString));
-	    	
-	    	Integer intOrdinal = EnumSetMappedUtilZZZ.getEnumConstant_OrdinalValue(objClass, "ISSTOPPED");
-	    	assertEquals("Prüfinteger sollte als Ergebnis 4 sein", intOrdinal.intValue(),4);
-	    	
-	    	@SuppressWarnings("unchecked")
-			String sAbbreviation = EnumSetMappedUtilZZZ.getEnumConstant_AbbreviationValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
-	    	assertTrue("Prüfstring sollte als Ergebnis 'isstopped' sein", "isstopped".equals(sAbbreviation));
-	    	assertTrue("Prüfstring sAbbreviation sollte gleich sString sein.", sString.equals(sAbbreviation));
-	    	
-	    	@SuppressWarnings("unchecked")
-			Integer intPosition = EnumSetMappedUtilZZZ.getEnumConstant_PositionValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
-	    	assertEquals("Prüfinteger sollte als Ergebnis 5 sein", intPosition.intValue(),5);
-	    		    	
-	     	@SuppressWarnings("unchecked")
-			String sDescription = EnumSetMappedUtilZZZ.getEnumConstant_DescriptionValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
-	     	assertTrue("Prüfstring sollte als Ergebnis leer sein", "".equals(sDescription));
-	    	
-	     	@SuppressWarnings("unchecked")
-			Integer intIndex = EnumSetMappedUtilZZZ.getEnumConstant_IndexValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
-	    	assertEquals("Prüfinteger sollte als Ergebnis 4 sein", intIndex.intValue(),4);
-	    	assertEquals("Prüfinteger sollte als Ergebnis dem ordinal - Wert entsprechen", intIndex.intValue(), intOrdinal.intValue());
-	    	assertEquals("Prüfinteger sollte als Ergebnis um 1 höher als der Index sein", intPosition.intValue(),intIndex.intValue()+1);
-	     	
-	     	//#########################################################
-	     	//Speziell für STATUS
-	     	@SuppressWarnings("unchecked")
-	     	String sStatusMessage = EnumSetMappedUtilZZZ.getEnumConstant_StatusMessageValue((Class<IEnumSetMappedStatusZZZ>) objClass, "ISSTOPPED");	     	
-	    	assertTrue("Prüfstring sollte als Ergebnis 'ZZZ: DummyTestObjectWithStatusZZZ beendet' sein", "ZZZ: DummyTestObjectWithStatusZZZ beendet".equals(sStatusMessage));
-	    		    		    		    		 	    
+	    	try {
+		    	Class<?> objClass = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+		    	String sName = EnumSetMappedUtilZZZ.getEnumConstant_NameValue(objClass, "ISSTOPPED");
+		    	assertTrue("Prüfstring sollte als Ergebnis 'ISSTOPPED' sein", "ISSTOPPED".equals(sName));
+		    	
+		    	String sString = EnumSetMappedUtilZZZ.getEnumConstant_StringValue(objClass, "ISSTOPPED");
+		    	assertTrue("Prüfstring sollte als Ergebnis 'isstopped' sein", "isstopped".equals(sString));
+		    	
+		    	Integer intOrdinal = EnumSetMappedUtilZZZ.getEnumConstant_OrdinalValue(objClass, "ISSTOPPED");
+		    	assertEquals("Prüfinteger sollte als Ergebnis 4 sein", intOrdinal.intValue(),4);
+		    	
+		    	@SuppressWarnings("unchecked")
+				String sAbbreviation = EnumSetMappedUtilZZZ.getEnumConstant_AbbreviationValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
+		    	assertTrue("Prüfstring sollte als Ergebnis 'isstopped' sein", "isstopped".equals(sAbbreviation));
+		    	assertTrue("Prüfstring sAbbreviation sollte gleich sString sein.", sString.equals(sAbbreviation));
+		    	
+		    	@SuppressWarnings("unchecked")
+				Integer intPosition = EnumSetMappedUtilZZZ.getEnumConstant_PositionValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
+		    	assertEquals("Prüfinteger sollte als Ergebnis 5 sein", intPosition.intValue(),5);
+		    		    	
+		     	@SuppressWarnings("unchecked")
+				String sDescription = EnumSetMappedUtilZZZ.getEnumConstant_DescriptionValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
+		     	assertTrue("Prüfstring sollte als Ergebnis leer sein", "".equals(sDescription));
+		    	
+		     	@SuppressWarnings("unchecked")
+				Integer intIndex = EnumSetMappedUtilZZZ.getEnumConstant_IndexValue((Class<IEnumSetMappedZZZ>) objClass, "ISSTOPPED");
+		    	assertEquals("Prüfinteger sollte als Ergebnis 4 sein", intIndex.intValue(),4);
+		    	assertEquals("Prüfinteger sollte als Ergebnis dem ordinal - Wert entsprechen", intIndex.intValue(), intOrdinal.intValue());
+		    	assertEquals("Prüfinteger sollte als Ergebnis um 1 höher als der Index sein", intPosition.intValue(),intIndex.intValue()+1);
+		     	
+		     	//#########################################################
+		     	//Speziell für STATUS
+		     	@SuppressWarnings("unchecked")
+		     	String sStatusMessage = EnumSetMappedUtilZZZ.getEnumConstant_StatusMessageValue((Class<IEnumSetMappedStatusZZZ>) objClass, "ISSTOPPED");	     	
+		    	assertTrue("Prüfstring sollte als Ergebnis 'ZZZ: DummyTestObjectWithStatusZZZ beendet' sein", "ZZZ: DummyTestObjectWithStatusZZZ beendet".equals(sStatusMessage));
+		    		
+	    	}catch(ExceptionZZZ ez) {
+	    		ez.printStackTrace();
+	    		fail("Method throws an exception." + ez.getMessageLast());
+	    	}
 	    }   
 	    
 	    public void testSearchEnumListInherited() {
@@ -248,53 +252,54 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 	    public void testSearchEnumMapped() {
 	    	
 	    	try {
-	    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
-	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
-	    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
-	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-	    	IEnumSetMappedZZZ[] enumaByInterface = EnumAvailableHelperZZZ.searchEnumMapped(objClassByInterface, "STATUSLOCAL", false);
-	    	assertNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", enumaByInterface);
-	    	
-	    	boolean bIsEmpty = ArrayUtilZZZ.isNull(enumaByInterface);
-	    	assertTrue("Es sollte kein STATUSLOCAL gefunden werden, da dieser ueber das Interface eingebunden wird", bIsEmpty);
-	    	
-	    	
-            //Für einen Positivtest dann mit einem Objekt Arbeiten, dass den Status direkt einbindet.
-	    	//a) per Klasse ohne Status im Interface
-	    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
-	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen   	
-	    	IEnumSetMappedZZZ[] enumaByDirect = EnumAvailableHelperZZZ.searchEnumMapped(objClassByDirect, "STATUSLOCAL", false);
-	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByDirect);
-	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByDirect.length==6);
-	    	
-	    	//b) per Klasse mit Status im Interface	    	
-	    	Class<?> objClassByInterface2 = objTestWithStatusByInterface.getClass();
-	    	
-	    	//Es sollen per Default auch Interfaces durchsucht werden
-	    	IEnumSetMappedZZZ[] enumaByInterface2 = EnumAvailableHelperZZZ.searchEnumMapped(objClassByInterface2, "STATUSLOCAL" );
-	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface2);
-	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface2.length==6);
-	    	
-	    	//++++++++++++++++++++++++++++++++++
-	    	//SPEZIAL
-	    	//c) per Klasse aus dem Enum selbst (aus Interface mit Status). 
-	    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.	    	
-	    	Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
-
-	    	IEnumSetMappedZZZ[] enumaByInterface3 = EnumAvailableHelperZZZ.searchEnumMapped(objClassFromInterface, "STATUSLOCAL");
-	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface3);
-	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface3.length==6);
-	    	
-	    	//+++++++++++++++++++++++++++++++++++++
-	    	//D) Per Klasse, mit einer Klasse mit "Interface mit Status" extends "Interface mit Status". 
-	    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.
-	    	Class<?> objClassFromInterfaceExtended = objTestWithStatusByInterfaceExtended.getClass();
-	    	IEnumSetMappedZZZ[] enumaByInterface4 = EnumAvailableHelperZZZ.searchEnumMapped(objClassFromInterfaceExtended, "STATUSLOCAL");
-	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT NULL zurueckkommen, da STATUSLOCAL ueber Interfaces eingebunden wird.", enumaByInterface4);
-	    	assertTrue("Es sollten mehr als 6 Elemente in dem Array der Status Enums sein.",enumaByInterface4.length>6);
-
-	    	
+		    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
+		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
+		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
+		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
+		    	IEnumSetMappedZZZ[] enumaByInterface = EnumAvailableHelperZZZ.searchEnumMapped(objClassByInterface, "STATUSLOCAL", false);
+		    	assertNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", enumaByInterface);
+		    	
+		    	boolean bIsEmpty = ArrayUtilZZZ.isNull(enumaByInterface);
+		    	assertTrue("Es sollte kein STATUSLOCAL gefunden werden, da dieser ueber das Interface eingebunden wird", bIsEmpty);
+		    	
+		    	
+	            //Für einen Positivtest dann mit einem Objekt Arbeiten, dass den Status direkt einbindet.
+		    	//a) per Klasse ohne Status im Interface
+		    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
+		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen   	
+		    	IEnumSetMappedZZZ[] enumaByDirect = EnumAvailableHelperZZZ.searchEnumMapped(objClassByDirect, "STATUSLOCAL", false);
+		    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByDirect);
+		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByDirect.length==6);
+		    	
+		    	//b) per Klasse mit Status im Interface	    	
+		    	Class<?> objClassByInterface2 = objTestWithStatusByInterface.getClass();
+		    	
+		    	//Es sollen per Default auch Interfaces durchsucht werden
+		    	IEnumSetMappedZZZ[] enumaByInterface2 = EnumAvailableHelperZZZ.searchEnumMapped(objClassByInterface2, "STATUSLOCAL" );
+		    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface2);
+		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface2.length==6);
+		    	
+		    	//++++++++++++++++++++++++++++++++++
+		    	//SPEZIAL
+		    	//c) per Klasse aus dem Enum selbst (aus Interface mit Status). 
+		    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.	    	
+		    	Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+	
+		    	IEnumSetMappedZZZ[] enumaByInterface3 = EnumAvailableHelperZZZ.searchEnumMapped(objClassFromInterface, "STATUSLOCAL");
+		    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface3);
+		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface3.length==6);
+		    	
+		    	//+++++++++++++++++++++++++++++++++++++
+		    	//D) Per Klasse, mit einer Klasse mit "Interface mit Status" extends "Interface mit Status". 
+		    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.
+		    	Class<?> objClassFromInterfaceExtended = objTestWithStatusByInterfaceExtended.getClass();
+		    	IEnumSetMappedZZZ[] enumaByInterface4 = EnumAvailableHelperZZZ.searchEnumMapped(objClassFromInterfaceExtended, "STATUSLOCAL");
+		    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT NULL zurueckkommen, da STATUSLOCAL ueber Interfaces eingebunden wird.", enumaByInterface4);
+		    	assertTrue("Es sollten mehr als 6 Elemente in dem Array der Status Enums sein.",enumaByInterface4.length>6);
+	
+		    	
 	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }

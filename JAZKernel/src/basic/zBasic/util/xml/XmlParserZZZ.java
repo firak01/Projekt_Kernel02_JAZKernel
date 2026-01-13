@@ -82,7 +82,7 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	//###################################################
 	//Methoden hier, da im Interface eingebunden	
 	@Override
-	public boolean getFlag(IParserXmlZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IParserXmlZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

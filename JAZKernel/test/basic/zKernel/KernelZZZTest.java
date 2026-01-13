@@ -1547,12 +1547,17 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 }
 
 public void testGetModuleAliasFromFilename(){
+	try {
 	assertEquals("MYTEST", KernelZZZ.computeModuleAliasByFilename("ZKernelConfigMYTEST_blabla.ini"));
 	assertEquals("MYTEST", KernelZZZ.computeModuleAliasByFilename("ZKernelConfigMYTEST.ini"));
 	assertEquals("", KernelZZZ.computeModuleAliasByFilename("ZKernelMyNixTest.ini"));
 	assertEquals("", KernelZZZ.computeModuleAliasByFilename("ZKernelxyzConfigMyNixTest.ini"));
 	assertEquals("", KernelZZZ.computeModuleAliasByFilename("MyNixTest.ini"));
 	assertEquals("", KernelZZZ.computeModuleAliasByFilename("MyNixTest.txt"));
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 /** void, testet den Zugriff auf die Aliasnamen, welche der Kernel im Zugriff hat.

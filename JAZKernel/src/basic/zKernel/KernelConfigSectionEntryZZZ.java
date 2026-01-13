@@ -536,7 +536,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	@Override
-	public void setValueAsString(Vector<String> vecValue) {
+	public void setValueAsString(Vector<String> vecValue) throws ExceptionZZZ {
 		if(vecValue!=null) {
 			String sValue = VectorUtilZZZ.implode(vecValue);
 			this.setValue(sValue);
@@ -813,7 +813,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 
 
 	@Override
-	public void setValue(ArrayList<String> alValue) {
+	public void setValue(ArrayList<String> alValue) throws ExceptionZZZ {
 		this.getValueArrayListVector().add(alValue);
 		if(!ArrayListUtilZZZ.isEmpty(alValue)) {				
 			this.isArrayValue(true);

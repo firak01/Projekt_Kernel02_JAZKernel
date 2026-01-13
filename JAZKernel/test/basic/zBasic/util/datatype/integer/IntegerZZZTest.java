@@ -21,25 +21,27 @@ public class IntegerZZZTest extends TestCase implements IConstantZZZ {
 	}//END setup
 	 
 	public void testParseIntFromRight(){
-		//try{
+		try{
 			String sTest = new String("---1");
 			Integer intValue = IntegerZZZ.parseIntFromRight(sTest);			 
 			assertEquals(intValue.intValue(), -1); 
 			
-//		}catch(ExceptionZZZ ez){
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	 }
 	
 	public void testParseAbsolutFromRight(){
-		//try{
+		try{
 			String sTest = new String("---1");
 			Integer intValue = IntegerZZZ.parseAbsolutFromRight(sTest);			 
 			assertEquals(intValue.intValue(), 1); 
 			
-//		}catch(ExceptionZZZ ez){
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	 }
 	
 }

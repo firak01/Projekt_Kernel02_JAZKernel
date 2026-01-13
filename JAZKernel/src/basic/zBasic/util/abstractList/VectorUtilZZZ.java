@@ -132,7 +132,7 @@ public class VectorUtilZZZ extends AbstractObjectWithExceptionZZZ {
 		return vecReturn;
 	}
 	
-	public static String implode(Vector vecIn){
+	public static String implode(Vector vecIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			sReturn = VectorUtilZZZ.implode(vecIn, "");
@@ -141,7 +141,7 @@ public class VectorUtilZZZ extends AbstractObjectWithExceptionZZZ {
 		
 	}
 	
-	public static String implode(Vector vecIn, String sDelimiter){
+	public static String implode(Vector vecIn, String sDelimiter) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(vecIn==null) break main;

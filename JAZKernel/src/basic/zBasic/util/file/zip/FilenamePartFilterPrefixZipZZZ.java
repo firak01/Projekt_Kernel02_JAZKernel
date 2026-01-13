@@ -25,20 +25,22 @@ public class FilenamePartFilterPrefixZipZZZ extends AbstractFilenamePartFilterZi
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getPrefix())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
-				
-				//Anfang des Dateinamens berechnen			
-				String sPrefixCur;
-				try {				
+				if(ze==null) break main;
+				try {
+					if(StringZZZ.isEmpty(this.getPrefix())) {
+						bReturn = true;
+						break main;
+					}				
+					String sName = ze.getName();
+					
+					//Anfang des Dateinamens berechnen			
+					String sPrefixCur=null;
+								
 					sPrefixCur = FileEasyZZZ.getNameOnly(sName);
 					if(StringZZZ.startsWithIgnoreCase(sPrefixCur, this.getPrefix())) bReturn = true;
 				} catch (ExceptionZZZ e) {			
 					e.printStackTrace();
+					return false;
 				} 					
 			}//END main:
 			return bReturn;

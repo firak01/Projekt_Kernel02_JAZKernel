@@ -8,7 +8,7 @@ public interface IKernelJavaCallIniSolverZZZ extends IKernelCallIniSolverZZZ{
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag);
+	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

@@ -23,17 +23,17 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 		super();	
 		
 	}
-	public CounterByCharacterAscii_AlphanumericSignificantZZZ(int iStartingValue){
+	public CounterByCharacterAscii_AlphanumericSignificantZZZ(int iStartingValue) throws ExceptionZZZ {
 		super(iStartingValue);		
 	}
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);		
 	}
-	public CounterByCharacterAscii_AlphanumericSignificantZZZ(int iStartingValue, ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
+	public CounterByCharacterAscii_AlphanumericSignificantZZZ(int iStartingValue, ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ {
 		super(iStartingValue);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	public CounterByCharacterAscii_AlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
+	public CounterByCharacterAscii_AlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ {
 		super(CounterByCharacterAscii_AlphanumericSignificantZZZ.iPOSITION_MIN-1);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}

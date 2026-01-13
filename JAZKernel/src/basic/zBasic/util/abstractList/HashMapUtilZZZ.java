@@ -289,7 +289,7 @@ public class HashMapUtilZZZ {
 	
 	
 	//#############################################################################
-	public static String computeAsHashMapEntry(String sKey, String sValue) {
+	public static String computeAsHashMapEntry(String sKey, String sValue) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sKey)) break main;
@@ -302,7 +302,7 @@ public class HashMapUtilZZZ {
 	/** Erstelle eine echte Kopie der HashMap und nicht nur einen Clone, bei dem die Referencen gleich bleiben.
 	 *  siehe: https://stackoverflow.com/questions/28288546/how-to-copy-hashmap-not-shallow-copy-in-java
 	 */
-	public static HashMap<String,Boolean> copy(HashMap<String,Boolean> hmOriginal){
+	public static HashMap<String,Boolean> copy(HashMap<String,Boolean> hmOriginal) throws ExceptionZZZ {
 	    HashMap<String,Boolean> copy = new HashMap<String, Boolean>();
 	    for (Map.Entry<String, Boolean> entry : hmOriginal.entrySet())
 	    {
@@ -331,7 +331,7 @@ public class HashMapUtilZZZ {
 	//	 */
 		
 		//TODOGOON: Das ist nicht im Einsatz, testen. 
-		public static HashMap<Integer, List<?>> copyWithList(HashMap<Integer, List<?>> original){
+		public static HashMap<Integer, List<?>> copyWithList(HashMap<Integer, List<?>> original) throws ExceptionZZZ {
 		    HashMap<Integer, List<?>> copy = new HashMap<Integer, List<?>>();
 		    for (Map.Entry<Integer, List<?>> entry : original.entrySet())
 		    {
@@ -349,7 +349,7 @@ public class HashMapUtilZZZ {
 		 * @param <K>
 		 * @param <V>
 		 */
-		public static <K, V> Object getEntryByIndex(Map<K, V> map, int iIndex) {
+		public static <K, V> Object getEntryByIndex(Map<K, V> map, int iIndex) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -378,7 +378,7 @@ public class HashMapUtilZZZ {
 		 * @param <K>
 		 * @param <V>
 		 */
-		public static <K, V> Object getEntryFirst(Map<K, V> map) {
+		public static <K, V> Object getEntryFirst(Map<K, V> map) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -402,7 +402,7 @@ public class HashMapUtilZZZ {
 		 * @param <K>
 		 * @param <V>
 		 */
-		public static <K, V> Object getEntryLast(Map<K,V> map) {
+		public static <K, V> Object getEntryLast(Map<K,V> map) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -423,7 +423,7 @@ public class HashMapUtilZZZ {
 		 * @return
 		 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
 		 */
-		public static Object getKeyByIndex(Map<?,?> map, int iIndex) {
+		public static Object getKeyByIndex(Map<?,?> map, int iIndex) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -439,7 +439,7 @@ public class HashMapUtilZZZ {
 		 * @return
 		 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
 		 */
-		public static Object getKeyFirst(Map<?,?> map) {
+		public static Object getKeyFirst(Map<?,?> map) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -455,7 +455,7 @@ public class HashMapUtilZZZ {
 		 * @return
 		 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
 		 */
-		public static Object getKeyLast(Map<?,?> map) {
+		public static Object getKeyLast(Map<?,?> map) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;
@@ -562,7 +562,7 @@ public class HashMapUtilZZZ {
 		* 
 		* lindhaueradmin; 22.05.2011 08:54:37
 		 */
-		public static void sortByKeyInteger_usingInnerComparator(Map<Integer,?> map) {
+		public static void sortByKeyInteger_usingInnerComparator(Map<Integer,?> map) throws ExceptionZZZ {
 			
 		     List<Integer> list = new LinkedList(map.keySet());
 		     Collections.sort(list, new Comparator() {

@@ -64,7 +64,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	
@@ -110,7 +110,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagOnFlagListeningZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagOnFlagListeningZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

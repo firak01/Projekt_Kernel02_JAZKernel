@@ -10,7 +10,7 @@ public interface IDummyTestObjectWithFlagByInterfaceExtendedZZZ extends IDummyTe
 		DUMMY01INTERFACEExtended,DUMMY02INTERFACEExtended
 	}
 		
-	boolean getFlag(FLAGZ objEnumFlag);
+	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;

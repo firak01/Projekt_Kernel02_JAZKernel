@@ -243,7 +243,7 @@ public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
 	
 	//### Aus IHashMapMultiZZZ
 	@Override
-	public V getElementByIndex(int iIndex) {
+	public V getElementByIndex(int iIndex) throws ExceptionZZZ {
 		K key = (K) this.hmOuter.getKeyByIndex(iIndex);
 		V obj = (V) this.hmOuter.get(key);		
 		return obj;

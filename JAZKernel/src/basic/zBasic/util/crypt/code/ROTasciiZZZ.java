@@ -54,12 +54,12 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 	}
 	
 	@Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii;
 	}
 
@@ -126,21 +126,21 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 	}
 	
 	@Override
-	public String getCharacterPoolBase() {
+	public String getCharacterPoolBase() throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(this.sCharacterPoolBase)) {
 			this.sCharacterPoolBase = ROTasciiZZZ.getCharacterPoolStringAscii();
 		}
 		return this.sCharacterPoolBase;
 	}
 		
-	public static String encrypt(String sInput, int n)  throws IllegalArgumentException {
+	public static String encrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ {
 		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
 		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
 	
 	}
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n) throws IllegalArgumentException {
+	public static String encrypt(String sInput, String sCharacterPoolIn, int n) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -193,7 +193,7 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, int n)  throws IllegalArgumentException{
+	public static String decrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ{
 
 		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
@@ -201,7 +201,7 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);		
 	}
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, int n)  throws IllegalArgumentException{
+	public static String decrypt(String sInput, String sCharacterPoolIn, int n)  throws IllegalArgumentException, ExceptionZZZ{
 
 		String sCharacterPool=null;
 		if(StringZZZ.isEmpty(sCharacterPool)) {

@@ -1,5 +1,6 @@
 package basic.zBasic.util.start;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -85,7 +86,7 @@ public class GetOpt {
 		}
 	}
 	
-	public String getoptString(String argv[]) {
+	public String getoptString(String argv[]) throws ExceptionZZZ {
 		if (optind == (argv.length)) {
 			done = true;
 		}

@@ -15,7 +15,7 @@ public interface IIniTagWithConversionZZZ {
 	//public void setEntry(IKernelConfigSectionEntryZZZ objEntry);
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IIniTagWithConversionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ);
+	public boolean getFlag(IIniTagWithConversionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ) throws ExceptionZZZ;
 	public boolean setFlag(IIniTagWithConversionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IIniTagWithConversionZZZ.FLAGZ[] objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

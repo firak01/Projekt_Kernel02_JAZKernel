@@ -624,7 +624,7 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 	 * @param sToFind
 	 * @return long
 	 */
-	public long getIndexFirst(String sToFind){
+	public long getIndexFirst(String sToFind) throws ExceptionZZZ {
 		long lFunction = -1;
 		
 		if(this.bIsString == true){
@@ -648,7 +648,7 @@ output:
 	 * @param sToFind
 	 * @return long
 	 */
-	public static long getIndexFirst(String[] saSource, String sToFind){
+	public static long getIndexFirst(String[] saSource, String sToFind) throws ExceptionZZZ {
 		long lFunction = -1;
 		main:{
 			if(saSource==null) break main;
@@ -665,7 +665,7 @@ output:
 		return lFunction;
 	}//end IndexFirstGet
 	
-	public static int[] getIndexContains(String[] saSource, String sToFind) {
+	public static int[] getIndexContains(String[] saSource, String sToFind) throws ExceptionZZZ {
 		int[] iaReturn=null;
 		main:{
 			if(saSource==null) break main;
@@ -684,7 +684,7 @@ output:
 		return iaReturn;
 	}
 	//##################################################################
-	public static String[] get(String[] saSource, int[]iaIndex) {
+	public static String[] get(String[] saSource, int[]iaIndex) throws ExceptionZZZ {
 		String[]saReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isEmpty(saSource)) break main;
@@ -704,7 +704,7 @@ output:
 	}
 	
 	//##################################################################
-	public static String getLast(Object[] saSource){
+	public static String getLast(Object[] saSource) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(saSource==null) break main;
@@ -717,7 +717,7 @@ output:
 		}// end main:
 		return sReturn;
 	}
-	public static String getLast(String[] saSource){
+	public static String getLast(String[] saSource) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(saSource==null) break main;
@@ -731,7 +731,7 @@ output:
 		return sReturn;
 	}
 	
-	public static String getFirst(Object[] saSource){
+	public static String getFirst(Object[] saSource) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(saSource==null) break main;
@@ -743,7 +743,7 @@ output:
 		return sReturn;
 	}
 		
-	public static String getFirst(String[] saSource){
+	public static String getFirst(String[] saSource) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(saSource==null) break main;
@@ -755,20 +755,20 @@ output:
 		return sReturn;
 	}
 	
-	public static String implode(String[] saString){
+	public static String implode(String[] saString) throws ExceptionZZZ {
 		return StringUtils.join(saString);   //
 	}
 	
-	public static String implode(String[] saString, String sDelimiter){
+	public static String implode(String[] saString, String sDelimiter) throws ExceptionZZZ {
 		return StringUtils.join(saString, sDelimiter);   //
 	}	
 	
-	public void insertSorted(String sString, String sFlagin) throws ExceptionZZZ{
+	public void insertSorted(String sString, String sFlagin) throws ExceptionZZZ {
 		String[] saNew = StringArrayZZZ.insertSorted(this.getArray(), sString, sFlagin);
 		this.setArray(saNew);
 	}
 	
-	public static String[] insertSorted(String[] saSorted, String sString, String sFlagIn) throws ExceptionZZZ{
+	public static String[] insertSorted(String[] saSorted, String sString, String sFlagIn) throws ExceptionZZZ {
 		String[] objReturn = null;
 		main:{
 		if(saSorted==null && StringZZZ.isEmpty(sString)) break main;
@@ -911,7 +911,7 @@ output:
 	 *
 	 * javadoc created by: 0823, 24.07.2006 - 08:52:50
 	 */
-	public static boolean isEmpty(String[] saString){
+	public static boolean isEmpty(String[] saString) throws ExceptionZZZ {
 		if (StringArrayZZZ.isEmptyNull(saString)) return true;
 		for(int iCounter = 0; iCounter <= saString.length-1; iCounter++) {
 			String sString = saString[iCounter];
@@ -920,13 +920,13 @@ output:
 		return true;
 	}
 	
-	public static boolean isEmptyNull(String[] saString){		
+	public static boolean isEmptyNull(String[] saString) throws ExceptionZZZ {		
 		if(saString==null) return true;
 		if(saString.length==0) return true;
 		return false;
 	}
 	
-	public static boolean isEmptyTrimmed(String[] saString){		
+	public static boolean isEmptyTrimmed(String[] saString) throws ExceptionZZZ {		
 		if (StringArrayZZZ.isEmptyNull(saString)) return true;
 		for(int iCounter = 0; iCounter <= saString.length-1; iCounter++) {
 			String sString = saString[iCounter];
@@ -1113,7 +1113,7 @@ output:
 		return objReturn;
 	}
 	
-	public static long searchIndexFirst(String[] saSource, String sToFind){
+	public static long searchIndexFirst(String[] saSource, String sToFind) throws ExceptionZZZ {
 		return StringArrayZZZ.getIndexFirst(saSource, sToFind);
 	}
 	
@@ -1150,7 +1150,7 @@ output:
 		return saReturn;
 	}
 		
-	public static Vector toVector(String[] saString){
+	public static Vector toVector(String[] saString) throws ExceptionZZZ {
 		Vector objReturn = new Vector();
 		main:{
 			if(saString==null) break main;
@@ -1164,7 +1164,7 @@ output:
 		return objReturn;
 	}
 	
-	public Vector toVector(){
+	public Vector toVector() throws ExceptionZZZ {
 		Vector objReturn = new Vector();
 		main:{
 			String[] saString = this.getArray();
@@ -1173,7 +1173,7 @@ output:
 		return objReturn;
 	}
 	
-	public static ArrayList<String> toArrayList(String[] saString){
+	public static ArrayList<String> toArrayList(String[] saString) throws ExceptionZZZ {
 		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			if(saString==null) break main;
@@ -1188,7 +1188,7 @@ output:
 		return listaString;
 	}
 	
-	public ArrayList<String> toArrayList(){
+	public ArrayList<String> toArrayList() throws ExceptionZZZ {
 		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			String[] saString = this.getArray();
@@ -1201,7 +1201,7 @@ output:
 	 *              Das wird hier vermieden.
 	 * @param sValue
 	 */
-	public static int[] toInteger(String[][] samValue){
+	public static int[] toInteger(String[][] samValue) throws ExceptionZZZ {
 		int iaReturn[];
 		main:{
 			if(samValue==null) {
@@ -1220,7 +1220,7 @@ output:
 		return iaReturn;
 	}
 	
-	public static int toInteger(String[] saValue) {
+	public static int toInteger(String[] saValue) throws ExceptionZZZ {
 		int iReturn=0;
 		main:{
 			if(saValue==null) break main;
@@ -1303,10 +1303,10 @@ output:
 	
 	
 	//#### GETTER / SETTER
-	public String[] getArray(){
+	public String[] getArray() throws ExceptionZZZ {
 		return this.saIntern;
 	}
-	public void setArray(String[] saString){
+	public void setArray(String[] saString) throws ExceptionZZZ {
 		this.saIntern = saString;
 	}
 }

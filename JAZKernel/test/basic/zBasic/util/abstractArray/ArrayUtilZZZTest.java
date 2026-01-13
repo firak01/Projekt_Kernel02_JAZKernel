@@ -31,7 +31,7 @@ public class ArrayUtilZZZTest extends TestCase{
     }//END setup
     
     public void testTrim() {
-// 	   try {
+ 	   try {
  		  int iArrayLengthOnStart=-1;  int iArrayLengthOnEnd=-1;
  		  int iListLengthOnStart=-1;  int iListLengthOnEnd=-1;
  		  String[]saTestReturn=null;
@@ -62,9 +62,9 @@ public class ArrayUtilZZZTest extends TestCase{
 	 	   assertEquals(iArrayLengthOnEnd, iListLengthOnEnd);
 	 	
 	 	   
-//		} catch (ExceptionZZZ ez) {
-//			ez.printStackTrace();
-//			fail("Method throws an exception." + ez.getMessageLast());
-// 		}    
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+ 		}    
     }
 }

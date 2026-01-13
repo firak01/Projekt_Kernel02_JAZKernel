@@ -125,7 +125,7 @@ public abstract class AbstractCounterStrategyAlphabetSignificantZZZ extends Abst
 		}
 		
 		@Override		
-		public String getCounterStringNormed(String sAlphanumeric){
+		public String getCounterStringNormed(String sAlphanumeric) throws ExceptionZZZ {
 			 String sReturn = null;
 			 main:{
 				 //String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);

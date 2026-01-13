@@ -101,7 +101,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
     return bReturn;
 }//end function
 		
-	public int getIndex(Object obj) {
+	public int getIndex(Object obj) throws ExceptionZZZ {
 		int iReturn = -1;
 		main:{
 			int iposMaxInt = this.size(); 		
@@ -337,7 +337,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return bReturn;
 	}
 	
-	public String computeDebugString(){
+	public String computeDebugString() throws ExceptionZZZ {
 		String sReturn = new String("");
 		main:{		
 			String sEntryDelimiter = AbstractArrayListZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;			
@@ -346,7 +346,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return sReturn;
 	}
 	
-	public String debugString(String sDebugEntryDelimiterIn){
+	public String debugString(String sDebugEntryDelimiterIn) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{	
 			String sEntryDelimiter = null;
@@ -360,11 +360,11 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return sReturn;
 	}
 	
-	public static String computeDebugString(ArrayList<?>lista) {
+	public static String computeDebugString(ArrayList<?>lista) throws ExceptionZZZ {
 		return AbstractArrayListZZZ.computeDebugString(lista, null);
 	}
 	
-	public static String computeDebugString(ArrayList<?>lista, String sEntryDelimiterIn) {
+	public static String computeDebugString(ArrayList<?>lista, String sEntryDelimiterIn) throws ExceptionZZZ {
 		String sReturn = new String("");
 		main:{
 			if(lista==null)break main;
@@ -393,15 +393,15 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 	/**
 	 * @return ArrayList, internal ArrayList. E.g. this is the result-list aber an .addList-method.
 	 */
-	public ArrayList<?> toArrayList() {
+	public ArrayList<?> toArrayList() throws ExceptionZZZ {
 		return (ArrayList<?>)this;
 	}	
 	
-	public String[] toStringArray() {
+	public String[] toStringArray() throws ExceptionZZZ {
 		return ArrayListUtilZZZ.toStringArray(this);
 	}
 	
-	public int[] toIntArray() {
+	public int[] toIntArray() throws ExceptionZZZ {
 		return ArrayListUtilZZZ.toIntArray(this);
 	}
 	}//end class

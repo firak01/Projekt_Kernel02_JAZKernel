@@ -29,41 +29,41 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public int getSubtype() {
+	public int getSubtype() throws ExceptionZZZ {
 		return CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal();
 	}
 			
 	@Override
-	public void setCryptNumber(int iCryptKey) {
+	public void setCryptNumber(int iCryptKey) throws ExceptionZZZ {
 		this.iCryptKey = iCryptKey;
 	}
 	@Override
-	public int getCryptNumber() {
+	public int getCryptNumber() throws ExceptionZZZ {
 		return this.iCryptKey;
 	}
 	
 	@Override
-	public int[] getDecryptedValuesAsInt() {
+	public int[] getDecryptedValuesAsInt() throws ExceptionZZZ {
 		return this.iaDecrypted;
 	}
 	
 	@Override
-	public void setDecryptedValues(int[] iaCrypted) {
+	public void setDecryptedValues(int[] iaCrypted) throws ExceptionZZZ {
 		this.iaDecrypted = iaCrypted;
 	}
 	
 	@Override
-	public int[] getOriginalValuesAsInt() {
+	public int[] getOriginalValuesAsInt(Object newParam) throws ExceptionZZZ {
 		return this.iaOriginal;
 	}
 	
 	@Override
-	public void setOriginalValues(int[] iaOriginal) {
+	public void setOriginalValues(int[] iaOriginal) throws ExceptionZZZ {
 		this.iaOriginal = iaOriginal;
 	}
 	
 	@Override
-	public boolean getFlag(IROTEnabledConstantZZZ.FLAGZ objEnumFlag) {		
+	public boolean getFlag(IROTEnabledConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {		
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -98,12 +98,12 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	//### Methoden werden zwar z.B. nur fuer Vigenere Verschluesselung, bzw. fuer Verschluesselung mit CharacterPool gebraucht.
 	//    Um den Einsatz von ICrypt - Objekten zu standardiesieren, hier notwendig.
 	@Override
-	public void setCryptKey(String sCryptKey) {
+	public void setCryptKey(String sCryptKey) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public String getCryptKey() {		
+	public String getCryptKey() throws ExceptionZZZ {		
 		return null;
 	}
 	
@@ -113,7 +113,7 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 		
@@ -124,24 +124,24 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 	}
 	
 	@Override
-	public void setCharacterPoolBase(String sCharacterPoolBase) {
+	public void setCharacterPoolBase(String sCharacterPoolBase) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public String getCharacterPoolBase() {
+	public String getCharacterPoolBase() throws ExceptionZZZ {
 		///Nur wg. ICryptZZZ
 		return null;
 	}
 		
 	
 	@Override
-	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public String getCharacterPoolAdditional() {
+	public String getCharacterPoolAdditional() throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 		return null;
 	}
@@ -154,7 +154,7 @@ public abstract class AbstractROTZZZ extends AbstractObjectWithFlagZZZ implement
 		
 
 	@Override
-	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	} 
 		

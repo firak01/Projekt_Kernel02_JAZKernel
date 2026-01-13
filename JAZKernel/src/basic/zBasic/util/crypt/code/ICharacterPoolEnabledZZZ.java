@@ -12,7 +12,7 @@ public interface ICharacterPoolEnabledZZZ extends ICharacterPoolEnabledConstantZ
 		//}	
 		
 		//damit muss man nicht mehr tippen hinter dem enum .name()
-		public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag);
+		public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 		public boolean setFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 		public boolean[] setFlag(ICharacterPoolEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ; 
 		boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
@@ -27,19 +27,19 @@ public interface ICharacterPoolEnabledZZZ extends ICharacterPoolEnabledConstantZ
 		public ArrayListZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
 		
 
-		public String getCharacterPoolBase();
-		public void setCharacterPoolBase(String sCharacterPool);
+		public String getCharacterPoolBase() throws ExceptionZZZ;
+		public void setCharacterPoolBase(String sCharacterPool) throws ExceptionZZZ;
 				
-		public String getCharacterPoolAdditional();
-		public void setCharacterPoolAdditional(String sCharacterPool);
+		public String getCharacterPoolAdditional() throws ExceptionZZZ;
+		public void setCharacterPoolAdditional(String sCharacterPool) throws ExceptionZZZ;
 		
 		
 		
-		public int[] getEncryptedCharacterPoolPosition();
-		public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition);
+		public int[] getEncryptedCharacterPoolPosition() throws ExceptionZZZ;
+		public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition) throws ExceptionZZZ;
 
-		public int[] getDecryptedCharacterPoolPosition();
-		public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition);
+		public int[] getDecryptedCharacterPoolPosition() throws ExceptionZZZ;
+		public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition) throws ExceptionZZZ;
 			
 		//Verlagert nach ICryptZZZ, wie auch der CharacterPool
 		//public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;

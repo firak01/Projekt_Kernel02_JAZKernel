@@ -10,7 +10,7 @@ public interface IKernelExpressionIniParserZZZ { //extends IKernelZFormulaIniSol
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelExpressionIniParserZZZ);
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelExpressionIniParserZZZ) throws ExceptionZZZ;
 	public boolean setFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnum_IKernelExpressionIniParserZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelExpressionIniParserZZZ.FLAGZ[] objEnum_IKernelExpressionIniParserZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

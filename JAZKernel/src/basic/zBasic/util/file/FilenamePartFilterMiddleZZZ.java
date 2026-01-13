@@ -22,25 +22,27 @@ public class FilenamePartFilterMiddleZZZ extends AbstractObjectWithExceptionZZZ 
 	/* (non-Javadoc)
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)	 
 	 */
+	@Override
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
 			//if(objFile==null) break main;
-			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getMiddle())) {
-				bReturn = true;
-				break main;
-			}
-		
+			if(sName==null) break main;	
 			
-			//"Mitte" des Dateinamens berechnen			
-			String sMiddleCur;
-			try {				
+			try {
+				if(StringZZZ.isEmpty(this.getMiddle())) {
+					bReturn = true;
+					break main;
+				}
+							
+				//"Mitte" des Dateinamens berechnen			
+				String sMiddleCur = null;
 				sMiddleCur = FileEasyZZZ.getNameOnly(sName);				
 				sMiddleCur = StringZZZ.midBounds(sMiddleCur, 1, 1);
 				if(StringZZZ.contains(sMiddleCur, this.getMiddle())) bReturn = true;
 			} catch (ExceptionZZZ e) {			
 				e.printStackTrace();
+				return false;
 			} 					
 		}//END main:
 		return bReturn;
@@ -52,6 +54,7 @@ public class FilenamePartFilterMiddleZZZ extends AbstractObjectWithExceptionZZZ 
 	 *
 	 * javadoc created by: 0823, 14.07.2006 - 11:43:07
 	 */
+	//@Override
 	public boolean accept(File objFile){
 		boolean bReturn = false;
 		main:{
@@ -65,9 +68,9 @@ public class FilenamePartFilterMiddleZZZ extends AbstractObjectWithExceptionZZZ 
 				sMiddleCur = FileEasyZZZ.getNameOnly(sName);
 				sMiddleCur = StringZZZ.midLeftRight(sMiddleCur, 1, 1);
 				if(StringZZZ.contains(sMiddleCur, this.getMiddle())) bReturn = true;
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
+			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
+				return false;
 			}
 					
 		}//END main:

@@ -98,20 +98,21 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	 * @param sPattern
 	 * @return
 	 * @author Fritz Lindhauer, 31.03.2021, 09:09:29
+	 * @throws ExceptionZZZ 
 	 */
-	public static ArrayList<String> getPatternList4ControlAll(String sPattern){
+	public static ArrayList<String> getPatternList4ControlAll(String sPattern) throws ExceptionZZZ{
 		ArrayList<String> listaControlWithValue = getPatternList4ControlWithValue(sPattern);
 		ArrayList<String> listaControlSimple = getPatternList4ControlSimple(sPattern);
 		
 		return (ArrayList<String>) ArrayListUtilZZZ.join(listaControlWithValue, listaControlSimple);
 	}
 	
-	public static ArrayList<String> getPatternList4ControlWithValue(String sPattern){
+	public static ArrayList<String> getPatternList4ControlWithValue(String sPattern) throws ExceptionZZZ{
 		return getPatternList4ControlWithValue_(sPattern);
 	}
 	
 	
-	private static ArrayList<String> getPatternList4ControlWithValue_(String sPattern){
+	private static ArrayList<String> getPatternList4ControlWithValue_(String sPattern) throws ExceptionZZZ{
 		ArrayList<String> listaReturn = new ArrayList<String>();
 		main:{
 			if(StringZZZ.isEmpty(sPattern)) break main;
@@ -158,11 +159,11 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		return listaReturn;
 	}
 	
-	public static ArrayList<String> getPatternList4ControlSimple(String sPattern){
+	public static ArrayList<String> getPatternList4ControlSimple(String sPattern) throws ExceptionZZZ{
 		return getPatternList4ControlSimple_(sPattern);
 	}
 	
-	private static ArrayList<String> getPatternList4ControlSimple_(String sPattern){
+	private static ArrayList<String> getPatternList4ControlSimple_(String sPattern) throws ExceptionZZZ{
 		ArrayList<String> listaReturn = new ArrayList<String>();
 		main:{
 			if(StringZZZ.isEmpty(sPattern)) break main;
@@ -759,7 +760,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		return bFunction;
 	}
 	
-	public boolean getFlag(String sFlagName){
+	public boolean getFlag(String sFlagName) throws ExceptionZZZ{
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) break main;

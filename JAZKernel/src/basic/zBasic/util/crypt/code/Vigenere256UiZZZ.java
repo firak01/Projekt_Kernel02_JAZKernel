@@ -103,12 +103,12 @@ public class Vigenere256UiZZZ extends Vigenere256ZZZ implements IVigenereUiZZZ{ 
   
 
   @Override
-	public void setFileOriginal(DateiUtil datei) {
+	public void setFileOriginal(DateiUtil datei) throws ExceptionZZZ {
 		this.dateiOriginal = datei;
 	}
 	
 	@Override
-	public DateiUtil getFileOriginal() {
+	public DateiUtil getFileOriginal() throws ExceptionZZZ {
 		if(this.dateiOriginal==null) {
 			String sFilePath = this.getFilePath();
 			DateiUtil Original = new DateiUtil(sFilePath);
@@ -118,12 +118,12 @@ public class Vigenere256UiZZZ extends Vigenere256ZZZ implements IVigenereUiZZZ{ 
 	}
 
 	@Override
-public void setFileEncrypted(DateiUtil datei) {
+public void setFileEncrypted(DateiUtil datei) throws ExceptionZZZ {
 		this.dateiEncrypted = datei;
 	}
 	
 	@Override
-	public DateiUtil getFileEncrypted() {
+	public DateiUtil getFileEncrypted() throws ExceptionZZZ {
 		if(this.dateiEncrypted==null) {
 			if(this.isFileOriginalEncrypted()) {
 				this.dateiEncrypted = this.getFileOriginal();
@@ -136,27 +136,27 @@ public void setFileEncrypted(DateiUtil datei) {
 	}	
 	
 	@Override
-	public void setFileDecrypted(DateiUtil datei) {
+	public void setFileDecrypted(DateiUtil datei) throws ExceptionZZZ {
 		this.dateiDecrypted = datei;
 	}
 	
 	@Override
-	public DateiUtil getFileDecrypted() {		
+	public DateiUtil getFileDecrypted() throws ExceptionZZZ {		
 		return this.dateiDecrypted;
 	}
 
 	@Override
-	public boolean isFileOriginalEncrypted() {
+	public boolean isFileOriginalEncrypted() throws ExceptionZZZ {
 		return this.bDateiOriginalIsEncrypted;
 	}
 	
 	@Override
-	public void isFileOriginalEncrypted(boolean bFileOriginalIsEncrypted) {
+	public void isFileOriginalEncrypted(boolean bFileOriginalIsEncrypted) throws ExceptionZZZ {
 		bDateiOriginalIsEncrypted = bFileOriginalIsEncrypted;
 	}
 	
 	@Override
-	public int[] readOriginalValuesAsInt() {
+	public int[] readOriginalValuesAsInt() throws ExceptionZZZ {
 		
 		DateiUtil Original = this.getFileOriginal();
 		if(Original!=null) {
@@ -164,6 +164,6 @@ public void setFileEncrypted(DateiUtil datei) {
 			this.setOriginalValues(p);
 		}
 		
-		return this.getOriginalValuesAsInt();
+		return this.getOriginalValuesAsInt(null);
 	}
 }

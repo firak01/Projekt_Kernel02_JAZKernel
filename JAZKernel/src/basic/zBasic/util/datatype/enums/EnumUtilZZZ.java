@@ -2,6 +2,7 @@ package basic.zBasic.util.datatype.enums;
 
 import java.util.ArrayList;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
@@ -14,7 +15,7 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
  * 
  */
 public class EnumUtilZZZ {
-	public static String[] toString(Enum[] enuma) {
+	public static String[] toString(Enum[] enuma) throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
 			if(ArrayUtilZZZ.isNull(enuma)) break main;
@@ -30,7 +31,7 @@ public class EnumUtilZZZ {
 		return saReturn;
 	}
 	
-	public static <E extends IEnumSetMappedZZZ> ArrayList<E> toArrayListMapped(Enum[] enuma) {	
+	public static <E extends IEnumSetMappedZZZ> ArrayList<E> toArrayListMapped(Enum[] enuma) throws ExceptionZZZ {	
 		ArrayList<E> listaeReturn = null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(enuma)) {	

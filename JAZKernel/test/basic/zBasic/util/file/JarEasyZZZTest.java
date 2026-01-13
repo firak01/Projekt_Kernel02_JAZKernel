@@ -57,7 +57,13 @@ public class JarEasyZZZTest extends TestCase{
 			try {
 				objJarAsSource.close();
 			} catch (IOException e) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
+				ExceptionZZZ ez=null;
+				try {
+					ez = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				}catch(ExceptionZZZ ez1){
+					ez1.printStackTrace();
+					fail("Method throws an exception." + ez1.getMessageLast());
+				}				
 				ez.printStackTrace();
 				fail("An exception happend testing: " + ez.getDetailAllLast());
 			}

@@ -408,7 +408,7 @@ public class KernelZFormulaMathSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<
 	
 	//### Aus Interface IKernelZFormulaIniZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
 	}
 	

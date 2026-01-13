@@ -22,24 +22,26 @@ public class FilenamePartFilterPrefixZZZ extends AbstractObjectWithExceptionZZZ 
 	/* (non-Javadoc)
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)	 
 	 */
+	@Override
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
 			//if(objFile==null) break main;
-			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getPrefix())) {
-				bReturn = true;
-				break main;
-			}
-		
+			if(sName==null) break main;	
 			
-			//Anfang des Dateinamens berechnen			
-			String sPrefixCur;
-			try {				
+			try {
+				if(StringZZZ.isEmpty(this.getPrefix())) {
+					bReturn = true;
+					break main;
+				}
+							
+				//Anfang des Dateinamens berechnen			
+				String sPrefixCur = null;					
 				sPrefixCur = FileEasyZZZ.getNameOnly(sName);
 				if(StringZZZ.startsWithIgnoreCase(sPrefixCur, this.getPrefix())) bReturn = true;
 			} catch (ExceptionZZZ e) {			
 				e.printStackTrace();
+				return false;
 			} 					
 		}//END main:
 		return bReturn;
@@ -51,6 +53,7 @@ public class FilenamePartFilterPrefixZZZ extends AbstractObjectWithExceptionZZZ 
 	 *
 	 * javadoc created by: 0823, 14.07.2006 - 11:43:07
 	 */
+	//@Override
 	public boolean accept(File objFile){
 		boolean bReturn = false;
 		main:{

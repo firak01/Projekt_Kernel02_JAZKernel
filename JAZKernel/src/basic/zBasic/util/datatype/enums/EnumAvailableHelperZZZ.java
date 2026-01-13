@@ -379,6 +379,32 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	//+++++++++++++++++++++++++++++++++++
 	//###############################################################################################
 	//+++ Speziel für das ILogStringFormatZZZ ++++++++++++++++++
+	//aber wir durchsuchen nun einmal beliebige Klassen nach dem Enum-Namen
+	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedLogStringFormatList(Object obj, String sEnumName)  throws ExceptionZZZ {
+		return searchEnumMappedLogStringFormatList_(obj, sEnumName, true, true);
+	}
+	
+	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedLogStringFormatList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+		return searchEnumMappedLogStringFormatList_(obj, sEnumName, bScanInterfaceImmidiate, true);
+	}
+	
+
+	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
+	//public static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedLogStringFormatList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
+		return searchEnumMappedLogStringFormatList_(obj, sEnumName, bScanInterfaceImmidiate, bScanParentClassImmidiate);
+	}	
+	
+	private static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedLogStringFormatList_(Object obj, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		Class<?> objClass = obj.getClass();
+		return searchEnumMappedLogStringFormatList_(objClass, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
+	}
+	
+	
+	
+	
 	//public static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
 	//s. ChatGPT vom 200260110
 	//Class<E> statt Class<?> ist der entscheide Punkt. Das ? ist für den Compiler eine BlackBox und enthält keine Typinformationen

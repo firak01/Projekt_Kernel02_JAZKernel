@@ -34,12 +34,12 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	}
 	
 	@Override 
-	public final int getCounterStartDefault(){
+	public final int getCounterStartDefault() throws ExceptionZZZ {
 		return this.iStartDefault;
 	}
 	
 	@Override
-	public final void setCounterStartDefault(int iStart){
+	public final void setCounterStartDefault(int iStart) throws ExceptionZZZ{
 		this.iStartDefault = iStart; //Wichtig: Diese Methode muss final sein, damit auch wirklich auf die Variable dieser Klasse zugegriffen wird. Ansonsten wird auf die Variable der abstrakten Klasse zugegriffen.
 	}
 
@@ -94,7 +94,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	}
 
 	@Override
-	public int computeNumberForString(String sTotalUnnormed) {
+	public int computeNumberForString(String sTotalUnnormed) throws ExceptionZZZ {
 		int iReturn = -99;
 		
 		main:{				

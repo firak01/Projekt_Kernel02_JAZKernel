@@ -27,20 +27,20 @@ public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectab
 	
 	//++++ Aus Interface
 	@Override
-	public boolean isLeftAligned() {
+	public boolean isLeftAligned() throws ExceptionZZZ {
 		return this.bLeftAligned;
 	}
 	@Override
-	public void isLeftAligned(boolean bValue) {
+	public void isLeftAligned(boolean bValue) throws ExceptionZZZ {
 		this.bLeftAligned = bValue;
 	}
 	
 	@Override
-	public boolean isRightAligned() {
+	public boolean isRightAligned() throws ExceptionZZZ {
 		return !this.bLeftAligned;
 	}
 	@Override
-	public void isRightAligned(boolean bValue) {
+	public void isRightAligned(boolean bValue) throws ExceptionZZZ {
 		this.bLeftAligned = !bValue;
 	}
 	
@@ -51,11 +51,11 @@ public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectab
 	
 	
 	@Override
-	public boolean isIncreasableInOtherMethod(){
+	public boolean isIncreasableInOtherMethod() throws ExceptionZZZ{
 		return this.bIncreasableInOtherMethod;
 	}
 	@Override
-	public void isIncreasableInOtherMethod(boolean bValue){
+	public void isIncreasableInOtherMethod(boolean bValue) throws ExceptionZZZ{
 		this.bIncreasableInOtherMethod = bValue;
 	}
 	
@@ -65,12 +65,12 @@ public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectab
 	
 	//Aus Interface ICounterStrategy
 	@Override
-	public void setCounterStart(int iStart){
+	public void setCounterStart(int iStart) throws ExceptionZZZ{
 		this.iStart = iStart;
 	}
 				
 	@Override
-	public int getCounterStart(){
+	public int getCounterStart() throws ExceptionZZZ{
 		if(this.iStart<=this.getCounterStartDefault()){
 			this.iStart = this.getCounterStartDefault();
 		}
@@ -78,22 +78,22 @@ public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectab
 	}
 	
 	@Override
-	public void setCounterStartDefault(int iStart){
+	public void setCounterStartDefault(int iStart) throws ExceptionZZZ{
 		this.iStartDefault = iStart;
 	}
 				
 	@Override
-	public int getCounterStartDefault(){		
+	public int getCounterStartDefault() throws ExceptionZZZ{		
 		return this.iStartDefault;
 	}
 	
 	@Override
-	public int getDigitValueMin(){
+	public int getDigitValueMin() throws ExceptionZZZ{
 		return this.getCharacterPositionMin()-1;
 	}
 	
 	@Override
-	public int getDigitValueMax(){
+	public int getDigitValueMax() throws ExceptionZZZ{
 		return this.getCharacterPositionMax()-1;
 	}
 	
@@ -105,12 +105,12 @@ public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectab
 	
 		
 	@Override
-	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange){
+	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange) throws ExceptionZZZ{
 		return iDigitValueInMinMaxRange + 1;
 	}
 	
 	@Override
-	public int getDigitValueForPositionValue(int iPositionValueInMinMaxRange){		
+	public int getDigitValueForPositionValue(int iPositionValueInMinMaxRange) throws ExceptionZZZ{		
 		return iPositionValueInMinMaxRange - 1;
 	}
 

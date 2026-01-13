@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -21,20 +22,27 @@ public class FilenamePartFilterEndingZZZ extends AbstractObjectWithExceptionZZZ 
 	/* (non-Javadoc)
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)	 
 	 */
+	@Override
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
 			//if(objFile==null) break main;
-			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getEnding())) {
-				bReturn = true;
-				break main;
-			}
+			if(sName==null) break main;		
 			
-					
-			//Dateiendung berechnen
-			String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
-			if(sEndingCur.equals(this.sFileEnding)) bReturn = true;			
+			try {
+				if(StringZZZ.isEmpty(this.getEnding())) {
+					bReturn = true;
+					break main;
+				}
+				
+						
+				//Dateiendung berechnen
+				String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+				if(sEndingCur.equals(this.sFileEnding)) bReturn = true;	
+			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				return false;
+			}
 		}//END main:
 		return bReturn;
 	}

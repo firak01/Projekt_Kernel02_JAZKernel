@@ -35,7 +35,7 @@ import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
 	//+++ Fuer den Namen der .java - Datei
-	public static String getMethodCurrentFileName(){
+	public static String getMethodCurrentFileName() throws ExceptionZZZ {
 		return getMethodCurrentFileName(1);
 	}
 	
@@ -43,7 +43,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
 	 * @return Return the name of the routine that called getCurrentMethodName
 	 */
-	  public static String getMethodCurrentFileName(int iOffset) {		  
+	  public static String getMethodCurrentFileName(int iOffset) throws ExceptionZZZ {		  
 			String method = null;
 			 
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -66,15 +66,15 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	/** @return Name des JavaFiles, welche die aktuelle Methode aufgerufen hat.
 	* lindhaueradmin, 27.04.2024
 	*/
-	  public static String getMethodCallingFileName() throws ExceptionZZZ{
+	  public static String getMethodCallingFileName() throws ExceptionZZZ {
 		  return getMethodCallingFileName_(1); //1 StacktracePostion weiter
 	  }
 	  
-	public static String getMethodCallingFileName(int iOffset) throws ExceptionZZZ{
+	public static String getMethodCallingFileName(int iOffset) throws ExceptionZZZ {
 		return getMethodCallingFileName_(iOffset+1);
 	}
 	
-	private static String getMethodCallingFileName_(int iStacktraceOffset) throws ExceptionZZZ{
+	private static String getMethodCallingFileName_(int iStacktraceOffset) throws ExceptionZZZ {
 		String method = null;
 				
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -102,7 +102,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	
 	//++++++++++++++++++++++ Für den Namen der Klasse und Methode, ohne den Dateinamen
-	public static String getMethodCurrentName(){
+	public static String getMethodCurrentName() throws ExceptionZZZ  {
 		return getMethodCurrentName(1);//1 StacktracePostion weiter
 	}
 	
@@ -111,7 +111,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
 	   * @return Return the name of the routine that called getCurrentMethodName
 	   */
-	  public static String getMethodCurrentName(int iStacktraceOffset) {		  
+	  public static String getMethodCurrentName(int iStacktraceOffset) throws ExceptionZZZ  {		  
 			String method = null;
 			 
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -174,11 +174,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			  return method;
 	  }
 	  
-	  public static String getMethodCurrentNameLined() throws ExceptionZZZ{
+	  public static String getMethodCurrentNameLined() throws ExceptionZZZ {
 		  return ReflectCodeZZZ.getMethodCurrentNameLined_(1,0);//0=StacktraceOffset, 0=iLineOffset
 	  }
 	  
-	  public static String getMethodCurrentNameLined(int iLineOffset) throws ExceptionZZZ{
+	  public static String getMethodCurrentNameLined(int iLineOffset) throws ExceptionZZZ {
 		  return ReflectCodeZZZ.getMethodCurrentNameLined_(1,iLineOffset);
 	  }
 	  
@@ -187,11 +187,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
 	   * @return Return the name of the routine that called getCurrentMethodName
 	   */
-	  public static String getMethodCurrentNameLined(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
+	  public static String getMethodCurrentNameLined(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ {		  
 		  return getMethodCurrentNameLined_(iStacktraceOffset, iLineOffset);
 	  }
 	  
-	  private static String getMethodCurrentNameLined_(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{		  
+	  private static String getMethodCurrentNameLined_(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ {		  
 			String sReturn = null;
 			main:{								
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -265,11 +265,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			return sReturn;
 	  }
   
-	  public static String getMethodCallingName() {
+	  public static String getMethodCallingName() throws ExceptionZZZ  {
 		  return getMethodCallingName_(1); //1 StacktracePostion weiter
 	  }
 	  
-	  public static String getMethodCallingName(int iStacktraceOffset) {
+	  public static String getMethodCallingName(int iStacktraceOffset) throws ExceptionZZZ  {
 		  return getMethodCallingName_(iStacktraceOffset+1); //1 StacktracePostion weiter
 	  }
 	 /**
@@ -344,7 +344,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	
 	
-	 public static String formatMethodCallingLine(int iLine){         		 
+	 public static String formatMethodCallingLine(int iLine) throws ExceptionZZZ {         		 
 		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.		 		 
 		 return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
@@ -355,7 +355,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		//return sLine;
 	 }
 	 
-	 public static String formatFileCallingLine(int iLine){
+	 public static String formatFileCallingLine(int iLine) throws ExceptionZZZ {
 		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt.
 		 //Merke20240427: Für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.
@@ -366,7 +366,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 return IReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + iLine; 		 
 	 }
 	 
-	 public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) {
+	 public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) throws ExceptionZZZ {
 		//Merke1: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
 		//        Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
 		//        Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
@@ -382,15 +382,15 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @return Zeile im Stacktrace für den Namen der Methode, welche die aktuelle Methode aufgerufen hat.
 	 * lindhaueradmin, 23.07.2013
 	 */
-	public static int getMethodCallingLine() throws ExceptionZZZ{
+	public static int getMethodCallingLine() throws ExceptionZZZ {
 		return getMethodCallingLine_(1);//1 Stacktracepostion weiter
 	}
 	
-	public static int getMethodCallingLine(int iStacktraceOffset) throws ExceptionZZZ{
+	public static int getMethodCallingLine(int iStacktraceOffset) throws ExceptionZZZ {
 		return getMethodCallingLine_(iStacktraceOffset+1);
 	}
 	
-	private static int getMethodCallingLine_(int iStacktraceOffset) throws ExceptionZZZ{
+	private static int getMethodCallingLine_(int iStacktraceOffset) throws ExceptionZZZ {
 		int iLine = -1;
 					
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -414,11 +414,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return iLine;
 	}
 	
-	public static int getMethodCurrentLine() throws ExceptionZZZ{
+	public static int getMethodCurrentLine() throws ExceptionZZZ {
 		return getMethodCallingLine_(1); //1 Stacktraceposition weiter, steckt schon in "calling"
 	}
 	
-	public static int getMethodCurrentLine(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ{
+	public static int getMethodCurrentLine(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ {
 		int iLine = -1;
 	 
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -447,7 +447,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  
 	  
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public static String getClassCallingName() throws ExceptionZZZ{
+	public static String getClassCallingName() throws ExceptionZZZ {
 		return getClassCallingName_(1); //1 StacktracePostion weiter
 	}
 	
@@ -456,7 +456,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getClassCallingName(int iStacktraceOffset) throws ExceptionZZZ{
+	public static String getClassCallingName(int iStacktraceOffset) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 			  
@@ -485,7 +485,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 	 */
-	private static String getClassCallingName_(int iStacktraceOffset) throws ExceptionZZZ{
+	private static String getClassCallingName_(int iStacktraceOffset) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 		  	if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -515,7 +515,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getClassCurrentName() throws ExceptionZZZ{
+	public static String getClassCurrentName() throws ExceptionZZZ {
 		  return ReflectCodeZZZ.getClassCallingName_(0);//0, weil Stacktraceposition weiter steckt schon in "calling"
 	  }
 	
@@ -524,7 +524,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 * lindhaueradmin, 23.07.2013
 		 * @throws ExceptionZZZ 
 		 */
-		public static String getClassCurrentName(int iStacktracePositionOffset) throws ExceptionZZZ{
+		public static String getClassCurrentName(int iStacktracePositionOffset) throws ExceptionZZZ {
 			  return ReflectCodeZZZ.getClassCallingName_(iStacktracePositionOffset);//1 Stacktraceposition weiter steckt schon in "calling"
 		  }
 
@@ -549,7 +549,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 //		  return sReturn;
 //	}
 		
-	public static String  getPositionCurrentInFile(int iLevel) throws ExceptionZZZ{
+	public static String  getPositionCurrentInFile(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{	  
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -572,11 +572,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		
 	}
 		
-	public static String  getPositionCurrentInFile(String sFile, int iLine) throws ExceptionZZZ{
+	public static String  getPositionCurrentInFile(String sFile, int iLine) throws ExceptionZZZ {
 		return getPositionCurrentInFile_(sFile, iLine);
 	}
 	
-	private static String getPositionCurrentInFile_(String sFile, int iLine) throws ExceptionZZZ{
+	private static String getPositionCurrentInFile_(String sFile, int iLine) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{	  
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -593,20 +593,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  return sReturn;
 	}
 		
-	public static String  getPositionCurrent() throws ExceptionZZZ{
+	public static String  getPositionCurrent() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 1);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++
-	public static String  getPositionCalling() throws ExceptionZZZ{
+	public static String  getPositionCalling() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2);
 	}
 	
-	public static String  getPositionCallingPlus(int iLevelPlus) throws ExceptionZZZ{
+	public static String  getPositionCallingPlus(int iLevelPlus) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2+iLevelPlus);
 	}
 	
-	public static String getPosition(int iLevel) throws ExceptionZZZ{
+	public static String getPosition(int iLevel) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, iLevel+1);
 	}
 	
@@ -694,11 +694,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 16.11.2025, 21:30:35
 	 */
-	public static String  getPositionCurrentSimple() throws ExceptionZZZ{
+	public static String  getPositionCurrentSimple() throws ExceptionZZZ {
 		return getPositionCurrentSimple_(null, 1);
 	}
 	
-	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ{
+	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		  main:{
 			  
@@ -739,11 +739,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	}
 	
 	//##########################
-	public static String  getPositionCallingSimple() throws ExceptionZZZ{
+	public static String  getPositionCallingSimple() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCallingSimple_(2);
 	}
 	
-	private static String getPositionCallingSimple_(int iLevel) throws ExceptionZZZ{
+	private static String getPositionCallingSimple_(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		  main:{
 			 if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -770,20 +770,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	//#####################################################################################
 	//####################
-	public static String  getPositionCurrentXml() throws ExceptionZZZ{
+	public static String  getPositionCurrentXml() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, 1);
 	}
 	
 	//####################
-	public static String  getPositionCallingXml() throws ExceptionZZZ{
+	public static String  getPositionCallingXml() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2);
 	}
 	
-	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ{
+	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2+iLevelPlus);
 	}
 	
-	public static String getPositionXml(int iLevel) throws ExceptionZZZ{
+	public static String getPositionXml(int iLevel) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, iLevel+1);
 	}
 	
@@ -890,11 +890,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	//#################################################################
 	//####################
-	public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ{
+	public static String  getPositionCurrentXmlFormated() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(null, 1);
 	}
 	
-	public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ{
+	public static String getPositionXmlFormated(int iLevel) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXmlFormated_(null, iLevel+1);
 	}
 		
@@ -1026,7 +1026,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getPackagePath(Object obj) throws ExceptionZZZ{
+	public static String getPackagePath(Object obj) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 			  if(obj == null) break main;
@@ -1056,7 +1056,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getPackagePathForConstant(Object obj){
+	public static String getPackagePathForConstant(Object obj) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 			  if(obj == null) break main;
@@ -1075,7 +1075,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @param obj
 	 * @return
 	 */
-	public static String getPackagePath(Class objClass)throws ExceptionZZZ{
+	public static String getPackagePath(Class objClass)throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{			 
 				  if(objClass == null) break main;
@@ -1099,8 +1099,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	* lindhaueradmin; 25.06.2006 12:51:08
 	 * @param obj
 	 * @return
+	 * @throws ExceptionZZZ  
 	 */
-	public static String getPackagePathForConstant(Class objClass){
+	public static String getPackagePathForConstant(Class objClass) throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{			 
 				  if(objClass == null) break main;
@@ -1123,7 +1124,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @param obj
 	 * @return
 	 */
-	public static String getPackagePathByReflection(Class objClass)throws ExceptionZZZ{
+	public static String getPackagePathByReflection(Class objClass)throws ExceptionZZZ {
 		  String sReturn = null;
 		  main:{
 			  try {
@@ -1156,7 +1157,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	* 
 	* lindhauer; 25.02.2008 10:40:28
 	 */
-	public static String getClassNameOnly(Object obj){
+	public static String getClassNameOnly(Object obj) throws ExceptionZZZ {
 		 String sReturn = null;
 		  main:{
 			  check:{
@@ -1182,7 +1183,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	* 
 	* lindhauer; 26.02.2008 09:39:50
 	 */
-	public static String getClassNameOnly(Class classOfObject){
+	public static String getClassNameOnly(Class classOfObject) throws ExceptionZZZ {
 		 String sReturn = null;
 		  main:{
 			  check:{
@@ -1208,7 +1209,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * Namen des uebergeordneten Aufrufers usw.
 	 * @return - Name der Aufrufenden Methode
 	 */
-	public static String getCaller(int callerID) {
+	public static String getCaller(int callerID) throws ExceptionZZZ  {
 		int stack_base = callerID+4;
 		// +1 to ignore "Throwable" line, +1 to ignore this method
 		StringWriter sw = new StringWriter();
@@ -1228,7 +1229,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
 	 * @throws ExceptionZZZ 
 	 */
-	public static String[] getCallingStack() throws ExceptionZZZ{
+	public static String[] getCallingStack() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getCallingStack(null);
 	}
 	
@@ -1240,7 +1241,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @author Fritz Lindhauer, 16.06.2019, 07:42:03
 	 * @throws ExceptionZZZ 
 	 */
-	public static String[] getCallingStack(String sRegEx) throws ExceptionZZZ{
+	public static String[] getCallingStack(String sRegEx) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{
 		ArrayList<String>listasTemp = new ArrayList<String>();
@@ -1370,7 +1371,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 
 	
-	public static String getClassMethodString() throws ExceptionZZZ{
+	public static String getClassMethodString() throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			String sMethod=ReflectCodeZZZ.getMethodCurrentName();//+1 Stacktrace steckt schon in in "calling", wir brauchen hier aber die auf-aufrufende Position
@@ -1383,7 +1384,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String getClassMethodString(StackTraceElement objStack) throws ExceptionZZZ{
+	public static String getClassMethodString(StackTraceElement objStack) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(objStack==null){
@@ -1399,7 +1400,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String getClassMethodCallingString() throws ExceptionZZZ{
+	public static String getClassMethodCallingString() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getClassMethodCallingString(1);//1 Stacktraceposition weiter 
 	}
 	public static String getClassMethodCallingString(int iOffset) throws ExceptionZZZ{
@@ -1418,7 +1419,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author lindhaueradmin, 13.08.2019, 07:22:51
 	 */
-	public static String getClassMethodCurrentString() throws ExceptionZZZ{
+	public static String getClassMethodCurrentString() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getClassMethodCallingString();//1 Stacktraceposition weiter steckt schon in "calling"
 	}
 	
@@ -1429,8 +1430,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	/**
 	 * Ermittelt den Namen der aufrufenden Funktion.
 	 */
-	public static String lastCaller(String className)
-	{
+	public static String lastCaller(String className) throws ExceptionZZZ {
 		String lastCaller = "";
 		for (int i = 1; true; i++) {
 			lastCaller = getCaller(i);
@@ -1446,8 +1446,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	/**
 	 * Ermittelt die Tiefe des Aufrufstacks.
 	 */
-	public static int callStackSize()
-	{
+	public static int callStackSize() throws ExceptionZZZ {
         StringWriter sw = new StringWriter();
         (new Throwable()).printStackTrace(new PrintWriter(sw));
         String trace = sw.toString();
@@ -1458,7 +1457,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
         return size;
     }
 	
-	public static StackTraceElement[] getStackTrace(String sRegEx) throws ExceptionZZZ{
+	public static StackTraceElement[] getStackTrace(String sRegEx) throws ExceptionZZZ {
 		StackTraceElement[] objaReturn = null;
 		main:{			
 			ArrayList<StackTraceElement>listaTemp = new ArrayList<StackTraceElement>();
@@ -1530,7 +1529,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 15.11.2025, 18:39:28
 	 */
-	public static String removePositionCurrentTagPartsFrom(String sXml) throws ExceptionZZZ{
+	public static String removePositionCurrentTagPartsFrom(String sXml) throws ExceptionZZZ {
 		String sReturn = sXml;
 		main:{
 			if(StringZZZ.isEmpty(sXml)) break main;

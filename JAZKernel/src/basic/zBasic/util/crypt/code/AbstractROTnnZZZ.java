@@ -131,7 +131,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		}
 		return this.objCharacterMissingReplacement;		
 	}
-	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) throws ExceptionZZZ {
 		this.objCharacterMissingReplacement = objCharacterMissingReplacement;
 	}
 	
@@ -161,12 +161,12 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public String getCharacterPoolBase() {
+	public String getCharacterPoolBase() throws ExceptionZZZ {
 		return this.sCharacterPoolBase;
 	}
 	
 	@Override
-	public void setCharacterPoolBase(String sCharacterPoolBase) {
+	public void setCharacterPoolBase(String sCharacterPoolBase) throws ExceptionZZZ {
 		this.sCharacterPoolBase = sCharacterPoolBase;
 		
 		//Nach Ändern des Werts die Liste leeren, so dass diese neu aufgebaut werden muss.
@@ -174,7 +174,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) throws ExceptionZZZ {
 		this.sCharacterPoolAdditional = sCharacterPoolAdditional;
 		
 		//Nach Ändern des Werts die Liste leeren, so dass diese neu aufgebaut werden muss.
@@ -182,7 +182,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public String getCharacterPoolAdditional() {
+	public String getCharacterPoolAdditional() throws ExceptionZZZ {
 		return this.sCharacterPoolAdditional;
 	}
 	
@@ -202,7 +202,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n) throws IllegalArgumentException {
+	public static String encrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -270,7 +270,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);		
 	}
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n)  throws IllegalArgumentException{
+	public static String decrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n)  throws IllegalArgumentException, ExceptionZZZ{
 
 		String sCharacterPool=null;
 		if(StringZZZ.isEmpty(sCharacterPool)) {
@@ -302,7 +302,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	
 	
 	@Override
-	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -335,7 +335,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	
 	
 	@Override
-	public void setCryptKey(String sCryptKey) {
+	public void setCryptKey(String sCryptKey) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}			
 }

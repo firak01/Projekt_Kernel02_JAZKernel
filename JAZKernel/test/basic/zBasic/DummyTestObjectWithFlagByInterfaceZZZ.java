@@ -33,7 +33,7 @@ public class DummyTestObjectWithFlagByInterfaceZZZ extends AbstractObjectWithFla
 	//###################################################
 	//Methoden hier, da im Interface eingebunden	
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

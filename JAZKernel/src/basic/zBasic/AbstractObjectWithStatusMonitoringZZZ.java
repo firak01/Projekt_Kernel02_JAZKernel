@@ -168,7 +168,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	//### FLAGZ: aus IStatusLocalMapForMonitoringStatusMessageUserZZZ   ####
 	//######################################################################
 	@Override
-	public boolean getFlag(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -212,7 +212,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	//### FLAGZ: aus IStatusLocalMapForMonitoringStatusMessageUserZZZ   ####
 	//######################################################################
 	@Override
-	public boolean getFlag(IMonitorObjectStatusLocalZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IMonitorObjectStatusLocalZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

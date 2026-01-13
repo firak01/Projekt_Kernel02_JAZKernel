@@ -422,6 +422,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    
 		    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }

@@ -86,6 +86,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	try{
 	    		objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
 	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    	
@@ -208,6 +209,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 						throw ez;						
 					}
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    	
@@ -220,6 +222,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 						throw ez;
 					}
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    	
@@ -231,6 +234,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 						throw ez;
 					}			    				    	
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    	
@@ -255,6 +259,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 				assertEquals("Erwarteter Wert ", stemp,stempRight);
 				
 			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 	
 		    	
@@ -267,6 +272,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 						throw ez;
 					}
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 	
 			
@@ -286,6 +292,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 						throw ez;
 					}
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				}				    						
 	    }
@@ -381,8 +388,9 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	 * @param sAlphanumeric
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 13:33:20
+	 * @throws ExceptionZZZ 
 	 */
-	private String getAlphanumericNormed_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){
+	private String getAlphanumericNormed_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric) throws ExceptionZZZ{
 		 String sReturn = null;
 		 main:{
 			 boolean bLowercase = objCounterStrategy.isLowercase();

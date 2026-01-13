@@ -3,6 +3,7 @@ package basic.zBasic.util.crypt.decrypt;
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
@@ -14,7 +15,7 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     int p, laengeSW;
     
     //+++++++++++++++++++
-    
+    try {
     if (arg.length > 0) {
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
@@ -106,10 +107,14 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
         //Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
     	Original.schreib(iaPure, EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
     }   
+    }catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		System.out.println("Method throws an exception." + ez.getMessageLast());
+	}
     System.exit(0);
   }
   
-  public static String computeKeyWordFromFile(DateiUtil fileUtil) {
+  public static String computeKeyWordFromFile(DateiUtil fileUtil) throws ExceptionZZZ {
 	  String sReturn=null;
 	  main:{
 		  if(fileUtil==null)break main;

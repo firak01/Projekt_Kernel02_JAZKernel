@@ -25,16 +25,22 @@ public class FilenamePartFilterEndingZipZZZ extends AbstractFilenamePartFilterZi
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getEnding())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
+				if(ze==null) break main;	
 				
-				//Dateiendung berechnen
-				String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
-				if(sEndingCur.equals(this.sFileEnding)) bReturn = true;	
+				try {
+					if(StringZZZ.isEmpty(this.getEnding())) {
+						bReturn = true;
+						break main;
+					}				
+					String sName = ze.getName();
+					
+					//Dateiendung berechnen
+					String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+					if(sEndingCur.equals(this.sFileEnding)) bReturn = true;						
+			    } catch (ExceptionZZZ e) {				
+					e.printStackTrace();
+					return false;
+				}	
 			}//END main:
 			return bReturn;
 	}

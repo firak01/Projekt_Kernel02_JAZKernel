@@ -36,12 +36,12 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 	  }
 		
 	  @Override
-		public Enum<?> getCipherTypeAsEnum() {
+		public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 			return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256;
 		}
 		
 		@Override
-		public CipherTypeZZZ getCipherType() {
+		public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 			return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256;
 		}
 

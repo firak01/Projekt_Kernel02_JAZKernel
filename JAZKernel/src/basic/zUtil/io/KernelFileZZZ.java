@@ -243,7 +243,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 
 	//### Aus IFlagUserZZZ
 	@Override
-	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -366,7 +366,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 		 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 		 */
-		public boolean getFlag(String sFlagName) {
+		public boolean getFlag(String sFlagName) throws ExceptionZZZ {
 			boolean bFunction = false;
 			main:{
 				if(StringZZZ.isEmpty(sFlagName)) break main;
@@ -516,7 +516,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 				 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 				 */
-				public boolean getFlagLocal(String sFlagName) {
+				public boolean getFlagLocal(String sFlagName) throws ExceptionZZZ {
 					boolean bFunction = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName)) break main;

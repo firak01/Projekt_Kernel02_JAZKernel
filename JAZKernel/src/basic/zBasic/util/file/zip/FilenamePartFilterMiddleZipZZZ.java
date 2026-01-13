@@ -25,22 +25,23 @@ public class FilenamePartFilterMiddleZipZZZ extends AbstractFilenamePartFilterZi
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getMiddle())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
-				
-				//"Mitte" des Dateinamens berechnen			
-				String sMiddleCur;
-				try {				
+				if(ze==null) break main;	
+				try {
+					if(StringZZZ.isEmpty(this.getMiddle())) {
+						bReturn = true;
+						break main;
+					}				
+					String sName = ze.getName();
+					
+					//"Mitte" des Dateinamens berechnen			
+					String sMiddleCur=null;							
 					sMiddleCur = FileEasyZZZ.getNameOnly(sName);				
 					sMiddleCur = StringZZZ.midBounds(sMiddleCur, 1, 1);
 					if(StringZZZ.contains(sMiddleCur, this.getMiddle())) bReturn = true;
-				} catch (ExceptionZZZ e) {			
+				} catch (ExceptionZZZ e) {				
 					e.printStackTrace();
-				} 							
+					return false;
+				}								
 			}//END main:
 			return bReturn;
 	}

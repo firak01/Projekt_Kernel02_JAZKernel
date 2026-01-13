@@ -41,7 +41,7 @@ public class EnumSetJdbcDatabaseClassTypeUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public static boolean startsWithAnyDescription(EnumSet<?> myEnumSet, String sToFind){
+	public static boolean startsWithAnyDescription(EnumSet<?> myEnumSet, String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			//Was ist besser? Erst das ganze Set typecasten, oder Einzelwerte im Set typecasten?

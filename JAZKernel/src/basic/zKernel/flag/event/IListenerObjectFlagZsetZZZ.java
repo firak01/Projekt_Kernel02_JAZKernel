@@ -18,7 +18,7 @@ public interface IListenerObjectFlagZsetZZZ extends EventListener, IFlagZEnabled
 		DUMMY,REGISTER_SELF_FOR_EVENT
 	}
 		
-	boolean getFlag(FLAGZ objEnumFlag);
+	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;

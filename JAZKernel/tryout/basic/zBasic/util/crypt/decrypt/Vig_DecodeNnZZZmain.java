@@ -95,7 +95,7 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	      DateiUtil Chiffre = objVigenere.getFileOriginal();
 	      System.out.println("\n-- Chiffriertentext von: "+Chiffre.computeFilePath()+" --");
 	      //int[]iaPure = objVigenere.getOriginalValuesAsCharacterPoolPosition();
-	      int[]iaPure = objVigenere.getOriginalValuesAsInt();
+	      int[]iaPure = objVigenere.getOriginalValuesAsInt(null);
 	      for (int i=0; i<iaPure.length; i++) {
 	        IoUtil.printCharWithPosition(iaPure[i],i,"|");
 	        if (((i+1)%80)==0) System.out.println();	// neue Zeile

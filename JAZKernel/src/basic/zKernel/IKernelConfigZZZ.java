@@ -16,25 +16,26 @@ public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectH
 	* @return
 	* 
 	* lindhauer; 25.07.2007 07:20:25
+	 * @throws ExceptionZZZ 
 	 */
-	public String readApplicationKey();
+	public String readApplicationKey() throws ExceptionZZZ;
 	public String getApplicationKeyDefault();
-	public String readSystemNumber();
+	public String readSystemNumber() throws ExceptionZZZ;
 	public String getSystemNumberDefault();
 	public String readConfigDirectoryName() throws ExceptionZZZ;
 	public String getConfigDirectoryNameDefault();
-	public String readConfigFileName();
+	public String readConfigFileName() throws ExceptionZZZ;
 	public String getConfigFileNameDefault();
 	
 	public String getLogFileName() throws ExceptionZZZ;
 	public String getLogFileNameDefault();
 	public String readLogFileName() throws ExceptionZZZ;
-	public boolean isLogFileNameDefault(String sValue);
+	public boolean isLogFileNameDefault(String sValue) throws ExceptionZZZ;
 	
 	public String getLogDirectoryName() throws ExceptionZZZ;
 	public String getLogDirectoryNameDefault();
 	public String readLogDirectoryName() throws ExceptionZZZ;
-	public boolean isLogDirectoryNameDefault(String sValue);
+	public boolean isLogDirectoryNameDefault(String sValue) throws ExceptionZZZ;
 	
 	
 	//20210331: Flagz, default String, als leerer JSON-Wert
@@ -44,20 +45,21 @@ public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectH
 	* @return (z.B. "a:b:cde:", mit dem Doppelpunkt als Anzeichen dafür, das ein Parameter diesem Steuerungsargument folgt.)
 	* 
 	* lindhauer; 31.07.2007 06:24:53
+	 * @throws ExceptionZZZ 
 	 */
-	public String readPatternString();
+	public String readPatternString() throws ExceptionZZZ;
 	public String getPatternStringDefault();
 	
 	public boolean isOnServer() throws ExceptionZZZ;
 	public boolean isInJar() throws ExceptionZZZ;
 	public boolean isInIDE() throws ExceptionZZZ;
-	public boolean isOptionObjectLoaded();
+	public boolean isOptionObjectLoaded() throws ExceptionZZZ;
 	
-	public boolean isApplicationKeyDefault(String sApplicationKey);
-	public boolean isSystemNumberDefault(String sSystemNumber);
-	public boolean isPatternStringDefault(String sValue);
-	public boolean isConfigFlagzJsonDefault(String sValue);
-	public boolean isConfigFileNameDefault(String sValue);
-	public boolean isConfigDirectoryNameDefault(String sValue);
+	public boolean isApplicationKeyDefault(String sApplicationKey) throws ExceptionZZZ;
+	public boolean isSystemNumberDefault(String sSystemNumber) throws ExceptionZZZ;
+	public boolean isPatternStringDefault(String sValue) throws ExceptionZZZ;
+	public boolean isConfigFlagzJsonDefault(String sValue) throws ExceptionZZZ;
+	public boolean isConfigFileNameDefault(String sValue) throws ExceptionZZZ;
+	public boolean isConfigDirectoryNameDefault(String sValue) throws ExceptionZZZ;
 	
 }

@@ -54,25 +54,40 @@ public class KernelZZZIsolatedTest extends TestCase {
  * @author Fritz Lindhauer, 13.07.2019, 08:38:03
  */
 public void testParameterByProgramAlias(){
+	try {
 //Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
 String sClassname = this.getClass().getName(); 
 sClassname = StringZZZ.replace(sClassname, "Isolated", "");
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	
 			
 }
 
 
 public void testGetModuleAliasAll(){
+	try {
 	//Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
 	String sClassname = this.getClass().getName(); 
 	sClassname = StringZZZ.replace(sClassname, "Isolated", "");
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	
 }
 
 public void testConstructorConfigObject(){
+	try {
 	//Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
 	String sClassname = this.getClass().getName(); 
 	sClassname = StringZZZ.replace(sClassname, "Isolated", "");
+	}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 	
 }
 

@@ -20,14 +20,14 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 		super();
 		this.setValueCurrent(this.getCounterStrategyObject().getCounterStart());
 	}
-	public AbstractCounterByStrategyAlphanumericSignificantZZZ(int iStartingValue){
+	public AbstractCounterByStrategyAlphanumericSignificantZZZ(int iStartingValue) throws ExceptionZZZ {
 		super(iStartingValue);		
 	}
-	public AbstractCounterByStrategyAlphanumericSignificantZZZ(int iStartingValue, ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
+	public AbstractCounterByStrategyAlphanumericSignificantZZZ(int iStartingValue, ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ {
 		super(iStartingValue);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	public AbstractCounterByStrategyAlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
+	public AbstractCounterByStrategyAlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ{
 		super(objCounterStrategy.getCounterStart());
 		this.setCounterStrategyObject(objCounterStrategy);
 	}	
@@ -89,7 +89,7 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 		
 		// ++++ Aus Interface						
 		@Override
-		public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy);
+		public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ ;
 		
 		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;

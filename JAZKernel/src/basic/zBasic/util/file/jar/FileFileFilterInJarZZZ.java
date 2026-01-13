@@ -55,7 +55,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 		}
 	}
 	
-	public void setName(String sName) {
+	public void setName(String sName) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sName)) {
 			super.setName(FileFileFilterInJarZZZ.sNAME_DEFAULT);
 		}else {
@@ -63,7 +63,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 		}
 	}
 	
-	public void setPrefix(String sPrefix) {
+	public void setPrefix(String sPrefix) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sPrefix)) {
 			super.setPrefix(FileFileFilterInJarZZZ.sPREFIX_DEFAULT);
 		}else {
@@ -71,7 +71,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 		}
 	}
 	
-	public void setMiddle(String sMiddle) {
+	public void setMiddle(String sMiddle) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sMiddle)) {
 			super.setMiddle(FileFileFilterInJarZZZ.sMIDDLE_DEFAULT);
 		}else {
@@ -79,7 +79,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 		}
 	}
 	
-	public void setSuffix(String sSuffix) {
+	public void setSuffix(String sSuffix) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sSuffix)) {
 			super.setSuffix(FileFileFilterInJarZZZ.sSUFFIX_DEFAULT);
 		}else {
@@ -88,7 +88,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	}
 
 				
-	public void setEnding(String sEnding) {
+	public void setEnding(String sEnding) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sEnding)) {
 			super.setEnding(FileFileFilterInJarZZZ.sENDING_DEFAULT);
 		}else {

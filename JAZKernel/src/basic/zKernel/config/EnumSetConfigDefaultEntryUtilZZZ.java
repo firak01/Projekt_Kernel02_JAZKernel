@@ -30,7 +30,7 @@ public class EnumSetConfigDefaultEntryUtilZZZ extends EnumSetUtilZZZ{
 	
 	//#################
 	//+++ Zugriffe auf den Enum-Wert der ConfigDescription					
-	public boolean startsWithAnyDescription(String sToFind){
+	public boolean startsWithAnyDescription(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> myEnumSet = this.getEnumSetCurrent();
@@ -39,7 +39,7 @@ public class EnumSetConfigDefaultEntryUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public static boolean startsWithAnyDescription(EnumSet<?> myEnumSet, String sToFind){
+	public static boolean startsWithAnyDescription(EnumSet<?> myEnumSet, String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			//Was ist besser? Erst das ganze Set typecasten, oder Einzelwerte im Set typecasten?

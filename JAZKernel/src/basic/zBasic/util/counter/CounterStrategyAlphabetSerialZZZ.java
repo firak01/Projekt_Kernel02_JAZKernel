@@ -89,7 +89,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 	}
 
 	@Override
-	public int computeNumberForString(String sTotal) {
+	public int computeNumberForString(String sTotal) throws ExceptionZZZ {
 	int iReturn = -99;
 		main:{
 			if(sTotal==null)break main;
@@ -148,7 +148,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 
 	
 	@Override
-	public String computeStringForNumber(int iNumber) {
+	public String computeStringForNumber(int iNumber) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(iNumber<-1)break main;

@@ -15,7 +15,7 @@ public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{
 	public UrlLogicBaseZZZ(){		
 	}
 	
-	public UrlLogicBaseZZZ(String sUrl){
+	public UrlLogicBaseZZZ(String sUrl) throws ExceptionZZZ{
 		this.setUrl(sUrl);
 	}
 	
@@ -32,12 +32,12 @@ public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{
 
 	//### GETTER / SETTER ###############
 	@Override	
-		public String getUrl(){
-			return this.sUrl; 
-		}
+	public String getUrl() throws ExceptionZZZ {
+		return this.sUrl; 
+	}
 
 	@Override
-	public void  setUrl(String sUrl){
+	public void  setUrl(String sUrl) throws ExceptionZZZ {
 		this.sUrl = sUrl;
 	}
 	
@@ -92,7 +92,7 @@ public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{
 		return bReturn;
 	}
 	
-	public static boolean hasProtocol(String sUrl, String sProtocolPlusSeparator) {
+	public static boolean hasProtocol(String sUrl, String sProtocolPlusSeparator) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sUrl)) break main;

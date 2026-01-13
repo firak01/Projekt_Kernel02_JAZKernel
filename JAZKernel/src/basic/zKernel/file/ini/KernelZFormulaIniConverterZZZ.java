@@ -190,7 +190,7 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 	
 	//### aus IIniTagWithConversionZZZ	
 	@Override
-	public boolean getFlag(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IIniTagWithConversionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

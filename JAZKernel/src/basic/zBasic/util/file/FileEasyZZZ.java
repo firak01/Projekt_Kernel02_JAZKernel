@@ -1623,7 +1623,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}//end main:
 		return sReturn;
 	}
-	public static String getParent(String sFilePathIn, String sDirectorySeparatorUsedIn) {
+	public static String getParent(String sFilePathIn, String sDirectorySeparatorUsedIn) throws ExceptionZZZ {
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 			
@@ -1670,8 +1670,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @param sFilePath
 	 * @return
 	 * @author Fritz Lindhauer, 08.08.2020, 12:59:00
+	 * @throws ExceptionZZZ 
 	 */
-	public static String flattenFilePathToFileName(String sFilePath) {
+	public static String flattenFilePathToFileName(String sFilePath) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			String sFilePathNormedForTempFile = StringZZZ.replace(sFilePath, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, "_");													
@@ -2899,7 +2900,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return sReturn;
 	}
 	
-	public static String getRoot(String sFilePath) {
+	public static String getRoot(String sFilePath) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sFilePath)) break main;
@@ -2957,8 +2958,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * 
 	 * @return
 	 * @author Fritz Lindhauer, 22.10.2020, 09:23:23
+	 * @throws ExceptionZZZ 
 	 */
-	public static File getDirectoryOfExecution() {
+	public static File getDirectoryOfExecution() throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sPathTotal = FileEasyZZZ.getDirectoryOfExecutionAsString();			
@@ -2966,7 +2968,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 		return objReturn;		
 	}
-	public static String getDirectoryOfExecutionAsString() {
+	public static String getDirectoryOfExecutionAsString() throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Das aktuelle Verzeichnis herausfinden, z.B. wenn der Code in einem Eclipse Projekt augeführt wird.

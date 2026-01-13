@@ -24,26 +24,25 @@ public class FilenamePartFilterNameZipZZZ extends AbstractFilenamePartFilterZipZ
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getFileName())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
-				
-				//Ende des JarPfads als Dateinamens berechnen			
-				String sNameCur;
-//				try {					
+				if(ze==null) break main;	
+				try {
+					if(StringZZZ.isEmpty(this.getFileName())) {
+						bReturn = true;
+						break main;
+					}				
+					String sName = ze.getName();
+					
+					//Ende des JarPfads als Dateinamens berechnen			
+					String sNameCur=null;					
 					String sCriterion = this.getCriterion();
 					if(StringZZZ.endsWithIgnoreCase(sName, sCriterion)) {
 						bReturn = true;
 						break main;
 					}
-//				} catch (ExceptionZZZ e) {			
-//					e.printStackTrace();
-//				} 					
-					
-					
+			    } catch (ExceptionZZZ e) {				
+					e.printStackTrace();
+					return false;
+				}						
 			}//END main:
 			return bReturn;
 	}

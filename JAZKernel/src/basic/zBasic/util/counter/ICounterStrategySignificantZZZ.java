@@ -3,14 +3,14 @@ package basic.zBasic.util.counter;
 import basic.zBasic.ExceptionZZZ;
 
 public interface ICounterStrategySignificantZZZ {		
-	public int getCounterLength();
+	public int getCounterLength() throws ExceptionZZZ;
 	public void setCounterLength(int iLength) throws ExceptionZZZ;
 	
-	public boolean hasCounterFilling();
-	public char getCounterFilling();
-	public void setCounterFilling(char cFilling);
-	public void setCounterFilling(Character charFilling);
+	public boolean hasCounterFilling() throws ExceptionZZZ;
+	public char getCounterFilling() throws ExceptionZZZ;
+	public void setCounterFilling(char cFilling) throws ExceptionZZZ;
+	public void setCounterFilling(Character charFilling) throws ExceptionZZZ;
 	public void setCounterFilling(String sFilling) throws ExceptionZZZ;
 	
-	public String getCounterStringNormed(String sCounterString);//Entferne führende Füllzeichen. Das kann man nur wg. des Stellenwerts (significant) machen.
+	public String getCounterStringNormed(String sCounterString) throws ExceptionZZZ;//Entferne führende Füllzeichen. Das kann man nur wg. des Stellenwerts (significant) machen.
 }

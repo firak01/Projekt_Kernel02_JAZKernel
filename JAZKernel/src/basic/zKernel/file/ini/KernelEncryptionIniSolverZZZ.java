@@ -613,7 +613,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	
 	//### Aus Interface IKernelEncryptionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
 	}
 	

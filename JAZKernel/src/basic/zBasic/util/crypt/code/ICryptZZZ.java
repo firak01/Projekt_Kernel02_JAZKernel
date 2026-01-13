@@ -19,14 +19,14 @@ public interface ICryptZZZ extends IFlagZEnabledZZZ{
 	
 	public String encrypt(String sInput) throws ExceptionZZZ;
 	public String decrypt(String sInput) throws ExceptionZZZ;
-	public int[] getDecryptedValuesAsInt();
-	public void setDecryptedValues(int[] iaCrypted);
-	public int[] getOriginalValuesAsInt();
-	public void setOriginalValues(int[] iaOriginal);
+	public int[] getDecryptedValuesAsInt() throws ExceptionZZZ;
+	public void setDecryptedValues(int[] iaCrypted) throws ExceptionZZZ;
+	public int[] getOriginalValuesAsInt(Object newParam) throws ExceptionZZZ;
+	public void setOriginalValues(int[] iaOriginal) throws ExceptionZZZ;
 	
-	public Enum<?> getCipherTypeAsEnum();    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
-	public CipherTypeZZZ getCipherType();    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
-	public int getSubtype(); //Hiermit wird festgelegt, welches Unterverfahren verwendet werden soll (also auch welche weiteren Parameter benötigt werden, z.B. KeyNumber oder KeyString)
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ;    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ;    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
+	public int getSubtype() throws ExceptionZZZ; //Hiermit wird festgelegt, welches Unterverfahren verwendet werden soll (also auch welche weiteren Parameter benötigt werden, z.B. KeyNumber oder KeyString)
 	
 	
 	
@@ -40,29 +40,29 @@ public interface ICryptZZZ extends IFlagZEnabledZZZ{
 	//Methoden für ROT - Verfahren
 	//Methoden um <Z:KeyNumber> Werte zu setzen
 	//Wichtig für alle ROT - Verschluesselungen
-	public int getCryptNumber();
-	public void setCryptNumber(int iCryptKey); //Manche Algorithmen benoetigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
+	public int getCryptNumber() throws ExceptionZZZ;
+	public void setCryptNumber(int iCryptKey) throws ExceptionZZZ; //Manche Algorithmen benoetigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
 	
 	//############################################################
 	//Methoden für Vigenere - Verfahren, müssten sonst in ICharacterPoolUserZZZ
-	public String getCryptKey();
-	public void setCryptKey(String sCryptKey); //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
+	public String getCryptKey() throws ExceptionZZZ;
+	public void setCryptKey(String sCryptKey) throws ExceptionZZZ; //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
 	
 	//Methoden um <Z:CharacterPool> Werte zu setzen
 	//Wichtig fuer ROTnn - Verschluesselung
 	public ArrayListZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ;
-	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool);
+	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ;
 	
 	public String getCharacterPool() throws ExceptionZZZ;
 	//Merke: Kein Setzen... dies wird aus CharacterPoolList berechnet
 	
-	public String getCharacterPoolBase();
-	public void setCharacterPoolBase(String sCharacterPoolBase);
+	public String getCharacterPoolBase() throws ExceptionZZZ;
+	public void setCharacterPoolBase(String sCharacterPoolBase) throws ExceptionZZZ;
 	
-	public String getCharacterPoolAdditional();
-	public void setCharacterPoolAdditional(String sCharacterPoolAdditional);
+	public String getCharacterPoolAdditional() throws ExceptionZZZ;
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) throws ExceptionZZZ;
 	
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
-	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) throws ExceptionZZZ;
 }

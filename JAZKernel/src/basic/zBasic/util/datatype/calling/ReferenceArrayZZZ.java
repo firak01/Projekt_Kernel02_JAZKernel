@@ -81,7 +81,7 @@ public class ReferenceArrayZZZ<T> {
     	}
     }
     
-    public T[] getAsString() {
+    public T[] getAsString() throws ExceptionZZZ {
     	return (T[]) ArrayListUtilZZZ.toStringArray(listaReferent);
     }
     

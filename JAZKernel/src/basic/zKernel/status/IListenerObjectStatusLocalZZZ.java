@@ -67,7 +67,7 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 		DUMMY,REGISTER_SELF_FOR_EVENT, STATUSLOCAL_REACT_ON_VALUEFALSE
 	}
 		
-	boolean getFlag(FLAGZ objEnumFlag);
+	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;

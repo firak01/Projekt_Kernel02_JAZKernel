@@ -9,12 +9,12 @@ public abstract class AbstractCounterStrategyNumbersOnlyZZZ extends AbstractCoun
 		}
 		
 		@Override
-		public int getCharacterPositionMax() {
+		public int getCharacterPositionMax() throws ExceptionZZZ {
 			return CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 		}
 		
 		@Override
-		public int getCharacterPositionMin() {
+		public int getCharacterPositionMin() throws ExceptionZZZ {
 			return CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
 		}
 		

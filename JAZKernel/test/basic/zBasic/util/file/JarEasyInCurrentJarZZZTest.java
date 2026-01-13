@@ -59,7 +59,13 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
 				
 			} catch (IOException e1) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Beim setUp - IOException: " + e1.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez=null;
+				try {
+					ez = new ExceptionZZZ("Beim setUp - IOException: " + e1.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
+				}catch(ExceptionZZZ ez1){
+					ez1.printStackTrace();
+					fail("Method throws an exception." + ez1.getMessageLast());
+				}
 				ez.printStackTrace();
 				fail("An exception happend testing: " + ez.getDetailAllLast());
 			} catch (ExceptionZZZ ez) {

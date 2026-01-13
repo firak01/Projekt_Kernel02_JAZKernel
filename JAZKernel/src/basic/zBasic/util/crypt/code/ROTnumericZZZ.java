@@ -37,12 +37,12 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolEnabl
 	}
 	
 	@Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric;
 	}
 	

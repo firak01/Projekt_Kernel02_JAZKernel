@@ -20,18 +20,18 @@ public interface IStringJustifierZZZ {
 	//Mit Leerzeichen wird dann gearbeitet um die Ausgaben des Informationsteils möglichst buendig untereinander zu bekommen.	
 	public String getPositionSeparatorDefault() throws ExceptionZZZ;
 	public String getPositionSeparator() throws ExceptionZZZ;
-	public void setPositionSeparator(String sPositionSeparator);
+	public void setPositionSeparator(String sPositionSeparator) throws ExceptionZZZ;
 
-	public String getPositionIdentifierDefault();
-	public String getPositionIdentifier();
-	public void setPositionIdentifier(String sPositionIdentifier);
+	public String getPositionIdentifierDefault() throws ExceptionZZZ;
+	public String getPositionIdentifier() throws ExceptionZZZ;
+	public void setPositionIdentifier(String sPositionIdentifier) throws ExceptionZZZ;
 
-	public int getInfoPartBoundLeftBehindCurrent();
-	public void setInfoPartBoundLeftBehindCurrent(int iIndex);
-	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease);
-	public int indexOfInfoPartBoundLeft(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
-	public int indexOfInfoPartBoundLeftBehind(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
-	public int getInfoPartBoundLeftBehind2use(String sLog);     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.
+	public int getInfoPartBoundLeftBehindCurrent() throws ExceptionZZZ;
+	public void setInfoPartBoundLeftBehindCurrent(int iIndex) throws ExceptionZZZ;
+	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) throws ExceptionZZZ;
+	public int indexOfInfoPartBoundLeft(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
+	public int indexOfInfoPartBoundLeftBehind(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
+	public int getInfoPartBoundLeftBehind2use(String sLog) throws ExceptionZZZ;     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.
 
 	public String justifyInfoPart(String sLog) throws ExceptionZZZ; //versuche den Log-InfoPart ueber alle Zeilen buendig zu machen. Teile auf und verwende zusätzliche \t
 		

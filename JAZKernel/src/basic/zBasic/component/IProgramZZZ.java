@@ -12,7 +12,7 @@ public interface IProgramZZZ extends IModuleUserZZZ, IFlagZEnabledZZZ{
 	public abstract String getProgramName() throws ExceptionZZZ;   //Z.B. ein Button, Ist der Package und Klassenname
 	//kein setProgramName(...), da der Name berechnet wird aus der Klasse
 	public abstract String getProgramAlias() throws ExceptionZZZ;  //Der Alias wird auf Modulebenen definiert. Package und Klassenname = Alias. Speicher den Alias in einer Variablen.
-	public abstract void resetProgramUsed();                      //wird das ISKERNELPROGRAM Flag neu auf true gesetzt, dann ist angeraten das durchzuführen. Somit würde ein ggfs. ererbtes anderes Program entfernt und der Programname/-alias neu geholt.
+	public abstract void resetProgramUsed() throws ExceptionZZZ;                      //wird das ISKERNELPROGRAM Flag neu auf true gesetzt, dann ist angeraten das durchzuführen. Somit würde ein ggfs. ererbtes anderes Program entfernt und der Programname/-alias neu geholt.
 	
 	//#############################################################
 	//### FLAGZ
@@ -22,7 +22,7 @@ public interface IProgramZZZ extends IModuleUserZZZ, IFlagZEnabledZZZ{
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(FLAGZ objEnumFlag);
+	public boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;

@@ -380,7 +380,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### aus IIniTagWithExpressionZZZ	
 	@Override
-	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -418,7 +418,7 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 	
 	//### Aus IKernelExpressionIniParserZZZ
 	@Override
-	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelExpressionIniParserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

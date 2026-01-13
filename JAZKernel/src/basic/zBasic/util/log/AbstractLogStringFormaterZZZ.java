@@ -1962,9 +1962,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	public HashMap<Integer, String> getHashMapFormatPositionStringDefault() throws ExceptionZZZ {
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
-			//HashMap automatisch aus dem Enum errechnen.
-			IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringFormatZZZ.sENUMNAME);
-			for(IEnumSetMappedZZZ ienum : ienuma) {
+			//HashMap automatisch aus dem Enum errechnen.			
+			ArrayList<IEnumSetMappedLogStringFormatZZZ>  listaEnumMappedLogStringFormat = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this, ILogStringFormatZZZ.sENUMNAME);
+			for(IEnumSetMappedZZZ ienum : listaEnumMappedLogStringFormat) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
 			}				
@@ -2459,7 +2459,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	//### FLAG: ILogStringFormaterZZZ
 	//###################################################
 	@Override
-	public boolean getFlag(ILogStringFormaterZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ILogStringFormaterZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

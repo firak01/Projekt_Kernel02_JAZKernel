@@ -172,7 +172,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 		}
 	}
 	
-	public String getVariable(String sKey){
+	public String getVariable(String sKey) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sKey)) break main;
@@ -202,7 +202,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagWithExpression
 	
 	//### aus IKernelZVariableIniSolverZZZ	
 	@Override
-	public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelZFormulaIni_VariableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

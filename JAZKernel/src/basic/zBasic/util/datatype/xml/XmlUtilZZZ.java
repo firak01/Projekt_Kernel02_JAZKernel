@@ -199,7 +199,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	
 	
 	//################################
-	public static boolean isTagEmpty(String sTag) {
+	public static boolean isTagEmpty(String sTag) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
 			if(!StringZZZ.startsWith(sTag, "<")) break main;
@@ -210,7 +210,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isTagPartOpening(String sTagPartOpening) {
+	public static boolean isTagPartOpening(String sTagPartOpening) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
 			if(!StringZZZ.startsWith(sTagPartOpening, "<")) break main;
@@ -224,7 +224,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 		
-	public static boolean isTagPartClosing(String sTagPart) {
+	public static boolean isTagPartClosing(String sTagPart) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
 			if(!StringZZZ.startsWith(sTagPart, "</")) break main;
@@ -235,7 +235,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isTag(String sTagName) {
+	public static boolean isTag(String sTagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
 			if(!StringZZZ.startsWith(sTagName, "<")) break main;
@@ -262,7 +262,7 @@ public class XmlUtilZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isTagPart(String sTagPart) {
+	public static boolean isTagPart(String sTagPart) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
 			boolean bTagPartStarting = XmlUtilZZZ.isTagPartOpening(sTagPart);
@@ -1236,8 +1236,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	 * @param sTagName
 	 * @return
 	 * @author Fritz Lindhauer, 20.07.2024, 07:48:25
+	 * @throws ExceptionZZZ 
 	 */
-	public static boolean isExpression4Tag(String sExpression, String sTagOpening, String sTagClosing){
+	public static boolean isExpression4Tag(String sExpression, String sTagOpening, String sTagClosing) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
 			bReturn=StringZZZ.containsAsTag(sExpression, sTagOpening, sTagClosing, false);
@@ -1254,8 +1255,9 @@ public class XmlUtilZZZ implements IConstantZZZ{
 	 * @param sTagClosing
 	 * @return
 	 * @author Fritz Lindhauer, 05.09.2024, 18:30:57
+	 * @throws ExceptionZZZ 
 	 */
-	public static boolean isSurroundedByTag(String sExpression, String sTagOpening, String sTagClosing){
+	public static boolean isSurroundedByTag(String sExpression, String sTagOpening, String sTagClosing) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sExpression)) break main;

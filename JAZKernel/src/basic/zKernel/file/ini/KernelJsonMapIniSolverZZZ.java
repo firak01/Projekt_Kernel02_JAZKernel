@@ -637,7 +637,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 				
 	//Aus IKernelJsonMapIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -675,7 +675,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolver4ChildT
 	
 	//Aus IKernelJsonIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	

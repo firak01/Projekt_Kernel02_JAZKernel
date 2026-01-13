@@ -15,7 +15,7 @@ public interface ICounterAlphanumericSignificantZZZ <T extends ICounterStrategyA
 	//public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy);
 
 	//Die gleichen Methoden gibt es im ICounterStringZZZ Interface
-	public void setCounterStrategyObject(T objCounterStrategy);
+	public void setCounterStrategyObject(T objCounterStrategy) throws ExceptionZZZ;
 	public T getCounterStrategyObject() throws ExceptionZZZ;
 
 	

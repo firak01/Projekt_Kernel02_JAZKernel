@@ -85,7 +85,7 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	return bReturn;	    	
     }
     
-    private boolean assertCheckNullBordersNumericChar_(String sResult,int iInput){
+    private boolean assertCheckNullBordersNumericChar_(String sResult,int iInput) throws ExceptionZZZ{
     	boolean bReturn = false;
     	main:{
     		//Char - Ermittlung ist nicht String - Ermittlung. D.h. 0 => null. Es gibt kein -1 => ""
@@ -364,30 +364,35 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	String stemp; boolean btemp; int itemp;
     	
     	main:{
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
-	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
-	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
-	    	assertFalse("Fehler beim Check auf Null Werte", btemp);
-	    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++			
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
-	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
-	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
-	    	assertFalse("Fehler beim Check auf Null Werte", btemp);
-			
-	    	//############################################################	    	
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
-	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
-	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-			assertEquals("0",stemp);
-	    					    					    	
-			//++++++++++++++++++++++++++++++++
-			itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
-	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
-	        btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-			assertEquals("9",stemp);
+    		try {
+		    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
+		    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
+		    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
+		    	assertFalse("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//+++++++++++++++++++++++++++++++++++++++++++++++++++			
+		    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
+		    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
+		    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
+		    	assertFalse("Fehler beim Check auf Null Werte", btemp);
+				
+		    	//############################################################	    	
+		    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
+		    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
+		    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+				assertEquals("0",stemp);
+		    					    					    	
+				//++++++++++++++++++++++++++++++++
+				itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
+		    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(itemp);
+		        btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+				assertEquals("9",stemp);
+    		}catch(ExceptionZZZ ez) {
+    			ez.printStackTrace();
+    			fail("Method throws an exception." + ez.getMessageLast());
+    		}
     	}//end main:
     	
     }

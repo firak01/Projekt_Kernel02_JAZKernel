@@ -120,6 +120,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 		}    
 	    
 	    public void testGetEnumConstant(){
+	    	try {
 	    	Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
 	    	String sName = EnumSetMappedUtilZZZ.getEnumConstant_NameValue(objClass, "ONE");
 	    	assertTrue("Prüfstring solllte als Ergebnis 'ONE' sein", "ONE".equals(sName));
@@ -148,7 +149,12 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 			Integer intIndex = EnumSetMappedUtilZZZ.getEnumConstant_IndexValue((Class<IEnumSetMappedZZZ>) objClass, "ONE");
 	    	assertEquals("Prüfinteger solllte als Ergebnis 0 sein", intIndex.intValue(),0);
 	    	assertEquals("Prüfinteger solllte als Ergebnis dem ordinal - Wert entsprechen", intIndex.intValue(), intOrdinal.intValue());
-	    	assertEquals("Prüfinteger solllte als Ergebnis um 1 höher als der Index sein", intPosition.intValue(),intIndex.intValue()+1);	    	
+	    	assertEquals("Prüfinteger solllte als Ergebnis um 1 höher als der Index sein", intPosition.intValue(),intIndex.intValue()+1);
+	    	
+	    	}catch(ExceptionZZZ ez) {
+	    		ez.printStackTrace();
+	    		fail("Method throws an exception." + ez.getMessageLast());
+	    	}
 	    }
 	    
 	    
@@ -207,6 +213,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 		   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);
 		   
 	    } catch (ExceptionZZZ ez) {
+	    	ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 		
 		   

@@ -88,70 +88,76 @@ public abstract class AbstractFileFilterZZZ extends AbstractObjectWithFlagZZZ im
 		}//end main:		
 	}
 	
-	public boolean accept(File objFileDir, String sName) {
+	@Override
+	public boolean accept(File objFileDir, String sName){
 		boolean bReturn=false;
 		main:{
 			if(sName==null) break main;				
 			
-			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
-			
-			//Falls der OvpnContext nicht passt
-			this.objFilterMiddle.setCriterion(this.getMiddle());
-			if(this.objFilterMiddle.accept(objFileDir, sName)==false) break main;
-	
-			//Template-Dateinamen fangen eben mit einem bestimmten String an.
-			this.objFilterPrefix.setCriterion(this.getPrefix());
-			if(this.objFilterPrefix.accept(objFileDir, sName)==false) break main;
-								
-			//Falls die Endung nicht passt
-			this.objFilterEnding.setCriterion(this.getEnding());
-			if(this.objFilterEnding.accept(objFileDir, sName)==false) break main;
-					
-			//Falls das Suffix nicht passt
-			if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_ALL.name()) || (this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_LAST.name()))) {
-				IFileExpansionZZZ objExpansion = this.getFileExpansionObject();
+			try {
+				//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
 				
-				//TODO GOON 20200324: Berücksichtigung der "FileExpansion" 
-				if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_ALL.name())){
-					//Falls das Flag Regard_FILE_EXPANSION_ALL gesetzt ist:
-					//... Nur prüfen, ob hinter dem Suffix ein "Zahlenwert steht".
+				//Falls der OvpnContext nicht passt
+				this.objFilterMiddle.setCriterion(this.getMiddle());
+				if(this.objFilterMiddle.accept(objFileDir, sName)==false) break main;
+		
+				//Template-Dateinamen fangen eben mit einem bestimmten String an.
+				this.objFilterPrefix.setCriterion(this.getPrefix());
+				if(this.objFilterPrefix.accept(objFileDir, sName)==false) break main;
+									
+				//Falls die Endung nicht passt
+				this.objFilterEnding.setCriterion(this.getEnding());
+				if(this.objFilterEnding.accept(objFileDir, sName)==false) break main;
+						
+				//Falls das Suffix nicht passt
+				if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_ALL.name()) || (this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_LAST.name()))) {
+					IFileExpansionZZZ objExpansion = this.getFileExpansionObject();
 					
-				}else if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_LAST.name())) {
-					//Falls das Flag Regard_FILE_EXPANSION_LAST gesetzt ist:
-					//... Rückwärts vom maximalen Wert zu 1 gehen und den ersten gefundenen Wert zurückgeben.
-					//
+					//TODO GOON 20200324: Berücksichtigung der "FileExpansion" 
+					if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_ALL.name())){
+						//Falls das Flag Regard_FILE_EXPANSION_ALL gesetzt ist:
+						//... Nur prüfen, ob hinter dem Suffix ein "Zahlenwert steht".
+						
+					}else if(this.getFlag(FLAGZ.REGARD_FILE_EXPANSION_LAST.name())) {
+						//Falls das Flag Regard_FILE_EXPANSION_LAST gesetzt ist:
+						//... Rückwärts vom maximalen Wert zu 1 gehen und den ersten gefundenen Wert zurückgeben.
+						//
+					}												
+				}else {
+					this.objFilterSuffix.setCriterion(this.getSuffix());
+					if(this.objFilterSuffix.accept(objFileDir, sName)==false) break main;
 				}												
-			}else {
-				this.objFilterSuffix.setCriterion(this.getSuffix());
-				if(this.objFilterSuffix.accept(objFileDir, sName)==false) break main;
-			}												
-			bReturn = true;
+				bReturn = true;
+			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				return false;
+			}
 		}//END main:
 		return bReturn;		
 	}
 	
 	//##### GETTER / SETTER	
-		public void setOvpnContext(String sContext) {
+		public void setOvpnContext(String sContext) throws ExceptionZZZ {
 			this.sOvpnContext=sContext;
 		}
-		public String getOvpnContext() {
+		public String getOvpnContext()throws ExceptionZZZ  {
 			return this.sOvpnContext;
 		}
 	
-		protected void setPrefix(String sPrefix) {
+		protected void setPrefix(String sPrefix)throws ExceptionZZZ {
 			this.sPrefix = sPrefix;
 		}
-		protected String getPrefix() {
+		protected String getPrefix() throws ExceptionZZZ {
 			if(StringZZZ.isEmpty(this.sPrefix)) {
 				this.setPrefix("");
 			}
 			return this.sPrefix;
 		}
 		
-		protected void setMiddle(String sMiddle) {
+		protected void setMiddle(String sMiddle) throws ExceptionZZZ {
 			this.sMiddle = sMiddle;
 		}
-		protected String getMiddle() {
+		protected String getMiddle() throws ExceptionZZZ {
 			if(StringZZZ.isEmpty(this.sMiddle)) {
 				this.setMiddle("");
 			}
@@ -159,30 +165,30 @@ public abstract class AbstractFileFilterZZZ extends AbstractObjectWithFlagZZZ im
 		}
 
 		
-		protected void setSuffix(String sSuffix) {
+		protected void setSuffix(String sSuffix) throws ExceptionZZZ {
 			this.sSuffix = sSuffix;
 		}
-		protected String getSuffix() {
+		protected String getSuffix() throws ExceptionZZZ {
 			if(StringZZZ.isEmpty(this.sSuffix)) {
 				this.setSuffix("");
 			}
 			return this.sSuffix;
 		}
 		
-		protected void setEnding(String sEnding){
+		protected void setEnding(String sEnding)throws ExceptionZZZ {
 			this.sEnding = sEnding;
 		}
-		protected String getEnding() {
+		protected String getEnding() throws ExceptionZZZ {
 			if(StringZZZ.isEmpty(this.sEnding)) {
 				this.setEnding("");
 			}
 			return this.sEnding;
 		}
 		
-		public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion) {
+		public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion)throws ExceptionZZZ  {
 			this.objExpansion = objFileExpansion;
 		}
-		public IFileExpansionZZZ getFileExpansionObject() {
+		public IFileExpansionZZZ getFileExpansionObject()throws ExceptionZZZ  {
 			return this.objExpansion;
 		}
 }//END class

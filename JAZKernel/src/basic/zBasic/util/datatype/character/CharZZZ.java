@@ -2,6 +2,7 @@ package basic.zBasic.util.datatype.character;
 
 import java.nio.charset.Charset;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CharZZZ {
@@ -42,7 +43,7 @@ public class CharZZZ {
 	}
 	
 	
-	public static boolean isLowercase(char c){
+	public static boolean isLowercase(char c) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String stemp = Character.toString(c);			
@@ -51,7 +52,7 @@ public class CharZZZ {
 		return bReturn;
 	}
 	
-	public static boolean isNumeric(char c){
+	public static boolean isNumeric(char c) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String stemp = Character.toString(c);			
@@ -77,7 +78,7 @@ public class CharZZZ {
 		return bReturn;
 	}
 	
-	public static boolean isUppercase(char c){
+	public static boolean isUppercase(char c) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String stemp = Character.toString(c);			

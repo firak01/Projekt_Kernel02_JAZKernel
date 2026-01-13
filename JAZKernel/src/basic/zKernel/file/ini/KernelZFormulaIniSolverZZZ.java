@@ -742,7 +742,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//### aus IKernelZFormulaIniZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
 	}
 	
@@ -780,7 +780,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	
 	//### aus IKernelZFormulaIni_PathZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) {
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIni_PathZZZ.name());
 	}
 	

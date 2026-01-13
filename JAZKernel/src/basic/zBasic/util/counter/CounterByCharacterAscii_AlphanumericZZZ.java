@@ -30,17 +30,17 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 		int iStartingValue = this.getCounterStrategyObjectDefault().getCounterStart();
 		this.setValueCurrent(iStartingValue);
 	}
-	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
+	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue) throws ExceptionZZZ {
 		super(iStartingValue);		
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);		
 	}
-	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
 		super(iStartingValue);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
 		super(objCounterStrategy.getCounterStart());
 		this.setCounterStrategyObject(objCounterStrategy);
 	}

@@ -21,7 +21,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 	 
 	    protected void setUp(){
 	      
-		//try {			
+//		try {			
 		
 			//### Das spezielle Generics Testobjekt			
 //			hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();
@@ -35,11 +35,11 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 			
 		
 			
-		/*
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-		*/
+		
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		} 
+		
 		
 	}//END setup
 	    
@@ -405,8 +405,9 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 	 * @param sAlphanumeric
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 13:33:20
+	 * @throws ExceptionZZZ 
 	 */
-	private String getAlphabetNormed_(ICounterStrategyAlphabetZZZ objCounterStrategy, String sAlphabet){
+	private String getAlphabetNormed_(ICounterStrategyAlphabetZZZ objCounterStrategy, String sAlphabet) throws ExceptionZZZ{
 		 String sReturn = null;
 		 main:{
 			 boolean bLowercase = objCounterStrategy.isLowercase();

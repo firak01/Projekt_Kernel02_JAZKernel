@@ -57,7 +57,7 @@ public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgram
 	//##########################################
 	//### FLAG HANDLING
 	@Override
-	public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

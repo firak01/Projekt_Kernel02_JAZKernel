@@ -172,7 +172,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>
 	
 	//### aus IKernelZFormulaIniZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) {
+	public boolean getFlag(IKernelZFormulaIniZZZ.FLAGZ objEnum_IKernelZFormulaIniZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIniZZZ.name());
 	}
 	

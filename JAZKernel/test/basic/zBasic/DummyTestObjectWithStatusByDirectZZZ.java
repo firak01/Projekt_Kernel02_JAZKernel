@@ -157,7 +157,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

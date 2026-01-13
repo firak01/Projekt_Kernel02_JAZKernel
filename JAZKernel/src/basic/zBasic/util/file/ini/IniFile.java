@@ -103,8 +103,9 @@ public class IniFile extends Object implements IIniStructureConstantZZZ
    * Creates an INI file object using the specified name
    * If the named file doesn't exist, create one
    * @param name the name of the file
+ * @throws ExceptionZZZ 
    */
-   public IniFile(String name) throws IOException
+   public IniFile(String name) throws IOException, ExceptionZZZ
    {
       this(name,true);
    }
@@ -114,8 +115,9 @@ public class IniFile extends Object implements IIniStructureConstantZZZ
    * If the named file doesn't exist, create one
    * @param name the name of the file
    * @param saveOnSet save file whenever a value is set
+ * @throws ExceptionZZZ 
    */
-   public IniFile(String name, boolean save) throws IOException
+   public IniFile(String name, boolean save) throws IOException, ExceptionZZZ
    {
       saveOnChange = save;
       fileName = name;
@@ -255,8 +257,9 @@ public class IniFile extends Object implements IIniStructureConstantZZZ
    * Reads lines, filling in subjects, variables and values.
    * 
    * FGL 2008-02-19: Nun werden auch leere Sections erfasst !!!
+ * @throws ExceptionZZZ 
    */
-   protected void parseLines()
+   protected void parseLines() throws ExceptionZZZ
    {
       String currentLine = null;    //current line being parsed
       String currentSubject = null; //the last subject found
@@ -283,8 +286,9 @@ public class IniFile extends Object implements IIniStructureConstantZZZ
    /** Adds and assignment (i.e. "variable=value") to a subject.
     * FGL 20060423 Now adding subjects, when the value is empty is the default case.
     * This is controlled by a flag.
+ * @throws ExceptionZZZ 
    */
-   protected boolean addAssignment(String subject, String assignment)
+   protected boolean addAssignment(String subject, String assignment) throws ExceptionZZZ
    {
       String value;
       String variable;
@@ -327,8 +331,9 @@ public class IniFile extends Object implements IIniStructureConstantZZZ
    * @param value the value of the variable (e.g. "green")
    * @param addToLines add the information to the lines vector
    * @return true if successful
+ * @throws ExceptionZZZ 
    */
-   protected boolean addValue(String subject, String variable, String value, boolean addToLines)
+   protected boolean addValue(String subject, String variable, String value, boolean addToLines) throws ExceptionZZZ
    {
 
       //if no subject, quit
@@ -399,8 +404,9 @@ protected boolean addSection(String sSection){
    * does the line represent a subject?
    * @param line a string representing a line from an INI file
    * @return true if line is a subject
+ * @throws ExceptionZZZ 
    */
-   protected boolean isaSubject(String line)
+   protected boolean isaSubject(String line) throws ExceptionZZZ
    {
 	   if(line.startsWith(IIniStructureConstantZZZ.sINI_SUBJECT_START)) {
 		   //FGL: 20191218: Versehentlich war ein Semikolon hinter dem Subject gelandet. Es wurde daraufhin nicht erkannt.
@@ -419,8 +425,9 @@ protected boolean addSection(String sSection){
    * @param subject the subject heading (e.g. "Widget Settings")
    * @param variable the variable name (e.g. "Color")
    * @param value the value of the variable (e.g. "green")
+ * @throws ExceptionZZZ 
    */
-   protected void setLine(String subject, String variable, String value)
+   protected void setLine(String subject, String variable, String value) throws ExceptionZZZ
    {
 
       //find the line containing the subject
@@ -450,8 +457,9 @@ protected boolean addSection(String sSection){
    * @param subject the subject heading (e.g. "Widget Settings")
    * @param variable the variable name (e.g. "Color")
    * @return the line number of the assignment, -1 if not found
+ * @throws ExceptionZZZ 
    */
-   protected int findAssignmentLine(String subject, String variable)
+   protected int findAssignmentLine(String subject, String variable) throws ExceptionZZZ
    {
       int start = findSubjectLine(subject);
       int end = endOfSubject(start);
@@ -489,8 +497,9 @@ protected boolean addSection(String sSection){
    * find a subject line within the lines vector
    * @param subject the subject heading (e.g. "Widget Settings")
    * @return the line number of the subject, -1 if not found
+ * @throws ExceptionZZZ 
    */
-   protected int findSubjectLine(String subject)
+   protected int findSubjectLine(String subject) throws ExceptionZZZ
    {
       String line;
       String formattedSubject = IIniStructureConstantZZZ.sINI_SUBJECT_START+subject+IIniStructureConstantZZZ.sINI_SUBJECT_END;
@@ -517,8 +526,9 @@ protected boolean addSection(String sSection){
    * starting at a given line
    * @param start the line number at which to start looking
    * @return the line number of the last assignment + 1
+ * @throws ExceptionZZZ 
    */
-   protected int endOfSubject(int start)
+   protected int endOfSubject(int start) throws ExceptionZZZ
    {
       int endIndex = start+1;
       if (start>=lines.size()) return lines.size();

@@ -26,7 +26,7 @@ public class ArrayListUniqueZZZTest extends TestCase{
 }//END setup
     
    public void testAdd() {
-	   //try {
+	   try {
 		   //Beim Unique Hinzufuegen duerfen keine Werte doppelt gespeichert werden.
 		   alTest.add("Testwert A");  //0
 		   alTest.add("Testwert B");  //1
@@ -41,8 +41,9 @@ public class ArrayListUniqueZZZTest extends TestCase{
 
 		   String sTest = alTest.debugString("\n");
 		   System.out.println(sTest);
-//   		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}    
+   		} catch (ExceptionZZZ ez) {
+   			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}    
    }
 }

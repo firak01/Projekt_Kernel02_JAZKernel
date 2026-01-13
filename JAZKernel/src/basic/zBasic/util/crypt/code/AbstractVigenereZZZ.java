@@ -145,7 +145,7 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 	
 	
 	@Override
-	public int[] getEncryptedValuesAsInt() {
+	public int[] getEncryptedValuesAsInt() throws ExceptionZZZ {
 		return this.iaEncrypted;
 	}
 	public void setEncryptedValues(int[] iaCrypted) {
@@ -197,7 +197,7 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 		return iaReturn;   
 	}
 	
-	public static String computeKeyWordFromEncryptedFile(String sFilePath) {
+	public static String computeKeyWordFromEncryptedFile(String sFilePath) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sFilePath)) break main;
@@ -207,7 +207,7 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 		}//end main:
 		return sReturn;
 	}
-	public static String computeKeyWordFromEncryptedFile(DateiUtil fileUtil) {
+	public static String computeKeyWordFromEncryptedFile(DateiUtil fileUtil) throws ExceptionZZZ {
 		  String sReturn=null;
 		  main:{
 			  if(fileUtil==null)break main;
@@ -257,32 +257,32 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 	
 	
 	@Override
-	public void setCryptKey(String sKeyWord) {
+	public void setCryptKey(String sKeyWord) throws ExceptionZZZ {
 		this.sKeyWord= sKeyWord;
 	}
 	
 	@Override
-	public String getCryptKey() {
+	public String getCryptKey() throws ExceptionZZZ {
 		return this.sKeyWord;
 	}
 		
 	@Override
-	public int[] getOriginalValuesAsInt() {
+	public int[] getOriginalValuesAsInt(Object newParam) throws ExceptionZZZ {
 		return this.iaOriginal;
 	}
 	
 	@Override
-	public void setOriginalValues(int[] iaOriginal) {
+	public void setOriginalValues(int[] iaOriginal) throws ExceptionZZZ {
 		this.iaOriginal = iaOriginal;
 	}
 	
 	@Override
-	public int[] getDecryptedValuesAsInt() {
+	public int[] getDecryptedValuesAsInt() throws ExceptionZZZ {
 		return this.iaDecrypted;
 	}
 	
 	@Override
-	public void setDecryptedValues(int[] iaDecrypted) {
+	public void setDecryptedValues(int[] iaDecrypted) throws ExceptionZZZ {
 		this.iaDecrypted = iaDecrypted;
 	}
 	
@@ -290,12 +290,12 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 	//AUS dem Interface ICrypt	
 	//+++ nur wichtig für ROT-Verfahren
 	@Override
-	public void setCryptNumber(int iCryptKey) {
+	public void setCryptNumber(int iCryptKey) throws ExceptionZZZ {
 		//wg. ICryptZZZ
 	}
 	
 	@Override
-	public int getCryptNumber() {
+	public int getCryptNumber() throws ExceptionZZZ {
 		return -1;
 		//wg. ICryptZZZ
 	}
@@ -313,27 +313,27 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 	}
 
 	@Override
-	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) throws ExceptionZZZ {
 		//wg. ICryptZZZ	
 	}
 	
 	@Override
-	public void setCharacterPoolBase(String sCharacterPool) {
+	public void setCharacterPoolBase(String sCharacterPool) throws ExceptionZZZ {
 		//wg. ICryptZZZ		
 	}
 	
 	@Override
-	public String getCharacterPoolBase() {
+	public String getCharacterPoolBase() throws ExceptionZZZ {
 		return null;		//wg. ICryptZZZ
 	}
 	
 	@Override
-	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public String getCharacterPoolAdditional() {
+	public String getCharacterPoolAdditional() throws ExceptionZZZ {
 		return null; //Nur wg. ICryptZZZ
 	}
 	
@@ -343,7 +343,7 @@ public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ impl
 	}
 	
 	@Override
-	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+	public void setCharacterPoolList(ArrayListZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		//Nur wg. ICryptZZZ
 	}
 	

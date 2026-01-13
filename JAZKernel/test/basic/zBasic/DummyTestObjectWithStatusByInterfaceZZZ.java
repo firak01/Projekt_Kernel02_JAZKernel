@@ -25,7 +25,7 @@ public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithS
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithStatusByInterfaceZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithStatusByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

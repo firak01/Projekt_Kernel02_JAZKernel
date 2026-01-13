@@ -56,12 +56,12 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 	}
 	
 	@Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn;
 	}
 	
@@ -128,12 +128,12 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
 	}
 	
-	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank) {
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank) throws ExceptionZZZ {
 		return ROTnnZZZ.encrypt(sInput, sCharacterPoolBaseIn, objCharacterMissingReplacement, n, bUseUppercase, bUseLowercase, bUseNumeric, bUseBlank, false, null);
     }
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) throws ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -158,11 +158,11 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank) {
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank) throws ExceptionZZZ {
 		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBaseIn, objCharacterMissingReplacement, n, bUseUppercase, bUseLowercase, bUseNumeric, bUseBlank, false,null);
 	}
 	
-	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter,String sCharacterPoolAdditionalIn) {
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter,String sCharacterPoolAdditionalIn) throws ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;

@@ -548,7 +548,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		}
 		return this.objCharacterMissingReplacement;		
 	}
-	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) throws ExceptionZZZ {
 		this.objCharacterMissingReplacement = objCharacterMissingReplacement;
 	}
 
@@ -588,28 +588,28 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 	
 	@Override
-	public String getCharacterPoolBase() {
+	public String getCharacterPoolBase() throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(this.sCharacterPoolBase)) {
 			this.sCharacterPoolBase = AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
 		}
 		return this.sCharacterPoolBase;
 	}
 	@Override
-	public void setCharacterPoolBase(String sCharacterPoolBase) {
+	public void setCharacterPoolBase(String sCharacterPoolBase) throws ExceptionZZZ {
 		this.sCharacterPoolBase = sCharacterPoolBase;
 		
 		//!!! nach dem Ändern der Base die Liste leeren, so dass diese neu aufgebaut würde.
 		this.listasCharacterPool.clear();
 	}
 	@Override
-	public String getCharacterPoolAdditional() {
+	public String getCharacterPoolAdditional() throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(this.sCharacterPoolAdditional)) {
 			this.sCharacterPoolAdditional = AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
 		}
 		return this.sCharacterPoolAdditional;
 	}
 	@Override
-	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) throws ExceptionZZZ {
 		this.sCharacterPoolAdditional = sCharacterPoolAdditional;
 		
 		//!!! nach dem Ändern der Zusatzzeichen die Liste leeren, so dass diese neu aufgebaut würde.
@@ -749,7 +749,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 //	}
 	
 	@Override
-	public boolean getFlag(IROTUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IROTUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -782,7 +782,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	
 	
 	@Override
-	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ICharacterPoolEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	

@@ -26,12 +26,12 @@ public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCou
 	}
 	
 	@Override
-	public int getCharacterPositionMax() {
+	public int getCharacterPositionMax() throws ExceptionZZZ {
 		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 	}
 	
 	@Override
-	public int getCharacterPositionMin() {
+	public int getCharacterPositionMin() throws ExceptionZZZ {
 		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
 	}
 	

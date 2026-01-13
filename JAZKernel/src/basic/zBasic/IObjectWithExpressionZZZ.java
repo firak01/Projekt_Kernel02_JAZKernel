@@ -6,7 +6,7 @@ public interface IObjectWithExpressionZZZ{
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ);
+	public boolean getFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ) throws ExceptionZZZ;
 	public boolean setFlag(IObjectWithExpressionZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IObjectWithExpressionZZZ.FLAGZ[] objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean proofFlagExists(IObjectWithExpressionZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;

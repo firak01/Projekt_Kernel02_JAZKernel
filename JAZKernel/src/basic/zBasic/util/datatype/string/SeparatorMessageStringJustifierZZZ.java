@@ -91,7 +91,7 @@ public class SeparatorMessageStringJustifierZZZ extends AbstractStringJustifierZ
 	}
 	
 	@Override
-	public String getPositionIdentifierDefault() {
+	public String getPositionIdentifierDefault() throws ExceptionZZZ {
 		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
 	}
 	

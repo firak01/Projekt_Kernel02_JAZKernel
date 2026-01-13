@@ -10,7 +10,7 @@ public class UrlLogicZZZ extends UrlLogicBaseZZZ {
 	public static final String sURL_PROTOCOL_PERSISTENCE_JDBC = "jdbc";
 	public static final String sURL_PROTOCOL_PERSISTENCE_SEPARATOR_PROTOCOL = ":";
 	
-	public UrlLogicZZZ(String sUrl){
+	public UrlLogicZZZ(String sUrl) throws ExceptionZZZ{
 		super(sUrl);
 	}
 	

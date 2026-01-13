@@ -28,7 +28,7 @@ public class GetOptZZZTest extends TestCase{
 	}
 	
 	public void testGetPatternList4ControlWithValue() {
-//		try {
+		try {
 			String sPattern=null;
 			ArrayList<String>listaPattern=null;
 			
@@ -57,14 +57,14 @@ public class GetOptZZZTest extends TestCase{
 			assertEquals(0,listaPattern.size());
 			
 					
-//		} catch (ExceptionZZZ ez) {
-//			ez.printStackTrace();
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}	
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
 	}
 	
 	public void testGetPatternList4ControlSimple() {
-//		try {
+		try {
 			String sPattern=null;
 			ArrayList<String>listaPattern=null;
 			
@@ -96,16 +96,16 @@ public class GetOptZZZTest extends TestCase{
 			
 			
 			
-//		} catch (ExceptionZZZ ez) {
-//			ez.printStackTrace();
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}	
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
 	}
 	
 	
 	
 	public void testGetPatternList4ControlAll() {
-//		try {
+		try {
 			String sPattern=null;
 			ArrayList<String>listaPattern=null;
 			
@@ -137,10 +137,10 @@ public class GetOptZZZTest extends TestCase{
 			
 			
 			
-//		} catch (ExceptionZZZ ez) {
-//			ez.printStackTrace();
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}	
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}	
 	}
 	
 	/**Fuer den Pattern String gilt: 1 Zeichen, ggf. gefolgt von einem Doppelpunkt

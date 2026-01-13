@@ -25,12 +25,12 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	}
 	
 	@Override
-	public Enum<?> getCipherTypeAsEnum() {
+	public Enum<?> getCipherTypeAsEnum() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn;
 	}
 	
 	@Override
-	public CipherTypeZZZ getCipherType() {
+	public CipherTypeZZZ getCipherType() throws ExceptionZZZ {
 		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn;
 	}
 

@@ -19,7 +19,7 @@ public interface IObjectWithStatusEnabledZZZ extends IObjectZZZ {
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public abstract boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag);
+	public abstract boolean getFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public abstract boolean setFlag(IObjectWithStatusEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean[] setFlag(IObjectWithStatusEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.

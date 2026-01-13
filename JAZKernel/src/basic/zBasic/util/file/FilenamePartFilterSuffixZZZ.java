@@ -26,20 +26,21 @@ public class FilenamePartFilterSuffixZZZ extends AbstractObjectWithExceptionZZZ 
 		boolean bReturn=false;
 		main:{
 			//if(objFile==null) break main;
-			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getSuffix())) {
-				bReturn = true;
-				break main;
-			}
-		
+			if(sName==null) break main;
 			
-			//Ende des Dateinamens berechnen			
-			String sSuffixCur;
-			try {				
+			try {
+				if(StringZZZ.isEmpty(this.getSuffix())) {
+					bReturn = true;
+					break main;
+				}
+					
+				//Ende des Dateinamens berechnen			
+				String sSuffixCur=null;		
 				sSuffixCur = FileEasyZZZ.getNameOnly(sName);
 				if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
 			} catch (ExceptionZZZ e) {			
 				e.printStackTrace();
+				return false;
 			} 					
 		}//END main:
 		return bReturn;
@@ -56,21 +57,22 @@ public class FilenamePartFilterSuffixZZZ extends AbstractObjectWithExceptionZZZ 
 		main:{
 			if(objFile==null) break main;				
 		
-			String sName = objFile.getPath();
+			try {
+				String sName = objFile.getPath();
+				
+				if(StringZZZ.isEmpty(this.getSuffix())) {
+					bReturn = true;
+					break main;
+				}
 			
-			if(StringZZZ.isEmpty(this.getSuffix())) {
-				bReturn = true;
-				break main;
-			}
-		
-			
-			//Ende des Dateinamens berechnen			
-			String sSuffixCur;
-			try {				
+				
+				//Ende des Dateinamens berechnen			
+				String sSuffixCur=null;							
 				sSuffixCur = FileEasyZZZ.getNameOnly(sName);
 				if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
 			} catch (ExceptionZZZ e) {			
 				e.printStackTrace();
+				return false;
 			} 								
 		}//END main:
 		return bReturn;

@@ -18,7 +18,7 @@ public interface IFlagZEnabledZZZ{
 	
 	//KONVENTION: 
 	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
-	public abstract boolean getFlag(String sFlagName);
+	public abstract boolean getFlag(String sFlagName) throws ExceptionZZZ;
 	public abstract boolean setFlag(String sFlagName, boolean bValue) throws ExceptionZZZ;;
 	public abstract boolean[] setFlag(String[] saFlagName, boolean bValue) throws ExceptionZZZ;;
 	public abstract boolean proofFlagExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
@@ -26,7 +26,7 @@ public interface IFlagZEnabledZZZ{
 	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public abstract boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag);
+	public abstract boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public abstract boolean setFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean[] setFlag(IFlagZEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.

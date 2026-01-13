@@ -805,7 +805,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	//### aus IKernelCallIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
@@ -843,7 +843,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	
 	//### Aus Interface IKernelJavaCallIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+	public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
 	}
 	

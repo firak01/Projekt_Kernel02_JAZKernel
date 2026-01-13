@@ -41,9 +41,9 @@ public class FileDirectoryEmptyPartFilterZipZZZ extends AbstractFilenamePartFilt
 				if(StringZZZ.contains(sName, this.getCriterion(), true)){ 
 					bReturn = true;	
 				}
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
+			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
+				return false;
 			}	
 		}//END main:
 		return bReturn;

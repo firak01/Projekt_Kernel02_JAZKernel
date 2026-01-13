@@ -1,8 +1,8 @@
 package basic.zBasic;
 
 public interface IUrlLogicZZZ extends IConstantZZZ{
-	public String getUrl();
-	public void setUrl(String sUrl);
+	public String getUrl() throws ExceptionZZZ;
+	public void setUrl(String sUrl) throws ExceptionZZZ;
 	
 	
 	//Merke: static Methoden können nicht in Interfaces aufgenommen werden.

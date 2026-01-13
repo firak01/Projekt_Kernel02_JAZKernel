@@ -57,7 +57,7 @@ private FileArrayEasyZZZ(){
 	//Zum Verstecken des Konstruktors
 }
 
-public static File[] add(File[] objaFile, File objFile) {
+public static File[] add(File[] objaFile, File objFile) throws ExceptionZZZ {
 	File[] objaReturn = null;
 	main:{
 		ArrayList<File> listaFile = new ArrayListZZZ<File>(objaFile);		

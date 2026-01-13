@@ -294,7 +294,7 @@ public class FileExpansionZZZTest extends TestCase {
 		}
 	}
 	
-	private int iterateExpansionAll_WhileHasNext_Next1x_() {
+	private int iterateExpansionAll_WhileHasNext_Next1x_() throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
@@ -316,7 +316,7 @@ public class FileExpansionZZZTest extends TestCase {
 	}
 	
 	
-	private int iterateExpansionAll_WhileHasNext_Next2x_() {
+	private int iterateExpansionAll_WhileHasNext_Next2x_() throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
@@ -344,7 +344,7 @@ public class FileExpansionZZZTest extends TestCase {
 		return iReturn;
 	}
 	
-	private int iterateExpansionAll_WhileHasNext_Next3x_() {
+	private int iterateExpansionAll_WhileHasNext_Next3x_() throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
@@ -379,7 +379,7 @@ public class FileExpansionZZZTest extends TestCase {
 		return iReturn;
 	}
 	
-	private int iterateExpansionAll_WhileNext3x_HasNext_() {
+	private int iterateExpansionAll_WhileNext3x_HasNext_() throws ExceptionZZZ {
 		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();

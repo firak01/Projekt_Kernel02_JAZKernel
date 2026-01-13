@@ -99,7 +99,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 	//###############################################
 	
 	@Override
-	public boolean getFlag(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -138,7 +138,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 		//### FLAGZ: aus IProgramRunnableZZZ                 ##########################
 		//######################################################################
 		@Override
-		public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) {
+		public boolean getFlag(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.getFlag(objEnumFlag.name());
 		}
 		@Override

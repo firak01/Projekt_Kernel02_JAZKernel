@@ -125,7 +125,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 	 * @return
 	 * @author lindhaueradmin, 10.09.2019, 07:40:41
 	 */
-	public static String getStringConsolidated(String sCharacter, int iDiv){
+	public static String getStringConsolidated(String sCharacter, int iDiv) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
 			if(sCharacter==null) break main;
@@ -142,8 +142,9 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 	 * @param listas
 	 * @return
 	 * @author lindhaueradmin, 10.09.2019, 07:21:53
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringConsolidated(ArrayList<String>listas){
+	public static String getStringConsolidated(ArrayList<String>listas) throws ExceptionZZZ {
 	//public static String getStringConsolidated(ArrayList<String>listas, boolean bLeftAsigned){
 		String sReturn = null;
 		main:{
@@ -166,8 +167,9 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 		 * @param sAlphanumeric
 		 * @return
 		 * @author Fritz Lindhauer, 30.05.2019, 13:33:20
+	 * @throws ExceptionZZZ 
 		 */
-		public static String getAlphanumericNormed(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){
+		public static String getAlphanumericNormed(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric) throws ExceptionZZZ{
 			 String sReturn = null;
 			 main:{
 				 boolean bLowercase = objCounterStrategy.isLowercase();
@@ -177,7 +179,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 			 return sReturn;
 		 }
 		
-		public static String getAlphanumericNormed(String sAlphanumeric, boolean bLowercase, boolean bLeftAligned){
+		public static String getAlphanumericNormed(String sAlphanumeric, boolean bLowercase, boolean bLeftAligned) throws ExceptionZZZ{
 			 String sReturn = null;
 			 main:{				
 			 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
@@ -191,7 +193,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 			 return sReturn;
 		 }
 		
-		public static String getNumericNormed(String sAlphanumeric, boolean bLeftAligned){
+		public static String getNumericNormed(String sAlphanumeric, boolean bLeftAligned) throws ExceptionZZZ{
 			 String sReturn = null;
 			 main:{				
 			 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);

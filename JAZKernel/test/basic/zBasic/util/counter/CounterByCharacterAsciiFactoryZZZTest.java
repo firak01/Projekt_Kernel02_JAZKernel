@@ -1076,7 +1076,7 @@ private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 	}//end main:
 	return bReturn;	    	
 }
-private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResultIn, boolean bLeftAligned){
+private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResultIn, boolean bLeftAligned) throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
 		String sResult = CounterStrategyHelperZZZ.getNumericNormed(sResultIn, bLeftAligned);

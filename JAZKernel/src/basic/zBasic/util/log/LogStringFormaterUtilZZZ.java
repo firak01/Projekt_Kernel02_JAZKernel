@@ -103,7 +103,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, IEnumSetMappedLogStringFormatZZZ> hmReturn = new HashMap<Integer,IEnumSetMappedLogStringFormatZZZ>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumAvailableHelperZZZ.searchEnumMappedList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString);
@@ -122,7 +122,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());

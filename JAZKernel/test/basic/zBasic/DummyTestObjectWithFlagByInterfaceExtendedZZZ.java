@@ -33,7 +33,7 @@ public class DummyTestObjectWithFlagByInterfaceExtendedZZZ extends AbstractObjec
 	//###################################################
 	//Methoden hier, da im Interface eingebunden	
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	
@@ -78,7 +78,7 @@ public class DummyTestObjectWithFlagByInterfaceExtendedZZZ extends AbstractObjec
 	//###################################################
 	//Methoden hier, da im Interface eingebunden	
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

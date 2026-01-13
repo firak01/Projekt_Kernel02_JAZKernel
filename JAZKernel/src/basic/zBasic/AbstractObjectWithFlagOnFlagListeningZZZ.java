@@ -69,7 +69,7 @@ public abstract class AbstractObjectWithFlagOnFlagListeningZZZ <T> extends Abstr
 	//### FLAGZ: aus IListenerObjectFlagZsetZZZ                 #########
 	//######################################################################
 	@Override
-	public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

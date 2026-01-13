@@ -288,7 +288,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithF
 			return this.getDirectoryPartFilter().getDirectoryPath();
 		}
 		
-		protected void setName(String sName) {
+		protected void setName(String sName) throws ExceptionZZZ {
 			this.getNamePartFilter().setFileName(sName);
 			this.getPathTotalFilter().setFileName(sName);
 			
@@ -297,14 +297,14 @@ public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithF
 			return this.getNamePartFilter().getFileName();
 		}
 		
-		protected void setPrefix(String sPrefix) {
+		protected void setPrefix(String sPrefix) throws ExceptionZZZ {
 			this.getPrefixPartFilter().setPrefix(sPrefix);
 		}
 		protected String getPrefix() {
 			return this.getPrefixPartFilter().getPrefix();
 		}
 		
-		protected void setMiddle(String sMiddle) {
+		protected void setMiddle(String sMiddle) throws ExceptionZZZ {
 			this.getMiddlePartFilter().setMiddle(sMiddle);
 		}
 		protected String getMiddle() {
@@ -312,14 +312,14 @@ public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithF
 		}
 
 		
-		protected void setSuffix(String sSuffix) {
+		protected void setSuffix(String sSuffix) throws ExceptionZZZ {
 			this.getSuffixPartFilter().setSuffix(sSuffix);
 		}
 		protected String getSuffix() {
 			return this.getSuffixPartFilter().getSuffix();
 		}
 		
-		protected void setEnding(String sEnding){
+		protected void setEnding(String sEnding) throws ExceptionZZZ{
 			this.getEndingPartFilter().setEnding(sEnding);
 		}
 		protected String getEnding() {

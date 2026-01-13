@@ -20,7 +20,7 @@ public class DummyTestObjectWithFlagZZZ extends AbstractObjectWithFlagZZZ<Object
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithFlagZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IDummyTestObjectWithFlagZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	

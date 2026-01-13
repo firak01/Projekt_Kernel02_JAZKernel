@@ -130,7 +130,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	}
 	
 	@Override
-	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IFlagZEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -175,7 +175,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 	 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 	 */
-	public boolean getFlag(String sFlagName) {
+	public boolean getFlag(String sFlagName) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) break main;
@@ -511,7 +511,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 	 */
 	@Override
-	public boolean getFlagLocal(String sFlagName) {
+	public boolean getFlagLocal(String sFlagName) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) break main;

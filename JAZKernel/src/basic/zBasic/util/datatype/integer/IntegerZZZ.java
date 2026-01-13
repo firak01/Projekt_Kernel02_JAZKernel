@@ -1,11 +1,12 @@
 package basic.zBasic.util.datatype.integer;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 public class IntegerZZZ {
-	public static Integer parseAbsolutFromRight(String sToParse) {
+	public static Integer parseAbsolutFromRight(String sToParse) throws ExceptionZZZ {
 		Integer intReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sToParse)) break main;
@@ -26,7 +27,7 @@ public class IntegerZZZ {
 		return intReturn;
 	}
 	
-	public static Integer parseIntFromRight(String sToParse) {
+	public static Integer parseIntFromRight(String sToParse) throws ExceptionZZZ {
 		Integer intReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sToParse)) break main;

@@ -103,7 +103,7 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	
 	
 	@Override
-	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class JarEasyUrlZZZ implements IConstantZZZ{
 
-	public static String computeUrlPathForContainingResource(JarFile objJar, String sResourcePath) {
+	public static String computeUrlPathForContainingResource(JarFile objJar, String sResourcePath) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(objJar==null) break main;

@@ -312,7 +312,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 	}
 		
 	//###############
-	public boolean startsWithAnyAlias(String sToFind){
+	public boolean startsWithAnyAlias(String sToFind) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -321,7 +321,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public static boolean startsWithAnyAlias(String sToFind, EnumSet<?> setEnumCurrent){
+	public static boolean startsWithAnyAlias(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			@SuppressWarnings("unchecked")
@@ -444,7 +444,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static String getEnumConstant_StringValue(Class<?> clazz, String name) {
+		public static String getEnumConstant_StringValue(Class<?> clazz, String name) throws ExceptionZZZ {
 		    if (clazz==null || name==null || name.isEmpty()) {
 		        return null;
 		    }
@@ -617,7 +617,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return intValue;
 		}
 		
-		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedZZZ> listae){
+		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
 			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -660,7 +660,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return objaeReturn;
 		}
 		
-		public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
+		public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
 			E[] objaeReturn = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -693,7 +693,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		
 		
 		
-		public static <E extends Enum> E[] toEnumArrayByMappedStatus(ArrayList<IEnumSetMappedStatusZZZ> listae){		
+		public static <E extends Enum> E[] toEnumArrayByMappedStatus(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{		
 			E[] objaeReturn = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;

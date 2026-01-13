@@ -544,7 +544,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 		
 	//##############################################################
-	private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) {
+	private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) throws ExceptionZZZ {
 		FileTextWriterZZZ objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sFilepath))break main;

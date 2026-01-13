@@ -388,7 +388,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	//### aus IKernelZFormulaIni_PathZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) {
+	public boolean getFlag(IKernelZFormulaIni_PathZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIni_PathZZZ.name());
 	}
 	
@@ -427,7 +427,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelIniTagSimpleZZZ
 	
 	//### aus IKernelExpressionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) {
+	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIni_PathZZZ) throws ExceptionZZZ {
 		return this.getFlag(objEnum_IKernelZFormulaIni_PathZZZ.name());
 	}
 	

@@ -72,7 +72,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	
 	//### Aus IKernelProgramZZZ
 	@Override
-	public String getProgramName(){
+	public String getProgramName() throws ExceptionZZZ{
 		if(StringZZZ.isEmpty(this.sProgramName)) {
 			if(this.getFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name())) {
 				this.sProgramName = this.getClass().getName();
@@ -96,7 +96,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	}
 	
 	@Override
-	public boolean getFlag(IKernelProgramZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
@@ -178,7 +178,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	}
 	
 	@Override
-	public boolean getFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override

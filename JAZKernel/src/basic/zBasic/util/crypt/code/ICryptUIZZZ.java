@@ -16,17 +16,17 @@ public interface ICryptUIZZZ{
 	
 	//##########################################################
 	//Methoden zum Dateihandling
-	public DateiUtil getFileOriginal();
-	public void setFileOriginal(DateiUtil objDatei);
+	public DateiUtil getFileOriginal() throws ExceptionZZZ;
+	public void setFileOriginal(DateiUtil objDatei) throws ExceptionZZZ;
 	
-	public DateiUtil getFileEncrypted();
-	public void setFileEncrypted(DateiUtil objDatei);
+	public DateiUtil getFileEncrypted() throws ExceptionZZZ;
+	public void setFileEncrypted(DateiUtil objDatei) throws ExceptionZZZ;
 	
-	public DateiUtil getFileDecrypted();
-	public void setFileDecrypted(DateiUtil objDatei);
+	public DateiUtil getFileDecrypted() throws ExceptionZZZ;
+	public void setFileDecrypted(DateiUtil objDatei) throws ExceptionZZZ;
 		
-	public boolean isFileOriginalEncrypted();
-	public void isFileOriginalEncrypted(boolean bFileOriginalEncryted);
+	public boolean isFileOriginalEncrypted() throws ExceptionZZZ;
+	public void isFileOriginalEncrypted(boolean bFileOriginalEncryted) throws ExceptionZZZ;
 	
-	public int[] readOriginalValuesAsInt();	
+	public int[] readOriginalValuesAsInt() throws ExceptionZZZ;	
 }

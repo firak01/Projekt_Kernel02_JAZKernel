@@ -108,7 +108,7 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 	}
 
 	@Override
-	public int computeNumberForString(String sTotalUnnormed) {
+	public int computeNumberForString(String sTotalUnnormed) throws ExceptionZZZ {
 		int iReturn = -1;
 		
 		//wg. der Problematik der Füllzeichen. Arbeite nur mit dahingehend normiertem String. Also führende Füllzeichen wegtrimmen.		
@@ -211,8 +211,9 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 	 * @param sAlphabet
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 13:28:43
+	 * @throws ExceptionZZZ 
 	 */
-	public String getAlphabetNormed(String sAlphabet, String sCharToStrip){
+	public String getAlphabetNormed(String sAlphabet, String sCharToStrip) throws ExceptionZZZ{
 		 String sReturn = null;
 		 main:{
 			 boolean bLowercase = this.isLowercase();

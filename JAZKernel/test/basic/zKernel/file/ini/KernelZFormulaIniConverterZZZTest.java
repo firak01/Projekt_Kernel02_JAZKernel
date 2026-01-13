@@ -110,7 +110,7 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagHandling(){
-		//try{
+		try{
 				
 		assertTrue(objExpressionConverterInit.getFlag("init"));
 		assertFalse(objExpressionConverter.getFlag("init")); //Nun wäre init falsch
@@ -119,9 +119,10 @@ public class KernelZFormulaIniConverterZZZTest extends TestCase {
 		assertFalse(objExpressionConverter.getFlag(IIniTagWithConversionZZZ.FLAGZ.USECONVERSION)); //Nun wäre init falsch
 		
 		
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 

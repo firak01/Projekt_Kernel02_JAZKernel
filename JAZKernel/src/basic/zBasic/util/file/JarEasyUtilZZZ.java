@@ -511,7 +511,7 @@ public class JarEasyUtilZZZ extends AbstractObjectWithExceptionZZZ implements IJ
 		}//END main:		
 	}
 	
-	public static boolean isDirectory(String sJarPath) {
+	public static boolean isDirectory(String sJarPath) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(StringZZZ.isEmpty(sJarPath)) break main;

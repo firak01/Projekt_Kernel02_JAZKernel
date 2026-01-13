@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import basic.javagently.Stream;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
@@ -67,7 +68,7 @@ public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 	}
 	
 	//##### Getter / Setter ###################
-	public String getFileName() {
+	public String getFileName() throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(this.sFileName)) {
 			this.sFileName = FileTextWriterZZZ.sFILE_NAME_DEFAULT;
 		}		

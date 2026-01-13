@@ -46,7 +46,7 @@ public class UrlLogicZZZ  extends UrlLogicBaseZZZ{
 		super(); 
 	}
 	
-	public UrlLogicZZZ(String sUrl){
+	public UrlLogicZZZ(String sUrl) throws ExceptionZZZ{
 		super(sUrl);	
 	}
 	

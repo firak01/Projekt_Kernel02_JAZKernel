@@ -27,7 +27,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 	
-	public static boolean isEmpty(ArrayList<?> objAL) {
+	public static boolean isEmpty(ArrayList<?> objAL) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(objAL==null) {
@@ -41,6 +41,18 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		}
 		return bReturn;
 	}
+	
+	public static boolean isNull(ArrayList<?> objAL) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(objAL==null) {
+				bReturn = true;
+				break main;
+			}
+		}
+		return bReturn;
+	}
+	
 	public static Object getFirst(ArrayList<?> objAL) throws ExceptionZZZ {
 		Object objReturn = null;
 		main:{
@@ -84,7 +96,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			return bReturn;
 		}
 	
-	public static String implode(ArrayList<?>lista, String sDelimiterIn){
+	public static String implode(ArrayList<?>lista, String sDelimiterIn) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(lista==null)break main;
@@ -109,7 +121,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn){
+	public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(lista==null)break main;
@@ -236,11 +248,11 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	
 		
-	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2){
+	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
 		return ArrayListUtilZZZ.join(lista1, lista2, false);
 	}
 	
-	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
+	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique) throws ExceptionZZZ{
 		ArrayList listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
@@ -271,7 +283,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	public static ArrayList<?> joinKeepFirst(ArrayList<?> lista1, ArrayList<?> lista2){
+	public static ArrayList<?> joinKeepFirst(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
 		ArrayList<?> listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
@@ -294,7 +306,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	public static ArrayList<?> joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2){
+	public static ArrayList<?> joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
 		ArrayList listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
@@ -317,7 +329,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase){
+	public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase) throws ExceptionZZZ {
 		main:{
 		if(lista==null) break main;
 		if(sToRemove==null) break main;
@@ -336,7 +348,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	  }//end main:
 	}
 	
-	public static void remove(ArrayList<?> lista, Integer intToRemove){
+	public static void remove(ArrayList<?> lista, Integer intToRemove) throws ExceptionZZZ {
 		main:{
 		if(lista==null) break main;
 		if(intToRemove==null) break main;
@@ -354,7 +366,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	
 	
-	public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
+	public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove) throws ExceptionZZZ {
 		main:{
 			if(lista==null) break main;
 			if(lista.size()>iNumberOfElements2Remove){
@@ -390,7 +402,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 //    // result now holds a reversed copy of the original list
 //    return result;
 //}
-	public static <T> List<T> reverse(List<T> lista) {
+	public static <T> List<T> reverse(List<T> lista) throws ExceptionZZZ {
 	    List<T> listaReturn = null; 
 		main:{
 			if(lista==null) break main;
@@ -418,7 +430,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 09.11.2025, 08:21:28
 	 */
-	public static <T> ArrayList<T> reverse(ArrayList<T> listaOriginal) {
+	public static <T> ArrayList<T> reverse(ArrayList<T> listaOriginal) throws ExceptionZZZ {
 		ArrayList<T> listaReturn = null;
 		main:{
 			if(listaOriginal==null) break main;
@@ -430,7 +442,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
         return listaReturn;
     }
 	
-	public static <T> ArrayListUniqueZZZ<T> reverse(ArrayListUniqueZZZ<T> listaOriginal) {
+	public static <T> ArrayListUniqueZZZ<T> reverse(ArrayListUniqueZZZ<T> listaOriginal) throws ExceptionZZZ {
 		ArrayListUniqueZZZ<T> listaReturn = null;
 		main:{
 			if(listaOriginal==null) break main;
@@ -448,7 +460,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	 * 
 	 * siehe: https://javahungry.blogspot.com/2017/11/how-to-sort-arraylist-in-descending-order-in-java.html
 	 */
-	public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
+	public static void  sortReverseAlphabetOrder(ArrayList<String> lista) throws ExceptionZZZ {
 		main:{
 			if(lista==null) break main;
 			if(lista.size()==0) break main;
@@ -459,7 +471,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	
 	
-	public static Object[]toArray(ArrayList<?> lista){
+	public static Object[]toArray(ArrayList<?> lista) throws ExceptionZZZ {
 		Object[] aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -476,7 +488,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(ArrayList<T> lista, Object obj) {
+	public static <T> T[] toArray(ArrayList<T> lista, Object obj) throws ExceptionZZZ {
 		T[]aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -493,7 +505,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(ArrayList<T> lista, Class<T> classObjIn) {
+	public static <T> T[] toArray(ArrayList<T> lista, Class<T> classObjIn) throws ExceptionZZZ {
 		T[]aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -510,7 +522,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return aReturn;
 	}
 	
-	public static Component[]toComponentArray(ArrayList<Component> lista){
+	public static Component[]toComponentArray(ArrayList<Component> lista) throws ExceptionZZZ {
 		Component[] aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -527,7 +539,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 
 
-	public static <E extends Enum> E[] toEnumArray(ArrayList<E> listae){
+	public static <E extends Enum> E[] toEnumArray(ArrayList<E> listae) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
 			if(listae==null) break main;
@@ -538,7 +550,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return enumaReturn;	
 		}
 
-	public static <E extends Enum & IEnumSetMappedZZZ> E[] toEnumArrayByMapped(ArrayList<E> listae){
+	public static <E extends Enum & IEnumSetMappedZZZ> E[] toEnumArrayByMapped(ArrayList<E> listae) throws ExceptionZZZ {
 		E[] objaeReturn = null;
 		main:{
 			if(listae==null) break main;
@@ -549,7 +561,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return objaeReturn;	
 	}
 	
-	public static <E extends Enum & IEnumSetMappedStatusZZZ> E[] toEnumArrayByMappedStatus(ArrayList<E> listae){
+	public static <E extends Enum & IEnumSetMappedStatusZZZ> E[] toEnumArrayByMappedStatus(ArrayList<E> listae) throws ExceptionZZZ {
 		E[] objaeReturn = null;
 		main:{
 			if(listae==null) break main;
@@ -643,7 +655,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 //	}
 
 	
-	public static File[]toFileArray(ArrayList<File> lista){
+	public static File[]toFileArray(ArrayList<File> lista)  throws ExceptionZZZ {
 		File[] aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -659,7 +671,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return aReturn;	
 	}
 	
-	public static int[]toIntArray(ArrayList<?> lista){
+	public static int[]toIntArray(ArrayList<?> lista)  throws ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -677,7 +689,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return iaReturn;	
 	}
 
-	public static String[]toStringArray(ArrayList<?> lista){
+	public static String[]toStringArray(ArrayList<?> lista)  throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -698,7 +710,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 
 	
-	public static ZipEntry[]toZipEntryArray(ArrayList<ZipEntry> lista){
+	public static ZipEntry[]toZipEntryArray(ArrayList<ZipEntry> lista)  throws ExceptionZZZ {
 		ZipEntry[] aReturn = null;
 		main:{
 			if(lista==null) break main;
@@ -716,7 +728,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	//###############################
 	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> trim(ArrayList<?> lista){
+	public static ArrayList<?> trim(ArrayList<?> lista) throws ExceptionZZZ {
 		ArrayList listaReturn = null;
 		main:{
 			if(lista==null)break main;					
@@ -732,7 +744,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	//###############################
 	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> unique(ArrayList<?> lista){
+	public static ArrayList<?> unique(ArrayList<?> lista) throws ExceptionZZZ {
 		ArrayList listaReturn = null;
 		main:{
 			listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(lista);
@@ -741,7 +753,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> uniqueKeepFirst(ArrayList<?> lista){
+	public static ArrayList<?> uniqueKeepFirst(ArrayList<?> lista) throws ExceptionZZZ {
 		ArrayList listaReturn = null;
 		main:{
 			if(lista==null)break main;					
@@ -755,7 +767,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> uniqueKeepLast(ArrayList<?> lista){
+	public static ArrayList<?> uniqueKeepLast(ArrayList<?> lista) throws ExceptionZZZ {
 		ArrayList listaReturn = null;
 		main:{
 			if(lista==null)break main;					
