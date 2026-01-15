@@ -32,7 +32,7 @@ public class EnumSetJdbcDatabaseClassTypeUtilZZZ extends EnumSetUtilZZZ{
 	
 	//#################
 	//+++ Zugriffe auf den Enum-Wert der ConfigDescription					
-	public boolean startsWithAnyDescription(String sToFind){
+	public boolean startsWithAnyDescription(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> myEnumSet = this.getEnumSetCurrent();

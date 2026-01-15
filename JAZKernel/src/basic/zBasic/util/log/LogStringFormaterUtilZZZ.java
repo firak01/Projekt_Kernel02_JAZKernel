@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
-import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
@@ -55,7 +55,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			//IEnumSetMappedLogStringFormatZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
 			
 			//Aber das geht nicht, s. ChatGPT vom 20260110
-			List<IEnumSetMappedLogStringFormatZZZ>listaEnum = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);			
+			List<IEnumSetMappedLogStringFormatZZZ>listaEnum = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);			
 			for(IEnumSetMappedLogStringFormatZZZ ienum : listaEnum) {
 				int iArgumentType =  ienum.getArgumentType();
 				if(iArgumentType==ILogStringFormatZZZ.iARG_CONTROL) {
@@ -103,7 +103,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, IEnumSetMappedLogStringFormatZZZ> hmReturn = new HashMap<Integer,IEnumSetMappedLogStringFormatZZZ>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString);
@@ -122,7 +122,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());

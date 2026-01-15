@@ -156,6 +156,7 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
      * @author Fritz Lindhauer, 16.03.2019, 08:34:53
      */
     public void testGetPositionInAlphabetForChar(){
+    	try {
     	char ctemp = '0';
     	int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	boolean btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
@@ -186,7 +187,10 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(26,itemp);
-    	
+    	} catch (ExceptionZZZ ez) {
+    		ez.printStackTrace();
+    		fail("Method throws an exception." + ez.getMessageLast());
+    	} 
     }
     
     public void testGetCharForPositionInAlphabet(){	    		    	
@@ -569,6 +573,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
     	assertTrue("Fehler beim Check auf gelungene Rekonvertierung", btemp);
     	
 	} catch (ExceptionZZZ ez) {
+		ez.printStackTrace();
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
 }

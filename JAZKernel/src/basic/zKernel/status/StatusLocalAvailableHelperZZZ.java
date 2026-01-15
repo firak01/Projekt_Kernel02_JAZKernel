@@ -16,6 +16,8 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapKeepFirstZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumMappedAvailableHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumMappedStatusAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -195,7 +197,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	}
 	
 	private static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect_(Class<E> cls, boolean bScanInterfaceImmediate)  throws ExceptionZZZ {
-		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = EnumAvailableHelperZZZ.searchEnumMappedStatusListDirect(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate);			
+		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = EnumMappedStatusAvailableHelperZZZ.searchEnumMappedStatusListDirect(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate);			
 		return listaeReturn;
 	}
 	
@@ -382,7 +384,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	}
 	
 	private static <E extends Enum<E> & IEnumSetMappedZZZ> ArrayList<IEnumSetMappedZZZ> searchEnumMappedList_(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
-		ArrayList<IEnumSetMappedZZZ> listaeReturn = EnumAvailableHelperZZZ.searchEnumMappedList(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate, bScanSuperclassImmediate);		
+		ArrayList<IEnumSetMappedZZZ> listaeReturn = EnumMappedAvailableHelperZZZ.searchEnumMappedList(cls, StatusLocalAvailableHelperZZZ.sENUM_NAME, bScanInterfaceImmediate, bScanSuperclassImmediate);		
 		return listaeReturn;
 	}
 	
@@ -918,7 +920,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	private static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped_(Class<?> classToCheck, String sEnumPropertyName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
-			IEnumSetMappedZZZ enumReturnTemp = EnumAvailableHelperZZZ.searchEnumMapped(classToCheck, StatusLocalAvailableHelperZZZ.sENUM_NAME, sEnumPropertyName, bScanInterfaceImmediate, bScanSuperclassImmediate);
+			IEnumSetMappedZZZ enumReturnTemp = EnumMappedAvailableHelperZZZ.searchEnumMapped(classToCheck, StatusLocalAvailableHelperZZZ.sENUM_NAME, sEnumPropertyName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 			enumReturn = (E) enumReturnTemp;
 		}//end main:
 		return enumReturn;

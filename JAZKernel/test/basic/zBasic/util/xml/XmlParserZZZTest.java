@@ -12,7 +12,7 @@ import basic.zBasic.util.abstractList.IHashMapMultiZZZ;
 import basic.zBasic.util.abstractList.IVector4XmlZZZ;
 import basic.zBasic.util.abstractList.Vector4XmlTagSimpleZZZ;
 import basic.zBasic.util.abstractList.Vector4XmlTagStringZZZ;
-import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumMappedAvailableHelperZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
@@ -37,7 +37,7 @@ public class XmlParserZZZTest extends TestCase{
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			
 			 //Hole die XML Strings aus dem Enum
-			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumMappedAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 
 			//Teste alle XML Strings hinsichtlich des Werts in dem Knoten
 			//Merke: Getestet wird auf den puren Eingabestring.
@@ -113,7 +113,7 @@ public class XmlParserZZZTest extends TestCase{
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			
 			 //Hole die XML Strings aus dem Enum
-			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumMappedAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 
 			//Teste alle XML Strings hinsichtlich des Werts in dem Knoten
 			//Merke: Getestet wird auf den puren Eingabestring.
@@ -295,7 +295,7 @@ public class XmlParserZZZTest extends TestCase{
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			
 			 //Hole die XML Strings aus dem Enum
-			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumMappedAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 
 			//Teste alle XML Strings hinsichtlich des Werts in dem Knoten
 			//Merke: Getestet wird auf den puren Eingabestring.
@@ -465,7 +465,7 @@ public class XmlParserZZZTest extends TestCase{
 			 ITreeNodeZZZ<ITagSimpleZZZ> objTree=null;
 			 
 			 //Hole die XML Strings aus dem Enum
-			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumMappedAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 
 			//Teste alle XML Strings hinsichtlich des Werts in dem Knoten
 			//Merke: Getestet wird auf den puren Eingabestring.

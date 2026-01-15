@@ -196,6 +196,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	     * @author Fritz Lindhauer, 16.03.2019, 08:34:53
 	     */
 	    public void testGetPositionInAlphanumericForChar(){
+	    	try {
 	    	//Grenzwerte: Geholt aus der ASCII Tabelle
 	    	char ctemp = '/';
 	    	int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(ctemp);
@@ -266,6 +267,10 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
 	    	assertEquals(36,itemp);
 	    	
+	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
+	    		fail("Method throws an exception." + ez.getMessageLast());
+	    	} 
 	    }
 	    
 	    public void testGetCharForPositionInAlphanumeric(){	    		    	

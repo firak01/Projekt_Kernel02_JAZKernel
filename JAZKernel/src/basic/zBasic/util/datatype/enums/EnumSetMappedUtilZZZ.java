@@ -344,7 +344,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public IEnumSetMappedZZZ  startsWithAnyAlias_EnumMappedObject(String sToFind){
+	public IEnumSetMappedZZZ  startsWithAnyAlias_EnumMappedObject(String sToFind) throws ExceptionZZZ{
 		IEnumSetMappedZZZ objReturn = null;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -352,7 +352,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		}
 		return objReturn;
 	}
-	public static IEnumSetMappedZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent){
+	public static IEnumSetMappedZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 		IEnumSetMappedZZZ objReturn = null;
 		main:{
 			@SuppressWarnings("unchecked")
@@ -374,7 +374,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		return objReturn;
 	}
 	
-	public boolean startsWithAnyAbbreviation(String sToFind){
+	public boolean startsWithAnyAbbreviation(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -383,7 +383,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public static boolean startsWithAnyAbbreviation(String sToFind, EnumSet<?> setEnumCurrent){
+	public static boolean startsWithAnyAbbreviation(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			Set<IEnumSetMappedZZZ> drivers = (Set<IEnumSetMappedZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -406,7 +406,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 	}
 		
 	
-	public boolean startsWithAnyDescription(String sToFind){
+	public boolean startsWithAnyDescription(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -414,7 +414,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		}
 		return bReturn;
 	}
-		public static boolean startsWithAnyDescription(String sToFind, EnumSet<?> setEnumCurrent){
+		public static boolean startsWithAnyDescription(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
 				Set<IEnumSetMappedZZZ> drivers = (Set<IEnumSetMappedZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
@@ -474,7 +474,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		
 		//getAbbreviation();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static String getEnumConstant_AbbreviationValue(Class<IEnumSetMappedZZZ> clazz, String name) {
+		public static String getEnumConstant_AbbreviationValue(Class<IEnumSetMappedZZZ> clazz, String name) throws ExceptionZZZ {
 			String sReturn = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;

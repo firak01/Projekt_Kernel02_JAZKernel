@@ -23,7 +23,7 @@ import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -1919,7 +1919,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
 		
 		//Kein Array, s. ChatGPT 20260110
-		List<?> listaReturn = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this.getClass(), ILogStringFormatZZZ.sENUMNAME);
+		List<?> listaReturn = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this.getClass(), ILogStringFormatZZZ.sENUMNAME);
 		
 		//Array automatisch aus dem Enum errechnen.
 		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = (IEnumSetMappedLogStringFormatZZZ[]) ArrayListUtilZZZ.toArray((ArrayList<?>) listaReturn);
@@ -1963,7 +1963,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.			
-			ArrayList<IEnumSetMappedLogStringFormatZZZ>  listaEnumMappedLogStringFormat = EnumAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ>  listaEnumMappedLogStringFormat = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this, ILogStringFormatZZZ.sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : listaEnumMappedLogStringFormat) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());

@@ -313,7 +313,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 	    	    	//Hole aus den verschiedenen Objekten die unterschiedlichen StatusMapped Objekte, per einfachem Namen
 	    	    	//Wird ggfs. verwendet in EventObjectStatusLocalZZZ, um nur per String dem Event eine passendes Enum-Objekt mitzugeben.
 	    	    	String sStatusToFind = "ISSTOPPED";
-	    	    	IEnumSetMappedZZZ objEnum = EnumAvailableHelperZZZ.searchEnumMappedByName(objTestWithStatusByDirect, "STATUSLOCAL", sStatusToFind);
+	    	    	IEnumSetMappedZZZ objEnum = EnumMappedAvailableHelperZZZ.searchEnumMappedByName(objTestWithStatusByDirect, "STATUSLOCAL", sStatusToFind);
 	    	    	assertNotNull("Einen Status '" + sStatusToFind + "' gibt es nicht", objEnum);
 	    		
 	    	} catch (ExceptionZZZ ez) {
@@ -331,7 +331,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();	
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	HashMap<String,IEnumSetMappedZZZ>hmEnumStatusByDirect = EnumAvailableHelperZZZ.searchHashMapEnumMapped(objClassByDirect, "STATUSLOCAL", false);
+		    	HashMap<String,IEnumSetMappedZZZ>hmEnumStatusByDirect = EnumMappedAvailableHelperZZZ.searchHashMapEnumMapped(objClassByDirect, "STATUSLOCAL", false);
 		    	assertNotNull("NULL sollte als HashMap der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", hmEnumStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",hmEnumStatusByDirect.size()==6);
 		    		    			    			    	
@@ -342,12 +342,12 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	HashMap<String,IEnumSetMappedZZZ>hmEnumStatusByInterface = EnumAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, "STATUSLOCAL", false);
+		    	HashMap<String,IEnumSetMappedZZZ>hmEnumStatusByInterface = EnumMappedAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, "STATUSLOCAL", false);
 		    	assertNull("NULL sollte als HashMap<String,IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", hmEnumStatusByInterface);
 		    	
 		    	//Postivtest:
 		    	//Merke: True gibt an, dass Interfaces durchsucht werden sollen
-		    	hmEnumStatusByInterface = EnumAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, "STATUSLOCAL", true);
+		    	hmEnumStatusByInterface = EnumMappedAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, "STATUSLOCAL", true);
 		    	assertNotNull("NULL sollte als HashMap<String,IEnumSetMappedStatusZZZ-Objekte> NICHT zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird und dies sollte gescannt werden.", hmEnumStatusByInterface);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",hmEnumStatusByInterface.size()==6);
 		    	 	
@@ -377,7 +377,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	//Dies liefert beim Hinzufuegen der Enums trotzdem einen TypeCast Fehler: ArrayList<Collection<? extends Enum<?>>> listaeStatusByDirect = StatusLocalHelperZZZ.getStatusLocalEnumList(objClassByDirect);
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedZZZ> listaeStatusByDirect = EnumAvailableHelperZZZ.searchEnumMappedList(objClassByDirect, "STATUSLOCAL", false);
+		    	ArrayList<IEnumSetMappedZZZ> listaeStatusByDirect = EnumMappedAvailableHelperZZZ.searchEnumMappedList(objClassByDirect, "STATUSLOCAL", false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 
@@ -389,12 +389,12 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedZZZ>listaeStatusByInterface = EnumAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", false);
+		    	ArrayList<IEnumSetMappedZZZ>listaeStatusByInterface = EnumMappedAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listaeStatusByInterface);
 		    	
 		    	//Postivtest:
 		    	//Merke: True gibt an, dass Interfaces durchsucht werden sollen
-		    	listaeStatusByInterface = EnumAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", true);
+		    	listaeStatusByInterface = EnumMappedAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", true);
 		    	assertNotNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> NICHT zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird und dies sollte gescannt werden.", listaeStatusByInterface);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByInterface.size()==6);
 		    
@@ -432,12 +432,12 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedZZZ>listasStatusByInterface = EnumAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", false);
+		    	ArrayList<IEnumSetMappedZZZ>listasStatusByInterface = EnumMappedAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listasStatusByInterface);
 		    	
 		    	//Postivtest:
 		    	//Merke: True gibt an, dass Interfaces durchsucht werden sollen
-		    	listasStatusByInterface = EnumAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", true);
+		    	listasStatusByInterface = EnumMappedAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, "STATUSLOCAL", true);
 		    	assertNotNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> NICHT zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird und dies sollte gescannt werden.", listasStatusByInterface);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listasStatusByInterface.size()==6);
 		    
@@ -461,7 +461,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
 	    		Class<?> class2Check = objTestWithStatusByDirect.getClass();
-		    	ArrayList<IEnumSetMappedZZZ> listaeStatusByDirect = EnumAvailableHelperZZZ.searchEnumMappedList(class2Check, "STATUSLOCAL", false);
+		    	ArrayList<IEnumSetMappedZZZ> listaeStatusByDirect = EnumMappedAvailableHelperZZZ.searchEnumMappedList(class2Check, "STATUSLOCAL", false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 		    	
