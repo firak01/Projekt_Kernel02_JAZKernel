@@ -122,11 +122,13 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 				assertFalse("C) Prüfstring 'XXXX' sollte in der Enumeration NICHT vorhanden sein.", btemp);
 				
 			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 		}    
 	    
 	    public void testGetEnumConstant(){
+	    	try {
 			//Merke; Dieser Test bezieht sich nur auf das Verarbeiten der Enums an sich, nicht auf eine konkrete Klasse. 
 			//       Darum Interface als Grundlage der Klassenangabe.
 	    	
@@ -164,7 +166,11 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	     	@SuppressWarnings("unchecked")
 	     	String sStatusMessage = EnumSetMappedUtilZZZ.getEnumConstant_StatusMessageValue((Class<IEnumSetMappedStatusZZZ>) objClass, "ISSTOPPED");	     	
 	    	assertTrue("Prüfstring sollte als Ergebnis 'ZZZ: DummyTestObjectWithStatusZZZ beendet' sein", "ZZZ: DummyTestObjectWithStatusZZZ beendet".equals(sStatusMessage));
-	    		    		    		    		 	    
+	    		    	
+	    	} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    }
 	    
 	    
@@ -208,6 +214,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	
 	    	
 	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -225,6 +232,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	    	assertNotNull("Einen Status '" + sStatusToFind + "' gibt es nicht", objEnum);
 	    		
 	    	} catch (ExceptionZZZ ez) {
+	    		ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -260,6 +268,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",hmEnumStatusByInterface.size()==6);
 		    	 	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -297,6 +306,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    
 	    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -335,6 +345,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	
 	    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -379,6 +390,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    
 		    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -445,6 +457,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 		    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 	    }
@@ -479,6 +492,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	
 		    } catch (ExceptionZZZ ez) {
+		    	ez.printStackTrace();
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 	    		    	
 	    }
