@@ -225,7 +225,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	boolean bScanInterfaceImmidiateC = true;
 		    	boolean bScanSuperclassImmidiateC = true;
-		    	Enum[] enumaReturnTempC = EnumAvailableHelperZZZ.searchEnum(objClassFromAbstractWithInterfaceExtended, "STATUSLOCAL", bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
+		    	Enum[] enumaReturnTempC = EnumAvailableHelperZZZ.searchEnumArray(objClassFromAbstractWithInterfaceExtended, "STATUSLOCAL", bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
 		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempC));
 		    	assertTrue(enumaReturnTempC.length==8);
 		    	
@@ -238,7 +238,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	boolean bScanInterfaceImmidiateA = true;
 		    	boolean bScanSuperclassImmidiateA = true;
-		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnum(objClassFromInterface, "STATUSLOCAL", bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
+		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnumArray(objClassFromInterface, "STATUSLOCAL", bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
 		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempA));
 		    	assertTrue(enumaReturnTempA.length==6);
 	    		

@@ -174,7 +174,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
  	  	    	  	   
  	  	   //Der eigentliche Test, hier soll ein Fehler geworfen werden.
  	  	   try {
- 	  		   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumArray(listaDummy);
+ 	  		   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(listaDummy);
  	  		   fail("Method should have thrown an exception.");
 	 	   } catch (ExceptionZZZ ez) {
 	 		   //Ein Fehler soll passieren....
@@ -203,7 +203,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 	  	   assertFalse("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (empty-Fall)",listaenumMapped.isEmpty());
 	  	   
 	  	   //Der eigentliche Test
-	  	   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumArray(listaenumMapped);
+	  	   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(listaenumMapped);
 	  	   assertNotNull(enumaMapped);
 	  	   assertTrue(enumaMapped.length==3);
 		  	
@@ -234,7 +234,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 		  	   
 		  	   //Der eigentliche Test
 		  	   //Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumArrayByMappedStatus(listaenumMappedStatus);
-		  	   Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumArray(listaenumMappedStatus);
+		  	   Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumMappedArray(listaenumMappedStatus);
 		  	   assertNotNull(enumaMappedStatus);
 		  	   assertTrue(enumaMappedStatus.length==3);
 			  	

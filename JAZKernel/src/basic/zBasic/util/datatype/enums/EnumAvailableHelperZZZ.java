@@ -132,7 +132,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	private static ArrayList<String> searchListDirect_(Class cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 		ArrayList<String>listasReturn = null;
 		main:{
-			Enum[]enuma = EnumAvailableHelperZZZ.searchEnum(cls, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
+			Enum[]enuma = EnumAvailableHelperZZZ.searchEnumArray(cls, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 			if(ArrayUtilZZZ.isNull(enuma))break main;
 			
 			String[] saReturn = EnumUtilZZZ.toString(enuma);
@@ -213,7 +213,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);			
 			for(Class<?> objclsByInterface : listaClassInterface) {
 				//false, weil ja die Interfaces eh betrachtet werde sollen
-				Enum[] enumaByInterface = searchEnum(objclsByInterface, sEnumName, false, false);
+				Enum[] enumaByInterface = searchEnumArray(objclsByInterface, sEnumName, false, false);
 				ArrayList<String>listasByInterfaceTemp=null;
 				if(!ArrayUtilZZZ.isNull(enumaByInterface)) {	
 					listasByInterfaceTemp = new ArrayList<String>();
@@ -479,44 +479,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 //		return objaeReturn;
 //	}
 		
-	//+++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++
-	public static <E extends Enum> E[] searchEnum(Object objForClass, String sEnumName)  throws ExceptionZZZ {
-		Class<?> cls = objForClass.getClass();
-		E[] enumaReturn = searchEnum_(cls,sEnumName, false, false);
-		return enumaReturn;
-	}
-	 
-	public static <E extends Enum> E[] searchEnum(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
-		E[] enumaReturn = searchEnum_(cls,sEnumName, false, false);
-		return enumaReturn;
-	}
-	
-	public static <E extends Enum> E[] searchEnum(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		E[] enumaReturn = searchEnum_(cls,sEnumName, bScanInterfaceImmidiate, false);
-		return enumaReturn;
-	}
-
-	public static <E extends Enum> E[] searchEnum(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
-		E[] enumaReturn = searchEnum_(cls,sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
-		return enumaReturn;
-	}
-	
-	
-	private static <E extends Enum> E[] searchEnum_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ{
-		E[] enumaReturn = null;
-		main:{
-			if(classToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-				 throw ez;
-			}
-			
-			ArrayList<E> listae = EnumAvailableHelperZZZ.searchEnumList(classToCheck, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);					
-			enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
-		}//end main:
-		return enumaReturn;
-	}
-	
+		
 	//+++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++	
 	public static <E extends Enum> E searchEnum(Object objForClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
@@ -615,6 +578,44 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	}
 	
 	
+	//+++++++++++++++++++++++++++++++++
+		//+++++++++++++++++++++++++++++++++
+		public static <E extends Enum> E[] searchEnumArray(Object objForClass, String sEnumName)  throws ExceptionZZZ {
+			Class<?> cls = objForClass.getClass();
+			E[] enumaReturn = searchEnumArray_(cls,sEnumName, false, false);
+			return enumaReturn;
+		}
+		 
+		public static <E extends Enum> E[] searchEnumArray(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
+			E[] enumaReturn = searchEnumArray_(cls,sEnumName, false, false);
+			return enumaReturn;
+		}
+		
+		public static <E extends Enum> E[] searchEnumArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+			E[] enumaReturn = searchEnumArray_(cls,sEnumName, bScanInterfaceImmidiate, false);
+			return enumaReturn;
+		}
+
+		public static <E extends Enum> E[] searchEnumArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
+			E[] enumaReturn = searchEnumArray_(cls,sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
+			return enumaReturn;
+		}
+		
+		
+		private static <E extends Enum> E[] searchEnumArray_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ{
+			E[] enumaReturn = null;
+			main:{
+				if(classToCheck==null) {
+					 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					 throw ez;
+				}
+				
+				ArrayList<E> listae = EnumAvailableHelperZZZ.searchEnumList(classToCheck, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);					
+				enumaReturn = ArrayListUtilZZZ.toEnumArray(listae);
+			}//end main:
+			return enumaReturn;
+		}
+
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++

@@ -174,14 +174,14 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    }
 	    
 	    
-	    public void testGetEnumlMapped() {
+	    public void testGetEnumMappedArray() {
 	    	
 	    	try {
 	    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
 	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 	    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
 	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassByInterface, false);
+	    	IEnumSetMappedStatusZZZ[] enumaByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface, false, false);
 	    	assertNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", enumaByInterface);
 	    	
 	    	boolean bIsEmpty = ArrayUtilZZZ.isNull(enumaByInterface);
@@ -192,7 +192,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	//a) per Klasse ohne Status im Interface
 	    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
 	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen   	
-	    	IEnumSetMappedStatusZZZ[] enumaByDirect = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassByDirect, false);
+	    	IEnumSetMappedStatusZZZ[] enumaByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByDirect, false, false);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByDirect);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByDirect.length==6);
 	    	
@@ -200,7 +200,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	Class<?> objClassByInterface2 = objTestWithStatusByInterface.getClass();
 	    	
 	    	//Es sollen per Default auch Interfaces durchsucht werden
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface2 = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassByInterface2);
+	    	IEnumSetMappedStatusZZZ[] enumaByInterface2 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface2);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface2);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface2.length==6);
 	    	
@@ -208,7 +208,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.	    	
 	    	Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
 
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface3 = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassFromInterface);
+	    	IEnumSetMappedStatusZZZ[] enumaByInterface3 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassFromInterface);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface3);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface3.length==6);
 	    	
@@ -472,7 +472,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	boolean bScanInterfaceImmidiateC = true;
 		    	boolean bScanSuperclassImmidiateC = true;
-		    	Enum[] enumaReturnTempC = (Enum[]) StatusLocalAvailableHelperZZZ.searchEnum(objClassFromAbstractWithInterfaceExtended, bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
+		    	Enum[] enumaReturnTempC = (Enum[]) StatusLocalAvailableHelperZZZ.searchEnumArray(objClassFromAbstractWithInterfaceExtended, bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
 		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempC));
 		    	assertTrue(enumaReturnTempC.length==8);
 		    	
@@ -485,7 +485,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	boolean bScanInterfaceImmidiateA = true;
 		    	boolean bScanSuperclassImmidiateA = true;
-		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnum(objClassFromInterface, "STATUSLOCAL", bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
+		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnumArray(objClassFromInterface, IEnumSetMappedStatusZZZ.sENUMNAME, bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
 		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempA));
 		    	assertTrue(enumaReturnTempA.length==6);
 	    		

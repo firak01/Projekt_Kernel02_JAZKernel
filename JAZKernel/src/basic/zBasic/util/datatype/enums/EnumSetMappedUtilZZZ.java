@@ -617,7 +617,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return intValue;
 		}
 		
-		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+		public static ArrayList<Collection<? extends Enum<?>>> toEnumArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
 			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -630,7 +630,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return listaEnum;
 		}
 		
-		public static <E extends Enum> E[] toEnumArray(ArrayList<?> listae) throws ExceptionZZZ{
+		public static <E extends Enum> E[] toEnumMappedArray(ArrayList<?> listae) throws ExceptionZZZ{
 			E[] objaeReturn = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;

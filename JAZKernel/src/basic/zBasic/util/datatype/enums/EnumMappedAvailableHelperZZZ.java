@@ -218,7 +218,7 @@ public class EnumMappedAvailableHelperZZZ  implements IConstantZZZ{
 		}
 		
 //				//1. von der Classe selbst implementiert		
-		Enum[] enuma = EnumAvailableHelperZZZ.searchEnum(cls,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
+		Enum[] enuma = EnumAvailableHelperZZZ.searchEnumArray(cls,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 		listaeReturn = EnumUtilZZZ.toArrayListMapped(enuma);
 		
 		ArrayList<IEnumSetMappedZZZ>listaeByDirect=null;
@@ -248,7 +248,7 @@ public class EnumMappedAvailableHelperZZZ  implements IConstantZZZ{
 			ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
 			for(Class<?> objclsByInterface : listaInterfaceSuper) {
 						
-				Enum[] enumaByInterface = EnumAvailableHelperZZZ.searchEnum(objclsByInterface, sEnumName,bScanInterfaceImmediate, false);
+				Enum[] enumaByInterface = EnumAvailableHelperZZZ.searchEnumArray(objclsByInterface, sEnumName,bScanInterfaceImmediate, false);
 				
 				//ArrayList<IEnumSetMappedZZZ>listaeByInterfaceTemp=null; 
 				ArrayList<E>listaeByInterfaceTemp=null;
