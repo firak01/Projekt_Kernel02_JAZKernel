@@ -11,7 +11,7 @@ import basic.zBasic.IObjectProtocolLogZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
@@ -29,7 +29,7 @@ import basic.zKernel.AbstractKernelLogZZZ;
  */
 public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject implements IObjectPositionLogZZZ, IEventObjectStatusLocalZZZ, Comparable<IEventObjectStatusLocalZZZ>{
 	//Merke: Das Interface comparable kann nicht mehrmals eingebunden werden. Daher in der Ausgangsklasse comparable nutzen und dort die Methoden erstellen.
-	protected IEnumSetMappedStatusZZZ objStatusEnum=null;
+	protected IEnumSetMappedStatusLocalZZZ objStatusEnum=null;
 	protected String sStatusMessage=null;
 	protected boolean bStatusValue;
 	
@@ -67,7 +67,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 				String sLog;
 				
 				//Ermittle das Enum aus dem Namen
-				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalAvailableHelperZZZ.searchEnumMappedByName(source, sEnumName, true);
+				IEnumSetMappedStatusLocalZZZ objEnumMapped = StatusLocalAvailableHelperZZZ.searchEnumMappedByName(source, sEnumName, true);
 				if(objEnumMapped==null) {
 					
 					//20240319: Wenn es ein Monitor-Objekt ist, dann kann der Status auch aus der cascadedHashMap stammen.
@@ -76,12 +76,12 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 						this.logProtocol(sLog);
 						
 						IStatusLocalMapForMonitoringStatusLocalUserZZZ sourceAsMonitor = (IStatusLocalMapForMonitoringStatusLocalUserZZZ) source;
-						HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmFromMonitor = sourceAsMonitor.getHashMapEnumSetForCascadingStatusLocal();
+						HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ> hmFromMonitor = sourceAsMonitor.getHashMapEnumSetForCascadingStatusLocal();
 						
-						Set<IEnumSetMappedStatusZZZ> setKeyFromMonitor = hmFromMonitor.keySet();
-						Iterator<IEnumSetMappedStatusZZZ> itKeyFromMonitor = setKeyFromMonitor.iterator();																
+						Set<IEnumSetMappedStatusLocalZZZ> setKeyFromMonitor = hmFromMonitor.keySet();
+						Iterator<IEnumSetMappedStatusLocalZZZ> itKeyFromMonitor = setKeyFromMonitor.iterator();																
 						while(itKeyFromMonitor.hasNext()) {
-							IEnumSetMappedStatusZZZ objKey = (IEnumSetMappedStatusZZZ) itKeyFromMonitor.next();
+							IEnumSetMappedStatusLocalZZZ objKey = (IEnumSetMappedStatusLocalZZZ) itKeyFromMonitor.next();
 							if(objKey.getName().equalsIgnoreCase(sEnumName)) {
 								objEnumMapped = objKey;
 								sLog = ReflectCodeZZZ.getPositionCurrent() + "EventObject ("+this.getClass().getName()+") for SourceClass ("+source.getClass().getName() +"). Enum '" + sEnumName + "' found in the cascading Hashmap as Key. ";
@@ -89,7 +89,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 								break;
 							}
 							
-							IEnumSetMappedStatusZZZ objValue = (IEnumSetMappedStatusZZZ) hmFromMonitor.get(objKey);
+							IEnumSetMappedStatusLocalZZZ objValue = (IEnumSetMappedStatusLocalZZZ) hmFromMonitor.get(objKey);
 							if(objValue.getName().equalsIgnoreCase(sEnumName)) {
 								objEnumMapped = objValue;
 								sLog = ReflectCodeZZZ.getPositionCurrent() + "EventObject ("+this.getClass().getName()+") for SourceClass ("+source.getClass().getName() +"). Enum '" + sEnumName + "'  found in the cascading Hashmap as Value. ";
@@ -168,17 +168,17 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	}
 	
 	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocal() {
+	public IEnumSetMappedStatusLocalZZZ getStatusLocal() {
 		return this.objStatusEnum;
 	}
 	
 	@Override
 	public void setStatusLocal(Enum objEnum) {
-		this.objStatusEnum = (IEnumSetMappedStatusZZZ) objEnum;
+		this.objStatusEnum = (IEnumSetMappedStatusLocalZZZ) objEnum;
 	}
 	
 	@Override
-	public void setStatusLocal(IEnumSetMappedStatusZZZ objEnumSet) {
+	public void setStatusLocal(IEnumSetMappedStatusLocalZZZ objEnumSet) {
 		this.objStatusEnum = objEnumSet;
 	}
 	

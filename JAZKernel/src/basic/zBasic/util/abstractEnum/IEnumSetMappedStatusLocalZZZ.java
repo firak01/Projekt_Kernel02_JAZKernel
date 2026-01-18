@@ -1,6 +1,6 @@
 package basic.zBasic.util.abstractEnum;
 
-public interface IEnumSetMappedStatusZZZ extends IEnumSetMappedZZZ{
+public interface IEnumSetMappedStatusLocalZZZ extends IEnumSetMappedZZZ{
 	public static String sENUMNAME="STATUSLOCAL";
 	
 	//weitere Erweiterungen, speziell für LocalStatus

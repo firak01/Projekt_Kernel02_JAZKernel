@@ -297,7 +297,7 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				//s. ChatGPT vom 20260110
 				//ArrayList<IEnumSetMappedZZZ> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 				//ArrayList<E> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
-				ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeByClassSuperTemp = searchEnumMappedLogStringFormatList(cls, sEnumName, bScanInterfaceImmediate);
+				ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeByClassSuperTemp = searchEnumMappedLogStringFormatList(objclsSuper, sEnumName, bScanInterfaceImmediate);
 				//listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 				listaeByClassSuper = (ArrayList<IEnumSetMappedLogStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
 			}

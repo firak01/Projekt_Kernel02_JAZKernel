@@ -5,20 +5,20 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
-public abstract class AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningRunnableZZZ implements IStatusLocalMapForMonitoringStatusLocalUserZZZ {
+public abstract class AbstractProgramWithStatusLocalOnStatusLocalListeningMonitoredRunnableZZZ extends AbstractProgramWithStatusLocalOnStatusLocalListeningRunnableZZZ implements IStatusLocalMapForMonitoringStatusLocalUserZZZ {
 	private static final long serialVersionUID = -1445384815158662362L;
-	protected volatile HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet =null;
+	protected volatile HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> hmEnumSet =null;
 	
 	
-	public AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningMonitoredRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 
-	public AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningMonitoredRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);	
 		AbstractProgramRunnableWithStatusListeningCascadedNew_();
 	}

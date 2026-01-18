@@ -3,7 +3,7 @@ package basic.zBasic;
 import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -15,23 +15,23 @@ import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
 import basic.zKernel.status.StatusLocalEventHelperZZZ;
 
-public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IListenerObjectStatusLocalZZZ{
+public abstract class AbstractObjectWithFlagOnStatusLocalListeningZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IListenerObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
-	protected HashMap<IEnumSetMappedStatusZZZ,String> hmEnumSetForAction_String = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.	
-	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> hmEnumSetForAction_Enum = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.	
-	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSetForAction_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
+	protected HashMap<IEnumSetMappedStatusLocalZZZ,String> hmEnumSetForAction_String = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.	
+	protected HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedZZZ> hmEnumSetForAction_Enum = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.	
+	protected HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ> hmEnumSetForAction_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
-	public AbstractObjectWithFlagOnStatusListeningZZZ() {	
+	public AbstractObjectWithFlagOnStatusLocalListeningZZZ() {	
 		super();		
 	}
-	public AbstractObjectWithFlagOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectWithFlagOnStatusLocalListeningZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 		AbstractObjectWithFlagOnStatusListeningNew_();
 	}
-	public AbstractObjectWithFlagOnStatusListeningZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectWithFlagOnStatusLocalListeningZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractObjectWithFlagOnStatusListeningNew_();
 	}
@@ -53,7 +53,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 		}
 		return bReturn;
 	}
-	public AbstractObjectWithFlagOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectWithFlagOnStatusLocalListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super();
 		//Die ggf. vorhandenen Flags setzen.
 		if(hmFlag!=null){
@@ -115,19 +115,19 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	//### STATUS
 	//####################
 	@Override
-	abstract public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom_String();
+	abstract public HashMap<IEnumSetMappedStatusLocalZZZ, String> createHashMapStatusLocal4ReactionCustom_String();
 
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, String> getHashMapStatusLocal4Reaction_String() {
+	public HashMap<IEnumSetMappedStatusLocalZZZ, String> getHashMapStatusLocal4Reaction_String() {
 		if(this.hmEnumSetForAction_String==null) {
-			HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_String();
+			HashMap<IEnumSetMappedStatusLocalZZZ, String> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_String();
 			this.hmEnumSetForAction_String = hmEnumSetForAction;
 		}
 		return this.hmEnumSetForAction_String;
 	}
 
 	@Override
-	public void setHashMapStatusLocal4Reaction_String(HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction) {
+	public void setHashMapStatusLocal4Reaction_String(HashMap<IEnumSetMappedStatusLocalZZZ, String> hmEnumSetForAction) {
 		this.hmEnumSetForAction_String = hmEnumSetForAction;
 	}
 	
@@ -170,7 +170,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			
 			//1. Hole die HashMap für die Aktionen pro reinkommenden Status.
 			//   Gibt es sie nicht oder sie ist leer, wird jeder Event - unabhaengig von dem Status - weiter verfolgt.
-			HashMap<IEnumSetMappedStatusZZZ,String>hmStatusLocal4Reaction= this.getHashMapStatusLocal4Reaction_String();
+			HashMap<IEnumSetMappedStatusLocalZZZ,String>hmStatusLocal4Reaction= this.getHashMapStatusLocal4Reaction_String();
 			
 			//2. Static - Methode, die ueber alle Klassen gleich ist anwenden.
 			//   Log-String als CallByValue Ersatzloesung mit einem Referenz-Objekt
@@ -187,12 +187,12 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	}
 	
 	@Override
-	public String getActionAliasString(IEnumSetMappedStatusZZZ enumStatus) {
+	public String getActionAliasString(IEnumSetMappedStatusLocalZZZ enumStatus) {
 		String sReturn = null;
 		main:{
 			if(enumStatus==null)break main;
 						
-			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocal4Reaction_String();
+			HashMap<IEnumSetMappedStatusLocalZZZ,String>hm= this.getHashMapStatusLocal4Reaction_String();
 			if(hm==null) break main;			
 			if(hm.isEmpty()) break main;
 			
@@ -211,7 +211,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 				 throw ez;
 			}
 			
-			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocal.getStatusEnum();
+			IEnumSetMappedStatusLocalZZZ enumStatus = (IEnumSetMappedStatusLocalZZZ) eventStatusLocal.getStatusEnum();
 			if(enumStatus==null) {
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject has no EnumStatus", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
@@ -277,7 +277,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 				 throw ez;
 			}
 			
-			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocal.getStatusEnum();
+			IEnumSetMappedStatusLocalZZZ enumStatus = (IEnumSetMappedStatusLocalZZZ) eventStatusLocal.getStatusEnum();
 			if(enumStatus==null) {
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject has no EnumStatus", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
@@ -292,7 +292,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			String sLog;
 			
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
-			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction_String();				
+			HashMap<IEnumSetMappedStatusLocalZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction_String();				
 			if(hmEnum==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> KEINE Hashmap StatusLocal4Reaction vorhanden. Breche ab";
 				this.logProtocol(sLog);
@@ -324,7 +324,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	}
 	
 	@Override
-	public boolean queryReactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+	public boolean queryReactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusLocalZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			bReturn = this.queryReactOnStatusLocal4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
@@ -333,7 +333,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	}
 	
 	@Override
-	public boolean reactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+	public boolean reactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusLocalZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			boolean bProof = this.queryReactOnStatusLocal4Action(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
@@ -348,43 +348,43 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	//###############
 	//### Andere Status Maps
 	@Override
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> createHashMapStatusLocal4ReactionCustom_Enum();
+	public abstract HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedZZZ> createHashMapStatusLocal4ReactionCustom_Enum();
 
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> getHashMapStatusLocal4Reaction_Enum() {
+	public HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedZZZ> getHashMapStatusLocal4Reaction_Enum() {
 		if(this.hmEnumSetForAction_Enum==null) {
-			HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_Enum();
+			HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedZZZ> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_Enum();
 			this.hmEnumSetForAction_Enum = hmEnumSetForAction;
 		}
 		return this.hmEnumSetForAction_Enum;
 	}
 
 	@Override
-	public void setHashMapStatusLocal4Reaction_Enum(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSetForReaction) {
+	public void setHashMapStatusLocal4Reaction_Enum(HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedZZZ> hmEnumSetForReaction) {
 		this.hmEnumSetForAction_Enum = hmEnumSetForReaction;
 	}
 
 	//+++
 	@Override
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapStatusLocal4ReactionCustom_EnumStatus();
+	public abstract HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> createHashMapStatusLocal4ReactionCustom_EnumStatus();
 
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> getHashMapStatusLocal4Reaction_EnumStatus() {
+	public HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> getHashMapStatusLocal4Reaction_EnumStatus() {
 		if(this.hmEnumSetForAction_EnumStatus==null) {
-			HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_EnumStatus();
+			HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom_EnumStatus();
 			this.hmEnumSetForAction_EnumStatus = hmEnumSetForAction;
 		}
 		return this.hmEnumSetForAction_EnumStatus;
 	}
 
 	@Override
-	public void setHashMapStatusLocal4Reaction_EnumStatus(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSetForReaction) {
+	public void setHashMapStatusLocal4Reaction_EnumStatus(HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> hmEnumSetForReaction) {
 		this.hmEnumSetForAction_EnumStatus = hmEnumSetForReaction;
 	}
 	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	abstract public boolean reactOnStatusLocal4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	abstract public boolean reactOnStatusLocal4ActionCustom(String sAction, IEnumSetMappedStatusLocalZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 }

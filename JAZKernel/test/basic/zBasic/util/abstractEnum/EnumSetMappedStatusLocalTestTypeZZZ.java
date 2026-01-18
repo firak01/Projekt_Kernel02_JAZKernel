@@ -66,7 +66,7 @@ So the Hibernate configuration would look like:
  */
 //Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 //Beispiel JDBCStringType:  ALIAS("Description, wird in der URL nicht genutzt","Abkürzung", also das, was im URL String steht. Meist gefolgt von einem  Doppelpunkt, der hinzugerechnet wird, wenn die Abkürzung nicht leer ist.")
-public enum EnumSetMappedStatusTestTypeZZZ implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+public enum EnumSetMappedStatusLocalTestTypeZZZ implements IEnumSetMappedStatusLocalZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	//Analog zu einem Beispiel aus dem OVPN Projekt.
 	//ISSTARTNEW(iSTATUSLOCAL_GROUPID, "isstartnew","SERVER: Noch nicht gestartet.", ""),
 	ONE(1,"eins","1","die 1"),
@@ -82,13 +82,13 @@ private int iStatusGroupId;
 
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //          In der Util-Klasse habe ich aber einen Workaround gefunden.
-EnumSetMappedStatusTestTypeZZZ(){	
+EnumSetMappedStatusLocalTestTypeZZZ(){	
 }
 
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //EnumSetMappedStatusTestTypeZZZ(String fullName, String abbr) {
 //Analog zu einem Beispiel aus dem OBPN Projekt: STATUSLOCAL(int iStatusGroupId, String sAbbreviation, String sStatusMessage, String sDescription) {
-EnumSetMappedStatusTestTypeZZZ(int iStatusGroupId, String fullName, String abbr, String sStatusMessage) {
+EnumSetMappedStatusLocalTestTypeZZZ(int iStatusGroupId, String fullName, String abbr, String sStatusMessage) {
 	this.iStatusGroupId = iStatusGroupId;
     this.name = fullName;
     this.abbr = abbr;
@@ -113,8 +113,8 @@ public String getAbbreviation() {
 }
 
 // the valueOfMethod <--- Translating from DB
-public static EnumSetMappedStatusTestTypeZZZ fromAbbreviation(String s) {
-    for (EnumSetMappedStatusTestTypeZZZ state : values()) {
+public static EnumSetMappedStatusLocalTestTypeZZZ fromAbbreviation(String s) {
+    for (EnumSetMappedStatusLocalTestTypeZZZ state : values()) {
         if (s.equals(state.getAbbreviation()))
             return state;
     }
@@ -127,7 +127,7 @@ public String getDescription(){
 }
 
 public EnumSet<?>getEnumSetUsed(){
-	return EnumSetMappedStatusTestTypeZZZ.getEnumSet();
+	return EnumSetMappedStatusLocalTestTypeZZZ.getEnumSet();
 }
 
 /* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
@@ -140,13 +140,13 @@ public static <E> EnumSet getEnumSet() {
 	//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 	
 	//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-	Class<EnumSetMappedStatusTestTypeZZZ> enumClass = EnumSetMappedStatusTestTypeZZZ.class;
-	EnumSet<EnumSetMappedStatusTestTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+	Class<EnumSetMappedStatusLocalTestTypeZZZ> enumClass = EnumSetMappedStatusLocalTestTypeZZZ.class;
+	EnumSet<EnumSetMappedStatusLocalTestTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
 	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
 	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
-		set.add((EnumSetMappedStatusTestTypeZZZ) obj);
+		set.add((EnumSetMappedStatusLocalTestTypeZZZ) obj);
 	}
 	return set;
 	

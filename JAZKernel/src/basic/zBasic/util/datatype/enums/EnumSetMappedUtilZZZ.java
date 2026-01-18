@@ -17,7 +17,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -525,14 +525,14 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			
 			
 		@SuppressWarnings({ "unchecked", "rawtypes" })			
-		public static String getEnumConstant_StatusMessageValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+		public static String getEnumConstant_StatusMessageValue(Class<IEnumSetMappedStatusLocalZZZ> clazz, String name) {				
 			String sReturn = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStatusLocalZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStatusLocalZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -549,14 +549,14 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			
 			
 		@SuppressWarnings({ "unchecked", "rawtypes" })			
-		public static int getEnumConstant_StatusGroupIdValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+		public static int getEnumConstant_StatusGroupIdValue(Class<IEnumSetMappedStatusLocalZZZ> clazz, String name) {				
 			int iReturn = -1;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStatusLocalZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStatusLocalZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -617,7 +617,10 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return intValue;
 		}
 		
-		public static ArrayList<Collection<? extends Enum<?>>> toEnumArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+		//public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{
+		//<E extends Enum<E> & IEnumSetMappedZZZ>
+		//public static ArrayList<E extends Enum<E> & IEnumSetMappedStatusZZZ>toEnum(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ {
+		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedStatusLocalZZZ> listae) throws ExceptionZZZ{
 			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -630,34 +633,78 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return listaEnum;
 		}
 		
-		public static <E extends Enum> E[] toEnumMappedArray(ArrayList<?> listae) throws ExceptionZZZ{
+		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
 			E[] objaeReturn = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
-
-				//Hier ein Arra<ListZZZ.getInstanceOf() verwenden und nach der Klasse die Fallunterscheidung machen.
-				//Das spart 1x dieses durchsehen der Liste....
-				ArrayList<Class<?>> listaInstance = ArrayListUtilZZZ.getInstanceOfList(listae);
-				if(listaInstance.contains(IEnumSetMappedZZZ.class)) {
-					objaeReturn=EnumSetMappedUtilZZZ.toEnumArrayByMapped((ArrayList<IEnumSetMappedZZZ>) listae);
-				}else if(listaInstance.contains(IEnumSetMappedStatusZZZ.class)) {
-					objaeReturn=EnumSetMappedUtilZZZ.toEnumArrayByMappedStatus((ArrayList<IEnumSetMappedStatusZZZ>) listae);
-				}else {
-					ExceptionZZZ ez = new ExceptionZZZ("The type of ArrayList is not from IEnumSetMappdeZZZ", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getPositionCurrent());
-					throw ez;
+				
+				//1. Versuch: Direkt per Cast.
+				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+				
+				//2. Versuch:
+				//Exception: objaeReturn = (E[]) ArrayListZZZ.toEnumMappedArray(listae);
+				
+				
+				//3. Versuch: Per Mappen der Einzelwerte
+				//Das Klappt....IEnumSetMappedZZZ[] objaeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+								
+				//EXCEPTION: ArrayList<Collection<? extends Enum<?>>> listaeTemp = new ArrayList<Collection<? extends Enum<?>>>();
+				ArrayList<E> listaeTemp = new ArrayList<E>();
+				
+				for(IEnumSetMappedZZZ objMapped : listae) {
+					//if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+					//3. aber Excepteion: listaeTemp.add((Collection<? extends Enum<?>>) objMapped);
+					listaeTemp.add((E) objMapped); 
 				}
-					
-				//obige Lösung ersetzt das mehrmalige interne ausrechnen der Liste.
-//				if(ArrayListZZZ.isInstanceOf(listae, IEnumSetMappedZZZ.class)) {
-//					objaeReturn=EnumSetMappedUtilZZZ.toEnumArrayByMapped((ArrayList<IEnumSetMappedZZZ>) listae);
-//				}else if(ArrayListZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class)) {
-//					objaeReturn=EnumSetMappedUtilZZZ.toEnumArrayByMappedStatus((ArrayList<IEnumSetMappedStatusZZZ>) listae);
-//				}else {
-//					ExceptionZZZ ez = new ExceptionZZZ("The type of ArrayList is not from IEnumSetMappdeZZZ", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getPositionCurrent());
-//					throw ez;
-//				}
-			}//end main:	
+				
+				//3.
+				objaeReturn = ArrayListUtilZZZ.toEnumArray(listaeTemp);
+			}
+			
 			return objaeReturn;
+		}
+		
+		
+		public static ArrayList<Collection<? extends Enum<?>>> toEnumArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
+			main:{
+				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
+				
+				for(IEnumSetMappedZZZ objMapped : listae) {
+					if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+					listaEnum.add((Collection<? extends Enum<?>>) objMapped);					
+				}				
+			}
+			return listaEnum;
+		}
+			
+		//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
+		//Meiner Meinung nach schon, wenn wir explizit nur mit diesem Interface arbeiten und nicht CASTEN
+		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(Enum[] enuma) throws ExceptionZZZ{
+			E[] enumaReturn = null;
+			main:{
+				if(ArrayUtilZZZ.isNull(enuma)) break main;
+				if(!(enuma instanceof IEnumSetMappedZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				
+				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
+				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
+				
+				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedZZZ[listeReturnTemp.size()]);
+			}//end main:
+			return enumaReturn;	
+		}
+		
+		//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+		//Meiner Meinung nach schon, wenn wir explizit nur mit diesem Interface arbeiten und nicht CASTEN
+		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(List<E> listae){
+			E[] enumaReturn = null;
+			main:{
+				if(listae==null) break main;
+				if(listae.size()==0) break main;
+											
+				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+			}//end main:
+			return enumaReturn;	
 		}
 		
 		public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
@@ -693,36 +740,36 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		
 		
 		
-		public static <E extends Enum> E[] toEnumArrayByMappedStatus(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{		
-			E[] objaeReturn = null;
-			main:{
-				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
-				
-				//1. Versuch: Direkt per Cast.
-				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
-				
-				//2. Versuch:
-				//Exception: objaeReturn = (E[]) ArrayListZZZ.toEnumMappedArray(listae);
-				
-				
-				//3. Versuch: Per Mappen der Einzelwerte
-				//Das Klappt....IEnumSetMappedZZZ[] objaeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
-								
-				//EXCEPTION: ArrayList<Collection<? extends Enum<?>>> listaeTemp = new ArrayList<Collection<? extends Enum<?>>>();
-				ArrayList<E> listaeTemp = new ArrayList<E>();
-				
-				for(IEnumSetMappedStatusZZZ objMapped : listae) {
-					//if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
-					//3. aber Excepteion: listaeTemp.add((Collection<? extends Enum<?>>) objMapped);
-					listaeTemp.add((E) objMapped); 
-				}
-				
-				//3.
-				objaeReturn = ArrayListUtilZZZ.toEnumArray(listaeTemp);
-			}
-			
-			return objaeReturn;
-		}
+//		public static <E extends Enum<E> & IEnumSetMappedStatusLocalZZZ> E[] toEnumArrayByMappedStatusLocal(ArrayList<IEnumSetMappedStatusLocalZZZ> listae) throws ExceptionZZZ{		
+//			E[] objaeReturn = null;
+//			main:{
+//				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
+//				
+//				//1. Versuch: Direkt per Cast.
+//				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+//				
+//				//2. Versuch:
+//				//Exception: objaeReturn = (E[]) ArrayListZZZ.toEnumMappedArray(listae);
+//				
+//				
+//				//3. Versuch: Per Mappen der Einzelwerte
+//				//Das Klappt....IEnumSetMappedZZZ[] objaeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+//								
+//				//EXCEPTION: ArrayList<Collection<? extends Enum<?>>> listaeTemp = new ArrayList<Collection<? extends Enum<?>>>();
+//				ArrayList<E> listaeTemp = new ArrayList<E>();
+//				
+//				for(IEnumSetMappedStatusLocalZZZ objMapped : listae) {
+//					//if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+//					//3. aber Excepteion: listaeTemp.add((Collection<? extends Enum<?>>) objMapped);
+//					listaeTemp.add((E) objMapped); 
+//				}
+//				
+//				//3.
+//				objaeReturn = ArrayListUtilZZZ.toEnumArray(listaeTemp);
+//			}
+//			
+//			return objaeReturn;
+//		}
 		
 		
 		
@@ -777,16 +824,29 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 //			return listaeReturn;	
 //		}
 		
-		public static <E extends Enum<E> & IEnumSetMappedZZZ> ArrayList<E> toEnumMappedArrayList(List<E> listae) throws ExceptionZZZ{
-			//ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
-			ArrayList<E> listaeReturn = null;
+		public static <E extends Enum<E> & IEnumSetMappedZZZ> ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(Enum[] enuma) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
+			main:{
+				if(enuma==null) break main;
+				if(!(enuma instanceof IEnumSetMappedZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				
+				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
+				for(Enum objenum : enuma) {				
+					listaeReturn.add((IEnumSetMappedZZZ) objenum);
+				}
+			}//end main:
+			return listaeReturn;	
+		}
+		
+		public static <E extends Enum<E> & IEnumSetMappedZZZ> ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(List<E> listae) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
 			main:{
 				if(listae==null) break main;
 				//if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
-				listaeReturn = new ArrayList<E>();
+				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 				for(E objenum : listae) {				
-					listaeReturn.add(objenum);
+					listaeReturn.add((IEnumSetMappedZZZ) objenum);
 				}
 			}//end main:
 			return listaeReturn;	
@@ -812,8 +872,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 //		}
 		
 		
-		public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedStatusArrayList(List<E> listae) throws ExceptionZZZ{
-			//ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+		public static <E extends Enum<E> & IEnumSetMappedStatusLocalZZZ> ArrayList<E> toEnumMappedStatusArrayList(List<E> listae) throws ExceptionZZZ{			
 			ArrayList<E> listaeReturn = null;
 			main:{
 				if(listae==null) break main;

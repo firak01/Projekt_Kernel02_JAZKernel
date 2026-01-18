@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
 public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
@@ -42,7 +42,7 @@ public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
 		
 	//++++++++++++++++++++++++
 	//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
-	public enum STATUSLOCAL implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+	public enum STATUSLOCAL implements IEnumSetMappedStatusLocalZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 		ISSTARTNEW(iSTATUSLOCAL_GROUPID,"isstartnew","ZZZ: ProgramMonitor nicht gestartet",""),
 		ISSTARTING(iSTATUSLOCAL_GROUPID,"isstarting","ZZZ: ProgramMonitor startet...",""),		
 		ISSTARTED(iSTATUSLOCAL_GROUPID,"isstarted","ZZZ: ProgramMonitor gestartet",""),

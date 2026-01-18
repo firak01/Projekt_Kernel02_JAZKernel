@@ -5,11 +5,21 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import basic.zBasic.AbstractObjectWithStatusOnStatusListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectProtocolLogZZZ;
+import basic.zBasic.IObjectWithStatusEnabledZZZ;
+import basic.zBasic.AbstractObjectWithFlagOnStatusLocalListeningZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.component.AbstractProgramWithFlagOnStatusLocalListeningZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.IStatusLocalMapForStatusLocalUserZZZ;
+import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -20,56 +30,47 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
-	private static final long serialVersionUID = -2571958920111633803L;
+public abstract class AbstractKernelUseObjectOnStatusLocalListeningZZZ extends AbstractObjectWithFlagOnStatusLocalListeningZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+	private static final long serialVersionUID = 6048997985909418786L;
 	
 	//Merke: Da es keine Mehrfachvererbung gibt, müssen die Objekte und Methoden aus AbstractKernelUseObjectZZZ hier auch vorkommen...
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected volatile IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
-	
-	
+		
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
+	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(){		
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ() throws ExceptionZZZ{		
 		super();
 	}
 	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
-	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(String[] saFlag) throws ExceptionZZZ {
-		super(saFlag);
-	}
-	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
-		super(hmFlag);
-	}
-
 	
 	/** This constructor declares the used Log-Object as the Kernel-LogObject.
 	* Lindhauer; 10.05.2006 06:06:00
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
-		KernelUseObjectWithStatusNew_(objKernel, null, null);		
+		KernelUseObjectListeningNew_(objKernel, null, null);		
 	}
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectWithStatusNew_(objKernel, null, null);
+		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
-		KernelUseObjectWithStatusNew_(objKernel, null, null);
+		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectWithStatusNew_(objKernel, null, null);				
+		KernelUseObjectListeningNew_(objKernel, null, null);				
 	}
 	
 	
@@ -79,26 +80,25 @@ public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ exte
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectWithStatusNew_(objKernel, null, objKernelContext);						
+		KernelUseObjectListeningNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
-		KernelUseObjectWithStatusNew_(null, objKernelUsing, null);
+		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusOnStatusListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusLocalListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
-		KernelUseObjectWithStatusNew_(null, objKernelUsing, null);
+		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
-		
-	//### Redundant zu AbstractKernelUseObjectZZZ
-	private boolean KernelUseObjectWithStatusNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
+	
+	private boolean KernelUseObjectListeningNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
-			boolean btemp; String sLog;	
+			boolean btemp;	
 								
 			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 			
@@ -140,6 +140,7 @@ public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ exte
 					if(hmFlagZpassed!=null) {
 						Set<String> setFlag = hmFlagZpassed.keySet();
 						Iterator<String> itFlag = setFlag.iterator();
+						String sLog;
 						while(itFlag.hasNext()) {
 							String sKey = itFlag.next();
 							 if(!StringZZZ.isEmpty(sKey)){
@@ -162,73 +163,5 @@ public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ exte
 		}//end main;
 		return bReturn;
 	}
-	
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
-	 */
-	public IKernelZZZ getKernelObject() throws ExceptionZZZ {
-		return this.objKernel;
-	}
-
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
-	 */
-	public void setKernelObject(IKernelZZZ objKernel) {
-		this.objKernel=objKernel;
-	}
-	
-	public void setContextUsed(IKernelContextZZZ objContext) {
-		this.objContext = objContext;
-	}
-
-	public IKernelContextZZZ getContextUsed() {
-		return this.objContext;
-	}
-
-	//aus IKernelLogObjectUserZZZ, analog zu KernelKernelZZZ
-	@Override
-	public LogZZZ getLogObject() throws ExceptionZZZ {
-		if(this.objLog==null) {
-			IKernelZZZ objKernel = this.getKernelObject();
-			if(objKernel!=null) {
-				this.objLog = objKernel.getLogObject();
-			}			
-		}
-		return this.objLog;
-	}
-
-	@Override
-	public void setLogObject(LogZZZ objLog) throws ExceptionZZZ {
-		this.objLog = objLog;
-	}	
-	
-	
-	//aus ILogZZZ		
-	/**
-	 * Hier wird der Unterschied zum einfachen logLineDate deutlich.
-	 * Ggfs. ist ueber den Kernel eine Protokolldatei definiert, die dann genutzt wird. 
-	 * 
-	* lindhaueradmin; 13.07.2006 08:38:51
-	 * @throws ExceptionZZZ 
-	 */	
-	/* (non-Javadoc)
-	 * @see basic.zBasic.AbstractObjectZZZ#logProtocolString(java.lang.String)
-	 */
-	@Override
-	public void logProtocol(String... sLogs) throws ExceptionZZZ{
-		
-		if(sLogs!=null){
-			LogZZZ objLog = this.getLogObject();
-			objLog.WriteLineDate(sLogs);
-		}else {
-			this.logLineDate(sLogs);	
-		}		
-	}
-
-	public boolean changedStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }//end class
 

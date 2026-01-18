@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
 public interface IProgramMonitorRunnableZZZ extends IProgramMonitorZZZ, IProgramRunnableZZZ {

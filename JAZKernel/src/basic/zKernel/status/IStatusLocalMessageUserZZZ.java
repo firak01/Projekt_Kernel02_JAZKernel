@@ -1,6 +1,6 @@
 package basic.zKernel.status;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
@@ -24,11 +24,11 @@ public interface IStatusLocalMessageUserZZZ extends IStatusLocalBasicUserZZZ, IC
 	public abstract boolean offerStatusLocal(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	public abstract boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	
-	public abstract boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue, String sMessage) throws ExceptionZZZ;//Merke: Das offer kommt vom dem intern verwendeten CircularBuffer Klasse
+	public abstract boolean offerStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusLocal, boolean bStatusValue, String sMessage) throws ExceptionZZZ;//Merke: Das offer kommt vom dem intern verwendeten CircularBuffer Klasse
 		
 	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
-	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 	public abstract String getStatusLocalMessage(); //das ist dann der aktuellste Wert aus dem CircularBuffer
 	public abstract String getStatusLocalMessage(Enum enumStatusIn) throws ExceptionZZZ;  //Das ist der Wert aus der HashMap fuer Message

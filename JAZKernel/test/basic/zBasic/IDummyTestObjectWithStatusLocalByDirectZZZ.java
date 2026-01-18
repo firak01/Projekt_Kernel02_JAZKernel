@@ -1,6 +1,6 @@
 package basic.zBasic;
 
-public interface IDummyTestObjectWithStatusByDirectZZZ{
+public interface IDummyTestObjectWithStatusLocalByDirectZZZ{
 	
 	
 	//#############################################################

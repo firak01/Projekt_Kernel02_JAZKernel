@@ -9,7 +9,7 @@ import org.apache.xmlbeans.impl.store.Query;
 import basic.zBasic.component.IProgramMonitorZZZ;
 import basic.zBasic.component.IProgramRunnableZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
@@ -39,7 +39,7 @@ import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 17:04:43
  * 
  */
-public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalUserZZZ{
+public abstract class AbstractObjectWithStatusLocalZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	protected volatile HashMap<String, String>hmStatusLocalMessage = new HashMap<String, String>();//20240310; Im Zuge der Arbeiten eingesehen, dass eine extra Message auch in eine extra HashMap gespeichert werden muss.
@@ -61,18 +61,18 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
-	public AbstractObjectWithStatusZZZ() {	
+	public AbstractObjectWithStatusLocalZZZ() {	
 		super();
 	}
-	public AbstractObjectWithStatusZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusLocalZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 		AbstractObjectWithStatusNew_();
 	}
-	public AbstractObjectWithStatusZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusLocalZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractObjectWithStatusNew_();
 	}
-	public AbstractObjectWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectWithStatusLocalZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 		AbstractObjectWithStatusNew_();
 	}
@@ -377,8 +377,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
-		IEnumSetMappedStatusZZZ objReturn = null;
+	public IEnumSetMappedStatusLocalZZZ getStatusLocalEnumPrevious() {
+		IEnumSetMappedStatusLocalZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious();
 			if(objStatus==null) break main;
@@ -389,8 +389,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
-		IEnumSetMappedStatusZZZ objReturn = null;
+	public IEnumSetMappedStatusLocalZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
+		IEnumSetMappedStatusLocalZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
 			if(objStatus==null) break main;
@@ -401,8 +401,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 
 	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent() {
-		IEnumSetMappedStatusZZZ objReturn = null;
+	public IEnumSetMappedStatusLocalZZZ getStatusLocalEnumCurrent() {
+		IEnumSetMappedStatusLocalZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = this.getStatusLocalObject();
 			if(objStatus==null) break main;
@@ -416,7 +416,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) throws ExceptionZZZ {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusLocalIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true, null);
@@ -426,7 +426,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusLocalIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, bStatusValue, null);
@@ -436,7 +436,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusLocal, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String sLog; 
@@ -679,14 +679,14 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		String sLog="";
 		int iStepsToSearchBackwardsTEST=-1;
 		boolean bGoonTEST = false;
-		IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
+		IEnumSetMappedStatusLocalZZZ objStatusLocalPreviousTEST = null;
 		do {	
 			iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
 			int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
 			sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;							
 			this.logProtocol(sLog);
 			
-			objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
+			objStatusLocalPreviousTEST = (IEnumSetMappedStatusLocalZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
 			if(objStatusLocalPreviousTEST==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";									
 				this.logProtocol(sLog);
@@ -709,7 +709,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObject();
 			if(objMessage==null) break main;
 			
-			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			IEnumSetMappedStatusLocalZZZ objEnum = objMessage.getEnumObject();
 			if(objEnum==null) break main;
 			
 			iReturn = objEnum.getStatusGroupId();
@@ -724,7 +724,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious();
 			if(objMessage==null) break main;
 			
-			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			IEnumSetMappedStatusLocalZZZ objEnum = objMessage.getEnumObject();
 			if(objEnum==null) break main;
 			
 			iReturn = objEnum.getStatusGroupId();
@@ -739,7 +739,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious(iIndexStepsBack);
 			if(objMessage==null) break main;
 			
-			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			IEnumSetMappedStatusLocalZZZ objEnum = objMessage.getEnumObject();
 			if(objEnum==null) break main;
 			
 			iReturn = objEnum.getStatusGroupId();
@@ -761,7 +761,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 			//+++ Durchsuche die vorherigen Schritte nach deren GroupId
 			//boolean bGoon = false;
-			IEnumSetMappedStatusZZZ objStatusLocalPrevious = null;
+			IEnumSetMappedStatusLocalZZZ objStatusLocalPrevious = null;
 			int iStepsToSearchBackwards = this.getCircularBufferStatusLocal().getCapacity();
 			//do {					
 				for(int iStepsPrevious = 0;iStepsPrevious<=iStepsToSearchBackwards;iStepsPrevious++) {
@@ -769,7 +769,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 					sLog = ReflectCodeZZZ.getPositionCurrent()+"Vorheriger Status= " + iStepsPrevious + " | Verwendeter Index= " + iIndex;										
 					this.logProtocol(sLog);
 					
-					objStatusLocalPrevious = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsPrevious);
+					objStatusLocalPrevious = (IEnumSetMappedStatusLocalZZZ) this.getStatusLocalEnumPrevious(iStepsPrevious);
 					if(objStatusLocalPrevious==null) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+"Kein entsprechend weit entfernter vorheriger Status vorhanden";											
 						this.logProtocol(sLog);
@@ -1261,14 +1261,14 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped) throws ExceptionZZZ{
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusLocalZZZ enumStatusMapped) throws ExceptionZZZ{
 		int iGroupId = enumStatusMapped.getStatusGroupId();
 		Enum enumStatus = (Enum)enumStatusMapped;
 		return this.switchStatusLocalForGroupTo_(iGroupId, enumStatus, null, true);
 	}
 	
 	@Override
-	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusLocalZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
 		int iGroupId = enumStatusMapped.getStatusGroupId();
 		Enum enumStatus = (Enum)enumStatusMapped;
 		return this.switchStatusLocalForGroupTo_( iGroupId, enumStatus, null, bStatusValue);
@@ -1285,7 +1285,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 			
 	@Override
-	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusLocalZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			int iGroupId = enumStatusMapped.getStatusGroupId();
@@ -1344,7 +1344,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 
 	@Override
-	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		return this.setStatusLocal(enumStatusMapped.getName(), bStatusValue, sStatusMessage);
 	}
 	
@@ -1355,7 +1355,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 
 	@Override
-	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ {
 		return this.setStatusLocal(enumStatusMapped.getName(), bStatusValue);
 	}
 		

@@ -8,18 +8,18 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extends AbstractProgramWithFlagOnStatusListeningZZZ implements IProgramRunnableZZZ{
+public abstract class AbstractProgramWithFlagOnStatusLocalListeningRunnableZZZ extends AbstractProgramWithFlagOnStatusLocalListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 202987237863158494L;
 	
-	public AbstractProgramWithFlagOnStatusListeningRunnableZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithFlagOnStatusLocalListeningRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 	
-	public AbstractProgramWithFlagOnStatusListeningRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithFlagOnStatusLocalListeningRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);		
 	}
 	
-	public AbstractProgramWithFlagOnStatusListeningRunnableZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractProgramWithFlagOnStatusLocalListeningRunnableZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);		
 	}
 	

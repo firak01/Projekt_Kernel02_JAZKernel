@@ -11,7 +11,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
@@ -561,18 +561,20 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return objaeReturn;	
 	}
 	
-	public static <E extends Enum & IEnumSetMappedStatusZZZ> E[] toEnumArrayByMappedStatus(ArrayList<E> listae) throws ExceptionZZZ {
-		E[] objaeReturn = null;
-		main:{
-			if(listae==null) break main;
-			if(listae.size()==0) break main;
-			
-			objaeReturn = (E[]) listae.toArray(new Enum[listae.size()]);
-		}//end main:
-		return objaeReturn;	
-	}
+	//Wg. CAST Problematik aus dieser Klasse raus. Verwende bessert die Util-Klasse des jeweiling EnumSetMapped
+//	public static <E extends Enum & IEnumSetMappedStatusLocalZZZ> E[] toEnumArrayByMappedStatus(ArrayList<E> listae) throws ExceptionZZZ {
+//		E[] objaeReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			if(listae.size()==0) break main;
+//			
+//			objaeReturn = (E[]) listae.toArray(new Enum[listae.size()]);
+//		}//end main:
+//		return objaeReturn;	
+//	}
 	
-//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
+
+	//Wg. CAST Problematik aus dieser Klasse raus. Verwende bessert die Util-Klasse des jeweiling EnumSetMapped
 //	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
 //		E[] enumaReturn = null;
 //		main:{
@@ -583,39 +585,34 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 //		}//end main:
 //		return enumaReturn;	
 //	}
-	
-//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
+
+	//todo loeschen wird alles in EnumSetMappedStatusUtilZZZ gemacht.
 //	public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArrayByMapped(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{
 //		IEnumSetMappedStatusZZZ[] enumaReturn = null;
 //		main:{
 //			if(listae==null) break main;
 //			if(listae.size()==0) break main;
 //			
-//			///Das gibt eine java.lang.ArrayStoreException...
-//			//enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-//			//enumaReturn = (IEnumSetMappedStatusZZZ[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-//			
-//			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
-//			
+//			enumaReturn = (IEnumSetMappedStatusZZZ[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
 //		}//end main:
 //		return enumaReturn;	
 //	}
 	
 	
-	public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedArrayListByMapped(List<E> listae) throws ExceptionZZZ{
-		ArrayList<E> listaeReturn = null;
-		main:{
-			if(listae==null) break main;
-			
-			listaeReturn = new ArrayList<E>();
-			if(listae.size()==0) break main;
-			
-			listaeReturn = EnumSetMappedUtilZZZ.toEnumMappedArrayList(listae);
-		}//end main:
-		return listaeReturn;	
-	}
+//	public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedArrayListByMapped(List<E> listae) throws ExceptionZZZ{
+//		ArrayList<E> listaeReturn = null;
+//		main:{
+//			if(listae==null) break main;
+//			
+//			listaeReturn = new ArrayList<E>();
+//			if(listae.size()==0) break main;
+//			
+//			listaeReturn = EnumSetMappedUtilZZZ.toEnumMappedArrayList(listae);
+//		}//end main:
+//		return listaeReturn;	
+//	}
 	
-	public static <E extends Enum<E> & IEnumSetMappedStatusZZZ> ArrayList<E> toEnumMappedStatusArrayListByMapped(List<E> listae) throws ExceptionZZZ{
+	public static <E extends Enum<E> & IEnumSetMappedStatusLocalZZZ> ArrayList<E> toEnumMappedStatusArrayListByMapped(List<E> listae) throws ExceptionZZZ{
 		ArrayList<E> listaeReturn = null;
 		main:{
 			if(listae==null) break main;

@@ -1,10 +1,10 @@
 package basic.zKernel.status;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 
 public interface IStatusBooleanZZZ {
-	public IEnumSetMappedStatusZZZ getEnumObject();
-	public void setEnumObject(IEnumSetMappedStatusZZZ objEnum);	
+	public IEnumSetMappedStatusLocalZZZ getEnumObject();
+	public void setEnumObject(IEnumSetMappedStatusLocalZZZ objEnum);	
 	public boolean getValue();	
 	public void setValue(boolean bValue) ;
 }

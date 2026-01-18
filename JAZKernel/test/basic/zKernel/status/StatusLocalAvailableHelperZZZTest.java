@@ -7,36 +7,36 @@ import java.util.HashMap;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import basic.zBasic.DummyTestObjectWithStatusByDirectZZZ;
-import basic.zBasic.DummyTestObjectWithStatusByInterfaceExtendedZZZ;
-import basic.zBasic.DummyTestObjectWithStatusByInterfaceZZZ;
-import basic.zBasic.DummyTestProgramWithStatusByInterfaceExtendedZZZ;
+import basic.zBasic.DummyTestObjectWithStatusLocalByDirectZZZ;
+import basic.zBasic.DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ;
+import basic.zBasic.DummyTestObjectWithStatusLocalByInterfaceZZZ;
+import basic.zBasic.DummyTestProgramWithStatusLocalByInterfaceExtendedZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
+import basic.zBasic.IDummyTestObjectWithStatusLocalByInterfaceZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
 public class StatusLocalAvailableHelperZZZTest  extends TestCase{
-	 private DummyTestObjectWithStatusByInterfaceExtendedZZZ objTestWithStatusByInterfaceExtended = null;
-	 private DummyTestObjectWithStatusByInterfaceZZZ objTestWithStatusByInterface = null;
-	 private DummyTestObjectWithStatusByDirectZZZ objTestWithStatusByDirect = null;
+	 private DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ objTestWithStatusByInterfaceExtended = null;
+	 private DummyTestObjectWithStatusLocalByInterfaceZZZ objTestWithStatusByInterface = null;
+	 private DummyTestObjectWithStatusLocalByDirectZZZ objTestWithStatusByDirect = null;
 	 
-	 private DummyTestProgramWithStatusByInterfaceExtendedZZZ objTestProgramWithStatusByInterfaceExtended = null;
+	 private DummyTestProgramWithStatusLocalByInterfaceExtendedZZZ objTestProgramWithStatusByInterfaceExtended = null;
 	 
 	    protected void setUp(){
 	    	try {			
-		    	objTestWithStatusByInterfaceExtended = new DummyTestObjectWithStatusByInterfaceExtendedZZZ();
-		    	objTestWithStatusByInterface = new DummyTestObjectWithStatusByInterfaceZZZ();
-		    	objTestWithStatusByDirect = new DummyTestObjectWithStatusByDirectZZZ();
+		    	objTestWithStatusByInterfaceExtended = new DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ();
+		    	objTestWithStatusByInterface = new DummyTestObjectWithStatusLocalByInterfaceZZZ();
+		    	objTestWithStatusByDirect = new DummyTestObjectWithStatusLocalByDirectZZZ();
 			
-		    	objTestProgramWithStatusByInterfaceExtended = new DummyTestProgramWithStatusByInterfaceExtendedZZZ();
+		    	objTestProgramWithStatusByInterfaceExtended = new DummyTestProgramWithStatusLocalByInterfaceExtendedZZZ();
 	    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
@@ -52,13 +52,13 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 				
 				//Static Zugriff
 				//EnumSet soll von der EnumerationZZZ-Klasse schon "generisch/per Reflektion" erzeugt und mitgebracht werden.
-				EnumSet setEnumGenerated = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.getEnumSet();		
+				EnumSet setEnumGenerated = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.getEnumSet();		
 				int iSize = setEnumGenerated.size();
 				assertTrue("6 Elemente im Set erwartet.", iSize==6);
 				
 				//Generischer Zugriff, ist  nicht ganz möglich, darum Verwendung der Factory Klasse
 				IEnumSetFactoryZZZ objFactory = EnumSetTestFactoryZZZ.getInstance();				
-				Class objClass = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+				Class objClass = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.class;
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				
 				//Beim Wiederholten Zugriff über die Util-Klasse soll das einmal erstellte EnumSet wiederverwendet werden.	
@@ -83,26 +83,26 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 
 				//Variante A) EnumSet selbst erzeugen
 				//Positivfall
-				EnumSet<IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL> setEnumCurrent = EnumSet.of(IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.ISSTARTNEW, IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.ISSTOPPED, IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.HASERROR);
+				EnumSet<IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL> setEnumCurrent = EnumSet.of(IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.ISSTARTNEW, IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.ISSTOPPED, IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.HASERROR);
 				assertNotNull(setEnumCurrent);
 				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ISSTOPPED", setEnumCurrent);
 				assertTrue("A) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
-				EnumSet<IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL> setEnumCurrent02 = EnumSet.of(IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.ISSTARTNEW, IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.ISSTOPPED, IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.HASERROR);
+				EnumSet<IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL> setEnumCurrent02 = EnumSet.of(IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.ISSTARTNEW, IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.ISSTOPPED, IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.HASERROR);
 				assertNotNull(setEnumCurrent02);
 				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("Nixdaaa", setEnumCurrent02);
 				assertFalse("A) Prüfstring sollte in der Enumeration NICHT vorhanden sein .", btemp);
 				
 				//Variante B) EnumSet per statischer Methode holen
 				//Positivfall
-				EnumSet<?> setEnumGenerated = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.getEnumSet();
+				EnumSet<?> setEnumGenerated = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.getEnumSet();
 				assertNotNull(setEnumGenerated);
 				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ISSTOPPED", setEnumGenerated);
 				assertTrue("B) Prüfstring 'ISSTOPPED' sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
-				EnumSet<?> setEnumGenerated02 = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.getEnumSet();
+				EnumSet<?> setEnumGenerated02 = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.getEnumSet();
 				assertNotNull(setEnumGenerated02);
 				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("NIXDA", setEnumGenerated02);
 				assertFalse("B) Prüfstring 'NIXDA' sollte in der Enumeration NICHT vorhanden sein.", btemp);
@@ -110,7 +110,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 				//Variante C) direkter
 				//Generischer Zugriff, ist  nicht ganz möglich, darum Verwendung der Factory Klasse
 				IEnumSetFactoryZZZ objFactory = EnumSetTestFactoryZZZ.getInstance();	
-				Class objClass = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+				Class objClass = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.class;
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				
 				//Positivfall
@@ -132,7 +132,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 			//Merke; Dieser Test bezieht sich nur auf das Verarbeiten der Enums an sich, nicht auf eine konkrete Klasse. 
 			//       Darum Interface als Grundlage der Klassenangabe.
 	    	
-	    	Class<?> objClass = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+	    	Class<?> objClass = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.class;
 	    	String sName = EnumSetMappedUtilZZZ.getEnumConstant_NameValue(objClass, "ISSTOPPED");
 	    	assertTrue("Prüfstring sollte als Ergebnis 'ISSTOPPED' sein", "ISSTOPPED".equals(sName));
 	    	
@@ -164,7 +164,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	     	//#########################################################
 	     	//Speziell für STATUS
 	     	@SuppressWarnings("unchecked")
-	     	String sStatusMessage = EnumSetMappedUtilZZZ.getEnumConstant_StatusMessageValue((Class<IEnumSetMappedStatusZZZ>) objClass, "ISSTOPPED");	     	
+	     	String sStatusMessage = EnumSetMappedUtilZZZ.getEnumConstant_StatusMessageValue((Class<IEnumSetMappedStatusLocalZZZ>) objClass, "ISSTOPPED");	     	
 	    	assertTrue("Prüfstring sollte als Ergebnis 'ZZZ: DummyTestObjectWithStatusZZZ beendet' sein", "ZZZ: DummyTestObjectWithStatusZZZ beendet".equals(sStatusMessage));
 	    		    	
 	    	} catch (ExceptionZZZ ez) {
@@ -181,7 +181,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 	    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
 	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface, false, false);
+	    	IEnumSetMappedStatusLocalZZZ[] enumaByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface, false, false);
 	    	assertNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", enumaByInterface);
 	    	
 	    	boolean bIsEmpty = ArrayUtilZZZ.isNull(enumaByInterface);
@@ -192,7 +192,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	//a) per Klasse ohne Status im Interface
 	    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
 	    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen   	
-	    	IEnumSetMappedStatusZZZ[] enumaByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByDirect, false, false);
+	    	IEnumSetMappedStatusLocalZZZ[] enumaByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByDirect, false, false);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByDirect);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByDirect.length==6);
 	    	
@@ -200,15 +200,15 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	Class<?> objClassByInterface2 = objTestWithStatusByInterface.getClass();
 	    	
 	    	//Es sollen per Default auch Interfaces durchsucht werden
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface2 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface2);
+	    	IEnumSetMappedStatusLocalZZZ[] enumaByInterface2 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassByInterface2);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface2);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface2.length==6);
 	    	
 	    	//c) per Klasse aus dem Enum selbst (aus Interface mit Status). 
 	    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.	    	
-	    	Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;
+	    	Class<?> objClassFromInterface = IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL.class;
 
-	    	IEnumSetMappedStatusZZZ[] enumaByInterface3 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassFromInterface);
+	    	IEnumSetMappedStatusLocalZZZ[] enumaByInterface3 = StatusLocalAvailableHelperZZZ.searchEnumMappedArray(objClassFromInterface);
 	    	assertNotNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", enumaByInterface3);
 	    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",enumaByInterface3.length==6);
 	    	
@@ -228,7 +228,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 	    	    	//Hole aus den verschiedenen Objekten die unterschiedlichen StatusMapped Objekte, per einfachem Namen
 	    	    	//Wird ggfs. verwendet in EventObjectStatusLocalZZZ, um nur per String dem Event eine passendes Enum-Objekt mitzugeben.
 	    	    	String sStatusToFind = "ISSTOPPED";
-	    	    	IEnumSetMappedStatusZZZ objEnum = StatusLocalAvailableHelperZZZ.searchEnumMappedByName(objTestWithStatusByDirect, sStatusToFind);
+	    	    	IEnumSetMappedStatusLocalZZZ objEnum = StatusLocalAvailableHelperZZZ.searchEnumMappedByName(objTestWithStatusByDirect, sStatusToFind);
 	    	    	assertNotNull("Einen Status '" + sStatusToFind + "' gibt es nicht", objEnum);
 	    		
 	    	} catch (ExceptionZZZ ez) {
@@ -247,7 +247,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();	
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	HashMap<String,IEnumSetMappedStatusZZZ>hmEnumStatusByDirect = StatusLocalAvailableHelperZZZ.searchHashMapEnumMapped(objClassByDirect, false);
+		    	HashMap<String,IEnumSetMappedStatusLocalZZZ>hmEnumStatusByDirect = StatusLocalAvailableHelperZZZ.searchHashMapEnumMapped(objClassByDirect, false);
 		    	assertNotNull("NULL sollte als HashMap der IEnumSetMappedStatzsZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", hmEnumStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",hmEnumStatusByDirect.size()==6);
 		    		    			    			    	
@@ -258,7 +258,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	HashMap<String,IEnumSetMappedStatusZZZ>hmEnumStatusByInterface = StatusLocalAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, false);
+		    	HashMap<String,IEnumSetMappedStatusLocalZZZ>hmEnumStatusByInterface = StatusLocalAvailableHelperZZZ.searchHashMapEnumMapped(objClassByInterface, false);
 		    	assertNull("NULL sollte als HashMap<String,IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", hmEnumStatusByInterface);
 		    	
 		    	//Postivtest:
@@ -367,7 +367,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	//Dies liefert beim Hinzufuegen der Enums trotzdem einen TypeCast Fehler: ArrayList<Collection<? extends Enum<?>>> listaeStatusByDirect = StatusLocalHelperZZZ.getStatusLocalEnumList(objClassByDirect);
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByDirect, false);
+		    	ArrayList<IEnumSetMappedStatusLocalZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByDirect, false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 
@@ -379,7 +379,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ>listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
+		    	ArrayList<IEnumSetMappedStatusLocalZZZ>listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listaeStatusByInterface);
 		    	
 		    	//Postivtest:
@@ -423,7 +423,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ>listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
+		    	ArrayList<IEnumSetMappedStatusLocalZZZ>listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listasStatusByInterface);
 		    	
 		    	//Postivtest:
@@ -452,7 +452,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	//Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objTestWithStatusByDirect, false);
+		    	ArrayList<IEnumSetMappedStatusLocalZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objTestWithStatusByDirect, false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 		    	
@@ -485,7 +485,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	
 		    	boolean bScanInterfaceImmidiateA = true;
 		    	boolean bScanSuperclassImmidiateA = true;
-		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnumArray(objClassFromInterface, IEnumSetMappedStatusZZZ.sENUMNAME, bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
+		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnumArray(objClassFromInterface, IEnumSetMappedStatusLocalZZZ.sENUMNAME, bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
 		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempA));
 		    	assertTrue(enumaReturnTempA.length==6);
 	    		

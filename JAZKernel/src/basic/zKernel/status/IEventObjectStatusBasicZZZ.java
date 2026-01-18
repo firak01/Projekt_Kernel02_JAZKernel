@@ -1,7 +1,7 @@
 package basic.zKernel.status;
 
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 
 public interface IEventObjectStatusBasicZZZ extends IObjectZZZ{
 	public Enum getStatusEnum();

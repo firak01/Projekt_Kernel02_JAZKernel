@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -16,7 +16,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
-	public static boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact, HashMap<IEnumSetMappedStatusZZZ,String>hmStatusLocal4Reaction, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ{
+	public static boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact, HashMap<IEnumSetMappedStatusLocalZZZ,String>hmStatusLocal4Reaction, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			String sLog;
@@ -36,7 +36,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 
 		
 			//Hole den vermeintlichen ActionAlias aus der HashMap
-			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocalReact.getStatusEnum();
+			IEnumSetMappedStatusLocalZZZ enumStatus = (IEnumSetMappedStatusLocalZZZ) eventStatusLocalReact.getStatusEnum();
 			
 			ReferenceArrayZZZ<String> objReturnReferenceTemp = new ReferenceArrayZZZ<String>();
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmStatusLocal4Reaction, objReturnReferenceTemp);
@@ -59,11 +59,11 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static String getActionAliasString4Reaction(IEnumSetMappedStatusZZZ enumStatus, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
+	public static String getActionAliasString4Reaction(IEnumSetMappedStatusLocalZZZ enumStatus, HashMap<IEnumSetMappedStatusLocalZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
 		return StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog, true);
 	
 	}
-	public static String getActionAliasString4Reaction(IEnumSetMappedStatusZZZ enumStatus, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog, boolean bConvertImmediate) throws ExceptionZZZ{
+	public static String getActionAliasString4Reaction(IEnumSetMappedStatusLocalZZZ enumStatus, HashMap<IEnumSetMappedStatusLocalZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog, boolean bConvertImmediate) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 		
@@ -110,7 +110,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 	}	
 	
 	
-	public static String getActionAliasString4Reaction(String sStatusName, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
+	public static String getActionAliasString4Reaction(String sStatusName, HashMap<IEnumSetMappedStatusLocalZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 		
@@ -129,7 +129,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 			//#######################################################################################
 			//Fuer die Weiterverarbeitung fehlt noch das IEnumSetMappedStatusZZZ Objekt 
 			ReferenceArrayZZZ<String>objReferenceLog02 = new ReferenceArrayZZZ<String>();
-			IEnumSetMappedStatusZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
+			IEnumSetMappedStatusLocalZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
 			String[] saLog02 = objReferenceLog02.get();
 			if(!ArrayUtilZZZ.isNull(saLog02)) {
 				objReturnReferenceLog.add(saLog02);				
@@ -153,8 +153,8 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 		return sReturn;
 	}	
 
-	public static IEnumSetMappedStatusZZZ getEnumStatusMapped(String sStatusName, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ {
-		IEnumSetMappedStatusZZZ objReturn = null;
+	public static IEnumSetMappedStatusLocalZZZ getEnumStatusMapped(String sStatusName, HashMap<IEnumSetMappedStatusLocalZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ {
+		IEnumSetMappedStatusLocalZZZ objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName)) {				 
 				 ExceptionZZZ ez = new ExceptionZZZ( "EnumStatus-String", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
@@ -168,10 +168,10 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 			
 				
 			//Gehe das KeySet der HashMap durch.
-			Set<IEnumSetMappedStatusZZZ> setEnumMapped = hmEnum.keySet();
-			Iterator<IEnumSetMappedStatusZZZ> itEnumMapped = setEnumMapped.iterator();
+			Set<IEnumSetMappedStatusLocalZZZ> setEnumMapped = hmEnum.keySet();
+			Iterator<IEnumSetMappedStatusLocalZZZ> itEnumMapped = setEnumMapped.iterator();
 			while(itEnumMapped.hasNext()) {
-				IEnumSetMappedStatusZZZ objEnumMapped = itEnumMapped.next();
+				IEnumSetMappedStatusLocalZZZ objEnumMapped = itEnumMapped.next();
 				String sEnumMapped = objEnumMapped.getName();
 				if(sStatusName.equals(sEnumMapped)) {
 					objReturn = objEnumMapped;

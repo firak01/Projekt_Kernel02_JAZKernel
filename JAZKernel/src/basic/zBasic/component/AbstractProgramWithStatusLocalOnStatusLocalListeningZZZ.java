@@ -2,14 +2,14 @@ package basic.zBasic.component;
 
 import java.util.HashMap;
 
-import basic.zBasic.AbstractObjectWithFlagOnStatusListeningZZZ;
+import basic.zBasic.AbstractObjectWithStatusLocalOnStatusLocalListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerProgramStatusLocalZZZ;
 
-public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IListenerProgramStatusLocalZZZ{
+public abstract class AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ extends AbstractObjectWithStatusLocalOnStatusLocalListeningZZZ<Object> implements IListenerProgramStatusLocalZZZ {
 	private static final long serialVersionUID = 8381960801083154549L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
@@ -20,31 +20,40 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramWithFlagOnStatusListeningZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ() throws ExceptionZZZ {
 		super();
 		AbstractProgramNew_();
 	}
 	
-	public AbstractProgramWithFlagOnStatusListeningZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ(String sFlag) throws ExceptionZZZ {
+		super(sFlag);
+		AbstractProgramNew_();
+	}
+	
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractProgramNew_();
 	}
 	
-	public AbstractProgramWithFlagOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);
 		AbstractProgramNew_();
 	}
 	
 		
 	private boolean AbstractProgramNew_() throws ExceptionZZZ {
-		
-		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
-	    this.setFlag(IProgramZZZ.FLAGZ.ISPROGRAM.name(), true);	
-				
-		return true;
+		boolean bReturn = false;
+		main:{
+			//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
+			this.setFlag(IProgramZZZ.FLAGZ.ISPROGRAM.name(), true);
+			
+			if(this.getFlag("init")) break main;
+			
+			bReturn = true;
+		}//end main	
+		return bReturn;
 	}
 	
-	//################################################################################
 	//### Aus IProgramZZZ
 	@Override
 	public String getProgramName() throws ExceptionZZZ{
@@ -60,63 +69,12 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	public String getProgramAlias() throws ExceptionZZZ {		
 		return null;
 	}
-			
+		
 	@Override
-	public boolean start() throws ExceptionZZZ {
-		return this.startCustom();
-	}
-	
-	@Override
-	public void resetProgramUsed() throws ExceptionZZZ  {
+	public void resetProgramUsed() throws ExceptionZZZ {
 		this.sProgramName = null;
 	}
-	
-	
 
-	//####################################################################
-	//### Aus IKernelModuleUserZZZ
-	@Override
-	public String readModuleName() throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-			IModuleZZZ objModule = this.getModule();
-			if(objModule!=null) {
-				sReturn = objModule.getModuleName();
-			}
-		}//end main:
-		return sReturn;
-	}
-	
-	@Override
-	public String getModuleName() throws ExceptionZZZ{
-		if(StringZZZ.isEmpty(this.sModuleName)) {
-			this.sModuleName = this.readModuleName();
-		}
-		return this.sModuleName;
-	}
-	
-	@Override
-	public void setModuleName(String sModuleName) throws ExceptionZZZ {
-		this.sModuleName=sModuleName;
-	}
-	
-	@Override
-	public void resetModuleUsed() throws ExceptionZZZ {
-		this.objModule = null;
-		this.sModuleName = null;
-	}
-	
-	@Override
-	public IModuleZZZ getModule() throws ExceptionZZZ {
-		return this.objModule;
-	}
-	
-	@Override
-	public void setModule(IModuleZZZ objModule) throws ExceptionZZZ  {
-		this.objModule = objModule;
-	}
-
-	//### Methoden
 	@Override
 	public boolean reset() throws ExceptionZZZ {
 		this.resetProgramUsed();
@@ -125,6 +83,10 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
 	
 	//###########################################
 	//### FLAGZ IProgramZZZ
@@ -164,7 +126,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	public boolean proofFlagSetBefore(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
-	
+
 	//###########################################
 	//### FLAGZ IModuleUserZZZ
 	//###########################################
@@ -204,7 +166,6 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
-	
 	//###########################################
 	//### FLAGZ IListenerProgramStatusLocalZZZ
 	//###########################################
@@ -242,5 +203,47 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	@Override
 	public boolean proofFlagSetBefore(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	//### Aus IKernelModuleUserZZZ	
+	@Override
+	public String readModuleName() throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			IModuleZZZ objModule = this.getModule();
+			if(objModule!=null) {
+				sReturn = objModule.getModuleName();
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public String getModuleName() throws ExceptionZZZ{
+		if(StringZZZ.isEmpty(this.sModuleName)) {
+			this.sModuleName = this.readModuleName();
+		}
+		return this.sModuleName;
+	}
+	
+	@Override
+	public void setModuleName(String sModuleName) throws ExceptionZZZ {
+		this.sModuleName=sModuleName;
+	}
+	
+	@Override
+	public void resetModuleUsed() throws ExceptionZZZ {
+		this.objModule = null;
+		this.sModuleName = null;
+	}
+	
+	@Override
+	public IModuleZZZ getModule() throws ExceptionZZZ {
+		return this.objModule;
+	}
+	
+	@Override
+	public void setModule(IModuleZZZ objModule) throws ExceptionZZZ {
+		this.objModule = objModule;
 	}
 }

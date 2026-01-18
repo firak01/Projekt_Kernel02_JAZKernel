@@ -31,7 +31,11 @@ import basic.zBasic.util.datatype.binary.BinaryTokenizerZZZTest;
 import basic.zBasic.util.datatype.character.AsciiZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZTest;
+import basic.zBasic.util.datatype.enums.EnumMappedAvailableHelperZZZTest;
+import basic.zBasic.util.datatype.enums.EnumMappedStatusLocalAvailableHelperZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
+import basic.zBasic.util.datatype.enums.EnumUtilZZZTest;
+import basic.zBasic.util.datatype.enums.EnumSetMappedStatusLocalUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
@@ -101,7 +105,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(basic.zBasic.util.log.testV02.LogStringFormatManagerZZZ02Test.class);
 		
 		//Tests fuer Enum
-		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);
+		objReturn.addTestSuite(EnumSetMappedStatusLocalUtilZZZTest.class);
 		objReturn.addTestSuite(EnumSetMappedZZZTest.class);
 		
 		//Tests fuer Container ARRAY
@@ -179,9 +183,18 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht		
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		
+		objReturn.addTestSuite(EnumUtilZZZTest.class);
+		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);
+		objReturn.addTestSuite(EnumSetMappedStatusLocalUtilZZZTest.class);
+		
 		objReturn.addTestSuite(EnumAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		objReturn.addTestSuite(EnumMappedAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		objReturn.addTestSuite(EnumMappedStatusLocalAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		
 		objReturn.addTestSuite(FlagZHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		objReturn.addTestSuite(StatusLocalAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		
+		
 		
 		//Test fuer Filter auf jar/zip Dateien
 		objReturn.addTestSuite(JarInfoClassLoaderTest.class);

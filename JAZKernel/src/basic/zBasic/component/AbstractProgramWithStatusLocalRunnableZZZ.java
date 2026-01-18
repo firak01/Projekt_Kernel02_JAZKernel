@@ -9,7 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithStatusEnabledZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -30,7 +30,7 @@ import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 16:52:42
  * 
  */
-public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgramWithStatusZZZ implements IProgramRunnableZZZ {
+public abstract class AbstractProgramWithStatusLocalRunnableZZZ extends AbstractProgramWithStatusZZZ implements IProgramRunnableZZZ {
 	private static final long serialVersionUID = 841548064355621206L;
 	
 	
@@ -39,15 +39,15 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramWithStatusRunnableZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 	
-	public AbstractProgramWithStatusRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);		
 	}
 	
-	public AbstractProgramWithStatusRunnableZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractProgramWithStatusLocalRunnableZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);		
 	}
 	

@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.component.IProgramMonitorZZZ.FLAGZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" 
@@ -17,13 +17,13 @@ public interface IStatusLocalMapForMonitoringStatusLocalUserZZZ extends IListene
 	public final String sERROR_STATUS_UNMAPPED = "this LOCAL status is not mapped";
 	public final int iERROR_STATUS_UNMAPPED = 52;
 	
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ>getHashMapEnumSetForCascadingStatusLocal();
-	public abstract void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet);	
+	public abstract HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ>getHashMapEnumSetForCascadingStatusLocal();
+	public abstract void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> hmEnumSet);	
 	public abstract boolean reactOnStatusLocalEvent4Monitor(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	public boolean isEventRelevant4MonitorOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	
 	//Map: ExternerWert aus Event, LokalerWert
-	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>createHashMapEnumSetForCascadingStatusLocalCustom();
+	public abstract HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ>createHashMapEnumSetForCascadingStatusLocalCustom();
 	
 	
 	//#############################################################

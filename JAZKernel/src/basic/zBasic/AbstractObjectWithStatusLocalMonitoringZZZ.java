@@ -3,31 +3,31 @@ package basic.zBasic;
 import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalReactZZZ;
 import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
-public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IListenerObjectStatusLocalReactZZZ, IMonitorObjectStatusLocalZZZ{
+public abstract class AbstractObjectWithStatusLocalMonitoringZZZ <T> extends AbstractObjectWithStatusLocalOnStatusLocalListeningZZZ<Object> implements IListenerObjectStatusLocalReactZZZ, IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
-	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSetForActionCascaded_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
+	protected HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ> hmEnumSetForActionCascaded_EnumStatus = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
-	public AbstractObjectWithStatusMonitoringZZZ() {	
+	public AbstractObjectWithStatusLocalMonitoringZZZ() {	
 		super();
 	}
-	public AbstractObjectWithStatusMonitoringZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusLocalMonitoringZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 		AbstractObjectWithStatusMonitoringNew_();
 	}
-	public AbstractObjectWithStatusMonitoringZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusLocalMonitoringZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractObjectWithStatusMonitoringNew_();
 	}
-	public AbstractObjectWithStatusMonitoringZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectWithStatusLocalMonitoringZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 		AbstractObjectWithStatusMonitoringNew_();
 	}
@@ -45,7 +45,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	
 	//### aus IStatusLocalMapForMonitoringStatusMessageUserZZZ	
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> getHashMapEnumSetForCascadingStatusLocal() {
+	public HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> getHashMapEnumSetForCascadingStatusLocal() {
 		if(this.hmEnumSetForActionCascaded_EnumStatus==null) {
 			this.hmEnumSetForActionCascaded_EnumStatus = this.createHashMapEnumSetForCascadingStatusLocalCustom();
 		}
@@ -53,7 +53,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	}
 	
 	@Override
-	public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet) {
+	public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> hmEnumSet) {
 		this.hmEnumSetForActionCascaded_EnumStatus = hmEnumSet;
 	}
 	
@@ -97,15 +97,15 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 			String sLog=null;
 			
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
-			IEnumSetMappedStatusZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
+			IEnumSetMappedStatusLocalZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
 			if(enumStatusIn==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
 				this.logProtocol(sLog);
 				break main;
 			}
 			
-			HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
-			IEnumSetMappedStatusZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
+			HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
+			IEnumSetMappedStatusLocalZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
 			if(enumStatusOut==null) {
 				sLog =  ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> KEINEN Gemappten Status gefunden. Setze also keinen eigenen Status.";
 				this.logProtocol(sLog);
@@ -133,15 +133,15 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 			String sLog;
 			
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
-			IEnumSetMappedStatusZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
+			IEnumSetMappedStatusLocalZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
 			if(enumStatusIn==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
 				this.logProtocol(sLog);
 				break main;
 			}
 			
-			HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
-			IEnumSetMappedStatusZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
+			HashMap<IEnumSetMappedStatusLocalZZZ,IEnumSetMappedStatusLocalZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
+			IEnumSetMappedStatusLocalZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
 			if(enumStatusOut==null) {
 				sLog =  ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> KEINEN Gemappten Status gefunden. Also Event NICHT mit Monitor-Objekt weiter verarbeitbar.";
 				this.logProtocol(sLog);
@@ -160,7 +160,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	 * @see basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ#createHashMapEnumSetForCascadingStatusLocalCustom()
 	 */
 	@Override
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
+	public abstract HashMap<IEnumSetMappedStatusLocalZZZ, IEnumSetMappedStatusLocalZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
 	
 	
 	

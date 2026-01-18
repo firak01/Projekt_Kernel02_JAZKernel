@@ -8,7 +8,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -102,7 +102,7 @@ public class EnumHelperZZZ implements IConstantZZZ{
 		return enumReturn;
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E getEnumStatsLocalForGroupAsField(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
+	public static <E extends IEnumSetMappedStatusLocalZZZ> E getEnumStatsLocalForGroupAsField(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
 			try {

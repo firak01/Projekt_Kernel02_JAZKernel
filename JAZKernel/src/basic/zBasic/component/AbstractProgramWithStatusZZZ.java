@@ -2,13 +2,13 @@ package basic.zBasic.component;
 
 import java.util.HashMap;
 
-import basic.zBasic.AbstractObjectWithStatusZZZ;
+import basic.zBasic.AbstractObjectWithStatusLocalZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 
-public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IProgramZZZ, IModuleUserZZZ, IEventBrokerStatusLocalUserZZZ {
+public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithStatusLocalZZZ implements IProgramZZZ, IModuleUserZZZ, IEventBrokerStatusLocalUserZZZ {
 	private static final long serialVersionUID = -3184969965157735065L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;

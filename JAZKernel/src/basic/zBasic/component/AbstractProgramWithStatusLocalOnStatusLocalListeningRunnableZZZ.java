@@ -5,18 +5,18 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramRunnableZZZ{
+public abstract class AbstractProgramWithStatusLocalOnStatusLocalListeningRunnableZZZ extends AbstractProgramWithStatusLocalOnStatusLocalListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
 		
-	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 
-	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningRunnableZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);		
 	}
 	
-	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusLocalOnStatusLocalListeningRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);	
 		AbstractProgramRunnableWithStatusListeningNew_();
 	}

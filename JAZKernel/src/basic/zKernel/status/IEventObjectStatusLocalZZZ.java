@@ -1,10 +1,10 @@
 package basic.zKernel.status;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 
 public interface IEventObjectStatusLocalZZZ extends IEventObjectStatusBasicZZZ{
-	public IEnumSetMappedStatusZZZ getStatusLocal();
-	public void setStatusLocal(IEnumSetMappedStatusZZZ objEnumSet);
+	public IEnumSetMappedStatusLocalZZZ getStatusLocal();
+	public void setStatusLocal(IEnumSetMappedStatusLocalZZZ objEnumSet);
 	public void setStatusLocal(Enum objEnum);
 	
 	public String getStatusMessage();

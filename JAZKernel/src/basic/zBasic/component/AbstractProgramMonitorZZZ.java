@@ -2,7 +2,7 @@ package basic.zBasic.component;
 
 import java.util.ArrayList;
 
-import basic.zBasic.AbstractObjectWithStatusMonitoringZZZ;
+import basic.zBasic.AbstractObjectWithStatusLocalMonitoringZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -10,7 +10,7 @@ import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatusMonitoringZZZ implements IProgramMonitorZZZ{
+public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatusLocalMonitoringZZZ implements IProgramMonitorZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;	
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;

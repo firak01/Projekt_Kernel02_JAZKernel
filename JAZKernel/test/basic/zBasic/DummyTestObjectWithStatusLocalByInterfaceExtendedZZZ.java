@@ -1,179 +1,47 @@
 package basic.zBasic;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStatusZZZ<Object> implements IDummyTestObjectWithStatusByDirectZZZ{
-	private static final long serialVersionUID = -3077811336052403537L;
+public class DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ extends AbstractObjectWithStatusLocalZZZ<Object> implements IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ{
+	private static final long serialVersionUID = -4468952293339389490L;
 
-	public DummyTestObjectWithStatusByDirectZZZ(String[] saFlag) throws ExceptionZZZ {
+	public DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 	}
 
-	public DummyTestObjectWithStatusByDirectZZZ() {
+	public DummyTestObjectWithStatusLocalByInterfaceExtendedZZZ() {
 		super();
 	}
 	
-	//#######################################################################################
-	// STATUS: HIER DIRECT eingebunden	
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//Die StatusId für Stati, aus dieser Klasse selbst. Nicht die Stati der anderen Klassen.
-	//Sollte dann irgendwie einzigartig sein.
-	public static int iSTATUSLOCAL_GROUPID=1;
-		
-	//++++++++++++++++++++++++
-	//ALIAS(Gruppenid der Meldung, "Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
-	public enum STATUSLOCAL implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-		ISSTARTNEW(iSTATUSLOCAL_GROUPID,"isstartnew","ZZZ: DummyTestObjectWithStatusZZZ nicht gestartet",""),
-		ISSTARTING(iSTATUSLOCAL_GROUPID,"isstarting","ZZZ: DummyTestObjectWithStatusZZZ startet...",""),		
-		ISSTARTED(iSTATUSLOCAL_GROUPID,"isstarted","ZZZ: DummyTestObjectWithStatusZZZ gestartet",""),
-		ISSTARTNO(iSTATUSLOCAL_GROUPID,"isstartno","ZZZ: DummyTestObjectWithStatusZZZ nicht gestartet",""),
-
-		ISSTOPPED(iSTATUSLOCAL_GROUPID,"isstopped","ZZZ: DummyTestObjectWithStatusZZZ beendet",""),
-				
-		HASERROR(iSTATUSLOCAL_GROUPID,"haserror","ZZZ: DummyTestObjectWithStatusZZZ meldet Fehler","");		
-		
-		private int iStatusGroupId;
-		private String sAbbreviation,sStatusMessage,sDescription;
-	
-		//#############################################
-		//#### Konstruktoren
-		//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
-		//In der Util-Klasse habe ich aber einen Workaround gefunden.
-		STATUSLOCAL(int iStatusGroupId, String sAbbreviation, String sStatusMessage, String sDescription) {
-			this.iStatusGroupId = iStatusGroupId;
-		    this.sAbbreviation = sAbbreviation;
-		    this.sStatusMessage = sStatusMessage;
-		    this.sDescription = sDescription;
-		}
-		
-		@Override
-		public int getStatusGroupId() {
-			return this.iStatusGroupId;
-		}
-		
-		@Override
-		public String getAbbreviation() {
-		 return this.sAbbreviation;
-		}
-		
-		@Override
-		public String getStatusMessage() {
-			 return this.sStatusMessage;
-		}
-		
-		public EnumSet<?>getEnumSetUsed(){
-			return STATUSLOCAL.getEnumSet();
-		}
-	
-		/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
-		@SuppressWarnings("rawtypes")
-		public static <E> EnumSet getEnumSet() {
-			
-		 //Merke: Das wird anders behandelt als FLAGZ Enumeration.
-			//String sFilterName = "FLAGZ"; /
-			//...
-			//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
-			
-			//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-			Class<STATUSLOCAL> enumClass = STATUSLOCAL.class;
-			EnumSet<STATUSLOCAL> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
-					
-			Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
-			for(Object obj : objaEnum){
-				//System.out.println(obj + "; "+obj.getClass().getName());
-				set.add((STATUSLOCAL) obj);
-			}
-			return set;
-			
-		}
-	
-		//TODO: Mal ausprobieren was das bringt
-		//Convert Enumeration to a Set/List
-		private static <E extends Enum<E>>EnumSet<E> toEnumSet(Class<E> enumClass,long vector){
-			  EnumSet<E> set=EnumSet.noneOf(enumClass);
-			  long mask=1;
-			  for (  E e : enumClass.getEnumConstants()) {
-			    if ((mask & vector) == mask) {
-			      set.add(e);
-			    }
-			    mask<<=1;
-			  }
-			  return set;
-			}
-	
-		//+++ Das könnte auch in einer Utility-Klasse sein.
-		//the valueOfMethod <--- Translating from DB
-		public static STATUSLOCAL fromAbbreviation(String s) {
-		for (STATUSLOCAL state : values()) {
-		   if (s.equals(state.getAbbreviation()))
-		       return state;
-		}
-		throw new IllegalArgumentException("Not a correct abbreviation: " + s);
-		}
-	
-		//##################################################
-		//#### Folgende Methoden bring Enumeration von Hause aus mit. 
-				//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
-		@Override
-		public String getName() {	
-			return super.name();
-		}
-	
-		@Override
-		public String toString() {//Mehrere Werte mit # abtennen
-		    return this.sAbbreviation+"="+this.sDescription;
-		}
-	
-		@Override
-		public int getIndex() {
-			return ordinal();
-		}
-	
-		//### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
-		@Override
-		public int getPosition() {
-			return getIndex()+1; 
-		}
-	
-		@Override
-		public String getDescription() {
-			return this.sDescription;
-		}
-		//+++++++++++++++++++++++++
-	}//End internal Class
-	//##### END STATUS DIRECT eingebunden #######################################
-	
-	
 	//###################################################
-	//### FLAGS #########################################
+	//### FLAG aus: IDummyTestObjectWithStatusByInterfaceZZZ
 	//###################################################
 		
 	@Override
-	public boolean getFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean getFlag(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean setFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 
 	@Override
-	public boolean[] setFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -188,14 +56,60 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 	}
 
 	@Override
-	public boolean proofFlagExists(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 
 	@Override
-	public boolean proofFlagSetBefore(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IDummyTestObjectWithStatusLocalByInterfaceZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
+	
+	//###################################################
+	//### FLAG aus : IDummyTestObjectWithStatusByInterfaceExtendedZZZ
+	//###############################################
+			
+		@Override
+		public boolean getFlag(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.getFlag(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean setFlag(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+		public boolean[] setFlag(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+
+		@Override
+		public boolean proofFlagExists(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}
+
+		@Override
+		public boolean proofFlagSetBefore(IDummyTestObjectWithStatusLocalByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 	
 	//####################################
 		//### STATUS: ILogFileWatchMonitorZZZ
@@ -208,7 +122,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			main:{
 				if(objEnumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) objEnumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) objEnumStatusIn;
 				String sStatusName = enumStatus.name();
 				if(StringZZZ.isEmpty(sStatusName)) break main;
 											
@@ -235,7 +149,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			main:{
 				if(enumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				
 				bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
 			}//end main;
@@ -249,7 +163,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			main:{
 				if(enumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				
 				bFunction = this.offerStatusLocal_(enumStatus, sStatusMessage, bStatusValue);				
 			}//end main;
@@ -263,7 +177,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 				
 			
 				//Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				String sStatusName = enumStatus.name();
 				bFunction = this.proofStatusLocalExists(sStatusName);															
 				if(!bFunction) {
@@ -349,7 +263,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			main:{
 				if(enumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 								
 				bFunction = this.offerStatusLocal(enumStatus, bStatusValue, null);
 			}//end main:
@@ -360,12 +274,12 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		 * @see basic.zBasic.AbstractObjectWithStatusZZZ#setStatusLocalEnum(basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ, boolean)
 		 */
 		@Override 
-		public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		public boolean setStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 			boolean bReturn = false;
 			main:{
 				if(enumStatusIn==null) break main;
 
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				
 				bReturn = this.offerStatusLocal(enumStatus, bStatusValue, null);
 			}//end main:
@@ -379,7 +293,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 			main:{
 				if(enumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				
 				bFunction = this.offerStatusLocal(enumStatus, bStatusValue, sMessage);
 			}//end main:
@@ -387,12 +301,12 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		}
 			
 		@Override 
-		public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusIn, boolean bStatusValue, String sMessage) throws ExceptionZZZ {
+		public boolean setStatusLocalEnum(IEnumSetMappedStatusLocalZZZ enumStatusIn, boolean bStatusValue, String sMessage) throws ExceptionZZZ {
 			boolean bReturn = false;
 			main:{
 				if(enumStatusIn==null) break main;
 				
-				IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
+				IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL enumStatus = (IDummyTestObjectWithStatusLocalByInterfaceZZZ.STATUSLOCAL) enumStatusIn;
 				
 				bReturn = this.offerStatusLocal(enumStatus, bStatusValue, sMessage);
 			}//end main:
@@ -405,5 +319,4 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		}				
 				
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 }
