@@ -3,6 +3,7 @@ package basic.zBasic.util.log;
 import static basic.zBasic.IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 import static basic.zBasic.IReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
 import static basic.zBasic.IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+import static basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ.sENUMNAME;
 
 import java.util.EnumSet;
 
@@ -17,7 +18,7 @@ import basic.zBasic.reflection.position.ITagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.ITagTypeMethodZZZ;
 
 public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZZZ, ITagTypeFileNameZZZ, ITagTypeFilePositionZZZ{ //verwenden von z.B. import static basic.zBasic.reflection.position.ITagTypeFileNameZZZ.*; geht nicht, weil ja die Konstanten alle gleich heissen. 
-	public static String sENUMNAME="LOGSTRINGFORMAT";
+	//public static String sENUMNAME="LOGSTRINGFORMAT";
 	public static String sSEPARATOR_PREFIX_DEFAULT="";
 	public static String sSEPARATOR_POSTFIX_DEFAULT="";
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;

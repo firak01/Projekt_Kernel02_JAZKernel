@@ -1,5 +1,7 @@
 package basic.zBasic.util.datatype.enums;
 
+import static basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ.sENUMNAME;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +17,6 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 
-import static basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ.sENUMNAME;
 
 public class EnumMappedStatusLocalAvailableHelperZZZ  implements IConstantZZZ{
 	//+++++++++++++++++++++++++

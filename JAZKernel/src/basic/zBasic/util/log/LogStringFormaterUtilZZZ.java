@@ -13,6 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -22,6 +23,10 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
+
+import static basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ.sENUMNAME;
+
+import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_LINENEXT_STRING;
 
 import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML;
@@ -37,13 +42,28 @@ import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
 
+
 public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	
 	 /* Macht eine HashMap mit dem ienumLogString.getFactor() als Key 
 	 * und dem String "sSeparator" als Wert.
 	 * 
 	 */
+
 	public static HashMap<Integer, String> getHashMapLogStringSeparatorAll() throws ExceptionZZZ {
+		return LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(false);
+	}
+	
+	public static HashMap<Integer, String> getHashMapLogStringSeparatorAll(boolean bLineFilter) throws ExceptionZZZ {
+		return LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(bLineFilter);
+	}
+	
+	public static HashMap<Integer, String> getHashMapLogStringSeparatorAllForLine() throws ExceptionZZZ {
+		return LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(true);
+	}
+	
+	
+	private static HashMap<Integer, String> getHashMapLogStringSeparatorAll_(boolean bLineFilter) throws ExceptionZZZ {
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
@@ -51,12 +71,16 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			//Problem: ClassCastException.
 			//Merksatz (wichtig!) - Erstellt von ChatGPT
 			//Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
-			//auch wenn das Enum dieses Interface implementiert			
-			//IEnumSetMappedLogStringFormatZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			//auch wenn das Enum dieses Interface implementiert
 			
 			//Aber das geht nicht, s. ChatGPT vom 20260110
-			List<IEnumSetMappedLogStringFormatZZZ>listaEnum = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);			
-			for(IEnumSetMappedLogStringFormatZZZ ienum : listaEnum) {
+			//IEnumSetMappedLogStringFormatZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			IEnumSetMappedLogStringFormatZZZ[] ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedArray(LogStringFormaterZZZ.class, sENUMNAME);
+			for(IEnumSetMappedLogStringFormatZZZ ienum : ienuma) {
+			
+
+			//List<IEnumSetMappedLogStringFormatZZZ>listaEnum = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);			
+			//for(IEnumSetMappedLogStringFormatZZZ ienum : listaEnum) {
 				int iArgumentType =  ienum.getArgumentType();
 				if(iArgumentType==ILogStringFormatZZZ.iARG_CONTROL) {
 					int iFaktor = ienum.getFactor();
@@ -84,7 +108,13 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				            break;
 				        case iFACTOR_CONTROL03SEPARATOR_XML:
 				        	hmReturn.put(iFaktor, sSEPARATOR_03_DEFAULT); //das eigentlich noch in XML umwandeln
-				            break;				       
+				            break;		
+				        case iFACTOR_LINENEXT_STRING:
+				        	if(!bLineFilter) {
+				        		//Der Format Manager teilt anhand dieses Kennzeichens die Formatanweisungen auf die verschiedenenen Zeile auf
+				        		hmReturn.put(iFaktor,  StringZZZ.crlf());				        		
+				        	}
+				        	break;
 				        default:
 				            System.out.println("Faktor iFaktor="+iFaktor + " wird nicht behandelt");
 				            break;
@@ -103,7 +133,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, IEnumSetMappedLogStringFormatZZZ> hmReturn = new HashMap<Integer,IEnumSetMappedLogStringFormatZZZ>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(LogStringFormaterZZZ.class, sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString);
@@ -122,7 +152,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(LogStringFormaterZZZ.class, ILogStringFormatZZZ.sENUMNAME);
+			ArrayList<IEnumSetMappedLogStringFormatZZZ> ienuma = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(LogStringFormaterZZZ.class, sENUMNAME);
 			for(IEnumSetMappedZZZ ienum : ienuma) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());

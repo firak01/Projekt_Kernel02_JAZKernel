@@ -1,5 +1,7 @@
 package basic.zBasic.util.log;
 
+import static basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ.sENUMNAME;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -1919,7 +1921,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
 		
 		//Kein Array, s. ChatGPT 20260110
-		List<?> listaReturn = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this.getClass(), ILogStringFormatZZZ.sENUMNAME);
+		List<?> listaReturn = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(this.getClass(), sENUMNAME);
 		
 		//Array automatisch aus dem Enum errechnen.
 		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = (IEnumSetMappedLogStringFormatZZZ[]) ArrayListUtilZZZ.toArray((ArrayList<?>) listaReturn);
@@ -1963,8 +1965,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
 		main:{
 			//HashMap automatisch aus dem Enum errechnen.			
-			ArrayList<IEnumSetMappedLogStringFormatZZZ>  listaEnumMappedLogStringFormat = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedLogStringFormatList(this, ILogStringFormatZZZ.sENUMNAME);
-			for(IEnumSetMappedZZZ ienum : listaEnumMappedLogStringFormat) {
+			ArrayList<IEnumSetMappedLogStringFormatZZZ>  listaEnumMappedLogStringFormat = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(this, sENUMNAME);
+			for(IEnumSetMappedLogStringFormatZZZ ienum : listaEnumMappedLogStringFormat) {
 				IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 				hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
 			}				
