@@ -45,7 +45,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	public ArrayListZZZ<IStringJustifierZZZ>getStringJustifierListDefault() throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ> listaReturn = new ArrayListZZZ<IStringJustifierZZZ>();
 		
-		TODOGOON20260102: Hier muss die Reihenfolge irgendwie aus dem uebergebenen Formatanweisungs-Array ermittelt werden.
+		//TODOGOON20260102: Hier muss die Reihenfolge irgendwie aus dem uebergebenen Formatanweisungs-Array ermittelt werden.
 		Separator01StringJustifierZZZ objJustifier01 = (Separator01StringJustifierZZZ) Separator01StringJustifierZZZ.getInstance();
 		listaReturn.add(objJustifier01);
 

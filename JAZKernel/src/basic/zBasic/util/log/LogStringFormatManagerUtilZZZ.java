@@ -38,7 +38,7 @@ public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 02.01.2026, 10:40:25
 	 */
 	public static IStringJustifierZZZ[] getStringJustifierArray(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierDefault) throws ExceptionZZZ{	
-		TODOGOON20260102: Algorithmus entwickeln hier aus dem Format die optimale Reihenfolge der Justifier festzulegen
+		//TODOGOON20260102: Algorithmus entwickeln hier aus dem Format die optimale Reihenfolge der Justifier festzulegen
 		
 		//MatchRuleZZZ<IEnumSetMappedLogStringFormatZZZ[],ArrayListZZZ<IStringJustifierZZZ>> containsRule = new MatchRuleZZZ<IEnumSetMappedLogStringFormatZZZ[], ArrayListZZZ<IStringJustifierZZZ>>() {
 		MatchRuleZZZ<IEnumSetMappedLogStringFormatZZZ,IStringJustifierZZZ> containsRule = new MatchRuleZZZ<IEnumSetMappedLogStringFormatZZZ, IStringJustifierZZZ>() {
