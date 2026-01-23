@@ -6,19 +6,19 @@ import java.util.List;
 
 import basic.zBasic.ExceptionZZZ;
 
-public class GenericArrayMatcher {
+public class GenericMatcherArray {
 
-    public static <K, V> V[] filter(
-            K[] keys,
-            V[] values,
-            IMatchRuleZZZ<K, V> rule,
+    public static <V, K> V[] filter(
+    		V[] values,
+            K[] keys,            
+            IMatchRuleZZZ<V, K> rule,
             Class<V> valueType) throws ExceptionZZZ {
 
         List<V> result = new ArrayList<V>();
 
         for (K key : keys) {
             for (V value : values) {
-                if (rule.matches(key, value)) {
+                if (rule.matches(value, key)) {
                     if (!result.contains(value)) {
                         result.add(value);
                     }

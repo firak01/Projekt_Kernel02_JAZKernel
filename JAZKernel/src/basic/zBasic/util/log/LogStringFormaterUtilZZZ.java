@@ -2,7 +2,10 @@ package basic.zBasic.util.log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -799,6 +802,24 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	
 
+	public static ArrayListZZZ<IEnumSetMappedLogStringFormatZZZ> getArrayListLogStringSeparatorFrom(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) {
+		ArrayListZZZ<IEnumSetMappedLogStringFormatZZZ> listaReturn = null;
+		main:{
+			if(hm==null)break main;
+			listaReturn = new ArrayListZZZ<IEnumSetMappedLogStringFormatZZZ>();
+			
+			Set<IEnumSetMappedLogStringFormatZZZ> set = hm.keySet();
+			Iterator<IEnumSetMappedLogStringFormatZZZ> it = set.iterator();
+			while(it.hasNext()) {
+				IEnumSetMappedLogStringFormatZZZ objFormatSet = it.next();
+				if(objFormatSet.getArgumentType()==ILogStringFormatZZZ.iARG_CONTROL) {
+					listaReturn.add(objFormatSet);
+				}
+			}
+			
+		}//end main:
+		return listaReturn;
+	}
 
 	
 }

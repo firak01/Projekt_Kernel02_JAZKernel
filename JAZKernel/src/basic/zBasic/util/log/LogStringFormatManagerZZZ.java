@@ -587,7 +587,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		
 		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList(hm);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+			//IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+			IStringJustifierZZZ objJustifier = listaStringJustifier.get(icount);
 			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}	
 		return sReturn;

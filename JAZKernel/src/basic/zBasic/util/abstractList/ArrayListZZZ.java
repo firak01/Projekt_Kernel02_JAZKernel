@@ -9,9 +9,12 @@ package basic.zBasic.util.abstractList;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import basic.javareflection.mopex.Mopex;
@@ -19,6 +22,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.rule.GenericMatcherArrayListZZZ;
+import basic.zBasic.rule.IMatchRuleZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 
@@ -106,5 +112,25 @@ public class ArrayListZZZ<T> extends AbstractArrayListZZZ<T> implements IArrayLi
 			iReturn = HashMapIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
 		}//end main
 		return iReturn;
-	}	
+	}
+	
+	 public <V, K> ArrayListZZZ<T> filter(K[] keys, IMatchRuleZZZ<T, K> rule) throws ExceptionZZZ {
+		 ArrayListZZZ<T> listaReturn=null;
+		 main:{
+			 if(ArrayUtilZZZ.isNull(keys)) {
+				 listaReturn = (ArrayListZZZ<T>) this.clonez();
+				 break main;
+			 }
+			 
+			 if(rule==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("Rule'", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());								  
+					throw ez;
+			 }
+			 
+			 ArrayListZZZ<T> values = this;
+			 return GenericMatcherArrayListZZZ.filter(values, keys, rule);
+		 }//end main:
+		 return listaReturn;
+	 }
+	
 }//end class

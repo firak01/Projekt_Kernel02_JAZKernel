@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 
 import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
@@ -28,7 +29,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  IConstantZZZ, IObjectZZZ, IArrayListExtendedZZZ{
+public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements IConstantZZZ, IObjectZZZ, IArrayListExtendedZZZ{
 	private static final long serialVersionUID = 2859619907770188881L;
 	
 	/**

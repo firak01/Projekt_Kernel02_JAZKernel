@@ -2,10 +2,10 @@ package basic.zBasic.rule;
 
 import basic.zBasic.ExceptionZZZ;
 
-public class MatchRuleZZZ<K,V> implements IMatchRuleZZZ<K,V>{
+public class ExampleMatchRuleZZZ<V,K> extends AbstractMatchRuleZZZ<V,K>{
 
 	@Override
-	public boolean matches(K key, V value) throws ExceptionZZZ {
+	public boolean matches(V value, K key) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			if(key==null) break main;
