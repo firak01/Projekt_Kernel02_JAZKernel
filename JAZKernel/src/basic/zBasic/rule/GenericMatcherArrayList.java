@@ -36,6 +36,32 @@ public class GenericMatcherArrayList {
        return result;
     }
     
+    public static <V, K> ArrayList<V> filter(
+    		List<V> values,
+            K key,            
+            IMatchRuleZZZ<V, K> rule
+            ) throws ExceptionZZZ {
+
+        ArrayList<V> result = null;
+        if (key == null || values == null || rule == null) {
+            return result;
+        }        
+        result = new ArrayList<V>();
+        
+        
+        
+        for (V value : values) {
+            if (rule.matches(value, key)) {
+                // Duplikate vermeiden
+                if (!result.contains(value)) {
+                    result.add(value);
+                }
+            }
+        }
+       
+       return result;
+    }
+    
     
     /*unschön, aber in statischen Methoden sind die Rückgabwerte halt nur so zu unterscheiden.
      * s. ChatGPT vom 2026-01-23 "Vererbung bei Interface"

@@ -9,11 +9,14 @@ import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 public interface ILogStringFormatManagerZZZ extends ILogStringFormatManagerComputerZZZ{
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListDefault() throws ExceptionZZZ;
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList() throws ExceptionZZZ;
-	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
-	//sinn? public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	
 	public void setStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaJustifier) throws ExceptionZZZ;
+
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	
+	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListUsed() throws ExceptionZZZ;
+	public void setStringJustifierListUsed(ArrayListZZZ<IStringJustifierZZZ> listaJustifier) throws ExceptionZZZ;	
 	
 	public boolean hasStringJustifier(int iIndex) throws ExceptionZZZ;
 	public IStringJustifierZZZ getStringJustifierDefault() throws ExceptionZZZ;

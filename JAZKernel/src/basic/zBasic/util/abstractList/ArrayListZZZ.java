@@ -114,6 +114,25 @@ public class ArrayListZZZ<T> extends AbstractArrayListZZZ<T> implements IArrayLi
 		return iReturn;
 	}
 	
+	public <V, K> ArrayListZZZ<T> filter(K key, IMatchRuleZZZ<T, K> rule) throws ExceptionZZZ {
+		 ArrayListZZZ<T> listaReturn=null;
+		 main:{
+			 if(key == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Key'", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());								  
+				throw ez;
+			 }
+			 
+			 if(rule==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("Rule'", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());								  
+					throw ez;
+			 }
+			 
+			 ArrayListZZZ<T> values = this;
+			 listaReturn = GenericMatcherArrayListZZZ.filter(values, key, rule);
+		 }//end main:
+		 return listaReturn;
+	 }
+	
 	 public <V, K> ArrayListZZZ<T> filter(K[] keys, IMatchRuleZZZ<T, K> rule) throws ExceptionZZZ {
 		 ArrayListZZZ<T> listaReturn=null;
 		 main:{

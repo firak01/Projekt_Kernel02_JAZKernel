@@ -46,5 +46,30 @@ public class GenericMatcherArrayListZZZ {
 
        return result;
     }
+    
+    public static <V, K> ArrayListZZZ<V> filter(
+    		ArrayListZZZ<V> values,
+            K key,            
+            IMatchRuleZZZ<V, K> rule
+            ) throws ExceptionZZZ {
+
+        ArrayListZZZ<V> result = null;
+        if (key == null || values == null || rule == null) {
+            return result;
+        }        
+        result = new ArrayListZZZ<V>();
+        
+        
+        for (V value : values) {
+             if (rule.matches(value, key)) {
+                 // Duplikate vermeiden
+                 if (!result.contains(value)) {
+                      result.add(value);
+                  }
+             }        
+        }
+
+       return result;
+    }
 }
 

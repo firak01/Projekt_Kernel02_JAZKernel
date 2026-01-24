@@ -45,7 +45,7 @@ public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
 		main:{
 			if(listaStringJustifier==null) break main;
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = LogStringFormatManagerUtilZZZ.getStringJustifierList(listaStringJustifier,ienumaFormatLogString);	
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = LogStringFormatManagerUtilZZZ.getStringJustifierListFiltered(listaStringJustifier,ienumaFormatLogString);	
 			objaReturn = ArrayListUtilZZZ.toArray(listaStringJustifierReturn, IStringJustifierZZZ.class);
 		}
 		return objaReturn;
@@ -58,12 +58,23 @@ public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString= new IEnumSetMappedLogStringFormatZZZ[1];
 			ienumaFormatLogString[0] = ienumFormatLogString;
-			listaReturn = getStringJustifierList(listaStringJustifier, ienumaFormatLogString);						
+			listaReturn = getStringJustifierListFiltered(listaStringJustifier, ienumaFormatLogString);						
 		}//end main:
 		return listaReturn;			
 	}
 	
-	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
+		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
+		main:{			
+			if(listaStringJustifier==null) break main;
+			
+			LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ> containsRule = new LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ>();				
+			listaReturn = listaStringJustifier.filter(ienumFormatLogString, containsRule);						
+		}//end main:
+		return listaReturn;			
+	}
+	
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
 		main:{			
 			if(listaStringJustifier==null) break main;

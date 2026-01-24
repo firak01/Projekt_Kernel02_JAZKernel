@@ -30,5 +30,28 @@ public class GenericMatcherArray {
         V[] array = (V[]) Array.newInstance(valueType, result.size());
         return result.toArray(array);
     }
+    
+    public static <V, K> V[] filter(
+    		V[] values,
+            K key,            
+            IMatchRuleZZZ<V, K> rule,
+            Class<V> valueType) throws ExceptionZZZ {
+
+        List<V> result = new ArrayList<V>();
+
+       
+        for (V value : values) {
+            if (rule.matches(value, key)) {
+                if (!result.contains(value)) {
+                    result.add(value);
+                }
+            }
+        }
+       
+
+        @SuppressWarnings("unchecked")
+        V[] array = (V[]) Array.newInstance(valueType, result.size());
+        return result.toArray(array);
+    }
 }
 

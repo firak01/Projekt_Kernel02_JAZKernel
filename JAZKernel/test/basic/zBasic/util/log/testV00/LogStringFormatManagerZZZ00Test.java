@@ -4,7 +4,9 @@ import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
+import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatManagerJustifiedZZZ;
@@ -457,4 +459,75 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	} 
+	
+	public void testCompute_FormatDefined_JustifierSorting(){
+		try{			
+			String sLog1 = null; String sLog2 = null; String sLog3 = null; String sThread = null; String sClassName = null;
+			String sLogValue = null; 
+			int iLogIndex1 = -1; int iLogIndex2 = -1; int iLogIndex3 = -1; int iThreadIndex = -1; int iClassNameIndex = -1;
+			
+			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
+			sLog1 = "der erste Logeintrag etwas laenger";
+			sLog2 = "der zweite Logeintrag";
+			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
+			sThread = "[Thread:";
+			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			
+			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat04= {
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					};
+			
+			
+			//+++ Merke: Im korrekten Einsatz wird die Liste der Formatanweisungen erst mit CONTROL_LINENEXT_ aufgeteilt
+			//           Jede Logzeile wird dann unabhängig voneinenader Formatiert.
+			//           Der Justifier ist allerdings ein Singleton, so dass die Position der Spaltentrennermarke erhalten bleibt.
+			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = LogStringFormatManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
+			assertNotNull(listaJustifierFiltered04);
+			assertTrue(listaJustifierFiltered04.size()==2);
+			
+//			Merke:
+//			public static String sSEPARATOR_MESSAGE_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+//			public static String sSEPARATOR_01_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+//			public static String sSEPARATOR_02_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
+//			public static String sSEPARATOR_03_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
+			
+			IStringJustifierZZZ objJustifierFiltered04_0 = listaJustifierFiltered04.get(0);
+			String sJustifierFilteredSeparator04_0 = objJustifierFiltered04_0.getPositionSeparator();
+			assertEquals(ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT, sJustifierFilteredSeparator04_0);
+		
+			IStringJustifierZZZ objJustifierFiltered04_1 = listaJustifierFiltered04.get(1);
+			String sJustifierFilteredSeparator04_1 = objJustifierFiltered04_1.getPositionSeparator();
+			assertEquals(ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT, sJustifierFilteredSeparator04_1);
+			
+			
+			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechen trotzdem mal aus
+			System.out.println("++++++++++++");
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1);
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			
+			System.out.println("++++++++++++");
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2);
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			
+			System.out.println("++++++++++++");
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			
+			
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
 }
