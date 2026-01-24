@@ -483,6 +483,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
 			String sLog= null;
+			
+			//if(StringZZZ.isEmpty(sLogIn)) break main;						
 			if(sLogIn!=null) {
 				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
 				if(!StringZZZ.isEmpty(sOuter)) {				
