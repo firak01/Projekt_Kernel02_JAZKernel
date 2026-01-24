@@ -550,7 +550,7 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 			}
 			
 			 for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++){
-			 	String sTemp = saSource[iCounter];
+			 	String sTemp = saSource[iCounter];			 	
 			 	if (sTemp.equalsIgnoreCase(sToFind)){	
 			 		bReturn = true;
 			 		break main;

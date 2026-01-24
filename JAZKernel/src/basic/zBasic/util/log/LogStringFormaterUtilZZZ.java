@@ -39,11 +39,14 @@ import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARAT
 import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML;
+import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING;
+import static basic.zBasic.util.log.ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML;
 
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
 import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
+import static basic.zBasic.util.log.ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT;
 
 
 public class LogStringFormaterUtilZZZ implements IConstantZZZ{
@@ -111,7 +114,13 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				            break;
 				        case iFACTOR_CONTROL03SEPARATOR_XML:
 				        	hmReturn.put(iFaktor, sSEPARATOR_03_DEFAULT); //das eigentlich noch in XML umwandeln
-				            break;		
+				            break;
+				        case iFACTOR_CONTROL04SEPARATOR_STRING:
+				        	hmReturn.put(iFaktor, sSEPARATOR_04_DEFAULT);
+				            break;
+				        case iFACTOR_CONTROL04SEPARATOR_XML:
+				        	hmReturn.put(iFaktor, sSEPARATOR_04_DEFAULT); //das eigentlich noch in XML umwandeln
+				            break;
 				        case iFACTOR_LINENEXT_STRING:
 				        	if(!bLineFilter) {
 				        		//Der Format Manager teilt anhand dieses Kennzeichens die Formatanweisungen auf die verschiedenenen Zeile auf
@@ -119,7 +128,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				        	}
 				        	break;
 				        default:
-				            System.out.println("Faktor iFaktor="+iFaktor + " wird nicht behandelt");
+				            System.out.println("LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(): Faktor iFaktor="+iFaktor + " wird nicht behandelt");
 				            break;
 				        }					
 				}				
@@ -501,15 +510,95 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
+	
+	//###############################################################################################
+	//### Berechne alle moeglichen Kommentar-, etc. Trenner. 
+	//### - auch um auszuschliessen, das eine Zeile nur aus diesem beseht.
+	public static String[] computeLinePartInLog_ControlSeparatorAny() throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			String stemp=null; 
+			ArrayList<String>listasSeparator=new ArrayList<String>();
+			
+			//+++++++++++++++++++++
+			stemp = computeLinePartInLog_ControlCommentSeparator();
+			listasSeparator.add(stemp);
+			stemp = computeLinePartInLog_ControlCommentSeparatorXml();
+			listasSeparator.add(stemp);
+			
+			stemp = computeLinePartInLog_Control01Separator();
+			listasSeparator.add(stemp);
+			stemp = computeLinePartInLog_Control01SeparatorXml();
+			listasSeparator.add(stemp);
+			
+			stemp = computeLinePartInLog_Control02Separator();
+			listasSeparator.add(stemp);
+			stemp = computeLinePartInLog_Control02SeparatorXml();
+			listasSeparator.add(stemp);
+			
+			stemp = computeLinePartInLog_Control03Separator();
+			listasSeparator.add(stemp);
+			stemp = computeLinePartInLog_Control03SeparatorXml();
+			listasSeparator.add(stemp);
+			
+			stemp = computeLinePartInLog_Control04Separator();
+			listasSeparator.add(stemp);
+			stemp = computeLinePartInLog_Control04SeparatorXml();
+			listasSeparator.add(stemp);
+			
+			//+++++++++++++++++++++++++++++
+			saReturn = ArrayListUtilZZZ.toStringArray(listasSeparator);
+		}//end main:
+		return saReturn;
+	}
+	
 	public static String computeLinePartInLog_ControlCommentSeparator() throws ExceptionZZZ {
 		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));
 		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
 	}
+	public static String computeLinePartInLog_ControlCommentSeparatorXml() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
 	
-	public static String computeLinePartInLog_ControlThreadIdSeparator() throws ExceptionZZZ {
+	public static String computeLinePartInLog_Control01Separator() throws ExceptionZZZ {
 		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));
 		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
 	}
+	public static String computeLinePartInLog_Control01SeparatorXml() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	
+	public static String computeLinePartInLog_Control02Separator() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	public static String computeLinePartInLog_Control02SeparatorXml() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	
+	public static String computeLinePartInLog_Control03Separator() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	public static String computeLinePartInLog_Control03SeparatorXml() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	
+	public static String computeLinePartInLog_Control04Separator() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	public static String computeLinePartInLog_Control04SeparatorXml() throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = LogStringFormaterUtilZZZ.getHashMapFormatPositionAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML));
+		return LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+	}
+	
+	//###############################################################################################
+	
 	
 	/** Nur das formatierte SEPARATOR-ZEICHEN
 	 * @param ienumFormatLogString
@@ -669,6 +758,32 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING:
+	            	//ByControl?
+	                //  sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	 
+	            	  sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	           
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML:
+	            	//ByControl?
+	               // sFormat = this.getHashMapFormatPositionString().get(
+	                //        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));
+	            	sFormat = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll().get(new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR04, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+
 	            default:
 	                System.out.println("AbstractLogStringZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;

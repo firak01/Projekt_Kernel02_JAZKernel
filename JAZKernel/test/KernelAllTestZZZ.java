@@ -39,6 +39,7 @@ import basic.zBasic.util.datatype.enums.EnumSetMappedStatusLocalUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
+import basic.zBasic.util.datatype.string.StringAnalyseUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZTest;
 import basic.zBasic.util.datatype.xml.XmlTagByTypeUtilZZZTest;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZTest;
@@ -146,6 +147,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(BinaryTokenizerZZZTest.class);
 		objReturn.addTestSuite(IntegerZZZTest.class);		
 		objReturn.addTestSuite(StringZZZTest.class);
+		objReturn.addTestSuite(StringAnalyseUtilZZZ.class);
 		objReturn.addTestSuite(XmlTagMatcherZZZTest.class);
 		objReturn.addTestSuite(XmlParserZZZTest.class);		
 		objReturn.addTestSuite(XmlUtilZZZTest.class);

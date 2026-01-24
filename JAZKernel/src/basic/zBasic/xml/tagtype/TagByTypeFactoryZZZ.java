@@ -22,6 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.reflection.position.TagTypeSeparator01ZZZ;
 import basic.zBasic.reflection.position.TagTypeSeparator02ZZZ;
 import basic.zBasic.reflection.position.TagTypeSeparator03ZZZ;
+import basic.zBasic.reflection.position.TagTypeSeparator04ZZZ;
 
 public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 	private static final long serialVersionUID = -8672998939542120263L;
@@ -46,6 +47,7 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 		SEPARATOR01("separator01",TagTypeSeparator01ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 01. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		SEPARATOR02("separator02",TagTypeSeparator02ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 02. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		SEPARATOR03("separator03",TagTypeSeparator03ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 03. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
+		SEPARATOR04("separator04",TagTypeSeparator04ZZZ.sTAGNAME,"Umgebender Tag fuer den Separator 04. Damit wird dann die ganze Log-Zeile als Sammlung von XML-Tags ermoeglicht."),
 		;
 		
 		

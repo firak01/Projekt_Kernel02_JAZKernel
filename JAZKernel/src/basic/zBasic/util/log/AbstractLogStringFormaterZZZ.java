@@ -29,6 +29,7 @@ import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelper
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
+import basic.zBasic.util.datatype.string.StringAnalyseUtilZZZ;
 import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -1812,8 +1813,22 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.
-			String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-			if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
+			//String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+			//if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
+			//	sReturn = null;
+			//}
+			
+			//20260124: Vermeide eine Zeile, die nur einen Kommentartrenner enthält
+
+			String[] saCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlSeparatorAny();
+			
+			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist, geht das so nicht.
+			//if(sReturn!=null && StringArrayZZZ.contains(saCommentSeparatorFormated, sReturn)) {
+			//	sReturn = null;
+			//}
+			
+			//Verwende daher einen Ansatz der Stringreduktion (s. ChatGPT 2026-01-24)
+			if(sReturn!=null && StringAnalyseUtilZZZ.consistsOnlyOf(sReturn, saCommentSeparatorFormated)){
 				sReturn = null;
 			}
 		}//end main:
