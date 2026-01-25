@@ -262,7 +262,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
 					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
 						
-						Integer intIndex = new Integer(iStringIndexToRead);
+						Integer intIndex = new Integer(iStringIndexToRead); //Durchlaufe die Log-Einträge auf der Suche nach dem ersten Eintrag, der noch nich geschrieben wurde.
 						if(!listaIndexRead.contains(intIndex)){
 							String sValue = this.computeByString_(classObj, sLogs[iStringIndexToRead], ienumFormatLogString);
 							if(sValue!=null) {								
@@ -1596,7 +1596,9 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedLogStringFormatZZZ)ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
 				String sLine = computeLineInLog_(classObj, ienumaLine, sLogs);
-				alsReturn.add(sLine);				
+				if(sLine!=null) { //z.B. werden Zeilen, nur mit Separatoren fuer die Justifier ausgeschlossen.
+					alsReturn.add(sLine);
+				}
 			}							
 		}//end main:
 		return alsReturn;

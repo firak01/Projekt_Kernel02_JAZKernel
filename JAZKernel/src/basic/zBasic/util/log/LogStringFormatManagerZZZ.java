@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -157,20 +158,37 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	@Override
 	public synchronized String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(obj, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		String sReturn = null;
+		main:{			
+			//String sReturn = super.computeJagged(obj, ienumaFormatLogString, sLogs);
+			//sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+			
+			//#######################
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+			
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(obj, ienumaFormatLogString, sLogs);
+			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
+			for(String sJagged : listasJagged) {
 		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+				
+				String sJustified = sJagged;
+				for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+					IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+					this.getStringJustifierListUsed().add(objJustifier);
+					sJustified = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sJustified);				
+				}	
+				listasReturn.add(sJustified);
+			}
 		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
 		return sReturn;
 	}
 

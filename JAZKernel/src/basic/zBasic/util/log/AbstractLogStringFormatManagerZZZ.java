@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
@@ -30,7 +31,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	private volatile ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = null;
 	
 	//Die liste der verwendeten Justifier, nach der Filterung
-	private volatile ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierUsed = null;
+	private volatile ArrayListUniqueZZZ<IStringJustifierZZZ> listaStringJustifierUsed = null;
 	
 	
 	private static final boolean INITIALIZED = true;// Trick, um Mehrfachinstanzen zu verhindern (optional)
@@ -82,7 +83,7 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 	@Override
 	public ArrayListZZZ<IStringJustifierZZZ>getStringJustifierListUsed() throws ExceptionZZZ{
 		if(this.listaStringJustifierUsed==null) {
-			this.listaStringJustifierUsed = new ArrayListZZZ<IStringJustifierZZZ>();
+			this.listaStringJustifierUsed = new ArrayListUniqueZZZ<IStringJustifierZZZ>();
 		}
 		return this.listaStringJustifierUsed;
 	}
