@@ -17,6 +17,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.json.JsonUtilZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
@@ -1150,6 +1151,16 @@ output:
 		return saReturn;
 	}
 		
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public Vector toVector() throws ExceptionZZZ {
+		Vector objReturn = new Vector();
+		main:{
+			String[] saString = this.getArray();
+			objReturn = StringArrayZZZ.toVector(saString);
+		}
+		return objReturn;
+	}
+	
 	public static Vector toVector(String[] saString) throws ExceptionZZZ {
 		Vector objReturn = new Vector();
 		main:{
@@ -1164,15 +1175,14 @@ output:
 		return objReturn;
 	}
 	
-	public Vector toVector() throws ExceptionZZZ {
-		Vector objReturn = new Vector();
-		main:{
-			String[] saString = this.getArray();
-			objReturn = StringArrayZZZ.toVector(saString);
-		}
-		return objReturn;
+	//++++++++++++++++++++++++++++++++++++++++
+	public ArrayList<String> toArrayList() throws ExceptionZZZ {
+		String[] saString = this.getArray();
+		ArrayList<String> listaString = StringArrayZZZ.toArrayList(saString);
+		return listaString;
 	}
 	
+
 	public static ArrayList<String> toArrayList(String[] saString) throws ExceptionZZZ {
 		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
@@ -1184,15 +1194,6 @@ output:
 				listaString.add(stemp);
 			}
 			
-		}
-		return listaString;
-	}
-	
-	public ArrayList<String> toArrayList() throws ExceptionZZZ {
-		ArrayList<String> listaString = new ArrayList<String>();
-		main:{
-			String[] saString = this.getArray();
-			listaString = StringArrayZZZ.toArrayList(saString);
 		}
 		return listaString;
 	}

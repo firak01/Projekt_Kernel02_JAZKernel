@@ -279,81 +279,184 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	
 	//#######################################################################################################################
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{		
 		String sReturn = sLog;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
 								
 			//Teile die Zeile ggfs. am Zeilenumbruch auf
 			String[] saLine = StringZZZ.explode(sLog, StringZZZ.crlf());
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, saLine);			
+			sReturn = justifyInfoPart_(objStringJustifier, false, saLine);			
 		}//end main:
 		return sReturn;
 	}
 	
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String[] saLine) throws ExceptionZZZ{
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String[] saLog) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			if(StringArrayZZZ.isEmpty(saLine)) break main;
-			if(objStringJustifier==null) {
-				sReturn = StringArrayZZZ.implode(saLine, StringZZZ.crlf());
+			if(saLog==null) break main;						
+			sReturn = justifyInfoPart_(objStringJustifier, false, saLog);			
+		}//end main:
+		return sReturn;		
+	}
+	
+	
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String sLog) throws ExceptionZZZ{
+		String sReturn = sLog;
+		main:{
+			if(StringZZZ.isEmpty(sLog)) break main;
+								
+			//Teile die Zeile ggfs. am Zeilenumbruch auf
+			String[] saLine = StringZZZ.explode(sLog, StringZZZ.crlf());
+			sReturn = justifyInfoPart_(objStringJustifier, bMergeFirst2Lines, saLine);			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
+		return justifyInfoPart_(objStringJustifier, bMergeFirst2Lines, saLine);
+	}
+	
+	private static String justifyInfoPart_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(saLine==null) break main;
+			
+			ArrayList<String> listasLine = StringArrayZZZ.toArrayList(saLine);
+			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayList(listasLine);
+			
+			ArrayListZZZ<String> listasReturn = justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLineZ);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
+		return sReturn;
+	}
+	
+//	private static String justifyInfoPart_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
+//		String sReturn = null;
+//		main:{
+//			if(StringArrayZZZ.isEmpty(saLine)) break main;
+//			if(objStringJustifier==null) {
+//				sReturn = StringArrayZZZ.implode(saLine, StringZZZ.crlf());
+//				break main;
+//			}
+//			
+//			
+//			//In den übergebenen Zeilen koennten weitere Kommentartrenner stecken.
+//			//Daher jede Zeile splitten und danach das neue "Standardisierte Array" weiterverarbeiten
+//			//Ggfs. auch die erste Zeile und die 2te Zeile zusammenfassen.
+//			String[] saLineNormed = normStringForJustify_(objStringJustifier,bMergeFirst2Lines, saLine);
+//			
+//			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SepartorStrings setzen
+//			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(saLineNormed[0]); 
+//			objStringJustifier.setInfoPartBoundLeftBehindIncreased(iIndexMayIncrease);
+//			
+//			//Nun das Standardisierte Array anpassen			
+//				if(saLineNormed.length>=2) {
+//					//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
+//					String[] saLineReversed1 = ArrayUtilZZZ.reverse(saLineNormed);
+//					ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
+//					for(String sLine : saLineReversed1) {
+//						String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
+//						listasLineReversedJustified1.add(sLineJustified);
+//					}
+//					
+//					ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
+//					ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
+//					for(String sLine : listasLineReversed2) {
+//						String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
+//						listasLineReversedJustified2.add(sLineJustified);
+//					}
+//					
+//					//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
+//					for(String sLineJustified : listasLineReversedJustified2) {
+//						if(sReturn==null){
+//							sReturn = sLineJustified;
+//						}else {					
+//							sReturn = sReturn + StringZZZ.crlf() + sLineJustified;
+//						}
+//					}	
+//				}else {
+//					String sLine = saLineNormed[0];
+//					if(sLine!=null) {
+//						sReturn = objStringJustifier.justifyInfoPart(sLine);					
+//					}
+//				}			
+//		}//end main:
+//		return sReturn;
+//	}
+	
+	
+	
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String> listasLine) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{			
+			if(listasLine==null) break main;
+			if(listasLine.isEmpty()) break main;			
+			
+			ArrayListZZZ<String> listasReturn = justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end  main:
+		return sReturn;
+	}
+
+	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+		return justifyInfoPartArrayList_(objStringJustifier, false, listasLine);
+	}
+	
+	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+		return justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
+	}
+	
+	private static ArrayListZZZ<String> justifyInfoPartArrayList_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+		ArrayListZZZ<String>listasReturn=null;;
+		main:{	
+			if(listasLine==null) break main;
+			
+			if(objStringJustifier==null | listasLine.isEmpty()) {
+				listasReturn=listasLine;
 				break main;
+			}else {
+				listasReturn = new ArrayListZZZ<String>();
 			}
 			
 			
 			//In den übergebenen Zeilen koennten weitere Kommentartrenner stecken.
 			//Daher jede Zeile splitten und danach das neue "Standardisierte Array" weiterverarbeiten
 			//Ggfs. auch die erste Zeile und die 2te Zeile zusammenfassen.
-			String[] saLineNormed = normStringForJustify(objStringJustifier,saLine);
+			ArrayListZZZ<String>listasLineNormed = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
 			
-			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SepartorStrings setzen
-			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(saLineNormed[0]); 
+			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SeparatorStrings setzen
+			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(listasLineNormed.get(0)); 
 			objStringJustifier.setInfoPartBoundLeftBehindIncreased(iIndexMayIncrease);
 			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Nun das Standardisierte Array anpassen
-			if(saLineNormed.length>=2) {
+			if(listasLineNormed.size()>=2) {
 				//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
-				String[] saLineReversed1 = ArrayUtilZZZ.reverse(saLineNormed);
-				ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
-				for(String sLine : saLineReversed1) {
+				ArrayListZZZ<String> listasLineReversed1 =  ArrayListUtilZZZ.reverse(listasLineNormed);
+				ArrayListZZZ<String>listasLineReversedJustified1 = new ArrayListZZZ<String>();
+				for(String sLine : listasLineReversed1) {
 					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
 					listasLineReversedJustified1.add(sLineJustified);
 				}
 				
-				ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
-				ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
+				ArrayListZZZ<String>listasLineReversed2 =  ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
+				ArrayListZZZ<String>listasLineReversedJustified2 = new ArrayListZZZ<String>();
 				for(String sLine : listasLineReversed2) {
 					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
 					listasLineReversedJustified2.add(sLineJustified);
 				}
 				
-				//Die Zeilen so verbinden, das sie mit einem "System.println" ausgegeben werden können.
-				for(String sLineJustified : listasLineReversedJustified2) {
-					if(sReturn==null){
-						sReturn = sLineJustified;
-					}else {					
-						sReturn = sReturn + StringZZZ.crlf() + sLineJustified;
-					}
-				}							
-			}else {
-				String sLine = saLineNormed[0];
+				listasReturn = listasLineReversedJustified2;
+			}else {				
+				String sLine = listasLineNormed.get(0);
 				if(sLine!=null) {
-					sReturn = objStringJustifier.justifyInfoPart(sLine);					
+					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
+					listasReturn.add(sLineJustified);
 				}
 			}		
 		}//end main:
-		return sReturn;
-	}
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String> listasLine) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{			
-			if(listasLine==null) break main;
-			if(listasLine.isEmpty()) break main;			
-			String[] saLine = ArrayListUtilZZZ.toArray(listasLine, String.class);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, saLine);
-			
-		}//end  main:
-		return sReturn;
+		return listasReturn;
 	}
 	
 	//###############################################
@@ -429,15 +532,18 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ {
-		return normStringForJustify_(objStringJustifier, sLog);
-	}
+	
 	
 	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String[] saLogIn) throws ExceptionZZZ {
-		return normStringForJustify_(objStringJustifier, saLogIn);
+		return normStringForJustify_(objStringJustifier, false, saLogIn);
 	}
 	
-	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier,String... saLogIn) throws ExceptionZZZ {
+	
+	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ {
+		return normStringForJustify_(objStringJustifier, false, sLog);
+	}
+	
+	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String... saLogIn) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{			
 			if(ArrayUtilZZZ.isEmpty(saLogIn)) break main;
@@ -445,6 +551,96 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				saReturn = saLogIn;
 				break main;
 			}
+			
+			ArrayList<String> listasLog = (ArrayList<String>) ArrayUtilZZZ.toArrayList(saLogIn);
+			ArrayListZZZ<String> listasLogZ = ArrayListUtilZZZ.toArrayList(listasLog);
+			
+			ArrayListZZZ<String> listasReturn = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLogZ);
+			
+			
+			
+//			String sSeparatorCommentDefault = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; //Also nicht ThreadIdSeparator, das bringt nur Probleme //;objStringJustifier.getPositionSeparator();
+//			
+//			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
+//			String sSeparatorCommentDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+//			//Natürlich wg. dem explode ohne den sSeparatorMessageDefault
+//			String sSeparatorCommentDefaultFormatedLeft = StringZZZ.left(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
+//			String sSeparatorCommentDefaultFormatedRight = StringZZZ.right(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
+//			
+//			//Die Einträge aufteilen und trimmen.
+//			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
+//			for(String sLog : saLogIn) {
+//				if(sLog!=null) {
+//					
+//					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
+//					for(String sLogSub : saLogSub) {
+//						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
+//							listasLogTrimmed.add(sLogSub.trim());//trimmen
+//						}
+//					}
+//				}
+//			}			
+//			String[] saLogTrimmed = listasLogTrimmed.toStringArray();				
+//			if(ArrayUtilZZZ.isEmpty(saLogTrimmed)) break main;
+//			
+//			//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
+//			//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
+//			//       und in der 2. Zeile ff dann die Kommentare.
+//			int iIndex=0;
+//			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
+//			if(saLogTrimmed.length>=2) {
+//				//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
+//				for(String sLog : saLogTrimmed ) {					
+//					if(iIndex==0) {
+//						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
+//						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault + saLogTrimmed[1];
+//						listasReturn.add(sReturnTemp);
+//						iIndex++;
+//					}else if(iIndex==1) {
+//						//Mache wg. der Zusammenfassung in 0 hier nix.
+//						iIndex++;
+//					}else if(iIndex>=2) {	
+//						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
+//							String sReturnTemp = sSeparatorCommentDefault + sLog;
+//							listasReturn.add(sReturnTemp);
+//							iIndex++;
+//						}
+//					}				
+//				}
+//			}else {
+//				//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
+//				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+//					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
+//						//String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
+//						String sReturnTemp = saLogTrimmed[0];//20260126: Irgendwie stoert das, weil doch nun die Separa + sSeparatorCommentDefault;
+//						listasReturn.add(sReturnTemp);
+//					}
+//				}else {
+//					listasReturn.add(saLogTrimmed[0]);
+//				}
+//			}
+//						
+			saReturn = listasReturn.toStringArray();
+		}//end main:
+		return saReturn;
+	}
+	
+	private static ArrayListZZZ<String> normStringForJustifyArrayList_(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String>listasLog) throws ExceptionZZZ {
+		return normStringForJustifyArrayList_(objStringJustifier, false, listasLog);
+	}
+	
+	private static ArrayListZZZ<String> normStringForJustifyArrayList_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLog) throws ExceptionZZZ {
+		ArrayListZZZ<String>listasReturn=null;;
+		main:{	
+			if(listasLog==null) break main;
+			
+			if(objStringJustifier==null | listasLog.isEmpty()) {
+				listasReturn=listasLog;
+				break main;
+			}else {
+				listasReturn = new ArrayListZZZ<String>();
+			}
+											
 			String sSeparatorCommentDefault = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; //Also nicht ThreadIdSeparator, das bringt nur Probleme //;objStringJustifier.getPositionSeparator();
 			
 			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
@@ -455,7 +651,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			
 			//Die Einträge aufteilen und trimmen.
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
-			for(String sLog : saLogIn) {
+			for(String sLog : listasLog) {
 				if(sLog!=null) {
 					
 					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
@@ -466,48 +662,48 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 					}
 				}
 			}			
-			String[] saLogTrimmed = listasLogTrimmed.toStringArray();				
-			if(ArrayUtilZZZ.isEmpty(saLogTrimmed)) break main;
 			
-			//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
-			//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
-			//       und in der 2. Zeile ff dann die Kommentare.
-			int iIndex=0;
-			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
-			if(saLogTrimmed.length>=2) {
-				//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
-				for(String sLog : saLogTrimmed ) {					
-					if(iIndex==0) {
-						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
-						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault + saLogTrimmed[1];
-						listasReturn.add(sReturnTemp);
-						iIndex++;
-					}else if(iIndex==1) {
-						//Mache wg. der Zusammenfassung in 0 hier nix.
-						iIndex++;
-					}else if(iIndex>=2) {	
-						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-							String sReturnTemp = sSeparatorCommentDefault + sLog;
+			if(bMergeFirst2Lines) {
+				//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
+				//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
+				//       und in der 2. Zeile ff dann die Kommentare.
+				int iIndex=0;
+				if(listasLogTrimmed.size()>=2) {
+					//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
+					for(String sLog : listasLogTrimmed ) {					
+						if(iIndex==0) {
+							//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
+							String sReturnTemp = listasLogTrimmed.get(0) + sSeparatorCommentDefault + listasLogTrimmed.get(1);						
 							listasReturn.add(sReturnTemp);
 							iIndex++;
-						}
-					}				
-				}
-			}else {
-				//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
-				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
-						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
-						listasReturn.add(sReturnTemp);
+						}else if(iIndex==1) {
+							//Mache wg. der Zusammenfassung in 0 hier nix.
+							iIndex++;
+						}else if(iIndex>=2) {	
+							if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
+								String sReturnTemp = sSeparatorCommentDefault + sLog;
+								listasReturn.add(sReturnTemp);
+								iIndex++;
+							}
+						}				
 					}
 				}else {
-					listasReturn.add(saLogTrimmed[0]);
+					//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
+	//				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+	//					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
+	//						//String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
+	//						String sReturnTemp = saLogTrimmed[0];//20260126: Irgendwie stoert das, weil doch nun die Separa + sSeparatorCommentDefault;
+	//						listasReturn.add(sReturnTemp);
+	//					}
+	//				}else {
+	//					listasReturn.add(saLogTrimmed[0]);
+	//				}
 				}
+			}else {
+				listasReturn = listasLogTrimmed;
 			}
-						
-			saReturn = listasReturn.toStringArray();
 		}//end main:
-		return saReturn;
+		return listasReturn;
 	}
 	
 	

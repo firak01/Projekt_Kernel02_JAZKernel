@@ -462,7 +462,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 	
 	public void testCompute_FormatDefined_JustifierSorting(){
 		try{			
-			String sLog1 = null; String sLog2 = null; String sLog3 = null; String sThread = null; String sClassName = null;
+			String sLog1 = null; String sLog2 = null; String sLog3 = null; String sLog4 = null; String sThread = null; String sClassName = null;
 			String sLogValue = null; 
 			int iLogIndex1 = -1; int iLogIndex2 = -1; int iLogIndex3 = -1; int iThreadIndex = -1; int iClassNameIndex = -1;
 			
@@ -470,6 +470,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sLog1 = "der erste Logeintrag etwas laenger";
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
+			sLog4 = "der vierte Logeintrag mit Thread, trotzdem alle buendig?";
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
@@ -480,11 +481,16 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 					};
 			
 			
@@ -521,10 +527,11 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			
 			System.out.println("++++++++++++");
 			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
-			
-			
-			
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
+						
+			System.out.println("++++++++++++");
+			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3, sLog4);
+			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());

@@ -442,6 +442,30 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
         return listaReturn;
     }
 	
+	
+	public static <T> ArrayListZZZ<T> reverse(ArrayListZZZ<T> lista) throws ExceptionZZZ {
+	    ArrayListZZZ<T> listaReturn = null; 
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			
+			
+			// create a new list, with exactly enough initial capacity to hold the (reversed) list
+			final int size = lista.size();
+			final int last = size - 1;
+			
+		    listaReturn = new ArrayListZZZ<T>(size);
+		    
+		    // iterate through the list in reverse order and append to the result
+		    for (int i = last; i >= 0; --i) {
+		        final T element = lista.get(i);
+		        listaReturn.add(element);
+		    }
+		}//end main	
+	    return listaReturn;
+	}	
+	
 	public static <T> ArrayListUniqueZZZ<T> reverse(ArrayListUniqueZZZ<T> listaOriginal) throws ExceptionZZZ {
 		ArrayListUniqueZZZ<T> listaReturn = null;
 		main:{
@@ -520,6 +544,16 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			aReturn = lista.toArray((T[]) java.lang.reflect.Array.newInstance(classObj, lista.size()));
 		}
 		return aReturn;
+	}
+	
+	public static ArrayListZZZ<String> toArrayList(ArrayList<String> listas) throws ExceptionZZZ{
+		ArrayListZZZ<String> listaReturn = new ArrayListZZZ<String>();
+		main:{
+			for(String s : listas) {
+				listaReturn.add(s);
+			}
+		}
+		return listaReturn;
 	}
 	
 	public static Component[]toComponentArray(ArrayList<Component> lista) throws ExceptionZZZ {

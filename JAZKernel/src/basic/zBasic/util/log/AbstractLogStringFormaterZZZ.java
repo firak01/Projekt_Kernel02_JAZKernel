@@ -205,6 +205,22 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 
 	//################################################
+	
+	private ArrayListZZZ<String> computeUsingFormat_ArrayList_(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
+		main:{
+			String sReturn = null;
+			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString ) {
+				sReturn = this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);
+				if(sReturn!=null) {
+					listasReturn.add(sReturn);
+				}
+			}
+		}//end main:
+		return listasReturn;
+	}
+	
+	
 	private String computeUsingFormat_(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		return this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);	
 	}
@@ -1344,14 +1360,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 			if(listasLine.size()>=2) {
 				//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
-				ArrayListUniqueZZZ<String>listasLineReversed1 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
-				ArrayListUniqueZZZ<String>listasLineReversedJustified1 = new ArrayListUniqueZZZ<String>();
+				ArrayListZZZ<String>listasLineReversed1 = (ArrayListZZZ<String>) ArrayListUtilZZZ.reverse(listasLine);
+				ArrayListZZZ<String>listasLineReversedJustified1 = new ArrayListZZZ<String>();
 				for(String sLine : listasLineReversed1) {
 					String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
 					listasLineReversedJustified1.add(sLineJustified);
 				}
 				
-				ArrayListUniqueZZZ<String>listasLineReversed2 = (ArrayListUniqueZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
+				ArrayListZZZ<String>listasLineReversed2 = (ArrayListZZZ<String>) ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
 				ArrayListUniqueZZZ<String>listasLineReversedJustified2 = new ArrayListUniqueZZZ<String>();
 				for(String sLine : listasLineReversed2) {
 					String sLineJustified = this.getStringJustifier().justifyInfoPart(sLine);
@@ -1815,7 +1831,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			//sReturn = this.getStringJustifier().justifyInfoPart(sReturn);
 			
 			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, listasLine);				
+			ArrayList<String> listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objStringJustifier, listasLine);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
 		}//end main:
 		return sReturn;
 	}
@@ -1907,6 +1924,31 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		return sReturn;
 	}
 			
+	private ArrayListZZZ<String> computeLinePartInLog_ArrayList_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
+		main:{								
+			Class classObj = null;		
+			if(classObjIn==null) {
+				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;			
+			}else {
+				classObj = classObjIn;
+			}
+			
+			//###### Ohne irgendeinen String
+			if(ArrayUtilZZZ.isNull(sLogs)) {
+				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.						
+				listasReturn = this.computeByObject_ArrayList_(classObj, ienumaFormatLogString); 					
+				break main;
+			}
+	
+		
+			//##### Mit zu verarbeitenden Strings			
+			listasReturn = this.computeUsingFormat_ArrayList_(classObj, ienumaFormatLogString, sLogs);				
+	}//end main:
+	return listasReturn;
+}
 		/** .LINENEXT als Steuerkennzeichen wird hier nicht mehr beruecksichtig
 		 * @param classObjIn
 		 * @param saLog
@@ -2241,8 +2283,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	}
 	
 	@Override
-	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		TODOGOON20260126 umstellen
+	public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			Class classObj = null;
@@ -2420,33 +2461,85 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayListZZZ<String> computeJaggedArrayList(Object objIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+						
+		Object obj = null;
+		if (objIn == null) {
+			obj = this;	
+		}else {
+		   	obj = objIn;
+		}
+				
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaFormatLogString[0] = ienumFormatLogString;
+				
+		return computeLinesInLog_Jagged_ArrayList_(obj.getClass(), ienumaFormatLogString, sLogs);
 	}
 
 
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayListZZZ<String> computeJaggedArrayList(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+								
+		Class classObj  = null;
+		if (classObjIn == null) {
+			classObj = this.getClass();	
+		}else {
+			classObj = classObjIn;
+		}
+						
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
+		ienumaFormatLogString[0] = ienumFormatLogString;
+						
+		return computeLinesInLog_Jagged_ArrayList_(classObj, ienumaFormatLogString, sLogs);
 	}
 
 
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayListZZZ<String> computeJaggedArrayList(Object objIn, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+						
+		Object obj = null;
+		if (objIn == null) {
+			obj = this;	
+		}else {
+		   	obj = objIn;
+		}
+								
+		return computeLinesInLog_Jagged_ArrayList_(obj.getClass(), ienumaFormatLogString, sLogs);
 	}
 
 
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayListZZZ<String> computeJaggedArrayList(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();				
+		main:{								
+			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+			
+			Class classObj = null;
+			if(classObjIn==null) {
+				classObj = this.getClass();
+			}else {
+				classObj = classObjIn;
+			}
+			
+			if(StringArrayZZZ.isEmpty(sLogs)) {	
+				
+				listasReturn = this.computeByObject_ArrayList_(classObj, ienumaFormatLogString);										
+			}else {
+				listasReturn = this.computeLinePartInLog_ArrayList_(classObj, ienumaFormatLogString, sLogs);
+			}
+			
+		}//end main:
+		return listasReturn;	
 	}
 	
 	

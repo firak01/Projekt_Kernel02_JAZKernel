@@ -171,23 +171,38 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			
 			//... Zeilen holen
 			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(obj, ienumaFormatLogString, sLogs);
-			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
-			for(String sJagged : listasJagged) {
-		
-				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-				
-				String sJustified = sJagged;
-				for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-					IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-					this.getStringJustifierListUsed().add(objJustifier);
-					sJustified = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sJustified);				
-				}	
-				listasReturn.add(sJustified);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			
+			
+			//Problem bei dieser Lösung:
+			//Selbst im Array schaft man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+//			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();									
+//			for(String sJagged : listasJagged) {
+//		
+//			
+//				
+//				String sJustified = sJagged;
+//				for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+//					IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+//					this.getStringJustifierListUsed().add(objJustifier);
+//					sJustified = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sJustified);				
+//				}	
+//				listasReturn.add(sJustified);
+//			}
+			
+			//Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			ArrayListZZZ<String>listasReturn = listasJagged;	
+							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, listasReturn);									
 			}
-		
-			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
 		}//end main:
 		return sReturn;
 	}
