@@ -1,9 +1,11 @@
 package basic.zBasic.util.log;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -45,8 +47,7 @@ public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZ
 		
 		
 		return hmReturn;
-	}
-	
+	}	
 	//Wenn ganz einfache Ausgabe gewünscht wird, .getPositionCurrentSimple verwenden
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 }

@@ -34,10 +34,17 @@ public interface ILogStringFormatManagerJaggedZZZ extends ILogStringFormatManage
 	//das ganze auch mit dem intern gespeicherten Format
 	//Ohne Objekt / Klasse macht das aber keinen Sinn.
 	
+
 	//... mit Objekt
 	public String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 	
 	//... mit Klasse
 	public String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ;
+	
+	
+	//#################################################
+	//### Jede Methode auch als ...ArrayList...
+	
+	
 	
 }

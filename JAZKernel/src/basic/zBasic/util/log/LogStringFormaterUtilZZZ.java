@@ -344,7 +344,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		}//end main:
 		return sReturn;
 	}
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, ArrayListUniqueZZZ<String> listasLine) throws ExceptionZZZ{
+	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String> listasLine) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
 			if(listasLine==null) break main;

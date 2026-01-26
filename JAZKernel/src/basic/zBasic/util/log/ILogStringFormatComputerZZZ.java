@@ -3,6 +3,7 @@ package basic.zBasic.util.log;
 import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 
 public interface ILogStringFormatComputerZZZ {
 
@@ -35,5 +36,27 @@ public interface ILogStringFormatComputerZZZ {
 		public String compute(Object obj, String... sLogs) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 		
 		//... mit Klasse
-		public String compute(Class classObj, String... sLogs) throws ExceptionZZZ;		
+		public String compute(Class classObj, String... sLogs) throws ExceptionZZZ;	
+		
+		//############################
+		//Jede Methode auch als ArrayListZZZ
+		public ArrayListZZZ<String> computeJaggedArrayList(String... sLogs) throws ExceptionZZZ;
+		
+		public ArrayListZZZ<String> computeJaggedArrayList(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ;
+		
+		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, String... sLogs) throws ExceptionZZZ;	
+		
+		public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		
+		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;		
+		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+
 }

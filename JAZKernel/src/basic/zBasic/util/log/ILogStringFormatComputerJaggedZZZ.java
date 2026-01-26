@@ -3,6 +3,7 @@ package basic.zBasic.util.log;
 import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 
 /** Merke: Nur String ohne XML-Inhalt sollten per Jagged angeglichen werden.
  *         Die XML-Tags blähen die Zeile auf und der Kommentartrenner wandert ganz weit nach rechts.
@@ -34,4 +35,7 @@ public interface ILogStringFormatComputerJaggedZZZ extends ILogStringFormatCompu
 		public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
 		public String computeJagged(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 		public String computeJagged(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+
+		
 }
+
