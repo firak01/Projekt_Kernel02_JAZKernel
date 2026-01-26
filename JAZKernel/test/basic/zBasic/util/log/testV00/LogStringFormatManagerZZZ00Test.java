@@ -468,9 +468,9 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
 			sLog1 = "der erste Logeintrag etwas laenger";
-			sLog2 = "der zweite Logeintrag";
+			sLog2 = "der zweite Logeintrag kuerzer";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
-			sLog4 = "der vierte Logeintrag mit Thread, trotzdem alle buendig?";
+			sLog4 = "der vierte Logeintrag, kuerzer + Thread, trotzdem alle buendig?";
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
@@ -483,9 +483,11 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,    //bewirkt, dass auch die Thread-Spalte immer buendig ist
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
@@ -496,16 +498,11 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			
 			//+++ Merke: Im korrekten Einsatz wird die Liste der Formatanweisungen erst mit CONTROL_LINENEXT_ aufgeteilt
 			//           Jede Logzeile wird dann unabhängig voneinenader Formatiert.
-			//           Der Justifier ist allerdings ein Singleton, so dass die Position der Spaltentrennermarke erhalten bleibt.
+			//           Der Justifier ist ein Singleton, so dass die Position der Spaltentrennermarke erhalten bleiben würde,
+			//           ohne immer explizit eine neue Instanz zu holen.
 			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = LogStringFormatManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
 			assertNotNull(listaJustifierFiltered04);
 			assertTrue(listaJustifierFiltered04.size()==2);
-			
-//			Merke:
-//			public static String sSEPARATOR_MESSAGE_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-//			public static String sSEPARATOR_01_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
-//			public static String sSEPARATOR_02_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
-//			public static String sSEPARATOR_03_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
 			
 			IStringJustifierZZZ objJustifierFiltered04_0 = listaJustifierFiltered04.get(0);
 			String sJustifierFilteredSeparator04_0 = objJustifierFiltered04_0.getPositionSeparator();
@@ -517,6 +514,8 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			
 			
 			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechen trotzdem mal aus
+			//Merke: Weil es eine Position gibt in der letzten Zeile noch die ThreadID auszugeben, kommt eine nahezu leere Zeile
+			//       in den Beispielen häufig zustande.
 			System.out.println("++++++++++++");
 			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1);
 			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			

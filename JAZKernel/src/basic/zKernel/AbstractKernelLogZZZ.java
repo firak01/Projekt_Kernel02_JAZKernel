@@ -154,10 +154,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public static IEnumSetMappedLogStringFormatZZZ[] getFormatForComputeLine() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedLogStringFormatZZZ[]iaFormat = {
-				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 return iaFormat;
@@ -257,6 +257,12 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public synchronized static String computeLine(String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine();
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
+	}
+
+	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	public synchronized static String computeLine(String sLog1, String sLog2) throws ExceptionZZZ { 	
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine();
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog1, sLog2);
 	}
 	
 	public synchronized static String computeLine(String... sLogs) throws ExceptionZZZ {	
@@ -598,12 +604,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	synchronized private boolean WriteLineDate_(Object obj, String... sLogs) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, sLogs);
-		
-		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
-		IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-		sLine = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sLine);
-					
+		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, sLogs); //Darin wird die Zeile schon "bündig gemacht".		
 		bReturn = WriteLine(sLine);
 				
 		return bReturn;

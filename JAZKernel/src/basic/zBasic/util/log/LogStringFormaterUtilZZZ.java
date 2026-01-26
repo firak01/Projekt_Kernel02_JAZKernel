@@ -400,7 +400,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	}
 
 	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
-		return justifyInfoPartArrayList_(objStringJustifier, false, listasLine);
+		return justifyInfoPartArrayList_(objStringJustifier, true, listasLine);
 	}
 	
 	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{

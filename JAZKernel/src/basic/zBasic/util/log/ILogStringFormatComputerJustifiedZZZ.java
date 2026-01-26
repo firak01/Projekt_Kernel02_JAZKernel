@@ -17,6 +17,9 @@ public interface ILogStringFormatComputerJustifiedZZZ extends ILogStringFormatCo
 	
 		//...justified Variante wichtiger Methoden
 		public String computeJustified(String... sLogs) throws ExceptionZZZ;
+		
+		public String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		
 	
 		public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
 		public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
