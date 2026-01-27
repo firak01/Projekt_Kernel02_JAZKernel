@@ -37,7 +37,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
     //Danach kann man wieder instanziieren.
 	//##########################################################
 	    
-	//als private deklariert, damit man es nicht so instanzieren kann, sonder die Methode .getInstance() verwenden muss
+	//als private deklariert, damit man es nicht so instanzieren kann, sondern die Methode .getInstance() verwenden muss
 	private LogStringFormatManagerZZZ() throws ExceptionZZZ{
 		super();
 	}

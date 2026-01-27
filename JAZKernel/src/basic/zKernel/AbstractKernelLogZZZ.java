@@ -654,21 +654,21 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	synchronized private boolean WriteLineDateWithPosition_(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ{
 		boolean bReturn = false;	
-		
+		main:{
 		//Hier nicht die Position hinzunehmen. Wg. des Leerstring kommt sie dann VOR den Kommentar
 		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, "");
 		
 		//Jetzt die Position extra. Sie kommt ganz hintenan.
 		int iLevelUsed = iStackTraceOffset + 1;		
 		String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(iLevelUsed);
-		sLog = sLog + sPosition;
+		sLine = sLine + sPosition;
 		
-		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
-		IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
-		
+//		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen
+//		IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
+//		sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+//		
 		bReturn = WriteLine(sLine);
-		
+		}//end main:
 		return bReturn;
 	}
 	

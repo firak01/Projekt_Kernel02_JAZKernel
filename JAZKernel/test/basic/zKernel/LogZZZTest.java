@@ -40,9 +40,9 @@ public class LogZZZTest extends TestCase{
 	public void testComputeLine() {
 		try {
 			String sLog1=null; String sLog2=null;
-			String sValue=null; String sMid=null;
-			String sValueExpectedStart=null; String sValueExpectedMid=null; String sValueExpectedEnd=null;
-			boolean bStartsWith=false; boolean bMidsWith=false; boolean bEndsWith=false;
+			String sValue=null; String sMid1=null; String sMid2=null;
+			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
+			boolean bStartsWith=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
 			
 			//##############################################
 			//Zeile mit 1x Logstring
@@ -52,18 +52,24 @@ public class LogZZZTest extends TestCase{
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "").trim();
-			sValueExpectedEnd = "[A01]" + sLog1 + "[/A01]" + "[A00/]" +ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+			sValueExpectedMid1 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "").trim();
+			sValueExpectedMid2 = ("[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
+			sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
 			bEndsWith = StringZZZ.endsWith(sValue, sValueExpectedEnd);
 			assertTrue(bEndsWith);
 			
-			sMid = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedEnd);
-			sMid = sMid.trim();
-			bMidsWith = sMid.equals(sValueExpectedMid);
-			assertTrue(bMidsWith);
+			sMid1 = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedMid2);
+			sMid1 = sMid1.trim();
+			bMid1found = sMid1.equals(sValueExpectedMid1);
+			assertTrue(bMid1found);
+			
+			sMid2 = StringZZZ.mid(sValue, sValueExpectedMid1, sValueExpectedEnd);
+			sMid2 = sMid2.trim();
+			bMid2found = sMid2.equals(sValueExpectedMid2);
+			assertTrue(bMid2found);
 			
 			
 			//###############################################
@@ -75,17 +81,24 @@ public class LogZZZTest extends TestCase{
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid = "[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]XXXTESTXXX[/A01]";
-			sValueExpectedEnd = "[A00/]" + ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT + "[A01]ZZZTESTZZZ[/A01]";
+			sValueExpectedMid1 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01]").trim();
+			sValueExpectedMid2 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT).trim();
+			sValueExpectedEnd = "[A01]"+ sLog2 +"[/A01]";
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
 			bEndsWith = StringZZZ.endsWith(sValue, sValueExpectedEnd);
 			assertTrue(bEndsWith);
 			
-			sMid = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedEnd);
-			bMidsWith = sMid.equals(sValueExpectedMid);
-			assertTrue(bMidsWith);
+			sMid1 = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedMid2);
+			sMid1 = sMid1.trim();
+			bMid1found = sMid1.equals(sValueExpectedMid1);
+			assertTrue(bMid1found);
+			
+			sMid2 = StringZZZ.mid(sValue, sValueExpectedMid1, sValueExpectedEnd);
+			sMid2 = sMid2.trim();
+			bMid2found = sMid2.equals(sValueExpectedMid2);
+			assertTrue(bMid2found);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
