@@ -698,6 +698,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 	//				}else {
 	//					listasReturn.add(saLogTrimmed[0]);
 	//				}
+					listasReturn = listasLogTrimmed;
 				}
 			}else {
 				listasReturn = listasLogTrimmed;

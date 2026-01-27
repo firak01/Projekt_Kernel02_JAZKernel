@@ -47,4 +47,8 @@ public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 		
 		return hmReturn;
 	}
+	
+	
+
+	
 }

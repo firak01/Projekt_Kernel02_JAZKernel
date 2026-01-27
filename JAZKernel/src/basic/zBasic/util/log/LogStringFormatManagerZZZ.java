@@ -101,7 +101,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
    		String sReturn = this.computeJustified(ienumFormatLogString);	
    		return sReturn;
    	}
-   		       
+       		       
     @Override
 	public synchronized String compute(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
 		String sReturn = this.computeJustified(ienumaFormatLogString, sLogs);
@@ -121,66 +121,36 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 	
-	//###################################################################
-	@Override
-	public synchronized String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		//WICHTIG2: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
-		//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
-
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}
-			
-		return sReturn;
-	}
-
-	@Override
-	public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return this.computeJustified(obj, hm);
-	}
-
-	@Override
-	public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(classObj, hm);	
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}
-		return sReturn;
-	}
-
+	
+	
+	
 	
 	//######################
 	
-	
-	
+	@Override
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(objFormater, obj, sLogs);
+		return sReturn;
+	}
+		
 	@Override
 	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumFormatLogString);
 		return sReturn;
 	}
 	
+		
 	@Override
 	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
+	@Override
+	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
+		return sReturn;
+	}
 	
 	@Override
 	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
@@ -216,18 +186,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		
 	
 
-	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, hm);
-		return sReturn;
-	}
 	
-	
-	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, hm);
-		return sReturn;
-	}
 	
 	
 	@Override
@@ -237,8 +196,72 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 
 	
+	//###################################################################
+		@Override
+		public synchronized String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = super.computeJagged(hm);
+			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG2: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			}
+				
+			return sReturn;
+		}
+
+		@Override
+		public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			return this.computeJustified(obj, hm);
+		}
+
+		@Override
+		public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = super.computeJagged(classObj, hm);	
+			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			}
+			return sReturn;
+		}
+		
+		@Override
+		public synchronized String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, hm);
+			return sReturn;
+		}
+		
+		
+		@Override
+		public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, obj, hm);
+			return sReturn;
+		}
+		
+		@Override
+		public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, classObj, hm);
+			return sReturn;
+		}
+
+		
+
 	
-	
+		//#########################################################################################
 	///##################################################################
   
 	@Override
@@ -463,11 +486,11 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
 			this.setStringJustifierList(listaStringJustifier);
 			
 			//... Zeilen holen
-			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(this.getClass(), ienumaFormatLogString);
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(this.getClass(), ienumFormatLogString);
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -494,11 +517,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
-		return sReturn;
-	}
+
 	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
@@ -556,83 +575,164 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 
-	TODOGOON
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}		
+		String sReturn=null;
+		main:{
+			String stemp=null;
+			
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+	
+			
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(this.getClass(), ienumaFormatLogString, sLogs);
+			
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			ArrayListZZZ<String>listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
 		return sReturn;
 	}
 	
 
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, obj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
-		return sReturn;
+	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String stemp = null;
+			
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(obj, ienumFormatLogString, sLogs);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			ArrayListZZZ<String>listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
+		return sReturn;	
 	}
 
 	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, obj, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}	
+		String sReturn = null;
+		main:{
+			String stemp = null;
+			
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(obj, ienumaFormatLogString, sLogs);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			ArrayListZZZ<String>listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
 		return sReturn;
 	}
 
 	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, classObj, ienumFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}		
+		String sReturn = null;
+		main:{
+			String stemp = null;
+			
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumFormatLogString, sLogs);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			ArrayListZZZ<String>listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
 		return sReturn;
 	}
 	
@@ -640,24 +740,47 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, classObj, ienumaFormatLogString, sLogs);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);		
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
-		this.setStringJustifierList(listaStringJustifier);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}		
+		String sReturn = null;
+		main:{
+			String stemp = null;
+			
+			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+			//... Liste der Justifier ausserhalb der Schleife holen
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			ArrayListZZZ<String>listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
 		return sReturn;
 	}
 
-	
+	//#######################################################################################################
+	//##################################################################################
+	//### HashMap mit den "Daten"
+	//TODOGOON20260127: HashMap übergeben, aber: Das müsste dann auch irgendwie umstrukturiert werden hin zur ArrayList-Methodik
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.computeJagged(objFormater, hm);
@@ -677,12 +800,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, hm);
-		return sReturn;
-	}
-
+	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.computeJagged(objFormater, obj, hm);
@@ -722,11 +840,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		return sReturn;
 	}
 
-	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, sLogs);
-		return sReturn;
-	}
+	
 	
 	@Override
 	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {

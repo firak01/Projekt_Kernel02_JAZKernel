@@ -96,7 +96,7 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             String s3="dritter";
 
             String thread = "[Thread:";
-            String cls = dummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;  
+            String cls = dummy.getClass().getSimpleName();  
 
             IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
                 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,

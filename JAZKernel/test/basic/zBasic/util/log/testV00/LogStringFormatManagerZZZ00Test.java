@@ -65,7 +65,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
 			sLog = "der erste Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName();
 
 			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, sLog);
 			assertNotNull(sLogValue);
@@ -101,7 +101,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sLog1 = "der erste Logeintrag";
 			sLog2 = "der zweite Logeintrag";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName();
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
@@ -242,7 +242,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName();
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
@@ -357,7 +357,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sLog2 = "der zweite Logeintrag";
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName();
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
@@ -377,7 +377,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
 									
-			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht ersetzt wurde
 			
 			assertTrue(StringZZZ.count(sLogValue,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
 			
@@ -472,7 +472,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sLog3 = "der dritte Logeintrag soll noch laenger sein, trotzdem alle buendig?";
 			sLog4 = "der vierte Logeintrag, kuerzer + Thread, trotzdem alle buendig?";
 			sThread = "[Thread:";
-			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+			sClassName = objDummy.getClass().getSimpleName();
 			
 			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat04= {
 					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,

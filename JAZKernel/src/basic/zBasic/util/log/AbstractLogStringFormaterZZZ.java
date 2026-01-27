@@ -209,12 +209,19 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	private ArrayListZZZ<String> computeUsingFormat_ArrayList_(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
 		main:{
-			String sReturn = null;
+			String sReturn = null; String sValue = null;
 			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString ) {
-				sReturn = this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);
-				if(sReturn!=null) {
-					listasReturn.add(sReturn);
+				sValue = this.computeUsingFormat_(classObj, null, ienumFormatLogString, sLogs);
+				if(sValue!=null) {
+					if(sReturn!=null) {
+						sReturn = sReturn + sValue;
+					}else {
+						sReturn = sValue;
+					}
 				}
+			}
+			if(sReturn!=null) {
+				listasReturn.add(sReturn);
 			}
 		}//end main:
 		return listasReturn;
@@ -1415,7 +1422,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	
 	private ArrayListZZZ<String> computeLinesInLogArrayList_Jagged_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
-		ArrayListZZZ<String>  alsReturn = new ArrayListZZZ<String>();
+		ArrayListZZZ<String>  listasReturn = new ArrayListZZZ<String>();
 		main:{	
 		  Class classObj = null;		
 			if(classObjIn==null) {
@@ -1426,7 +1433,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				classObj = classObjIn;
 			}
 			
-			String sLog = null;
+			String sReturn = null; String sValue = null;
 			
 			//TODOGOON20251117;//Eigentlich müssten hier mit dem .LINENEXT Argument versehen die HashMap gesplittet werden.
 			//
@@ -1435,13 +1442,21 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			//Iteration über die mit LINENEXT gesteuerten Einträge
 	        //for (Entry<IEnumSetMappedLogStringFormatZZZ, String> entry : hmLog.entrySet()) {
 	        //    IEnumSetMappedLogStringFormatZZZ enumAsKey = entry.getKey();	                   
-	            sLog = this.computeLineInLog_(classObj, hmLog);	           
-	            if(sLog!=null) {
-	            	alsReturn.add(sLog);
+	            sValue = this.computeLineInLog_(classObj, hmLog);	           	          	           
+	            if(sValue!=null) {
+					if(sReturn!=null) {
+						sReturn = sReturn + sValue;
+					}else {
+						sReturn = sValue;
+					}
 				}
+			//}
+			if(sReturn!=null) {
+				listasReturn.add(sReturn);
+			}
 	        //}
 		}//end main:
-		return alsReturn;
+		return listasReturn;
 
 	}
 	
@@ -1616,7 +1631,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	 * @author Fritz Lindhauer, 09.11.2025, 08:08:19
 	 */
 	private ArrayListZZZ<String> computeLinesInLog_Jagged_ArrayList_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
-		ArrayListZZZ<String> alsReturn = new ArrayListZZZ<String>();;
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();		
 		main:{
 			Class classObj = null;		
 			if(classObjIn==null) {
@@ -1641,15 +1656,23 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						
 			
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
+			String sReturn = null; String sValue = null;
 			List<IEnumSetMappedLogStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedLogStringFormatZZZ)ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedLogStringFormatZZZ.class);			
 			for(IEnumSetMappedLogStringFormatZZZ[] ienumaLine: listaEnumLine){
-				String sLine = computeLineInLog_Jagged_(classObj, ienumaLine, sLogs);
-				if(sLine!=null) { //z.B. werden Zeilen, nur mit Separatoren fuer die Justifier ausgeschlossen.
-					alsReturn.add(sLine);
-				}
-			}							
+				sValue = computeLineInLog_Jagged_(classObj, ienumaLine, sLogs);
+				if(sValue!=null) { //z.B. werden Zeilen, nur mit Separatoren fuer die Justifier ausgeschlossen.
+					if(sReturn!=null) {
+						sReturn = sReturn + sValue;
+					}else {
+						sReturn = sValue;
+					}
+				}				
+			}	
+			if(sReturn!=null) {
+				listasReturn.add(sReturn);
+			}
 		}//end main:
-		return alsReturn;
+		return listasReturn;
 	}
 	
 	
@@ -2675,69 +2698,14 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	return sReturn;
 	}
 
-//	@Override
-//	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-//		String sReturn = null;
-//		main:{		
-//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-//			
-//			sReturn = this.computeJagged(classObj, ienumFormatLogString);
-//			if(StringZZZ.isEmpty(sReturn)) break main;
-//		
-//		
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-//		
-//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-//		}//end main:
-//	return sReturn;
-//	}
 
-//	@Override
-//	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		String sReturn = null;
-//		main:{		
-//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-//			
-//			sReturn = this.computeJagged(obj, ienumFormatLogString, sLogs);
-//			if(StringZZZ.isEmpty(sReturn)) break main;
-//		
-//		
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-//		
-//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-//		}//end main:
-//	return sReturn;
-//	}
-
-//	@Override
-//	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		String sReturn = null;
-//		main:{		
-//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-//			
-//			sReturn = this.computeJagged(classObj, ienumFormatLogString, sLogs);
-//			if(StringZZZ.isEmpty(sReturn)) break main;
-//		
-//		
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-//		
-//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-//		}//end main:
-//	return sReturn;
-//	}
-
+	@Override
+	public String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)
+			throws ExceptionZZZ {
+		//TODOGOON: Soll der Formater überhaupt .computeJustified können?
+		return null;
+	}
+	
 	@Override
 	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
