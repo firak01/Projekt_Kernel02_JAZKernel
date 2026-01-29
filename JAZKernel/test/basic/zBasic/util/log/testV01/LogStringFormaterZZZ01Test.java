@@ -111,7 +111,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat01);
 		
 			sLogValue = objLogStringTest.compute(objDummy, sLog1);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
@@ -141,7 +141,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
 						
 			sLogValue = objLogStringTest.compute(objDummy, sLog1);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x, trotz zweitem STRINGTYPE
@@ -172,7 +172,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
 			
 			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog1);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==2); //!! nun 2x, trotz zweitem STRINGTYPE, aber LINENEXT existiert nicht, bzw. ist nachfolgend
@@ -204,7 +204,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
 						
 			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x,
@@ -265,7 +265,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
 		
 			sLogValue = objLogStringTest.compute(objDummy, sLog1);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
@@ -289,7 +289,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
 			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x, trotz zweitem STRINGTYPE
@@ -324,7 +324,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
 			sLogValue = objLogStringTest.compute(objDummy, saLog);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x,
@@ -385,7 +385,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
 		
 			sLogValue = objLogStringTest.compute(objDummy, sLog1);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
@@ -409,7 +409,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
 			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x, trotz zweitem STRINGTYPE
@@ -444,7 +444,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
 			sLogValue = objLogStringTest.compute(objDummy, saLog);
-			System.out.println("Hier erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
 			assertTrue(StringZZZ.count(sLogValue, sLog1)==1); //!! nun 1x,
