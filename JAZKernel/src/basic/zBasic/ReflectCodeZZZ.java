@@ -250,9 +250,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				  }				 				  
 				}//End if : Verarbeitung vor Java 1.4
 				
-				//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden
-				if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
-					 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+				//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden. Mehr als IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR
+				String sCommentSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+				if(!StringZZZ.endsWith(sReturn,  sCommentSeparator)) {
+					 sReturn = sReturn + sCommentSeparator;
 			 	}
 								
 				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
@@ -347,7 +348,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 public static String formatMethodCallingLine(int iLine) throws ExceptionZZZ {         		 
 		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.		 		 
-		 return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+		 //return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+		 String sCommentSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+		 return " - Line " + iLine + sCommentSeparator;
 		 
 		//geht leider nicht, da wir hier den Dateinamen nicht haben. 
 		//String sLine = ReflectCodeZZZ.formatFileCallingLine(iLine);

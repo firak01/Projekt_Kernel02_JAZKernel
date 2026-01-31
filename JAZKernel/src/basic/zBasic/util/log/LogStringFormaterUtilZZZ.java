@@ -322,8 +322,7 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 		main:{
 			if(saLine==null) break main;
 			
-			ArrayList<String> listasLine = StringArrayZZZ.toArrayList(saLine);
-			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayList(listasLine);
+			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayList(saLine);
 			
 			ArrayListZZZ<String> listasReturn = justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLineZ);
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
@@ -474,15 +473,15 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				return justifyInfoPart(objStringJustifier, sLog);
 			}
 			
-			String[]saLogCommented = normStringForJustify(objStringJustifier, sLine, sLog);
+			String[]saLogCommented = normStringForJustify_(objStringJustifier, sLine, sLog);
 			
-			sReturn = justifyInfoPart(objStringJustifier, saLogCommented);			
+			sReturn = justifyInfoPart(objStringJustifier, false, saLogCommented);			
 		}//end  main:
 		return sReturn;
 	}
 	
 	
-	public static String[] normStringForJustify(IStringJustifierZZZ objStringJustifier,String sLine, String sLog) throws ExceptionZZZ {
+	private static String[] normStringForJustify_(IStringJustifierZZZ objStringJustifier,String sLine, String sLog) throws ExceptionZZZ {
 		String[] saReturn=null;
 		main:{			
 			boolean bLineEmpty = StringZZZ.isEmpty(sLine);
@@ -503,27 +502,42 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			String sSeparatorMessageDefault = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 			
 				
-			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen
-			String[]saLog = StringZZZ.explode(sLog, sSeparatorMessageDefault);
+			//Splitte sLog auf, ggfs. Hier vorhandene Kommentarzeilen. Auf jeden Fall wird ein abschliessendes Kommentarzeichen zum Leerstring am Ende.
+			//String[]saLog = StringZZZ.explode(sLog, sSeparatorMessageDefault);
 			
 			//Trimme nun ggf. Leerzeichen weg
-			String[]saLogTrimmed = StringArrayZZZ.trim(saLog);
+			//reicht nicht String[]saLogTrimmed = StringArrayZZZ.trim(saLog);
+			String[]saLineTrimmed = normStringForJustify_(objStringJustifier, false, sLine);
 			
 			//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
 			int iIndex=-1;
-			saReturn = new String[saLogTrimmed.length];
-			for(String sLogTrimmed : saLogTrimmed ) {
-				if(!StringZZZ.isEmpty(sLogTrimmed)){					
+			saReturn = new String[saLineTrimmed.length];
+			for(String sLineTrimmed : saLineTrimmed ) {
+				if(!StringZZZ.isEmpty(sLineTrimmed)){					
 					iIndex++;
-					if(iIndex==0) {
-						//vergiss nicht den sLine String an der ersten Stelle voranzustellen (das ist der add-Moment)	
-						if(sLine.endsWith(sSeparatorMessageDefault)) {
-							saReturn[iIndex] = sLine + sLogTrimmed;
+					if(iIndex==saLineTrimmed.length-1) { //Das Log an der letzten Zeile anhaengen
+						//Beim Anhaengen nur den Kommentartrenner hinzufuegen, wenn er noch nicht im Log ist.
+						//Merke: Der Kommentartrenner kann ja schon vorher durch andere Log Berechnungen reingekommen sein.
+						//if(sLog.contains(sSeparatorMessageDefault)) { //TODOGOON: Wenn ueberall nur noch der FormatKommentar verwendet wird, sonst...:  
+						if(sLog.contains(sSeparatorMessageDefault) || sLog.contains(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)){
+							if(sLineTrimmed.endsWith(sSeparatorMessageDefault)){
+								sLineTrimmed = StringZZZ.stripRight(sLineTrimmed, sSeparatorMessageDefault);
+								saReturn[iIndex] = sLineTrimmed + sLog;
+							}else if (sLineTrimmed.endsWith(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+								sLineTrimmed = StringZZZ.stripRight(sLineTrimmed, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+								saReturn[iIndex] = sLineTrimmed + sLog;
+							}else {
+								saReturn[iIndex] = sLineTrimmed + sLog;
+							}
 						}else {
-							saReturn[iIndex] = sLine + sSeparatorMessageDefault + sLogTrimmed;
-						}
+							if(sLineTrimmed.endsWith(sSeparatorMessageDefault) || sLineTrimmed.endsWith(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
+								saReturn[iIndex] = sLineTrimmed + sLog;
+							}else {
+								saReturn[iIndex] = sLineTrimmed + sSeparatorMessageDefault + sLog;
+							}
+						}						
 					}else {					
-						saReturn[iIndex] = sSeparatorMessageDefault + sLogTrimmed;					
+						saReturn[iIndex] = sLineTrimmed;					
 					}		
 				}
 			}
@@ -552,74 +566,9 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 				break main;
 			}
 			
-			ArrayList<String> listasLog = (ArrayList<String>) ArrayUtilZZZ.toArrayList(saLogIn);
-			ArrayListZZZ<String> listasLogZ = ArrayListUtilZZZ.toArrayList(listasLog);
-			
+			ArrayListZZZ<String> listasLogZ = ArrayListUtilZZZ.toArrayList(saLogIn);
 			ArrayListZZZ<String> listasReturn = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLogZ);
-			
-			
-			
-//			String sSeparatorCommentDefault = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; //Also nicht ThreadIdSeparator, das bringt nur Probleme //;objStringJustifier.getPositionSeparator();
-//			
-//			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
-//			String sSeparatorCommentDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-//			//Natürlich wg. dem explode ohne den sSeparatorMessageDefault
-//			String sSeparatorCommentDefaultFormatedLeft = StringZZZ.left(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
-//			String sSeparatorCommentDefaultFormatedRight = StringZZZ.right(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
-//			
-//			//Die Einträge aufteilen und trimmen.
-//			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
-//			for(String sLog : saLogIn) {
-//				if(sLog!=null) {
-//					
-//					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
-//					for(String sLogSub : saLogSub) {
-//						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
-//							listasLogTrimmed.add(sLogSub.trim());//trimmen
-//						}
-//					}
-//				}
-//			}			
-//			String[] saLogTrimmed = listasLogTrimmed.toStringArray();				
-//			if(ArrayUtilZZZ.isEmpty(saLogTrimmed)) break main;
-//			
-//			//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
-//			//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
-//			//       und in der 2. Zeile ff dann die Kommentare.
-//			int iIndex=0;
-//			ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
-//			if(saLogTrimmed.length>=2) {
-//				//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
-//				for(String sLog : saLogTrimmed ) {					
-//					if(iIndex==0) {
-//						//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
-//						String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault + saLogTrimmed[1];
-//						listasReturn.add(sReturnTemp);
-//						iIndex++;
-//					}else if(iIndex==1) {
-//						//Mache wg. der Zusammenfassung in 0 hier nix.
-//						iIndex++;
-//					}else if(iIndex>=2) {	
-//						if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-//							String sReturnTemp = sSeparatorCommentDefault + sLog;
-//							listasReturn.add(sReturnTemp);
-//							iIndex++;
-//						}
-//					}				
-//				}
-//			}else {
-//				//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
-//				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-//					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
-//						//String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
-//						String sReturnTemp = saLogTrimmed[0];//20260126: Irgendwie stoert das, weil doch nun die Separa + sSeparatorCommentDefault;
-//						listasReturn.add(sReturnTemp);
-//					}
-//				}else {
-//					listasReturn.add(saLogTrimmed[0]);
-//				}
-//			}
-//						
+								
 			saReturn = listasReturn.toStringArray();
 		}//end main:
 		return saReturn;
@@ -642,67 +591,81 @@ public class LogStringFormaterUtilZZZ implements IConstantZZZ{
 			}
 											
 			String sSeparatorCommentDefault = ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT; //Also nicht ThreadIdSeparator, das bringt nur Probleme //;objStringJustifier.getPositionSeparator();
-			
+		
 			//Nur der ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT reicht nicht, das muss der Formatierte String sein: "[A00/]# "
 			String sSeparatorCommentDefaultFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 			//Natürlich wg. dem explode ohne den sSeparatorMessageDefault
-			String sSeparatorCommentDefaultFormatedLeft = StringZZZ.left(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
-			String sSeparatorCommentDefaultFormatedRight = StringZZZ.right(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
+			//String sSeparatorCommentDefaultFormatedLeft = StringZZZ.left(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
+			//String sSeparatorCommentDefaultFormatedRight = StringZZZ.right(sSeparatorCommentDefaultFormated, sSeparatorCommentDefault);
 			
-			//Die Einträge aufteilen und trimmen.
+			//Die Einträge aufteilen und trimmen. Damit macht ein ein vorheriges "justifien" wieder rueckgaengig
 			ArrayListZZZ<String>listasLogTrimmed = new ArrayListZZZ<String>();
+			int iIndex=-1; int iIndexSub; String sReturnSub=null;
 			for(String sLog : listasLog) {
 				if(sLog!=null) {
-					
-					String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
-					for(String sLogSub : saLogSub) {
-						if(!StringZZZ.isEmpty(sLogSub) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedLeft) & !sLogSub.equalsIgnoreCase(sSeparatorCommentDefaultFormatedRight)){         //Leerwerte weglassen , Separator (links, rechts) weglassen
-							listasLogTrimmed.add(sLogSub.trim());//trimmen
-						}
-					}
-				}
-			}			
+					iIndex++;
+					if(StringZZZ.contains(sLog, sSeparatorCommentDefault)) {
+						String[] saLogSub = StringZZZ.explode(sLog, sSeparatorCommentDefault);
+						iIndexSub=-1;
+						sReturnSub="";
+						for(String sLogSub : saLogSub) {	
+							iIndexSub++;
+							sLogSub = sLogSub.trim(); //trimmen
+							if(!StringZZZ.isEmpty(sLogSub)) {
+								if(iIndexSub==0) {	
+									if(bMergeFirst2Lines && listasLog.size()>= 2) {
+										sReturnSub = sLogSub;                          //Dann wird später zusammengefasst und dabei der Trenner gesetzt
+									}else {
+										sReturnSub = sLogSub+sSeparatorCommentDefault; // + wieder den Trenner;
+									}
+								}else {																			
+									sReturnSub = sReturnSub + sLogSub; // + wieder den hinteren Kommentarteil
+								}																		
+							}//isEmpty(sLogSub)
+						}//end for	
+						listasLogTrimmed.add(sReturnSub);
+					}else {
+						sLog = sLog.trim();
+						listasLogTrimmed.add(sLog);
+					}//end if constains
+				}//end if sLog!=null	
+			}//end for
 			
 			if(bMergeFirst2Lines) {
 				//Merke: Ziel ist das Zusammenfassen der 1. + 2. Zeile
 				//       Dabei wird davon ausgegangen, das in der 1. Zeile so etwas wie die Codepostion steht
 				//       und in der 2. Zeile ff dann die Kommentare.
-				int iIndex=0;
+				iIndex=-1;
 				if(listasLogTrimmed.size()>=2) {
 					//Ergänze nun die getrimmten String mit einem neuen Kommentar-Marker voranstellen
-					for(String sLog : listasLogTrimmed ) {					
+					for(String sLog : listasLogTrimmed ) {
+						iIndex++;
 						if(iIndex==0) {
 							//Zusammenfassen der Zeilen 1. + 2. . Dabei gehe ich davon aus, das im 1. Kommentar so etwas wie die CodePosition steht.					
 							String sReturnTemp = listasLogTrimmed.get(0) + sSeparatorCommentDefault + listasLogTrimmed.get(1);						
 							listasReturn.add(sReturnTemp);
-							iIndex++;
+							
 						}else if(iIndex==1) {
 							//Mache wg. der Zusammenfassung in 0 hier nix.
-							iIndex++;
 						}else if(iIndex>=2) {	
-							if(!StringZZZ.isEmpty(sLog)) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array
-								String sReturnTemp = sSeparatorCommentDefault + sLog;
-								listasReturn.add(sReturnTemp);
-								iIndex++;
-							}
+							listasReturn.add(sLog);						
 						}				
 					}
 				}else {
-					//Zur Vorbereitung, falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
-	//				if(sSeparatorCommentDefault.equals(ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)) {
-	//					if(!StringZZZ.isEmpty(saLogTrimmed[0])) { //Damit keine Leeren Kommentarzeilen reinkommen in das Return-Array					
-	//						//String sReturnTemp = saLogTrimmed[0] + sSeparatorCommentDefault; 				
-	//						String sReturnTemp = saLogTrimmed[0];//20260126: Irgendwie stoert das, weil doch nun die Separa + sSeparatorCommentDefault;
-	//						listasReturn.add(sReturnTemp);
-	//					}
-	//				}else {
-	//					listasReturn.add(saLogTrimmed[0]);
-	//				}
+					//mache nix weiter
 					listasReturn = listasLogTrimmed;
 				}
-			}else {
+			}else {	
+				//mache nix weiter
 				listasReturn = listasLogTrimmed;
 			}
+			
+			//Zur Vorbereitung, wenn noch kein falls irgendwann ein echter Kommentar kommt, einen Kommentar-Marker hintenangestellt
+//			int iIndexLast = listasReturn.size()-1;
+//			if(!listasReturn.get(iIndexLast).contains(sSeparatorCommentDefault)) {
+//				String stemp = listasReturn.get(iIndexLast) + sSeparatorCommentDefault;
+//				listasReturn.replace(iIndexLast, stemp);
+//			}
 		}//end main:
 		return listasReturn;
 	}

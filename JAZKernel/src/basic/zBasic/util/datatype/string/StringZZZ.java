@@ -77,7 +77,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	
 	public static String crlf() throws ExceptionZZZ{
-		String sReturn = new String("");
+		String sReturn = null;
 		main:{
 			try{
 				sReturn = System.getProperty("line.separator");

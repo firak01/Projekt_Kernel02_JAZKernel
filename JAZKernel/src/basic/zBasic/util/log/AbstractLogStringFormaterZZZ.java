@@ -652,14 +652,20 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			
-			String sReturn = null;
+			String sReturn = null; String sValue = null;
 			for(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
-				sReturn = computeByObject_(classObj, ienumFormatLogString);
-				if(sReturn!=null) {
-					listasReturn.add(sReturn);
+				sValue = computeByObject_(classObj, ienumFormatLogString);
+				if(sValue!=null) {
+					if(sReturn!=null) {
+						sReturn = sReturn + sValue;
+					}else {
+						sReturn = sValue;
+					}
 				}
 			}
-			
+			if(sReturn!=null) {
+				listasReturn.add(sReturn);
+			}
 		}//end main:
 		return listasReturn;
 	}
@@ -2542,7 +2548,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Class classObjIn, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();				
+		ArrayListZZZ<String> listasReturn = null;				
 		main:{								
 			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
@@ -2555,7 +2561,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			}
 			
 			if(StringArrayZZZ.isEmpty(sLogs)) {	
-				
 				listasReturn = this.computeByObject_ArrayList_(classObj, ienumaFormatLogString);										
 			}else {
 				listasReturn = this.computeLinePartInLog_ArrayList_(classObj, ienumaFormatLogString, sLogs);

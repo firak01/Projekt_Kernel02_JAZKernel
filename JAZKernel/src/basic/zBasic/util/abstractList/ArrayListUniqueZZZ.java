@@ -6,20 +6,7 @@
  */
 package basic.zBasic.util.abstractList;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
-import basic.javareflection.mopex.Mopex;
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 
 
 /**
@@ -79,16 +66,29 @@ public class ArrayListUniqueZZZ<T> extends AbstractArrayListZZZ<T> implements IA
 	
 	
 	@SuppressWarnings("unchecked")
-	public boolean add(Object obj){
+	@Override
+	public boolean add(T obj){
 		boolean bReturn = false;
 		main:{
 			if(obj==null)break main;			
 			if(this.contains(obj)) break main;
 			
-			bReturn = super.add((T) obj);			
+			bReturn = super.add(obj);			
+		}//end main
+		return bReturn;
+	}
+	
+	@Override
+	public boolean replace(int iIndex, T obj) {
+		boolean bReturn = false;
+		main:{
+			if(obj==null)break main;			
+			if(this.contains(obj)) break main;
+			
+			bReturn = super.replace(iIndex, obj);			
 		}//end main
 		return bReturn;
 	}
 	
 	
-	}//end class
+}//end class

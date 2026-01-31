@@ -126,6 +126,33 @@ public class LogZZZTest extends TestCase{
 	}
 	
 	
+	public void testcomputeLineDate() {
+		try {
+			boolean btemp; int itemp;
+			String sValue; boolean bValue;
+			
+			sValue = objLogTest.computeLineDate(this);
+			assertNotNull(sValue);
+		
+			sValue = objLogTest.computeLineDate(strTEST_ENTRY_DEFAULT); //Darin wird die Zeile schon "bündig gemacht".
+			assertNotNull(sValue);
+			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			
+			//Nur 1x den MessageSeparator
+			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den MessageSeparator erwartet", bValue);
+			
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	public void testWriteLineDate(){
 		try {
 			assertTrue(objLogTest.WriteLineDate(strTEST_ENTRY_DEFAULT));

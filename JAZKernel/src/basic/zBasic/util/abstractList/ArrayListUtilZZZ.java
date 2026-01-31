@@ -14,6 +14,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 
 /**Merksatz (wichtig!)(von ChatGPT, 20260110)
  * Ein Enum-Array kann niemals direkt zu einem Interface-Array gecastet werden,
@@ -544,6 +545,15 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			aReturn = lista.toArray((T[]) java.lang.reflect.Array.newInstance(classObj, lista.size()));
 		}
 		return aReturn;
+	}
+	
+	public static ArrayListZZZ<String> toArrayList(String[] sa) throws ExceptionZZZ{
+		ArrayListZZZ<String> listaReturn = null;
+		main:{
+			ArrayList<String> listasLine = StringArrayZZZ.toArrayList(sa);
+			listaReturn = ArrayListUtilZZZ.toArrayList(listasLine);
+		}//end main:
+		return listaReturn;
 	}
 	
 	public static ArrayListZZZ<String> toArrayList(ArrayList<String> listas) throws ExceptionZZZ{

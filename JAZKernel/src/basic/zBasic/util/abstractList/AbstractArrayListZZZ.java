@@ -9,11 +9,7 @@ package basic.zBasic.util.abstractList;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
 
 import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
@@ -391,6 +387,19 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements IC
 	return sReturn;
 	}
  
+	public boolean replace(int iIndex, T obj) {
+		boolean bReturn=false;
+		main:{
+			if(iIndex>this.size()-1) break main;
+			
+			this.remove(iIndex); //gibt sogar das Element, das aus der Liste entfernt wurde zurueck.
+			this.add(iIndex, obj);
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 	/**
 	 * @return ArrayList, internal ArrayList. E.g. this is the result-list aber an .addList-method.
 	 */

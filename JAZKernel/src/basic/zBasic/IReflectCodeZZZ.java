@@ -8,7 +8,7 @@ public interface IReflectCodeZZZ{
 	public static final String sPACKAGE_SEPERATOR = ".";
 
 	//+++ Fuer Formatanweisungen 
-	public static final String sPOSITION_METHOD_SEPARATOR = " § ";    //Merke: Damit wird eine ggfs. errechnete Position im Code abgegrenzt.
+	public static final String sPOSITION_METHOD_SEPARATOR = "§ ";    //Merke: Damit wird eine ggfs. errechnete Position im Code abgegrenzt.
 	public static final String sPOSITION_METHOD_IDENTIFIER = IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR + "";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.	
 
 	public static final String sPOSITION_FILE_SEPARATOR = " @";    //Merke: Damit wird eine ggfs. errechnete Position im Code abgegrenzt.
