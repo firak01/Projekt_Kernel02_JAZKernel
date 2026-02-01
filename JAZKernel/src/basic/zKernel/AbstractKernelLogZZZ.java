@@ -258,10 +258,19 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine();
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
 	}
+	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ{
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
+	}
+	
 
 	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
 	public synchronized static String computeLine(String sLog1, String sLog2) throws ExceptionZZZ { 	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine();
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog1, sLog2);
+	}
+	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, String sLog1, String sLog2) throws ExceptionZZZ { 		
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog1, sLog2);
 	}
 	
@@ -270,8 +279,16 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLogs);
 	}
 	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLogs);
+	}
+	
 	public synchronized static String computeLine(Object obj, String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine_withObject();
+		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLog);
+	}
+	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, Object obj, String sLog) throws ExceptionZZZ {
 		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLog);
 	}
 	
@@ -280,8 +297,16 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLogs);
 	}	
 	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, Object obj, String... sLogs) throws ExceptionZZZ {
+		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, sLogs);
+	}
+	
 	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLine_withObject();
+		return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, sLog);
+	}
+	
+	public synchronized static String computeLine(IEnumSetMappedLogStringFormatZZZ[]iaFormat, Class classObj, String sLog) throws ExceptionZZZ {
 		return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, sLog);
 	}
 	
@@ -290,12 +315,18 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return LogStringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, sLogs);
 	}
 	
+	//##################################################################################
+	//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
+	//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
+	//### sollte sie fehlen.
+	//##################################################################################
+	
 	//+++ mit Datum
 	public synchronized static String computeLineDate() throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDate();
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat);
 	}
-	
+
 	public synchronized static String computeLineDate(String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDate();
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
@@ -337,6 +368,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Merke1: Damit spart man sich ggfs. das Entfernen von XML-Tags.
 	//### Merke2: Zeilennummer, etc aus der CodePosition kann nur als XML Wert zur Vefuegung gestellt werden.
 	//#######################################################
+
 	public synchronized static String computeLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 		

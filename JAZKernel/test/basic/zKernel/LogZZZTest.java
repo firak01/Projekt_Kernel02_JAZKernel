@@ -2,6 +2,7 @@ package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
 import basic.zKernel.KernelContextZZZ;
 import basic.zKernel.KernelZZZ;
@@ -37,7 +38,97 @@ public class LogZZZTest extends TestCase{
 		}		
 	}
 	
-	public void testComputeLine() {
+	public void testComputeLine_CUSTOM() {
+		try {
+			int itemp;
+			String sLog1=null; String sLog2=null;
+			String sValue=null; String sMid1=null; String sMid2=null;
+			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
+			boolean bValue=false;
+			
+			boolean bStartsWith=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
+			
+			//##############################################
+			//Hier die verschiedenen Custom-Formate durchspielen. 
+			//Dann muss aber jedes Mal die Ueberpruefung des Ergebnisses eine andere sein. (anfang, mitte, ende).
+			//Ueberlass das dem DEFAULT-Test
+			//
+			//wichtig ist hier nur, das jeder Log-Text 1x erscheint.
+			//egal was man konfiguriert: CONTROL_SEPARATORMESSAGE_STRING ist nur 1x im Ergebnis.
+			//                           Andere Separatoren können häufiger im Ergebnis sein.
+			//###############################################
+			
+			//Das CUSTOM-Format			
+			IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
+			 };
+			
+			//##############################################
+			//Zeile mit 1x Logstring
+			sLog1 = "XXXTESTLAENGERXXX";
+			sValue = objLogTest.computeLine(iaFormat, sLog1);
+			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
+			
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog1);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
+			
+			//Nur 1x den MessageSeparator
+			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+			
+			//###############################################
+			//Zeile mit 2x Logstring
+			sLog2 = "ZZZTESTZZZ";
+			
+			sValue = objLogTest.computeLine(iaFormat, sLog2, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
+			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
+			
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog1);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
+			
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog1);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog2 + "' erwartet", bValue);
+			
+			//Nur 1x den Messageseparator
+			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	
+	public void testComputeLine_DEFAULT() {
 		try {
 			String sLog1=null; String sLog2=null;
 			String sValue=null; String sMid1=null; String sMid2=null;
@@ -46,9 +137,9 @@ public class LogZZZTest extends TestCase{
 			
 			//##############################################
 			//Zeile mit 1x Logstring
-			sLog1 = "XXXTESTXXX";
+			sLog1 = "XXXTESTLAENGERXXX";
 			sValue = objLogTest.computeLine(sLog1);
-			System.out.println("LogZZZTest.testComputeLine(): Logausgabe in nächster Zeile.\n" + sValue);
+			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
@@ -77,7 +168,7 @@ public class LogZZZTest extends TestCase{
 			sLog2 = "ZZZTESTZZZ";
 			
 			sValue = objLogTest.computeLine(sLog1, sLog2);
-			System.out.println("LogZZZTest.testComputeLine(): Logausgabe in nächster Zeile.\n" + sValue);
+			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
@@ -130,19 +221,33 @@ public class LogZZZTest extends TestCase{
 		try {
 			boolean btemp; int itemp;
 			String sValue; boolean bValue;
+			String sLog;
+			
+			//##################################################################################
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
+			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
+			//### sollte sie fehlen.
+			//##################################################################################
+			sLog = strTEST_ENTRY_DEFAULT;
 			
 			sValue = objLogTest.computeLineDate(this);
 			assertNotNull(sValue);
-		
-			sValue = objLogTest.computeLineDate(strTEST_ENTRY_DEFAULT); //Darin wird die Zeile schon "bündig gemacht".
+			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			
+			sValue = objLogTest.computeLineDate(sLog); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
-			//Nur 1x den MessageSeparator
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog + "' erwartet", bValue);
+			
+			//Nur 1x den Messageseparator
 			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den MessageSeparator erwartet", bValue);
-			
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog + "' erwartet", bValue);
+						
 			//Nicht am Ende, sondern vor dem uebergebenen String.
 			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
@@ -152,6 +257,49 @@ public class LogZZZTest extends TestCase{
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
+	
+	
+	public void testcomputeLineDateWithPosition() {
+		try {
+			boolean btemp; int itemp;
+			String sValue; boolean bValue;
+			String sLog;
+			
+			//##################################################################################
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
+			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
+			//### sollte sie fehlen.
+			//##################################################################################
+			sLog = strTEST_ENTRY_DEFAULT;
+			
+			sValue = objLogTest.computeLineDateWithPosition(this);
+			assertNotNull(sValue);
+			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			
+			sValue = objLogTest.computeLineDateWithPosition(sLog); //Darin wird die Zeile schon "bündig gemacht".
+			assertNotNull(sValue);
+			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog + "' erwartet", bValue);
+			
+			//Nur 1x den Messageseparator
+			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog + "' erwartet", bValue);
+						
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	
 	public void testWriteLineDate(){
 		try {
@@ -164,8 +312,18 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDateWithPosition(){
 		try {
+			
+			//##################################################################################
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
+			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
+			//### sollte sie fehlen.
+			//##################################################################################
+			
+			
 			//Verwende intern das Format STRING_BY_XML
 			assertTrue(objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT));
+			
+			//bValue=objLog01.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -174,6 +332,14 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDateWithPositionXml(){
 		try {
+			
+			//##################################################################################
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
+			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
+			//### sollte sie fehlen.
+			//##################################################################################
+			
+			
 			boolean bDummy = objLogTest.WriteLineDateWithPositionXml(this, "");
 			assertTrue(bDummy);
 			

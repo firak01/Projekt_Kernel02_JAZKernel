@@ -398,6 +398,16 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		main:{
 			String stemp;
 			
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogString==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+						
 			//#######################
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
@@ -439,6 +449,16 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		main:{
 			String stemp;
 		
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogString==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
 			//#######################
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
@@ -581,6 +601,18 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		main:{
 			String stemp=null;
 			
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogString==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
+			//################################################################
+			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
@@ -663,6 +695,18 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		main:{
 			String stemp = null;
 			
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogString==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
+			//################################################
+			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
@@ -743,6 +787,16 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		String sReturn = null;
 		main:{
 			String stemp = null;
+			
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogString==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
 			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
