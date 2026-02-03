@@ -401,7 +401,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog2 = StringArrayZZZ.prepend(sLog2, sPositionCalling);
 		 
-		String[] saLog1 = StringArrayZZZ.prepend(saLog2, sLog1);
+		String[] saLog1 = StringArrayZZZ.prepend(sLog1, saLog2);
 		
 		
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog1);

@@ -273,12 +273,12 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 						}
 					}
 				}else {
-					sReturn = this.computeByControl_(classObj, ienumFormatLogString, null);
+					sReturn = this.computeByControl_(classObj, ienumFormatLogString, sLogs);
 				}	
 				
 			}else if(bFormatUsingControl & !bFormatUsingString) {
 				//Hier wird nur das Steuerungszeichen ohne String verarbeitet
-				sReturn = this.computeByControl_(classObj, ienumFormatLogString, null);					
+				sReturn = this.computeByControl_(classObj, ienumFormatLogString, sLogs);					
 			}else if(bFormatUsingObject) {
 				sReturn = this.computeUsingFormatByObject_(classObj, ienumFormatLogString);				
 			}else if(bFormatUsingString & !bFormatUsingControl) {				
@@ -480,8 +480,15 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 //	}
 
 	
-	
+	//Merke: Das String-Array wird nur gebraucht um zu prüfen, ob es überhaupt einen Kommentar gibt.
+	//       Falls es keinen Kommentar gibt, dann wird auch kein Kommentarseparator geschrieben.   
 	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String sLogIn) throws ExceptionZZZ {
+		String[]saLog = new String[1];
+		saLog[0]=sLogIn;
+		return computeByControl_(classObjIn,ienumFormatLogString,saLog );
+	}
+	
+	private String computeByControl_(Class classObjIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String[] saLogIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			Class classObj = null;		
@@ -507,30 +514,32 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
 			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
-			String sLog= null;
+			String sLogTotal= null;
 			
-			//if(StringZZZ.isEmpty(sLogIn)) break main;						
-			if(sLogIn!=null) {
-				String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
-				if(!StringZZZ.isEmpty(sOuter)) {				
-					//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
-					//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
-					//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
-					//Darum entfernen wir dies ggfs.															
-					sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
-					if(StringZZZ.isEmpty(sOuter)) break main;
-					sLog = StringZZZ.joinAll(sLog, sOuter);
-				}else {
-					//Also: sOuter ist Leerstring oder Null UND es nicht explizit ein XML, nur dann den String übernehme
-					boolean bContainsXml = XmlUtilZZZ.isXmlContained(sLogIn);	
-					if(bContainsXml) {
-						//mache nix
+			//Rechne aus, ob es überhaupt einen gueltigen Kommentar gibt, der keine XML-Angabe ist.
+			if(saLogIn!=null) {
+				for(String sLog : saLogIn) {
+					String sOuter = XmlUtilZZZ.findTextOuterXml(sLog);
+					if(!StringZZZ.isEmpty(sOuter)) {				
+						//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+						//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+						//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+						//Darum entfernen wir dies ggfs.															
+						sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+						if(StringZZZ.isEmpty(sOuter)) break main;
+						sLogTotal = StringZZZ.joinAll(sLogTotal, sOuter);
 					}else {
-						sLog = StringZZZ.joinAll(sLog, sOuter);
-					}
-				}				
+						//Also: sOuter ist Leerstring oder Null UND es nicht explizit ein XML, nur dann den String übernehme
+						boolean bContainsXml = XmlUtilZZZ.isXmlContained(sLog);	
+						if(bContainsXml) {
+							//mache nix
+						}else {
+							sLogTotal = StringZZZ.joinAll(sLogTotal, sOuter);
+						}
+					}	
+				}//end for
 			}else {
-				sLog="";
+				sLogTotal="";
 			}
 			
 			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
@@ -540,33 +549,40 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	        switch (ienumFormatLogString.getFactor()) {
 	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
 	            	//ByControl?
-	                  sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
-	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
-	                  
-	                  sReturn = sMessageSeparator;
+	            	//Aber nur, wenn es ueberhaupt einen Kommentar gibt (und das kein XML Kommentar ist, wie im der Positionsangabe)
+	            	if(!StringZZZ.isEmpty(sLogTotal)) {
+		            
+		                sFormat = this.getHashMapFormatPositionString().get(
+		                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+		                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+		                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		                  
+		                sReturn = sMessageSeparator;
+	            	}
 	                break;
 	                
 	            case ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
 	            	//ByControl?
-	                sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
-	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
-	                  
-
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
-		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
-		            
-	                sReturn = sMessageSeparatorTag;
+	            	//Aber nur, wenn es ueberhaupt einen Kommentar gibt (und das kein XML Kommentar ist, wie im der Positionsangabe)
+	            	if(!StringZZZ.isEmpty(sLogTotal)) {
+		                sFormat = this.getHashMapFormatPositionString().get(
+		                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+		                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+		                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		                  
+	
+			        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
+			        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+			            
+		                sReturn = sMessageSeparatorTag;
+	            	}
 	                break;
 	            case ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING:
 	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));	                    
 	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
-	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
@@ -575,7 +591,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));	                    
 	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT);
-	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
 		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
@@ -588,7 +604,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                  sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));	                    
 	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
-	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
@@ -597,7 +613,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));	                    
 	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT);
-	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
 		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR02, sMessageSeparator);
@@ -610,7 +626,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                  sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
 	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
-	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 	                  sReturn = sMessageSeparator;
 	                break;
@@ -619,7 +635,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sFormat = this.getHashMapFormatPositionString().get(
 	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));	                    
 	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT);
-	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sLog + sPostfixSeparator;
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
 		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR03, sMessageSeparator);

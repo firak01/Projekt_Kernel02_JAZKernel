@@ -90,8 +90,24 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 		return objReturn;
 	}
 	
-	public static String[] append(String[] saString1, String sString2) throws ExceptionZZZ{
-		return StringArrayZZZ.append(saString1, sString2, (String)null);		
+	public static String[] append(String sString2, String[] saString1) throws ExceptionZZZ{
+		return StringArrayZZZ.append(sString2, saString1, (String)null);		
+	}
+	
+	public static String[] append(String sString2, String[] saString1, String sFlagIn) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			String[]saFlag=null;
+			if(sFlagIn!=null) {
+				saFlag=new String[1];
+				saFlag[0]=sFlagIn;
+			}
+			
+			String[]saString2=new String[1];
+			saString2[0]=sString2;
+			objReturn = StringArrayZZZ.append(saString2, saString1, saFlag);
+		}//end main:
+		return objReturn;		
 	}
 	
 	public static String[] append(String[] saString1, String sString2, String sFlagIn) throws ExceptionZZZ{
@@ -403,6 +419,10 @@ public class StringArrayZZZ extends AbstractObjectWithExceptionZZZ{
 		return StringArrayZZZ.append(saString1, saString2, saFlagControl);
 	}
 	
+	
+	public static String[] prepend(String sString2, String[] saString1) throws ExceptionZZZ{
+		return StringArrayZZZ.append(sString2, saString1, "BEFORE");
+	}
 	
 	public static String[] prepend(String[] saString1, String sString2) throws ExceptionZZZ{
 		return StringArrayZZZ.append(saString1, sString2, "BEFORE");
