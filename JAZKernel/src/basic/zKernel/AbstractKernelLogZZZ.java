@@ -332,6 +332,13 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
 	}
 	
+	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	public synchronized static String computeLineDate(String sLog1, String sLog2) throws ExceptionZZZ {	
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDate();
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLog1, sLog2);
+	}
+	
+	
 	public synchronized static String computeLineDate(String... sLogs) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDate();
 		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, sLogs);
@@ -369,11 +376,42 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Merke2: Zeilennummer, etc aus der CodePosition kann nur als XML Wert zur Vefuegung gestellt werden.
 	//#######################################################
 
+	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	public synchronized static String computeLineDateWithPosition(String sLog1) throws ExceptionZZZ {	
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
+		
+		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
+		 
+		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		String[] saLog = StringArrayZZZ.prepend(sLog1, sPositionCalling);
+		 
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog);
+	}
+	
+	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	public synchronized static String computeLineDateWithPosition(String sLog1, String sLog2) throws ExceptionZZZ {	
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
+		
+		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
+		 
+		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		String[] saLog2 = StringArrayZZZ.prepend(sLog2, sPositionCalling);
+		 
+		String[] saLog1 = StringArrayZZZ.prepend(saLog2, sLog1);
+		
+		
+		return LogStringFormatManagerZZZ.getInstance().compute(iaFormat, saLog1);
+	}
+	
 	public synchronized static String computeLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -382,12 +420,25 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
+	public synchronized static String computeLineDateWithPosition(Object obj, String sLog1, String sLog2) throws ExceptionZZZ {	
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
+		
+		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
+		 
+		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
+		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
+		String[] saLog = StringArrayZZZ.prepend(sLog1, sPositionCalling);
+		 
+		return LogStringFormatManagerZZZ.getInstance().compute(obj, iaFormat, saLog);
+	}	
+	
 	
 	public synchronized static String computeLineDateWithPosition(Object obj, String... sLogs) throws ExceptionZZZ {	
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 		
 		 //Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		 String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		 //Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		 //String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -402,7 +453,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -416,7 +467,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
@@ -441,7 +492,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPositionXml_withObject();
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -455,7 +506,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPositionXml_withObject();
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -470,7 +521,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPositionXml_withObject();		
 		 
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
@@ -484,7 +535,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		IEnumSetMappedLogStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPositionXml_withObject();		
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXmlPlus(1);
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);

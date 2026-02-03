@@ -605,6 +605,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2);
 	}
 	
+	//wie getPositionCallingPlus(iLevelPlus)
+	public static String  getPositionCalling(int iLevelPlus) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2+iLevelPlus);
+	}
+	
+	//wie getPositionCalling(iLevelPlus)
 	public static String  getPositionCallingPlus(int iLevelPlus) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2+iLevelPlus);
 	}
@@ -782,6 +788,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2);
 	}
 	
+	//wie getPositionCallingXmlPlus(iLevelPlus)
+	public static String  getPositionCallingXml(int iLevelPlus) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2+iLevelPlus);
+	}
+	
+	//wie getPositionCallingXml(iLevelPlus)
 	public static String  getPositionCallingXmlPlus(int iLevelPlus) throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentXml_(null, 2+iLevelPlus);
 	}
