@@ -12,7 +12,9 @@ public interface IReflectCodeZZZ{
 	public static final String sPOSITION_METHOD_IDENTIFIER = IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR + "";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.	
 
 	public static final String sPOSITION_FILE_SEPARATOR = " @";    //Merke: Damit wird eine ggfs. errechnete Position im Code abgegrenzt.
-	public static final String sPOSITION_FILE_IDENTIFIER = IReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + "";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.
+	//public static final String sPOSITION_FILE_IDENTIFIER = IReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + "";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.
+	public static final String sPOSITION_FILE_IDENTIFIER_RIGHT = ")";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so, z.B. aus:  ~ (AbstractKernelObjectZZZ.java:2393) 
+	public static final String sPOSITION_FILE_IDENTIFIER_LEFT = IReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + "(";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so, z.B. aus:  ~ (AbstractKernelObjectZZZ.java:2393)
 
 	public static final String sPOSITION_LINENR_SEPARATOR = ":";    //Merke: Damit wird eine ggfs. errechnete Position im Code abgegrenzt.
 	public static final String sPOSITION_LINENR_IDENTIFIER = IReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + "";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.

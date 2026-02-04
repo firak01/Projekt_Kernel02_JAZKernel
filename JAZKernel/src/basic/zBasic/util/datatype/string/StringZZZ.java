@@ -2030,7 +2030,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
-	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
+	/** String,  analog to LotusScript, returns the substring "right from the last  occurance of sToFind". Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	 * 
 	 * Gibt den String rechts von dem Suchstring zurück.

@@ -940,6 +940,8 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	private String computeByString_(Class classObjIn, String sLogIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			String stemp;
+			
 			Class classObj = null;		
 			if(classObjIn==null) {
 				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
@@ -1091,14 +1093,21 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
 				
 				//Auseinanderbauen
-				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_IN_FILE_IDENTIFIER, ReflectCodeZZZ.sPOSITION_IN_FILE_IDENTIFIER);				
+				sLog = stemp;
+				
 				
 				//Die Postionsangabe weglassen
 				
+				
+				
+				
 				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
@@ -1112,14 +1121,20 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
 				
 				//Auseinanderbauen
-				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(stemp + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				
+				sLog = stemp;
+				
 				
 				//Die Postionsangabe weglassen
 				
 				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
@@ -1133,14 +1148,21 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
 				
 				//Auseinanderbauen
-				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + stemp, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				stemp = StringZZZ.left(stemp + ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER, ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER);
+				
+				sLog = stemp;
+				
 				
 				//Die Postionsangabe weglassen
 				
 				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
 				break;
@@ -1152,15 +1174,23 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				//Merke: Der Position steht im Logstring immer am Anfang
 				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
 				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				//Neu 20260204 nun wird ja jeder Separator per Konfiguration reingerechnet.
+				//             Also reduziert sich das auf die Klammern um (FileEasyZZZ.java:1911), was ein Ausdruck ist, damit die Position in Eclipse Clickbar ist.
 				
 				//Auseinanderbauen
-				sLeft = StringZZZ.left(sLogIn, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
-				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				sLeft = StringZZZ.left(sLogIn, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Die Postionsangabe weglassen
+//				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+//				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);	
 				
-				//Die Postionsangabe weglassen
-				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
-				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + stemp, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER + stemp, ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER);
+				
+				sLog = stemp;
 				sLog = String.format(sFormat, sLog);
 				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
 				break;
@@ -1676,7 +1706,7 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 					throw ez;
 				}	
 			
-				if(ArrayUtilZZZ.isEmpty(ienumaFormatLogStringIn)) {				
+				if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
 					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;	
 				}
