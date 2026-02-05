@@ -42,11 +42,16 @@ public class ReflectCodeZZZTest   extends TestCase{
 	public void testGetPositionCurrent() {
 		try {
 			String sValue = ReflectCodeZZZ.getPositionCurrent();			
-			int iLineNr=44;
+			int iLineNr=44;			
+			System.out.println("ReflectCodeZZZ.testGetPositionCurrent(): Wert in der naechsten Zeile...");
 			System.out.println("sValue=\t\t"+sValue);
-			String sValueExpected = "testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") [A00/]# ";
+			//String sValueExpected = "testGetPositionCurrent @ReflectCodeZZZTest.java:"+ iLineNr + " ~ (ReflectCodeZZZTest.java:"+ iLineNr + ") [A00/]# ";
+			//Kein Kommentartrenner am Schluss, da kein Kommentar vorhanden.
+			String sValueExpected = "testGetPositionCurrent[A00/] ~(ReflectCodeZZZTest.java:"+ iLineNr + ")";
 			System.out.println("sValueExpected=\t"+sValueExpected);
 			assertEquals(sValueExpected, sValue);
+			
+			
 			
 			
 		} catch (ExceptionZZZ ez) {

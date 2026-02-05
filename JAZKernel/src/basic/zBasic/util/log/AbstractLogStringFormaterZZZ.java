@@ -643,6 +643,29 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR04, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+
 	            default:
 	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;
@@ -1188,7 +1211,6 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 				
 				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
 				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + stemp, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
-				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER + stemp, ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER);
 				
 				sLog = stemp;
 				sLog = String.format(sFormat, sLog);

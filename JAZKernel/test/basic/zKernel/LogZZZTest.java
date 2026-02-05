@@ -1,6 +1,7 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringFormatZZZ;
@@ -43,7 +44,7 @@ public class LogZZZTest extends TestCase{
 		try {
 			int itemp;
 			String sLog1=null; String sLog2=null;
-			String sValue=null; String sMid1=null; String sMid2=null;
+			String sValue=null; String sMid1=null; String sMid2=null; int iLine=0; String sFilePath=null; String sLinePosition=null; 
 			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
 			boolean bValue=false;
 			
@@ -62,7 +63,6 @@ public class LogZZZTest extends TestCase{
 			//Das CUSTOM-Format			
 			IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
@@ -71,12 +71,17 @@ public class LogZZZTest extends TestCase{
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
+					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING,
 					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
 			 };
 			
+			//Die aktuelle Java-Datei
+			sFilePath = ReflectCodeZZZ.getMethodCurrentFileName();
+			
 			//##############################################
 			//Zeile mit 1x Logstring
-			sLog1 = "XXXTESTLAENGERXXX";
+			sLog1 = "XXXTESTLAENGERXXX";			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
 			sValue = objLogTest.computeLine(iaFormat, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 			
@@ -94,11 +99,16 @@ public class LogZZZTest extends TestCase{
 			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
+			//Der Name der aufrufenden Klasse muss auch hierdrin sein, mit der Zeilennummer
+			sLinePosition = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);//Neu ausrechnen. Merke: Das wäre mit deraktuellen Zeilennumer und das ist in diesem Fall falsch: ReflectCodeZZZ.getMethodCurrentNameLined();
+			itemp = StringZZZ.count(sValue, sLinePosition);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x die Fileposition '" + sLinePosition + "' im Logstring '" + sValue + "' erwartet", bValue);
 			
 			//###############################################
 			//Zeile mit 2x Logstring
 			sLog2 = "ZZZTESTZZZ";
-			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLine(iaFormat, sLog2, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 			
@@ -121,6 +131,11 @@ public class LogZZZTest extends TestCase{
 			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
+			//Der Name der aufrufenden Klasse muss auch hierdrin sein, mit der Zeilennummer
+			sLinePosition = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);//Neu ausrechnen. Merke: Das wäre mit deraktuellen Zeilennumer und das ist in diesem Fall falsch: ReflectCodeZZZ.getMethodCurrentNameLined();
+			itemp = StringZZZ.count(sValue, sLinePosition);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x die Fileposition '" + sLinePosition + "' im Logstring '" + sValue + "' erwartet", bValue);
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -132,13 +147,20 @@ public class LogZZZTest extends TestCase{
 	public void testComputeLine_DEFAULT() {
 		try {
 			String sLog1=null; String sLog2=null;
-			String sValue=null; String sMid1=null; String sMid2=null;
+			String sValue=null; String sMid1=null; String sMid2=null; int iLine=0; String sFilePath=null; String sLinePosition=null;
 			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
 			boolean bStartsWith=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
 			
 			//##############################################
+			
+			//Die aktuelle Java-Datei
+			sFilePath = ReflectCodeZZZ.getMethodCurrentFileName();
+			
+			
+			//#############################################
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLine(sLog1);
 			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			
@@ -222,17 +244,24 @@ public class LogZZZTest extends TestCase{
 		try {
 			boolean btemp; int itemp;
 			String sValue; boolean bValue;
-			String sLog1; String sLog2;
+			String sLog1; String sLog2; int iLine=0; String sFilePath=null; String sLinePosition=null;
+			
 			
 			//##################################################################################
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
 			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
 			//### sollte sie fehlen.
 			//##################################################################################
+			
+			//Die aktuelle Java-Datei
+			sFilePath = ReflectCodeZZZ.getMethodCurrentFileName();
+			
+			
+			//############################################
 			sLog1 = strTEST_ENTRY01_DEFAULT;
 			sLog2 = strTEST_ENTRY02_DEFAULT;
 			
-			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDate(this);
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
@@ -250,6 +279,7 @@ public class LogZZZTest extends TestCase{
 			
 			
 			//################################################
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDate(sLog1); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
@@ -305,16 +335,23 @@ public class LogZZZTest extends TestCase{
 		try {
 			boolean btemp; int itemp;
 			String sValue; boolean bValue;
-			String sLog1;String sLog2;
+			String sLog1;String sLog2; int iLine=0; String sFilePath=null; String sLinePosition=null;
 			
 			//##################################################################################
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
 			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
 			//### sollte sie fehlen.
 			//##################################################################################
+			
+			//Die aktuelle Java-Datei
+			sFilePath = ReflectCodeZZZ.getMethodCurrentFileName();
+		
+			//################################################################
+			
 			sLog1 = strTEST_ENTRY01_DEFAULT;
 			sLog2 = strTEST_ENTRY02_DEFAULT;
 			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDateWithPosition(this);
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
@@ -331,6 +368,7 @@ public class LogZZZTest extends TestCase{
 			
 			
 			//########################################
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDateWithPosition(sLog1); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
@@ -351,6 +389,7 @@ public class LogZZZTest extends TestCase{
 			
 			//#########################################
 			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDateWithPosition(sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);

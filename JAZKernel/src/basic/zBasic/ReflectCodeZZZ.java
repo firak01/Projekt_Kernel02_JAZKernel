@@ -36,7 +36,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
 	//+++ Fuer den Namen der .java - Datei
 	public static String getMethodCurrentFileName() throws ExceptionZZZ {
-		return getMethodCurrentFileName(1);
+		return getMethodCurrentFileName(1); //+1 weil man ja die Java Klasse der aufrufenden Methode haben will und nicht ReflectCodeZZZ selbst.)
 	}
 	
 	/** use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
@@ -45,20 +45,21 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 */
 	  public static String getMethodCurrentFileName(int iOffset) throws ExceptionZZZ {		  
 			String method = null;
-			 
+			
+			int iOffsetUsed = iPOSITION_STACKTRACE_CURRENT + iOffset +1; //Noch einmal +1, weil einem ja nicht die aktuelle ReflectCodeZZZ.java Datei interessiert, sondern die fur den Aufruf verwendete.
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 				///Siehe Artikel 'The surprisingly simple stack trace Element'");
 				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();								
 				if(stackTrace.length>=4){
-					StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset];
+					StackTraceElement element = stackTrace[iOffsetUsed];
 					method = element.getFileName();
 				}
 								
 			}else{
 				
 				//Verarbeitung vor Java 1.4
-				method = getMethodCurrentName(iOffset);
+				method = getMethodCurrentName(iOffsetUsed);
 			}//End if : Verarbeitung vor Java 1.4
 			return method;
 	  }
@@ -358,6 +359,12 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		//return sLine;
 	 }
 	 
+	 public static String getFileCallingLine(String sFilePath, int iLine) throws ExceptionZZZ {
+		 String sReturn = ReflectCodeZZZ.formatFileCallingLine(iLine);
+		 sReturn = sFilePath + sReturn;
+		 return sReturn;
+	 }
+	 
 	 public static String formatFileCallingLine(int iLine) throws ExceptionZZZ {
 		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt.
 		 //Merke20240427: Für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
@@ -369,15 +376,61 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 return IReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + iLine; 		 
 	 }
 	 
-	 public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) throws ExceptionZZZ {
+	 /** Merke: Clickable ist das nur, wenn noch vorne ein Leerzeichen steht.
+	  *         Das wird in der enum LOGSTRINGFORMAT (siehe ILogStringFormatZZZ) fuer die entsprechenden Formate der "FilePosition" schon gemacht.
+	 * @param sFilePath
+	 * @param iLine
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2026, 15:13:22
+	 */
+	 public static String formatFileCallingLine(String sFilePath, int iLine) throws ExceptionZZZ {
+			//Merke1: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
+			//        Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
+			//        Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
+			 
+			//Merke2: Das Clicken funktioniert nicht, wenn es 2x die gleiche Datei im src-Ordner gibt. 
+			//        (vermutlich muesste dann der Pfad mit augegeben werden).
+			String sReturn = sFilePath + ReflectCodeZZZ.formatFileCallingLine(iLine);				
+			return IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + sReturn + IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT;
+		 }
+	 
+	 /** Merke: Clickable ist das nur, wenn noch vorne ein Leerzeichen steht.
+	  *         Das wird in der enum LOGSTRINGFORMAT (siehe ILogStringFormatZZZ) fuer die entsprechenden Formate der "FilePosition" schon gemacht.
+	 * @param sFilePath
+	 * @param iLine
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2026, 15:13:22
+	 */
+	 public static String formatFileCallingLineForConsole(String sFilePath, int iLine) throws ExceptionZZZ {
+			//Merke1: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
+			//        Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
+			//        Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
+			 
+			//Merke2: Das Clicken funktioniert nicht, wenn es 2x die gleiche Datei im src-Ordner gibt. 
+			//        (vermutlich muesste dann der Pfad mit augegeben werden).
+			String sReturn = getPositionCurrentInFile_(sFilePath, iLine);				
+			return sReturn;
+		 }
+	 
+	 /** Merke: Clickable ist das nur, wenn noch vorne ein Leerzeichen steht.
+	  *         Das wird in der enum LOGSTRINGFORMAT (siehe ILogStringFormatZZZ) fuer die entsprechenden Formate der "FilePosition" schon gemacht.
+	 * @param sFilePath
+	 * @param iLine
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2026, 15:13:22
+	 */
+	public static String formatFileCallingLineForConsoleClickable(String sFilePath, int iLine) throws ExceptionZZZ {
 		//Merke1: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
 		//        Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
 		//        Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
 		 
 		//Merke2: Das Clicken funktioniert nicht, wenn es 2x die gleiche Datei im src-Ordner gibt. 
-		//        (vermutlich muesste dann der Pfad mit augegeben werden).
-		String sLine = ReflectCodeZZZ.formatFileCallingLine(iLine);
-		return " (" + sFilePath + sLine + ") ";
+		//        (vermutlich muesste dann der Pfad mit augegeben werden).		
+		String sReturn = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);
+		return " " + sReturn;
 	 }
 	 
 	
@@ -513,7 +566,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return sReturn;
 	  }
 		
-	  /**
+	 /**
 	 * @return Name (inkl. Package) der aktuellen Klasse
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
@@ -522,36 +575,21 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		  return ReflectCodeZZZ.getClassCallingName_(0);//0, weil Stacktraceposition weiter steckt schon in "calling"
 	  }
 	
-	  /**
-		 * @return Name (inkl. Package) der aktuellen Klasse
-		 * lindhaueradmin, 23.07.2013
-		 * @throws ExceptionZZZ 
-		 */
-		public static String getClassCurrentName(int iStacktracePositionOffset) throws ExceptionZZZ {
-			  return ReflectCodeZZZ.getClassCallingName_(iStacktracePositionOffset);//1 Stacktraceposition weiter steckt schon in "calling"
-		  }
-
-//		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++				
-//	public static String  getPositionCurrentInObject(String sObjectWithMethod, int iLine) throws ExceptionZZZ{
-//		String sReturn = null;
-//		  main:{
-//			  
-//			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
-//					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-//					///System.out.println("HIER WEITERARBEITEN, gemaes Artikel 'The surprisingly simple stack trace Element'");
-//				  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-//				  	sReturn =  sObjectWithMethod + sLine;
-//				  	
-//				}else{
-//					
-//					//Verarbeitung vor Java 1.4
-//					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;	   
-//				}//end Java Version
-//		  }//end main:
-//		  return sReturn;
-//	}
-		
+	 /**
+	 * @return Name (inkl. Package) der aktuellen Klasse
+	 * lindhaueradmin, 23.07.2013
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getClassCurrentName(int iStacktracePositionOffset) throws ExceptionZZZ {
+		  return ReflectCodeZZZ.getClassCallingName_(iStacktracePositionOffset);//1 Stacktraceposition weiter steckt schon in "calling"
+	  }
+	
+	public static String getPositionCurrentInFile() throws ExceptionZZZ {
+		return getPositionCurrentInFile(1);
+	}
+	
+	
+	
 	public static String  getPositionCurrentInFile(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{	  
@@ -584,8 +622,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		main:{	  
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-				///System.out.println("HIER WEITERARBEITEN, gemaess Artikel 'The surprisingly simple stack trace Element'");
-			   sReturn = ReflectCodeZZZ.formatFileCallingLineForConsoleClickable(sFile, iLine);					  	
+				///System.out.println("HIER WEITERARBEITEN, gemaess Artikel 'The surprisingly simple stack trace Element'");			   
+			   //Variante mit Klammern 
+				String sLine = ReflectCodeZZZ.formatFileCallingLine(sFile, iLine);			   
+			   sReturn = sLine;
 			}else{
 				
 				//Verarbeitung vor Java 1.4
@@ -647,51 +687,24 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed); 
 
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man gerne haette... file oder object zentriert.
-			//a) Variante mit dem Dateinamen
-			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-			
-			//b) Variante mit Objektname und dahinter iLine
-			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
-			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
-
-			//Mit LogString-Klasse
-//			String[]saParts = new String[3];
-//			saParts[0] = sMethod;
-//			saParts[1] = sPositionInFile;
-//			saParts[2] = sPOSITION_MESSAGE_SEPARATOR; //Den Trenner zum Kommentar hier schon einbauen. Im Formater wird dann daran die Bündigkeit per justifier gemacht.
-			
-//			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-//			sReturn = LogStringFormatManagerZZZ.getInstance().compute(objFormater, classObj, saParts);
-
+			//Variante mit dem Dateinamen, Zeilenummer, in Klammern. Vorbeitet dies (mit noch notwendigen Leerzeichen vorneweg) in der Konsole clickbar zu machen.
+			//String sPositionInFile = formatFileCallingLine(sFile, iLine);
+			//String sPositionInFile = ReflectCodeZZZ.getFileCallingLine(sFile, iLine); //Variante ohne Klammern
+			String sPositionInFile = ReflectCodeZZZ.getFileCallingLine(sFile, iLine); //Da muss in der Formatierung noch das Leerzeichen voran und die Klammern
+				
 			
 			//Erweitere um Separatoren
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
-			//hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR + sFile);//20260204
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING_BY_HASHMAP, sFile);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_LINENR_SEPARATOR + sLine);			
-			//hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, ReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR + sPositionInFile);//20260204
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, sPositionInFile);
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING, "");
+			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, sPositionInFile);//hat dann noch Leerzeichen vorangestellt!!!!
 			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING, "");
-						
-			
+									
 			//Erzeuge hier den String als NICHT - XML Variante. 
 			//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
 			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-			sReturn = LogStringFormatManagerZZZ.getInstance().computeJustified(objFormater, hmLogString);
-			
-			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-			//Abschliessenden Trenner für Folgekommentare
-			//sReturn = sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-			
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-			
-			//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-			//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
+			sReturn = LogStringFormatManagerZZZ.getInstance().computeJagged(objFormater, hmLogString);						
 		}//end main:
 		return sReturn;
 	}
@@ -732,13 +745,6 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 					if(!StringZZZ.endsWith(sReturn,  IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR)) {
 						 sReturn = sReturn + IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 				 	}
-					
-					//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-				    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-					//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-					
-					//IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-					//sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 				}else{
 					
 						//Verarbeitung vor Java 1.4
@@ -819,6 +825,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	private static String getPositionCurrentXml_(Class objClass, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
+			
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
@@ -850,16 +858,14 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethod);
 			String sMethodTag = objTagMethod.getElementString();
 			
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
-			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
-			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
+			//Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.			
+			//String sPositionInFile = ReflectCodeZZZ.formatFileCallingLineForConsoleClickable(sFile, iLine); //Hat in der Formatierung schon das Leerzeichen voran
+			//String sPositionInFile = ReflectCodeZZZ.getPositionCurrentInFile(sFile, iLine); //Da muss in der Formatierung noch das Leerzeichen voran
+			String sPositionInFile = ReflectCodeZZZ.getFileCallingLine(sFile, iLine); //Da muss in der Formatierung noch das Leerzeichen voran und die Klammern
+				
 			ITagByTypeZZZ objTagPositionInFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
 			String sPositionInFileTag = objTagPositionInFile.getElementString();
-			
-			//b) Variante mit Objektname und dahinter iLine
-			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
-			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
-			
+						
 			sReturn = sClassnameTag + sMethodTag + sFileTag + sLineTag + sPositionInFileTag; 
 					
 			//umgib den Tag mit dem <positioncurrent> Tag
@@ -885,21 +891,6 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 		String sDateTag = objTagDate.getElementString();
 	 							
 			String sReturnPre = sThreadIdTag + sDateTag;
-			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-			//Abschliessenden Trenner für mögliche Folgekommentare
-			//ABER: NICHT BEIM XML-FORMAT!!!!
-			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-			
-//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-//			
-//			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
-			
 			sReturn = sReturnPre + sReturn;
 		}//end main:
 		return sReturn;
@@ -931,6 +922,8 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	private static String getPositionCurrentXmlFormated_(Class objClass, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN
+			
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 2 Ebene tiefer definiert werden.
@@ -954,22 +947,15 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 						
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 						
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
-			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
-			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-			
-			//b) Variante mit Objektname und dahinter iLine
-			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
-			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
-			
+			//String sPositionInFile = ReflectCodeZZZ.formatFileCallingLineForConsoleClickable(sFile, iLine); //Hat in der Formatierung schon das Leerzeichen voran
+			//String sPositionInFile = ReflectCodeZZZ.getPositionCurrentInFile(sFile, iLine); //Da muss in der Formatierung noch das Leerzeichen voran
+			String sPositionInFile = ReflectCodeZZZ.getFileCallingLine(sFile, iLine); //Da muss in der Formatierung noch das Leerzeichen voran und die Klammern
+					
 			//FGL20251118: 
 			//Hier wird der LogStringFormatManagerXml verwendet um diesen String zu errechnen.
 			//Dabei ist der String der aktuellen Position eh nur für andere Log-Formatierungen die Quelle für Daten.
 			//Das ist etwas uebertrieben. Wird aber hier als alternativer Ansatz implementiert.
 			
-			
-			//Hier müssen nun die PRO und POST Formatierungsanweisungen definiert werden
-			//und sie müssen vor und dahinter geschrieben werden.
 			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
 			
 			//Ansatzpunkt für weiter Tags als Format			
@@ -1013,17 +999,6 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			ILogStringFormaterZZZ objFormaterPre = new LogStringFormater4ReflectCodeZZZ();
 			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);			
 			sReturn = sReturnPre + sReturn;
-			
-			//+++++++++++++++++++++++++++++++++++++
-			//20251128; Der MessageSeparator ist nun eine eigene Formatanweisung
-			//Abschliessenden Trenner für mögliche Folgekommentare
-			//Aber beim XML Format gibt es diese nicht!!!
-			//sReturn = sReturnPre + sReturn + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;
-
-//WICHTIG: DEN XML BASIERTEN STRING NICHT(!!!) BUENDIG MACHEN. DA DIE TAGS DIE GRENZE GAAAANZ WEIT NACH RECHTS SCHIEBEN			
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//			IStringJustifierZZZ objStringJustifier = StringJustifierZZZ.getInstance();
-//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);
 		}//end main:
 		return sReturn;
 	}
@@ -1551,8 +1526,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sXml)) break main;
 			
-			//Entferne nun die in ReflectCodeZZZ.getPositionCurrent() -sinnvollerweise - hinzugenommenen XML Tags
-			//ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
+			//Entferne nun die in ReflectCodeZZZ.getPositionCurrent() -sinnvollerweise - hinzugenommenen XML Tags			
 			ITagTypeZZZ objTagTypeDate = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.DATE);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeDate, "");
 			
@@ -1564,20 +1538,16 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			
 			ITagTypeZZZ objTagTypeLine = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeLine, "");
-			
-			//ITagByTypeZZZ objTagFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME);
+						
 			ITagTypeZZZ objTagTypeFile = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeFile, "");
-					
-			//ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD);
+								
 			ITagTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypeMethod, "");
 			
-			//ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE);
 			ITagTypeZZZ objTagTypePosition = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypePosition, "");
-			
-			//ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT);
+						
 			ITagTypeZZZ objTagTypePositionCurrent = TagByTypeFactoryZZZ.createTagTypeByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT);
 			sReturn = XmlUtilTagByTypeZZZ.replaceTagParts(sReturn, objTagTypePositionCurrent, "");						
 		}
