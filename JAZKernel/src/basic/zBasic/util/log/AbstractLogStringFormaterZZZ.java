@@ -643,10 +643,32 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR04, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
 	            case ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING:
 	            	//ByControl?
 	                  sFormat = this.getHashMapFormatPositionString().get(
-	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
+	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING));	                    
 	                  sMessageSeparator = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT);
 	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
@@ -660,12 +682,11 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
 	                  
 
-		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR04, sMessageSeparator);
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sMessageSeparator);
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
-	                break;
-
+	                break;	               
 	            default:
 	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;

@@ -11,6 +11,8 @@ public interface IStringJustifierZZZ {
 	public static String sSEPARATOR_01_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 	public static String sSEPARATOR_02_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
 	public static String sSEPARATOR_03_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
+	public static String sSEPARATOR_04_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT;
+	public static String sSEPARATOR_POSITION_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT;
 	
 	public boolean reset() throws ExceptionZZZ;
 	

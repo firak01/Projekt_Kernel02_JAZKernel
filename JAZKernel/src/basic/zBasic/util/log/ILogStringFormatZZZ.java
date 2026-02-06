@@ -33,6 +33,7 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static String sSEPARATOR_01_DEFAULT="^";
 	public static String sSEPARATOR_02_DEFAULT="° ";
 	public static String sSEPARATOR_03_DEFAULT=IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+	public static String sSEPARATOR_04_DEFAULT=" | ";
 	
 	
 	
@@ -110,8 +111,11 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	public static int iFACTOR_CONTROL03SEPARATOR_STRING=223;
 	public static int iFACTOR_CONTROL03SEPARATOR_XML=227;
 	
-	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_STRING=229;
-	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_XML=233;
+	public static int iFACTOR_CONTROL04SEPARATOR_STRING=229;
+	public static int iFACTOR_CONTROL04SEPARATOR_XML=233;
+	
+	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_STRING=239;
+	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_XML=241;
 	
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
@@ -186,7 +190,9 @@ public interface ILogStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumb
 	CONTROL_SEPARATOR02_STRING("separator02",ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 02. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
 	CONTROL_SEPARATOR02_XML("separator02xml",ILogStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 02 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
 	CONTROL_SEPARATOR03_STRING("separator03",ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 03. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-	CONTROL_SEPARATOR03_XML("separator03xml",ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 03 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
+	CONTROL_SEPARATOR03_XML("separator03xml",ILogStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 03 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+	CONTROL_SEPARATOR04_STRING("separator04",ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 04. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+	CONTROL_SEPARATOR04_XML("separator04xml",ILogStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 04 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
 	CONTROL_SEPARATORPOSITION_STRING("separatorposition",ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator Fileposition (Merke: Damit das in der Console clickbar ist Leerzeichen drum). Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
 	CONTROL_SEPARATORPOSITION_XML("separatorpositionxml",ILogStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",ILogStringFormatZZZ.iARG_CONTROL, "" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator FilePosition (Merke: Damit das in der Console clickbar ist Leerzeichen drum) in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),						
 	;		

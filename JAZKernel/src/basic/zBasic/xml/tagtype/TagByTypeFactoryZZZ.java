@@ -191,12 +191,20 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			
 			String sTagNameUsed = sTagName.toLowerCase();
 			switch (sTagNameUsed) {
+			case TagTypeSeparatorMessageZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparatorMessageZZZ();
+				break;
+				//+++++++++++++++++++++
 			case TagTypeLineNumberZZZ.sTAGNAME:
 				objReturn = new TagTypeLineNumberZZZ();
 				break;	
 			case TagTypeFileNameZZZ.sTAGNAME:
 				objReturn = new TagTypeFileNameZZZ();
 				break;
+			case TagTypeFilePositionZZZ.sTAGNAME:
+				objReturn = new TagTypeFilePositionZZZ();
+				break;
+				//++++
 			case TagTypeDateZZZ.sTAGNAME:
 				objReturn = new TagTypeDateZZZ();
 				break;
@@ -209,12 +217,13 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			case TagTypeMethodZZZ.sTAGNAME:
 				objReturn = new TagTypeMethodZZZ();
 				break;
-			case TagTypeFilePositionZZZ.sTAGNAME:
-				objReturn = new TagTypeFilePositionZZZ();
-				break;
+				//+++++++++++++++++++++++++++++++++				
 			case TagTypePositionCurrentZZZ.sTAGNAME:
 				objReturn = new TagTypePositionCurrentZZZ();
 				break;
+				
+				//+++++++++++++++++++++++++++++++++++++++++++
+				//+++++++++++++++++++++++++++++++++++++++++++
 			case TagTypeStringType01ZZZ.sTAGNAME:
 				objReturn = new TagTypeStringType01ZZZ();
 				break;
@@ -224,6 +233,8 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			case TagTypeStringType03ZZZ.sTAGNAME:
 				objReturn = new TagTypeStringType03ZZZ();
 				break;
+				
+				//++++++++++++++++
 			case TagTypeSeparator01ZZZ.sTAGNAME:
 				objReturn = new TagTypeSeparator01ZZZ();
 				break;
@@ -233,9 +244,10 @@ public class TagByTypeFactoryZZZ extends AbstractObjectWithExceptionZZZ{
 			case TagTypeSeparator03ZZZ.sTAGNAME:
 				objReturn = new TagTypeSeparator03ZZZ();
 				break;
-			case TagTypeSeparatorMessageZZZ.sTAGNAME:
-				objReturn = new TagTypeSeparatorMessageZZZ();
+			case TagTypeSeparator04ZZZ.sTAGNAME:
+				objReturn = new TagTypeSeparator04ZZZ();
 				break;
+
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled tagtype '" + sTagName + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;				

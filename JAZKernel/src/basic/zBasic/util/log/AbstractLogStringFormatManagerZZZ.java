@@ -12,6 +12,8 @@ import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.datatype.string.Separator01StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.Separator02StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.Separator03StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.Separator04StringJustifierZZZ;
+import basic.zBasic.util.datatype.string.SeparatorFilePositionJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWithFlagZZZ implements ILogStringFormatManagerZZZ, ILogStringFormatManagerJaggedZZZ{
@@ -60,6 +62,12 @@ public abstract class AbstractLogStringFormatManagerZZZ extends AbstractObjectWi
 		Separator03StringJustifierZZZ objJustifier03 = (Separator03StringJustifierZZZ) Separator03StringJustifierZZZ.getInstance();
 		listaReturn.add(objJustifier03);
 		
+		Separator04StringJustifierZZZ objJustifier04 = (Separator04StringJustifierZZZ) Separator04StringJustifierZZZ.getInstance();
+		listaReturn.add(objJustifier04);
+		
+		SeparatorFilePositionJustifierZZZ objJustifierFilePosition = (SeparatorFilePositionJustifierZZZ) SeparatorFilePositionJustifierZZZ.getInstance();
+		listaReturn.add(objJustifierFilePosition);
+				
 		SeparatorMessageStringJustifierZZZ objJustifierMessage = (SeparatorMessageStringJustifierZZZ) SeparatorMessageStringJustifierZZZ.getInstance();
 		listaReturn.add(objJustifierMessage);
 		
