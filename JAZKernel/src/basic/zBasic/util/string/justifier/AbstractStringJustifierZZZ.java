@@ -4,9 +4,9 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerXmlZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterUtilZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
+import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 
 public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExceptionZZZ implements IStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;

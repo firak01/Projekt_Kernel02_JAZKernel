@@ -9,28 +9,28 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class LogStringFormater4ReflectCodeZZZ extends AbstractLogStringFormaterZZZ{
+public class StringFormater4ReflectCodeZZZ extends AbstractStringFormaterZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
 	
-	public LogStringFormater4ReflectCodeZZZ() throws ExceptionZZZ{		
+	public StringFormater4ReflectCodeZZZ() throws ExceptionZZZ{		
 		super();
 	}
 	
 	
 	
 	@Override
-	public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMappedCustom() {
+	public IEnumSetMappedStringFormatZZZ[] getFormatPositionsMappedCustom() {
 		//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
-		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+		IEnumSetMappedStringFormatZZZ[] iaenumReturn = {
+				IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
 		};
 		return iaenumReturn;
 	}

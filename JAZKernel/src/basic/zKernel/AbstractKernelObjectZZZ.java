@@ -46,7 +46,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
-import basic.zBasic.util.string.formater.LogStringFormaterUtilZZZ;
+import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
@@ -7594,7 +7594,7 @@ MeinTestParameter=blablaErgebnis
 			String sTemp = AbstractKernelLogZZZ.computeLineDate(this);
 			
 			IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-			sTemp = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sTemp, sLog);
+			sTemp = StringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sTemp, sLog);
 			
 			System.out.println(sTemp);
 		}else {
@@ -7618,7 +7618,7 @@ MeinTestParameter=blablaErgebnis
 			sLog = sLog + sPosition;
 			
 			IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-			sLine = LogStringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
+			sLine = StringFormaterUtilZZZ.justifyInfoPartAdded(objStringJustifier, sLine, sLog);
 			
 			System.out.println(sLine);
 		}else {

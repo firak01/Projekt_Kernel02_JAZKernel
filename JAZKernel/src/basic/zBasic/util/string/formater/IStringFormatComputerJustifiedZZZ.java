@@ -12,17 +12,17 @@ import basic.zBasic.ExceptionZZZ;
  * @author Fritz Lindhauer, 30.11.2025, 09:43:07
  * 
  */
-public interface ILogStringFormatComputerJustifiedZZZ extends ILogStringFormatComputerZZZ {
+public interface IStringFormatComputerJustifiedZZZ extends IStringFormatComputerZZZ {
 
 	
 		//...justified Variante wichtiger Methoden
 		public String computeJustified(String... sLogs) throws ExceptionZZZ;
 		
-		public String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public String computeJustified(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 		
 	
-		public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
-		public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public String computeJustified(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
 	
 		//sinn? public String computeJustified(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 		//sinn? public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
@@ -34,6 +34,6 @@ public interface ILogStringFormatComputerJustifiedZZZ extends ILogStringFormatCo
 	
 		//sinn? public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;		
 		//sinn? public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
-		public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-		public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public String computeJustified(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public String computeJustified(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
 }

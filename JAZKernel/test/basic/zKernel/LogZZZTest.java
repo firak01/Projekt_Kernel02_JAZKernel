@@ -3,8 +3,8 @@ package basic.zKernel;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zKernel.KernelContextZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -61,18 +61,18 @@ public class LogZZZTest extends TestCase{
 			//###############################################
 			
 			//Das CUSTOM-Format			
-			IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING,
-					 ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
+			IEnumSetMappedStringFormatZZZ[]iaFormat= {
+					 IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
 			 };
 			
 			//Die aktuelle Java-Datei
@@ -91,13 +91,13 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
 			
 			//Nur 1x den MessageSeparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 			
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 			//Der Name der aufrufenden Klasse muss auch hierdrin sein, mit der Zeilennummer
 			sLinePosition = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);//Neu ausrechnen. Merke: Das wäre mit deraktuellen Zeilennumer und das ist in diesem Fall falsch: ReflectCodeZZZ.getMethodCurrentNameLined();
@@ -123,13 +123,13 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog2 + "' erwartet", bValue);
 			
 			//Nur 1x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 			
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 			//Der Name der aufrufenden Klasse muss auch hierdrin sein, mit der Zeilennummer
 			sLinePosition = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);//Neu ausrechnen. Merke: Das wäre mit deraktuellen Zeilennumer und das ist in diesem Fall falsch: ReflectCodeZZZ.getMethodCurrentNameLined();
@@ -167,8 +167,8 @@ public class LogZZZTest extends TestCase{
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
 			sValueExpectedMid1 = ("[A00/]");
-			sValueExpectedMid2 = (ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
-			sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+			sValueExpectedMid2 = (IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
+			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
@@ -196,8 +196,8 @@ public class LogZZZTest extends TestCase{
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
 			sValueExpectedMid1 = ("[A00/]");
-			sValueExpectedMid2 = (ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01][A00/]").trim();
-			sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT + "[A01]"+ sLog2 +"[/A01]";
+			sValueExpectedMid2 = (IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01][A00/]").trim();
+			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_01_DEFAULT + "[A01]"+ sLog2 +"[/A01]";
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
@@ -273,9 +273,9 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Keinen LogString '" + sLog1 + "' erwartet", bValue);
 			
 			//0x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==0);
-			assertTrue("Keinen Kommentarseparator erwartet '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Keinen Kommentarseparator erwartet '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 			
 			
 			//################################################
@@ -290,13 +290,13 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
 			
 			//Nur 1x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 						
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 			
 			//################################################
@@ -315,13 +315,13 @@ public class LogZZZTest extends TestCase{
 			
 			
 			//Nur 1x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 						
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 			
 		} catch (ExceptionZZZ ez) {
@@ -362,9 +362,9 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Keinen LogString '" + sLog1 + "' erwartet", bValue);
 			
 			//0x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==0);
-			assertTrue("Keinen Kommentarseparator erwartet '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Keinen Kommentarseparator erwartet '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 			
 			
 			//########################################
@@ -379,13 +379,13 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
 			
 			//Nur 1x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 						
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 			//#########################################
 			
@@ -404,13 +404,13 @@ public class LogZZZTest extends TestCase{
 			assertTrue("Mindestens/Nur 1x den LogString2 '" + sLog2 + "' erwartet", bValue);
 						
 			//Nur 1x den Messageseparator
-			itemp = StringZZZ.count(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
 			bValue = (itemp==1);
-			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
 						
 			//Nicht am Ende, sondern vor dem uebergebenen String.
-			bValue = StringZZZ.endsWith(sValue, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
-			assertFalse("Der Separator '" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();

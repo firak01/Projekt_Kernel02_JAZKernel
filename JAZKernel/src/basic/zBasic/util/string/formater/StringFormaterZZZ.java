@@ -8,10 +8,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 
-public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
+public class StringFormaterZZZ extends AbstractStringFormaterZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
 		
-	public LogStringFormaterZZZ() throws ExceptionZZZ{		
+	public StringFormaterZZZ() throws ExceptionZZZ{		
 		super();
 	}
 	
@@ -20,20 +20,20 @@ public class LogStringFormaterZZZ extends AbstractLogStringFormaterZZZ{
 //	}
 
 	@Override
-	public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMappedCustom() {
+	public IEnumSetMappedStringFormatZZZ[] getFormatPositionsMappedCustom() {
 		//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
 		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
-		IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,					
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-				ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
+		IEnumSetMappedStringFormatZZZ[] iaenumReturn = {
+				IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,					
+				IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+				IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,				
 		};
 		return iaenumReturn;
 	}

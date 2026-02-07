@@ -2,8 +2,8 @@ package basic.zBasic.util.string.formater.testV02;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormaterZZZ;
 
 /**Per ChatGPT von Redundanz befreit durch Verwendung einer Abstrakten Test-Klasse
  * Diese wurde von ChatGPT basierend auf den .testV00 Klassen erstellt  
@@ -12,11 +12,11 @@ import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
  */
 public class LogStringFormaterZZZ02Test extends AbstractLogStringFormatZZZTest {
 
-	private LogStringFormaterZZZ formater = null;
+	private StringFormaterZZZ formater = null;
 
 	protected void setUp(){
 		try {			
-			formater = new LogStringFormaterZZZ();
+			formater = new StringFormaterZZZ();
 								
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -30,7 +30,7 @@ public class LogStringFormaterZZZ02Test extends AbstractLogStringFormatZZZTest {
 
     @Override
     protected String computeWithFormat(DummyTestObjectZZZ dummy,
-            IEnumSetMappedLogStringFormatZZZ[] format,
+            IEnumSetMappedStringFormatZZZ[] format,
             String... logs) throws ExceptionZZZ {
 
         formater.setFormatPositionsMapped(format);

@@ -27,7 +27,7 @@ import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
+public class StringFormatManagerUtilZZZ implements IConstantZZZ{
 	
 	
 	
@@ -40,46 +40,46 @@ public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 02.01.2026, 10:40:25
 	 */
-	public static IStringJustifierZZZ[] getStringJustifierArray(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
+	public static IStringJustifierZZZ[] getStringJustifierArray(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
 		IStringJustifierZZZ[] objaReturn = null;	
 		main:{
 			if(listaStringJustifier==null) break main;
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = LogStringFormatManagerUtilZZZ.getStringJustifierListFiltered(listaStringJustifier,ienumaFormatLogString);	
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = StringFormatManagerUtilZZZ.getStringJustifierListFiltered(listaStringJustifier,ienumaFormatLogString);	
 			objaReturn = ArrayListUtilZZZ.toArray(listaStringJustifierReturn, IStringJustifierZZZ.class);
 		}
 		return objaReturn;
 	}
 		
-	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
 		main:{			
 			if(listaStringJustifier==null) break main;
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString= new IEnumSetMappedLogStringFormatZZZ[1];
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString= new IEnumSetMappedStringFormatZZZ[1];
 			ienumaFormatLogString[0] = ienumFormatLogString;
 			listaReturn = getStringJustifierListFiltered(listaStringJustifier, ienumaFormatLogString);						
 		}//end main:
 		return listaReturn;			
 	}
 	
-	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
 		main:{			
 			if(listaStringJustifier==null) break main;
 			
-			LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ> containsRule = new LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ>();				
+			StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ> containsRule = new StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ>();				
 			listaReturn = listaStringJustifier.filter(ienumFormatLogString, containsRule);						
 		}//end main:
 		return listaReturn;			
 	}
 	
-	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListFiltered(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
 		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
 		main:{			
 			if(listaStringJustifier==null) break main;
 			
-			LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ> containsRule = new LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ>();				
+			StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ> containsRule = new StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ>();				
 			listaReturn = listaStringJustifier.filter(ienumaFormatLogString, containsRule);						
 		}//end main:
 		return listaReturn;			
@@ -87,17 +87,17 @@ public class LogStringFormatManagerUtilZZZ implements IConstantZZZ{
 
 
 
-	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public static ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		ArrayListZZZ<IStringJustifierZZZ>listaReturn=null;
 		main:{
 			if(listaStringJustifier == null) break main;
 			
 			//Hole aus der HashMap die Bestandteile, die Kontrollformat sind als Arraylist						
-			ArrayListZZZ<IEnumSetMappedLogStringFormatZZZ> listaEnumFormatLogString= LogStringFormaterUtilZZZ.getArrayListLogStringSeparatorFrom(hm);
+			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaEnumFormatLogString= StringFormaterUtilZZZ.getArrayListLogStringSeparatorFrom(hm);
 			 
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArray(listaEnumFormatLogString);
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArray(listaEnumFormatLogString);
 			
-			LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ> containsRule = new LogStringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedLogStringFormatZZZ>();							
+			StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ> containsRule = new StringFormatMatchRuleZZZ<IStringJustifierZZZ, IEnumSetMappedStringFormatZZZ>();							
 			listaReturn = listaStringJustifier.filter(ienumaFormatLogString, containsRule);
 		}//end main:
 		return listaReturn;	

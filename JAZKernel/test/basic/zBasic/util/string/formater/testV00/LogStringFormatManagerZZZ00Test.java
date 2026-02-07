@@ -9,18 +9,18 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatManagerJustifiedZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatManagerZZZ.FLAGZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ.LOGSTRINGFORMAT;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerJustifiedZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ.FLAGZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import junit.framework.TestCase;
 
 public class LogStringFormatManagerZZZ00Test extends TestCase {
-	private LogStringFormatManagerZZZ objLogManagerTest = null;
+	private StringFormatManagerZZZ objLogManagerTest = null;
 	
 	protected void setUp(){
 //		try {			
@@ -35,17 +35,17 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			ILogStringFormatManagerJustifiedZZZ objLogManager = LogStringFormatManagerZZZ.getInstance();
-			boolean btemp1a = objLogManager.setFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY, true);
+			IStringFormatManagerJustifiedZZZ objLogManager = StringFormatManagerZZZ.getInstance();
+			boolean btemp1a = objLogManager.setFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
 						
-			LogStringFormatManagerZZZ.destroyInstance();
+			StringFormatManagerZZZ.destroyInstance();
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
-			ILogStringFormatManagerZZZ objLogManager2 = LogStringFormatManagerZZZ.getNewInstance();
+			IStringFormatManagerZZZ objLogManager2 = StringFormatManagerZZZ.getNewInstance();
 			
-			boolean btemp2a = objLogManager2.getFlag(ILogStringFormatManagerZZZ.FLAGZ.DUMMY);
+			boolean btemp2a = objLogManager2.getFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY);
 			assertFalse(btemp2a);
 			
 			
@@ -67,7 +67,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName();
 
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, sLog);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, sLog);
 			assertNotNull(sLogValue);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 			
@@ -104,13 +104,13 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sClassName = objDummy.getClass().getSimpleName();
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat01= {
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
 			
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -131,14 +131,14 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag aber nur 1x in der Zeile erscheinen.	
 			//a) identischer Fall
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat02= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat02= {
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 							};
 						
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat01, sLog1);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -167,7 +167,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der identische Logeintrag auch 2x in der Zeile erscheinen. Wenn entsprechend uebergeben	
 			//b) gleicher Logeintraege		
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog1);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -197,7 +197,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag auch 2x in der Zeile erscheinen.	
 			//c) unterschiedliche Logeintraege									
-			sLogValue = LogStringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -244,19 +244,19 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName();
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat03= {
+					IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 					};
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -279,7 +279,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//b) unterschiedliche Logeintraege							
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -312,7 +312,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			saLog[0]=sLog1;
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, saLog);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -359,19 +359,19 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName();
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat03= {
+					IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					};
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -394,7 +394,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//b) unterschiedliche Logeintraege							
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -427,7 +427,7 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			saLog[0]=sLog1;
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, saLog);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -474,25 +474,25 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName();
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat04= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,    //bewirkt, dass auch die Thread-Spalte immer buendig ist
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat04= {
+					IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,    //bewirkt, dass auch die Thread-Spalte immer buendig ist
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR02_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 					};
 			
 			
@@ -500,36 +500,36 @@ public class LogStringFormatManagerZZZ00Test extends TestCase {
 			//           Jede Logzeile wird dann unabhängig voneinenader Formatiert.
 			//           Der Justifier ist ein Singleton, so dass die Position der Spaltentrennermarke erhalten bleiben würde,
 			//           ohne immer explizit eine neue Instanz zu holen.
-			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = LogStringFormatManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
+			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = StringFormatManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
 			assertNotNull(listaJustifierFiltered04);
 			assertTrue(listaJustifierFiltered04.size()==2);
 			
 			IStringJustifierZZZ objJustifierFiltered04_0 = listaJustifierFiltered04.get(0);
 			String sJustifierFilteredSeparator04_0 = objJustifierFiltered04_0.getPositionSeparator();
-			assertEquals(ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT, sJustifierFilteredSeparator04_0);
+			assertEquals(IStringFormatZZZ.sSEPARATOR_03_DEFAULT, sJustifierFilteredSeparator04_0);
 		
 			IStringJustifierZZZ objJustifierFiltered04_1 = listaJustifierFiltered04.get(1);
 			String sJustifierFilteredSeparator04_1 = objJustifierFiltered04_1.getPositionSeparator();
-			assertEquals(ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT, sJustifierFilteredSeparator04_1);
+			assertEquals(IStringFormatZZZ.sSEPARATOR_02_DEFAULT, sJustifierFilteredSeparator04_1);
 			
 			
 			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechen trotzdem mal aus
 			//Merke: Weil es eine Position gibt in der letzten Zeile noch die ThreadID auszugeben, kommt eine nahezu leere Zeile
 			//       in den Beispielen häufig zustande.
 			System.out.println("++++++++++++");
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 						
 			System.out.println("++++++++++++");
-			sLogValue = LogStringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3, sLog4);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3, sLog4);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();

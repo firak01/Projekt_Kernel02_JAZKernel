@@ -2,7 +2,7 @@ package basic.zBasic.util.string.formater;
 
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
-public interface IEnumSetMappedLogStringFormatZZZ extends IEnumSetMappedZZZ{
+public interface IEnumSetMappedStringFormatZZZ extends IEnumSetMappedZZZ{
 	public static String sENUMNAME="LOGSTRINGFORMAT";
 	
 	//weitere Erweiterungen, speziell für LogString

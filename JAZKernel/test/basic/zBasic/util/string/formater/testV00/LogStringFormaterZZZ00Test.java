@@ -9,21 +9,21 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormaterZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ.LOGSTRINGFORMAT;
-import basic.zBasic.util.string.formater.ILogStringFormaterZZZ.FLAGZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormaterZZZ;
+import basic.zBasic.util.string.formater.StringFormaterZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
+import basic.zBasic.util.string.formater.IStringFormaterZZZ.FLAGZ;
 import junit.framework.TestCase;
 
 public class LogStringFormaterZZZ00Test extends TestCase{
 	
-	private LogStringFormaterZZZ objLogStringTest = null;
+	private StringFormaterZZZ objLogStringTest = null;
 
 	protected void setUp(){
 		try {			
-			objLogStringTest = new LogStringFormaterZZZ();
+			objLogStringTest = new StringFormaterZZZ();
 								
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -33,11 +33,11 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			LogStringFormaterZZZ objLogString = new LogStringFormaterZZZ();
-			boolean btemp1a = objLogString.setFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD, true);
+			StringFormaterZZZ objLogString = new StringFormaterZZZ();
+			boolean btemp1a = objLogString.setFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD, true);
 			assertTrue(btemp1a);
 			
-			boolean btemp1b = objLogString.getFlag(ILogStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD);
+			boolean btemp1b = objLogString.getFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD);
 			assertTrue(btemp1b);
 					
 		} catch (ExceptionZZZ ez) {
@@ -113,10 +113,10 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			sClassName = objDummy.getClass().getSimpleName(); //+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
 			//+++ Bei 1x Strintype soll der Logeintrag nur 1x erscheinen.					
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat01= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat01= {
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat01);
 		
@@ -141,11 +141,11 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag aber nur 1x in der Zeile erscheinen.	
 			//a) identischer Fall
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat02= {
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-							ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat02= {
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 							};
 			
 			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
@@ -260,17 +260,17 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat03= {
+					IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 					};
 			
 			
@@ -395,14 +395,14 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			sThread = "[Thread:";
 			sClassName = objDummy.getClass().getSimpleName()+ IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormat03= {
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-					ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat03= {
+					IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_STRING,						
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
+					IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+					IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING,
 					};
 			
 			

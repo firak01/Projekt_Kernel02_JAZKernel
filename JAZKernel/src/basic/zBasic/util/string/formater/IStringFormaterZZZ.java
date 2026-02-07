@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 
-public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ, ILogStringFormatComputerJaggedZZZ {//, ILogStringFormatComputerJustifiedZZZ {
+public interface IStringFormaterZZZ extends IStringFormatComputerZZZ, IStringFormatComputerJaggedZZZ {//, ILogStringFormatComputerJustifiedZZZ {
 	//+++++++++++++++++++++++++++++++
 		public int computeFormatPositionsNumber() throws ExceptionZZZ;
 		
@@ -21,10 +21,10 @@ public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ, ILog
 				
 				Also zuerst die Threadangabe, danach der Wert des 1. Arguments der compute-Methode, dann der Klassenname, danach der Wert des 2. Arguments der compute-Methode
 		 */
-		public void setFormatPositionsMapped(IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat);
-		public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMapped() throws ExceptionZZZ;
-		public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMappedDefault() throws ExceptionZZZ;
-		public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMappedCustom() throws ExceptionZZZ;
+		public void setFormatPositionsMapped(IEnumSetMappedStringFormatZZZ[]ienumaMappedFormat);
+		public IEnumSetMappedStringFormatZZZ[]getFormatPositionsMapped() throws ExceptionZZZ;
+		public IEnumSetMappedStringFormatZZZ[]getFormatPositionsMappedDefault() throws ExceptionZZZ;
+		public IEnumSetMappedStringFormatZZZ[]getFormatPositionsMappedCustom() throws ExceptionZZZ;
 		
 		public void setHashMapFormatPositionString(HashMap<Integer,String>hmFormatPostionString);
 		public HashMap<Integer,String>getHashMapFormatPositionString() throws ExceptionZZZ;

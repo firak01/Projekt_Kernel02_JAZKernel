@@ -22,7 +22,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /**Merksatz (wichtig!)(von ChatGPT, 20260110)
@@ -64,8 +64,8 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		boolean bReturn = false;
 		main:{
 			@SuppressWarnings("unchecked")
-			Set<IEnumSetMappedLogStringFormatZZZ> drivers = (Set<IEnumSetMappedLogStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
-			for(IEnumSetMappedLogStringFormatZZZ driver : drivers) {
+			Set<IEnumSetMappedStringFormatZZZ> drivers = (Set<IEnumSetMappedStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+			for(IEnumSetMappedStringFormatZZZ driver : drivers) {
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -83,20 +83,20 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		return bReturn;
 	}
 	
-	public IEnumSetMappedLogStringFormatZZZ  startsWithAnyAlias_EnumMappedObject(String sToFind) throws ExceptionZZZ{
-		IEnumSetMappedLogStringFormatZZZ objReturn = null;
+	public IEnumSetMappedStringFormatZZZ  startsWithAnyAlias_EnumMappedObject(String sToFind) throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ objReturn = null;
 		main:{
 			EnumSet<?> drivers = this.getEnumSetCurrent();//..allOf(JdbcDriverClassTypeZZZ.class);
 			objReturn = EnumSetMappedLogStringFormatUtilZZZ.startsWithAnyAlias_EnumMappedObject(sToFind, drivers);
 		}
 		return objReturn;
 	}
-	public static IEnumSetMappedLogStringFormatZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
-		IEnumSetMappedLogStringFormatZZZ objReturn = null;
+	public static IEnumSetMappedStringFormatZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ objReturn = null;
 		main:{
 			@SuppressWarnings("unchecked")
-			Set<IEnumSetMappedLogStringFormatZZZ> drivers = (Set<IEnumSetMappedLogStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
-			for(IEnumSetMappedLogStringFormatZZZ driver : drivers) {
+			Set<IEnumSetMappedStringFormatZZZ> drivers = (Set<IEnumSetMappedStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+			for(IEnumSetMappedStringFormatZZZ driver : drivers) {
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -125,8 +125,8 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 	public static boolean startsWithAnyAbbreviation(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			Set<IEnumSetMappedLogStringFormatZZZ> drivers = (Set<IEnumSetMappedLogStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
-			for(IEnumSetMappedLogStringFormatZZZ driver : drivers) {
+			Set<IEnumSetMappedStringFormatZZZ> drivers = (Set<IEnumSetMappedStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+			for(IEnumSetMappedStringFormatZZZ driver : drivers) {
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -156,8 +156,8 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		public static boolean startsWithAnyDescription(String sToFind, EnumSet<?> setEnumCurrent) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				Set<IEnumSetMappedLogStringFormatZZZ> drivers = (Set<IEnumSetMappedLogStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
-				for(IEnumSetMappedLogStringFormatZZZ driver : drivers) {
+				Set<IEnumSetMappedStringFormatZZZ> drivers = (Set<IEnumSetMappedStringFormatZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+				for(IEnumSetMappedStringFormatZZZ driver : drivers) {
 //				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -213,14 +213,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		
 		//getAbbreviation();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static String getEnumConstant_AbbreviationValue(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) throws ExceptionZZZ {
+		public static String getEnumConstant_AbbreviationValue(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) throws ExceptionZZZ {
 			String sReturn = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -240,14 +240,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		//public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
-		public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) {				
+		public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) {				
 			String sReturn = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -263,14 +263,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		}	
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static Integer getEnumConstant_PositionValue(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) {
+		public static Integer getEnumConstant_PositionValue(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) {
 			Integer intValue = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -286,14 +286,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static Integer getEnumConstant_IndexValue(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) {
+		public static Integer getEnumConstant_IndexValue(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) {
 			Integer intValue = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -312,14 +312,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		//################################################################
 		//### Besondere Werte dieses ENUMS
 		@SuppressWarnings({ "unchecked", "rawtypes" })			
-		public static String getEnumConstant_Format(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) {				
+		public static String getEnumConstant_Format(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) {				
 			String sReturn = null;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -336,14 +336,14 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 			
 			
 		@SuppressWarnings({ "unchecked", "rawtypes" })			
-		public static int getEnumConstant_Factor(Class<IEnumSetMappedLogStringFormatZZZ> clazz, String name) {				
+		public static int getEnumConstant_Factor(Class<IEnumSetMappedStringFormatZZZ> clazz, String name) {				
 			int iReturn = -1;
 			main:{
 		    if (clazz==null || name==null || name.isEmpty()) break main;
 		  
 		    
-		    IEnumSetMappedLogStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedLogStringFormatZZZ driver : enumaSetMapped) {
+		    IEnumSetMappedStringFormatZZZ[] enumaSetMapped = clazz.getEnumConstants();
+			for(IEnumSetMappedStringFormatZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
@@ -364,7 +364,7 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		//public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ{
 		//<E extends Enum<E> & IEnumSetMappedZZZ>
 		//public static ArrayList<E extends Enum<E> & IEnumSetMappedStatusZZZ>toEnum(ArrayList<IEnumSetMappedStatusZZZ> listae) throws ExceptionZZZ {
-		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedLogStringFormatZZZ> listae) throws ExceptionZZZ{
+		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedStringFormatZZZ> listae) throws ExceptionZZZ{
 			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -377,7 +377,7 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 			return listaEnum;
 		}
 		
-		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedLogStringFormatZZZ> listae) throws ExceptionZZZ{
+		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedStringFormatZZZ> listae) throws ExceptionZZZ{
 			E[] objaeReturn = null;
 			main:{
 				if(ArrayListUtilZZZ.isEmpty(listae)) break main;
@@ -395,7 +395,7 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 				//EXCEPTION: ArrayList<Collection<? extends Enum<?>>> listaeTemp = new ArrayList<Collection<? extends Enum<?>>>();
 				ArrayList<E> listaeTemp = new ArrayList<E>();
 				
-				for(IEnumSetMappedLogStringFormatZZZ objMapped : listae) {
+				for(IEnumSetMappedStringFormatZZZ objMapped : listae) {
 					//if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
 					//3. aber Excepteion: listaeTemp.add((Collection<? extends Enum<?>>) objMapped);
 					listaeTemp.add((E) objMapped); 
@@ -444,50 +444,50 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 	
 		//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
 		//Meiner Meinung nach schon, wenn wir explizit nur mit diesem Interface arbeiten und nicht CASTEN 
-		public static <E extends IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] toEnumMappedArray(ArrayList<IEnumSetMappedStatusLocalZZZ> listae) throws ExceptionZZZ{
-			IEnumSetMappedLogStringFormatZZZ[] objaReturn = null;
+		public static <E extends IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] toEnumMappedArray(ArrayList<IEnumSetMappedStatusLocalZZZ> listae) throws ExceptionZZZ{
+			IEnumSetMappedStringFormatZZZ[] objaReturn = null;
 			main:{
-				objaReturn = (IEnumSetMappedLogStringFormatZZZ[]) listae.toArray(new IEnumSetMappedLogStringFormatZZZ[listae.size()]);
+				objaReturn = (IEnumSetMappedStringFormatZZZ[]) listae.toArray(new IEnumSetMappedStringFormatZZZ[listae.size()]);
 			}
 			return objaReturn;
 		}
 				
 		//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
 		//Meiner Meinung nach schon, wenn wir explizit nur mit diesem Interface arbeiten und nicht CASTEN
-		public static <E extends IEnumSetMappedLogStringFormatZZZ> E[] toEnumMappedArray(Enum[] enuma) throws ExceptionZZZ{
+		public static <E extends IEnumSetMappedStringFormatZZZ> E[] toEnumMappedArray(Enum[] enuma) throws ExceptionZZZ{
 			E[] enumaReturn = null;
 			main:{
 				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				
-				ArrayList<IEnumSetMappedLogStringFormatZZZ> listeReturnTemp = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArrayList(enuma);
+				ArrayList<IEnumSetMappedStringFormatZZZ> listeReturnTemp = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArrayList(enuma);
 				if(ArrayListUtilZZZ.isEmpty(listeReturnTemp)) break main;
 				
-				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedLogStringFormatZZZ[listeReturnTemp.size()]);
+				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedStringFormatZZZ[listeReturnTemp.size()]);
 			}//end main:
 			return enumaReturn;	
 		}
 
 		//Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
 		//Meiner Meinung nach schon, wenn wir explizit nur mit diesem Interface arbeiten und nicht CASTEN
-		public static <E extends IEnumSetMappedLogStringFormatZZZ> E[] toEnumMappedArray(List<E> listae){
+		public static <E extends IEnumSetMappedStringFormatZZZ> E[] toEnumMappedArray(List<E> listae){
 			E[] enumaReturn = null;
 			main:{
 				if(listae==null) break main;
 				if(listae.size()==0) break main;
 											
-				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedLogStringFormatZZZ[listae.size()]);
+				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStringFormatZZZ[listae.size()]);
 			}//end main:
 			return enumaReturn;	
 		}
 						
-		public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> toEnumMappedArrayList(List<IEnumSetMappedLogStringFormatZZZ> listae) throws ExceptionZZZ{
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeReturn = null;
+		public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> toEnumMappedArrayList(List<IEnumSetMappedStringFormatZZZ> listae) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedStringFormatZZZ> listaeReturn = null;
 			main:{
 				if(listae==null) break main;
 				//if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
-				listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
-				for(IEnumSetMappedLogStringFormatZZZ objenum : listae) {				
+				listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
+				for(IEnumSetMappedStringFormatZZZ objenum : listae) {				
 					listaeReturn.add(objenum);
 				}
 			}//end main:
@@ -495,15 +495,15 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 		}
 		
 		
-		public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> toEnumMappedArrayList(Enum[] enuma) throws ExceptionZZZ{
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeReturn = null;			
+		public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> toEnumMappedArrayList(Enum[] enuma) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedStringFormatZZZ> listaeReturn = null;			
 			main:{
 				if(enuma==null) break main;
-				if(!(enuma instanceof IEnumSetMappedLogStringFormatZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				if(!(enuma instanceof IEnumSetMappedStringFormatZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
-				listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+				listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 				for(Enum objEnum : enuma) {
-					IEnumSetMappedLogStringFormatZZZ objEnumMapped = (IEnumSetMappedLogStringFormatZZZ) objEnum;
+					IEnumSetMappedStringFormatZZZ objEnumMapped = (IEnumSetMappedStringFormatZZZ) objEnum;
 					listaeReturn.add(objEnumMapped);
 				}
 			}//end main:

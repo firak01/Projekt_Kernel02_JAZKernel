@@ -4,9 +4,9 @@ import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ.LOGSTRINGFORMAT;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import junit.framework.TestCase;
 
 public abstract class AbstractLogStringFormatZZZTest extends TestCase {
@@ -21,7 +21,7 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
     /** Formatieren mit Format-Enum */
     protected abstract String computeWithFormat(
             DummyTestObjectZZZ dummy,
-            IEnumSetMappedLogStringFormatZZZ[] format,
+            IEnumSetMappedStringFormatZZZ[] format,
             String... logs
     ) throws ExceptionZZZ;
 
@@ -98,14 +98,14 @@ public abstract class AbstractLogStringFormatZZZTest extends TestCase {
             String thread = "[Thread:";
             String cls = dummy.getClass().getSimpleName();  
 
-            IEnumSetMappedLogStringFormatZZZ[] format = new IEnumSetMappedLogStringFormatZZZ[]{
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING, 
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
-                ILogStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING
+            IEnumSetMappedStringFormatZZZ[] format = new IEnumSetMappedStringFormatZZZ[]{
+                IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,
+                IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+                IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING, 
+                IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+                IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
+                IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_,
+                IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE03_STRING_BY_STRING
             };
 
             String result = computeWithFormat(dummy, format, s1, s2, s3);

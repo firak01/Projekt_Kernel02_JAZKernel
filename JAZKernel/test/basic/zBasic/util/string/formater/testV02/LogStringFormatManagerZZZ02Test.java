@@ -2,8 +2,8 @@ package basic.zBasic.util.string.formater.testV02;
 
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
 
 /**Per ChatGPT von Redundanz befreit durch Verwendung einer Abstrakten Test-Klasse
  * Diese wurde von ChatGPT basierend auf den .testV00 Klassen erstellt
@@ -14,12 +14,12 @@ public class LogStringFormatManagerZZZ02Test extends AbstractLogStringFormatZZZT
 
     @Override
     protected String compute(DummyTestObjectZZZ dummy, String... logs) throws ExceptionZZZ {
-        return LogStringFormatManagerZZZ.getNewInstance().compute(dummy, logs);
+        return StringFormatManagerZZZ.getNewInstance().compute(dummy, logs);
     }
 
     @Override
-    protected String computeWithFormat(DummyTestObjectZZZ dummy,IEnumSetMappedLogStringFormatZZZ[] format,String... logs) throws ExceptionZZZ {
-        return LogStringFormatManagerZZZ.getNewInstance().compute(dummy, format, logs);
+    protected String computeWithFormat(DummyTestObjectZZZ dummy,IEnumSetMappedStringFormatZZZ[] format,String... logs) throws ExceptionZZZ {
+        return StringFormatManagerZZZ.getNewInstance().compute(dummy, format, logs);
     }
 }
 

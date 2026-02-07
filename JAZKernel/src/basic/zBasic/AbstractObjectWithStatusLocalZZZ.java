@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.StringFormaterZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;

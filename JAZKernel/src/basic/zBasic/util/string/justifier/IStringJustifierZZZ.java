@@ -2,17 +2,17 @@ package basic.zBasic.util.string.justifier;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormaterZZZ;
 import custom.zKernel.ILogZZZ;
 
 public interface IStringJustifierZZZ {
-	public static String sSEPARATOR_MESSAGE_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-	public static String sSEPARATOR_01_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
-	public static String sSEPARATOR_02_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_02_DEFAULT;
-	public static String sSEPARATOR_03_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_03_DEFAULT;
-	public static String sSEPARATOR_04_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_04_DEFAULT;
-	public static String sSEPARATOR_POSITION_DEFAULT=ILogStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT;
+	public static String sSEPARATOR_MESSAGE_DEFAULT=IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+	public static String sSEPARATOR_01_DEFAULT=IStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+	public static String sSEPARATOR_02_DEFAULT=IStringFormatZZZ.sSEPARATOR_02_DEFAULT;
+	public static String sSEPARATOR_03_DEFAULT=IStringFormatZZZ.sSEPARATOR_03_DEFAULT;
+	public static String sSEPARATOR_04_DEFAULT=IStringFormatZZZ.sSEPARATOR_04_DEFAULT;
+	public static String sSEPARATOR_POSITION_DEFAULT=IStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT;
 	
 	public boolean reset() throws ExceptionZZZ;
 	

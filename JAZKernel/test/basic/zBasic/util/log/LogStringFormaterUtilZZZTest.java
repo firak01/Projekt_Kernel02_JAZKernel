@@ -11,9 +11,9 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterUtilZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import junit.framework.TestCase;
 
 public class LogStringFormaterUtilZZZTest  extends TestCase{
@@ -33,7 +33,7 @@ public class LogStringFormaterUtilZZZTest  extends TestCase{
 	public void testGetHashMapFormatPositionStringAll() {
 		try {
 			//Hole den Formatierten String des "Kommentartrenners"
-			HashMap<Integer, String> hmValue = LogStringFormaterUtilZZZ.getHashMapFormatPositionStringAll();
+			HashMap<Integer, String> hmValue = StringFormaterUtilZZZ.getHashMapFormatPositionStringAll();
 			assertNotNull(hmValue);
 			
 			int iSize = hmValue.size();
@@ -51,8 +51,8 @@ public class LogStringFormaterUtilZZZTest  extends TestCase{
 			String sValue=null; String sValueExpected=null;
 						
 			sValueExpected = "[A00/]# ";
-			IEnumSetMappedLogStringFormatZZZ ienumFormatLogString = ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING;
-			sValue= LogStringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
+			IEnumSetMappedStringFormatZZZ ienumFormatLogString = IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING;
+			sValue= StringFormaterUtilZZZ.computeLinePartInLog(ienumFormatLogString);
 			assertNotNull(sValue);
 			assertEquals(sValueExpected, sValue);
 			

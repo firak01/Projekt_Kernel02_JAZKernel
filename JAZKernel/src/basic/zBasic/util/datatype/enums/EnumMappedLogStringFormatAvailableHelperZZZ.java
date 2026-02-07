@@ -1,6 +1,6 @@
 package basic.zBasic.util.datatype.enums;
 
-import static basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ.sENUMNAME;
+import static basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ.sENUMNAME;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,26 +15,26 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 
 public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ{
 	//+++++++++++++++++++++++++
 	//+++++++++++++++++++++++++
 	//Hier wird in einer beliebige (!!!!) Klasse nach dem Enum mit dem Namen gesucht. 
 	//Darum ist der Returnwert vorgegeben, aber die Klasse ist <?>
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumName, sEnumPropertyName, true, true);
 	}
 
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumName, sEnumPropertyName, bScanInterfaceImmidiate, true);
 	}
 
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate) throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ searchEnumMapped(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumName, sEnumPropertyName, bScanInterfaceImmidiate, bScanParentClassImmidiate);
 	}
 	
-	private static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ searchEnumMapped_(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate) throws ExceptionZZZ {
+	private static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ searchEnumMapped_(Class<?> classToCheck, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
 			String sEnumInnerName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + sEnumName;
@@ -100,25 +100,25 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 
 	//+++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++
-	public static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName(Class objClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
+	public static IEnumSetMappedStringFormatZZZ searchEnumMappedByName(Class objClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedByName_(objClass, sEnumName, sEnumPropertyName, true);		
 	}
 
 	
-	public static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName(Class objClass, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	public static IEnumSetMappedStringFormatZZZ searchEnumMappedByName(Class objClass, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedByName_(objClass, sEnumName, sEnumPropertyName, bScanInterfaceImmidiate);		
 	}
 
-	public static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName(Object objForClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
+	public static IEnumSetMappedStringFormatZZZ searchEnumMappedByName(Object objForClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedByName_(objForClass, sEnumName, sEnumPropertyName, true);
 	}
 
-	public static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName(Object objForClass, String sEnumName,  String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	public static IEnumSetMappedStringFormatZZZ searchEnumMappedByName(Object objForClass, String sEnumName,  String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedByName_(objForClass, sEnumName, sEnumPropertyName, bScanInterfaceImmidiate);
 	}
 	
-	private static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName_(Class objClass, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ objReturn = null;
+	private static IEnumSetMappedStringFormatZZZ searchEnumMappedByName_(Class objClass, String sEnumName, String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+		IEnumSetMappedStringFormatZZZ objReturn = null;
 		main:{
 			if(objClass==null) {
 				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
@@ -130,20 +130,20 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				 throw ez;
 			}
 			
-			HashMap<String,IEnumSetMappedLogStringFormatZZZ> hmStatus = EnumMappedLogStringFormatAvailableHelperZZZ.searchHashMapEnumMapped(objClass, sEnumName, bScanInterfaceImmidiate);
+			HashMap<String,IEnumSetMappedStringFormatZZZ> hmStatus = EnumMappedLogStringFormatAvailableHelperZZZ.searchHashMapEnumMapped(objClass, sEnumName, bScanInterfaceImmidiate);
 			if(hmStatus==null)break main;
 			
-			IEnumSetMappedLogStringFormatZZZ objBooleanMessage = hmStatus.get(sEnumPropertyName);
+			IEnumSetMappedStringFormatZZZ objBooleanMessage = hmStatus.get(sEnumPropertyName);
 			if(objBooleanMessage==null) break main;
 			
-			objReturn = (IEnumSetMappedLogStringFormatZZZ) objBooleanMessage; //objBooleanMessage.getEnumObject();
+			objReturn = (IEnumSetMappedStringFormatZZZ) objBooleanMessage; //objBooleanMessage.getEnumObject();
 		
 		}//end main:
 		return objReturn;		
 	}
 
-	private static IEnumSetMappedLogStringFormatZZZ searchEnumMappedByName_(Object objForClass, String sEnumName,  String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ objReturn = null;
+	private static IEnumSetMappedStringFormatZZZ searchEnumMappedByName_(Object objForClass, String sEnumName,  String sEnumPropertyName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+		IEnumSetMappedStringFormatZZZ objReturn = null;
 		main:{
 			if(objForClass==null) {
 				 ExceptionZZZ ez = new ExceptionZZZ( "Object for Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
@@ -161,10 +161,10 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 			}
 			
 			Class<?> objClass = objForClass.getClass();
-			ArrayList<IEnumSetMappedLogStringFormatZZZ> listae = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(objClass, sEnumName, bScanInterfaceImmidiate);
+			ArrayList<IEnumSetMappedStringFormatZZZ> listae = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(objClass, sEnumName, bScanInterfaceImmidiate);
 			if(ArrayListUtilZZZ.isEmpty(listae)) break main;
 			
-			for(IEnumSetMappedLogStringFormatZZZ obje : listae) {
+			for(IEnumSetMappedStringFormatZZZ obje : listae) {
 				String sName = obje.getName();
 				if(sEnumPropertyName.equals(sName)) {
 					objReturn = obje;
@@ -177,57 +177,57 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 	}
 	//#####################################################	
 	//#####################################################
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Object objForClass)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Object objForClass)  throws ExceptionZZZ {
 		Class<?> cls = objForClass.getClass();
 		String sEnumName = sENUMNAME;
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, true, true);
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, true, true);
 		return enumaReturn;
 	}
 	 
 	//++++++++++++++++++++++
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls)  throws ExceptionZZZ {
 		String sEnumName = sENUMNAME;
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, true, true);
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, true, true);
 		return enumaReturn;
 	}
 	
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
 		String sEnumName = sENUMNAME;
 		E[] enumaReturn = (E[]) searchEnumMappedArray_(cls, sEnumName, bScanInterfaceImmidiate, true);
 		return enumaReturn;
 	}
 
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
 		String sEnumName = sENUMNAME;
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
 		return enumaReturn;
 	}
 	
 	//+++++++++++++++++++++++
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Object objForClass, String sEnumName)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Object objForClass, String sEnumName)  throws ExceptionZZZ {
 		Class<?> cls = objForClass.getClass();
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, true, true);
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, true, true);
 		return enumaReturn;
 	}
 	 
 	//++++++++++++++++++++++++
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, true, true);
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, true, true);
 		return enumaReturn;
 	}
 	
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, bScanInterfaceImmidiate, true);
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, bScanInterfaceImmidiate, true);
 		return enumaReturn;
 	}
 
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate)  throws ExceptionZZZ {
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = searchEnumMappedArray_(cls,sEnumName, bScanInterfaceImmidiate, bScanSuperclassImmidiate);
 		return enumaReturn;
 	}
 	
-	private static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> IEnumSetMappedLogStringFormatZZZ[] searchEnumMappedArray_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ{
-		IEnumSetMappedLogStringFormatZZZ[] enumaReturn = null;
+	private static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] searchEnumMappedArray_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ[] enumaReturn = null;
 		main:{
 			if(classToCheck==null) {
 				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
@@ -247,19 +247,19 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 	//#####################################################
 	//#####################################################
 	//aber wir durchsuchen nun einmal beliebige Klassen nach dem Enum-Namen
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(cls, sEnumName, true, true);
 	}
 
 	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
 	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(cls, sEnumName, bScanInterfaceImmidiate, true);
 	}
 
 	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
 	//public static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(cls, sEnumName, bScanInterfaceImmidiate, bScanParentClassImmidiate);
 	}
 
@@ -267,27 +267,27 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 	//###############################################################################################
 	//+++ Speziel für das ILogStringFormatZZZ ++++++++++++++++++
 	//aber wir durchsuchen nun einmal beliebige Klassen nach dem Enum-Namen
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(obj, sEnumName, true, true);
 	}
 
 	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
 	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(obj, sEnumName, bScanInterfaceImmidiate, true);
 	}
 
 	//public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
 	//public static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
-	public static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
+	public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList(Object obj, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanParentClassImmidiate)  throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList_(obj, sEnumName, bScanInterfaceImmidiate, bScanParentClassImmidiate);
 	}
 
 	//private static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 	//private static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 	//Das ? ist unspezifisch, ohne ? funktioniert wenigstens der Compiler, ob es dann auch zur Laufzeit funktioniert????
-	private static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
-		ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeReturn = null;
+	private static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		ArrayList<IEnumSetMappedStringFormatZZZ> listaeReturn = null;
 		main:{
 		if(cls==null) {
 			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
@@ -298,10 +298,10 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 		Enum[] enuma = EnumAvailableHelperZZZ.searchEnumArray(cls,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 		listaeReturn = EnumUtilZZZ.toArrayListMapped(enuma);
 		
-		ArrayList<IEnumSetMappedLogStringFormatZZZ>listaeByDirect=null;		
+		ArrayList<IEnumSetMappedStringFormatZZZ>listaeByDirect=null;		
 		if(!ArrayUtilZZZ.isNull(enuma)) {	
 			//listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-			listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+			listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 			for(Enum objEnum : enuma) {				
 				//IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) objEnum;				
 				E e = (E) objEnum;
@@ -319,7 +319,7 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 		//2. allen Interfaces der Klasse, auch den "Elterninerfaces"
 		//In der scanInterfacesSuper-Methode meiner ReflectClass-Klasse wird folgendes beachtet.https://stackoverflow.com/questions/24020413/get-parent-interface-of-interface-in-java
 		//ArrayList<IEnumSetMappedZZZ>listaeByInterface=null;
-		ArrayList<IEnumSetMappedLogStringFormatZZZ>listaeByInterface=null;
+		ArrayList<IEnumSetMappedStringFormatZZZ>listaeByInterface=null;
 		if(bScanInterfaceImmediate) {
 			ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
 			ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
@@ -328,10 +328,10 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				Enum[] enumaByInterface = EnumAvailableHelperZZZ.searchEnumArray(objclsByInterface, sEnumName,bScanInterfaceImmediate, false);
 				
 				//ArrayList<IEnumSetMappedZZZ>listaeByInterfaceTemp=null; 
-				ArrayList<IEnumSetMappedLogStringFormatZZZ>listaeByInterfaceTemp=null;
+				ArrayList<IEnumSetMappedStringFormatZZZ>listaeByInterfaceTemp=null;
 				if(!ArrayUtilZZZ.isNull(enumaByInterface)) {			
 					//listaeByInterfaceTemp = new ArrayList<IEnumSetMappedZZZ>();
-					listaeByInterfaceTemp = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+					listaeByInterfaceTemp = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 					for(Enum objEnum : enumaByInterface) {						
 						//IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) objEnum;
 						E e = (E) objEnum;
@@ -343,9 +343,9 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				}
 				if(!ArrayListUtilZZZ.isEmpty(listaeByInterfaceTemp)) {
 					//if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedZZZ>();				
-					if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+					if(ArrayListUtilZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 					//listaeByInterface = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByInterface, listaeByInterfaceTemp);
-					listaeByInterface = (ArrayList<IEnumSetMappedLogStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByInterface, listaeByInterfaceTemp);
+					listaeByInterface = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByInterface, listaeByInterfaceTemp);
 				}
 			}
 			
@@ -355,7 +355,7 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 		
 		//3. Hole die Elternklassen.
 		//ArrayList<IEnumSetMappedZZZ>listaeByClassSuper=null;
-		ArrayList<IEnumSetMappedLogStringFormatZZZ>listaeByClassSuper=null;
+		ArrayList<IEnumSetMappedStringFormatZZZ>listaeByClassSuper=null;
 		if(bScanSuperclassImmediate) {
 			ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
 		
@@ -366,37 +366,37 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				//s. ChatGPT vom 20260110
 				//ArrayList<IEnumSetMappedZZZ> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 				//ArrayList<E> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
-				ArrayList<IEnumSetMappedLogStringFormatZZZ> listaeByClassSuperTemp = searchEnumMappedList(objclsSuper, sEnumName, bScanInterfaceImmediate);
+				ArrayList<IEnumSetMappedStringFormatZZZ> listaeByClassSuperTemp = searchEnumMappedList(objclsSuper, sEnumName, bScanInterfaceImmediate);
 				//listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
-				listaeByClassSuper = (ArrayList<IEnumSetMappedLogStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
 			}
 		}
 		
 		if(!ArrayListUtilZZZ.isEmpty(listaeByDirect)) {		
 			//if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 			listaeReturn.addAll(listaeByDirect);			
 		}
 		
 		if(!ArrayListUtilZZZ.isEmpty(listaeByInterface)) {
 			//if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 			listaeReturn.addAll(listaeByInterface);
 		}
 		
 		if(!ArrayListUtilZZZ.isEmpty(listaeByClassSuper)) {
 			//if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedLogStringFormatZZZ>();
+			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
 			listaeReturn.addAll(listaeByClassSuper);
 		}
 		
 		//listaeReturn = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.unique(listaeReturn);
-		listaeReturn = (ArrayList<IEnumSetMappedLogStringFormatZZZ>) ArrayListUtilZZZ.unique(listaeReturn);
+		listaeReturn = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.unique(listaeReturn);
 	}//end main:
 	return listaeReturn;
 	}
 
-	private static <E extends Enum<E> & IEnumSetMappedLogStringFormatZZZ> ArrayList<IEnumSetMappedLogStringFormatZZZ> searchEnumMappedList_(Object obj, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+	private static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> searchEnumMappedList_(Object obj, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 		Class<?> objClass = obj.getClass();
 		return searchEnumMappedList_(objClass, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 	}
@@ -412,8 +412,8 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
 	//public static HashMap<String,Collection<? extends IEnumSetMappedZZZ>> getHashMapEnumStatusLocal(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 	//Das ? ist unspezifisch, ohne ? funktioniert wenigstens der Compiler, ob es dann auch zur Laufzeit funktioniert????
-	public static HashMap<String, IEnumSetMappedLogStringFormatZZZ> searchHashMapEnumMapped(Class classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {		
-		HashMap<String, IEnumSetMappedLogStringFormatZZZ> hmReturn = null;
+	public static HashMap<String, IEnumSetMappedStringFormatZZZ> searchHashMapEnumMapped(Class classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {		
+		HashMap<String, IEnumSetMappedStringFormatZZZ> hmReturn = null;
 		main:{
 			
 //Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110
@@ -422,12 +422,12 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 			
 			//s. ChatGPT vom 20260110
 			//ArrayList<IEnumSetMappedZZZ>listaEnumaMappedStatus= EnumAvailableHelperZZZ.searchEnumMappedList(classToCheck, sEnumName, bScanInterfaceImmidiate);
-			List<IEnumSetMappedLogStringFormatZZZ> listaEnumaMappedStatus = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(classToCheck, sEnumName, bScanInterfaceImmidiate);
+			List<IEnumSetMappedStringFormatZZZ> listaEnumaMappedStatus = EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumMappedList(classToCheck, sEnumName, bScanInterfaceImmidiate);
 			
 			if(listaEnumaMappedStatus==null) break main;
 
-			hmReturn = new HashMap<String, IEnumSetMappedLogStringFormatZZZ>();			
-			for(IEnumSetMappedLogStringFormatZZZ objEnumMapped : listaEnumaMappedStatus) {
+			hmReturn = new HashMap<String, IEnumSetMappedStringFormatZZZ>();			
+			for(IEnumSetMappedStringFormatZZZ objEnumMapped : listaEnumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
 				hmReturn.put(sEnum, objEnumMapped);
 			}		
@@ -437,24 +437,24 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 
 	//########################################
 	//########################################
-	public static <E extends Enum & IEnumSetMappedLogStringFormatZZZ> ArrayList<E> searchEnumList(Object objForClass, String sEnumName) throws ExceptionZZZ {
+	public static <E extends Enum & IEnumSetMappedStringFormatZZZ> ArrayList<E> searchEnumList(Object objForClass, String sEnumName) throws ExceptionZZZ {
 		Class<?> classToCheck = objForClass.getClass();
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,true,true);
 	}
 	
-	public static <E extends Enum & IEnumSetMappedLogStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
+	public static <E extends Enum & IEnumSetMappedStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,true,true);
 	}
 	
-	public static <E extends Enum & IEnumSetMappedLogStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate) throws ExceptionZZZ {
+	public static <E extends Enum & IEnumSetMappedStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,bScanInterfaceImidiate, true);
 	}
 	
-	public static <E extends Enum & IEnumSetMappedLogStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ {
+	public static <E extends Enum & IEnumSetMappedStringFormatZZZ> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate, boolean bScanSuperclassImmidiate) throws ExceptionZZZ {
 		return EnumMappedLogStringFormatAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,bScanInterfaceImidiate, bScanSuperclassImmidiate);
 	}
 	
-	private static <E extends Enum & IEnumSetMappedLogStringFormatZZZ> ArrayList<E> searchEnumList_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate, boolean bScanSuperclassImidiate) throws ExceptionZZZ {
+	private static <E extends Enum & IEnumSetMappedStringFormatZZZ> ArrayList<E> searchEnumList_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImidiate, boolean bScanSuperclassImidiate) throws ExceptionZZZ {
 		ArrayList<E> listaeReturn = null;
 		main:{
 			String sEnumInnerName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + sEnumName;

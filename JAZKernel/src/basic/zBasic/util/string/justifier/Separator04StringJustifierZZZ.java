@@ -3,8 +3,8 @@ package basic.zBasic.util.string.justifier;
 import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerXmlZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
 
 /** Mache einen String buendig zu den anderen "Vorausgegangenen" String.
  *  

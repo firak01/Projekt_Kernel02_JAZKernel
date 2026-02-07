@@ -15,12 +15,12 @@ import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ implements ILogStringFormatManagerJustifiedZZZ{
+public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ implements IStringFormatManagerJustifiedZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
 
 	// --- Singleton Instanz ---
 	//muss als Singleton static sein. //Muss in der Konkreten Manager Klasse definiert sein, da ja unterschiedlich
-	protected static ILogStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
+	protected static IStringFormatManagerZZZ objLogStringManagerINSTANCE=null;
 
 	//##########################################################
 	//Trick, um Mehrfachinstanzen zu verhindern (optional)
@@ -39,14 +39,14 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	//##########################################################
 	    
 	//als private deklariert, damit man es nicht so instanzieren kann, sondern die Methode .getInstance() verwenden muss
-	private LogStringFormatManagerZZZ() throws ExceptionZZZ{
+	private StringFormatManagerZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
-	public static ILogStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
+	public static IStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
 		//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
 		//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
-		synchronized(LogStringFormatManagerZZZ.class) {
+		synchronized(StringFormatManagerZZZ.class) {
 			if(objLogStringManagerINSTANCE == null) {
 				if (INITIALIZED) {
 		            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
@@ -55,14 +55,14 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 				INITIALIZED=true;
 			}
 		}
-		return (ILogStringFormatManagerJustifiedZZZ) objLogStringManagerINSTANCE;
+		return (IStringFormatManagerJustifiedZZZ) objLogStringManagerINSTANCE;
 	}
 	
-	public static LogStringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
+	public static StringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
-		objLogStringManagerINSTANCE = new LogStringFormatManagerZZZ();
-		return (LogStringFormatManagerZZZ)objLogStringManagerINSTANCE;
+		objLogStringManagerINSTANCE = new StringFormatManagerZZZ();
+		return (StringFormatManagerZZZ)objLogStringManagerINSTANCE;
 	}
 	
 	public static synchronized void destroyInstance() throws ExceptionZZZ{
@@ -98,26 +98,26 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
     
     //######################
     @Override
-   	public synchronized String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+   	public synchronized String compute(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
    		String sReturn = this.computeJustified(ienumFormatLogString);	
    		return sReturn;
    	}
        		       
     @Override
-	public synchronized String compute(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
+	public synchronized String compute(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
 		String sReturn = this.computeJustified(ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 
 	@Override
-	public synchronized String compute(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(obj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
 	
 	
 	@Override
-	public synchronized String compute(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 		return sReturn;
 	}
@@ -129,58 +129,58 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	//######################
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, sLogs);
 		return sReturn;
 	}
 		
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumFormatLogString);
 		return sReturn;
 	}
 	
 		
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
 		return sReturn;
 	}
 	
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
 		return sReturn;
 	}
 	
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString);	
 		return sReturn;
 	}
@@ -191,7 +191,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	
 	@Override
-	public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, sLogs);	
 		return sReturn;
 	}
@@ -199,7 +199,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	//###################################################################
 		@Override
-		public synchronized String compute(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			String sReturn = super.computeJagged(hm);
 			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 			
@@ -212,19 +212,19 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 			}
 				
 			return sReturn;
 		}
 
 		@Override
-		public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			return this.computeJustified(obj, hm);
 		}
 
 		@Override
-		public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			String sReturn = super.computeJagged(classObj, hm);	
 			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 			
@@ -235,26 +235,26 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 			}
 			return sReturn;
 		}
 		
 		@Override
-		public synchronized String compute(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			String sReturn = this.computeJustified(objFormater, hm);
 			return sReturn;
 		}
 		
 		
 		@Override
-		public synchronized String compute(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			String sReturn = this.computeJustified(objFormater, obj, hm);
 			return sReturn;
 		}
 		
 		@Override
-		public synchronized String compute(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 			String sReturn = this.computeJustified(objFormater, classObj, hm);
 			return sReturn;
 		}
@@ -273,8 +273,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			
 			//#######################
 			//Hole das Format, aus einem Default.
-			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 	
 		
 		
@@ -304,7 +304,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -339,8 +339,8 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		
 			//#######################
 			//Hole das Format, aus einem Default.
-			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
@@ -367,7 +367,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -380,7 +380,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	//############################################################
 	
 	@Override
-	public synchronized String computeJustified(Object objIn, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object objIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		Object obj = null;
 		if(objIn==null) {
 			obj = this;
@@ -394,7 +394,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public synchronized String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			String stemp;
@@ -435,7 +435,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, listasReturn);//true ist default... Fasse ggf. 1. Zeile und 2. Zeile zusammen beim Normieren.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, listasReturn);//true ist default... Fasse ggf. 1. Zeile und 2. Zeile zusammen beim Normieren.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -445,7 +445,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	
 	@Override
-	public synchronized String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			String stemp;
@@ -486,7 +486,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -498,12 +498,12 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	//####################################################
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {		
 		String sReturn=null;
 		main:{
 			String stemp = null;
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
@@ -530,7 +530,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -541,7 +541,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		Object obj = null;
 		if(objIn==null) {
 			obj = this;
@@ -555,12 +555,12 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	}
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			String stemp = null;
 			
-			IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
@@ -587,7 +587,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -597,7 +597,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn=null;
 		main:{
 			String stemp=null;
@@ -641,7 +641,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -651,7 +651,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -681,7 +681,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -691,7 +691,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -733,7 +733,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -743,7 +743,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -773,7 +773,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -784,7 +784,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -824,7 +824,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
@@ -837,7 +837,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	//### HashMap mit den "Daten"
 	//TODOGOON20260127: HashMap übergeben, aber: Das müsste dann auch irgendwie umstrukturiert werden hin zur ArrayList-Methodik
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.computeJagged(objFormater, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -850,14 +850,14 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}		
 		return sReturn;
 	}
 
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.computeJagged(objFormater, obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -870,14 +870,14 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}	
 		return sReturn;
 	}
 	
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
 		String sReturn = super.computeJagged(objFormater, classObj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -890,7 +890,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}		
 		return sReturn;
 	}
@@ -898,7 +898,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 	
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.computeJagged(objFormater, obj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
@@ -912,7 +912,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}	
 		return sReturn;
 	}
@@ -920,7 +920,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	
 		
 	@Override
-	public synchronized String computeJustified(ILogStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = super.computeJagged(objFormater, classObj, sLogs);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -928,19 +928,19 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
 		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 		
-		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
+		IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
 		this.setStringJustifierList(listaStringJustifier);
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);		
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);		
 		}
 		return sReturn;
 	}
 
 	@Override
-	public synchronized String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String computeJustified(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.computeJagged(hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -953,13 +953,13 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}	
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public synchronized String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = super.computeJagged(obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
@@ -972,7 +972,7 @@ public class LogStringFormatManagerZZZ extends AbstractLogStringFormatManagerZZZ
 		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
 			this.getStringJustifierListUsed().add(objJustifier);
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
 		}		
 		return sReturn;
 	}

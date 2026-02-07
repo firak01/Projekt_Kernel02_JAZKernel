@@ -18,14 +18,14 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
-import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
-import basic.zBasic.util.string.formater.ILogStringFormaterZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerXmlZZZ;
-import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.LogStringFormater4ReflectCodeZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterUtilZZZ;
-import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormaterZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.StringFormater4ReflectCodeZZZ;
+import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
+import basic.zBasic.util.string.formater.StringFormaterZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
@@ -252,7 +252,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				}//End if : Verarbeitung vor Java 1.4
 				
 				//Abschliessenden Trenner für mögliche Folgekommentare, falls nicht schon vorhanden. Mehr als IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR
-				String sCommentSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+				String sCommentSeparator = StringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 				if(!StringZZZ.endsWith(sReturn,  sCommentSeparator)) {
 					 sReturn = sReturn + sCommentSeparator;
 			 	}
@@ -262,7 +262,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 				
 				IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-				sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);				
+				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);				
 			}//end main:
 			return sReturn;
 	  }
@@ -350,7 +350,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
 		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.		 		 
 		 //return " - Line " + iLine + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-		 String sCommentSeparator = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+		 String sCommentSeparator = StringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
 		 return " - Line " + iLine + sCommentSeparator;
 		 
 		//geht leider nicht, da wir hier den Dateinamen nicht haben. 
@@ -694,17 +694,17 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				
 			
 			//Erweitere um Separatoren
-			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING, "");
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, sPositionInFile);//hat dann noch Leerzeichen vorangestellt!!!!
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING, "");
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedStringFormatZZZ, String>();
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_HASHMAP, sMethod);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING, "");
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_HASHMAP, sPositionInFile);//hat dann noch Leerzeichen vorangestellt!!!!
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING, "");
 									
 			//Erzeuge hier den String als NICHT - XML Variante. 
 			//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-			ILogStringFormaterZZZ objFormater = new LogStringFormaterZZZ();
-			sReturn = LogStringFormatManagerZZZ.getInstance().computeJagged(objFormater, hmLogString);						
+			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
+			sReturn = StringFormatManagerZZZ.getInstance().computeJagged(objFormater, hmLogString);						
 		}//end main:
 		return sReturn;
 	}
@@ -956,20 +956,20 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Dabei ist der String der aktuellen Position eh nur für andere Log-Formatierungen die Quelle für Daten.
 			//Das ist etwas uebertrieben. Wird aber hier als alternativer Ansatz implementiert.
 			
-			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLogString = new LinkedHashMap<IEnumSetMappedStringFormatZZZ, String>();
 			
 			//Ansatzpunkt für weiter Tags als Format			
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_XML_BY_HASHMAP, sClassname);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_HASHMAP, sMethod);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_XML_BY_HASHMAP, sLine);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_HASHMAP, sFile);
-			hmLogString.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_HASHMAP, sPositionInFile);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAMESIMPLE_XML_BY_HASHMAP, sClassname);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_HASHMAP, sMethod);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILELINE_XML_BY_HASHMAP, sLine);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML_BY_HASHMAP, sFile);
+			hmLogString.put(IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_HASHMAP, sPositionInFile);
 			
 			//Erzeuge hier den String als XML Variante. 
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-			ILogStringFormaterZZZ objFormater = new LogStringFormater4ReflectCodeZZZ();
-			sReturn = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
+			IStringFormaterZZZ objFormater = new StringFormater4ReflectCodeZZZ();
+			sReturn = StringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogString);
 		
 			//umgib den Tag mit dem <positioncurrent> Tag
 			ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
@@ -989,15 +989,15 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	        String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	                     + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();		
 	       	
-			LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLogStringPre = new LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String>();			
-			hmLogStringPre.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML_BY_HASHMAP, sDate);
-			hmLogStringPre.put(ILogStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML_BY_HASHMAP, sThreadId);
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLogStringPre = new LinkedHashMap<IEnumSetMappedStringFormatZZZ, String>();			
+			hmLogStringPre.put(IStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML_BY_HASHMAP, sDate);
+			hmLogStringPre.put(IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML_BY_HASHMAP, sThreadId);
 			
 			//Erzeuge hier den String als XML Variante. 
 			//Grund: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//       in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-			ILogStringFormaterZZZ objFormaterPre = new LogStringFormater4ReflectCodeZZZ();
-			String sReturnPre = LogStringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);			
+			IStringFormaterZZZ objFormaterPre = new StringFormater4ReflectCodeZZZ();
+			String sReturnPre = StringFormatManagerXmlZZZ.getInstance().compute(objFormater, hmLogStringPre);			
 			sReturn = sReturnPre + sReturn;
 		}//end main:
 		return sReturn;

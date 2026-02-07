@@ -7,7 +7,7 @@ import basic.zBasic.rule.AbstractMatchRuleZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 
-public class LogStringFormatMatchRuleZZZ<V extends IStringJustifierZZZ,K extends IEnumSetMappedLogStringFormatZZZ> extends AbstractMatchRuleZZZ<V,K>{
+public class StringFormatMatchRuleZZZ<V extends IStringJustifierZZZ,K extends IEnumSetMappedStringFormatZZZ> extends AbstractMatchRuleZZZ<V,K>{
 
 	@Override
 	public boolean matches(V value, K key) throws ExceptionZZZ {
@@ -16,7 +16,7 @@ public class LogStringFormatMatchRuleZZZ<V extends IStringJustifierZZZ,K extends
 			if(value==null) break main;
 			if(key==null) break main;
 		
-			HashMap<Integer, String> hmSeparator = LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAllForLine();
+			HashMap<Integer, String> hmSeparator = StringFormaterUtilZZZ.getHashMapLogStringSeparatorAllForLine();
 			
 			//Hole den Faktor aus dem IEnum, damit ein ggfs. vorhandener Faktor mit Steuerkennzeichen und Separator 
 			//mit dem Separtor des Justifiers verglichen werden kann.
