@@ -10,7 +10,7 @@ import basic.zBasic.util.string.formater.StringFormaterZZZ;
  * @author Fritz Lindhauer, 15.11.2025, 16:22:53
  * 
  */
-public class LogStringFormaterZZZ02Test extends AbstractLogStringFormatZZZTest {
+public class StringFormaterZZZ02Test extends AbstractStringFormatZZZTest {
 
 	private StringFormaterZZZ formater = null;
 

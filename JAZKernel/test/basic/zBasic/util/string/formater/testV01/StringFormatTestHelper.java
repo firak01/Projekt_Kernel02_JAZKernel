@@ -8,7 +8,7 @@ import junit.framework.TestCase;
  * Hilfsklasse zur Reduktion redundanter Testlogik.
  * Beide Testklassen (Formater & Manager) können diese statischen Methoden nutzen.
  */
-public class LogStringFormatTestHelper extends TestCase {
+public class StringFormatTestHelper extends TestCase {
 
     // -------------------------------------------------------------
     // Grundlegende Prüfungen

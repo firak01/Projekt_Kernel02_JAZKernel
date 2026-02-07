@@ -19,7 +19,7 @@ import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import junit.framework.TestCase;
 
-public class LogStringFormatManagerZZZ00Test extends TestCase {
+public class StringFormatManagerZZZ00Test extends TestCase {
 	private StringFormatManagerZZZ objLogManagerTest = null;
 	
 	protected void setUp(){

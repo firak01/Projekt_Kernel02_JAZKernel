@@ -10,7 +10,7 @@ import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
  * @author Fritz Lindhauer, 15.11.2025, 16:22:02
  * 
  */
-public class LogStringFormatManagerZZZ02Test extends AbstractLogStringFormatZZZTest {
+public class StringFormatManagerZZZ02Test extends AbstractStringFormatZZZTest {
 
     @Override
     protected String compute(DummyTestObjectZZZ dummy, String... logs) throws ExceptionZZZ {

@@ -1,22 +1,14 @@
-package basic.zBasic.util.log;
+package basic.zBasic.util.string.formater;
 
 import java.util.HashMap;
 
-import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IReflectCodeZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.math.PrimeFactorizationZZZ;
-import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import junit.framework.TestCase;
 
-public class LogStringFormaterUtilZZZTest  extends TestCase{
+public class StringFormaterUtilZZZTest  extends TestCase{
 	
 	//private LogStringFormaterZZZ objLogStringTest = null;
 

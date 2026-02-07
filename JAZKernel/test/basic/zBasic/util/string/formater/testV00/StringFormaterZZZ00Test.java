@@ -17,7 +17,7 @@ import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.string.formater.IStringFormaterZZZ.FLAGZ;
 import junit.framework.TestCase;
 
-public class LogStringFormaterZZZ00Test extends TestCase{
+public class StringFormaterZZZ00Test extends TestCase{
 	
 	private StringFormaterZZZ objLogStringTest = null;
 

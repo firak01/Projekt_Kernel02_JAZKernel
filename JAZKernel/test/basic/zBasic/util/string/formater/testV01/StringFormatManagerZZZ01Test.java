@@ -5,17 +5,17 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IReflectCodeZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
-import basic.zBasic.util.string.formater.IStringFormaterZZZ;
-import basic.zBasic.util.string.formater.StringFormaterZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ.FLAGZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
-import basic.zBasic.util.string.formater.IStringFormaterZZZ.FLAGZ;
 import junit.framework.TestCase;
+
 
 /** Erweiterungsansatz: Verwende zur Reduktion der Redundanz eine Helper-Klasse.
  *  Diese wurde von ChatGPT basierend auf den .testV00 Klassen erstellt 
@@ -24,51 +24,40 @@ import junit.framework.TestCase;
  * @author Fritz Lindhauer, 15.11.2025, 16:50:40
  * 
  */
-public class LogStringFormaterZZZ01Test extends TestCase{
+public class StringFormatManagerZZZ01Test extends TestCase {
+	private StringFormatManagerZZZ objLogManagerTest = null;
 	
-	private StringFormaterZZZ objLogStringTest = null;
-
 	protected void setUp(){
-		try {			
-			objLogStringTest = new StringFormaterZZZ();
-								
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 	
+//		try {			
+//			
+//					
+//			
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		} 	
 	}//END setup
 
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			StringFormaterZZZ objLogString = new StringFormaterZZZ();
-			boolean btemp1a = objLogString.setFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD, true);
+			IStringFormatManagerZZZ objLogManager = StringFormatManagerZZZ.getNewInstance();
+			boolean btemp1a = objLogManager.setFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
+						
+			StringFormatManagerZZZ.destroyInstance();
 			
-			boolean btemp1b = objLogString.getFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD);
-			assertTrue(btemp1b);
-					
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
+			IStringFormatManagerZZZ objLogManager2 = StringFormatManagerZZZ.getNewInstance();
+			
+			boolean btemp2a = objLogManager2.getFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY);
+			assertFalse(btemp2a);
+			
+			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
-	}
-	
-	public void testComputeN() {
-		try {
-			//20240423:
-			//MErke: Diese Primfaktorenzerlegung, etc. wird noch nirgendwo verwendet			
-			int iNumber = objLogStringTest.computeFormatPositionsNumber();
-			assertTrue(iNumber>0);//Verwende die custom-FormatPosition
-
-			int[]iatest = PrimeFactorizationZZZ.primeFactorsAsIntArray(iNumber);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": '" + IntegerArrayZZZ.implode(iatest) + "'");
-			
-			int iValue = PrimeNumberZZZ.computePositionValueFromPrime(iNumber, 3);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + iValue);
-		} catch (ExceptionZZZ ez) {
-			ez.printStackTrace();
-			fail("Method throws an exception." + ez.getMessageLast());
-		}	
 	}
 	
 	public void testCompute_FormatDefault() {
@@ -77,13 +66,13 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			DummyTestObjectZZZ dummy = new DummyTestObjectZZZ();
 	        String sLog = "der erste Logeintrag";
 	        String thread = "[Thread:";
-	        String cls = dummy.getClass().getSimpleName() + IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+	        String cls = dummy.getClass().getSimpleName();
 
-	        String result = objLogStringTest.compute(dummy, sLog);
+	        String result = StringFormatManagerZZZ.getNewInstance().compute(dummy, sLog);
 
-	        LogStringFormatTestHelper.assertContainsOnce(result, sLog);
-	        LogStringFormatTestHelper.assertThreadAndClass(result, thread, cls);
-	        LogStringFormatTestHelper.assertOrder(result, cls, thread, sLog);
+	        StringFormatTestHelper.assertContainsOnce(result, sLog);
+	        StringFormatTestHelper.assertThreadAndClass(result, thread, cls);
+	        StringFormatTestHelper.assertOrder(result, cls, thread, sLog);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -108,9 +97,8 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat01);
-		
-			sLogValue = objLogStringTest.compute(objDummy, sLog1);
+			
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -137,10 +125,8 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE02_STRING_BY_STRING,
 							};
-			
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
 						
-			sLogValue = objLogStringTest.compute(objDummy, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -169,9 +155,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der identische Logeintrag auch 2x in der Zeile erscheinen. Wenn entsprechend uebergeben	
 			//b) gleicher Logeintraege		
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
-			
-			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat02, sLog1, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -200,10 +184,8 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 						
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag auch 2x in der Zeile erscheinen.	
-			//c) unterschiedliche Logeintraege			
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat02);
-						
-			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
+			//c) unterschiedliche Logeintraege									
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat02, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -262,9 +244,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
-		
-			sLogValue = objLogStringTest.compute(objDummy, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -285,10 +265,9 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
-			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -316,14 +295,12 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 						
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 3x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
-			//c) ARRAY der Logeintraege			
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
-						
+			//c) ARRAY der Logeintraege									
 			String[]saLog = new String[3];
 			saLog[0]=sLog1;
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
-			sLogValue = objLogStringTest.compute(objDummy, saLog);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -382,9 +359,7 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
-		
-			sLogValue = objLogStringTest.compute(objDummy, sLog1);
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy,ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -405,10 +380,9 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
 			
 			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
-			sLogValue = objLogStringTest.compute(objDummy, sLog1, sLog2);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -437,13 +411,11 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++ Bei 3x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//c) ARRAY der Logeintraege			
-			objLogStringTest.setFormatPositionsMapped(ienumaFormat03);
-						
 			String[]saLog = new String[3];
 			saLog[0]=sLog1;
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
-			sLogValue = objLogStringTest.compute(objDummy, saLog);
+			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy,ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			assertTrue(StringZZZ.contains(sLogValue, sLog1));
@@ -475,4 +447,4 @@ public class LogStringFormaterZZZ01Test extends TestCase{
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	} 
-}//end class
+}

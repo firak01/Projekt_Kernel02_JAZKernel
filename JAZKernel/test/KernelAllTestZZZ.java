@@ -96,14 +96,14 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
 		//Tests fuer das bauen eines FORMATIERTEN LogStrings
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.LogStringFormaterZZZ00Test.class);
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.LogStringFormatManagerZZZ00Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormaterZZZ00Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormatManagerZZZ00Test.class);
 		
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV01.LogStringFormaterZZZ01Test.class);
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV01.LogStringFormatManagerZZZ01Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV01.StringFormaterZZZ01Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV01.StringFormatManagerZZZ01Test.class);
 		
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.LogStringFormaterZZZ02Test.class);
-		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.LogStringFormatManagerZZZ02Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.StringFormaterZZZ02Test.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.StringFormatManagerZZZ02Test.class);
 		
 		//Tests fuer Enum
 		objReturn.addTestSuite(EnumSetMappedStatusLocalUtilZZZTest.class);

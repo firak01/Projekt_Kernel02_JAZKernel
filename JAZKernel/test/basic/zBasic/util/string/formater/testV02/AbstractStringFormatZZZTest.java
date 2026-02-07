@@ -9,7 +9,7 @@ import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import junit.framework.TestCase;
 
-public abstract class AbstractLogStringFormatZZZTest extends TestCase {
+public abstract class AbstractStringFormatZZZTest extends TestCase {
 
     // -------------------------------------------------------------------------
     // ABSTRACT: von Kindklassen zu implementieren
