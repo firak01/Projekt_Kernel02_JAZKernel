@@ -2666,145 +2666,145 @@ public abstract class AbstractLogStringFormaterZZZ extends AbstractObjectWithFla
 	
 	
 	
-	//###################################################
-	//### aus ILogStringFormatComputerJustifiedZZZ
-	//### Normalerweise sorgt der FormatManager für das Justified, 
-	//### aber ggfs. soll der Formater selbst auch buendige Zeilen produzieren
-	//###################################################
-	
-	@Override
-	public String computeJustified(String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-		return sReturn;
-	}
-	
-	@Override
-	public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-
-		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-		
-		return this.computeLinesInLog_Justified_(this.getClass(), hm);
-	}
-	
-	
-	@Override
-	public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			return this.computeLinesInLog_Justified_(obj.getClass(), hm);
-	}
-
-	
-	@Override
-	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(obj, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
-
-	@Override
-	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(classObj, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
-
-
-	@Override
-	public String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)
-			throws ExceptionZZZ {
-		//TODOGOON: Soll der Formater überhaupt .computeJustified können?
-		return null;
-	}
-	
-	@Override
-	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(obj, ienumaFormatLogString, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
-
-	@Override
-	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString,	String... sLogs) throws ExceptionZZZ {
-		String sReturn = null;
-		main:{		
-			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
-			
-			sReturn = this.computeJagged(classObj, ienumFormatLogString, sLogs);
-			if(StringZZZ.isEmpty(sReturn)) break main;
-		
-		
-			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
-		}//end main:
-	return sReturn;
-	}
+//	//###################################################
+//	//### aus ILogStringFormatComputerJustifiedZZZ
+//	//### Normalerweise sorgt der FormatManager für das Justified, 
+//	//### aber ggfs. soll der Formater selbst auch buendige Zeilen produzieren
+//	//###################################################
+//	
+//	@Override
+//	public String computeJustified(String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{
+//		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//		return sReturn;
+//	}
+//	
+//	@Override
+//	public String computeJustified(LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+//
+//		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//		
+//		return this.computeLinesInLog_Justified_(this.getClass(), hm);
+//	}
+//	
+//	
+//	@Override
+//	public String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hm) throws ExceptionZZZ {
+//		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			return this.computeLinesInLog_Justified_(obj.getClass(), hm);
+//	}
+//
+//	
+//	@Override
+//	public String computeJustified(Object obj, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(obj, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
+//
+//	@Override
+//	public String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(classObj, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
+//
+//
+//	@Override
+//	public String computeJustified(IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs)
+//			throws ExceptionZZZ {
+//		//TODOGOON: Soll der Formater überhaupt .computeJustified können?
+//		return null;
+//	}
+//	
+//	@Override
+//	public String computeJustified(Object obj, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(obj, ienumaFormatLogString, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
+//
+//	@Override
+//	public String computeJustified(Class classObj, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString,	String... sLogs) throws ExceptionZZZ {
+//		String sReturn = null;
+//		main:{		
+//			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
+//			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+//			
+//			sReturn = this.computeJagged(classObj, ienumFormatLogString, sLogs);
+//			if(StringZZZ.isEmpty(sReturn)) break main;
+//		
+//		
+//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+//			//WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+//			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+//		
+//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
+//			sReturn = LogStringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);							
+//		}//end main:
+//	return sReturn;
+//	}
 
 	//###################################################
 	//### FLAG: ILogStringFormaterZZZ

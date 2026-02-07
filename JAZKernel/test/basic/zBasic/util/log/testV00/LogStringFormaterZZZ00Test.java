@@ -364,11 +364,13 @@ public class LogStringFormaterZZZ00Test extends TestCase{
 			assertTrue(iLogIndex2> iThreadIndex + sThread.length());
 			
 			
-			//###################################################################
-			//### und nun alles "buendig ausgeben"
-			//###################################################################
-			sLogValue = objLogStringTest.computeJustified(objDummy, saLog);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "In der folgenden Zeile erst geht der (nun buendige) Logeintrag los...: "+"\n" + sLogValue);			
+//			//###################################################################
+//			//### und nun alles "buendig ausgeben"
+//			//###################################################################
+//			
+//			MERKE: Nur der Format Manager soll buendig machen können 
+//			sLogValue = objLogStringTest.computeJustified(objDummy, saLog);
+//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "In der folgenden Zeile erst geht der (nun buendige) Logeintrag los...: "+"\n" + sLogValue);			
 		
 			
 			

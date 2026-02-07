@@ -166,8 +166,8 @@ public class LogZZZTest extends TestCase{
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid1 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "").trim();
-			sValueExpectedMid2 = ("[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
+			sValueExpectedMid1 = ("[A00/]");
+			sValueExpectedMid2 = (ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
 			sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
@@ -195,9 +195,9 @@ public class LogZZZTest extends TestCase{
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid1 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01]").trim();
-			sValueExpectedMid2 = ("[A00/]" + ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT).trim();
-			sValueExpectedEnd = "[A01]"+ sLog2 +"[/A01]";
+			sValueExpectedMid1 = ("[A00/]");
+			sValueExpectedMid2 = (ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01][A00/]").trim();
+			sValueExpectedEnd = ILogStringFormatZZZ.sSEPARATOR_01_DEFAULT + "[A01]"+ sLog2 +"[/A01]";
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			

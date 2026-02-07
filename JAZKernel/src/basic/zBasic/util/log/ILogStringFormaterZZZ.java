@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.datatype.string.IStringJustifierZZZ;
 
-public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ, ILogStringFormatComputerJaggedZZZ, ILogStringFormatComputerJustifiedZZZ {
+public interface ILogStringFormaterZZZ extends ILogStringFormatComputerZZZ, ILogStringFormatComputerJaggedZZZ {//, ILogStringFormatComputerJustifiedZZZ {
 	//+++++++++++++++++++++++++++++++
 		public int computeFormatPositionsNumber() throws ExceptionZZZ;
 		
