@@ -5,7 +5,7 @@ import java.util.GregorianCalendar;
 
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import junit.framework.TestCase;

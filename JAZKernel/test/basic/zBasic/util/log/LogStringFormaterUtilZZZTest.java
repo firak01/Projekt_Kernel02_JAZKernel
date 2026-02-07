@@ -11,6 +11,9 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterUtilZZZ;
 import junit.framework.TestCase;
 
 public class LogStringFormaterUtilZZZTest  extends TestCase{

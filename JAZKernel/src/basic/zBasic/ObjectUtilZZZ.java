@@ -1,6 +1,6 @@
 package basic.zBasic;
 
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
 
 public class ObjectUtilZZZ implements IConstantZZZ{
 	/** Merke: Ensure Methoden werfen dann die ExceptionZZZ

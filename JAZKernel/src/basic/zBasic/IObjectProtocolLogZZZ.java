@@ -1,6 +1,6 @@
 package basic.zBasic;
 
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
 
 public interface IObjectProtocolLogZZZ extends IObjectLogZZZ{
 	//#################################

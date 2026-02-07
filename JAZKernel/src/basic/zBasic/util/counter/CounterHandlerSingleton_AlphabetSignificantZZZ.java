@@ -7,7 +7,7 @@ import basic.zBasic.ReflectCodeKernelZZZ;
 //import basic.zBasic.KernelSingletonVIA;
 //import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.datatype.string.SeparatorMessageStringJustifierZZZ;
+import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 
 public class CounterHandlerSingleton_AlphabetSignificantZZZ {
 	private static CounterHandlerSingleton_AlphabetSignificantZZZ objCounterSingleton = null; //muss static sein, wg. getInstance()!!!

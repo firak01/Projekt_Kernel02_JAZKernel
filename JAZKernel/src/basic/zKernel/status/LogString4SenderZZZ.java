@@ -3,9 +3,9 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.log.AbstractLogStringFormaterZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.ILogStringFormatZZZ;
+import basic.zBasic.util.string.formater.AbstractLogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.ILogStringFormatZZZ;
 
 /** Alternatives LogString-Format zu LogStringZZZ.
  *  Dieses ist dafuer gedacht in einem "Sender / EventBroker" Objekt 

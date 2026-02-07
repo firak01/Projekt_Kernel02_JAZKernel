@@ -6,8 +6,8 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
 
 public abstract class AbstractObjectWithExceptionZZZ <T> extends AbstractObjectZZZ<T> implements IObjectWithExceptionZZZ{

@@ -41,9 +41,9 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
 
 /** 20170725: Diese Klasse Generisch gemacht. Dabei den Klassennamen analog zur HashMapExtended gewählt. 
  *                    Die alte Klasse beibehalten als nicht generisch...

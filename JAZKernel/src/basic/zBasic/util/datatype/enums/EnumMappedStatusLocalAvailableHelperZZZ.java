@@ -15,7 +15,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
 
 
 public class EnumMappedStatusLocalAvailableHelperZZZ  implements IConstantZZZ{

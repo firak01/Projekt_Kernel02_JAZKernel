@@ -8,8 +8,8 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
  *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".

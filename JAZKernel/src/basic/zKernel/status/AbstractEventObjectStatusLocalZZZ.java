@@ -14,9 +14,9 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
 
 /** 

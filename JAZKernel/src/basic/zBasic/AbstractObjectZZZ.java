@@ -4,9 +4,9 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
-import basic.zBasic.util.log.LogStringFormatManagerZZZ;
-import basic.zBasic.util.log.LogStringFormaterZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedLogStringFormatZZZ;
+import basic.zBasic.util.string.formater.LogStringFormatManagerZZZ;
+import basic.zBasic.util.string.formater.LogStringFormaterZZZ;
 import custom.zKernel.ILogZZZ;
 import custom.zKernel.LogSingletonZZZ;
 
