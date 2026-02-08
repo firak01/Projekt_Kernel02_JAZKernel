@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 
+//Methoden, die sowohl der einzelne Formater als auch der FormatManager haben
 public interface IStringFormatComputerZZZ {
 
 		//auf ein intern gespeichertes Format angewiesen

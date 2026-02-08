@@ -1,4 +1,4 @@
-package basic.zBasic.util.string.formater;
+package basic.zBasic.util.string.justifier;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,12 +22,13 @@ import basic.zBasic.util.datatype.enums.EnumSetMappedLogStringFormatUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
-import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
+import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatMatchRuleZZZ;
+import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class StringFormatManagerUtilZZZ implements IConstantZZZ{
+public class StringJustifierManagerUtilZZZ implements IConstantZZZ{
 	
 	
 	
@@ -45,7 +46,7 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ{
 		main:{
 			if(listaStringJustifier==null) break main;
 			
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = StringFormatManagerUtilZZZ.getStringJustifierListFiltered(listaStringJustifier,ienumaFormatLogString);	
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifierReturn = StringJustifierManagerUtilZZZ.getStringJustifierListFiltered(listaStringJustifier,ienumaFormatLogString);	
 			objaReturn = ArrayListUtilZZZ.toArray(listaStringJustifierReturn, IStringJustifierZZZ.class);
 		}
 		return objaReturn;

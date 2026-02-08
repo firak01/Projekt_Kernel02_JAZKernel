@@ -6,7 +6,7 @@ import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormaterZZZ;
 import custom.zKernel.ILogZZZ;
 
-public interface IStringJustifierZZZ {
+public interface IStringJustifierZZZ extends IStringJustifierJustifyZZZ{
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT;//IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 	public static String sSEPARATOR_01_DEFAULT=IStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 	public static String sSEPARATOR_02_DEFAULT=IStringFormatZZZ.sSEPARATOR_02_DEFAULT;
@@ -33,8 +33,5 @@ public interface IStringJustifierZZZ {
 	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) throws ExceptionZZZ;
 	public int indexOfInfoPartBoundLeft(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
 	public int indexOfInfoPartBoundLeftBehind(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
-	public int getInfoPartBoundLeftBehind2use(String sLog) throws ExceptionZZZ;     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.
-
-	public String justifyInfoPart(String sLog) throws ExceptionZZZ; //versuche den Log-InfoPart ueber alle Zeilen buendig zu machen. Teile auf und verwende zusätzliche \t
-		
+	public int getInfoPartBoundLeftBehind2use(String sLog) throws ExceptionZZZ;     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.	
 }

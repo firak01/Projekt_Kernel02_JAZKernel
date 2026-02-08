@@ -56,6 +56,7 @@ import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
 import basic.zBasic.util.stream.StreamZZZTest;
+import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ00Test;
 import basic.zBasic.util.xml.XmlParserZZZTest;
 import basic.zBasic.util.xml.XmlTagMatcherZZZTest;
 import basic.zKernel.GetOptZZZTest;
@@ -95,7 +96,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectUtilZZZTest.class);
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
-		//Tests fuer das bauen eines FORMATIERTEN LogStrings
+		//Tests fuer das bauen eines FORMATIERTEN (ggfs. buendigen) Strings
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormaterZZZ00Test.class);
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormatManagerZZZ00Test.class);
 		
@@ -104,6 +105,11 @@ public class KernelAllTestZZZ {
 		
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.StringFormaterZZZ02Test.class);
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV02.StringFormatManagerZZZ02Test.class);
+		
+		//Tests fuer das bauen eines BUENDIGEN (ggfs. formatierten) Strings
+		objReturn.addTestSuite(StringJustifierManagerZZZ00Test.class);
+		
+		
 		
 		//Tests fuer Enum
 		objReturn.addTestSuite(EnumSetMappedStatusLocalUtilZZZTest.class);

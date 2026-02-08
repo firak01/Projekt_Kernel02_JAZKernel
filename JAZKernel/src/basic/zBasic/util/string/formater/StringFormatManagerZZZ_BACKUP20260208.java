@@ -15,7 +15,7 @@ import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
-public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ implements IStringFormatManagerJustifiedZZZ{
+public class StringFormatManagerZZZ_BACKUP20260208 extends AbstractStringFormatManagerZZZ implements IStringFormatManagerJustifiedZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
 
 	// --- Singleton Instanz ---
@@ -39,14 +39,14 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//##########################################################
 	    
 	//als private deklariert, damit man es nicht so instanzieren kann, sondern die Methode .getInstance() verwenden muss
-	private StringFormatManagerZZZ() throws ExceptionZZZ{
+	private StringFormatManagerZZZ_BACKUP20260208() throws ExceptionZZZ{
 		super();
 	}
 	
 	public static IStringFormatManagerJustifiedZZZ getInstance() throws ExceptionZZZ{
 		//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
 		//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
-		synchronized(StringFormatManagerZZZ.class) {
+		synchronized(StringFormatManagerZZZ_BACKUP20260208.class) {
 			if(objFormatManagerINSTANCE == null) {
 				if (INITIALIZED) {
 		            throw new ExceptionZZZ(new IllegalStateException("Singleton already initialized"));
@@ -58,11 +58,11 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		return (IStringFormatManagerJustifiedZZZ) objFormatManagerINSTANCE;
 	}
 	
-	public static StringFormatManagerZZZ getNewInstance() throws ExceptionZZZ{
+	public static StringFormatManagerZZZ_BACKUP20260208 getNewInstance() throws ExceptionZZZ{
 		//Damit wird garantiert einen neue, frische Instanz geholt.
 		//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
-		objFormatManagerINSTANCE = new StringFormatManagerZZZ();
-		return (StringFormatManagerZZZ)objFormatManagerINSTANCE;
+		objFormatManagerINSTANCE = new StringFormatManagerZZZ_BACKUP20260208();
+		return (StringFormatManagerZZZ_BACKUP20260208)objFormatManagerINSTANCE;
 	}
 	
 	public static synchronized void destroyInstance() throws ExceptionZZZ{
@@ -122,8 +122,12 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		return sReturn;
 	}
 	
-
+	
+	
+	
+	
 	//######################
+	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, obj, sLogs);
@@ -181,6 +185,11 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		return sReturn;
 	}
 		
+	
+
+	
+	
+	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = this.computeJustified(objFormater, classObj, sLogs);	
@@ -189,71 +198,71 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	
 	//###################################################################
-	@Override
-	public synchronized String compute(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(hm);
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		//WICHTIG2: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
-		//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
-
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
-		}
+		@Override
+		public synchronized String compute(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = super.computeJagged(hm);
+			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 			
-		return sReturn;
-	}
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG2: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
 
-	@Override
-	public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return this.computeJustified(obj, hm);
-	}
-
-	@Override
-	public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(classObj, hm);	
-		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
-		
-		//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-	    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-		//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-		
-		ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
-		for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-			IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
-			sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			}
+				
+			return sReturn;
 		}
-		return sReturn;
-	}
-	
-	@Override
-	public synchronized String compute(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, hm);
-		return sReturn;
-	}
-	
-	
-	@Override
-	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, hm);
-		return sReturn;
-	}
-	
-	@Override
-	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, hm);
-		return sReturn;
-	}
+
+		@Override
+		public synchronized String compute(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			return this.computeJustified(obj, hm);
+		}
+
+		@Override
+		public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = super.computeJagged(classObj, hm);	
+			sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);			
+				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objJustifier, sReturn);
+			}
+			return sReturn;
+		}
+		
+		@Override
+		public synchronized String compute(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, hm);
+			return sReturn;
+		}
+		
+		
+		@Override
+		public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, obj, hm);
+			return sReturn;
+		}
+		
+		@Override
+		public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+			String sReturn = this.computeJustified(objFormater, classObj, hm);
+			return sReturn;
+		}
+
+		
 
 	
-
-
-	//#########################################################################################
+		//#########################################################################################
 	///##################################################################
   
 	@Override
