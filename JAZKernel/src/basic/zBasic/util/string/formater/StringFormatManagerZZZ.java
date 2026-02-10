@@ -1,6 +1,7 @@
 package basic.zBasic.util.string.formater;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -10,7 +11,9 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
+import basic.zBasic.util.string.justifier.IStringJustifierManagerZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
+import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
@@ -333,13 +336,20 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
+			TODOGOON: Formatanweisungen normieren
+			
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+			
+			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
+			sReturn = objJustifierManager.compute(listasJagged, ienumaFormatLogString);
+			siehe unten
+			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
 			this.setStringJustifierList(listaStringJustifier);
 			
-			//... Zeilen holen
-			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -401,13 +411,25 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 						
 			//#######################
+						
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
-			//... Liste der Justifier ausserhalb der Schleife holen
-			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
-			this.setStringJustifierList(listaStringJustifier);
+			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
+			
+			TODOGOON: Formatanweisungen normieren.
+			
 			
 			//... Zeilen holen
 			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+			
+			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
+			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);
+			siehe unten
+			
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+			
+					
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -452,13 +474,19 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			
 			//#######################
+						
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(this, ienumaFormatLogString, sLogs);
+			
+			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
+			sReturn = objJustifierManager.compute(listasJagged, ienumaFormatLogString);
+			siehe unten
+			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
 			this.setStringJustifierList(listaStringJustifier);
-						
-			//... Zeilen holen
-			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(this, ienumaFormatLogString, sLogs);
+			
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -553,13 +581,15 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
+			
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString);
+		
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
 			this.setStringJustifierList(listaStringJustifier);
-			
-			//... Zeilen holen
-			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString);
+		
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
@@ -739,13 +769,17 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		main:{
 			String stemp = null;
 			
+			
+			//... Zeilen holen
+			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumFormatLogString, sLogs);
+
+			
+			
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
 			this.setStringJustifierList(listaStringJustifier);
 
-			//... Zeilen holen
-			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumFormatLogString, sLogs);
 			
 			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
 		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
