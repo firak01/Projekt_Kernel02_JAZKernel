@@ -185,52 +185,88 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 		return bReturn;
 	}
 	
+	//#######################################
 	//### aus IStringJustifierManagerComputerZZZ
+	@Override
+	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged) throws ExceptionZZZ{
+		ArrayListZZZ<String>listasReturn=null;
+		main:{			
+			if(listasJagged==null) break main;
+			listasReturn=new ArrayListZZZ<String>();
+			
+			String stemp;
+									
+			//#######################
+			//Hier werden keine Formatierungsanweisungen uebergeben, aus denen dann die benoetigten Zeilentrenner berechnet werden.
+			//Daher die im Manager gespeicherten Justifier verwenden.			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierList();
+				
+				
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
+			//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
+			//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
+			
+			//... ggfs. aus der FilePosition entstandene Tags löschen
+			ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
+			for(String sLog : listasJagged) {
+				stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
+				listasJaggedDetaged.add(stemp);
+			}
+						
+			listasReturn = listasJaggedDetaged;							
+			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
+				IStringJustifierZZZ objJustifier = listaStringJustifier.get(icount);		
+				this.getStringJustifierListUsed().add(objJustifier);
+				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+			}
+			
+		
+		//########
+		}//end main:
+		return listasReturn;
+	}
+
+	
 	
 	@Override
 	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn) throws ExceptionZZZ{
 		ArrayListZZZ<String>listasReturn=null;
-		main:{
+		main:{			
 			if(listasJagged==null) break main;
 			listasReturn=new ArrayListZZZ<String>();
 			
-			//######### 20260210 Veschoben aus StringFormatManagerZZZ
-			TODOGOON. IM GRUNDE IMMER SPLITTEN, WENN EIN ARRAY von IEnumSetMappedStringFormatZZZ ÜBERGEBEN WURDE!!!
 			String stemp;
-			
-			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
+						
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogStringIn==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogStringIn)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+						
+			//#######################
+						
+			//1. Teile Formatierung an den Zeilentrennern auf.
 			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogStringIn, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
+			
+			//2. Mache jede Zeile bündig, per den notwendigen Justifiern
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier; 
+			ArrayListZZZ<String> listasReturnTemp;
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
 			
-			
-				//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
-				//... Liste der Justifier ausserhalb der Schleife holen
-				ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+				//... Liste der Justifier der Zeile
+				listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
 				this.setStringJustifierList(listaStringJustifier);
-				
-				
-				//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-			    //WICHTIG1: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
-				//WICHTIG3: Man es nicht dies buendig zu halten, wenn spätere Strings länger sind.
-				//		    Lösungsansatz: Beim "Justifien" eine ArrayList übergeben. Darin wird einmal hin und wieder zurück bündig gemacht.
-				
-				//... ggfs. aus der FilePosition entstandene Tags löschen
-				ArrayListZZZ<String>listasJaggedDetaged = new ArrayListZZZ<String>();
-				for(String sLog : listasJagged) {
-					stemp = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sLog);
-					listasJaggedDetaged.add(stemp);
-				}
-							
-				listasReturn = listasJaggedDetaged;							
-				for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
-					IStringJustifierZZZ objJustifier = this.getStringJustifier(icount);		
-					this.getStringJustifierListUsed().add(objJustifier);
-					listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
-				}
+								
+				listasReturnTemp = this.compute(listasJagged);
+				listasReturn.addAll(listasReturnTemp);
+			}//end for
 			
-			
-		}
 		//########
 		}//end main:
 		return listasReturn;

@@ -8,6 +8,6 @@ import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 
 public interface IStringJustifierManagerComputerZZZ {
 
-	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
-	
+	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged) throws ExceptionZZZ;
+	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;	
 }

@@ -433,6 +433,10 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SeparatorStrings setzen
 			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(listasLineNormed.get(0)); 
 			objStringJustifier.setInfoPartBoundLeftBehindIncreased(iIndexMayIncrease);
+		
+			//20260210 TODOGOON Das erledigen mit: 
+			//objStringJustifier.justifyArrayList(listasLineNormed);
+			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Nun das Standardisierte Array anpassen

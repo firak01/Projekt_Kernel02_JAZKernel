@@ -1763,18 +1763,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			}else {
 				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}
-			
-//			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
-//			if(ienumaFormatLogStringIn==null) {
-//				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
-//			}
-//			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogStringIn)) {				
-//				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;	
-//			}
-						
-			
+								
 			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
 			String sReturn = null; String sValue = null;
 			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);			
@@ -2659,13 +2648,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				classObj = classObjIn;
 			}
 			
-			//if(StringArrayZZZ.isEmpty(sLogs)) {	
-			//	listasReturn = this.computeLinePartByObject_ArrayList_(classObj, ienumaFormatLogString);										
-			//}else {
-				//listasReturn = this.computeLinePartInLog_ArrayList_(classObj, ienumaFormatLogString, sLogs);
-				listasReturn = computeLinesInLog_Jagged_ArrayList_(classObjIn, ienumaFormatLogString, sLogs);
-			//}
-			
+			listasReturn = computeLinesInLog_Jagged_ArrayList_(classObjIn, ienumaFormatLogString, sLogs);			
 		}//end main:
 		return listasReturn;	
 	}
