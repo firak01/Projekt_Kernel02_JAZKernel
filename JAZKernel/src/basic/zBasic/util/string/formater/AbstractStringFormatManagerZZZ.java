@@ -7,6 +7,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.string.justifier.ARRAY;
+import basic.zBasic.util.string.justifier.IMMER;
 import basic.zBasic.util.string.justifier.IStringJustifierManagerZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.Separator01StringJustifierZZZ;
@@ -17,6 +19,8 @@ import basic.zBasic.util.string.justifier.SeparatorFilePositionJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerUtilZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
+import basic.zBasic.util.string.justifier.TODOGOON;
+import basic.zBasic.util.string.justifier.ÜBERGEBEN;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
 /** Abstrakte Klasse der FormatManager.
@@ -707,6 +711,9 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		
+		TODOGOON. IM GRUNDE IMMER SPLITTEN, WENN EIN ARRAY von IEnumSetMappedStringFormatZZZ ÜBERGEBEN WURDE!!!
+		
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ();
 		return objFormater.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 	}

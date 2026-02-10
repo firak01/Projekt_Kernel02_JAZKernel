@@ -7,7 +7,7 @@ import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 
-public interface IStringJustifierManagerZZZ {
+public interface IStringJustifierManagerZZZ extends IStringJustifierManagerComputerZZZ{
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierListDefault() throws ExceptionZZZ;
 	public ArrayListZZZ<IStringJustifierZZZ> getStringJustifierList() throws ExceptionZZZ;
 	public void setStringJustifierList(ArrayListZZZ<IStringJustifierZZZ> listaJustifier) throws ExceptionZZZ;

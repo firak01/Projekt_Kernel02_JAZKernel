@@ -336,15 +336,15 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = objFormater.getFormatPositionsMapped();
 			
-			TODOGOON: Formatanweisungen normieren
+			//TODOGOON20260210: Formatanweisungen normieren
 			
 			//... Zeilen holen
 			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
-			sReturn = objJustifierManager.compute(listasJagged, ienumaFormatLogString);
-			siehe unten
+			ArrayListZZZ<String> listasReturn = objJustifierManager.compute(listasJagged, ienumaFormatLogString);
 			
+			/*20260210 verschoben nach StringJustifierManagerZZZ
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			//... Liste der Justifier ausserhalb der Schleife holen
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
@@ -370,7 +370,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				this.getStringJustifierListUsed().add(objJustifier);
 				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
-			
+			*/
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
 		}//end main:
 		return sReturn;	
@@ -415,14 +415,14 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//Hole nicht eine (per CRLF zusammengefasste) Zeile, sondern jede Zeile einzeln
 			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
 			
-			TODOGOON: Formatanweisungen normieren.
+			//TODOGOON20260210: Formatanweisungen normieren.
 			
 			
 			//... Zeilen holen
 			ArrayListZZZ<String>listasJagged = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
-			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);
+			sReturn = objJustifierManager.compute(sReturn, ienumaFormatLogString);
 			siehe unten
 			
 			
