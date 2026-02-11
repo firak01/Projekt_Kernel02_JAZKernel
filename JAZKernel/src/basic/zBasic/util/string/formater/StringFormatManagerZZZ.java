@@ -283,6 +283,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			ArrayListZZZ<String>listasJaggedTemp;
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
+				TODOGOON20260211;//Hier wird der gleiche LogEintrag bei jedem Format neu ausgegeben. Dabei sind das neue Zeilen und dor 
 				listasJaggedTemp = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 				listasJaggedReturn.addAll(listasJaggedTemp);
 			}
