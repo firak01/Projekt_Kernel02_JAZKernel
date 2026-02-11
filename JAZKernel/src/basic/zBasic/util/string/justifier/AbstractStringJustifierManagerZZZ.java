@@ -9,7 +9,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
@@ -187,6 +189,21 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 	
 	//#######################################
 	//### aus IStringJustifierManagerComputerZZZ
+	@Override 
+	public String compute(String sJagged) throws ExceptionZZZ{
+		String sReturn = sJagged;
+		main:{
+			if(StringZZZ.isEmpty(sJagged)) break main;
+			
+			ArrayListZZZ<String>listasJagged = new ArrayListZZZ<String>();
+			listasJagged.add(sJagged);
+			
+			ArrayListZZZ<String>listasReturn = compute(listasJagged);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
+		return sReturn;
+	}
+	
 	@Override
 	public ArrayListZZZ<String> compute(ArrayListZZZ<String> listasJagged) throws ExceptionZZZ{
 		ArrayListZZZ<String>listasReturn=null;
@@ -272,6 +289,65 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 		return listasReturn;
 	}
 	
+	//##############################
+	//### Justifier aus HashMap
+	@Override 
+	public String compute(String sJagged, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ{
+		String sReturn = sJagged;
+		main:{
+			if(StringZZZ.isEmpty(sJagged)) break main;
+			
+			ArrayListZZZ<String>listasJagged = new ArrayListZZZ<String>();
+			listasJagged.add(sJagged);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(hm);
+			this.setStringJustifierList(listaStringJustifier);
+			
+			ArrayListZZZ<String>listasReturn = compute(listasJagged);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
+		return sReturn;
+	}
+	
+	//##############################
+	//### Justifier aus Array 
+	@Override 
+	public String compute(String sJagged, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
+		String sReturn = sJagged;
+		main:{
+			if(StringZZZ.isEmpty(sJagged)) break main;
+			
+			ArrayListZZZ<String>listasJagged = new ArrayListZZZ<String>();
+			listasJagged.add(sJagged);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumaFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+			
+			ArrayListZZZ<String>listasReturn = compute(listasJagged);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
+		return sReturn;
+	}
+	
+	//###############################
+	//### Justifier aus Einzelwert
+	@Override 
+	public String compute(String sJagged, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
+		String sReturn = sJagged;
+		main:{
+			if(StringZZZ.isEmpty(sJagged)) break main;
+			
+			ArrayListZZZ<String>listasJagged = new ArrayListZZZ<String>();
+			listasJagged.add(sJagged);
+			
+			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier = this.getStringJustifierListFiltered(ienumFormatLogString);
+			this.setStringJustifierList(listaStringJustifier);
+			
+			ArrayListZZZ<String>listasReturn = compute(listasJagged);
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
+		}//end main:
+		return sReturn;
+	}
 	
 
 	//###################################################
