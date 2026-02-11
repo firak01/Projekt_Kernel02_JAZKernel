@@ -17,6 +17,7 @@ import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatManagerZZZ.FLAGZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
+import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
 import junit.framework.TestCase;
 
 public class StringFormatManagerZZZ00Test extends TestCase {
@@ -500,7 +501,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//           Jede Logzeile wird dann unabhängig voneinenader Formatiert.
 			//           Der Justifier ist ein Singleton, so dass die Position der Spaltentrennermarke erhalten bleiben würde,
 			//           ohne immer explizit eine neue Instanz zu holen.
-			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = StringFormatManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
+			ArrayListZZZ<IStringJustifierZZZ> listaJustifierFiltered04 = StringJustifierManagerZZZ.getNewInstance().getStringJustifierListFiltered(ienumaFormat04);
 			assertNotNull(listaJustifierFiltered04);
 			assertTrue(listaJustifierFiltered04.size()==2);
 			
