@@ -82,112 +82,95 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
    
     @Override
 	public synchronized String compute(String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(sLogs);
-		return sReturn;
+		return this.computeJustified(sLogs);		
 	}
     
     @Override
 	public synchronized String compute(Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(obj, sLogs);
-		return sReturn;
+		return this.computeJustified(obj, sLogs);		
 	}
     
     @Override
 	public synchronized String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(classObj, sLogs);
-		return sReturn;
+		return this.computeJustified(classObj, sLogs);		
 	}
 	
     
     //######################
     @Override
    	public synchronized String compute(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-   		String sReturn = this.computeJustified(ienumFormatLogString);	
-   		return sReturn;
+   		return this.computeJustified(ienumFormatLogString);	
    	}
        		       
     @Override
 	public synchronized String compute(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
-		String sReturn = this.computeJustified(ienumaFormatLogString, sLogs);
-		return sReturn;
+		return this.computeJustified(ienumaFormatLogString, sLogs);		
 	}
 
 	@Override
 	public synchronized String compute(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(obj, ienumaFormatLogString, sLogs);	
-		return sReturn;
+		return this.computeJustified(obj, ienumaFormatLogString, sLogs);			
 	}
 	
 	
 	@Override
 	public synchronized String compute(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
-		return sReturn;
+		return this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 	}
 	
 
 	//######################
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, sLogs);
-		return sReturn;
+		return this.computeJustified(objFormater, obj, sLogs);		
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, ienumFormatLogString);
-		return sReturn;
+		return this.computeJustified(objFormater, ienumFormatLogString);
 	}
 	
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
-		return sReturn;
+		return this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString);
-		return sReturn;
+		return this.computeJustified(objFormater, obj, ienumFormatLogString);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
-		return sReturn;
+		return this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
-		return sReturn;
+		return this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
-		return sReturn;
+		return this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
-		return sReturn;
+		return this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, ienumFormatLogString);	
-		return sReturn;
+		return this.computeJustified(objFormater, classObj, ienumFormatLogString);	
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, sLogs);	
-		return sReturn;
+		return this.computeJustified(objFormater, classObj, sLogs);	
 	}
 
 	
@@ -271,7 +254,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	@Override
 	public synchronized String computeJustified(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
-		return computeJustified(classObj, ienumaFormatLogStringIn, sLogs);
+		return computeJustified_(classObj, ienumaFormatLogStringIn, sLogs);
 	}
 	
 	private String computeJustified_(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
