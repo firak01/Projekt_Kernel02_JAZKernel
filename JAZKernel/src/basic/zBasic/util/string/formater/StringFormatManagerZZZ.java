@@ -82,16 +82,19 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
    
     @Override
 	public synchronized String compute(String... sLogs) throws ExceptionZZZ {
+    	this.resetStringIndexRead();
 		return this.computeJustified(sLogs);		
 	}
     
     @Override
 	public synchronized String compute(Object obj, String... sLogs) throws ExceptionZZZ {
+    	this.resetStringIndexRead();
 		return this.computeJustified(obj, sLogs);		
 	}
     
     @Override
 	public synchronized String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
+    	this.resetStringIndexRead();
 		return this.computeJustified(classObj, sLogs);		
 	}
 	
@@ -99,22 +102,26 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
     //######################
     @Override
    	public synchronized String compute(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+    	this.resetStringIndexRead();
    		return this.computeJustified(ienumFormatLogString);	
    	}
        		       
     @Override
 	public synchronized String compute(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
+    	this.resetStringIndexRead();
 		return this.computeJustified(ienumaFormatLogString, sLogs);		
 	}
 
 	@Override
 	public synchronized String compute(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(obj, ienumaFormatLogString, sLogs);			
 	}
 	
 	
 	@Override
 	public synchronized String compute(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(classObj, ienumaFormatLogString, sLogs);	
 	}
 	
@@ -122,54 +129,64 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//######################
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, obj, sLogs);		
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, ienumFormatLogString);
 	}
 	
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, obj, ienumFormatLogString);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, classObj, ienumFormatLogString);	
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJustified(objFormater, classObj, sLogs);	
 	}
 
@@ -282,20 +299,17 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//3. Alle Zeilen unbündig holen
 			ArrayListZZZ<String>listasJaggedTemp;
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
-			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
-				TODOGOON20260211;//Hier wird der gleiche LogEintrag bei jedem Format neu ausgegeben. Dabei sind das neue Zeilen und dor 
+			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) { 
 				listasJaggedTemp = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
 				listasJaggedReturn.addAll(listasJaggedTemp);
 			}
 			
-			//4. Zeilen bündig machen
-			ArrayListZZZ<String>listasJustifiedTemp;
-			ArrayListZZZ<String> listasJustifiedReturn=new ArrayListZZZ<String>();
+			//4. Zeilen bündig machen			
+			ArrayListZZZ<String> listasJustifiedReturn=listasJaggedReturn;
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
-				listasJustifiedTemp = objJustifierManager.compute(listasJaggedReturn, ienumaFormatLogString);
-				listasJustifiedReturn.addAll(listasJustifiedTemp);
+				listasJustifiedReturn = objJustifierManager.compute(listasJustifiedReturn, ienumaFormatLogString);
 			}
 			
 			ArrayListZZZ<String> listasReturn = listasJustifiedReturn; 
@@ -520,13 +534,11 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			
 			//4. Zeilen buendig machen
-			ArrayListZZZ<String>listasJustifiedTemp;
-			ArrayListZZZ<String> listasJustifiedReturn=new ArrayListZZZ<String>();
+			ArrayListZZZ<String> listasJustifiedReturn=listasJaggedReturn;
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
-				listasJustifiedTemp = objJustifierManager.compute(listasJaggedReturn, ienumaFormatLogString);
-				listasJustifiedReturn.addAll(listasJustifiedTemp);
+				listasJustifiedReturn = objJustifierManager.compute(listasJustifiedReturn, ienumaFormatLogString);				
 			}
 			
 			ArrayListZZZ<String> listasReturn = listasJustifiedReturn; 
@@ -690,6 +702,4 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
 		return objJustifierManager.compute(sReturn, hm);
 	}
-
-	
 }

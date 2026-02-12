@@ -55,35 +55,23 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	
 	//Der LogString-Index - also von den reinen String ( nicht ggfs. hinzugefuegte XML Strings wie von ReflectCodeZZZ.getPositionCurrent() )
 	//Hier als Array aller schon benutzter "einfacher" Strings. Das wird gemacht, damit die XML Strings auch weiterhin bei jeder Operation beruecksichtigt werden können.
-	//protected volatile int iStringIndexToReadLbound=0;
 	protected volatile ArrayListUniqueZZZ<Integer>listaintStringIndexRead=null;
-	
-	//Zum Buendig machen
-	//Idee: Bei mehreren Instanzen per Default auf das Singleton zugreifen
-	//      Aber ggfs. ueberschreibend auf einen hinterlegten zugreifen.
-	//protected volatile IStringJustifierZZZ objStringJustifier = null;
-		
 	
 	//######################
 	//### KONSTRUKTOR
 	public AbstractStringFormaterZZZ() throws ExceptionZZZ{		
 		super();
-		AbstractLogStringFormaterNew_();
+		AbstractLogStringFormaterNew_(null);
 	}
 	
-//	public AbstractLogStringFormaterZZZ(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{
-//		super();
-//		AbstractLogStringFormaterNew_(objJustifier);
-//	}
-//	
-//	private boolean AbstractLogStringFormaterNew_(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{
-//		this.setStringJustifier(objJustifier);
-//		
-//		return true;
-//	}
+	public AbstractStringFormaterZZZ(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ{		
+		super();
+		AbstractLogStringFormaterNew_(listaintStringIndexRead);
+	}
 	
-	
-	private boolean AbstractLogStringFormaterNew_() throws ExceptionZZZ{		
+		
+	private boolean AbstractLogStringFormaterNew_(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ{
+		this.listaintStringIndexRead = listaintStringIndexRead;
 		return true;
 	}
 	
@@ -100,7 +88,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public boolean reset() throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{
+		main:{			
 			boolean btemp1 = this.resetStringIndexRead();
 
 			//!!! nur resetten, wenn es ein eigener String Justifier ist
@@ -111,17 +99,18 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 //			
 //			bReturn = btemp1 | btemp2;
 			
-			bReturn = btemp1;
+			//20260212 raus
+			//bReturn = btemp1;
 		}//end main:
 		return bReturn;
 	}
 	
+	//##########################################################################
+	//### aus IStringFormatComputerZZZ
 	@Override 
 	public boolean resetStringIndexRead() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			//if(this.iStringIndexToReadLbound==0) break main;			
-			//this.iStringIndexToReadLbound=0;
 			if(this.getStringIndexReadList().size()>=1) {
 				bReturn = true;
 			}
@@ -143,69 +132,61 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		this.listaintStringIndexRead = listaintStringIndexRead;
 	}
 	
-//	//+++ Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################	
-//	@Override
-//	public IStringJustifierZZZ getStringJustifier() throws ExceptionZZZ {
-//		if(!this.hasStringJustifierPrivate()) {
-//			//Verwende als default das Singleton
-//			return SeparatorMessageStringJustifierZZZ.getInstance();
-//		}else {
-//			//Verwende als "manual override" den einmal hinterlegten StringJustifier.
-//			return this.objStringJustifier;
-//		}
-//	}
-//
-//	@Override
-//	public void setStringJustifier(IStringJustifierZZZ objStringJustifier) throws ExceptionZZZ {
-//		this.objStringJustifier = objStringJustifier;
-//	}
-	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
 	@Override
 	public String compute(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(ienumFormatLogString);
 	}
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(obj, ienumFormatLogString);
 	}
 
 	@Override
 	public String compute(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(classObj, ienumFormatLogString);
 	}
 	
 	
 	@Override
 	public String compute(String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(sLogs);
 	}
 	
 	@Override
 	public String compute(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(obj, ienumaFormatLogString, sLogs);		
 	}
 	
 	
 	@Override
 	public String compute(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(classObj, ienumFormatLogString, sLogs);
 	}
 	
 	@Override
-	public String compute(IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {		
+	public String compute(IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(ienumaFormatLogString, sLogs);
 	}
 
 	
 	@Override
-	public String compute(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {			
+	public String compute(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(obj, ienumFormatLogString, sLogs);
 	}
 	
 	@Override
 	public String compute(Class classObj, IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(classObj, ienumaFormatLogString, sLogs);
 	}
 
@@ -2109,17 +2090,20 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	//OHNE KLASSEN ODER OBJEKTANGABE MACHT DAS KEINEN SINN		
 	@Override
 	public String compute(Object obj, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(obj, sLogs);
 	}
 		
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe
 	@Override
 	public String compute(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(hm);
 	}
 	
 	@Override
 	public String compute(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(obj, hm);
 	}
 	
@@ -2127,12 +2111,14 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	
 	@Override
 	public String compute(Class classObj, String... sLogs) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(classObj, sLogs);
 	}
 	
 	//+++ Mit expliziter Angabe zu ILogStringZZZ.iFACTOR_CLASSMETHOD und darin ggfs. der komplette String, aber ohne konkrete Formatsangabe	
 	@Override
 	public String compute(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+		this.resetStringIndexRead();
 		return this.computeJagged(classObj, hmLog);
 	}
 
@@ -2253,7 +2239,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public String computeJagged(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 				
 		Class classObj = this.getClass();
 		return computeUsingFormatByObject_(classObj, ienumFormatLogString);
@@ -2264,7 +2251,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public String computeJagged(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs)	throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode.
+		//20260212 raus
+		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode.
 				
 		Class classObj = this.getClass();		    		
 		return this.computeLinesInLog_Jagged_(classObj, ienumaFormatLogString, sLogs);
@@ -2276,7 +2264,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	public String computeJagged(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 				
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 		
 		Class classObj = null;
 	    if (obj == null) {
@@ -2292,7 +2281,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	public String computeJagged(Class classObjIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 				
 		Class classObj = null;
 	    if (classObj == null) {
@@ -2307,7 +2297,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public String computeJagged(Class classObjIn, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 				
 		Class classObj = null;
 	    if (classObjIn == null) {
@@ -2338,7 +2329,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		String sReturn = "";
 		main:{								
 			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+			//20260212 raus
+			//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 			
 			Class classObj = null;
 			if(classObjIn==null) {
@@ -2363,7 +2355,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		String sReturn = null;
 		main:{
 			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+			//20260212 raus
+			//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 			
 			Class classObj = null;
 			if(obj==null) {
@@ -2382,7 +2375,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	public String computeJagged(Class classObjIn, String... sLogs) throws ExceptionZZZ {
 
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 	
 		Class classObj = null;
 		if(classObjIn==null) {
@@ -2419,7 +2413,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public String computeJagged(Class classObjIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		//20260212 raus
+		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 
 		Class classObj = null;
 		if(classObjIn==null) {
@@ -2442,7 +2437,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	public String computeJagged(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 		
 		Class classObj = null;
 		if(obj==null) {
@@ -2458,7 +2454,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	public String computeJagged(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 		
 		return this.computeLinesInLog_Jagged_(this.getClass(), hm);
 	}
@@ -2468,7 +2465,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		//20260212 raus
+		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 
 		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
 		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
@@ -2532,7 +2530,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		//20260212 raus
+		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 		
 		return this.computeLinesInLog_Jagged_ArrayList_(this.getClass(), ienumaFormatLogString, sLogs);
 	}
@@ -2542,7 +2541,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
+		//20260212 raus
+		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 				
 		Object obj;
 		if(objIn==null) {
@@ -2560,7 +2560,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Class classObjIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 				
 		Class classObj = null;
 		if (classObjIn == null) {
@@ -2580,7 +2581,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 						
 		Object obj = null;
 		if (objIn == null) {
@@ -2600,7 +2602,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Class classObjIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 								
 		Class classObj  = null;
 		if (classObjIn == null) {
@@ -2620,7 +2623,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList(Object objIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-		this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
+		//20260212 raus
+		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
 						
 		Object obj = null;
 		if (objIn == null) {
@@ -2639,7 +2643,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		ArrayListZZZ<String> listasReturn = null;				
 		main:{								
 			//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
-			this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
+			//20260212 raus
+			//this.resetStringIndexRead(); //Hier in der aufrufenden Methode und nicht in der von x-Stellen aufgerufene private Methode
 			
 			Class classObj = null;
 			if(classObjIn==null) {

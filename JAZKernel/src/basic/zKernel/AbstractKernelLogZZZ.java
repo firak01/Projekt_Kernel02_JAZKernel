@@ -255,7 +255,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	//+++ als moeglichst einfacher String.  
 	public synchronized static String computeLine(String sLog) throws ExceptionZZZ {	
-		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLine();
+		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLine();		
 		return StringFormatManagerZZZ.getInstance().compute(iaFormat, sLog);
 	}
 	

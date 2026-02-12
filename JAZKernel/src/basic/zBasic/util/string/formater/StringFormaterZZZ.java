@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 
@@ -13,6 +14,10 @@ public class StringFormaterZZZ extends AbstractStringFormaterZZZ{
 		
 	public StringFormaterZZZ() throws ExceptionZZZ{		
 		super();
+	}
+	
+	public StringFormaterZZZ(ArrayListUniqueZZZ<Integer> listaintStringIndexRead) throws ExceptionZZZ{		
+		super(listaintStringIndexRead);
 	}
 	
 //	public LogStringFormaterZZZ(IStringJustifierZZZ objJustifier) throws ExceptionZZZ{		

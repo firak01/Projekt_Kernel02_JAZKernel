@@ -3,6 +3,7 @@ package basic.zBasic.util.string.formater;
 import java.util.LinkedHashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 
 //Methoden, die sowohl der einzelne Formater als auch der FormatManager haben
@@ -60,4 +61,14 @@ public interface IStringFormatComputerZZZ {
 		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 
+		//###########################	
+		//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
+		public boolean resetStringIndexRead() throws ExceptionZZZ;	
+									
+		public ArrayListUniqueZZZ<Integer> getStringIndexReadList() throws ExceptionZZZ;
+		public void setStringIndexRead(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ;
+				
+		
+		//Zurücksetzen von allem
+		public boolean reset() throws ExceptionZZZ;		
 }
