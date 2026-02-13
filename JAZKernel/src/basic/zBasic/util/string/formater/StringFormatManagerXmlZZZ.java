@@ -156,7 +156,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
-			sReturn = objFormater.computeJagged(ienumFormatLogString);
+			sReturn = objFormater.computeJagged_(ienumFormatLogString);
 		}//end main:
 		return sReturn;		
 	}
@@ -165,7 +165,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(obj, ienumFormatLogString);							
+			sReturn = objFormater.computeJagged_(obj, ienumFormatLogString);							
 		}//end main:
 		return sReturn;			
 	}
@@ -174,7 +174,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
-			sReturn = objFormater.computeJagged(ienumaFormatLogString, sLogs);						
+			sReturn = objFormater.computeJagged_(ienumaFormatLogString, sLogs);						
 		}//end main:
 		return sReturn;	
 	}
@@ -183,7 +183,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(obj, ienumFormatLogString, sLogs);						
+			sReturn = objFormater.computeJagged_(obj, ienumFormatLogString, sLogs);						
 		}//end main:
 		return sReturn;			
 	}
@@ -192,7 +192,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);						
+			sReturn = objFormater.computeJagged_(obj, ienumaFormatLogString, sLogs);						
 		}//end main:
 		return sReturn;			
 	}
@@ -201,7 +201,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);					
+			sReturn = objFormater.computeJagged_(classObj, ienumFormatLogString, sLogs);					
 		}//end main:
 		return sReturn;			
 	}
@@ -210,7 +210,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);						
+			sReturn = objFormater.computeJagged_(classObj, ienumaFormatLogString, sLogs);						
 		}//end main:
 		return sReturn;		
 	}
@@ -220,7 +220,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 		String sReturn = null;
 		main:{
 			//... die konkrete Formatanweisung wurde schon aus einem Array der "normierten" Formatanweisungen geholt.
-			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString);							
+			sReturn = objFormater.computeJagged_(classObj, ienumFormatLogString);							
 		}//end main:
 		return sReturn;				
 	}
@@ -229,7 +229,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(hm);		
+			sReturn = objFormater.computeJagged_(hm);		
 		}//end main:
 		return sReturn;		
 	}
@@ -238,7 +238,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(obj, hm);		
+			sReturn = objFormater.computeJagged_(obj, hm);		
 		}//end main:
 		return sReturn;			
 	}
@@ -247,7 +247,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(classObj, hm);	
+			sReturn = objFormater.computeJagged_(classObj, hm);	
 		}//end main:
 		return sReturn;		
 	}
@@ -256,7 +256,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(obj, sLogs);
+			sReturn = objFormater.computeJagged_(obj, sLogs);
 		}//end main:
 		return sReturn;				
 	}
@@ -265,7 +265,7 @@ public class StringFormatManagerXmlZZZ extends AbstractStringFormatManagerZZZ{
 	public String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			sReturn = objFormater.computeJagged(classObj, sLogs);		
+			sReturn = objFormater.computeJagged_(classObj, sLogs);		
 		}//end main:
 		return sReturn;		
 	}

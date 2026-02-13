@@ -130,64 +130,64 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, obj, sLogs);		
+		return this.computeJustified_(objFormater, obj, sLogs);		
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, ienumFormatLogString);
+		return this.computeJustified_(objFormater, ienumFormatLogString);
 	}
 	
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, ienumaFormatLogString, sLogs);
+		return this.computeJustified_(objFormater, ienumaFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, obj, ienumFormatLogString);
+		return this.computeJustified_(objFormater, obj, ienumFormatLogString);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, obj, ienumFormatLogString, sLogs);
+		return this.computeJustified_(objFormater, obj, ienumFormatLogString, sLogs);
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, obj, ienumaFormatLogString, sLogs);
+		return this.computeJustified_(objFormater, obj, ienumaFormatLogString, sLogs);
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, classObj, ienumFormatLogString, sLogs);				
+		return this.computeJustified_(objFormater, classObj, ienumFormatLogString, sLogs);				
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, classObj, ienumaFormatLogString, sLogs);		
+		return this.computeJustified_(objFormater, classObj, ienumaFormatLogString, sLogs);		
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, classObj, ienumFormatLogString);	
+		return this.computeJustified_(objFormater, classObj, ienumFormatLogString);	
 	}
 		
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		this.resetStringIndexRead();
-		return this.computeJustified(objFormater, classObj, sLogs);	
+		return this.computeJustified_(objFormater, classObj, sLogs);	
 	}
 
 	
@@ -197,7 +197,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
   
 	@Override
 	public synchronized String computeJustified(String... sLogs) throws ExceptionZZZ {
-		return computeJustified_(this.getClass(), sLogs);	
+		return computeJustified__(this.getClass(), sLogs);	
 	}
 	
 	
@@ -213,16 +213,16 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		}
 		Class objClass = obj.getClass();
 		
-		return computeJustified_(objClass, sLogs);
+		return computeJustified__(objClass, sLogs);
 	}
 	
 
 	@Override
 	public synchronized String computeJustified(Class classObj, String... sLogs) throws ExceptionZZZ {				
-		return computeJustified_(classObj, sLogs);
+		return computeJustified__(classObj, sLogs);
 	}
 	
-	private String computeJustified_(Class classObj, String... sLogs) throws ExceptionZZZ {				
+	private String computeJustified__(Class classObj, String... sLogs) throws ExceptionZZZ {				
 		String sReturn = null;
 		main:{
 			String stemp=null;
@@ -242,7 +242,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				throw ez;	
 			}
 						
-			sReturn = computeJustified_(classObj, ienumaFormatLogStringIn, sLogs);
+			sReturn = computeJustified__(classObj, ienumaFormatLogStringIn, sLogs);
 		}//end main:
 		return sReturn;	
 	}
@@ -252,7 +252,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//############################################################
 	@Override
 	public synchronized String computeJustified(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
-		return this.computeJustified_(this.getClass(), ienumaFormatLogStringIn, sLogs);
+		return this.computeJustified__(this.getClass(), ienumaFormatLogStringIn, sLogs);
 	}	
 	
 	
@@ -266,15 +266,15 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		}
 		Class objClass = obj.getClass();
 		
-		return this.computeJustified_(objClass, ienumaFormatLogStringIn, sLogs);
+		return this.computeJustified__(objClass, ienumaFormatLogStringIn, sLogs);
 	}
 	
 	@Override
 	public synchronized String computeJustified(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
-		return computeJustified_(classObj, ienumaFormatLogStringIn, sLogs);
+		return computeJustified__(classObj, ienumaFormatLogStringIn, sLogs);
 	}
 	
-	private String computeJustified_(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
+	private String computeJustified__(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			String stemp;
@@ -300,7 +300,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			ArrayListZZZ<String>listasJaggedTemp;
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) { 
-				listasJaggedTemp = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+				listasJaggedTemp = super.computeJaggedArrayList_(classObj, ienumaFormatLogString, sLogs);
 				listasJaggedReturn.addAll(listasJaggedTemp);
 			}
 			
@@ -329,12 +329,12 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	//####################################################
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {		
-		return this.computeJustified_(objFormater, this.getClass(), ienumFormatLogStringIn);					
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {		
+		return this.computeJustified__(objFormater, this.getClass(), ienumFormatLogStringIn);					
 	}
 
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{							
 			Object obj = null;
@@ -345,17 +345,17 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			Class objClass = obj.getClass();
 			
-			sReturn = this.computeJustified_(objFormater, objClass, ienumFormatLogString);
+			sReturn = this.computeJustified__(objFormater, objClass, ienumFormatLogString);
 		}//end main:
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {
-		return computeJustified_(objFormater, classObj, ienumFormatLogStringIn);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {
+		return computeJustified__(objFormater, classObj, ienumFormatLogStringIn);
 	}
 	
-	private String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {
+	private String computeJustified__(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			String stemp;
@@ -378,7 +378,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 //			}
 						
 			//Das ist hier nur 1 Zeile, darum keine Schleife
-			listasJaggedTemp = super.computeJaggedArrayList(objFormater, classObj, ienumFormatLogStringIn);
+			listasJaggedTemp = super.computeJaggedArrayList_(objFormater, classObj, ienumFormatLogStringIn);
 			listasJaggedReturn.addAll(listasJaggedTemp);
 			
 			//4. Zeilen buendig machen
@@ -401,7 +401,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	//########################################################
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{							
 			Object obj = null;
@@ -412,18 +412,18 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			Class objClass = obj.getClass();
 			
-			sReturn = this.computeJustified_(objFormater, objClass, ienumFormatLogStringIn, sLogs);
+			sReturn = this.computeJustified__(objFormater, objClass, ienumFormatLogStringIn, sLogs);
 		}//end main:
 		return sReturn;		
 	}
 
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
-		return computeJustified_(objFormater, classObj, ienumFormatLogStringIn, sLogs);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+		return computeJustified__(objFormater, classObj, ienumFormatLogStringIn, sLogs);
 	}
 	
-	private String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+	private String computeJustified__(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -456,7 +456,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 //			}
 						
 			//Das ist hier nur 1 Formatanweisung, darum keine Schleife
-			listasJaggedTemp = super.computeJaggedArrayList(objFormater, classObj, ienumFormatLogStringIn, sLogs);
+			listasJaggedTemp = super.computeJaggedArrayList_(objFormater, classObj, ienumFormatLogStringIn, sLogs);
 			listasJaggedReturn.addAll(listasJaggedTemp);
 			
 			//4. Zeilen buendig machen
@@ -478,12 +478,12 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	//####################################################################
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
-		return computeJustified_(objFormater, this.getClass(), ienumaFormatLogStringIn, sLogs);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+		return computeJustified__(objFormater, this.getClass(), ienumaFormatLogStringIn, sLogs);
 	}
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Object objIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			Object obj = null;
@@ -494,17 +494,17 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			Class objClass = obj.getClass();
 			
-			sReturn = computeJustified_(objFormater, objClass, ienumaFormatLogStringIn, sLogs);	
+			sReturn = computeJustified__(objFormater, objClass, ienumaFormatLogStringIn, sLogs);	
 		}//end main:
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
-		return computeJustified_(objFormater, classObj, ienumaFormatLogStringIn, sLogs);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+		return computeJustified__(objFormater, classObj, ienumaFormatLogStringIn, sLogs);
 	}
 	
-	private String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
+	private String computeJustified__(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {		
 		String sReturn = null;
 		main:{
 			String stemp = null;
@@ -529,7 +529,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			ArrayListZZZ<String>listasJaggedTemp;
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
 			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
-				listasJaggedTemp = super.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+				listasJaggedTemp = super.computeJaggedArrayList_(classObj, ienumaFormatLogString, sLogs);
 				listasJaggedReturn.addAll(listasJaggedTemp);
 			}
 			
@@ -550,7 +550,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//##################################################################
 	//### Hole ohne Angabe der Formatanweisungen als Array, diese aus dem objFormater
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object objIn, String... sLogs) throws ExceptionZZZ {
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Object objIn, String... sLogs) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			Object obj = null;
@@ -561,17 +561,17 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			Class objClass = obj.getClass();
 			
-			sReturn = computeJustified_(objFormater, objClass, sLogs);	
+			sReturn = computeJustified__(objFormater, objClass, sLogs);	
 		}//end main:
 		return sReturn;
 	}
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
-		return computeJustified_(objFormater, classObj, sLogs);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+		return computeJustified__(objFormater, classObj, sLogs);
 	}
 	
-	private String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
+	private String computeJustified__(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			//1. Teile Formatierung an den Zeilentrennern auf.
@@ -586,7 +586,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
 
 			
-			listasJaggedTemp = super.computeJaggedArrayList(objFormater, classObj, sLogs);
+			listasJaggedTemp = super.computeJaggedArrayList_(objFormater, classObj, sLogs);
 			listasJaggedReturn.addAll(listasJaggedTemp);
 			
 			//4. Zeilen buendig machen
@@ -614,7 +614,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//###################################################################
 	@Override
 	public synchronized String compute(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(hm);
+		String sReturn = super.computeJagged_(hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -628,7 +628,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	@Override
 	public synchronized String compute(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(classObj, hm);	
+		String sReturn = super.computeJagged_(classObj, hm);	
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -637,27 +637,27 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return this.computeJustified(objFormater, hm);	
+		return this.computeJustified_(objFormater, hm);	
 	}
 	
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, obj, hm);
+		String sReturn = this.computeJustified_(objFormater, obj, hm);
 		return sReturn;
 	}
 	
 	@Override
 	public synchronized String compute(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = this.computeJustified(objFormater, classObj, hm);
+		String sReturn = this.computeJustified_(objFormater, classObj, hm);
 		return sReturn;
 	}
 
 	
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, hm);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.computeJagged_(objFormater, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 				
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -666,8 +666,8 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, obj, hm);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.computeJagged_(objFormater, obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -676,8 +676,8 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	
 	@Override
-	public synchronized String computeJustified(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
-		String sReturn = super.computeJagged(objFormater, classObj, hm);
+	public synchronized String computeJustified_(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {		
+		String sReturn = super.computeJagged_(objFormater, classObj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -687,7 +687,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	@Override
 	public synchronized String computeJustified(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(hm);
+		String sReturn = super.computeJagged_(hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		
@@ -696,7 +696,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	
 	@Override
 	public synchronized String computeJustified(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		String sReturn = super.computeJagged(obj, hm);
+		String sReturn = super.computeJagged_(obj, hm);
 		sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);	
 		
 		IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();		

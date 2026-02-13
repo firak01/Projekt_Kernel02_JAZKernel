@@ -17,6 +17,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import basic.zBasic.util.string.formater.StringFormaterZZZ;
@@ -175,6 +176,29 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 };
 		 return iaFormat;
 	}
+	
+	
+	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLineWithPosition_withObject() throws ExceptionZZZ{
+		//Da die Position nicht an anderer Stelle ermittelt werden kann, sie hier in die Log-Strings aufnehmen.
+		//Bei der Abarbeitung wird geprüft, ob der verwendete Tag "positioncurrent" vorhanden ist.
+		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 //Merke: Da nun alles STRING_BY... ist, muss man keine XML-Tags mehr aus dem String entfernen, wie mit:
+		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
+		IEnumSetMappedStringFormatZZZ[]iaFormat= {
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
+		 };
+		return iaFormat;
+	}
+	
+	
 	
 	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLineDate() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
@@ -530,10 +554,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
-		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		return StringFormatManagerZZZ.getInstance().computeJagged(obj, iaFormat, saLog);
+		//return StringFormatManagerZZZ.getInstance().computeJagged_(obj, iaFormat, saLog);
+		return StringFormatManagerXmlZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
 	
@@ -544,10 +568,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
-		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
 		
-		return StringFormatManagerZZZ.getInstance().computeJagged(obj, iaFormat, saLog);
+		//return StringFormatManagerZZZ.getInstance().computeJagged_(obj, iaFormat, saLog);
+		return StringFormatManagerXmlZZZ.getInstance().compute(obj, iaFormat, saLog);
 	}
 	
 	
@@ -559,10 +583,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
-		//String[] satemp = StringArrayZZZ.append(stemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
 		 
-		return StringFormatManagerZZZ.getInstance().computeJagged(classObj, iaFormat, saLog);
+		//return StringFormatManagerZZZ.getInstance().computeJagged_(classObj, iaFormat, saLog);
+		return StringFormatManagerXmlZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -573,10 +597,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml();
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
-		//String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
 		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
 		 
-		return StringFormatManagerZZZ.getInstance().computeJagged(classObj, iaFormat, saLog);
+		//return StringFormatManagerZZZ.getInstance().computeJagged_(classObj, iaFormat, saLog);
+		return StringFormatManagerXmlZZZ.getInstance().compute(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -778,7 +802,8 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		//Jetzt die Position extra. Sie kommt ganz hintenan.
 		int iLevelUsed = iStackTraceOffset + 1;		
-		String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(iLevelUsed);
+		//String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(iLevelUsed);
+		String sPosition = ReflectCodeZZZ.getPositionCurrentInFileForConsoleClickable(iLevelUsed);
 		sLine = sLine + sPosition;
 		
 //		//ggfs. mehrere Kommentartrenner auf mehrere Zeilen buendig aufteilen

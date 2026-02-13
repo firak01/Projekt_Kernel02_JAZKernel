@@ -9,6 +9,7 @@ import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.StringFormaterZZZ;
 import custom.zKernel.ILogZZZ;
 import custom.zKernel.LogSingletonZZZ;
+import custom.zKernel.LogZZZ;
 
 public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, IObjectPositionLogZZZ{
 	private static final long serialVersionUID = 4785854649300281154L;
@@ -137,8 +138,8 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
 		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
-		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
+		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);		
 		objLog.WriteLine(sLogUsed);
 	}
 	
@@ -170,7 +171,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	}
 	
 	@Override
-	public synchronized void logProtocol(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+	public synchronized void logProtocol(Object objIn, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
 		main:{
 			if(ArrayUtilZZZ.isNull(sLogs)) break main;
 			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
@@ -178,26 +179,54 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 				break main;
 			}
 			
-			int iIndex=0;
-			if(obj==null) {			
-				for(String sLog : sLogs) {
-					if(ienumaMappedLogString.length>iIndex) {
-						this.logProtocol(ienumaMappedLogString[iIndex],sLog);
-						iIndex++;
-					}else {
-						this.logProtocol(sLog);
-					}
-				}
+		
+			
+			Object obj=null;
+			if(objIn==null) {
+				obj=this;
 			}else {
-				for(String sLog : sLogs) {
-					if(ienumaMappedLogString.length>iIndex) {
-						this.logProtocol(obj, ienumaMappedLogString[iIndex],sLog);
-						iIndex++;
-					}else {
-						this.logProtocol(sLog);
-					}
-				}			
+				obj=objIn;
 			}
+			
+			String sLogUsed;
+			
+			//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+			ILogZZZ objLog = LogSingletonZZZ.getInstance();
+							
+			//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
+			if(obj==null) {
+				sLogUsed = StringFormatManagerZZZ.getInstance().compute(sLogs, ienumaMappedLogString);
+			}else {
+				sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, ienumaMappedLogString, sLogs);
+			}
+			//wird schon in .WriteLine(...) gemacht;//System.out.println(sLogUsed);
+			
+			objLog.WriteLine(sLogUsed);
+			
+			//20260213: Blödsinn.
+			//In einer Schleife um die Formatanweisungen und dann jeweils die Protokolle mitgeben.
+			//BZW. den StringFormatManager benühen.
+// 	int iIndex=0;
+						
+//			if(obj==null) {			
+//				for(String sLog : sLogs) {
+//					if(ienumaMappedLogString.length>iIndex) {
+//						this.logProtocol(ienumaMappedLogString[iIndex],sLog);
+//						iIndex++;
+//					}else {
+//						this.logProtocol(sLog);
+//					}
+//				}
+//			}else {
+//				for(String sLog : sLogs) {
+//					if(ienumaMappedLogString.length>iIndex) {
+//						this.logProtocol(obj, ienumaMappedLogString[iIndex],sLog);
+//						iIndex++;
+//					}else {
+//						this.logProtocol(sLog);
+//					}
+//				}			
+//			}
 		}//end main:
 	}
 	
@@ -225,14 +254,22 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 		String[] saLog = StringArrayZZZ.prepend(sLogs, sPositionCalling);
+		
+		
 		this.logProtocol(this, saLog);
 	}
 	
+	TODOGOON20260213: NICHT VERGESSEN DAS DANN IN EINE PRIVATE METHODE ZU  PACKEN AUF DIE ALLE ANDEREN AUCH ZUGREIFEN!!!
 	@Override
 	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
+		
+		//Wir wollen hier zwar ohne Datum, aber mit Positionsangabe
+		IEnumSetMappedStringFormatZZZ[]iaFormat = LogZZZ.getFormatForComputeLineWithPosition_withObject();
+		
+		
 		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 		String[] saLog = StringArrayZZZ.prepend(sLog, sPositionCalling);
-		this.logProtocol(this, saLog);
+		this.logProtocol(this, iaFormat, saLog);
 	}
 			
 	@Override

@@ -49,36 +49,36 @@ public interface IStringFormatManagerComputerZZZ extends IStringFormatComputerZZ
 	//### JAGGED VARIANTE
 	//######################################
 	
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;	
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ;
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ;		
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;	
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ;		
 
-	public String computeJagged(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String computeJagged_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 	
 	//##### jede der Varianten auch als ArrayList
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;	
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ;
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ;		
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;	
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs) throws ExceptionZZZ;		
 
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 
 	
 }

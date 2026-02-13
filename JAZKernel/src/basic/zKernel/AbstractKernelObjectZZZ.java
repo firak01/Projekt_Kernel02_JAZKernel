@@ -7086,14 +7086,34 @@ MeinTestParameter=blablaErgebnis
 		boolean bReturn = false;		
 		main:{			
 				String stemp=null; boolean btemp=false; String sLog = null;
+				//DAS PROBLEM IST, DASS DAS KONFIGURATIONSOBJEKT IM GRUNDE IMMER EHER DA SEIN MUSS ALS DER KERNEL, AUCH BEIM PROTOKOLLIEREN
 				sLog = "Initializing KernelObject";				
-				this.logProtocolWithPosition(sLog);
+				//this.logProtocolWithPosition(sLog); //20260213 WAR ZWAR ORIGINAL DIE CODE-ANWEISUNG, nun wird ein CONFIG OBJEKT ERSTELLT, etc. !!! MIT DEFAULT WERTEN !!!
+				this.logLineDateWithPosition(sLog);   //Nahezu identische LOG Ausgabe, ober ohne CONFIG OBJEKT ERSTELLUNG. Also ohne DEFAULT WERTE.
+				
 				//20191204: Umstrukturierung:
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
 				//siehe als schon realisiertes Beispiel: Die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
 							
 				//Es geht dabei darum die direkt gesetzten Flags aus dem Configuration-Objekt zu übernehmen, also z.B. "useFormula" zu übernehmen.												
-				String[] saFlagUsed = null;				
+				String[] saFlagUsed = null;	
+				
+				
+				//########################################################
+				//###  Config Objekt erstellen
+				//########################################################
+				
+				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgendeiner Klasse gesetzt werden sollen.
+				//D.h. ggfs. stehen sie in dieser Klasse gar nicht zur Verfügung
+				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.
+				//Merke: Auch wenn nichts übergeben wurde, ist das Kommandozeilen-Argument ein Array mit 1 Leerwert zu sein.
+				if(objConfig==null && !StringArrayZZZ.isEmptyTrimmed(saArg)) {
+					//20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu, mit ggfs. übergebenen Argumenten der Commando-Startzeile
+					ConfigZZZ objConfigNew = new ConfigZZZ(saArg);					
+					objConfig=objConfigNew;
+				}	
+				
+				
 				if(objConfig!=null) {
 					//Übernimm die direkt gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlag();
@@ -7109,18 +7129,9 @@ MeinTestParameter=blablaErgebnis
 				bReturn = this.getFlag("INIT");
 		 		if(bReturn) break main;
 											
-				//++++++++++++++++++++++++++++++
-				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgendeiner Klasse gesetzt werden sollen.
-				//D.h. ggfs. stehen sie in dieser Klasse gar nicht zur Verfügung
-				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.
-				//Merke: Auch wenn nichts übergeben wurde, ist das Kommandozeilen-Argument ein Array mit 1 Leerwert zu sein.
-				if(objConfig==null && !StringArrayZZZ.isEmptyTrimmed(saArg)) {
-					//20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu, mit ggfs. übergebenen Argumenten der Commando-Startzeile
-					ConfigZZZ objConfigNew = new ConfigZZZ(saArg);					
-					objConfig=objConfigNew;
-				}		
-				
-				
+		 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		 		//
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				if(objConfig!=null) {
 					this.setConfigObject(objConfig);
 						
@@ -7614,7 +7625,7 @@ MeinTestParameter=blablaErgebnis
 			String sLine = AbstractKernelLogZZZ.computeLineDate(this, ""); 
 			
 			//Jetzt die Position extra. Sie kommt ganz hintenan.
-			String sPosition = ReflectCodeZZZ.getPositionCurrentInFile(1);//current+1=calling
+			String sPosition = ReflectCodeZZZ.getPositionCurrentInFileForConsoleClickable(1);//.getPositionCurrentInFile(1);//current+1=calling
 			sLog = sLog + sPosition;
 			
 			IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();

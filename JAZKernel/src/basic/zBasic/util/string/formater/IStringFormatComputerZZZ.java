@@ -42,33 +42,32 @@ public interface IStringFormatComputerZZZ {
 		
 		//############################
 		//Jede Methode auch als ArrayListZZZ
-		public ArrayListZZZ<String> computeJaggedArrayList(String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(String... sLogs) throws ExceptionZZZ;
 		
-		public ArrayListZZZ<String> computeJaggedArrayList(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ;
 		
-		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, String... sLogs) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, String... sLogs) throws ExceptionZZZ;	
+		public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, String... sLogs) throws ExceptionZZZ;	
 		
-		public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 		
-		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;		
-		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
-		public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;		
+		public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
+		public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ;
 
-		//###########################	
-		//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
-		public boolean resetStringIndexRead() throws ExceptionZZZ;	
-									
+		//###########################
 		public ArrayListUniqueZZZ<Integer> getStringIndexReadList() throws ExceptionZZZ;
 		public void setStringIndexRead(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ;
 				
-		
-		//Zurücksetzen von allem
+		//Zuruecksetzen, z.B. des Indexwerts, true wenn etwas zurueckzusetzen war.
+		public boolean resetStringIndexRead() throws ExceptionZZZ;	
+											
+		//Zurücksetzen
 		public boolean reset() throws ExceptionZZZ;		
 }

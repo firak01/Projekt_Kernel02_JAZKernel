@@ -94,8 +94,8 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	
 	@Override
 	public boolean reset() throws ExceptionZZZ {
-	//	boolean bReturn = this.resetStringIndexRead();
-		return false;
+		boolean bReturn = this.resetStringIndexRead();
+		return bReturn;
 	}
 	
 	
@@ -208,7 +208,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(ienumFormatLogString);
+			sReturn = objFormater.computeJagged_(ienumFormatLogString);
 
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);
@@ -221,7 +221,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(obj, ienumFormatLogString);
+			sReturn = objFormater.computeJagged_(obj, ienumFormatLogString);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);			
@@ -234,7 +234,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{			
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(ienumaFormatLogString, sLogs);
+			sReturn = objFormater.computeJagged_(ienumaFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumaFormatLogString);			
@@ -247,7 +247,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+			sReturn = objFormater.computeJagged_(obj, ienumFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);			
@@ -260,7 +260,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+			sReturn = objFormater.computeJagged_(obj, ienumaFormatLogString, sLogs);
 						
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumaFormatLogString);			
@@ -273,7 +273,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		String sReturn = null;
 		main:{
 			this.resetStringIndexRead();
-			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+			sReturn = objFormater.computeJagged_(classObj, ienumFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);			
@@ -288,7 +288,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 			this.resetStringIndexRead();
 			//TODOGOON20260210;//zunächst einmal muss der objFormater die Formatanweisungen "normieren".
             //d.h. seine bisherigen Formatanweisungen mit den neuen Formatanweisungen vergleichen
-			sReturn = objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+			sReturn = objFormater.computeJagged_(classObj, ienumaFormatLogString, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumaFormatLogString);			
@@ -303,7 +303,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 			this.resetStringIndexRead();
 			
 			//... die konkrete Formatanweisung wurde schon aus einem Array der "normierten" Formatanweisungen geholt.
-			sReturn = objFormater.computeJagged(classObj, ienumFormatLogString);
+			sReturn = objFormater.computeJagged_(classObj, ienumFormatLogString);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, ienumFormatLogString);			
@@ -317,7 +317,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		main:{
 			this.resetStringIndexRead();
 			
-			sReturn = objFormater.computeJagged(hm);
+			sReturn = objFormater.computeJagged_(hm);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, hm);			
@@ -331,7 +331,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		main:{
 			this.resetStringIndexRead();
 			
-			sReturn = objFormater.computeJagged(obj, hm);
+			sReturn = objFormater.computeJagged_(obj, hm);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, hm);			
@@ -345,7 +345,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		main:{
 			this.resetStringIndexRead();
 			
-			sReturn = objFormater.computeJagged(classObj, hm);
+			sReturn = objFormater.computeJagged_(classObj, hm);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn, hm);		
@@ -359,7 +359,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		main:{
 			this.resetStringIndexRead();
 			
-			sReturn = objFormater.computeJagged(obj, sLogs);
+			sReturn = objFormater.computeJagged_(obj, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn);
@@ -373,7 +373,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 		main:{
 			this.resetStringIndexRead();
 			
-			sReturn = objFormater.computeJagged(classObj, sLogs);
+			sReturn = objFormater.computeJagged_(classObj, sLogs);
 			
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			sReturn = objJustifierManager.compute(sReturn);			
@@ -385,314 +385,314 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	//### Aus ILogStringFormat Manager JAGGED
 	//#####################################################
 	@Override
-	public String computeJagged(String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ();
-		return objFormater.computeJagged(sLogs);
+		return objFormater.computeJagged_(sLogs);
 	}
 
 	
 	@Override
-	public String computeJagged(Object obj, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Object obj, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(obj, sLogs);
+		return objFormater.computeJagged_(obj, sLogs);
 	}
 
 	@Override
-	public String computeJagged(Class classObj, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Class classObj, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(classObj, (IEnumSetMappedStringFormatZZZ[]) null, sLogs);
+		return objFormater.computeJagged_(classObj, (IEnumSetMappedStringFormatZZZ[]) null, sLogs);
 	}
 
 	
 	
 	@Override
-	public String computeJagged(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public String computeJagged_(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(hm);
+		return objFormater.computeJagged_(hm);
 	}
 
 	@Override
-	public String computeJagged(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm)	throws ExceptionZZZ {
+	public String computeJagged_(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm)	throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(obj, hm);
+		return objFormater.computeJagged_(obj, hm);
 	}
 
 	@Override
-	public String computeJagged(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+	public String computeJagged_(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(classObj, hmLog);
+		return objFormater.computeJagged_(classObj, hmLog);
 	}
 
 	@Override
-	public String computeJagged(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String computeJagged_(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(ienumFormatLogString);
+		return objFormater.computeJagged_(ienumFormatLogString);
 	}
 	
 	@Override
-	public String computeJagged(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(ienumaFormatLogString, sLogs);
+		return objFormater.computeJagged_(ienumaFormatLogString, sLogs);
 	}
 
 
 	
 	@Override
-	public String computeJagged(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String computeJagged_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(obj, ienumFormatLogString);
+		return objFormater.computeJagged_(obj, ienumFormatLogString);
 	}
 	
 	@Override
-	public String computeJagged(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String computeJagged_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(classObj, ienumFormatLogString);
+		return objFormater.computeJagged_(classObj, ienumFormatLogString);
 	}
 
 	@Override
-	public String computeJagged(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+		return objFormater.computeJagged_(obj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+		return objFormater.computeJagged_(classObj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+		return objFormater.computeJagged_(obj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public String computeJagged_(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+		return objFormater.computeJagged_(classObj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJagged(obj, ienumFormatLogString);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged_(obj, ienumFormatLogString);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(ienumaFormatLogString, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(obj, ienumFormatLogString, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(obj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(obj, ienumaFormatLogString, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(obj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(classObj, ienumFormatLogString, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(classObj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(classObj, ienumaFormatLogString, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(classObj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJagged(classObj, ienumFormatLogString);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged_(classObj, ienumFormatLogString);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJagged(hm);
+	public String computeJagged_(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged_(hm);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJagged(obj, hm);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged_(obj, hm);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJagged(classObj, hm);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJagged_(classObj, hm);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJagged(obj, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJagged_(obj, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, Class classObj, String... sLogs)	throws ExceptionZZZ {
-		return objFormater.computeJagged(classObj, sLogs);
+	public String computeJagged_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs)	throws ExceptionZZZ {
+		return objFormater.computeJagged_(classObj, sLogs);
 	}
 
 	@Override
-	public String computeJagged(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJagged(ienumFormatLogString);
+	public String computeJagged_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJagged_(ienumFormatLogString);
 	}
 	
 	
 	//###########################################################
 	//### Jede Methode auch als ....ArrayList
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());
-		return objFormater.computeJaggedArrayList(sLogs);
+		return objFormater.computeJaggedArrayList_(sLogs);
 	}
 
 	
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(obj, sLogs);
+		return objFormater.computeJaggedArrayList_(obj, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(classObj, (IEnumSetMappedStringFormatZZZ[]) null, sLogs);
+		return objFormater.computeJaggedArrayList_(classObj, (IEnumSetMappedStringFormatZZZ[]) null, sLogs);
 	}
 
 	
 	
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(hm);
+		return objFormater.computeJaggedArrayList_(hm);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm)	throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm)	throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(obj, hm);
+		return objFormater.computeJaggedArrayList_(obj, hm);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(classObj, hmLog);
+		return objFormater.computeJaggedArrayList_(classObj, hmLog);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(ienumFormatLogString);
+		return objFormater.computeJaggedArrayList_(ienumFormatLogString);
 	}
 	
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(ienumaFormatLogString, sLogs);
+		return objFormater.computeJaggedArrayList_(ienumaFormatLogString, sLogs);
 	}
 
 
 	
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(obj, ienumFormatLogString);
+		return objFormater.computeJaggedArrayList_(obj, ienumFormatLogString);
 	}
 	
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(classObj, ienumFormatLogString);
+		return objFormater.computeJaggedArrayList_(classObj, ienumFormatLogString);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(obj, ienumFormatLogString, sLogs);
+		return objFormater.computeJaggedArrayList_(obj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(classObj, ienumFormatLogString, sLogs);
+		return objFormater.computeJaggedArrayList_(classObj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+	public ArrayListZZZ<String> computeJaggedArrayList_(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(obj, ienumaFormatLogString, sLogs);
+		return objFormater.computeJaggedArrayList_(obj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {	
+	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {	
 		IStringFormaterZZZ objFormater = new StringFormaterZZZ(this.getStringIndexReadList());		
-		return objFormater.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+		return objFormater.computeJaggedArrayList_(classObj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(obj, ienumFormatLogString);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(obj, ienumFormatLogString);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(ienumaFormatLogString, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(obj, ienumFormatLogString, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(obj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(obj, ienumaFormatLogString, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(obj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(classObj, ienumFormatLogString, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(classObj, ienumFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(classObj, ienumaFormatLogString, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(classObj, ienumaFormatLogString, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(classObj, ienumFormatLogString);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(classObj, ienumFormatLogString);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(hm);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(hm);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(obj, hm);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(obj, hm);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(classObj, hm);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(classObj, hm);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(obj, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Object obj, String... sLogs) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(obj, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, Class classObj, String... sLogs)	throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(classObj, sLogs);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, Class classObj, String... sLogs)	throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(classObj, sLogs);
 	}
 
 	@Override
-	public ArrayListZZZ<String> computeJaggedArrayList(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
-		return objFormater.computeJaggedArrayList(ienumFormatLogString);
+	public ArrayListZZZ<String> computeJaggedArrayList_(IStringFormaterZZZ objFormater, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		return objFormater.computeJaggedArrayList_(ienumFormatLogString);
 	}
 	
 	//###################################################

@@ -28,7 +28,10 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	public static String sSEPARATOR_PREFIX_DEFAULT="";
 	public static String sSEPARATOR_POSTFIX_DEFAULT="";
 	public static String sSEPARATOR_MESSAGE_DEFAULT=IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
-	public static String sSEPARATOR_POSITION_DEFAULT=IReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR_LEFT;
+	public static String sSEPARATOR_POSITION_DEFAULT=IReflectCodeZZZ.sPOSITION_IN_FILE_SEPARATOR_LEFT + " "; //Leerzeichen, zwingend notwendig um die Position Clickbar in der Konsole zu machen.
+																											 //Zwar ist in der Formatkonfiguration das Leerzeichen auch vorhanden, beim Normieren des Strings entfernt der Justifier aber diesen Leerstring  (halt überfluessige Leerzeichen wegtrimmen)
+	                                                                                                         //Hole so das Leerzeichen wieder rein.
+	
 	
 	public static String sSEPARATOR_01_DEFAULT="^";
 	public static String sSEPARATOR_02_DEFAULT="° ";
@@ -143,7 +146,9 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	CLASSMETHOD_STRING_BY_HASHMAP("methodbystring",IStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRING,"" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem  in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
 	CLASSFILELINE_STRING_BY_HASHMAP("linenrbystring",IStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRING, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
 	CLASSFILENAME_STRING_BY_HASHMAP("filenamebystring",IStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRING, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),
-	CLASSFILEPOSITION_STRING_BY_HASHMAP("filepositionbystring",IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + " " + IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT, "%s",IStringFormatZZZ.iARG_STRING, IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT + " " + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Position in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent(). (Merke: Damit das in der Console clickbar ist Leerzeichen drum)."),		
+	//Hier die Leerzeichen nicht verwenden. Die Position mit Leerzeichen kommt schon so in den String rein.... Dann ist noch ein Leerzeichen zuviel
+	//CLASSFILEPOSITION_STRING_BY_HASHMAP("filepositionbystring",IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + " " + IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT, "%s",IStringFormatZZZ.iARG_STRING, IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT + " " + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Position in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent(). (Merke: Damit das in der Console clickbar ist Leerzeichen drum)."),		
+	CLASSFILEPOSITION_STRING_BY_HASHMAP("filepositionbystring",IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "" + IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT, "%s",IStringFormatZZZ.iARG_STRING, IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT + "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Position in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent(). (Merke: Damit das in der Console clickbar ist Leerzeichen drum, das wird aber schon im String bereitgestellt. Darf also hier nicht extra noch rein)."),
 	
 	
 	CLASSMETHOD_XML_BY_XML("method",IStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_XML, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRINGXML, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem XML-String in diesem XML-Tag Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrentXml()."),

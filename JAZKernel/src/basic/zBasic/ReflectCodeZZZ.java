@@ -635,6 +635,61 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	  }//end main:
 	  return sReturn;
 	}
+	
+	//#######################################################
+	public static String getPositionCurrentInFileForConsoleClickable() throws ExceptionZZZ {
+		return getPositionCurrentInFileForConsoleClickable(1);
+	}
+	
+	public static String  getPositionCurrentInFileForConsoleClickable(int iLevel) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{	  
+			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+				///System.out.println("HIER WEITERARBEITEN, gemaess Artikel 'The surprisingly simple stack trace Element'");
+				int iLevelUsed = iLevel+1;
+				
+				int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+				String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
+			
+				sReturn = getPositionInFileForConsoleClickable_(sFile, iLine);					  	
+			}else{
+				
+				//Verarbeitung vor Java 1.4
+				ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	   
+			}//end Java Version
+	  }//end main:
+	  return sReturn;
+		
+	}
+	
+	public static String  getPositionCurrentInFileForConsoleClickable(String sFile, int iLine) throws ExceptionZZZ {
+		return getPositionInFileForConsoleClickable_(sFile, iLine);
+	}
+	
+	public static String  getPositionInFileForConsoleClickable(String sFile, int iLine) throws ExceptionZZZ {
+		return getPositionInFileForConsoleClickable_(sFile, iLine);
+	}
+	
+	private static String getPositionInFileForConsoleClickable_(String sFile, int iLine) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{	  
+			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+				///System.out.println("HIER WEITERARBEITEN, gemaess Artikel 'The surprisingly simple stack trace Element'");			   
+			   //Variante mit Klammern 
+				String sLine = ReflectCodeZZZ.formatFileCallingLineForConsoleClickable(sFile, iLine);			   
+			   sReturn = sLine;
+			}else{
+				
+				//Verarbeitung vor Java 1.4
+				ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	   
+			}//end Java Version
+	  }//end main:
+	  return sReturn;
+	}
 		
 	public static String  getPositionCurrent() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 1);
@@ -703,8 +758,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Erzeuge hier den String als NICHT - XML Variante. 
 			//ACHTUNG: Die Tags aus dieser Variante koennen dann von dem LogStringFormatManagerZZZ (oder auch wieder vom LogStringFormatManagerXmlZZZ)
 			//         NICHT in ein Format gebracht werden, bei dem die Reihenfolge veraendert wurde
-			IStringFormaterZZZ objFormater = new StringFormaterZZZ();
-			sReturn = StringFormatManagerZZZ.getInstance().computeJagged(objFormater, hmLogString);						
+			//IStringFormaterZZZ objFormater = new StringFormaterZZZ();
+			//sReturn = StringFormatManagerZZZ.getInstance().computeJagged_(objFormater, hmLogString);						
+			sReturn = StringFormatManagerZZZ.getInstance().computeJagged_(hmLogString);
 		}//end main:
 		return sReturn;
 	}
