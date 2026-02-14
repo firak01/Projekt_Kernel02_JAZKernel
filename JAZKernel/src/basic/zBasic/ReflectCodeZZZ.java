@@ -18,6 +18,8 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormaterZZZ;
@@ -1249,6 +1251,44 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return sReturn;			
 	}
 	
+	public static String getClassFileName(Object obj) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			Class classObj = obj.getClass();
+			sReturn = ReflectCodeZZZ.getClassFileName(classObj);
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String getClassFileName(Class classObj) throws ExceptionZZZ{
+		return classObj.getSimpleName() + ".java";		
+	}
+	
+	
+	public static String getClassFilePath(Object obj) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			Class classObj = obj.getClass();
+			sReturn = ReflectCodeZZZ.getClassFilePath(classObj);
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String getClassFilePath(Class classObj) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{			
+			String sFileName = ReflectCodeZZZ.getClassFileName(classObj);			
+			String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+			
+			 //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
+            //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+            //ALSO: Einfacher halten.
+			String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
+			
+			sReturn = sFilePathTotal;
+		}//end main:
+		return sReturn;
+	}
 	
 	/**
 	 * Liefert den Namen einer aufrufenden Methode oder deren Aufrufer

@@ -40,5 +40,9 @@ public interface ILogZZZ extends IFileExpansionEnabledZZZ, IKernelConfigUserZZZ{
 	public boolean WriteLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ;
 	public boolean WriteLineDateWithPosition(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
 	
+	public boolean WriteLineDateWithPositionXml(String sLog) throws ExceptionZZZ;
+	
+	public boolean WriteLineDateWithPositionXml(Class classObj, String sLog) throws ExceptionZZZ;
 	public boolean WriteLineDateWithPositionXml(Object obj, String sLog) throws ExceptionZZZ;
+	public boolean WriteLineDateWithPositionXml(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
 }

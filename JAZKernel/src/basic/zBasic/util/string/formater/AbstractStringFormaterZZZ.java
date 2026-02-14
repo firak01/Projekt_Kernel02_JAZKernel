@@ -828,12 +828,14 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	                        sFormat = this.getHashMapFormatPositionString().get(
 	                            new Integer(IStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING));
 	                        //sReturn = String.format(sFormat, StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS) + FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS + classObj.getSimpleName() + ".java");
-	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
-	                        String sFileName = classObj.getSimpleName() + ".java";
-	                        //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
-	                        //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
-	                        //ALSO: Einfacher halten.
-	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
+//	                        String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+//	                        String sFileName = classObj.getSimpleName() + ".java";
+//	                        //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
+//	                        //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+//	                        //ALSO: Einfacher halten.
+//	                        String sFilePathTotal = sDirectory + StringZZZ.char2String(IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR) + sFileName;
+	                        
+	                        String sFilePathTotal = ReflectCodeZZZ.getClassFilePath(classObj);
 	                        sReturn = String.format(sFormat, sFilePathTotal);
 	                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                    }
@@ -2652,7 +2654,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				classObj = classObjIn;
 			}
 			
-			listasReturn = computeLinesInLog_Jagged_ArrayList__(classObjIn, ienumaFormatLogString, sLogs);			
+			listasReturn = computeLinesInLog_Jagged_ArrayList__(classObj, ienumaFormatLogString, sLogs);			
 		}//end main:
 		return listasReturn;	
 	}

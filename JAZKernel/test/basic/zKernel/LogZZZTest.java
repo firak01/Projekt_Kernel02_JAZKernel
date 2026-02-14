@@ -51,6 +51,33 @@ public class LogZZZTest extends TestCase{
 			boolean bStartsWith=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
 			
 			//##############################################
+			//ohne bestimmtes Format, verwendet wird also das als default im System vorhandene Format.
+			//Merke: Das ist ohne File-Position-Angabe
+			//##############################################
+			
+			//Zeile mit 1x Logstring
+			sLog1 = "XXXTESTLAENGERXXX";			
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
+			sValue = objLogTest.computeLine(sLog1);
+			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
+						
+			//Nur 1x den LogString
+			itemp = StringZZZ.count(sValue, sLog1);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
+			
+			//Nur 1x den MessageSeparator
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+						
+			
+			//##############################################
 			//Hier die verschiedenen Custom-Formate durchspielen. 
 			//Dann muss aber jedes Mal die Ueberpruefung des Ergebnisses eine andere sein. (anfang, mitte, ende).
 			//Ueberlass das dem DEFAULT-Test
@@ -147,43 +174,37 @@ public class LogZZZTest extends TestCase{
 	public void testComputeLine_DEFAULT() {
 		try {
 			String sLog1=null; String sLog2=null;
-			String sValue=null; String sMid1=null; String sMid2=null; int iLine=0; String sFilePath=null; String sLinePosition=null;
-			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
-			boolean bStartsWith=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
+			String sValue=null; String sMid=null; String sMid1=null; String sMid2=null; int iLine=0; String sFilePath=null; String sLinePosition=null;
+			String sValueExpectedStart=null; String sValueExpectedMid=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
+			boolean bStartsWith=false; boolean bMidFound=false; boolean bMid1found=false; boolean bMid2found=false; boolean bEndsWith=false;
 			
 			//##############################################
 			
 			//Die aktuelle Java-Datei
-			sFilePath = ReflectCodeZZZ.getMethodCurrentFileName();
+			String sClassFilePath = ReflectCodeZZZ.getClassFilePath(this);
 			
 			
 			//#############################################
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLine(sLog1);
+			sValue = objLogTest.computeLine(this, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
-			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid1 = ("[A00/]");
-			sValueExpectedMid2 = (IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]" + "[A00/]").trim();
-			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_01_DEFAULT;
+			sValueExpectedStart = "[A00/]"; //ohne Datum, darum geht es mit dem Thread los
+			sValueExpectedMid1 = "^[T][Thread: 1][/T][CF]File:" + sClassFilePath + "][/CF][A00/]" ;
+			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]";
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
 			bEndsWith = StringZZZ.endsWith(sValue, sValueExpectedEnd);
 			assertTrue(bEndsWith);
 			
-			sMid1 = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedMid2);
-			sMid1 = sMid1.trim();
-			bMid1found = sMid1.equals(sValueExpectedMid1);
-			assertTrue(bMid1found);
-			
-			sMid2 = StringZZZ.mid(sValue, sValueExpectedMid1, sValueExpectedEnd);
-			sMid2 = sMid2.trim();
-			bMid2found = sMid2.equals(sValueExpectedMid2);
-			assertTrue(bMid2found);
+			sMid = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedEnd);
+			sMid = sMid.trim();
+			bMidFound = sMid.equals(sValueExpectedMid);
+			assertTrue(bMidFound);
 			
 			
 			//###############################################
@@ -421,7 +442,14 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDate(){
 		try {
-			assertTrue(objLogTest.WriteLineDate(strTEST_ENTRY01_DEFAULT));
+			boolean bValue=false;
+			
+			//##################################################################################
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
+			//##################################################################################
+		
+			bValue = objLogTest.WriteLineDate(strTEST_ENTRY01_DEFAULT);
+			assertTrue(bValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -433,14 +461,10 @@ public class LogZZZTest extends TestCase{
 			boolean bValue=false;
 			
 			//##################################################################################
-			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
-			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
-			//### sollte sie fehlen.
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
 			//##################################################################################
 			
-			
-			//Verwende intern das Format STRING_BY_XML
-			bValue = objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY01_DEFAULT);
+			bValue = objLogTest.WriteLineDateWithPosition(strTEST_ENTRY01_DEFAULT);
 			assertTrue(bValue);
 			
 		} catch (ExceptionZZZ ez) {
@@ -451,19 +475,16 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDateWithPositionXml(){
 		try {
-			
+			boolean bValue=false;
+						
 			//##################################################################################
-			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
-			//### Sonst muss man nachher noch dafuer sorgen, das diese spezielle Formatanweisung auch noch explizit hinzugefuegt wird,
-			//### sollte sie fehlen.
+			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
 			//##################################################################################
 			
+			bValue = objLogTest.WriteLineDateWithPositionXml("");
+			assertTrue(bValue);
 			
-			boolean bDummy = objLogTest.WriteLineDateWithPositionXml(this, "");
-			assertTrue(bDummy);
-			
-			//Verwende intern das Format XML_BY_XML
-			boolean bValue = objLogTest.WriteLineDateWithPositionXml(this, strTEST_ENTRY01_DEFAULT); 
+			bValue = objLogTest.WriteLineDateWithPositionXml(strTEST_ENTRY01_DEFAULT); 
 			assertTrue(bValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
