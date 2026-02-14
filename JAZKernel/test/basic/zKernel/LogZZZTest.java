@@ -84,7 +84,7 @@ public class LogZZZTest extends TestCase{
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
 			sValue = objLogTest.computeLine(iaFormat, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
-			
+						
 			//Nur 1x den LogString
 			itemp = StringZZZ.count(sValue, sLog1);
 			bValue = (itemp==1);
@@ -430,6 +430,7 @@ public class LogZZZTest extends TestCase{
 	
 	public void testWriteLineDateWithPosition(){
 		try {
+			boolean bValue=false;
 			
 			//##################################################################################
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 
@@ -439,9 +440,9 @@ public class LogZZZTest extends TestCase{
 			
 			
 			//Verwende intern das Format STRING_BY_XML
-			assertTrue(objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY01_DEFAULT));
+			bValue = objLogTest.WriteLineDateWithPosition(this, strTEST_ENTRY01_DEFAULT);
+			assertTrue(bValue);
 			
-			//bValue=objLog01.WriteLineDateWithPosition(this, strTEST_ENTRY_DEFAULT);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
